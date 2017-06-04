@@ -1,0 +1,7 @@
+git push --all google
+
+git username:
+chrisdennett@gmail.com
+
+password:
+1/cK6_Fy3wO9TPqNBth_eWYQaM_On84J3FDElkRAhJ0nBV3_Hwvck86dHBC3SdXfmo
