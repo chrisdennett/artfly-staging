@@ -1,6 +1,7 @@
 // commit changes to git
 use the version control panel to check changes
 
+// using terminal
 // add to google -> https://console.cloud.google.com/code/develop/browse/artfly/master?project=art-blam
 git push --all google
 
@@ -9,3 +10,5 @@ chrisdennett@gmail.com
 
 password:
 1/cK6_Fy3wO9TPqNBth_eWYQaM_On84J3FDElkRAhJ0nBV3_Hwvck86dHBC3SdXfmo
+
+// after pasting in the password you won't see the terminal change, just press enter
