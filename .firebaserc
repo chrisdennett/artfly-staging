@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "art-blam",
+    "staging": "artfly-staging"
+  }
+}
