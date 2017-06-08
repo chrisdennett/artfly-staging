@@ -3,6 +3,7 @@ import firebase from '../firebase/firebaseConfig';
 import * as fb from 'firebase';
 
 export const FETCH_USER_AUTH = "fetchUserAuth";
+export const CREATE_USER = 'create_user';
 export const FETCH_USER = "fetchUser";
 export const FETCH_ARTISTS = "fetchArtists";
 export const FETCH_ARTWORK_KEYS = "fetchArtworkKeys";
@@ -10,15 +11,15 @@ export const FETCH_ARTWORKS = "fetchArtworks";
 export const FETCH_ARTWORK = "fetchArtwork";
 export const LOGIN_USER = "loginUser";
 export const LOGOUT_USER = "logoutUser";
-export const CREATE_USER = 'create_user';
-export const ADD_USER_ARTIST = 'create_artist';
+export const ADD_NEW_ARTIST = 'addNewArtist';
+export const CANCEL_ADD_ARTIST = 'cancelAddArtist';
 export const CREATE_ARTWORK = 'createArtwork';
 export const UPLOAD_IMAGE = 'uploadImage';
 export const IMAGE_UPLOAD_PROGRESS = 'imageUploadProgress';
 // export const CLEAR_IMAGE_UPLOAD = 'clearImageUpload';
 // export const DELETE_IMAGE_UPLOAD = 'deleteImageUpload';
 
-export function createNewArtist(userId, formValues, callback = null) {
+export function addNewArtist(userId, formValues, callback = null) {
     return dispatch => {
         const artistRef = firebase.database().ref('/artists').push();
         const userArtistRef = firebase.database().ref(`/users/${userId}/artists/${artistRef.key}`);
@@ -30,16 +31,26 @@ export function createNewArtist(userId, formValues, callback = null) {
                     .set({ name: formValues.artistName, biog: formValues.biog })
                     .then(() => {
                         dispatch({
-                            type: ADD_USER_ARTIST,
+                            type: ADD_NEW_ARTIST,
                             payload: { [userArtistRef.key]: { name: formValues.artistName, biog: formValues.biog } }
                         });
 
                         if (callback) callback();
                     })
                     .catch(function (error) {
-                        console.log('Synchronization failed');
+                        console.log('Synchronization failed: ', error);
                     })
             );
+    }
+}
+
+export function cancelAddArtist(callback = null){
+    return dispatch => {
+        dispatch({
+            type: CANCEL_ADD_ARTIST,
+            payload: "cancel"
+        });
+        if (callback) callback();
     }
 }
 
@@ -65,7 +76,7 @@ export function createNewUser(authId, formValues, callback = null) {
                         if (callback) callback();
                     })
                     .catch(function (error) {
-                        console.log('Synchronization failed');
+                        console.log('Synchronization failed: ', error);
                     })
             );
     }
@@ -83,16 +94,6 @@ export function loginUser() {
         }).catch((error) => {
             console.log(error);
         });
-
-
-       /* firebase.auth().signInWithPopup(provider).then(function (result) {
-            dispatch({
-                type: LOGIN_USER,
-                payload: result
-            })
-        }).catch((error) => {
-            console.log(error);
-        });*/
     }
 }
 
@@ -335,7 +336,7 @@ export function createNewArtwork(artistId, artData, callback = null) {
                         if (callback) callback(artworkRef.key);
                     })
                     .catch(function (error) {
-                        console.log('Synchronization failed');
+                        console.log('Synchronization failed: ', error);
                     })
             );
     }

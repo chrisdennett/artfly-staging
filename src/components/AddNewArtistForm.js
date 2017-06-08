@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { createNewArtist } from '../actions';
+import { addNewArtist, cancelAddArtist } from '../actions';
 
 class AddNewArtistForm extends Component {
 
@@ -38,12 +38,15 @@ class AddNewArtistForm extends Component {
     }
 
     onNewArtistFormSubmit(values){
-        this.props.createNewArtist(this.props.userId, values);
-        // console.log("values: ", values);
+        this.props.addNewArtist(this.props.userId, values, () => {
+            this.setState({formOpen: false});
+        });
     }
 
     onFormCancel(){
-        this.setState({formOpen: false});
+        this.props.cancelAddArtist(() => {
+            this.setState({formOpen: false});
+        });
     }
 
     render() {
@@ -52,10 +55,6 @@ class AddNewArtistForm extends Component {
         if(this.state.formOpen){
             return (
                 <div>
-                    {/*
-                    TODO: add redux form in here with name and biog
-                    this component will need userId from props to call an event, but I think that's all
-                    */}
                     <form onSubmit={handleSubmit(this.onNewArtistFormSubmit.bind(this))}>
                         <Field
                             name="artistName"
@@ -68,7 +67,7 @@ class AddNewArtistForm extends Component {
                             component={this.renderField}
                         />
                         <button type="submit" className="btn btn-primary">Submit</button>
-                        <button onClick={this.onFormCancel.bind(this)} className="btn btn-danger">Cancel</button>
+                        <button type="button" onClick={this.onFormCancel.bind(this)} className="btn btn-danger">Cancel</button>
                     </form>
                 </div>
             )
@@ -114,7 +113,7 @@ AddNewArtistForm = connect(
             biog: "One of the best artists know to humankind."
         }
     })
-    , { createNewArtist }
+    , { addNewArtist, cancelAddArtist }
 )(AddNewArtistForm);
 
 export default AddNewArtistForm;

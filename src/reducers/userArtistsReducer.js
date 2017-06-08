@@ -1,5 +1,5 @@
 import { FETCH_ARTISTS } from '../actions';
-import { ADD_USER_ARTIST } from '../actions';
+import { ADD_NEW_ARTIST } from '../actions';
 
 export default function (state = {}, action) {
 
@@ -11,7 +11,7 @@ export default function (state = {}, action) {
             artistData = action.payload[artistKey];
             return { ...state, [artistKey]: artistData };
 
-        case ADD_USER_ARTIST:
+        case ADD_NEW_ARTIST:
             artistKey = Object.keys(action.payload)[0];
             artistData = action.payload[artistKey];
 
