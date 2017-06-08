@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux';
 // import { reducer as formReducer } from 'redux-form';
 
-import UserAuthReducer from './userAuthReducer';
-import UserReducer from './userReducer';
-import UserArtistsReducer from './userArtistsReducer';
-import CurrentArtworkKeysReducer from './currentArtworkKeysReducer';
-import CurrentArtworksReducer from './currentArtworksReducer';
-import CurrentArtworkReducer from './currentArtworkReducer';
-import UploadImageReducer from './uploadImageReducer';
-import UploadImageProgressReducer from './uploadImageProgressReducer';
+import UserAuthReducer from '../components/User/userAuthReducer';
+import UserReducer from '../components/User/userReducer';
+import UserArtistsReducer from '../components/User/userArtistsReducer';
+import CurrentArtworkKeysReducer from '../components/Gallery/currentArtworkKeysReducer';
+import CurrentArtworksReducer from '../components/Gallery/currentArtworksReducer';
+import CurrentArtworkReducer from '../components/Artwork/currentArtworkReducer';
+import UploadImageReducer from '../components/ArtworkAdder/uploadImageReducer';
+import UploadImageProgressReducer from '../components/ArtworkAdder/uploadImageProgressReducer';
 import FormReducer from './FormReducer';
 // import {ADD_USER_ARTIST} from '../actions';
 

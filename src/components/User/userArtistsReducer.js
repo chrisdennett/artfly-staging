@@ -1,5 +1,4 @@
-import { FETCH_ARTISTS } from '../actions';
-import { ADD_NEW_ARTIST } from '../actions';
+import { ADD_NEW_ARTIST, FETCH_ARTISTS } from './UserActions';
 
 export default function (state = {}, action) {
 

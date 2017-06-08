@@ -1,4 +1,4 @@
-import { IMAGE_UPLOAD_PROGRESS } from '../actions';
+import { IMAGE_UPLOAD_PROGRESS } from './ArtworkAdderActions';
 
 export default function (state = 0, action) {
     switch (action.type) {

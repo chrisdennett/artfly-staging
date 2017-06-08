@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { createNewUser, logoutUser } from '../actions';
+import { createNewUser, logoutUser } from './UserActions';
 
 class NewUserForm extends Component {
 

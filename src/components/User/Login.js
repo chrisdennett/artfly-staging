@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchUserAuth, fetchUser, fetchArtists, loginUser, logoutUser } from '../actions';
+import { fetchUserAuth, fetchUser, loginUser, logoutUser, fetchArtists } from './UserActions';
 
 import NewUserForm from './NewUserForm';
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchArtwork } from '../actions';
+import { fetchArtwork } from './ArtworkActions';
 
 class Artwork extends Component {
 

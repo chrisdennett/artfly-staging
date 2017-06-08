@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { addNewArtist, cancelAddArtist } from '../actions';
+import { addNewArtist, cancelAddArtist } from '../../actions/index';
 
 class AddNewArtistForm extends Component {
 

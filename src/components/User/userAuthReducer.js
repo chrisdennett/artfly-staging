@@ -1,4 +1,4 @@
-import { FETCH_USER_AUTH } from '../actions';
+import { FETCH_USER_AUTH } from './UserActions';
 
 // FETCH_USER_AUTH is triggered when logging in and out
 // so not dealt with LOGIN_USER and LOGOUT_USER actions, but could do here if needed

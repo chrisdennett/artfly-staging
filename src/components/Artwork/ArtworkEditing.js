@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { fetchArtwork } from '../actions';
+import { fetchArtwork } from './ArtworkActions';
 
 class ArtworkEditing extends Component {
 

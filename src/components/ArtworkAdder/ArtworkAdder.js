@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { fetchUserAuth, fetchUser, fetchArtists, uploadImage, clearImageUpload, deleteImageUpload } from '../actions';
+import { uploadImage } from './ArtworkAdderActions';
 import PhotoSelector from './PhotoSelector/PhotoSelector';
 
 /*
@@ -109,4 +109,4 @@ function mapStateToProps(state) {
 
 export default withRouter(connect(
     mapStateToProps,
-    { fetchUserAuth, fetchUser, fetchArtists, uploadImage, clearImageUpload, deleteImageUpload })(ArtworkAdder));
+    { uploadImage })(ArtworkAdder));

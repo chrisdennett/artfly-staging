@@ -1,4 +1,4 @@
-import { FETCH_ARTWORKS } from '../actions';
+import { FETCH_ARTWORKS } from './GalleryActions';
 
 export default function (state = {}, action) {
     switch (action.type) {

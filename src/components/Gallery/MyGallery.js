@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 import _ from 'lodash';
 
-import AddNewAristForm from './AddNewArtistForm';
-import { fetchUserAuth, fetchUser, fetchArtists, fetchArtworks, fetchArtworkKeys } from '../actions';
+import AddNewArtistForm from '../ArtistAdder/AddNewArtistForm';
+import { fetchArtworkKeys, fetchArtworks } from './GalleryActions';
 
 class MyGallery extends Component {
 
@@ -39,7 +39,7 @@ class MyGallery extends Component {
                 <h1>{this.props.user.galleryName}</h1>
                 <p>Curator: {this.props.user.username}</p>
                 <h2>Artists in residence:</h2>
-                <AddNewAristForm userId={this.props.userAuth.uid}/>
+                <AddNewArtistForm userId={this.props.userAuth.uid}/>
                 <ul>
                     {artistList}
                 </ul>
@@ -109,5 +109,5 @@ function mapStateToProps(state) {
 
 export default connect(
     mapStateToProps,
-    { fetchUserAuth, fetchUser, fetchArtists, fetchArtworks, fetchArtworkKeys }
+    { fetchArtworks, fetchArtworkKeys }
 )(MyGallery);

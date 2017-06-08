@@ -3,12 +3,12 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
-import Home from '../components/Home';
-import MyGallery from '../components/MyGallery';
-import Artwork from '../components/Artwork';
-import ArtworkEditing from '../components/ArtworkEditing';
-import Login from '../components/Login';
-import ArtworkAdder from '../components/ArtworkAdder';
+import Home from '../components/Home/Home';
+import MyGallery from '../components/Gallery/MyGallery';
+import Artwork from '../components/Artwork/Artwork';
+import ArtworkEditing from '../components/Artwork/ArtworkEditing';
+import Login from '../components/User/Login';
+import ArtworkAdder from '../components/ArtworkAdder/ArtworkAdder';
 import store from '../store';
 
 export default (
