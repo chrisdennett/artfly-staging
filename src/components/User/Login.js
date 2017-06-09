@@ -1,26 +1,10 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { fetchUserAuth, fetchUser, loginUser, logoutUser, fetchArtists } from './UserActions';
+import { loginUser, logoutUser } from './UserActions';
 
 import NewUserForm from './NewUserForm';
 
 class Login extends Component {
-
-    componentDidMount() {
-        this.props.fetchUserAuth(() => {
-            // if userAuth is not null...
-            if (this.props.userAuth) {
-                // ...fetch user data with a callback function
-                this.props.fetchUser(this.props.userAuth.uid, () => {
-                    // ...fetch the user's artists
-                    if(this.props.user) {
-                        this.props.fetchArtists(this.props.user.artists);
-                    }
-                });
-            }
-        });
-    }
 
     login() {
         this.props.loginUser();
@@ -48,11 +32,11 @@ class Login extends Component {
             )
         }
 
+
         return (
-            <div>
+            <span>
                 <button onClick={this.logout.bind(this)}>Log out</button>
-                <Link to="/mygallery">My Gallery</Link>
-            </div>
+            </span>
         );
     }
 }
@@ -64,4 +48,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, { fetchUserAuth, fetchUser, fetchArtists, loginUser, logoutUser })(Login);
+export default connect(mapStateToProps, { loginUser, logoutUser })(Login);

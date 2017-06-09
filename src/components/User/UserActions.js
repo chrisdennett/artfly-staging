@@ -36,7 +36,7 @@ export function addNewArtist(userId, formValues, callback = null) {
     }
 }
 
-export function cancelAddArtist(callback = null){
+export function cancelAddArtist(callback = null) {
     return dispatch => {
         dispatch({
             type: CANCEL_ADD_ARTIST,
@@ -72,12 +72,26 @@ export function createNewUser(authId, formValues, callback = null) {
     return dispatch => {
         const userRef = firebase.database().ref(`/users/${authId}`);
         const artistRef = firebase.database().ref('/artists').push();
+        const galleryRef = firebase.database().ref('/galleries').push();
         const userArtistsObj = {};
         userArtistsObj[artistRef.key] = 'true';
-        const newUserData = { ...formValues, artists: userArtistsObj };
 
+        const newUserData = {
+            email: formValues.email,
+            galleryId: galleryRef.key,
+            artists: userArtistsObj
+        };
+
+        // set the user data first, then add the gallery, then add the artist
         userRef
             .set(newUserData)
+            .then(
+                galleryRef
+                    .set({
+                        name:formValues.galleryName,
+                        artists: userArtistsObj
+                    })
+            )
             .then(
                 artistRef
                     .set({ name: formValues.artistName })
@@ -98,6 +112,10 @@ export function createNewUser(authId, formValues, callback = null) {
 
 export function loginUser() {
     const provider = new fb.auth.GoogleAuthProvider();
+
+    //firebase.auth.AuthCredential.provider is deprecated. Please use the providerId field instead.
+    provider.addScope('profile');
+    provider.addScope('email');
 
     return dispatch => {
         firebase.auth().signInWithPopup(provider).then(function (result) {

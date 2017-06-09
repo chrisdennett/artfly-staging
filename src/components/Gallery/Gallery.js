@@ -1,12 +1,18 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
-import AddNewArtistForm from '../ArtistAdder/AddNewArtistForm';
-import { fetchArtworkKeys, fetchArtworks } from './GalleryActions';
+import { fetchGallery, fetchGalleryArtists, fetchArtworkKeys, fetchArtworks } from './GalleryActions';
 
-class MyGallery extends Component {
+class Gallery extends Component {
+
+    componentDidMount() {
+        const { galleryId } = this.props.match.params;
+        this.props.fetchGallery(galleryId, () => {
+            this.props.fetchGalleryArtists(this.props.gallery.artists);
+        });
+    }
 
     onArtistClick(artistId, event) {
         this.showArtistPictures(artistId)
@@ -19,15 +25,11 @@ class MyGallery extends Component {
     }
 
     render() {
-        if (!this.props.userAuth || !this.props.user) {
-            return (<Redirect to="/"/>)
-        }
-
-        if (!this.props.userArtists) {
+        if (!this.props.gallery.artists) {
             return (<h1>Add your first gallery</h1>)
         }
 
-        const artistList = _.map(this.props.userArtists, (artistData, artistId) => {
+        const artistList = _.map(this.props.galleryArtists, (artistData, artistId) => {
             return (
                 <li key={artistId}>
                     <button onClick={this.onArtistClick.bind(this, artistId)}>{ artistData.name }</button>
@@ -36,10 +38,9 @@ class MyGallery extends Component {
 
         return (
             <div>
-                <h1>{this.props.user.galleryName}</h1>
-                <p>Curator: {this.props.user.username}</p>
+                <h1>{this.props.gallery.name}</h1>
+                <p>Curator: {this.props.gallery.curator}</p>
                 <h2>Artists in residence:</h2>
-                <AddNewArtistForm userId={this.props.userAuth.uid}/>
                 <ul>
                     {artistList}
                 </ul>
@@ -49,11 +50,11 @@ class MyGallery extends Component {
                         _.map(this.props.currentArtworks, (artworkData, artworkId) => {
 
                             /*This should only be triggered if I've been mucking around with the database*/
-                            if(!artworkData || !artworkData.artist || !this.props.userArtists[artworkData.artist]){
+                            if(!artworkData || !artworkData.artist || !this.props.gallery.artists[artworkData.artist]){
                                 return <div key={artworkId}>Can't find artwork: {artworkId}</div>
                             }
 
-                            const artistName = this.props.userArtists[artworkData.artist].name;
+                            const artistName = this.props.gallery.artists[artworkData.artist].name;
                             const dateAdded = new Date(artworkData.dateAdded).toDateString(); // TODO: when these are proper dates, convert to string
                             const imgUrl = `https://res.cloudinary.com/artfly/image/fetch/w_150,h_150/${encodeURIComponent(artworkData.url)}`;
 
@@ -99,9 +100,8 @@ class MyGallery extends Component {
 
 function mapStateToProps(state) {
     return {
-        userAuth: state.userAuth,
-        user: state.user,
-        userArtists: state.userArtists,
+        gallery: state.gallery,
+        galleryArtists: state.galleryArtists,
         currentArtworkKeys: state.currentArtworkKeys,
         currentArtworks: state.currentArtworks
     }
@@ -109,5 +109,5 @@ function mapStateToProps(state) {
 
 export default connect(
     mapStateToProps,
-    { fetchArtworks, fetchArtworkKeys }
-)(MyGallery);
+    { fetchGallery, fetchGalleryArtists, fetchArtworks, fetchArtworkKeys }
+)(Gallery);

@@ -2,8 +2,48 @@ import firebase from '../../firebase/firebaseConfig';
 // TODO: I think I should be able to do away with this through first import
 import * as fb from 'firebase';
 
+export const FETCH_GALLERY = "fetchGallery";
 export const FETCH_ARTWORK_KEYS = "fetchArtworkKeys";
 export const FETCH_ARTWORKS = "fetchArtworks";
+export const FETCH_GALLERY_ARTISTS = "fetchGalleryArtists";
+
+export function fetchGallery(galleryId, callback=null) {
+    return dispatch => {
+        firebase.database()
+            .ref(`/galleries/${galleryId}`)
+            .once('value')
+            .then(function (snapshot) {
+                dispatch({
+                    type: FETCH_GALLERY,
+                    payload: snapshot.val()
+                });
+
+                if (callback) callback();
+            })
+    }
+}
+
+export function fetchGalleryArtists(artistList, callback) {
+    return dispatch => {
+        const keys = Object.keys(artistList);
+
+        for (let i = 0; i < keys.length; i++) {
+            firebase.database()
+                .ref('/artists/' + keys[i])
+                .on('value', (snapshot) => {
+                    const artistId = snapshot.key;
+                    const artistData = snapshot.val();
+
+                    dispatch({
+                        type: FETCH_GALLERY_ARTISTS,
+                        payload: { [artistId]: artistData }
+                    });
+
+                    if (callback) callback();
+                })
+        }
+    }
+}
 
 export function fetchArtworkKeys(artistId, callback) {
     return dispatch => {
