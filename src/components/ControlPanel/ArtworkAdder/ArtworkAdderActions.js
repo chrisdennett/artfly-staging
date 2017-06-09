@@ -54,7 +54,7 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
                 // Upload completed successfully - save artwork data
                 const dateStamp = Date.now();
                 const newArtworkData = {
-                    owner: userId,
+                    curator: userId,
                     artist: artistId,
                     imgRef: artworkRef.key,
                     url: uploadTask.snapshot.downloadURL,

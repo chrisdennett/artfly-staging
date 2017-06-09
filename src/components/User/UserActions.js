@@ -79,7 +79,8 @@ export function createNewUser(authId, formValues, callback = null) {
         const newUserData = {
             email: formValues.email,
             galleryId: galleryRef.key,
-            artists: userArtistsObj
+            artists: userArtistsObj,
+            curator: formValues.curator
         };
 
         // set the user data first, then add the gallery, then add the artist
@@ -89,6 +90,7 @@ export function createNewUser(authId, formValues, callback = null) {
                 galleryRef
                     .set({
                         name:formValues.galleryName,
+                        curatorId: authId,
                         artists: userArtistsObj
                     })
             )

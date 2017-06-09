@@ -6,10 +6,13 @@ import "./photo-selector-styles.css";
 // - send it's id and the selected file to a callback function when selected
 class PhotoSelector extends Component {
 
-    handleImageChange(event){
+    handleImageChange(event) {
         event.preventDefault();
-        const imgFile = event.target.files[0];
-        this.props.onPhotoSelected(imgFile, this.props.id);
+
+        if (event.target.files[0]) {
+            const imgFile = event.target.files[0];
+            this.props.onPhotoSelected(imgFile, this.props.id);
+        }
     }
 
     render() {
@@ -17,7 +20,7 @@ class PhotoSelector extends Component {
             <span>
                 <input className="inputfile"
                        onChange={this.handleImageChange.bind(this)}
-                       type="file" name={this.props.id} id={this.props.id} />
+                       type="file" name={this.props.id} id={this.props.id}/>
 
                 <label disabled={this.props.disabled}
                        className={this.props.disabled ? 'disabled' : ''}
