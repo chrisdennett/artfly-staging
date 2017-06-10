@@ -39,7 +39,7 @@ class Gallery extends Component {
         return (
             <div>
                 <h1>{this.props.gallery.name}</h1>
-                <p>Curator: {this.props.gallery.curator}</p>
+                <p>Curator: {this.props.gallery.curatorId}</p>
                 <h2>Artists in residence:</h2>
                 <ul>
                     {artistList}

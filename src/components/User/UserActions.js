@@ -89,7 +89,7 @@ export function createNewUser(authId, formValues, callback = null) {
             .then(
                 galleryRef
                     .set({
-                        name:formValues.galleryName,
+                        name: formValues.galleryName,
                         curatorId: authId,
                         artists: userArtistsObj
                     })
@@ -114,21 +114,32 @@ export function createNewUser(authId, formValues, callback = null) {
 
 export function loginUser() {
     const provider = new fb.auth.GoogleAuthProvider();
-
-    //firebase.auth.AuthCredential.provider is deprecated. Please use the providerId field instead.
-    provider.addScope('profile');
-    provider.addScope('email');
+    fb.auth().signInWithRedirect(provider);
 
     return dispatch => {
-        firebase.auth().signInWithPopup(provider).then(function (result) {
-            dispatch({
-                type: LOGIN_USER,
-                payload: result
+        fb.auth()
+            .getRedirectResult()
+            .then(result => {
+                dispatch({
+                    type: LOGIN_USER,
+                    payload: result.user
+                })
             })
-        }).catch((error) => {
-            console.log(error);
-        });
+            .catch(error => {
+                console.log(error);
+            });
     }
+
+    /*return dispatch => {
+     firebase.auth().signInWithPopup(provider).then(function (result) {
+     dispatch({
+     type: LOGIN_USER,
+     payload: result
+     })
+     }).catch((error) => {
+     console.log(error);
+     });
+     }*/
 }
 
 export function logoutUser() {

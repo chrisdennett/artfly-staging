@@ -20,7 +20,13 @@ class PhotoSelector extends Component {
             <span>
                 <input className="inputfile"
                        onChange={this.handleImageChange.bind(this)}
-                       type="file" name={this.props.id} id={this.props.id}/>
+                       type="file" accept="image/*"
+                       name={this.props.id} id={this.props.id}/>
+
+                {/*<input className="inputfile"
+                       onChange={this.handleImageChange.bind(this)}
+                       type="file" accept="image/*" capture="camera"
+                       name={this.props.id} id={this.props.id}/>*/}
 
                 <label disabled={this.props.disabled}
                        className={this.props.disabled ? 'disabled' : ''}

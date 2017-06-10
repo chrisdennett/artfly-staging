@@ -11,8 +11,10 @@ import UploadImageProgressReducer from '../components/ControlPanel/ArtworkAdder/
 import GalleryReducer from '../components/Gallery/GalleryReducer';
 import GalleryArtistsReducer from '../components/Gallery/galleryArtistsReducer';
 import FormReducer from './FormReducer';
+import CommunityReducer from '../components/Home/CommunityReducer';
 
 const rootReducer = combineReducers({
+    communityData: CommunityReducer,
     userAuth: UserAuthReducer,
     user: UserReducer,
     gallery: GalleryReducer,

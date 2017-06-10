@@ -14,7 +14,7 @@ class UserControls extends Component {
                 // ...fetch user data with a callback function
                 this.props.fetchUser(this.props.userAuth.uid, () => {
                     // ...fetch the user's artists
-                    if(this.props.user) {
+                    if (this.props.user) {
                         this.props.fetchArtists(this.props.user.artists);
                     }
                 });
@@ -24,13 +24,18 @@ class UserControls extends Component {
 
     render() {
         if (!this.props.userAuth || !this.props.user) {
-            return <Login />
+            return (
+                <div>
+                    <Link to="/">home</Link>
+                    <Login />
+                </div>
+            )
         }
 
         return (
             <div>
-                <Login />
                 <Link to="/">home</Link>
+                <Login />
                 <Link to={`/gallery/${this.props.user.galleryId}`}>Gallery</Link>
                 <Link to="/controlPanel">Control Panel</Link>
             </div>
