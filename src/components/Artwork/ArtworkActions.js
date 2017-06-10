@@ -11,7 +11,7 @@ export function fetchArtwork(artworkId, callback = null) {
             payload: "loading"
         });
         firebase.database()
-            .ref(`/artworks/${artworkId}`)
+            .ref(`user-data/artworks/${artworkId}`)
             .once('value')
             .then(function (snapshot) {
                 dispatch({

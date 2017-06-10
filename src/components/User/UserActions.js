@@ -13,8 +13,8 @@ export const CANCEL_ADD_ARTIST = 'cancelAddArtist';
 
 export function addNewArtist(userId, formValues, callback = null) {
     return dispatch => {
-        const artistRef = firebase.database().ref('/artists').push();
-        const userArtistRef = firebase.database().ref(`/users/${userId}/artists/${artistRef.key}`);
+        const artistRef = firebase.database().ref('/user-data/artists').push();
+        const userArtistRef = firebase.database().ref(`/user-data/users/${userId}/artists/${artistRef.key}`);
 
         userArtistRef
             .set('true')
@@ -52,7 +52,7 @@ export function fetchArtists(artistList, callback) {
 
         for (let i = 0; i < keys.length; i++) {
             firebase.database()
-                .ref('/artists/' + keys[i])
+                .ref('/user-data/artists/' + keys[i])
                 .on('value', (snapshot) => {
                     const artistId = snapshot.key;
                     const artistData = snapshot.val();
@@ -70,9 +70,9 @@ export function fetchArtists(artistList, callback) {
 
 export function createNewUser(authId, formValues, callback = null) {
     return dispatch => {
-        const userRef = firebase.database().ref(`/users/${authId}`);
-        const artistRef = firebase.database().ref('/artists').push();
-        const galleryRef = firebase.database().ref('/galleries').push();
+        const userRef = firebase.database().ref(`/user-data/users/${authId}`);
+        const artistRef = firebase.database().ref('/user-data/artists').push();
+        const galleryRef = firebase.database().ref('/user-data/galleries').push();
         const userArtistsObj = {};
         userArtistsObj[artistRef.key] = 'true';
 
@@ -91,6 +91,7 @@ export function createNewUser(authId, formValues, callback = null) {
                     .set({
                         name: formValues.galleryName,
                         curatorId: authId,
+                        curator: formValues.curator,
                         artists: userArtistsObj
                     })
             )
@@ -126,20 +127,9 @@ export function loginUser() {
                 })
             })
             .catch(error => {
-                console.log(error);
+                console.log("log in error: ", error);
             });
     }
-
-    /*return dispatch => {
-     firebase.auth().signInWithPopup(provider).then(function (result) {
-     dispatch({
-     type: LOGIN_USER,
-     payload: result
-     })
-     }).catch((error) => {
-     console.log(error);
-     });
-     }*/
 }
 
 export function logoutUser() {
@@ -171,7 +161,7 @@ export function fetchUserAuth(callback = null) {
 export function fetchUser(userAuthId, callback = null) {
     return dispatch => {
         firebase.database()
-            .ref(`/users/${userAuthId}`)
+            .ref(`/user-data/users/${userAuthId}`)
             .on('value', (snapshot) => {
                 dispatch({
                     type: FETCH_USER,

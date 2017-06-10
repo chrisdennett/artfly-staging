@@ -9,7 +9,7 @@ export const IMAGE_UPLOAD_PROGRESS = 'imageUploadProgress';
 export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null) {
     return dispatch => {
         // Create a new image ref in the database
-        const artworkRef = firebase.database().ref('/artworks').push();
+        const artworkRef = firebase.database().ref('/user-data/artworks').push();
         // use the artwork key as the name for the artwork to ensure it is unique.
         const artworkName = artworkRef.key;
 
@@ -64,7 +64,7 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
                 };
 
                 // save artwork to database and add artwork to artistArtworks
-                const artistArtworksRef = firebase.database().ref(`artistArtworks/${artistId}/${artworkRef.key}`);
+                const artistArtworksRef = firebase.database().ref(`/user-data/artistArtworks/${artistId}/${artworkRef.key}`);
                 artworkRef
                     .set(newArtworkData)
                     .then(
@@ -90,8 +90,8 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
 // THIS DOESN'T SEEM TO BE USED
 export function createNewArtwork(artistId, artData, callback = null) {
     return dispatch => {
-        const artworkRef = firebase.database().ref('/artworks').push();
-        const artistArtworksRef = firebase.database().ref(`/artistArtworks/${artistId}/${artworkRef.key}`);
+        const artworkRef = firebase.database().ref('/user-data/artworks').push();
+        const artistArtworksRef = firebase.database().ref(`/user-data/artistArtworks/${artistId}/${artworkRef.key}`);
 
         artistArtworksRef
             .set('true')

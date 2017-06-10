@@ -25,8 +25,12 @@ class Gallery extends Component {
     }
 
     render() {
-        if (!this.props.gallery.artists) {
+        if (!this.props.gallery) {
             return (<h1>Add your first gallery</h1>)
+        }
+
+        if (!this.props.gallery.artists) {
+            return <h1>Looks like you've got a gallery with no artists!</h1>
         }
 
         const artistList = _.map(this.props.galleryArtists, (artistData, artistId) => {
@@ -39,7 +43,7 @@ class Gallery extends Component {
         return (
             <div>
                 <h1>{this.props.gallery.name}</h1>
-                <p>Curator: {this.props.gallery.curatorId}</p>
+                <p>Curator: {this.props.gallery.curator}</p>
                 <h2>Artists in residence:</h2>
                 <ul>
                     {artistList}
@@ -50,7 +54,7 @@ class Gallery extends Component {
                         _.map(this.props.currentArtworks, (artworkData, artworkId) => {
 
                             /*This should only be triggered if I've been mucking around with the database*/
-                            if(!artworkData || !artworkData.artist || !this.props.gallery.artists[artworkData.artist]){
+                            if (!artworkData || !artworkData.artist || !this.props.gallery.artists[artworkData.artist]) {
                                 return <div key={artworkId}>Can't find artwork: {artworkId}</div>
                             }
 

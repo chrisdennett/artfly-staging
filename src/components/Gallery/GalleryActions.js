@@ -10,9 +10,8 @@ export const FETCH_GALLERY_ARTISTS = "fetchGalleryArtists";
 export function fetchGallery(galleryId, callback=null) {
     return dispatch => {
         firebase.database()
-            .ref(`/galleries/${galleryId}`)
-            .once('value')
-            .then(function (snapshot) {
+            .ref(`user-data/galleries/${galleryId}`)
+            .on('value', snapshot => {
                 dispatch({
                     type: FETCH_GALLERY,
                     payload: snapshot.val()
@@ -29,7 +28,7 @@ export function fetchGalleryArtists(artistList, callback) {
 
         for (let i = 0; i < keys.length; i++) {
             firebase.database()
-                .ref('/artists/' + keys[i])
+                .ref('user-data/artists/' + keys[i])
                 .on('value', (snapshot) => {
                     const artistId = snapshot.key;
                     const artistData = snapshot.val();
@@ -48,7 +47,7 @@ export function fetchGalleryArtists(artistList, callback) {
 export function fetchArtworkKeys(artistId, callback) {
     return dispatch => {
         firebase.database()
-            .ref(`/artistArtworks/${artistId}`)
+            .ref(`user-data/artistArtworks/${artistId}`)
             .once('value')
             .then(function (snapshot) {
                 dispatch({
@@ -80,7 +79,7 @@ export function fetchArtworks(artworks, callback) {
 
         for (let i = 0; i < totalToGet; i++) {
             let promise = firebase.database()
-                .ref('/artworks/' + keys[i])
+                .ref('user-data/artworks/' + keys[i])
                 .once('value')
                 .then(function (snapshot) {
                     return snapshot;
