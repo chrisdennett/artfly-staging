@@ -123,7 +123,6 @@ export function cancelAddArtist(callback = null) {
     }
 }
 
-
 export function createNewUser(authId, formValues, callback = null) {
     return dispatch => {
         const userRef = firebase.database().ref(`/user-data/users/${authId}`);

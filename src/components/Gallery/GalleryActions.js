@@ -30,7 +30,7 @@ function fetchGalleryArtworks(artistList, dispatch) {
         let artistId = keys[i];
 
         firebase.database()
-            .ref('/user-data/artistArtworks/' + artistId)
+            .ref('/user-data/artistArtworkIds/' + artistId)
             .on('value', (snapshot) => {
                 const artistArtworkIds = snapshot.val();
 

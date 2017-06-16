@@ -2,7 +2,7 @@ import firebase from '../../../firebase/firebaseConfig';
 // TODO: I think I should be able to do away with this through first import
 import * as fb from 'firebase';
 
-export const CREATE_ARTWORK = 'createArtwork';
+// export const CREATE_ARTWORK = 'createArtwork';
 export const UPLOAD_IMAGE = 'uploadImage';
 export const IMAGE_UPLOAD_PROGRESS = 'imageUploadProgress';
 
@@ -19,7 +19,7 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
         const uploadTask = userPicturesRef.put(imgFile);
 
         uploadTask.on(fb.storage.TaskEvent.STATE_CHANGED,
-            function(snapshot) {
+            function (snapshot) {
                 const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
 
                 dispatch({
@@ -28,11 +28,16 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
                 });
 
                 switch (snapshot.state) {
-                    case fb.storage.TaskState.PAUSED:   console.log('Upload is paused');    break;
-                    case fb.storage.TaskState.RUNNING:  console.log('Upload is running');   break;
-                    default: console.log("uncaught snapshot state: ", snapshot.state);
+                    case fb.storage.TaskState.PAUSED:
+                        console.log('Upload is paused');
+                        break;
+                    case fb.storage.TaskState.RUNNING:
+                        console.log('Upload is running');
+                        break;
+                    default:
+                        console.log("uncaught snapshot state: ", snapshot.state);
                 }
-            }, function(error) {
+            }, function (error) {
 
                 // A full list of error codes is available at
                 // https://firebase.google.com/docs/storage/web/handle-errors
@@ -48,9 +53,10 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
                     case 'storage/unknown':
                         // Unknown error occurred, inspect error.serverResponse
                         break;
-                    default: console.log("uncaught error: ", error);
+                    default:
+                        console.log("uncaught error: ", error);
                 }
-            }, function() {
+            }, function () {
                 // Upload completed successfully - save artwork data
                 const dateStamp = Date.now();
                 const newArtworkData = {
@@ -63,12 +69,12 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
                     dateAdded: dateStamp
                 };
 
-                // save artwork to database and add artwork to artistArtworks
-                const artistArtworksRef = firebase.database().ref(`/user-data/artistArtworks/${artistId}/${artworkRef.key}`);
+                // save artwork to database and add artwork to artistArtworkIds
+                const artistArtworkIdsRef = firebase.database().ref(`/user-data/artistArtworkIds/${artistId}/${artworkRef.key}`);
                 artworkRef
                     .set(newArtworkData)
                     .then(
-                        artistArtworksRef
+                        artistArtworkIdsRef
                             .set('true')
                             .then(() => {
                                 dispatch({
@@ -88,26 +94,27 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
 }
 
 // THIS DOESN'T SEEM TO BE USED
-export function createNewArtwork(artistId, artData, callback = null) {
-    return dispatch => {
-        const artworkRef = firebase.database().ref('/user-data/artworks').push();
-        const artistArtworksRef = firebase.database().ref(`/user-data/artistArtworks/${artistId}/${artworkRef.key}`);
+/*
+ export function createNewArtwork(artistId, artData, callback = null) {
+ return dispatch => {
+ const artworkRef = firebase.database().ref('/user-data/artworks').push();
+ const artistArtworkIdsRef = firebase.database().ref(`/user-data/artistArtworkIds/${artistId}/${artworkRef.key}`);
 
-        artistArtworksRef
-            .set('true')
-            .then(
-                artworkRef
-                    .set(artData, () => {
-                        dispatch({
-                            type: CREATE_ARTWORK,
-                            payload: { [artworkRef.key]: artData }
-                        });
+ artistArtworkIdsRef
+ .set('true')
+ .then(
+ artworkRef
+ .set(artData, () => {
+ dispatch({
+ type: CREATE_ARTWORK,
+ payload: { [artworkRef.key]: artData }
+ });
 
-                        if (callback) callback(artworkRef.key);
-                    })
-                    .catch(function (error) {
-                        console.log('Synchronization failed: ', error);
-                    })
-            );
-    }
-}
+ if (callback) callback(artworkRef.key);
+ })
+ .catch(function (error) {
+ console.log('Synchronization failed: ', error);
+ })
+ );
+ }
+ }*/
