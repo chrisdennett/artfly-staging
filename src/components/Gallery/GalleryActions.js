@@ -33,8 +33,12 @@ function fetchGalleryArtworks(artistList, dispatch) {
             .ref('/user-data/artistArtworks/' + artistId)
             .on('value', (snapshot) => {
                 const artistArtworkIds = snapshot.val();
-                const artworkIds = Object.keys(artistArtworkIds);
-                fetchArtworksFromIds(artworkIds, dispatch);
+
+                if (artistArtworkIds) {
+                    const artworkIds = Object.keys(artistArtworkIds);
+                    fetchArtworksFromIds(artworkIds, dispatch);
+                }
+
             })
     }
 }

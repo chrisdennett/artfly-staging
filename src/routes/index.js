@@ -5,8 +5,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import store from '../store';
 import Home from '../components/Home/Home';
 import Gallery from '../components/Gallery/Gallery';
-// import Artwork from '../components/Artwork/Artwork';
-// import ArtworkEditing from '../components/Artwork/ArtworkEditing';
 import UserControls from "../components/User/UserControls";
 import ControlPanel from "../components/ControlPanel/ControlPanel";
 

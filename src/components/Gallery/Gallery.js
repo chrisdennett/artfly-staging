@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
-import Artwork from '../Artwork/Artwork';
+import Artwork from './Artwork/Artwork';
 import { fetchGallery } from './GalleryActions';
 
 class Gallery extends Component {
