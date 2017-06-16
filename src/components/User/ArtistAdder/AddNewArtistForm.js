@@ -38,7 +38,7 @@ class AddNewArtistForm extends Component {
     }
 
     onNewArtistFormSubmit(values){
-        this.props.addNewArtist(this.props.userId, values, () => {
+        this.props.addNewArtist(this.props.userId, this.props.galleryId, values, () => {
             this.setState({formOpen: false});
         });
     }
@@ -112,8 +112,10 @@ AddNewArtistForm = connect(
             artistName: "Secret artist",
             biog: "One of the best artists know to humankind."
         }
-    })
-    , { addNewArtist, cancelAddArtist }
+    }),
+    {
+        addNewArtist,
+        cancelAddArtist }
 )(AddNewArtistForm);
 
 export default AddNewArtistForm;

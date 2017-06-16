@@ -15,7 +15,7 @@ class Login extends Component {
     }
 
     render() {
-        if (!this.props.userAuth || !this.props.userAuth.uid) {
+        if (!this.props.user) {
             return (
                 <span>
                     <button onClick={this.login.bind(this)}>Sign up / Log in</button>
@@ -24,14 +24,13 @@ class Login extends Component {
         }
 
         /*If there's not user data it must be a new user*/
-        if (!this.props.user) {
+        if (this.props.user.isNewUser) {
             return (
                 <div>
                     <NewUserForm {...this.props} />
                 </div>
             )
         }
-
 
         return (
             <span>
@@ -43,7 +42,6 @@ class Login extends Component {
 
 function mapStateToProps(state) {
     return {
-        userAuth: state.userAuth,
         user: state.user
     }
 }

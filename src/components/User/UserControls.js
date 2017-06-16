@@ -1,29 +1,18 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchUserAuth, fetchUser, fetchArtists } from './UserActions';
+import { fetchUserData } from './UserActions';
 
 import Login from './Login';
 
 class UserControls extends Component {
 
-    componentDidMount() {
-        this.props.fetchUserAuth(() => {
-            // if userAuth is not null...
-            if (this.props.userAuth) {
-                // ...fetch user data with a callback function
-                this.props.fetchUser(this.props.userAuth.uid, () => {
-                    // ...fetch the user's artists
-                    if (this.props.user) {
-                        this.props.fetchArtists(this.props.user.artists);
-                    }
-                });
-            }
-        });
+    componentDidMount(){
+        this.props.fetchUserData();
     }
 
     render() {
-        if (!this.props.userAuth || !this.props.user) {
+        if (!this.props.user) {
             return (
                 <div>
                     <Link to="/">home</Link>
@@ -45,9 +34,8 @@ class UserControls extends Component {
 
 function mapStateToProps(state) {
     return {
-        userAuth: state.userAuth,
         user: state.user
     }
 }
 
-export default connect(mapStateToProps, { fetchUserAuth, fetchUser, fetchArtists })(UserControls);
+export default connect(mapStateToProps, { fetchUserData })(UserControls);

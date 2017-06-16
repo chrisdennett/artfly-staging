@@ -2,21 +2,23 @@ import React, { Component } from "react";
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import ArtworkAdder from './ArtworkAdder/ArtworkAdder';
-import AddNewArtistForm from '../User/ArtistAdder/AddNewArtistForm';
+import CuratorDetails from './CuratorDetails';
+import GalleryDetails from './GalleryDetails';
+import ArtistsDetails from './ArtistsDetails';
 
 class ControlPanel extends Component {
 
     render() {
-        if (!this.props.userAuth || !this.props.user) {
+        if (!this.props.user) {
             return (<Redirect to="/"/>)
         }
 
         return (
             <div>
                 <h1>Control Panel</h1>
-                <ArtworkAdder />
-                <AddNewArtistForm userId={this.props.userAuth.uid}/>
+                <CuratorDetails name={this.props.user.curator }/>
+                <GalleryDetails name={this.props.user.gallery.name }/>
+                <ArtistsDetails userId={this.props.user.uid} galleryId={this.props.user.galleryId}/>
             </div>
         );
     }
@@ -24,7 +26,6 @@ class ControlPanel extends Component {
 
 function mapStateToProps(state) {
     return {
-        userAuth: state.userAuth,
         user: state.user
     }
 }

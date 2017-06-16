@@ -23,8 +23,8 @@ class ArtworkEditing extends Component {
         }
 
         // if the artwork owner doesn't match the user id redirect to the artwork
-        const { userAuth } = this.props;
-        if(!userAuth || artwork.owner !== userAuth.uid){
+        const { user } = this.props;
+        if(!user || artwork.owner !== user.uid){
 
             const { artworkId } = this.props.match.params;
 
@@ -50,7 +50,7 @@ class ArtworkEditing extends Component {
 function mapStateToProps(state) {
     return {
         artwork: state.currentArtwork,
-        userAuth: state.userAuth
+        user: state.user
     }
 }
 

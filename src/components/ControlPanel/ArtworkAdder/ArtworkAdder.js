@@ -52,7 +52,7 @@ class ArtworkAdder extends Component {
         const imgHeight = event.target.naturalHeight;
 
         // pass all the data needed to the action
-        this.props.uploadImage(this.state.imgFile, this.props.userAuth.uid, this.state.artistId, imgWidth, imgHeight);
+        this.props.uploadImage(this.state.imgFile, this.props.user.uid, this.state.artistId, imgWidth, imgHeight);
     }
 
     render() {
@@ -61,7 +61,7 @@ class ArtworkAdder extends Component {
         const imageLoading = this.props.imageUploadProgress > 0 && this.props.imageUploadProgress < 100;
         const isNewArtwork = this.state.uploadThumb;
 
-        if(!this.props.userAuth || !this.props.user){
+        if(!this.props.user){
             return <span />
         }
 
@@ -69,7 +69,7 @@ class ArtworkAdder extends Component {
             <div>
                 <p>Add artwork by:</p>
                 {
-                    _.map(this.props.userArtists, (artist, artistId) => {
+                    _.map(this.props.user.artists, (artist, artistId) => {
                         return (<PhotoSelector id={artistId}
                                                key={artistId}
                                                disabled={imageLoading}
@@ -99,9 +99,7 @@ class ArtworkAdder extends Component {
 
 function mapStateToProps(state) {
     return {
-        userAuth: state.userAuth,
         user: state.user,
-        userArtists: state.userArtists,
         imageUpload: state.imageUpload,
         imageUploadProgress: state.imageUploadProgress
     }

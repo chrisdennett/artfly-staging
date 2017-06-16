@@ -29,7 +29,7 @@ class NewUserForm extends Component {
     }
 
     onNewUserFormSubmit(values) {
-        this.props.createNewUser(this.props.userAuth.uid, values);
+        this.props.createNewUser(this.props.user.uid, values);
     }
 
     onFormCancel(){
@@ -38,7 +38,7 @@ class NewUserForm extends Component {
 
     render() {
         const { handleSubmit } = this.props; // handleSubmit is added to props by redux-form
-        const { photoURL } = this.props.userAuth;
+        const { photoURL } = this.props.user;
 
         return (
             <div>
@@ -114,10 +114,10 @@ NewUserForm = reduxForm({
 NewUserForm = connect(
     state => ({
         initialValues: {
-            curator: state.userAuth.displayName,
-            artistName: state.userAuth.displayName,
-            email: state.userAuth.email,
-            galleryName: `The curious gallery of ${state.userAuth.displayName}`
+            curator: state.user.displayName,
+            artistName: state.user.displayName,
+            email: state.user.email,
+            galleryName: `The curious gallery of ${state.user.displayName}`
         }
     })
     , { createNewUser, logoutUser }

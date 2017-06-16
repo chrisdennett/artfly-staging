@@ -3,15 +3,13 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
-import { fetchGallery, fetchGalleryArtists, fetchArtworkKeys, fetchArtworks } from './GalleryActions';
+import { fetchGallery, fetchArtworks } from './GalleryActions';
 
 class Gallery extends Component {
 
     componentDidMount() {
         const { galleryId } = this.props.match.params;
-        this.props.fetchGallery(galleryId, () => {
-            this.props.fetchGalleryArtists(this.props.gallery.artists);
-        });
+        this.props.fetchGallery(galleryId);
     }
 
     onArtistClick(artistId, event) {
@@ -19,9 +17,10 @@ class Gallery extends Component {
     }
 
     showArtistPictures(artistId) {
-        this.props.fetchArtworkKeys(artistId, () => {
+        //TODO: add filter to list to show only artworks matching artist
+        /*this.props.fetchArtworkKeys(artistId, () => {
             this.props.fetchArtworks(this.props.currentArtworkKeys);
-        });
+        });*/
     }
 
     render() {
@@ -33,7 +32,7 @@ class Gallery extends Component {
             return <h1>Looks like you've got a gallery with no artists!</h1>
         }
 
-        const artistList = _.map(this.props.galleryArtists, (artistData, artistId) => {
+        const artistList = _.map(this.props.gallery.artists, (artistData, artistId) => {
             return (
                 <li key={artistId}>
                     <button onClick={this.onArtistClick.bind(this, artistId)}>{ artistData.name }</button>
@@ -105,13 +104,11 @@ class Gallery extends Component {
 function mapStateToProps(state) {
     return {
         gallery: state.gallery,
-        galleryArtists: state.galleryArtists,
-        currentArtworkKeys: state.currentArtworkKeys,
         currentArtworks: state.currentArtworks
     }
 }
 
 export default connect(
     mapStateToProps,
-    { fetchGallery, fetchGalleryArtists, fetchArtworks, fetchArtworkKeys }
+    { fetchGallery, fetchArtworks }
 )(Gallery);
