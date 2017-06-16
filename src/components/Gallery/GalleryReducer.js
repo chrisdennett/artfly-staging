@@ -1,18 +1,21 @@
-import { FETCH_GALLERY, FETCH_GALLERY_ARTISTS } from './GalleryActions';
+import { FETCH_GALLERY, FETCH_GALLERY_ARTISTS, FETCH_GALLERY_ARTWORKS } from './GalleryActions';
 
 export default function (state = {}, action) {
 
-    let artistKey, artistData, newState;
+    let newState;
 
     switch (action.type) {
         case FETCH_GALLERY:
-            return action.payload;
+            return {...state, ...action.payload};
+
+        case FETCH_GALLERY_ARTWORKS:
+            newState = {...state};
+            newState.artworks = {...state.artworks, ...action.payload}
+            return newState;
 
         case FETCH_GALLERY_ARTISTS:
             newState = { ...state };
-            artistKey = Object.keys(action.payload)[0];
-            artistData = action.payload[artistKey];
-            newState.artists = { ...state.artists, [artistKey]: artistData };
+            newState.artists = { ...state.artists, ...action.payload };
             return newState;
 
         default:

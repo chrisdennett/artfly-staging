@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
-import { fetchGallery, fetchArtworks } from './GalleryActions';
+import Artwork from '../Artwork/Artwork';
+import { fetchGallery } from './GalleryActions';
 
 class Gallery extends Component {
 
@@ -18,12 +19,23 @@ class Gallery extends Component {
 
     showArtistPictures(artistId) {
         //TODO: add filter to list to show only artworks matching artist
-        /*this.props.fetchArtworkKeys(artistId, () => {
-            this.props.fetchArtworks(this.props.currentArtworkKeys);
-        });*/
     }
 
     render() {
+        const { galleryId, artworkId } = this.props.match.params;
+
+        if (artworkId) {
+            if (this.props.gallery &&
+                this.props.gallery.artworks &&
+                this.props.gallery.artworks[artworkId]) {
+
+                return <Artwork artwork={this.props.gallery.artworks[artworkId]}/>
+            }
+            else {
+                return <div>Loading currentArtwork...</div>
+            }
+        }
+
         if (!this.props.gallery) {
             return (<h1>Add your first gallery</h1>)
         }
@@ -39,6 +51,7 @@ class Gallery extends Component {
                 </li>)
         });
 
+
         return (
             <div>
                 <h1>{this.props.gallery.name}</h1>
@@ -50,7 +63,7 @@ class Gallery extends Component {
 
                 <div className="gallery">
                     {
-                        _.map(this.props.currentArtworks, (artworkData, artworkId) => {
+                        _.map(this.props.gallery.artworks, (artworkData, artworkId) => {
 
                             /*This should only be triggered if I've been mucking around with the database*/
                             if (!artworkData || !artworkData.artist || !this.props.gallery.artists[artworkData.artist]) {
@@ -63,7 +76,7 @@ class Gallery extends Component {
 
                             return (
                                 <div key={artworkId}>
-                                    <Link to={`/artwork/${artworkId}`}>
+                                    <Link to={`${galleryId}/artwork/${artworkId}`}>
                                         <img
                                             src={imgUrl}
                                             alt={`artwork by user`}/>
@@ -103,12 +116,11 @@ class Gallery extends Component {
 
 function mapStateToProps(state) {
     return {
-        gallery: state.gallery,
-        currentArtworks: state.currentArtworks
+        gallery: state.gallery
     }
 }
 
 export default connect(
     mapStateToProps,
-    { fetchGallery, fetchArtworks }
+    { fetchGallery }
 )(Gallery);

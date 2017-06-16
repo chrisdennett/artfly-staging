@@ -4,9 +4,9 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import store from '../store';
 import Home from '../components/Home/Home';
-import MyGallery from '../components/Gallery/Gallery';
-import Artwork from '../components/Artwork/Artwork';
-import ArtworkEditing from '../components/Artwork/ArtworkEditing';
+import Gallery from '../components/Gallery/Gallery';
+// import Artwork from '../components/Artwork/Artwork';
+// import ArtworkEditing from '../components/Artwork/ArtworkEditing';
 import UserControls from "../components/User/UserControls";
 import ControlPanel from "../components/ControlPanel/ControlPanel";
 
@@ -17,9 +17,8 @@ export default (
                 <UserControls />
 
                 <Switch>
-                    <Route path="/artwork/:artworkId/:editMode" component={ArtworkEditing}/>
-                    <Route path="/artwork/:artworkId" component={Artwork}/>
-                    <Route path="/gallery/:galleryId" component={MyGallery}/>
+                    <Route path="/gallery/:galleryId/artwork/:artworkId" component={Gallery}/>
+                    <Route path="/gallery/:galleryId" component={Gallery}/>
                     <Route path="/controlPanel" component={ControlPanel}/>
                     <Route path="/" component={Home}/>
                 </Switch>

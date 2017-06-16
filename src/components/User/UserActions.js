@@ -180,8 +180,7 @@ export function loginUser() {
                 dispatch({
                     type: LOGIN_USER,
                     payload: result.user
-                })
-                console.log("Log in user dispatched");
+                });
             })
             .catch(error => {
                 console.log("log in error: ", error);
