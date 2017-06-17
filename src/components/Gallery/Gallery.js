@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import _ from 'lodash';
+
 
 import Artwork from './Artwork/Artwork';
+import GalleryEntrance from './GalleryEntrance';
 import { fetchGallery } from './GalleryActions';
 
 class Gallery extends Component {
@@ -11,14 +11,6 @@ class Gallery extends Component {
     componentDidMount() {
         const { galleryId } = this.props.match.params;
         this.props.fetchGallery(galleryId);
-    }
-
-    onArtistClick(artistId, event) {
-        this.showArtistPictures(artistId)
-    }
-
-    showArtistPictures(artistId) {
-        //TODO: add filter to list to show only artworks matching artist
     }
 
     render() {
@@ -44,51 +36,9 @@ class Gallery extends Component {
             return <h1>Looks like you've got a gallery with no artists!</h1>
         }
 
-        const artistList = _.map(this.props.gallery.artists, (artistData, artistId) => {
-            return (
-                <li key={artistId}>
-                    <button onClick={this.onArtistClick.bind(this, artistId)}>{ artistData.name }</button>
-                </li>)
-        });
-
-
         return (
-            <div>
-                <h1>{this.props.gallery.name}</h1>
-                <p>Curator: {this.props.gallery.curator}</p>
-                <h2>Artists in residence:</h2>
-                <ul>
-                    {artistList}
-                </ul>
+            <GalleryEntrance galleryId={galleryId} {...this.props} />
 
-                <div className="gallery">
-                    {
-                        _.map(this.props.gallery.artworks, (artworkData, artworkId) => {
-
-                            /*This should only be triggered if I've been mucking around with the database*/
-                            if (!artworkData || !artworkData.artist || !this.props.gallery.artists[artworkData.artist]) {
-                                return <div key={artworkId}>Can't find artwork: {artworkId}</div>
-                            }
-
-                            const artistName = this.props.gallery.artists[artworkData.artist].name;
-                            const dateAdded = new Date(artworkData.dateAdded).toDateString(); // TODO: when these are proper dates, convert to string
-                            const imgUrl = `https://res.cloudinary.com/artfly/image/fetch/w_150,h_150/${encodeURIComponent(artworkData.url)}`;
-
-                            return (
-                                <div key={artworkId}>
-                                    <Link to={`${galleryId}/artwork/${artworkId}`}>
-                                        <img
-                                            src={imgUrl}
-                                            alt={`artwork by user`}/>
-                                        <p>By {artistName}</p>
-                                        <p>{dateAdded}</p>
-                                    </Link>
-                                </div>
-                            )
-                        })
-                    }
-                </div>
-            </div>
         );
     }
 }
