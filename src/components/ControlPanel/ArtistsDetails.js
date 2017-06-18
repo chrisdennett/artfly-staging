@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import ArtworkAdder from './ArtworkAdder/ArtworkAdder';
-import AddNewArtistForm from '../User/ArtistAdder/AddNewArtistForm';
+import AddNewArtistForm from './ArtistAdder/AddNewArtistForm';
 
 class ArtistsDetails extends Component {
 

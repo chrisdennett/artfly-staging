@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { fetchUserData } from './UserActions';
 
 import Login from './Login';
+import GalleryControls from './GalleryControls/GalleryControls';
 
 class UserControls extends Component {
 
@@ -27,6 +28,7 @@ class UserControls extends Component {
                 <Login />
                 <Link to={`/gallery/${this.props.user.galleryId}`}>Gallery</Link>
                 <Link to="/controlPanel">Control Panel</Link>
+                <GalleryControls />
             </div>
         );
     }
