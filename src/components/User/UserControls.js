@@ -13,6 +13,8 @@ class UserControls extends Component {
     }
 
     render() {
+        const { artworkId } = this.props.match.params;
+
         if (!this.props.user) {
             return (
                 <div>
@@ -28,7 +30,7 @@ class UserControls extends Component {
                 <Login />
                 <Link to={`/gallery/${this.props.user.galleryId}`}>Gallery</Link>
                 <Link to="/controlPanel">Control Panel</Link>
-                <GalleryControls />
+                <GalleryControls artworkId={artworkId} />
             </div>
         );
     }

@@ -12,7 +12,7 @@ export function fetchGallery(galleryId) {
                 const galleryData = snapshot.val();
                 dispatch({
                     type: FETCH_GALLERY,
-                    payload: galleryData
+                    payload: {...galleryData, galleryId}
                 });
 
                 if (galleryData.artistIds) {

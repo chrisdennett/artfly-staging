@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 
-
 import Artwork from './Artwork/Artwork';
 import GalleryEntrance from './GalleryEntrance';
 import { fetchGallery } from './GalleryActions';
@@ -38,7 +37,6 @@ class Gallery extends Component {
 
         return (
             <GalleryEntrance galleryId={galleryId} {...this.props} />
-
         );
     }
 }

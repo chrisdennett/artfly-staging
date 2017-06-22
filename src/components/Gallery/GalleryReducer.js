@@ -9,11 +9,13 @@ export default function (state = {}, action) {
             return {...state, ...action.payload};
 
         case FETCH_GALLERY_ARTWORKS:
-            newState = {...state};
-            newState.artworks = {...state.artworks, ...action.payload}
+            /*This only returns one artwork at a time so perhaps name should be changed*/
+            newState = { ...state };
+            newState.artworks = { ...state.artworks, ...action.payload };
             return newState;
 
         case FETCH_GALLERY_ARTISTS:
+            /*This only returns one artist at a time so perhaps name should be changed*/
             newState = { ...state };
             newState.artists = { ...state.artists, ...action.payload };
             return newState;

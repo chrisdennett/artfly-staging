@@ -62,7 +62,6 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
                 const newArtworkData = {
                     curator: userId,
                     artist: artistId,
-                    imgRef: artworkRef.key,
                     url: uploadTask.snapshot.downloadURL,
                     imgWidth: imgWidth,
                     imgHeight: imgHeight,
