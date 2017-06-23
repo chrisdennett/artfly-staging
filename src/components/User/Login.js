@@ -15,7 +15,7 @@ class Login extends Component {
     }
 
     render() {
-        if (!this.props.user) {
+        if (!this.props.user || !this.props.user.uid) {
             return (
                 <span>
                     <button onClick={this.login.bind(this)}>Sign up / Log in</button>

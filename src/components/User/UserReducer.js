@@ -7,7 +7,7 @@ import {
     LOGOUT_USER
 } from './UserActions';
 
-export default function (state = null, action) {
+export default function (state = {}, action) {
 
     let artistKey, artistData, newState;
 

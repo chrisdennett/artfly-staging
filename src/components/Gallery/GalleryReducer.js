@@ -1,7 +1,6 @@
 import { FETCH_GALLERY, FETCH_GALLERY_ARTISTS, FETCH_GALLERY_ARTWORKS } from './GalleryActions';
 
 export default function (state = {}, action) {
-
     let newState;
 
     switch (action.type) {

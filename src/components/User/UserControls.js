@@ -13,9 +13,9 @@ class UserControls extends Component {
     }
 
     render() {
-        const { artworkId } = this.props.match.params;
+        const { artworkId, galleryId } = this.props.match.params;
 
-        if (!this.props.user) {
+        if (!this.props.user || !this.props.user.uid) {
             return (
                 <div>
                     <Link to="/">home</Link>
@@ -25,12 +25,16 @@ class UserControls extends Component {
         }
 
         return (
+
             <div>
                 <Link to="/">home</Link>
                 <Login />
-                <Link to={`/gallery/${this.props.user.galleryId}`}>Gallery</Link>
                 <Link to="/controlPanel">Control Panel</Link>
-                <GalleryControls artworkId={artworkId} />
+
+                <GalleryControls artworkId={artworkId}
+                                 galleryId={this.props.user.galleryId}
+                                 currentGalleryId={galleryId}
+                                 history={this.props.history}/>
             </div>
         );
     }

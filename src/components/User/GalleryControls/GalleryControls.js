@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 class GalleryControls extends Component {
 
@@ -22,40 +21,82 @@ class GalleryControls extends Component {
             let prevId = null;
             let nextId = null;
 
-            if(currIdIndex > 0){
-                prevId = allIds[currIdIndex-1];
+            if (currIdIndex > 0) {
+                prevId = allIds[currIdIndex - 1];
             }
 
-            if(allIds.length-1 > currIdIndex){
-                nextId = allIds[currIdIndex+1];
+            if (allIds.length - 1 > currIdIndex) {
+                nextId = allIds[currIdIndex + 1];
             }
 
-            this.setState({nextArtworkId:nextId, prevArtworkId:prevId})
+            this.setState({ nextArtworkId: nextId, prevArtworkId: prevId })
+        }
+
+    }
+
+    onPrevClick() {
+        this.goToArtwork(this.state.prevArtworkId);
+    }
+
+    onNextClick() {
+        this.goToArtwork(this.state.nextArtworkId);
+    }
+
+    goToArtwork(artworkId) {
+        if (artworkId) {
+            this.props.history.push(`/gallery/${this.props.galleryId}/artwork/${artworkId}`);
+        }
+        else if (!this.state.prevArtworkId) {
+            // we're back to the start, go to the entrance
+            this.goToGalleryEntrance();
+        }
+        else if (!this.state.nextArtworkId) {
+            // go to exit if we make one, but for now go back the entrance
+            this.goToGalleryEntrance();
         }
     }
 
-    getNav(){
-        let prevLink = <span>Prev</span>;
-        let nextLink = <span>Next</span>;
+    goToGalleryEntrance() {
+        this.props.history.push(`/gallery/${this.props.galleryId}`);
+    }
 
-        if(this.state.prevArtworkId){
-            prevLink = <Link to={`${this.state.prevArtworkId}`}>Prev</Link>
+    renderControls() {
+        let nextButtonLabel = 'next';
+        let prevButtonLabel = 'prev';
+        let prevButtonStyles = {};
+        let nextButtonStyles = {};
+
+        if(!this.props.currentGalleryId){
+            // only show the next a previous controls inside a gallery
+            prevButtonStyles.display = 'none';
+            nextButtonStyles.display = 'none';
         }
-
-        if(this.state.nextArtworkId){
-            nextLink = <Link to={`${this.state.nextArtworkId}`}>Next</Link>
+        else if (!this.props.artworkId) {
+            nextButtonLabel = "Enter >";
+            prevButtonStyles.display = 'none';
+        }
+        else {
+            if (!this.state.nextArtworkId) {
+                nextButtonLabel = 'exit >';
+            }
+            if (!this.state.prevArtworkId) {
+                prevButtonLabel = '< entrance';
+            }
         }
 
         return (
             <span>
-                {prevLink}
-                {nextLink}
+                <button onClick={this.goToGalleryEntrance.bind(this)}>Gallery</button>
+                <button style={prevButtonStyles}
+                        onClick={this.onPrevClick.bind(this)}>{prevButtonLabel}</button>
+                <button style={nextButtonStyles}
+                        onClick={this.onNextClick.bind(this)}>{nextButtonLabel}</button>
             </span>
         )
     }
 
     render() {
-        return this.getNav();
+        return this.renderControls();
     }
 }
 

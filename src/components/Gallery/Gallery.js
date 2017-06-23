@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import Artwork from './Artwork/Artwork';
 import GalleryEntrance from './GalleryEntrance';
@@ -14,6 +15,18 @@ class Gallery extends Component {
 
     render() {
         const { galleryId, artworkId } = this.props.match.params;
+        /*Move this out to its own RemoteControlRedirect component*/
+        const allowRemoteControl = true;
+
+        if(allowRemoteControl && this.props.gallery.remoteControl){
+
+            const { galleryId, artworkId } = this.props.match.params;
+            const remoteArtworkId = this.props.gallery.remoteControl.artworkId;
+
+            if(remoteArtworkId && remoteArtworkId !== artworkId){
+                return (<Redirect to={`/gallery/${galleryId}/artwork/${remoteArtworkId}`}/>);
+            }
+        }
 
         if (artworkId) {
             if (this.props.gallery &&
@@ -64,7 +77,8 @@ class Gallery extends Component {
 
 function mapStateToProps(state) {
     return {
-        gallery: state.gallery
+        gallery: state.gallery,
+        remoteControls: state.remoteControls,
     }
 }
 
