@@ -2,7 +2,8 @@
 use the version control panel to check changes
 
 // using terminal
-// add to google -> https://console.cloud.google.com/code/develop/browse/artfly/master?project=art-blam
+// add to google ->
+https://console.cloud.google.com/code/develop/browse/artfly/master?project=art-blam
 git push --all google
 
 git username:

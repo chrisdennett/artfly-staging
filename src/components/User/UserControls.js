@@ -20,6 +20,10 @@ class UserControls extends Component {
                 <div>
                     <Link to="/">home</Link>
                     <Login />
+                    <GalleryControls artworkId={artworkId}
+                                     galleryId={this.props.user.galleryId}
+                                     currentGalleryId={galleryId}
+                                     history={this.props.history}/>
                 </div>
             )
         }

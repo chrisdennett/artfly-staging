@@ -44,7 +44,7 @@ class GalleryControls extends Component {
 
     goToArtwork(artworkId) {
         if (artworkId) {
-            this.props.history.push(`/gallery/${this.props.galleryId}/artwork/${artworkId}`);
+            this.props.history.push(`/gallery/${this.props.currentGalleryId}/artwork/${artworkId}`);
         }
         else if (!this.state.prevArtworkId) {
             // we're back to the start, go to the entrance
@@ -57,7 +57,7 @@ class GalleryControls extends Component {
     }
 
     goToGalleryEntrance() {
-        this.props.history.push(`/gallery/${this.props.galleryId}`);
+        this.props.history.push(`/gallery/${this.props.currentGalleryId}`);
     }
 
     renderControls() {
@@ -65,6 +65,7 @@ class GalleryControls extends Component {
         let prevButtonLabel = 'prev';
         let prevButtonStyles = {};
         let nextButtonStyles = {};
+        let galleryButtonStyles = {};
 
         if(!this.props.currentGalleryId){
             // only show the next a previous controls inside a gallery
@@ -84,9 +85,14 @@ class GalleryControls extends Component {
             }
         }
 
+        if(!this.props.galleryId){
+            galleryButtonStyles.display = 'none';
+        }
+
         return (
             <span>
-                <button onClick={this.goToGalleryEntrance.bind(this)}>Gallery</button>
+                <button style={galleryButtonStyles}
+                        onClick={this.goToGalleryEntrance.bind(this)}>My Gallery</button>
                 <button style={prevButtonStyles}
                         onClick={this.onPrevClick.bind(this)}>{prevButtonLabel}</button>
                 <button style={nextButtonStyles}
