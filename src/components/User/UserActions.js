@@ -11,12 +11,13 @@ export const FETCH_USER_GALLERY = "fetchUserGallery";
 export const ADD_USER_ARTIST = 'addUserArtist';
 //TODO: Cancel doesn't feel right here - should this be local state only?
 export const CANCEL_ADD_ARTIST = 'cancelAddArtist';
+export const CURATOR_UPDATED = 'userUpdated';
 
 export function fetchUserData() {
     return dispatch => {
         dispatch({
             type: FETCH_USER,
-            payload: {status:"pending"}
+            payload: { status: "pending" }
         });
 
         firebase.auth()
@@ -33,7 +34,16 @@ export function fetchUserData() {
                             if (userData) {
                                 dispatch({
                                     type: FETCH_USER,
-                                    payload: { ...userData, photoURL, displayName, email, uid, gallery:{}, artists:{}, status:"complete" }
+                                    payload: {
+                                        ...userData,
+                                        photoURL,
+                                        displayName,
+                                        email,
+                                        uid,
+                                        gallery: {},
+                                        artists: {},
+                                        status: "complete"
+                                    }
                                 });
 
                                 // if user is set up fetch remaining data
@@ -49,7 +59,7 @@ export function fetchUserData() {
                                 // TODO: Figure out if I need to do something with this
                                 dispatch({
                                     type: FETCH_USER,
-                                    payload: {status:"new"}
+                                    payload: { status: "new" }
                                 });
                             }
                         })
@@ -58,7 +68,7 @@ export function fetchUserData() {
                 else {
                     dispatch({
                         type: FETCH_USER,
-                        payload: {status:"none"}
+                        payload: { status: "none" }
                     });
                 }
 
@@ -94,6 +104,23 @@ function fetchUserArtists(artistList, dispatch) {
     }
 }
 
+export function updateCurator(userId, curatorName, callback=null) {
+    return dispatch => {
+        const userRef = firebase.database().ref(`/user-data/users/${userId}`);
+        userRef.update({ curator: curatorName })
+            .then(() => {
+                dispatch({
+                    type: CURATOR_UPDATED,
+                    payload: { curator: curatorName }
+                });
+
+                if (callback) callback();
+            })
+            .catch(function (error) {
+                console.log('updateCurator failed: ', error);
+            })
+    }
+}
 
 export function addNewArtist(userId, galleryId, formValues, callback = null) {
     return dispatch => {
