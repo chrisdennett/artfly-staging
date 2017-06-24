@@ -8,12 +8,16 @@ import GalleryControls from './GalleryControls/GalleryControls';
 
 class UserControls extends Component {
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.fetchUserData();
     }
 
     render() {
         const { artworkId, galleryId } = this.props.match.params;
+
+        if (this.props.user.status === "pending") {
+            return <div>Checking the salad draw...</div>
+        }
 
         if (!this.props.user || !this.props.user.uid) {
             return (

@@ -57,7 +57,11 @@ class GalleryControls extends Component {
     }
 
     goToGalleryEntrance() {
-        this.props.history.push(`/gallery/${this.props.currentGalleryId}`);
+        let galleryId = this.props.galleryId;
+        if(!galleryId){
+            galleryId = this.props.currentGalleryId;
+        }
+        this.props.history.push(`/gallery/${galleryId}`);
     }
 
     renderControls() {

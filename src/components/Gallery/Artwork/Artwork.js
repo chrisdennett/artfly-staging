@@ -3,7 +3,7 @@ import React from 'react';
 const Artwork = function (props) {
     const currentArtwork = props.artwork;
 
-    let rotation = currentArtwork.rotation;
+    /*let rotation = currentArtwork.rotation;
     let scaleFactor, scaledHeight, scaledWidth, imgWAfterRotation, imgHAfterRotation;
     if (!rotation) rotation = 0;
     if (rotation === 0 || rotation === 180) {
@@ -23,7 +23,7 @@ const Artwork = function (props) {
     scaledHeight = Math.round(imgHAfterRotation * scaleFactor);
 
     // let imgUrl = "https://firebasestorage.googleapis.com/v0/b/art-blam.appspot.com/o/userContent%2FRAj7f1WqphUMntmK2ar6wfzEFxe2%2F465962744.jpg?alt=media&token=944265d2-84a6-441d-a9f2-e0d96abb849b";
-    const imgUrl = encodeURIComponent(currentArtwork.url);
+    const imgUrl = encodeURIComponent(currentArtwork.url);*/
 
     /*
      Build url ref: http://cloudinary.com/documentation/image_transformation_reference
@@ -39,12 +39,19 @@ const Artwork = function (props) {
      e_auto_contrast
      */
 
+    const imgStyle = {
+        width: '100%',
+        height: 'auto'
+    };
+
     return (
         <div>
             <h1>Artwork</h1>
-            <img
-                src={`https://res.cloudinary.com/artfly/image/fetch/w_${scaledWidth},h_${scaledHeight},a_${rotation}/${imgUrl}`}
-                alt="artist Holly"/>
+            <img style={imgStyle} src={currentArtwork.url} alt="artist Holly"/>
+
+            {/* <img
+             src={`https://res.cloudinary.com/artfly/image/fetch/w_${scaledWidth},h_${scaledHeight},a_${rotation}/${imgUrl}`}
+             alt="artist Holly"/>*/}
         </div>
     );
 

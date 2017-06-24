@@ -14,6 +14,11 @@ export const CANCEL_ADD_ARTIST = 'cancelAddArtist';
 
 export function fetchUserData() {
     return dispatch => {
+        dispatch({
+            type: FETCH_USER,
+            payload: {status:"pending"}
+        });
+
         firebase.auth()
             .onAuthStateChanged((result) => {
                 // if authorised (result is not null) get user data
@@ -28,7 +33,7 @@ export function fetchUserData() {
                             if (userData) {
                                 dispatch({
                                     type: FETCH_USER,
-                                    payload: { ...userData, photoURL, displayName, email, uid }
+                                    payload: { ...userData, photoURL, displayName, email, uid, gallery:{}, artists:{}, status:"complete" }
                                 });
 
                                 // if user is set up fetch remaining data
@@ -41,18 +46,19 @@ export function fetchUserData() {
                                 }
                             }
                             else {
-                                // TODO: Need to add property isNewUser if no user data set up yet
-
+                                // TODO: Figure out if I need to do something with this
+                                dispatch({
+                                    type: FETCH_USER,
+                                    payload: {status:"new"}
+                                });
                             }
-
-
                         })
                 }
                 // user not authorised or not logged in
                 else {
                     dispatch({
                         type: FETCH_USER,
-                        payload: null
+                        payload: {status:"none"}
                     });
                 }
 

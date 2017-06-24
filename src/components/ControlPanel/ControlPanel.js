@@ -9,18 +9,22 @@ import ArtistsDetails from './ArtistsDetails';
 class ControlPanel extends Component {
 
     render() {
-        if (!this.props.user) {
+        if(this.props.user.status === "complete"  && this.props.user.gallery){
+            return (
+                <div>
+                    <h1>Control Panel</h1>
+                    <CuratorDetails name={this.props.user.curator }/>
+                    <GalleryDetails name={this.props.user.gallery.name }/>
+                    <ArtistsDetails userId={this.props.user.uid} galleryId={this.props.user.galleryId}/>
+                </div>
+            );
+        }
+
+        if (this.props.user.status === "none" ) {
             return (<Redirect to="/"/>)
         }
 
-        return (
-            <div>
-                <h1>Control Panel</h1>
-                <CuratorDetails name={this.props.user.curator }/>
-                <GalleryDetails name={this.props.user.gallery.name }/>
-                <ArtistsDetails userId={this.props.user.uid} galleryId={this.props.user.galleryId}/>
-            </div>
-        );
+        return <div>Looking for socks</div>;
     }
 }
 
