@@ -11,7 +11,8 @@ export const FETCH_USER_GALLERY = "fetchUserGallery";
 export const ADD_USER_ARTIST = 'addUserArtist';
 //TODO: Cancel doesn't feel right here - should this be local state only?
 export const CANCEL_ADD_ARTIST = 'cancelAddArtist';
-export const CURATOR_UPDATED = 'userUpdated';
+export const CURATOR_UPDATED = 'curatorUpdated'; // is this used or needed?
+export const GALLERY_UPDATED = 'galleryUpdated'; // also is this used or needed?
 
 export function fetchUserData() {
     return dispatch => {
@@ -104,7 +105,25 @@ function fetchUserArtists(artistList, dispatch) {
     }
 }
 
-export function updateCurator(userId, curatorName, callback=null) {
+export function updateGallery(galleryId, galleryName, callback = null) {
+    return dispatch => {
+        const galleryRef = firebase.database().ref(`user-data/galleries/${galleryId}`);
+        galleryRef.update({ name: galleryName })
+            .then(() => {
+                dispatch({
+                    type: GALLERY_UPDATED,
+                    payload: { name: galleryName }
+                });
+
+                if (callback) callback();
+            })
+            .catch(function (error) {
+                console.log('updateGallery failed: ', error);
+            })
+    }
+}
+
+export function updateCurator(userId, curatorName, callback = null) {
     return dispatch => {
         const userRef = firebase.database().ref(`/user-data/users/${userId}`);
         userRef.update({ curator: curatorName })

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 
-import EditCuratorForm from './EditCuratorForm';
-import { updateCurator } from '../../User/UserActions';
+import EditGalleryForm from './EditGalleryForm';
+import { updateGallery } from '../../User/UserActions';
 
-class CuratorDetails extends Component {
+class GalleryDetails extends Component {
 
     constructor(props) {
         super(props);
@@ -20,9 +20,7 @@ class CuratorDetails extends Component {
     }
 
     onFormSubmit(newName) {
-        console.log("newName: ", newName);
-
-        this.props.updateCurator(this.props.userId, newName, () => {
+        this.props.updateGallery(this.props.galleryId, newName, () => {
             this.setState({ inEditingMode: false })
         });
     }
@@ -32,7 +30,7 @@ class CuratorDetails extends Component {
 
         if (this.state.inEditingMode) {
             content = (
-                <EditCuratorForm userId={this.props.userId}
+                <EditGalleryForm userId={this.props.userId}
                                  onFormSubmit={this.onFormSubmit.bind(this)}
                                  onFormCancel={this.onCancelEdit.bind(this)}/>
             );
@@ -40,7 +38,7 @@ class CuratorDetails extends Component {
         else {
             content = (
                 <div>
-                    <span>Curator: </span><span>{this.props.name}</span>
+                    <span>Gallery: </span><span>{this.props.name}</span>
                     <button onClick={this.onEditButtClick.bind(this)}>Edit</button>
                 </div>
             );
@@ -50,4 +48,4 @@ class CuratorDetails extends Component {
     }
 }
 
-export default connect(null, { updateCurator })(CuratorDetails);
+export default connect(null, { updateGallery })(GalleryDetails);
