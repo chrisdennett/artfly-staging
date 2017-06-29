@@ -1,3 +1,7 @@
+********************************************************************************
+********************************************************************************
+********************************************************************************
+
 // commit changes to git
 use the version control panel to check changes
 
@@ -10,6 +14,47 @@ git username:
 chrisdennett@gmail.com
 
 password:
-1/cK6_Fy3wO9TPqNBth_eWYQaM_On84J3FDElkRAhJ0nBV3_Hwvck86dHBC3SdXfmo
+1/wCnRJyzb2wjk2VNFmgl3mO9rgprZl5awlV5casbznUo
 
 // after pasting in the password you won't see the terminal change, just press enter
+
+********************************************************************************
+********************************************************************************
+********************************************************************************
+
+// Url after generating password said this:
+Git Credentials
+
+This is your Git username:
+
+chrisdennett@gmail.com
+This is your Git password:
+
+1/wCnRJyzb2wjk2VNFmgl3mO9rgprZl5awlV5casbznUo
+To use this password, add the following text to your .netrc file:
+
+machine source.developers.google.com login chrisdennett@gmail.com password 1/wCnRJyzb2wjk2VNFmgl3mO9rgprZl5awlV5casbznUo
+Instructions for Removing Cookies
+
+If your Git client includes cookies in its request to source.developers.google.com, authorization may fail. Follow these steps to ensure correct behavior:
+
+Identify your Git cookie file.
+
+Run this command in your terminal:
+
+git config http.cookiefile
+The output is the path to your Git cookie file. If the command produces no output, then you have no Git cookie file and you are done.
+Identify the Cloud Source Repositories cookie in the Git cookie file.
+
+Open your Git cookie file in a text editor. Find the line that begins with source.developers.google.com. This is your Cloud Source Repositories cookie.
+
+If no line begins with source.developers.google.com, then you are not sending a Cloud Source Repositories cookie and you are done.
+Revoke the OAuth token in the Cloud Source Repositories cookie.
+
+If your cookie contains an OAuth refresh token (a value matching the regular expression 1/[-_A-Za-z0-9]+), then revoke the token. You can revoke the token by making a request to https://accounts.google.com/o/oauth2/revoke and including the token as a parameter:
+
+curl https://accounts.google.com/o/oauth2/revoke?token={token}
+Delete the Cloud Source Repositories cookie from the Git cookie file.
+
+Delete the line you identified in Step 2. Save the Git cookie file and close your editor.
+Learn more about using Cloud Source Repositories.
