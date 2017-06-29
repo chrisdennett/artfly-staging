@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { loginUser, logoutUser } from './UserActions';
 
-import NewUserForm from './NewUserForm';
-
 class Login extends Component {
 
     login() {
@@ -15,21 +13,15 @@ class Login extends Component {
     }
 
     render() {
+
+
+
         if (!this.props.user || !this.props.user.uid) {
             return (
                 <span>
                     <button onClick={this.login.bind(this)}>Sign up / Log in</button>
                 </span>
             );
-        }
-
-        /*If there's not user data it must be a new user*/
-        if (this.props.user.isNewUser) {
-            return (
-                <div>
-                    <NewUserForm {...this.props} />
-                </div>
-            )
         }
 
         return (

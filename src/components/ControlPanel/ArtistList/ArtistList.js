@@ -19,6 +19,7 @@ class ArtistList extends Component {
                             <ArtistInfo disableEditing={disableEditing}
                                         key={artistId}
                                         userId={this.props.userId}
+                                        galleryId={this.props.galleryId}
                                         artist={artist}
                                         artistId={artistId} /> )
                     })

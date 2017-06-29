@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { fetchUserData } from './UserActions';
 
 import Login from './Login';
+import NewUserForm from './NewUserForm';
 import GalleryControls from './GalleryControls/GalleryControls';
 
 class UserControls extends Component {
@@ -14,9 +15,14 @@ class UserControls extends Component {
 
     render() {
         const { artworkId, galleryId } = this.props.match.params;
+        const userStatus = this.props.user.status;
 
-        if (this.props.user.status === "pending") {
+        if (userStatus === "pending") {
             return <div>Checking the salad draw...</div>
+        }
+
+        if(userStatus === "new"){
+            return <NewUserForm {...this.props} />
         }
 
         if (!this.props.user || !this.props.user.uid) {

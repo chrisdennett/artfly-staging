@@ -50,7 +50,9 @@ export function fetchUserData() {
                                 // if user is set up fetch remaining data
                                 // TODO: Need to set if there's already a listener set up for both of these
                                 if (userData.artistIds) {
-                                    fetchUserArtists(userData.artistIds, dispatch);
+                                    const artistIds = Object.keys(userData.artistIds);
+                                    fetchUserArtists(artistIds, dispatch);
+                                    fetchUserArtistsArtworkIds(artistIds, dispatch)
                                 }
                                 if (userData.galleryId) {
                                     fetchUserGallery(userData.galleryId, dispatch);
@@ -60,7 +62,13 @@ export function fetchUserData() {
                                 // TODO: Figure out if I need to do something with this
                                 dispatch({
                                     type: FETCH_USER,
-                                    payload: { status: "new" }
+                                    payload: {
+                                        photoURL,
+                                        displayName,
+                                        email,
+                                        uid,
+                                        status: "new"
+                                    }
                                 });
                             }
                         })
@@ -88,11 +96,10 @@ function fetchUserGallery(galleryId, dispatch) {
         })
 }
 
-function fetchUserArtists(artistList, dispatch) {
-    const keys = Object.keys(artistList);
-    for (let i = 0; i < keys.length; i++) {
+function fetchUserArtists(artistIds, dispatch) {
+    for (let i = 0; i < artistIds.length; i++) {
         firebase.database()
-            .ref('/user-data/artists/' + keys[i])
+            .ref('/user-data/artists/' + artistIds[i])
             .on('value', (snapshot) => {
                 const artistId = snapshot.key;
                 const artistData = snapshot.val();
@@ -100,8 +107,24 @@ function fetchUserArtists(artistList, dispatch) {
                     type: FETCH_USER_ARTISTS,
                     payload: { [artistId]: artistData }
                 });
-
             })
+    }
+}
+
+function fetchUserArtistsArtworkIds(artistIds, dispatch){
+    // TODO: get this being triggered by fetch user artists and have the
+    // data being added to the user > artist > [artistId] data in the reducer
+    for (let i = 0; i < artistIds.length; i++) {
+       /* firebase.database()
+            .ref('/user-data/artists/' + artistIds[i])
+            .on('value', (snapshot) => {
+                const artistId = snapshot.key;
+                const artistData = snapshot.val();
+                dispatch({
+                    type: FETCH_USER_ARTISTS,
+                    payload: { [artistId]: artistData }
+                });
+            })*/
     }
 }
 
@@ -178,7 +201,7 @@ export function cancelAddArtist(callback = null) {
 export function createNewUser(authId, formValues, callback = null) {
     return dispatch => {
         const userRef = firebase.database().ref(`/user-data/users/${authId}`);
-        const artistRef = firebase.database().ref('/user-data/artistIds').push();
+        const artistRef = firebase.database().ref('/user-data/artists').push();
         const galleryRef = firebase.database().ref('/user-data/galleries').push();
         const userArtistsObj = {};
         userArtistsObj[artistRef.key] = 'true';

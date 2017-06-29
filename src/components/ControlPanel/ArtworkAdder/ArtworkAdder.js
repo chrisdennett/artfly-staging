@@ -61,7 +61,7 @@ class ArtworkAdder extends Component {
         const isNewArtwork = this.state.uploadThumb;
 
         return (
-            <div>
+            <span>
                 <PhotoSelector id={this.props.artistId}
                                key={this.props.artistId}
                                disabled={imageLoading}
@@ -79,7 +79,7 @@ class ArtworkAdder extends Component {
                      alt="upload thumbnail"/>
                 }
 
-            </div>
+            </span>
         );
     }
 }
