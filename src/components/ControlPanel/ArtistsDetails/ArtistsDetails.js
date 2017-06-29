@@ -17,7 +17,9 @@ class ArtistsDetails extends Component {
 
                 {
                     _.map(this.props.artists, (artist, artistId) => {
-                        return (<ArtistInfo key={artistId} artist={artist} artistId={artistId} /> )
+                        const disableEditing = this.props.artistIdBeingEdited && this.props.artistIdBeingEdited !== artistId;
+
+                        return (<ArtistInfo disableEditing={disableEditing} key={artistId} artist={artist} artistId={artistId} /> )
                     })
                 }
 

@@ -9,13 +9,17 @@ import ArtistsDetails from './ArtistsDetails/ArtistsDetails';
 class ControlPanel extends Component {
 
     render() {
+
+        // set value to Id of artist being edited or
+        const artistIdBeingEdited = (!this.props.controlPanel.currentArtist) ? null : this.props.controlPanel.currentArtist.artistId;
+
         if(this.props.user.status === "complete"  && this.props.user.gallery){
             return (
                 <div>
                     <h1>Control Panel</h1>
                     <CuratorDetails userId={this.props.user.uid} name={this.props.user.curator }/>
                     <GalleryDetails galleryId={this.props.user.galleryId} name={this.props.user.gallery.name }/>
-                    <ArtistsDetails artists={this.props.user.artists} userId={this.props.user.uid} galleryId={this.props.user.galleryId}/>
+                    <ArtistsDetails artistIdBeingEdited={artistIdBeingEdited} artists={this.props.user.artists} userId={this.props.user.uid} galleryId={this.props.user.galleryId}/>
                 </div>
             );
         }
@@ -30,7 +34,8 @@ class ControlPanel extends Component {
 
 function mapStateToProps(state) {
     return {
-        user: state.user
+        user: state.user,
+        controlPanel: state.controlPanel
     }
 }
 

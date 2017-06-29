@@ -31,6 +31,10 @@ class ArtistInfo extends Component {
 
     render() {
         let content;
+        let editButtonStyle = {};
+        if(this.props.disableEditing){
+            editButtonStyle.display = 'none';
+        }
 
         if (this.state.inEditingMode) {
             content = (
@@ -45,7 +49,7 @@ class ArtistInfo extends Component {
                 <div>
                     <div>Artist: {this.props.artist.name}</div>
                     <div>Biog: {this.props.artist.biog}</div>
-                    <button onClick={this.onEditButtClick.bind(this)}>Edit</button>
+                    <button style={editButtonStyle} onClick={this.onEditButtClick.bind(this)}>Edit</button>
                 </div>
             );
         }

@@ -12,7 +12,7 @@ export function setCurrentArtist(artistId, callback) {
             .then(snapshot => {
                 dispatch({
                     type: CURRENT_ARTIST_UPDATED,
-                    payload: snapshot.val()
+                    payload: {...snapshot.val(), artistId:artistId}
                 });
 
                 if (callback) callback();
