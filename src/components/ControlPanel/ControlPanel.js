@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import CuratorDetails from './CuratorDetails/CuratorDetails';
 import GalleryDetails from './GalleryDetails/GalleryDetails';
-import ArtistsDetails from './ArtistsDetails/ArtistsDetails';
+import ArtistList from './ArtistList/ArtistList';
 
 class ControlPanel extends Component {
 
@@ -19,7 +19,7 @@ class ControlPanel extends Component {
                     <h1>Control Panel</h1>
                     <CuratorDetails userId={this.props.user.uid} name={this.props.user.curator }/>
                     <GalleryDetails galleryId={this.props.user.galleryId} name={this.props.user.gallery.name }/>
-                    <ArtistsDetails artistIdBeingEdited={artistIdBeingEdited} artists={this.props.user.artists} userId={this.props.user.uid} galleryId={this.props.user.galleryId}/>
+                    <ArtistList artistIdBeingEdited={artistIdBeingEdited} artists={this.props.user.artists} userId={this.props.user.uid} galleryId={this.props.user.galleryId}/>
                 </div>
             );
         }

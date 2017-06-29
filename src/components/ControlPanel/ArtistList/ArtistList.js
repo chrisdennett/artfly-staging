@@ -4,10 +4,7 @@ import _ from 'lodash';
 import AddNewArtistForm from '../ArtistAdder/AddNewArtistForm';
 import ArtistInfo from './ArtistInfo';
 
-class ArtistsDetails extends Component {
-
-    /*TODO: Only allow one artist to be edited at at time*/
-
+class ArtistList extends Component {
     render() {
         return (
             <div>
@@ -32,4 +29,4 @@ class ArtistsDetails extends Component {
     }
 }
 
-export default ArtistsDetails;
+export default ArtistList;
