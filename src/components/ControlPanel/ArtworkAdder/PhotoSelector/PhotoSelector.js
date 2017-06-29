@@ -9,6 +9,8 @@ class PhotoSelector extends Component {
     handleImageChange(event) {
         event.preventDefault();
 
+        console.log("hello: ");
+
         if (event.target.files[0]) {
             const imgFile = event.target.files[0];
             this.props.onPhotoSelected(imgFile, this.props.id);
@@ -30,7 +32,9 @@ class PhotoSelector extends Component {
 
                 <label disabled={this.props.disabled}
                        className={this.props.disabled ? 'disabled' : ''}
-                       htmlFor={this.props.id}>{this.props.label}</label>
+                       htmlFor={this.props.id}>
+                    ^ upload
+                </label>
             </span>
         );
     }

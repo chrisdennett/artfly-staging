@@ -8,12 +8,11 @@
 }
 
 .inputfile + label {
-    font-size: 1.25em;
-    font-weight: 700;
+    font-size: 1em;
     color: white;
     background-color: black;
     display: inline-block;
-    padding: 10px;
+    padding: 5px;
     margin: 5px;
     cursor: pointer;
 }

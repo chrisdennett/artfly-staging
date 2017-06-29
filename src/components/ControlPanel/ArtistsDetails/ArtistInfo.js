@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import EditArtistForm from './EditArtistForm';
 import { setCurrentArtist, updateArtist, cancelArtistUpdate } from '../ControlPanelActions';
+import ArtworkAdder from '../ArtworkAdder/ArtworkAdder';
 
 class ArtistInfo extends Component {
 
@@ -49,6 +50,7 @@ class ArtistInfo extends Component {
                 <div>
                     <div>Artist: {this.props.artist.name}</div>
                     <div>Biog: {this.props.artist.biog}</div>
+                    <ArtworkAdder userId={this.props.userId} artistId={this.props.artistId} />
                     <button style={editButtonStyle} onClick={this.onEditButtClick.bind(this)}>Edit</button>
                 </div>
             );

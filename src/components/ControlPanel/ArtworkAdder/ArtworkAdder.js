@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import _ from 'lodash';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -52,7 +51,7 @@ class ArtworkAdder extends Component {
         const imgHeight = event.target.naturalHeight;
 
         // pass all the data needed to the action
-        this.props.uploadImage(this.state.imgFile, this.props.user.uid, this.state.artistId, imgWidth, imgHeight);
+        this.props.uploadImage(this.state.imgFile, this.props.userId, this.state.artistId, imgWidth, imgHeight);
     }
 
     render() {
@@ -61,36 +60,24 @@ class ArtworkAdder extends Component {
         const imageLoading = this.props.imageUploadProgress > 0 && this.props.imageUploadProgress < 100;
         const isNewArtwork = this.state.uploadThumb;
 
-        if(!this.props.user){
-            return <span />
-        }
-
         return (
             <div>
-                <p>Add artwork by:</p>
-                {
-                    _.map(this.props.user.artists, (artist, artistId) => {
-                        return (<PhotoSelector id={artistId}
-                                               key={artistId}
-                                               disabled={imageLoading}
-                                               label={artist.name}
-                                               onPhotoSelected={this.onPhotoSelected.bind(this)}/> )
-                    })
-                }
+                <PhotoSelector id={this.props.artistId}
+                               key={this.props.artistId}
+                               disabled={imageLoading}
+                               onPhotoSelected={this.onPhotoSelected.bind(this)}/>
 
                 {imageLoading &&
-                    <p>Image loading: {this.props.imageUploadProgress}%</p>
+                <p>Image loading: {this.props.imageUploadProgress}%</p>
                 }
 
                 {isNewArtwork &&
-                    <img ref="imgThumbRef"
-                      style={imgStyle}
-                      onLoad={this.onThumbLoad.bind(this)}
-                      src={this.state.uploadThumb}
-                      alt="upload thumbnail"/>
+                <img ref="imgThumbRef"
+                     style={imgStyle}
+                     onLoad={this.onThumbLoad.bind(this)}
+                     src={this.state.uploadThumb}
+                     alt="upload thumbnail"/>
                 }
-
-                <hr/>
 
             </div>
         );
@@ -99,7 +86,6 @@ class ArtworkAdder extends Component {
 
 function mapStateToProps(state) {
     return {
-        user: state.user,
         imageUpload: state.imageUpload,
         imageUploadProgress: state.imageUploadProgress
     }

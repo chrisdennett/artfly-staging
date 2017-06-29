@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import _ from 'lodash';
 
-import ArtworkAdder from '../ArtworkAdder/ArtworkAdder';
 import AddNewArtistForm from '../ArtistAdder/AddNewArtistForm';
 import ArtistInfo from './ArtistInfo';
 
@@ -19,11 +18,15 @@ class ArtistsDetails extends Component {
                     _.map(this.props.artists, (artist, artistId) => {
                         const disableEditing = this.props.artistIdBeingEdited && this.props.artistIdBeingEdited !== artistId;
 
-                        return (<ArtistInfo disableEditing={disableEditing} key={artistId} artist={artist} artistId={artistId} /> )
+                        return (
+                            <ArtistInfo disableEditing={disableEditing}
+                                        key={artistId}
+                                        userId={this.props.userId}
+                                        artist={artist}
+                                        artistId={artistId} /> )
                     })
                 }
 
-                <ArtworkAdder />
             </div>
         );
     }

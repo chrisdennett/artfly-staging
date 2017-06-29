@@ -39,8 +39,6 @@ class EditArtistForm extends Component {
     render() {
         const { handleSubmit } = this.props; // handleSubmit is added to props by redux-form
 
-        console.log("this.props: ", this.props);
-
         return (
             <div>
                 <form onSubmit={handleSubmit(this.onFormSubmit.bind(this))}>
