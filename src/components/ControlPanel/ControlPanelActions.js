@@ -95,14 +95,18 @@ function deleteArtwork(artworkId, userId, dispatch) {
     // delete image in storage
     const imageStorageRef = firebase.storage().ref();
     const userPicturesRef = imageStorageRef.child(`userContent/${userId}/${artworkId}`);
-    userPicturesRef.delete();
+    userPicturesRef.delete().then(() => {
 
-    // delete artwork data
-    const artworkDataRef = firebase.database().ref(`user-data/artworks/${artworkId}`);
-    artworkDataRef.remove();
+        // delete artwork data
+        const artworkDataRef = firebase.database().ref(`user-data/artworks/${artworkId}`);
+        artworkDataRef.remove();
 
-    dispatch({
-        type: ARTWORK_DELETED,
-        payload: artworkId
+        dispatch({
+            type: ARTWORK_DELETED,
+            payload: artworkId
+        });
+
+    }).catch(function(error) {
+        console.log("ControlPanelActions > deleteArtwork > error: ", error);
     });
 }
