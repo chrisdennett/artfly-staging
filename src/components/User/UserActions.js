@@ -7,6 +7,7 @@ export const FETCH_USER = "fetchUser";
 export const LOGIN_USER = "loginUser";
 export const LOGOUT_USER = "logoutUser";
 export const FETCH_USER_ARTISTS = "fetchUserArtists";
+export const FETCH_USER_ARTIST_ARTWORK_IDS = "fetchUserArtistArtworkIds";
 export const FETCH_USER_GALLERY = "fetchUserGallery";
 export const ADD_USER_ARTIST = 'addUserArtist';
 //TODO: Cancel doesn't feel right here - should this be local state only?
@@ -111,20 +112,22 @@ function fetchUserArtists(artistIds, dispatch) {
     }
 }
 
-function fetchUserArtistsArtworkIds(artistIds, dispatch){
-    // TODO: get this being triggered by fetch user artists and have the
-    // data being added to the user > artist > [artistId] data in the reducer
-    for (let i = 0; i < artistIds.length; i++) {
-       /* firebase.database()
-            .ref('/user-data/artists/' + artistIds[i])
-            .on('value', (snapshot) => {
-                const artistId = snapshot.key;
-                const artistData = snapshot.val();
+function fetchUserArtistsArtworkIds(artistIds, dispatch) {
+    for (let artistId of artistIds) {
+        firebase.database()
+            .ref(`/user-data/artistArtworkIds/${artistId}`)
+            .on('value', snapshot => {
+                const artistArtworkIdsData = snapshot.val();
+                let ids = [];
+                if (artistArtworkIdsData) {
+                    ids = Object.keys(artistArtworkIdsData);
+                }
+
                 dispatch({
-                    type: FETCH_USER_ARTISTS,
-                    payload: { [artistId]: artistData }
+                    type: FETCH_USER_ARTIST_ARTWORK_IDS,
+                    payload: { [artistId]: ids }
                 });
-            })*/
+            });
     }
 }
 
@@ -227,7 +230,7 @@ export function createNewUser(authId, formValues, callback = null) {
             )
             .then(
                 artistRef
-                    .set({ name: formValues.artistName, biog:"The artists' artist." })
+                    .set({ name: formValues.artistName, biog: "The artists' artist." })
                     .then(() => {
                         dispatch({
                             type: CREATE_USER,

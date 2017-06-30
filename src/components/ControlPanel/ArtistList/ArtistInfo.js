@@ -28,12 +28,12 @@ class ArtistInfo extends Component {
         this.setState({ showConfirmDelete: true });
     }
 
-    onCancelDeleteButtClick(){
+    onCancelDeleteButtClick() {
         this.setState({ showConfirmDelete: false });
     }
 
-    onConfirmDeleteButtClick(){
-        this.setState({ showConfirmDelete: false })
+    onConfirmDeleteButtClick() {
+        this.setState({ showConfirmDelete: false });
         this.props.deleteArtist(this.props.artistId, this.props.userId, this.props.galleryId, () => {
             console.log("delete callback");
         });
@@ -52,11 +52,21 @@ class ArtistInfo extends Component {
             editButtonStyle.display = 'none';
         }
 
-        if(!this.props.artist){
+        if (!this.props.artist) {
             return <span>ARTIST BEING DELETED</span>
         }
 
         if (this.state.showConfirmDelete) {
+            const totalArtworks = this.props.artist.artworkIds.length;
+            let deleteWarningMessage;
+            if (totalArtworks === 1) {
+                deleteWarningMessage = `Yes, DELETE artist and their ${totalArtworks} artwork`;
+            }else if(totalArtworks === 0) {
+                deleteWarningMessage = `Yes, DELETE artist (they have no artworks)`;
+            }else {
+                deleteWarningMessage = `Yes, DELETE artist and their ${totalArtworks} artworks`;
+            }
+
             content = (
                 <div>
                     <div>Artist: {this.props.artist.name}</div>
@@ -64,7 +74,8 @@ class ArtistInfo extends Component {
                     <hr />
                     <div>Are you want to delete this Artist and all their artworks?</div>
                     <button style={editButtonStyle} onClick={this.onCancelDeleteButtClick.bind(this)}>Cancel</button>
-                    <button style={editButtonStyle} onClick={this.onConfirmDeleteButtClick.bind(this)}>Yes Delete artist and 42 artworks</button>
+                    <button style={editButtonStyle}
+                            onClick={this.onConfirmDeleteButtClick.bind(this)}>{deleteWarningMessage}</button>
                 </div>
             );
         }
