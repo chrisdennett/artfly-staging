@@ -26,7 +26,9 @@ export default function (state = {}, action) {
         case FETCH_USER_ARTISTS:
             newState = { ...state };
             artistKey = Object.keys(action.payload)[0];
-            artistData = action.payload[artistKey];
+            artistData = {...state.artists[artistKey], ...action.payload[artistKey]};
+
+            // artistData = action.payload[artistKey];
             newState.artists = { ...state.artists, [artistKey]: artistData };
             return newState;
 
