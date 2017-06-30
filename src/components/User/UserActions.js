@@ -227,7 +227,7 @@ export function createNewUser(authId, formValues, callback = null) {
             )
             .then(
                 artistRef
-                    .set({ name: formValues.artistName })
+                    .set({ name: formValues.artistName, biog:"The artists' artist." })
                     .then(() => {
                         dispatch({
                             type: CREATE_USER,

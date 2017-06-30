@@ -15,7 +15,7 @@ export function fetchGallery(galleryId) {
                     payload: {...galleryData, galleryId}
                 });
 
-                if (galleryData.artistIds) {
+                if (galleryData && galleryData.artistIds) {
                     fetchGalleryArtists(galleryData.artistIds, dispatch);
                     fetchGalleryArtworks(galleryData.artistIds, dispatch)
                 }

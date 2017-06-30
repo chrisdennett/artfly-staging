@@ -17,7 +17,7 @@ export default function (state = {}, action) {
             return {};
 
         case FETCH_USER:
-            console.log("action.payload: ", action.payload);
+            console.log("FETCH_USER: ", action.payload);
             return {...state, ...action.payload};
 
         case FETCH_USER_GALLERY:
@@ -38,7 +38,9 @@ export default function (state = {}, action) {
             return newState;
 
         case CREATE_USER:
-            return action.payload;
+            // Doesn't need to return anything because there is a firebase listener on the user
+            // that will trigger FETCH_USER
+            return state;
 
         default:
             return state;

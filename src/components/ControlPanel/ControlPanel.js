@@ -12,8 +12,9 @@ class ControlPanel extends Component {
 
         // set value to Id of artist being edited or
         const artistIdBeingEdited = (!this.props.controlPanel.currentArtist) ? null : this.props.controlPanel.currentArtist.artistId;
+        const userStatus = this.props.user.status;
 
-        if(this.props.user.status === "complete"  && this.props.user.gallery){
+        if(userStatus === "complete"  && this.props.user.gallery){
             return (
                 <div>
                     <h1>Control Panel</h1>
@@ -24,11 +25,11 @@ class ControlPanel extends Component {
             );
         }
 
-        if (this.props.user.status === "none" ) {
+        if (userStatus === "none" || userStatus === "new" ) {
             return (<Redirect to="/"/>)
         }
 
-        return <div>Looking for socks</div>;
+        return <div>Busy doing something important no doubt...</div>;
     }
 }
 

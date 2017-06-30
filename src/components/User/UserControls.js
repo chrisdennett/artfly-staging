@@ -25,7 +25,7 @@ class UserControls extends Component {
             return <NewUserForm {...this.props} />
         }
 
-        if (!this.props.user || !this.props.user.uid) {
+        if (this.props.user.status === "none" || !this.props.user || !this.props.user.uid) {
             return (
                 <div>
                     <Link to="/">home</Link>
