@@ -3,7 +3,7 @@
 ********************************************************************************
 
 // commit changes to git
-use the version control panel to check changes
+CTRL K - use the version control panel to check changes - and push at the same time
 
 // then in terminal push the changes to google
 git push google master
