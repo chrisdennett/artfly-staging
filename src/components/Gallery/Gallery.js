@@ -4,26 +4,20 @@ import { Redirect } from 'react-router-dom';
 
 import Artwork from './Artwork/Artwork';
 import GalleryEntrance from './GalleryEntrance';
-import { fetchGallery } from './GalleryActions';
 
 class Gallery extends Component {
-
-    componentDidMount() {
-        const { galleryId } = this.props.match.params;
-        this.props.fetchGallery(galleryId);
-    }
 
     render() {
         const { galleryId, artworkId } = this.props.match.params;
         /*Move this out to its own RemoteControlRedirect component*/
         const allowRemoteControl = true;
 
-        if(allowRemoteControl && this.props.gallery.remoteControl){
+        if (allowRemoteControl && this.props.gallery.remoteControl) {
 
             const { galleryId, artworkId } = this.props.match.params;
             const remoteArtworkId = this.props.gallery.remoteControl.artworkId;
 
-            if(remoteArtworkId && remoteArtworkId !== artworkId){
+            if (remoteArtworkId && remoteArtworkId !== artworkId) {
                 return (<Redirect to={`/gallery/${galleryId}/artwork/${remoteArtworkId}`}/>);
             }
         }
@@ -80,5 +74,5 @@ function mapStateToProps(state) {
 
 export default connect(
     mapStateToProps,
-    { fetchGallery }
+    {  }
 )(Gallery);

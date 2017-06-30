@@ -31,7 +31,6 @@ class GalleryControls extends Component {
 
             this.setState({ nextArtworkId: nextId, prevArtworkId: prevId })
         }
-
     }
 
     onPrevClick() {
@@ -44,7 +43,7 @@ class GalleryControls extends Component {
 
     goToArtwork(artworkId) {
         if (artworkId) {
-            this.props.history.push(`/gallery/${this.props.currentGalleryId}/artwork/${artworkId}`);
+            this.props.history.push(`/gallery/${this.props.galleryIdFromUrl}/artwork/${artworkId}`);
         }
         else if (!this.state.prevArtworkId) {
             // we're back to the start, go to the entrance
@@ -57,11 +56,11 @@ class GalleryControls extends Component {
     }
 
     goToGalleryEntrance() {
-        let galleryId = this.props.galleryId;
-        if(!galleryId){
-            galleryId = this.props.currentGalleryId;
-        }
-        this.props.history.push(`/gallery/${galleryId}`);
+        this.props.history.push(`/gallery/${this.props.galleryIdFromUrl}`);
+    }
+
+    goToUserGallery(){
+        this.props.history.push(`/gallery/${this.props.userGalleryId}`);
     }
 
     renderControls() {
@@ -70,8 +69,8 @@ class GalleryControls extends Component {
         let prevButtonStyles = {};
         let nextButtonStyles = {};
         let galleryButtonStyles = {};
-
-        if(!this.props.currentGalleryId){
+        
+        if(!this.props.galleryIdFromUrl){
             // only show the next a previous controls inside a gallery
             prevButtonStyles.display = 'none';
             nextButtonStyles.display = 'none';
@@ -89,14 +88,14 @@ class GalleryControls extends Component {
             }
         }
 
-        if(!this.props.galleryId){
+        if(!this.props.userGalleryId){
             galleryButtonStyles.display = 'none';
         }
 
         return (
             <span>
                 <button style={galleryButtonStyles}
-                        onClick={this.goToGalleryEntrance.bind(this)}>My Gallery</button>
+                        onClick={this.goToUserGallery.bind(this)}>My Gallery</button>
                 <button style={prevButtonStyles}
                         onClick={this.onPrevClick.bind(this)}>{prevButtonLabel}</button>
                 <button style={nextButtonStyles}

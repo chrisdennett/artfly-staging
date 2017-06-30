@@ -1,11 +1,33 @@
 import firebase from '../../firebase/firebaseConfig';
 
+export const NEW_GALLERY_COMING = "newGalleryComing";
 export const FETCH_GALLERY = "fetchGallery";
 export const FETCH_GALLERY_ARTWORKS = "fetchGalleryArtworks";
 export const FETCH_GALLERY_ARTISTS = "fetchGalleryArtists";
 
+let currentGalleryId;
+
 export function fetchGallery(galleryId) {
+
     return dispatch => {
+        //This stops unnecessary calls to the database which will set up new listener
+        if(galleryId === currentGalleryId){
+            return {};
+        }
+
+        // remove the listener
+        firebase.database().ref(`user-data/galleries/${currentGalleryId}`).off();
+
+        // store the new galleryId as a global variable
+        currentGalleryId = galleryId;
+
+        // reducer reacts to this by clearing the current gallery
+        // this stops the old gallery showing while the new one loads
+        dispatch({
+            type: NEW_GALLERY_COMING,
+            payload: {}
+        });
+
         firebase.database()
             .ref(`user-data/galleries/${galleryId}`)
             .on('value', snapshot => {
@@ -22,6 +44,7 @@ export function fetchGallery(galleryId) {
 
             })
     }
+
 }
 
 function fetchGalleryArtworks(artistList, dispatch) {

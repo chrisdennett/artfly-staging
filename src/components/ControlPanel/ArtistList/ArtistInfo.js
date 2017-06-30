@@ -58,6 +58,7 @@ class ArtistInfo extends Component {
 
         if (this.state.showConfirmDelete) {
             let deleteWarningMessage;
+            console.log("totalArtworks: ", totalArtworks);
             if (totalArtworks === 1) {
                 deleteWarningMessage = `Yes, DELETE artist and their ${totalArtworks} artwork`;
             }
