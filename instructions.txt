@@ -8,6 +8,10 @@ use the version control panel to check changes
 // then in terminal push the changes to google
 git push google master
 
+********************************************************************************
+********************************************************************************
+********************************************************************************
+
 
 // OLD LONG-WINDED WAY
 // using terminal
