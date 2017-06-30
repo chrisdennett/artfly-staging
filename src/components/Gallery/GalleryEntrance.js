@@ -5,21 +5,17 @@ import _ from 'lodash';
 
 class GalleryEntrance extends Component {
 
-    onArtistClick(artistId, event) {
-        this.showArtistPictures(artistId)
-    }
-
-    showArtistPictures(artistId) {
-        //TODO: add filter to list to show only artworks matching artist
-    }
 
     render() {
+
         const artistList = _.map(this.props.gallery.artists, (artistData, artistId) => {
             return (
                 <li key={artistId}>
-                    <button onClick={this.onArtistClick.bind(this, artistId)}>{ artistData.name }</button>
+                    <span>{ artistData.name }</span>
                 </li>)
         });
+
+        let imgStyle = { width: 60, height: 60 };
 
         return (
             <div>
@@ -42,14 +38,14 @@ class GalleryEntrance extends Component {
 
                             const artistName = this.props.gallery.artists[artworkData.artist].name;
                             const dateAdded = new Date(artworkData.dateAdded).toDateString(); // TODO: when these are proper dates, convert to string
-                            const imgUrl = `https://res.cloudinary.com/artfly/image/fetch/w_150,h_150/${encodeURIComponent(artworkData.url)}`;
+                            const imgUrl = artworkData.url;
 
                             return (
                                 <div key={artworkId}>
                                     <Link to={`${this.props.galleryId}/artwork/${artworkId}`}>
-                                        <img
-                                            src={imgUrl}
-                                            alt={`artwork by user`}/>
+                                        <img src={imgUrl}
+                                             style={imgStyle}
+                                             alt={`artwork by user`}/>
                                         <p>By {artistName}</p>
                                         <p>{dateAdded}</p>
                                     </Link>
@@ -61,6 +57,7 @@ class GalleryEntrance extends Component {
             </div>
         )
     }
-};
+}
+;
 
 export default GalleryEntrance;
