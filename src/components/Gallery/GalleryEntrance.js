@@ -5,9 +5,7 @@ import _ from 'lodash';
 
 class GalleryEntrance extends Component {
 
-
     render() {
-
         const artistList = _.map(this.props.gallery.artists, (artistData, artistId) => {
             return (
                 <li key={artistId}>
@@ -58,6 +56,5 @@ class GalleryEntrance extends Component {
         )
     }
 }
-;
 
 export default GalleryEntrance;
