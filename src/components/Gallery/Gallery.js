@@ -44,10 +44,6 @@ class Gallery extends Component {
             return (<h1>Add your first gallery</h1>)
         }
 
-        if (!this.props.gallery.artists) {
-            return <h1>Looks like you've got a gallery with no artists!</h1>
-        }
-
         return (
             <GalleryEntrance galleryId={galleryId} {...this.props} />
         );
