@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import Artwork from './Artwork/Artwork';
 import GalleryEntrance from './GalleryEntrance';
 
-
 class Gallery extends Component {
 
     render() {
@@ -20,10 +19,6 @@ class Gallery extends Component {
             else {
                 return <div>Loading currentArtwork...</div>
             }
-        }
-
-        if (!this.props.gallery) {
-            return (<h1>Add your first gallery</h1>)
         }
 
         return (

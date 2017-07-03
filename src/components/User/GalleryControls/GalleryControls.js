@@ -12,6 +12,7 @@ class GalleryControls extends Component {
         }
     }
 
+    // Works out where we are in the gallery so as to set up the next and prev buttons correctly
     componentWillReceiveProps(nextProps) {
         if (nextProps.gallery && nextProps.gallery.artworks) {
             const currId = nextProps.artworkId;
@@ -111,7 +112,6 @@ class GalleryControls extends Component {
 
 function mapStateToProps(state) {
     return {
-        galleryControls: state.galleryControls,
         gallery: state.gallery
     }
 }

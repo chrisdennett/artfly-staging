@@ -38,7 +38,7 @@ export function fetchGallery(galleryId) {
 
                 if (galleryData && galleryData.artistIds) {
                     fetchGalleryArtists(galleryData.artistIds, dispatch);
-                    fetchGalleryArtworks(galleryData.artistIds, dispatch)
+                    fetchGalleryArtistArtworks(galleryData.artistIds, dispatch)
                 }
 
             })
@@ -46,7 +46,7 @@ export function fetchGallery(galleryId) {
 
 }
 
-function fetchGalleryArtworks(artistList, dispatch) {
+function fetchGalleryArtistArtworks(artistList, dispatch) {
     const keys = Object.keys(artistList);
     for (let i = 0; i < keys.length; i++) {
         let artistId = keys[i];
@@ -58,27 +58,31 @@ function fetchGalleryArtworks(artistList, dispatch) {
 
                 if (artistArtworkIds) {
                     const artworkIds = Object.keys(artistArtworkIds);
-                    fetchArtworksFromIds(artworkIds, dispatch);
+                    fetchArtworks(artworkIds, dispatch);
                 }
 
             })
     }
 }
 
-function fetchArtworksFromIds(artworkIds, dispatch) {
+function fetchArtworks(artworkIds, dispatch) {
     for (let i = 0; i < artworkIds.length; i++) {
         let artworkId = artworkIds[i];
-        firebase.database()
-            .ref('user-data/artworks/' + artworkId)
-            .on('value', snapshot => {
-                const artworkId = snapshot.key;
-                const artworkData = snapshot.val();
-                dispatch({
-                    type: FETCH_GALLERY_ARTWORKS,
-                    payload: { [artworkId]: artworkData }
-                });
-            });
+        fetchArtwork(artworkId, dispatch);
     }
+}
+
+function fetchArtwork(artworkId, dispatch){
+    firebase.database()
+        .ref('user-data/artworks/' + artworkId)
+        .on('value', snapshot => {
+            const artworkId = snapshot.key;
+            const artworkData = snapshot.val();
+            dispatch({
+                type: FETCH_GALLERY_ARTWORKS,
+                payload: { [artworkId]: artworkData }
+            });
+        });
 }
 
 function fetchGalleryArtists(artistList, dispatch) {

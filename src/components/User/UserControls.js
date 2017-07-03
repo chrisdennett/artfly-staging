@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchUserData } from './UserActions';
 import { fetchGallery } from '../Gallery/GalleryActions';
+import { setArtworkId } from '../Gallery/Artwork/ArtworkActions';
 
 import Login from './Login';
 import NewUserForm from './NewUserForm';
@@ -21,6 +22,10 @@ class UserControls extends Component {
         if (galleryId) {
             this.props.fetchGallery(galleryId);
         }
+
+        /*if(artworkId){
+            this.props.setArtworkId(artworkId)
+        }*/
     }
 
     addUserOnlyControlsIfLoggedIn() {
@@ -65,4 +70,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, { fetchUserData, fetchGallery })(UserControls);
+export default connect(mapStateToProps, { fetchUserData, fetchGallery, setArtworkId })(UserControls);

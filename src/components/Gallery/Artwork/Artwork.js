@@ -5,10 +5,16 @@ import { setupForNewArtwork, setImageLoaded } from './ArtworkActions';
 
 class Artwork extends Component {
 
+    componentWillMount(){
+        // set up for new artwork
+        this.props.setupForNewArtwork();
+    }
+
     componentWillReceiveProps(nextProps) {
         // if the artwork Id is different from the previous id trigger loading image message
         const currentArtwork = this.props.currentArtwork;
         const nextArtwork = nextProps.currentArtwork;
+
         if (currentArtwork !== nextArtwork) {
             // dispatch an event that will allow artwork to prepare for loading in image
             this.props.setupForNewArtwork();
@@ -64,7 +70,7 @@ class Artwork extends Component {
 
         let loadingMessageStyle = { display: 'none'};
 
-        if(this.props.artwork.status === "setup"){
+        if(!this.props.artwork.status || this.props.artwork.status === "setup"){
             imgStyle.display = 'none';
             loadingMessageStyle = {};
         }

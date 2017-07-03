@@ -27,9 +27,6 @@ class ArtworkAdder extends Component {
     }
 
     onPhotoSelected(imgFile, artistId) {
-
-        console.log("imgFile: ", imgFile);
-
         // load image to get the width and the height, then call action to save to database
         // action should trigger a loading event and a finished event
         const reader = new FileReader();
