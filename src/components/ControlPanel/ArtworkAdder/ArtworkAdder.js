@@ -27,6 +27,9 @@ class ArtworkAdder extends Component {
     }
 
     onPhotoSelected(imgFile, artistId) {
+
+        console.log("imgFile: ", imgFile);
+
         // load image to get the width and the height, then call action to save to database
         // action should trigger a loading event and a finished event
         const reader = new FileReader();
@@ -47,6 +50,8 @@ class ArtworkAdder extends Component {
     }
 
     onThumbLoad(event) {
+        console.log("event: ", event);
+
         const imgWidth = event.target.naturalWidth;
         const imgHeight = event.target.naturalHeight;
 
@@ -55,10 +60,27 @@ class ArtworkAdder extends Component {
     }
 
     render() {
-        let imgStyle = { width: 60, height: "100%" };
+        let imgStyle = { display: 'none' };
+        let uploadNotificationBox = <span style={{ display: 'none' }}/>;
+        let imageLoading = false;
+        const uploadInfo = this.props.imageUploader[this.props.artistId];
 
-        const imageLoading = this.props.imageUploadProgress > 0 && this.props.imageUploadProgress < 100;
-        const isNewArtwork = this.state.uploadThumb;
+        if (uploadInfo) {
+            imageLoading = uploadInfo.progress > 0 && uploadInfo.progress < 100;
+            const isNewArtwork = this.state.uploadThumb;
+            // TODO: Notification box should be it's own component.
+
+            if (imageLoading) {
+                uploadNotificationBox = <span>Image loading: {uploadInfo.progress}%</span>
+            }
+            else if (isNewArtwork) {
+                imgStyle = { width: 60, height: "100%" };
+                uploadNotificationBox =
+                    <span>
+                        New image loaded:
+                    </span>
+            }
+        }
 
         return (
             <span>
@@ -67,18 +89,13 @@ class ArtworkAdder extends Component {
                                disabled={imageLoading}
                                onPhotoSelected={this.onPhotoSelected.bind(this)}/>
 
-                {imageLoading &&
-                <p>Image loading: {this.props.imageUploadProgress}%</p>
-                }
+                {uploadNotificationBox}
 
-                {isNewArtwork &&
                 <img ref="imgThumbRef"
                      style={imgStyle}
                      onLoad={this.onThumbLoad.bind(this)}
                      src={this.state.uploadThumb}
                      alt="upload thumbnail"/>
-                }
-
             </span>
         );
     }
@@ -86,8 +103,7 @@ class ArtworkAdder extends Component {
 
 function mapStateToProps(state) {
     return {
-        imageUpload: state.imageUpload,
-        imageUploadProgress: state.imageUploadProgress
+        imageUploader: state.imageUploader
     }
 }
 

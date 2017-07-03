@@ -2,12 +2,14 @@ import firebase from '../../../firebase/firebaseConfig';
 // TODO: I think I should be able to do away with this through first import
 import * as fb from 'firebase';
 
-// export const CREATE_ARTWORK = 'createArtwork';
 export const UPLOAD_IMAGE = 'uploadImage';
 export const IMAGE_UPLOAD_PROGRESS = 'imageUploadProgress';
 
 export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null) {
     return dispatch => {
+
+        console.log("artistId: ", artistId);
+
         // Create a new image ref in the database
         const artworkRef = firebase.database().ref('/user-data/artworks').push();
         // use the artwork key as the name for the artwork to ensure it is unique.
@@ -24,7 +26,7 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
 
                 dispatch({
                     type: IMAGE_UPLOAD_PROGRESS,
-                    payload: progress
+                    payload: {artistId:artistId, progress:progress}
                 });
 
                 switch (snapshot.state) {
@@ -60,6 +62,7 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
                 // Upload completed successfully - save artwork data
                 const dateStamp = Date.now();
                 const newArtworkData = {
+                    id: artworkRef.key,
                     curator: userId,
                     artist: artistId,
                     url: uploadTask.snapshot.downloadURL,
@@ -78,7 +81,11 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
                             .then(() => {
                                 dispatch({
                                     type: UPLOAD_IMAGE,
-                                    payload: { [artworkRef.key]: newArtworkData }
+                                    payload: {
+                                        artistId:artistId,
+                                        progress:100,
+                                        artwork: newArtworkData
+                                    }
                                 });
 
                                 if (callback) callback();
@@ -91,29 +98,3 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
 
     }
 }
-
-// THIS DOESN'T SEEM TO BE USED
-/*
- export function createNewArtwork(artistId, artData, callback = null) {
- return dispatch => {
- const artworkRef = firebase.database().ref('/user-data/artworks').push();
- const artistArtworkIdsRef = firebase.database().ref(`/user-data/artistArtworkIds/${artistId}/${artworkRef.key}`);
-
- artistArtworkIdsRef
- .set('true')
- .then(
- artworkRef
- .set(artData, () => {
- dispatch({
- type: CREATE_ARTWORK,
- payload: { [artworkRef.key]: artData }
- });
-
- if (callback) callback(artworkRef.key);
- })
- .catch(function (error) {
- console.log('Synchronization failed: ', error);
- })
- );
- }
- }*/

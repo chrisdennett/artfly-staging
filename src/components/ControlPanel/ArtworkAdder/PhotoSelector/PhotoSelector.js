@@ -9,8 +9,6 @@ class PhotoSelector extends Component {
     handleImageChange(event) {
         event.preventDefault();
 
-        console.log("hello: ");
-
         if (event.target.files[0]) {
             const imgFile = event.target.files[0];
             this.props.onPhotoSelected(imgFile, this.props.id);
