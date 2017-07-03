@@ -8,7 +8,6 @@ export const FETCH_GALLERY_ARTISTS = "fetchGalleryArtists";
 let currentGalleryId;
 
 export function fetchGallery(galleryId) {
-
     return dispatch => {
         //This stops unnecessary calls to the database which will set up new listener
         if(galleryId === currentGalleryId){

@@ -13,7 +13,7 @@ class GalleryEntrance extends Component {
                 </li>)
         });
 
-        let imgStyle = { width: 60, height: 60 };
+        // let imgStyle = { width: 60, height: 60 };
 
         return (
             <div>
@@ -36,14 +36,14 @@ class GalleryEntrance extends Component {
 
                             const artistName = this.props.gallery.artists[artworkData.artist].name;
                             const dateAdded = new Date(artworkData.dateAdded).toDateString(); // TODO: when these are proper dates, convert to string
-                            const imgUrl = artworkData.url;
+                            // const imgUrl = artworkData.url;
 
                             return (
                                 <div key={artworkId}>
                                     <Link to={`${this.props.galleryId}/artwork/${artworkId}`}>
-                                        <img src={imgUrl}
+                                        {/*<img src={imgUrl}
                                              style={imgStyle}
-                                             alt={`artwork by user`}/>
+                                             alt={`artwork by user`}/>*/}
                                         <p>By {artistName}</p>
                                         <p>{dateAdded}</p>
                                     </Link>
