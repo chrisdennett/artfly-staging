@@ -1,11 +1,18 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import Slim from '../../slim/slim.react';
 
 import { setupForNewArtwork, setImageLoaded } from './ArtworkActions';
 
 class Artwork extends Component {
 
-    componentWillMount(){
+    constructor(props){
+        super(props);
+        this.state = {blob:""}
+    }
+
+
+    componentWillMount() {
         // set up for new artwork
         this.props.setupForNewArtwork();
     }
@@ -21,8 +28,57 @@ class Artwork extends Component {
         }
     }
 
-    onImageLoad(){
+    onImageLoad() {
         this.props.setImageLoaded();
+    }
+
+
+    // called when slim has initialized
+    slimInit(data, slim) {
+        // slim instance reference
+        console.log("slimInit > slim: ", slim.load);
+        // current slim data object and slim reference
+        console.log("slimInit > data: ", data);
+
+        /* slim.load(this.props.currentArtwork.url, () => {
+         console.log("callback after image loaded");
+         });*/
+    }
+
+    onImageEditConfirm(imgData) {
+        // crop and rotation
+        const { crop, rotation } = imgData.actions;
+        const { x, y, height, width } = crop;
+
+        // original image dimensions
+        const origWidth = imgData.input.width;
+        const origHeight = imgData.input.height;
+
+        // output canvas
+        const outputCanvas = imgData.output.image;
+        // const ctx = outputCanvas.getContext('2d');
+
+        outputCanvas.toBlob(blob => {
+            this.setState({blob:URL.createObjectURL(blob)});
+        }, "image/jpeg", 10);
+
+        /* const image = outputCanvas.toDataURL("image/jpg").replace("image/jpg", "image/octet-stream");
+         const w = window.open('about:blank', 'image from canvas');
+         w.document.write("<img src='" + image + "' alt='from canvas'/>");
+
+         console.log("image: ", image);*/
+
+        console.log("origWidth: ", origWidth);
+        console.log("origHeight: ", origHeight);
+        console.log("rotation: ", rotation);
+        console.log("crop x: ", x);
+        console.log("crop y: ", y);
+        console.log("crop height: ", height);
+        console.log("crop width: ", width);
+    }
+
+    onImageTransformCancel() {
+        console.log("Image transform cancelled");
     }
 
     render() {
@@ -49,41 +105,45 @@ class Artwork extends Component {
          // let imgUrl = "https://firebasestorage.googleapis.com/v0/b/art-blam.appspot.com/o/userContent%2FRAj7f1WqphUMntmK2ar6wfzEFxe2%2F465962744.jpg?alt=media&token=944265d2-84a6-441d-a9f2-e0d96abb849b";
          const imgUrl = encodeURIComponent(currentArtwork.url);*/
 
-        /*
-         Build url ref: http://cloudinary.com/documentation/image_transformation_reference
-         http://res.cloudinary.com/demo/image/upload/
-         w_220,h_140,c_fill/l_brown_sheep,w_220,h_140,c_fill,x_220/l_horses,w_220,h_140,c_fill,y_140,x_-110/l_white_chicken,w_220,h_140,c_fill,y_70,x_110/l_butterfly.png,h_200,x_-10,a_10/w_400,h_260,c_crop,r_20/l_text:Parisienne_35_bold:Memories from our trip,co_rgb:990C47,y_155/e_shadow/yellow_tulip.jpg
-
-         effects:
-         e_cartoonify:20:60
-         e_negate
-         e_vibrance:70
-         e_auto_brightness
-         e_auto_color
-         e_auto_contrast
-         */
-
         let imgStyle = {
             width: '100%',
             height: 'auto'
         };
 
-        let loadingMessageStyle = { display: 'none'};
+        let loadingMessageStyle = { display: 'none' };
 
-        if(!this.props.artwork.status || this.props.artwork.status === "setup"){
+        if (!this.props.artwork.status || this.props.artwork.status === "setup") {
             imgStyle.display = 'none';
             loadingMessageStyle = {};
+        }
+
+        // if editing the image
+        if (currentArtwork.url) {
+            // crop={{ x: 0, y: 300, width: 630, height: 280 }}
+            return <div>
+                <h1>Artwork</h1>
+                <img src={this.state.blob} alt=""/>
+                <hr />
+                <Slim rotation={0}
+                      initialImage={currentArtwork.url}
+                      didConfirm={this.onImageEditConfirm.bind(this)}
+                      didCancel={this.onImageTransformCancel.bind(this)}
+                      instantEdit={true}
+                      buttonConfirmLabel="DONE"
+                      didInit={ this.slimInit.bind(this) }/></div>;
         }
 
         return (
             <div>
                 <h1>Artwork</h1>
-                <div style={loadingMessageStyle}>Artwork is being loaded...</div>
-                <img style={imgStyle} onLoad={this.onImageLoad.bind(this)} src={currentArtwork.url} alt="artist Holly"/>
 
-                {/* <img
-                 src={`https://res.cloudinary.com/artfly/image/fetch/w_${scaledWidth},h_${scaledHeight},a_${rotation}/${imgUrl}`}
-                 alt="artist Holly"/>*/}
+
+
+
+                <img alt="upload" style={imgStyle} onLoad={this.onImageLoad.bind(this)} src={currentArtwork.url}/>
+
+                <div style={loadingMessageStyle}>Artwork is being loaded...</div>
+
             </div>
         );
     }
@@ -95,4 +155,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect( mapStateToProps, { setupForNewArtwork, setImageLoaded })(Artwork);
+export default connect(mapStateToProps, { setupForNewArtwork, setImageLoaded })(Artwork);

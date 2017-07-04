@@ -1,6 +1,5 @@
 ********************************************************************************
 ********************************************************************************
-********************************************************************************
 
 // commit changes to git
 CTRL K - use the version control panel to check changes - and push at the same time
@@ -10,10 +9,25 @@ git push google master
 
 ********************************************************************************
 ********************************************************************************
+
+CORS
+There was a cross domain error - change when go live
+
+// https://stackoverflow.com/questions/37760695/firebase-storage-and-access-control-allow-origin/37765371#37765371
+[
+  {
+    "origin": ["https://example.com"],
+    "method": ["GET"],
+    "maxAgeSeconds": 3600
+  }
+]
+
+gsutil cors set cors.json gs://art-blam.appspot.com
+
+********************************************************************************
 ********************************************************************************
 
-
-// OLD LONG-WINDED WAY
+// OLD GIT (ho, ho, I mean the previously used GIT process) - LONG-WINDED WAY
 // using terminal
 // add to google ->
 https://console.cloud.google.com/code/develop/browse/artfly/master?project=art-blam

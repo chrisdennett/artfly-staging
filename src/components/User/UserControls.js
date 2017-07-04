@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+// import Slim from '../slim/slim.react';
+
 import { fetchUserData } from './UserActions';
 import { fetchGallery } from '../Gallery/GalleryActions';
 import { setArtworkId } from '../Gallery/Artwork/ArtworkActions';
@@ -52,6 +54,32 @@ class UserControls extends Component {
         return allowEdit;
     }
 
+/*
+
+    // called when slim has initialized
+    slimInit(data, slim) {
+        // slim instance reference
+        console.log(slim);
+
+        // current slim data object and slim reference
+        console.log(data);
+    }
+
+    // called when upload button is pressed or automatically if push is enabled
+    slimService(formdata, progress, success, failure, slim) {
+        // slim instance reference
+        console.log(slim);
+
+        // form data to post to server
+        console.log(formdata);
+
+        // call these methods to handle upload state
+        console.log(progress, success, failure)
+    }
+*/
+
+
+
     render() {
         const artworkIdFromUrl = this.props.match.params.artworkId;
         const galleryIdFromUrl = this.props.match.params.galleryId;
@@ -69,6 +97,10 @@ class UserControls extends Component {
 
         return (
             <div>
+                {/*<Slim service={ this.slimService.bind(this) }
+                      didInit={ this.slimInit.bind(this) }>
+                    <input type="file" accept="image/*" name="artwork"/>
+                </Slim>*/}
                 <Link to="/">home</Link>
                 <Login />
                 { this.addUserOnlyControlsIfLoggedIn()}
