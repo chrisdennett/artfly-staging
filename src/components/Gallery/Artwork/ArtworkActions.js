@@ -3,7 +3,7 @@
 
 export const SET_UP_FOR_NEW_ARTWORK = "setUpForNewArtwork";
 export const IMAGE_LOADED = "imageLoaded";
-// export const SET_ARTWORK_ID = "setArtworkId";
+export const SET_ARTWORK_ID = "setArtworkId";
 // export const FETCH_ARTWORK = "fetchArtwork";
 // export const FETCHING_ARTWORK = "fetchingArtwork";
 
@@ -25,14 +25,14 @@ export function setImageLoaded() {
     }
 }
 
-/*export function setArtworkId(artworkId) {
+export function setArtworkId(artworkId) {
     return dispatch => {
         dispatch({
             type: SET_ARTWORK_ID,
             payload: artworkId
         })
     }
-}*/
+}
 
 /*NOT CURRENTLY USED - AS GALLERY LOADS ALL ARTWORKS*/
 /*

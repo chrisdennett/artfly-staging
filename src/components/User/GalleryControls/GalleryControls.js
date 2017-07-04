@@ -64,12 +64,17 @@ class GalleryControls extends Component {
         this.props.history.push(`/gallery/${this.props.userGalleryId}`);
     }
 
+    onEditArtworkClick(){
+        console.log("hello chuck");
+    }
+
     renderControls() {
         let nextButtonLabel = 'next';
         let prevButtonLabel = 'prev';
         let prevButtonStyles = {};
         let nextButtonStyles = {};
         let galleryButtonStyles = {};
+        let editArtworkButtonStyles = { display: 'none'};
         
         if(!this.props.galleryIdFromUrl){
             // only show the next a previous controls inside a gallery
@@ -89,6 +94,10 @@ class GalleryControls extends Component {
             }
         }
 
+        if(this.props.allowArtworkEditing){
+            editArtworkButtonStyles = {};
+        }
+
         if(!this.props.userGalleryId){
             galleryButtonStyles.display = 'none';
         }
@@ -101,6 +110,8 @@ class GalleryControls extends Component {
                         onClick={this.onPrevClick.bind(this)}>{prevButtonLabel}</button>
                 <button style={nextButtonStyles}
                         onClick={this.onNextClick.bind(this)}>{nextButtonLabel}</button>
+                <button style={editArtworkButtonStyles}
+                        onClick={this.onEditArtworkClick.bind(this)}>Edit artwork</button>
             </span>
         )
     }

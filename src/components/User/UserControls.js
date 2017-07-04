@@ -15,17 +15,17 @@ class UserControls extends Component {
         this.props.fetchUserData();
     }
 
-    componentWillUpdate(nextProps) {
-        const params = nextProps.match.params;
-        const { galleryId } = params;
+    componentWillReceiveProps(nextProps) {
+        const nextParams = nextProps.match.params;
+        const { galleryId, artworkId } = nextParams;
 
-        if (galleryId) {
+        if (galleryId && galleryId !== this.props.gallery.galleryId) {
             this.props.fetchGallery(galleryId);
         }
 
-        /*if(artworkId){
+        if (artworkId && artworkId !== this.props.artworkId) {
             this.props.setArtworkId(artworkId)
-        }*/
+        }
     }
 
     addUserOnlyControlsIfLoggedIn() {
@@ -36,10 +36,28 @@ class UserControls extends Component {
         return <Link to="/controlPanel">Control Panel</Link>;
     }
 
+    isArtworkEditingAllowed() {
+        let allowEdit = false;
+
+        if (this.props.gallery && this.props.gallery.artworks && this.props.artworkId && this.props.gallery.artworks[this.props.artworkId]) {
+            const artworkData = this.props.gallery.artworks[this.props.artworkId];
+            const userId = !this.props.user.uid ? null : this.props.user.uid;
+
+            if(userId && artworkData.curator === userId){
+                allowEdit = true;
+            }
+
+        }
+
+        return allowEdit;
+    }
+
     render() {
         const artworkIdFromUrl = this.props.match.params.artworkId;
         const galleryIdFromUrl = this.props.match.params.galleryId;
         const userStatus = this.props.user.status;
+        const allowArtworkEditing = this.isArtworkEditingAllowed();
+
 
         if (userStatus === "pending") {
             return <div>Checking the salad draw...</div>
@@ -56,6 +74,7 @@ class UserControls extends Component {
                 { this.addUserOnlyControlsIfLoggedIn()}
 
                 <GalleryControls artworkId={artworkIdFromUrl}
+                                 allowArtworkEditing={allowArtworkEditing}
                                  userGalleryId={this.props.user.galleryId}
                                  galleryIdFromUrl={galleryIdFromUrl}
                                  history={this.props.history}/>
@@ -66,7 +85,9 @@ class UserControls extends Component {
 
 function mapStateToProps(state) {
     return {
-        user: state.user
+        user: state.user,
+        gallery: state.gallery,
+        artworkId: state.artwork.artworkId
     }
 }
 

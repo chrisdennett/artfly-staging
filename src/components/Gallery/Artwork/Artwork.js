@@ -91,7 +91,7 @@ class Artwork extends Component {
 
 function mapStateToProps(state) {
     return {
-        artwork: state.artwork,
+        artwork: state.artwork
     }
 }
 
