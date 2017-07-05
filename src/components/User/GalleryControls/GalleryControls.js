@@ -65,7 +65,7 @@ class GalleryControls extends Component {
     }
 
     onEditArtworkClick(){
-        console.log("hello chuck");
+        console.log("this isn't doing anything yet");
     }
 
     renderControls() {
@@ -111,7 +111,7 @@ class GalleryControls extends Component {
                 <button style={nextButtonStyles}
                         onClick={this.onNextClick.bind(this)}>{nextButtonLabel}</button>
                 <button style={editArtworkButtonStyles}
-                        onClick={this.onEditArtworkClick.bind(this)}>Edit artwork</button>
+                        onClick={this.onEditArtworkClick.bind(this)}>Edit artwork (not working yet)</button>
             </span>
         )
     }
