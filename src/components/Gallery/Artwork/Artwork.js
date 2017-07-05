@@ -118,7 +118,7 @@ class Artwork extends Component {
         }
 
         // if editing the image
-        if (currentArtwork.url) {
+        if (currentArtwork.url && this.props.inEditingMode) {
             // crop={{ x: 0, y: 300, width: 630, height: 280 }}
             return <div>
                 <h1>Artwork</h1>
@@ -136,9 +136,6 @@ class Artwork extends Component {
         return (
             <div>
                 <h1>Artwork</h1>
-
-
-
 
                 <img alt="upload" style={imgStyle} onLoad={this.onImageLoad.bind(this)} src={currentArtwork.url}/>
 
