@@ -37,7 +37,6 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
                         console.log("uncaught snapshot state: ", snapshot.state);
                 }
             }, function (error) {
-
                 // A full list of error codes is available at
                 // https://firebase.google.com/docs/storage/web/handle-errors
                 switch (error.code) {
