@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 
+import { setArtworkToEdit } from '../../ArtworkEditor/ArtworkEditorActions';
+
 class GalleryControls extends Component {
 
     constructor(props) {
@@ -65,7 +67,10 @@ class GalleryControls extends Component {
     }
 
     onEditArtworkClick(){
-        console.log("this isn't doing anything yet");
+        // set artwork to edit id to current artwork id
+        //this.props.artworkId
+        this.props.setArtworkToEdit(this.props.artworkId);
+        this.props.history.push(`/artwork-editor`);
     }
 
     renderControls() {
@@ -105,13 +110,16 @@ class GalleryControls extends Component {
         return (
             <span>
                 <button style={galleryButtonStyles}
-                        onClick={this.goToUserGallery.bind(this)}>My Gallery</button>
+                        onClick={this.goToUserGallery.bind(this)}>My Galleries</button>
+
                 <button style={prevButtonStyles}
                         onClick={this.onPrevClick.bind(this)}>{prevButtonLabel}</button>
+
                 <button style={nextButtonStyles}
                         onClick={this.onNextClick.bind(this)}>{nextButtonLabel}</button>
+
                 <button style={editArtworkButtonStyles}
-                        onClick={this.onEditArtworkClick.bind(this)}>Edit artwork (not working yet)</button>
+                        onClick={this.onEditArtworkClick.bind(this)}>Edit artwork</button>
             </span>
         )
     }
@@ -127,4 +135,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {})(GalleryControls);
+export default connect(mapStateToProps, { setArtworkToEdit })(GalleryControls);

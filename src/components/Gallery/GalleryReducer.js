@@ -1,8 +1,8 @@
 import {
     NEW_GALLERY_COMING,
     FETCH_GALLERY,
-    FETCH_GALLERY_ARTISTS,
-    FETCH_GALLERY_ARTWORKS } from './GalleryActions';
+    FETCH_GALLERY_ARTISTS } from './GalleryActions';
+    // ARTWORK_CHANGE } from './GalleryActions';
 
 export default function (state = {}, action) {
     let newState;
@@ -26,11 +26,11 @@ export default function (state = {}, action) {
 
             return newState;
 
-        case FETCH_GALLERY_ARTWORKS:
-            /*This only returns one artwork at a time so perhaps name should be changed*/
+        /*case ARTWORK_CHANGE:
+            /!*This only returns one artwork at a time so perhaps name should be changed*!/
             newState = { ...state };
             newState.artworks = { ...state.artworks, ...action.payload };
-            return newState;
+            return newState;*/
 
         case FETCH_GALLERY_ARTISTS:
             /*This only returns one artist at a time so perhaps name should be changed*/

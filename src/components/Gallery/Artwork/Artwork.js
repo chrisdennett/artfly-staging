@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import Slim from '../../slim/slim.react';
+import Slim from '../../ArtworkEditor/slim/slim.react';
 
-import { setupForNewArtwork, setImageLoaded } from './ArtworkActions';
+import { startLoadingArtwork, setImageLoaded } from './ArtworkActions';
 
 class Artwork extends Component {
 
@@ -11,10 +11,9 @@ class Artwork extends Component {
         this.state = {blob:""}
     }
 
-
     componentWillMount() {
         // set up for new artwork
-        this.props.setupForNewArtwork();
+        this.props.startLoadingArtwork();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -24,7 +23,7 @@ class Artwork extends Component {
 
         if (currentArtwork !== nextArtwork) {
             // dispatch an event that will allow artwork to prepare for loading in image
-            this.props.setupForNewArtwork();
+            this.props.startLoadingArtwork();
         }
     }
 
@@ -152,4 +151,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, { setupForNewArtwork, setImageLoaded })(Artwork);
+export default connect(mapStateToProps, { startLoadingArtwork, setImageLoaded })(Artwork);

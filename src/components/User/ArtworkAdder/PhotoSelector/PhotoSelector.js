@@ -31,7 +31,7 @@ class PhotoSelector extends Component {
                 <label disabled={this.props.disabled}
                        className={this.props.disabled ? 'disabled' : ''}
                        htmlFor={this.props.id}>
-                    ^ upload
+                    Add Artwork
                 </label>
             </span>
         );

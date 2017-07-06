@@ -11,15 +11,18 @@ class Gallery extends Component {
 
         if (artworkId) {
             if (this.props.gallery &&
-                this.props.gallery.artworks &&
-                this.props.gallery.artworks[artworkId]) {
+                this.props.artworks &&
+                this.props.artworks[artworkId]) {
 
-                return <Artwork currentArtwork={this.props.gallery.artworks[artworkId]}/>
+                return <Artwork currentArtwork={this.props.artworks[artworkId]}/>
             }
             else {
                 return <div>Loading currentArtwork...</div>
             }
         }
+
+        // TODO: Currently the gallery will be displaying all the artworks loaded in
+        // Instead pass in all the artwork Ids from the gallery.
 
         return (
             <GalleryEntrance galleryId={galleryId} {...this.props} />
@@ -51,7 +54,7 @@ class Gallery extends Component {
 function mapStateToProps(state) {
     return {
         gallery: state.gallery,
-        remoteControls: state.remoteControls,
+        artworks: state.artworks
     }
 }
 

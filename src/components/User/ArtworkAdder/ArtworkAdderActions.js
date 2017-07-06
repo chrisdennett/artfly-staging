@@ -2,14 +2,11 @@ import firebase from '../../../firebase/firebaseConfig';
 // TODO: I think I should be able to do away with this through first import
 import * as fb from 'firebase';
 
-export const UPLOAD_IMAGE = 'uploadImage';
-export const IMAGE_UPLOAD_PROGRESS = 'imageUploadProgress';
+export const ADD_ARTWORK_UPLOAD_PROGRESS = 'imageUploadProgress';
+export const ADD_ARTWORK_COMPLETE = 'artworkAdded';
 
 export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null) {
     return dispatch => {
-
-        console.log("artistId: ", artistId);
-
         // Create a new image ref in the database
         const artworkRef = firebase.database().ref('/user-data/artworks').push();
         // use the artwork key as the name for the artwork to ensure it is unique.
@@ -25,8 +22,8 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
                 const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
 
                 dispatch({
-                    type: IMAGE_UPLOAD_PROGRESS,
-                    payload: {artistId:artistId, progress:progress}
+                    type: ADD_ARTWORK_UPLOAD_PROGRESS,
+                    payload: {artistId:artistId, id:artworkRef.key, progress:progress}
                 });
 
                 switch (snapshot.state) {
@@ -80,7 +77,7 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
                             .set('true')
                             .then(() => {
                                 dispatch({
-                                    type: UPLOAD_IMAGE,
+                                    type: ADD_ARTWORK_COMPLETE,
                                     payload: {
                                         artistId:artistId,
                                         progress:100,

@@ -10,6 +10,7 @@ import { setArtworkId } from '../Gallery/Artwork/ArtworkActions';
 import Login from './Login';
 import NewUserForm from './NewUserForm';
 import GalleryControls from './GalleryControls/GalleryControls';
+import ArtworkAdder from './ArtworkAdder/ArtworkAdder';
 
 class UserControls extends Component {
 
@@ -35,57 +36,61 @@ class UserControls extends Component {
             return "";
         }
 
-        return <Link to="/controlPanel">Control Panel</Link>;
+        const allArtistIds = Object.keys(this.props.user.artistIds);
+        // just use the first one - could add a default artist value later if want to give user more control over this
+        const defaultArtistId = allArtistIds[0];
+
+        return <span>
+                    <ArtworkAdder history={this.props.history}
+                                  artistId={defaultArtistId}
+                                  userId={this.props.user.uid}/>
+                    <Link to="/controlPanel">Control Panel</Link>
+                </span>;
     }
 
     isArtworkEditingAllowed() {
         let allowEdit = false;
 
-        if (this.props.gallery && this.props.gallery.artworks && this.props.artworkId && this.props.gallery.artworks[this.props.artworkId]) {
-            const artworkData = this.props.gallery.artworks[this.props.artworkId];
+        if (this.props.gallery && this.props.artworks && this.props.artworkId && this.props.artworks[this.props.artworkId]) {
+            const artworkData = this.props.artworks[this.props.artworkId];
             const userId = !this.props.user.uid ? null : this.props.user.uid;
 
-            if(userId && artworkData.curator === userId){
+            if (userId && artworkData.curator === userId) {
                 allowEdit = true;
             }
-
         }
-
         return allowEdit;
     }
 
-/*
+    /*
 
-    // called when slim has initialized
-    slimInit(data, slim) {
-        // slim instance reference
-        console.log(slim);
+     // called when slim has initialized
+     slimInit(data, slim) {
+     // slim instance reference
+     console.log(slim);
 
-        // current slim data object and slim reference
-        console.log(data);
-    }
+     // current slim data object and slim reference
+     console.log(data);
+     }
 
-    // called when upload button is pressed or automatically if push is enabled
-    slimService(formdata, progress, success, failure, slim) {
-        // slim instance reference
-        console.log(slim);
+     // called when upload button is pressed or automatically if push is enabled
+     slimService(formdata, progress, success, failure, slim) {
+     // slim instance reference
+     console.log(slim);
 
-        // form data to post to server
-        console.log(formdata);
+     // form data to post to server
+     console.log(formdata);
 
-        // call these methods to handle upload state
-        console.log(progress, success, failure)
-    }
-*/
-
-
+     // call these methods to handle upload state
+     console.log(progress, success, failure)
+     }
+     */
 
     render() {
         const artworkIdFromUrl = this.props.match.params.artworkId;
         const galleryIdFromUrl = this.props.match.params.galleryId;
         const userStatus = this.props.user.status;
         const allowArtworkEditing = this.isArtworkEditingAllowed();
-
 
         if (userStatus === "pending") {
             return <div>Checking the salad draw...</div>
@@ -98,9 +103,9 @@ class UserControls extends Component {
         return (
             <div>
                 {/*<Slim service={ this.slimService.bind(this) }
-                      didInit={ this.slimInit.bind(this) }>
-                    <input type="file" accept="image/*" name="artwork"/>
-                </Slim>*/}
+                 didInit={ this.slimInit.bind(this) }>
+                 <input type="file" accept="image/*" name="artwork"/>
+                 </Slim>*/}
                 <Link to="/">home</Link>
                 <Login />
                 { this.addUserOnlyControlsIfLoggedIn()}
@@ -119,6 +124,7 @@ function mapStateToProps(state) {
     return {
         user: state.user,
         gallery: state.gallery,
+        artworks: state.artworks,
         artworkId: state.artwork.artworkId
     }
 }

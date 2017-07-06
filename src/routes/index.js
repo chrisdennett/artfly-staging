@@ -7,6 +7,7 @@ import Home from '../components/Home/Home';
 import Gallery from '../components/Gallery/Gallery';
 import UserControls from "../components/User/UserControls";
 import ControlPanel from "../components/ControlPanel/ControlPanel";
+import ArtworkEditor from "../components/ArtworkEditor/ArtworkEditor";
 
 export default (
     <Provider store={store}>
@@ -17,6 +18,7 @@ export default (
                         <Route path="/gallery/:galleryId/artwork/:artworkId" component={UserControls}/>
                         <Route path="/gallery/:galleryId" component={UserControls}/>
                         <Route path="/controlPanel" component={UserControls}/>
+                        <Route path="/artwork-editor" component={UserControls}/>
                         <Route path="/" component={UserControls}/>
                     </Switch>
                 </div>
@@ -26,6 +28,7 @@ export default (
                         <Route path="/gallery/:galleryId/artwork/:artworkId" component={Gallery}/>
                         <Route path="/gallery/:galleryId" component={Gallery}/>
                         <Route path="/controlPanel" component={ControlPanel}/>
+                        <Route path="/artwork-editor" component={ArtworkEditor}/>
                         <Route path="/" component={Home}/>
                     </Switch>
                 </div>

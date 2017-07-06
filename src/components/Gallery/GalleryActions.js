@@ -2,7 +2,7 @@ import firebase from '../../firebase/firebaseConfig';
 
 export const NEW_GALLERY_COMING = "newGalleryComing";
 export const FETCH_GALLERY = "fetchGallery";
-export const FETCH_GALLERY_ARTWORKS = "fetchGalleryArtworks";
+export const ARTWORK_CHANGE = "artworkChange";
 export const FETCH_GALLERY_ARTISTS = "fetchGalleryArtists";
 
 let currentGalleryId;
@@ -79,7 +79,7 @@ function fetchArtwork(artworkId, dispatch){
             const artworkId = snapshot.key;
             const artworkData = snapshot.val();
             dispatch({
-                type: FETCH_GALLERY_ARTWORKS,
+                type: ARTWORK_CHANGE,
                 payload: { [artworkId]: artworkData }
             });
         });

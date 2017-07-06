@@ -47,13 +47,14 @@ class ArtworkAdder extends Component {
     }
 
     onThumbLoad(event) {
-        console.log("event: ", event);
-
         const imgWidth = event.target.naturalWidth;
         const imgHeight = event.target.naturalHeight;
 
         // pass all the data needed to the action
         this.props.uploadImage(this.state.imgFile, this.props.userId, this.state.artistId, imgWidth, imgHeight);
+
+        // go to the Artwork Editing page
+        this.props.history.push(`/artwork-editor`);
     }
 
     render() {

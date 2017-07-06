@@ -13,8 +13,6 @@ class GalleryEntrance extends Component {
                 </li>)
         });
 
-        // let imgStyle = { width: 60, height: 60 };
-
         return (
             <div>
                 GalleryEntrance:
@@ -27,7 +25,7 @@ class GalleryEntrance extends Component {
 
                 <div className="gallery">
                     {
-                        _.map(this.props.gallery.artworks, (artworkData, artworkId) => {
+                        _.map(this.props.artworks, (artworkData, artworkId) => {
 
                             /*This should only be triggered if I've been mucking around with the database*/
                             if (!artworkData || !artworkData.artist || !this.props.gallery.artists[artworkData.artist]) {

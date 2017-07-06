@@ -7,7 +7,7 @@ export const SET_ARTWORK_ID = "setArtworkId";
 // export const FETCH_ARTWORK = "fetchArtwork";
 // export const FETCHING_ARTWORK = "fetchingArtwork";
 
-export function setupForNewArtwork() {
+export function startLoadingArtwork() {
     return dispatch => {
         dispatch({
             type: SET_UP_FOR_NEW_ARTWORK,

@@ -13,9 +13,6 @@ export default function (state = {}, action) {
             const artworkId = action.payload;
             return {...state, artworkId};
 
-       /* case SET_ARTWORK_ID:
-            return {...state, artworkId:action.payload};*/
-
         default:
             return state;
     }
