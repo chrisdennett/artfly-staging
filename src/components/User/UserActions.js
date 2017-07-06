@@ -154,13 +154,19 @@ export function addNewArtist(userId, galleryId, formValues, callback = null) {
         const userArtistRef = firebase.database().ref(`/user-data/users/${userId}/artistIds/${artistRef.key}`);
         const galleryArtistRef = firebase.database().ref(`/user-data/galleries/${galleryId}/artistIds/${artistRef.key}`);
 
+        const newArtistData = {
+            name: formValues.artistName,
+            biog: formValues.biog,
+            adminId: userId
+        };
+
         userArtistRef.set('true')
             .then(galleryArtistRef.set('true'))
-            .then(artistRef.set({ name: formValues.artistName, biog: formValues.biog })
+            .then(artistRef.set(newArtistData)
                 .then(() => {
                     dispatch({
                         type: ADD_USER_ARTIST,
-                        payload: { [userArtistRef.key]: { name: formValues.artistName, biog: formValues.biog } }
+                        payload: { [userArtistRef.key]: newArtistData }
                     });
 
                     if (callback) callback();
@@ -203,12 +209,17 @@ export function createNewUser(authId, formValues, callback = null) {
                 galleryRef
                     .set({
                         name: formValues.galleryName,
-                        artistIds: userArtistsObj
+                        artistIds: userArtistsObj,
+                        adminId: authId
                     })
             )
             .then(
                 artistRef
-                    .set({ name: formValues.artistName, biog: "The artists' artist." })
+                    .set({
+                        name: formValues.artistName,
+                        biog: "The artists' artist.",
+                        adminId: authId
+                    })
                     .then(() => {
                         dispatch({
                             type: CREATE_USER,

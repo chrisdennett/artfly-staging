@@ -38,9 +38,8 @@ class ArtistInfo extends Component {
     }
 
     onFormSubmit(newArtistData) {
-        this.props.updateArtist(this.props.artistId, newArtistData, () => {
-            this.setState({ inEditingMode: false })
-        });
+        this.setState({ inEditingMode: false })
+        this.props.updateArtist(this.props.artistId, newArtistData);
     }
 
     render() {
