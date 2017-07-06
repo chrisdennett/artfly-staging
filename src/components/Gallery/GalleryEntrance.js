@@ -17,6 +17,7 @@ class GalleryEntrance extends Component {
             <div>
                 GalleryEntrance:
                 <h1>{this.props.gallery.name}</h1>
+                <p>Curator: {this.props.gallery.curator}</p>
                 <h2>Artists in residence:</h2>
                 <ul>
                     {artistList}

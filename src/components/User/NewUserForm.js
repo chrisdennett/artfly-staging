@@ -48,6 +48,11 @@ class NewUserForm extends Component {
                     Let's set you up. Oh and don't worry you can change all this later if you need to.</p>
                 <form onSubmit={handleSubmit(this.onNewUserFormSubmit.bind(this))}>
                     <Field
+                        name="curator"
+                        label="Curator"
+                        component={this.renderField}
+                    />
+                    <Field
                         name="artistName"
                         label="Artist"
                         component={this.renderField}
@@ -72,6 +77,11 @@ class NewUserForm extends Component {
 
 const validate = values => {
     const errors = {};
+    if (!values.curator) {
+        errors.curator = 'Required'
+    } else if (values.curator.length > 15) {
+        errors.curator = 'Must be 15 characters or less'
+    }
 
     if (!values.artistName) {
         errors.artistName = 'Required'
@@ -104,6 +114,7 @@ NewUserForm = reduxForm({
 NewUserForm = connect(
     state => ({
         initialValues: {
+            curator: state.user.displayName,
             artistName: state.user.displayName,
             email: state.user.email,
             galleryName: `The curious gallery of ${state.user.displayName}`
