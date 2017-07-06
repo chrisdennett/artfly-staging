@@ -1,4 +1,4 @@
-import { CURRENT_ARTIST_UPDATED, ARTIST_UPDATED, ARTIST_UPDATE_CANCELLED } from './ControlPanelActions';
+import { CURRENT_ARTIST_UPDATED, ARTIST_UPDATED, ARTIST_UPDATE_CANCELLED } from './MyGalleriesActions';
 
 export default function (state = {}, action) {
 

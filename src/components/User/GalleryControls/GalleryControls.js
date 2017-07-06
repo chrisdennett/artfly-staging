@@ -110,7 +110,7 @@ class GalleryControls extends Component {
         return (
             <span>
                 <button style={galleryButtonStyles}
-                        onClick={this.goToUserGallery.bind(this)}>My Galleries</button>
+                        onClick={this.goToUserGallery.bind(this)}>Gallery Home</button>
 
                 <button style={prevButtonStyles}
                         onClick={this.onPrevClick.bind(this)}>{prevButtonLabel}</button>

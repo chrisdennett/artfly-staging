@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 
 import EditArtistForm from './EditArtistForm';
-import { setCurrentArtist, updateArtist, cancelArtistUpdate, deleteArtist } from '../ControlPanelActions';
+import { setCurrentArtist, updateArtist, cancelArtistUpdate, deleteArtist } from '../MyGalleriesActions';
 // import ArtworkAdder from '../ArtworkAdder/ArtworkAdder';
 
 class ArtistInfo extends Component {

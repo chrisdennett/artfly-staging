@@ -30,27 +30,6 @@ class Gallery extends Component {
     }
 }
 
-/*
-
- {/*<div className="responsive" key={artworkId}>
- <div className="img">
- <Link to={`/artwork/${artworkId}`}>
- <Image publicId={artworkData.url}  secure="true">
- <Transformation
- crop="fit"
- width="300"
- height="300"
- responsive_placeholder="blank"
- />
- </Image>
- </Link>
- <div className="desc">
- Artist {artistName}</div>
- <div className="desc">Created at {dateAdded}</div>
- </div>
- </div>
- */
-
 function mapStateToProps(state) {
     return {
         gallery: state.gallery,

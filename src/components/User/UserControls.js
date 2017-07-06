@@ -44,8 +44,24 @@ class UserControls extends Component {
                     <ArtworkAdder history={this.props.history}
                                   artistId={defaultArtistId}
                                   userId={this.props.user.uid}/>
-                    <Link to="/controlPanel">Control Panel</Link>
+                    <Link to="/myGalleries">My Galleries</Link>
                 </span>;
+    }
+
+    addGalleryControlsIfNeeded(){
+        const artworkIdFromUrl = this.props.match.params.artworkId;
+        const galleryIdFromUrl = this.props.match.params.galleryId;
+        const allowArtworkEditing = this.isArtworkEditingAllowed();
+
+        if(!galleryIdFromUrl){
+            return "";
+        }
+
+        return <GalleryControls artworkId={artworkIdFromUrl}
+                                allowArtworkEditing={allowArtworkEditing}
+                                userGalleryId={this.props.user.galleryId}
+                                galleryIdFromUrl={galleryIdFromUrl}
+                                history={this.props.history}/>
     }
 
     isArtworkEditingAllowed() {
@@ -63,7 +79,6 @@ class UserControls extends Component {
     }
 
     /*
-
      // called when slim has initialized
      slimInit(data, slim) {
      // slim instance reference
@@ -87,10 +102,7 @@ class UserControls extends Component {
      */
 
     render() {
-        const artworkIdFromUrl = this.props.match.params.artworkId;
-        const galleryIdFromUrl = this.props.match.params.galleryId;
         const userStatus = this.props.user.status;
-        const allowArtworkEditing = this.isArtworkEditingAllowed();
 
         if (userStatus === "pending") {
             return <div>Checking the salad draw...</div>
@@ -108,13 +120,10 @@ class UserControls extends Component {
                  </Slim>*/}
                 <Link to="/">home</Link>
                 <Login />
-                { this.addUserOnlyControlsIfLoggedIn()}
+                { this.addUserOnlyControlsIfLoggedIn() }
 
-                <GalleryControls artworkId={artworkIdFromUrl}
-                                 allowArtworkEditing={allowArtworkEditing}
-                                 userGalleryId={this.props.user.galleryId}
-                                 galleryIdFromUrl={galleryIdFromUrl}
-                                 history={this.props.history}/>
+                { this.addGalleryControlsIfNeeded() }
+
             </div>
         )
     }
