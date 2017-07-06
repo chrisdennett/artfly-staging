@@ -38,7 +38,7 @@ class AddNewArtistForm extends Component {
     }
 
     onNewArtistFormSubmit(values){
-        this.props.addNewArtist(this.props.userId, this.props.galleryId, values, () => {
+        this.props.addNewArtist(this.props.userId, values, () => {
             this.setState({formOpen: false});
         });
     }

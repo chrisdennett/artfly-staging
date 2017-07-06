@@ -148,20 +148,28 @@ export function updateGallery(galleryId, galleryName, callback = null) {
     }
 }
 
-export function addNewArtist(userId, galleryId, formValues, callback = null) {
+export function addNewArtist(userId, formValues, callback = null) {
     return dispatch => {
         const artistRef = firebase.database().ref('/user-data/artists').push();
         const userArtistRef = firebase.database().ref(`/user-data/users/${userId}/artistIds/${artistRef.key}`);
-        const galleryArtistRef = firebase.database().ref(`/user-data/galleries/${galleryId}/artistIds/${artistRef.key}`);
+        const galleryRef = firebase.database().ref('/user-data/galleries').push();
 
         const newArtistData = {
             name: formValues.artistName,
             biog: formValues.biog,
+            artistGalleryId: galleryRef.key,
             adminId: userId
         };
 
         userArtistRef.set('true')
-            .then(galleryArtistRef.set('true'))
+            .then(
+                galleryRef
+                    .set({
+                        name: `The amazing gallery of ${formValues.artistName}`,
+                        artistIds: {[artistRef.key]:true},
+                        adminId: userId
+                    })
+            )
             .then(artistRef.set(newArtistData)
                 .then(() => {
                     dispatch({
@@ -198,7 +206,6 @@ export function createNewUser(authId, formValues, callback = null) {
 
         const newUserData = {
             email: formValues.email,
-            galleryId: galleryRef.key,
             artistIds: userArtistsObj
         };
 
@@ -218,6 +225,7 @@ export function createNewUser(authId, formValues, callback = null) {
                     .set({
                         name: formValues.artistName,
                         biog: "The artists' artist.",
+                        artistGalleryId: galleryRef.key,
                         adminId: authId
                     })
                     .then(() => {
