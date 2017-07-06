@@ -60,7 +60,7 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
                 const dateStamp = Date.now();
                 const newArtworkData = {
                     id: artworkRef.key,
-                    curator: userId,
+                    ownerId: userId,
                     artist: artistId,
                     url: uploadTask.snapshot.downloadURL,
                     imgWidth: imgWidth,
