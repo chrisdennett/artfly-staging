@@ -50,14 +50,17 @@ class UserControls extends Component {
 
     isArtworkEditingAllowed() {
         let allowEdit = false;
+        const artworkId = this.props.match.params.artworkId;
 
-        if (this.props.gallery && this.props.artworks && this.props.artworkId && this.props.artworks[this.props.artworkId]) {
-            const artworkData = this.props.artworks[this.props.artworkId];
+        if (this.props.gallery && this.props.artworks && artworkId && this.props.artworks[artworkId]) {
+            const artworkData = this.props.artworks[artworkId];
             const userId = !this.props.user.uid ? null : this.props.user.uid;
 
-            if (userId && artworkData.curator === userId) {
+            // TODO: ownerId has not been added yet
+            if (artworkData.ownerId === userId) {
                 allowEdit = true;
             }
+
         }
         return allowEdit;
     }
