@@ -71,7 +71,7 @@ class UserControls extends Component {
             const artworkData = this.props.artworks[this.props.artworkId];
             const userId = !this.props.user.uid ? null : this.props.user.uid;
 
-            if (userId && artworkData.curator === userId) {
+            if (userId && artworkData.ownerId === userId) {
                 allowEdit = true;
             }
         }
