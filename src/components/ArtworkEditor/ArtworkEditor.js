@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 class ArtworkEditor extends Component {
 
     render() {
+        const userStatus = this.props.user.status;
         const { id } = this.props.artworkToEdit;
         let imgUrl = "";
         let altText = "";
@@ -18,6 +20,9 @@ class ArtworkEditor extends Component {
             }
         }
 
+        if (userStatus === "none" || userStatus === "new" ) {
+            return (<Redirect to="/"/>)
+        }
 
         return (
             <div>
@@ -38,6 +43,7 @@ class ArtworkEditor extends Component {
 
 function mapStateToProps(state) {
     return {
+        user: state.user,
         artworkToEdit: state.artworkToEdit,
         artworks: state.artworks
     }
