@@ -27,7 +27,6 @@ export function updateGallery(galleryId, newGalleryData, callback) {
     }
 }
 
-
 export function setCurrentArtist(artist, artistId, galleryName, callback) {
     return dispatch => {
         dispatch({

@@ -8,13 +8,13 @@ export const CREATE_USER = 'create_user';
 export const FETCH_USER = "fetchUser";
 export const LOGIN_USER = "loginUser";
 export const LOGOUT_USER = "logoutUser";
-export const FETCH_USER_ARTISTS = "fetchUserArtists";
-export const FETCH_USER_ARTIST_ARTWORK_IDS = "fetchUserArtistArtworkIds";
-export const FETCH_USER_GALLERY = "fetchUserGallery";
+// export const FETCH_USER_ARTISTS = "fetchUserArtists";
+export const ARTIST_ARTWORK_IDS_CHANGE = "artistArtworkIdsChange";
+// export const FETCH_USER_GALLERY = "fetchUserGallery";
 export const ADD_USER_ARTIST = 'addUserArtist';
 //TODO: Cancel doesn't feel right here - should this be local state only?
 export const CANCEL_ADD_ARTIST = 'cancelAddArtist';
-export const GALLERY_UPDATED = 'galleryUpdated'; // also is this used or needed?
+// export const GALLERY_UPDATED = 'galleryUpdated'; // also is this used or needed?
 
 export function fetchUserData() {
     return (dispatch) => {
@@ -52,7 +52,7 @@ export function fetchUserData() {
                                 if (userData.artistIds) {
                                     const artistIds = Object.keys(userData.artistIds);
                                     fetchUserArtists(artistIds, dispatch);
-                                    fetchUserArtistsArtworkIds(artistIds, dispatch)
+                                    fetchArtistsArtworkIds(artistIds, dispatch)
                                 }
                             }
                             else {
@@ -102,7 +102,7 @@ function fetchUserArtists(artistIds, dispatch) {
     }
 }
 
-function fetchUserArtistsArtworkIds(artistIds, dispatch) {
+function fetchArtistsArtworkIds(artistIds, dispatch) {
     for (let artistId of artistIds) {
         firebase.database()
             .ref(`/user-data/artistArtworkIds/${artistId}`)
@@ -114,14 +114,14 @@ function fetchUserArtistsArtworkIds(artistIds, dispatch) {
                 }
 
                 dispatch({
-                    type: FETCH_USER_ARTIST_ARTWORK_IDS,
+                    type: ARTIST_ARTWORK_IDS_CHANGE,
                     payload: { [artistId]: ids }
                 });
             });
     }
 }
 
-export function updateGallery(galleryId, galleryName, callback = null) {
+/*export function updateGallery(galleryId, galleryName, callback = null) {
     return dispatch => {
         const galleryRef = firebase.database().ref(`user-data/galleries/${galleryId}`);
         galleryRef.update({ name: galleryName })
@@ -137,7 +137,7 @@ export function updateGallery(galleryId, galleryName, callback = null) {
                 console.log('updateGallery failed: ', error);
             })
     }
-}
+}*/
 
 export function addNewArtist(userId, formValues, callback = null) {
     return dispatch => {

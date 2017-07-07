@@ -80,7 +80,7 @@ class AddNewArtistForm extends Component {
 
         return (
             <div>
-                <button onClick={this.onAddNewArtistClick.bind(this)}>Add new artist</button>
+                <button onClick={this.onAddNewArtistClick.bind(this)}>Add new artist gallery</button>
             </div>
         );
     }

@@ -70,7 +70,7 @@ class ArtistInfo extends Component {
             <h1>{galleryName}</h1>
             <div>Artist: {this.props.artist.name}</div>
             <div>Biog: {this.props.artist.biog}</div>
-            <div>Total artworks: {totalArtworks}</div>
+            <div>Total artworks: {this.props.artistArtworkIds.length}</div>
         </div>;
 
         if (this.state.showConfirmDelete) {

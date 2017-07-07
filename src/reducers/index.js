@@ -9,6 +9,7 @@ import ArtworkEditorReducer from '../components/ArtworkEditor/ArtworkEditorReduc
 import ArtworksReducer from './ArtworksReducer';
 import GalleriesReducer from './GalleriesReducer';
 import ArtistsReducer from './ArtistsReducer';
+import ArtistArtworkIdsReducer from './ArtistArtworkIdsReducer';
 import FormReducer from './FormReducer';
 
 const rootReducer = combineReducers({
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     galleries: GalleriesReducer,
     artists: ArtistsReducer,
     artworks: ArtworksReducer,
+    artistsArtworkIds: ArtistArtworkIdsReducer,
     artwork: ArtworkReducer,
     artworkToEdit: ArtworkEditorReducer,
     imageUploader: ImageUploaderReducer,
