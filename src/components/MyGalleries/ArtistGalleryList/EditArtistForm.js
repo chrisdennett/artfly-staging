@@ -29,7 +29,7 @@ class EditArtistForm extends Component {
 
     onFormSubmit(values) {
         //TODO if used same names as data could just return values
-        this.props.onFormSubmit({name:values.artistName, biog:values.biog});
+        this.props.onFormSubmit({...values});
     }
 
     onFormCancel() {

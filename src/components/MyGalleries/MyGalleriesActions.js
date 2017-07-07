@@ -7,12 +7,32 @@ export const ARTIST_UPDATED = 'artistUpdated';
 export const ARTIST_UPDATE_CANCELLED = 'artistUpdated';
 export const ARTIST_DELETED = 'artistDeleted';
 export const ARTWORK_DELETED = 'artworkDeleted';
+export const GALLERY_UPDATED = 'galleryUpdated';
+
+export function updateGallery(galleryId, newGalleryData, callback) {
+    return dispatch => {
+        const artistRef = firebase.database().ref(`user-data/galleries/${galleryId}`);
+        artistRef.update({ ...newGalleryData })
+            .then(() => {
+                dispatch({
+                    type: GALLERY_UPDATED,
+                    payload: newGalleryData
+                });
+
+                if (callback) callback();
+            })
+            .catch(function (error) {
+                console.log('updateGallery failed: ', error);
+            })
+    }
+}
+
 
 export function setCurrentArtist(artist, artistId, galleryName, callback) {
     return dispatch => {
         dispatch({
             type: CURRENT_ARTIST_UPDATED,
-            payload: { ...artist, artistId:artistId, galleryName }
+            payload: { ...artist, artistId: artistId, galleryName }
         });
 
         if (callback) callback();

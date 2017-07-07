@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 
 import EditArtistForm from './EditArtistForm';
-import { setCurrentArtist, updateArtist, cancelArtistUpdate, deleteArtist } from '../MyGalleriesActions';
+import { setCurrentArtist, updateArtist, cancelArtistUpdate, deleteArtist, updateGallery } from '../MyGalleriesActions';
 
 class ArtistInfo extends Component {
 
@@ -40,7 +40,11 @@ class ArtistInfo extends Component {
 
     onFormSubmit(newArtistData) {
         this.setState({ inEditingMode: false });
-        this.props.updateArtist(this.props.artistId, newArtistData);
+        const { artistName, biog, galleryName } = newArtistData;
+        const galleryId = this.props.artist.artistGalleryId;
+
+        this.props.updateArtist(this.props.artistId, { name: artistName, biog: biog });
+        this.props.updateGallery(galleryId, { name: galleryName });
     }
 
     onOpenGalleryButtClick() {
@@ -127,6 +131,7 @@ class ArtistInfo extends Component {
 export default connect(null, {
     setCurrentArtist,
     updateArtist,
+    updateGallery,
     cancelArtistUpdate,
     deleteArtist
 })(ArtistInfo);
