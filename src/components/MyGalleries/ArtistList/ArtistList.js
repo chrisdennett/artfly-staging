@@ -18,6 +18,7 @@ class ArtistList extends Component {
                         return (
                             <ArtistInfo disableEditing={disableEditing}
                                         key={artistId}
+                                        history={this.props.history}
                                         userId={this.props.userId}
                                         galleryId={this.props.galleryId}
                                         artist={artist}

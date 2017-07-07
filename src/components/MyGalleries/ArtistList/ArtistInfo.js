@@ -37,12 +37,12 @@ class ArtistInfo extends Component {
     }
 
     onFormSubmit(newArtistData) {
-        this.setState({ inEditingMode: false })
+        this.setState({ inEditingMode: false });
         this.props.updateArtist(this.props.artistId, newArtistData);
     }
 
     onOpenGalleryButtClick(){
-
+        this.props.history.push(`/gallery/${this.props.artist.artistGalleryId}`);
     }
 
     render() {
