@@ -21,6 +21,7 @@ class MyGalleries extends Component {
                                 artists={this.props.user.artists}
                                 userId={this.props.user.uid}
                                 history={this.props.history}
+                                galleries={this.props.galleries}
                                 galleryId={this.props.user.galleryId}/>
                 </div>
             );
@@ -37,7 +38,8 @@ class MyGalleries extends Component {
 function mapStateToProps(state) {
     return {
         user: state.user,
-        controlPanel: state.controlPanel
+        controlPanel: state.controlPanel,
+        galleries: state.galleries
     }
 }
 

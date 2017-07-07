@@ -2,6 +2,8 @@ import firebase from '../../firebase/firebaseConfig';
 // TODO: I think I should be able to do away with this through first import
 import * as fb from 'firebase';
 
+import { fetchGalleryUsingID } from '../Gallery/GalleryActions';
+
 export const CREATE_USER = 'create_user';
 export const FETCH_USER = "fetchUser";
 export const LOGIN_USER = "loginUser";
@@ -15,7 +17,7 @@ export const CANCEL_ADD_ARTIST = 'cancelAddArtist';
 export const GALLERY_UPDATED = 'galleryUpdated'; // also is this used or needed?
 
 export function fetchUserData() {
-    return dispatch => {
+    return (dispatch) => {
         dispatch({
             type: FETCH_USER,
             payload: { status: "pending" }
@@ -54,9 +56,6 @@ export function fetchUserData() {
                                     fetchUserArtists(artistIds, dispatch);
                                     fetchUserArtistsArtworkIds(artistIds, dispatch)
                                 }
-                                if (userData.galleryId) {
-                                    fetchUserGallery(userData.galleryId, dispatch);
-                                }
                             }
                             else {
                                 // TODO: Figure out if I need to do something with this
@@ -85,17 +84,6 @@ export function fetchUserData() {
     }
 }
 
-function fetchUserGallery(galleryId, dispatch) {
-    firebase.database()
-        .ref(`user-data/galleries/${galleryId}`)
-        .on('value', snapshot => {
-            dispatch({
-                type: FETCH_USER_GALLERY,
-                payload: snapshot.val()
-            });
-        })
-}
-
 function fetchUserArtists(artistIds, dispatch) {
     for (let i = 0; i < artistIds.length; i++) {
         firebase.database()
@@ -103,6 +91,11 @@ function fetchUserArtists(artistIds, dispatch) {
             .on('value', (snapshot) => {
                 const artistId = snapshot.key;
                 const artistData = snapshot.val();
+                const artistGalleryId = artistData.artistGalleryId;
+
+                // This has been imported from gallery actions.
+                fetchGalleryUsingID(artistGalleryId, dispatch);
+
                 dispatch({
                     type: FETCH_USER_ARTISTS,
                     payload: { [artistId]: artistData }

@@ -23,7 +23,9 @@ class UserControls extends Component {
         const { galleryId, artworkId } = nextParams;
 
         if (galleryId) {
-            this.props.fetchGallery(galleryId);
+            if (!this.props.galleries[galleryId]) {
+                this.props.fetchGallery(galleryId);
+            }
         }
 
         if (artworkId) {
@@ -48,12 +50,12 @@ class UserControls extends Component {
                 </span>;
     }
 
-    addGalleryControlsIfNeeded(){
+    addGalleryControlsIfNeeded() {
         const artworkIdFromUrl = this.props.match.params.artworkId;
         const galleryIdFromUrl = this.props.match.params.galleryId;
         const allowArtworkEditing = this.isArtworkEditingAllowed();
 
-        if(!galleryIdFromUrl){
+        if (!galleryIdFromUrl) {
             return "";
         }
 

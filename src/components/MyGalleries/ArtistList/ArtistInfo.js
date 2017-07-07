@@ -41,13 +41,12 @@ class ArtistInfo extends Component {
         this.props.updateArtist(this.props.artistId, newArtistData);
     }
 
-    onOpenGalleryButtClick(){
+    onOpenGalleryButtClick() {
         this.props.history.push(`/gallery/${this.props.artist.artistGalleryId}`);
     }
 
     render() {
         const totalArtworks = (!this.props.artist || !this.props.artist.artworkIds) ? "" : this.props.artist.artworkIds.length;
-
         let content;
         let editButtonStyle = {};
         if (this.props.disableEditing) {
@@ -57,6 +56,16 @@ class ArtistInfo extends Component {
         if (!this.props.artist) {
             return <span>ARTIST BEING DELETED</span>
         }
+
+        const artistGallery = this.props.galleries[this.props.artist.artistGalleryId];
+        const galleryName = (!artistGallery) ? "" : artistGallery.name;
+
+        const artistInfo = <div>
+            <h1>{galleryName}</h1>
+            <div>Artist: {this.props.artist.name}</div>
+            <div>Biog: {this.props.artist.biog}</div>
+            <div>Total artworks: {totalArtworks}</div>
+        </div>;
 
         if (this.state.showConfirmDelete) {
             let deleteWarningMessage;
@@ -71,13 +80,10 @@ class ArtistInfo extends Component {
                 deleteWarningMessage = `Yes, DELETE artist and their ${totalArtworks} artworks`;
             }
 
-            //TODO: Split up into smaller components - to DRY it up
-
+            //TODO: Consider having artist editing taking up a full page, could trigger a function on parent component to do this
             content = (
                 <div>
-                    <div>Artist: {this.props.artist.name}</div>
-                    <div>Biog: {this.props.artist.biog}</div>
-                    <div>Total artworks: {totalArtworks}</div>
+                    {artistInfo}
                     <hr />
                     <div>Are you want to delete this Artist and all their artworks?</div>
                     <button style={editButtonStyle} onClick={this.onCancelDeleteButtClick.bind(this)}>Cancel</button>
@@ -97,11 +103,10 @@ class ArtistInfo extends Component {
         else {
             content = (
                 <div>
-                    <div>Artist: {this.props.artist.name}</div>
-                    <div>Biog: {this.props.artist.biog}</div>
-                    <div>Total artworks: {totalArtworks}</div>
+                    {artistInfo}
 
-                    <button style={editButtonStyle} onClick={this.onOpenGalleryButtClick.bind(this)}>Open Gallery</button>
+                    <button style={editButtonStyle} onClick={this.onOpenGalleryButtClick.bind(this)}>Open Gallery
+                    </button>
                     <button style={editButtonStyle} onClick={this.onEditButtClick.bind(this)}>Edit</button>
                     <button style={editButtonStyle} onClick={this.onDeleteButtClick.bind(this)}>Delete</button>
                 </div>

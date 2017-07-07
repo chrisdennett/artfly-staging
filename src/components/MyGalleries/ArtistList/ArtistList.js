@@ -20,6 +20,7 @@ class ArtistList extends Component {
                                         history={this.props.history}
                                         userId={this.props.userId}
                                         galleryId={this.props.galleryId}
+                                        galleries={this.props.galleries}
                                         artist={artist}
                                         artistId={artistId} /> )
                     })
