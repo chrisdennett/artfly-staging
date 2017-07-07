@@ -22,11 +22,11 @@ class UserControls extends Component {
         const nextParams = nextProps.match.params;
         const { galleryId, artworkId } = nextParams;
 
-        if (galleryId && galleryId !== this.props.gallery.galleryId) {
+        if (galleryId) {
             this.props.fetchGallery(galleryId);
         }
 
-        if (artworkId && artworkId !== this.props.artworkId) {
+        if (artworkId) {
             this.props.setArtworkId(artworkId)
         }
     }
@@ -67,7 +67,7 @@ class UserControls extends Component {
     isArtworkEditingAllowed() {
         let allowEdit = false;
 
-        if (this.props.gallery && this.props.artworks && this.props.artworkId && this.props.artworks[this.props.artworkId]) {
+        if (this.props.galleries && this.props.artworks && this.props.artworkId && this.props.artworks[this.props.artworkId]) {
             const artworkData = this.props.artworks[this.props.artworkId];
             const userId = !this.props.user.uid ? null : this.props.user.uid;
 
@@ -132,7 +132,7 @@ class UserControls extends Component {
 function mapStateToProps(state) {
     return {
         user: state.user,
-        gallery: state.gallery,
+        galleries: state.galleries,
         artworks: state.artworks,
         artworkId: state.artwork.artworkId
     }

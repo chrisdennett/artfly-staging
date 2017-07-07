@@ -8,9 +8,8 @@ class ArtistList extends Component {
     render() {
         return (
             <div>
-                <h2>Artists</h2>
                 <AddNewArtistForm userId={this.props.userId} galleryId={this.props.galleryId}/>
-
+                <hr />
                 {
                     _.map(this.props.artists, (artist, artistId) => {
                         const disableEditing = this.props.artistIdBeingEdited && this.props.artistIdBeingEdited !== artistId;

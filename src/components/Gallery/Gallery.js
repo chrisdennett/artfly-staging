@@ -21,18 +21,19 @@ class Gallery extends Component {
             }
         }
 
-        // TODO: Currently the gallery will be displaying all the artworks loaded in
-        // Instead pass in all the artwork Ids from the gallery.
+        if(!galleryId || !this.props.galleries[galleryId]){
+            return <div>Loading Gallery</div>
+        }
 
         return (
-            <GalleryEntrance galleryId={galleryId} {...this.props} />
+            <GalleryEntrance gallery={this.props.galleries[galleryId]} />
         );
     }
 }
 
 function mapStateToProps(state) {
     return {
-        gallery: state.gallery,
+        galleries: state.galleries,
         artworks: state.artworks
     }
 }
