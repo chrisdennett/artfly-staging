@@ -57,6 +57,11 @@ class AddNewArtistForm extends Component {
                 <div>
                     <form onSubmit={handleSubmit(this.onNewArtistFormSubmit.bind(this))}>
                         <Field
+                            name="galleryName"
+                            label="Gallery Name: "
+                            component={this.renderField}
+                        />
+                        <Field
                             name="artistName"
                             label="Artist Name: "
                             component={this.renderField}
@@ -84,6 +89,13 @@ class AddNewArtistForm extends Component {
 const validate = values => {
     const errors = {};
 
+    if (!values.galleryName) {
+        errors.galleryName = 'Required'
+    }
+    else if (values.galleryName.length > 42) {
+        errors.galleryName = 'Must be 42 characters or less'
+    }
+
     if (!values.artistName) {
         errors.artistName = 'Required'
     } else if (values.artistName.length > 15) {
@@ -109,6 +121,7 @@ AddNewArtistForm = reduxForm({
 AddNewArtistForm = connect(
     state => ({
         initialValues: {
+            galleryName: "Best Gallery Ever",
             artistName: "Secret artist",
             biog: "One of the best artists know to humankind."
         }

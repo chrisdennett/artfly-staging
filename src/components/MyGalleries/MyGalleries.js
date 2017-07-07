@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import ArtistList from './ArtistGalleryList/ArtistList';
+import ArtistList from './ArtistGalleryList/ArtistGalleryList';
 
 class MyGalleries extends Component {
     render() {

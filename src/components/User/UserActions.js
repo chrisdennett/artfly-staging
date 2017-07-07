@@ -144,6 +144,7 @@ export function addNewArtist(userId, formValues, callback = null) {
         const artistRef = firebase.database().ref('/user-data/artists').push();
         const userArtistRef = firebase.database().ref(`/user-data/users/${userId}/artistIds/${artistRef.key}`);
         const galleryRef = firebase.database().ref('/user-data/galleries').push();
+        const galleryName = !formValues.galleryName ? `The amazing gallery of ${formValues.artistName}` : formValues.galleryName;
 
         const newArtistData = {
             name: formValues.artistName,
@@ -156,7 +157,7 @@ export function addNewArtist(userId, formValues, callback = null) {
             .then(
                 galleryRef
                     .set({
-                        name: `The amazing gallery of ${formValues.artistName}`,
+                        name: galleryName,
                         artistIds: {[artistRef.key]:true},
                         adminId: userId
                     })
