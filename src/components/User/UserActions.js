@@ -43,8 +43,6 @@ export function fetchUserData() {
                                         displayName,
                                         email,
                                         uid,
-                                        gallery: {},
-                                        artists: {},
                                         status: "complete"
                                     }
                                 });
@@ -89,17 +87,17 @@ function fetchUserArtists(artistIds, dispatch) {
         firebase.database()
             .ref('/user-data/artists/' + artistIds[i])
             .on('value', (snapshot) => {
-                const artistId = snapshot.key;
+                // const artistId = snapshot.key;
                 const artistData = snapshot.val();
                 const artistGalleryId = artistData.artistGalleryId;
 
                 // This has been imported from gallery actions.
                 fetchGalleryUsingID(artistGalleryId, dispatch);
 
-                dispatch({
+                /*dispatch({
                     type: FETCH_USER_ARTISTS,
                     payload: { [artistId]: artistData }
-                });
+                });*/
             })
     }
 }

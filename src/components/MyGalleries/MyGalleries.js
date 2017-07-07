@@ -13,12 +13,12 @@ class MyGalleries extends Component {
         const artistIdBeingEdited = (!this.props.controlPanel.currentArtist) ? null : this.props.controlPanel.currentArtist.artistId;
         const userStatus = this.props.user.status;
 
-        if(userStatus === "complete"  && this.props.user.gallery){
+        if(userStatus === "complete"){
             return (
                 <div>
                     <h1>My Galleries</h1>
                     <ArtistList artistIdBeingEdited={artistIdBeingEdited}
-                                artists={this.props.user.artists}
+                                artists={this.props.artists}
                                 userId={this.props.user.uid}
                                 history={this.props.history}
                                 galleries={this.props.galleries}
@@ -39,7 +39,8 @@ function mapStateToProps(state) {
     return {
         user: state.user,
         controlPanel: state.controlPanel,
-        galleries: state.galleries
+        galleries: state.galleries,
+        artists: state.artists
     }
 }
 
