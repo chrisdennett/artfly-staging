@@ -6,7 +6,7 @@ import _ from 'lodash';
 class GalleryEntrance extends Component {
 
     render() {
-        const artistList = _.map(this.props.gallery.artists, (artistData, artistId) => {
+        const artistList = _.map(this.props.artists, (artistData, artistId) => {
             return (
                 <li key={artistId}>
                     <span>{ artistData.name }</span>

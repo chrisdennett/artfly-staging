@@ -21,12 +21,24 @@ class Gallery extends Component {
             }
         }
 
-        if(!galleryId || !this.props.galleries[galleryId]){
+        if (!galleryId || !this.props.galleries[galleryId]) {
             return <div>Loading Gallery</div>
         }
 
+        const gallery = this.props.galleries[galleryId];
+        const galleryArtists = [];
+
+        if (this.props.artists) {
+            const galleryArtistIds = Object.keys(gallery.artistIds);
+            for (let id of galleryArtistIds) {
+                if (this.props.artists[id]) {
+                    galleryArtists.push(this.props.artists[id]);
+                }
+            }
+        }
+
         return (
-            <GalleryEntrance gallery={this.props.galleries[galleryId]} />
+            <GalleryEntrance gallery={gallery} artists={galleryArtists}/>
         );
     }
 }
@@ -34,8 +46,9 @@ class Gallery extends Component {
 function mapStateToProps(state) {
     return {
         galleries: state.galleries,
+        artists: state.artists,
         artworks: state.artworks
     }
 }
 
-export default connect( mapStateToProps, {  })(Gallery);
+export default connect(mapStateToProps, {})(Gallery);

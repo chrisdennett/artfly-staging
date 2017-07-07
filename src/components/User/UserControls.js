@@ -23,7 +23,9 @@ class UserControls extends Component {
         const { galleryId, artworkId } = nextParams;
 
         if (galleryId) {
-            if (!this.props.galleries[galleryId]) {
+            const gallery = this.props.galleries[galleryId];
+
+            if (!gallery) {
                 this.props.fetchGallery(galleryId);
             }
         }

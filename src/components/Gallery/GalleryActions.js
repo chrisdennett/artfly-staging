@@ -3,12 +3,14 @@ import firebase from '../../firebase/firebaseConfig';
 export const NEW_GALLERY_COMING = "newGalleryComing";
 export const FETCH_GALLERY = "fetchGallery";
 export const ARTWORK_CHANGE = "artworkChange";
+export const ARTIST_CHANGE = "artistChange";
 export const FETCH_GALLERY_ARTISTS = "fetchGalleryArtists";
 
 export function fetchGalleryUsingID(galleryId, dispatch) {
-    // remove any listeners already there
+    // remove any listeners if there are already there
     firebase.database().ref(`user-data/galleries/${galleryId}`).off();
 
+    // set up a listener for this gallery
     firebase.database()
         .ref(`user-data/galleries/${galleryId}`)
         .on('value', snapshot => {
@@ -17,7 +19,25 @@ export function fetchGalleryUsingID(galleryId, dispatch) {
                 type: FETCH_GALLERY,
                 payload: { ...galleryData, galleryId }
             });
+
+            fetchArtists(Object.keys(galleryData.artistIds), dispatch);
         })
+}
+
+function fetchArtists(artistIds, dispatch) {
+    for (let i = 0; i < artistIds.length; i++) {
+        firebase.database()
+            .ref('/user-data/artists/' + artistIds[i])
+            .on('value', (snapshot) => {
+                const artistId = snapshot.key;
+                const artistData = snapshot.val();
+
+                dispatch({
+                    type: ARTIST_CHANGE,
+                    payload: { [artistId]: artistData }
+                });
+            })
+    }
 }
 
 export function fetchGallery(galleryId) {
