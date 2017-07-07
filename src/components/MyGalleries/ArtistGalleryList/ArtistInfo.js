@@ -12,7 +12,9 @@ class ArtistInfo extends Component {
     }
 
     onEditButtClick() {
-        this.props.setCurrentArtist(this.props.artistId, () => {
+        const galleryName = this.props.galleries[this.props.artist.artistGalleryId].name;
+
+        this.props.setCurrentArtist(this.props.artist, this.props.artistId, galleryName, () => {
             this.setState({ inEditingMode: true })
         });
     }

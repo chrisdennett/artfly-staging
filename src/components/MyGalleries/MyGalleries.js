@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-// import { Link } from 'react-router-dom';
 
-import ArtistList from './ArtistList/ArtistList';
+import ArtistList from './ArtistGalleryList/ArtistList';
 
 class MyGalleries extends Component {
-
     render() {
-
         // set value to Id of artist being edited or
         const artistIdBeingEdited = (!this.props.controlPanel.currentArtist) ? null : this.props.controlPanel.currentArtist.artistId;
         const userStatus = this.props.user.status;

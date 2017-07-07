@@ -8,19 +8,14 @@ export const ARTIST_UPDATE_CANCELLED = 'artistUpdated';
 export const ARTIST_DELETED = 'artistDeleted';
 export const ARTWORK_DELETED = 'artworkDeleted';
 
-export function setCurrentArtist(artistId, callback) {
+export function setCurrentArtist(artist, artistId, galleryName, callback) {
     return dispatch => {
-        const artistRef = firebase.database().ref(`user-data/artists/${artistId}`);
-        artistRef
-            .once('value')
-            .then(snapshot => {
-                dispatch({
-                    type: CURRENT_ARTIST_UPDATED,
-                    payload: { ...snapshot.val(), artistId: artistId }
-                });
+        dispatch({
+            type: CURRENT_ARTIST_UPDATED,
+            payload: { ...artist, artistId:artistId, galleryName }
+        });
 
-                if (callback) callback();
-            })
+        if (callback) callback();
     }
 }
 
@@ -106,7 +101,7 @@ function deleteArtwork(artworkId, userId, dispatch) {
             payload: artworkId
         });
 
-    }).catch(function(error) {
+    }).catch(function (error) {
         console.log("ControlPanelActions > deleteArtwork > error: ", error);
     });
 }

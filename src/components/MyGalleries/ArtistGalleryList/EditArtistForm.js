@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
-class EditGalleryForm extends Component {
+class EditArtistForm extends Component {
 
     renderField(field) {
         // pulling meta out of field.  And also pulling touched and error out of meta.
@@ -28,7 +28,8 @@ class EditGalleryForm extends Component {
     }
 
     onFormSubmit(values) {
-        this.props.onFormSubmit(values.galleryName);
+        //TODO if used same names as data could just return values
+        this.props.onFormSubmit({name:values.artistName, biog:values.biog});
     }
 
     onFormCancel() {
@@ -43,7 +44,17 @@ class EditGalleryForm extends Component {
                 <form onSubmit={handleSubmit(this.onFormSubmit.bind(this))}>
                     <Field
                         name="galleryName"
-                        label="Gallery: "
+                        label="Gallery Name: "
+                        component={this.renderField}
+                    />
+                    <Field
+                        name="artistName"
+                        label="Artist: "
+                        component={this.renderField}
+                    />
+                    <Field
+                        name="biog"
+                        label="Biog: "
                         component={this.renderField}
                     />
                     <button type="submit">Submit</button>
@@ -64,25 +75,42 @@ const validate = values => {
         errors.galleryName = 'Must be 42 characters or less'
     }
 
+    if (!values.artistName) {
+        errors.artistName = 'Required'
+    }
+    else if (values.artistName.length > 42) {
+        errors.artistName = 'Must be 42 characters or less'
+    }
+
+    if (!values.biog) {
+        errors.biog = 'Required'
+    }
+    else if (values.biog.length > 242) {
+        errors.biog = 'Must be 242 characters or less'
+    }
+
     return errors
 };
 
 // Decorate with reduxForm(). It will read the initialValues prop provided by connect()
-EditGalleryForm = reduxForm({
-    form: 'EditGalleryForm', // a unique identifier for this form
+EditArtistForm = reduxForm({
+    form: 'EditArtistForm', // a unique identifier for this form
     validate
-})(EditGalleryForm);
+})(EditArtistForm);
 
 // You have to connect() to any reducers that you wish to connect to yourself
-EditGalleryForm = connect(
-    state => ({
+EditArtistForm = connect(
+    state => (
+        {
         initialValues: {
-            galleryName: state.user.gallery.name
+            galleryName: state.controlPanel.currentArtist.galleryName,
+            artistName: state.controlPanel.currentArtist.name,
+            biog: state.controlPanel.currentArtist.biog
          }
     }),
     {
         /* actions go in here.*/
     }
-)(EditGalleryForm);
+)(EditArtistForm);
 
-export default EditGalleryForm;
+export default EditArtistForm;
