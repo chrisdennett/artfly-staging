@@ -5,6 +5,7 @@ export const FETCH_GALLERY = "fetchGallery";
 export const ARTWORK_CHANGE = "artworkChange";
 export const ARTIST_CHANGE = "artistChange";
 export const FETCH_GALLERY_ARTISTS = "fetchGalleryArtists";
+export const ARTIST_ARTWORK_IDS_CHANGE = "artistArtworkIdsChange";
 
 export function fetchGalleryUsingID(galleryId, dispatch) {
     // remove any listeners if there are already there
@@ -20,7 +21,7 @@ export function fetchGalleryUsingID(galleryId, dispatch) {
                 payload: { ...galleryData, galleryId }
             });
 
-            if(galleryData && galleryData.artistIds) {
+            if (galleryData && galleryData.artistIds) {
                 fetchArtists(Object.keys(galleryData.artistIds), dispatch);
             }
         })
@@ -38,6 +39,8 @@ function fetchArtists(artistIds, dispatch) {
                     type: ARTIST_CHANGE,
                     payload: { [artistId]: artistData }
                 });
+
+                fetchArtistArtworkIds(artistId, dispatch);
             })
     }
 }
@@ -48,61 +51,79 @@ export function fetchGallery(galleryId) {
     }
 }
 
-/*function fetchGalleryArtistArtworks(artistList, dispatch) {
-    const keys = Object.keys(artistList);
-    for (let i = 0; i < keys.length; i++) {
-        let artistId = keys[i];
-
-        firebase.database()
-            .ref('/user-data/artistArtworkIds/' + artistId)
-            .on('value', (snapshot) => {
-                const artistArtworkIds = snapshot.val();
-
-                if (artistArtworkIds) {
-                    const artworkIds = Object.keys(artistArtworkIds);
-                    fetchArtworks(artworkIds, dispatch);
-                }
-
-            })
-    }
-}*/
-
-/*function fetchArtworks(artworkIds, dispatch) {
-    for (let i = 0; i < artworkIds.length; i++) {
-        let artworkId = artworkIds[i];
-        fetchArtwork(artworkId, dispatch);
-    }
-}*/
-
-/*function fetchArtwork(artworkId, dispatch) {
+function fetchArtistArtworkIds(artistId, dispatch) {
     firebase.database()
-        .ref('user-data/artworks/' + artworkId)
+        .ref(`/user-data/artistArtworkIds/${artistId}`)
         .on('value', snapshot => {
-            const artworkId = snapshot.key;
-            const artworkData = snapshot.val();
+            const artistArtworkIdsData = snapshot.val();
+            let ids = [];
+            if (artistArtworkIdsData) {
+                ids = Object.keys(artistArtworkIdsData);
+            }
+
             dispatch({
-                type: ARTWORK_CHANGE,
-                payload: { [artworkId]: artworkData }
+                type: ARTIST_ARTWORK_IDS_CHANGE,
+                payload: { [artistId]: ids }
             });
         });
-}*/
+}
+
+
+/*function fetchGalleryArtistArtworks(artistList, dispatch) {
+ const keys = Object.keys(artistList);
+ for (let i = 0; i < keys.length; i++) {
+ let artistId = keys[i];
+
+ firebase.database()
+ .ref('/user-data/artistArtworkIds/' + artistId)
+ .on('value', (snapshot) => {
+ const artistArtworkIds = snapshot.val();
+
+ if (artistArtworkIds) {
+ const artworkIds = Object.keys(artistArtworkIds);
+ fetchArtworks(artworkIds, dispatch);
+ }
+
+ })
+ }
+ }*/
+
+/*function fetchArtworks(artworkIds, dispatch) {
+ for (let i = 0; i < artworkIds.length; i++) {
+ let artworkId = artworkIds[i];
+ fetchArtwork(artworkId, dispatch);
+ }
+ }*/
+
+/*function fetchArtwork(artworkId, dispatch) {
+ firebase.database()
+ .ref('user-data/artworks/' + artworkId)
+ .on('value', snapshot => {
+ const artworkId = snapshot.key;
+ const artworkData = snapshot.val();
+ dispatch({
+ type: ARTWORK_CHANGE,
+ payload: { [artworkId]: artworkData }
+ });
+ });
+ }*/
 
 /*
-function fetchGalleryArtists(artistList, dispatch) {
-    const keys = Object.keys(artistList);
+ function fetchGalleryArtists(artistList, dispatch) {
+ const keys = Object.keys(artistList);
 
-    for (let i = 0; i < keys.length; i++) {
-        firebase.database()
-            .ref('user-data/artists/' + keys[i])
-            .on('value', (snapshot) => {
-                const artistId = snapshot.key;
-                const artistData = snapshot.val();
+ for (let i = 0; i < keys.length; i++) {
+ firebase.database()
+ .ref('user-data/artists/' + keys[i])
+ .on('value', (snapshot) => {
+ const artistId = snapshot.key;
+ const artistData = snapshot.val();
 
-                dispatch({
-                    type: FETCH_GALLERY_ARTISTS,
-                    payload: { [artistId]: artistData }
-                });
-            })
-    }
-}
-*/
+ dispatch({
+ type: FETCH_GALLERY_ARTISTS,
+ payload: { [artistId]: artistData }
+ });
+ })
+ }
+ }
+ */

@@ -32,7 +32,11 @@ class Gallery extends Component {
             const galleryArtistIds = Object.keys(gallery.artistIds);
             for (let id of galleryArtistIds) {
                 if (this.props.artists[id]) {
-                    galleryArtists.push(this.props.artists[id]);
+                    const artistData = this.props.artists[id];
+                    if(this.props.artistsArtworkIds[id]){
+                        artistData.artworkIds = this.props.artistsArtworkIds[id];
+                    }
+                    galleryArtists.push(artistData);
                 }
             }
         }
@@ -47,6 +51,7 @@ function mapStateToProps(state) {
     return {
         galleries: state.galleries,
         artists: state.artists,
+        artistsArtworkIds: state.artistsArtworkIds,
         artworks: state.artworks
     }
 }

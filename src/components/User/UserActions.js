@@ -52,7 +52,7 @@ export function fetchUserData() {
                                 if (userData.artistIds) {
                                     const artistIds = Object.keys(userData.artistIds);
                                     fetchUserArtists(artistIds, dispatch);
-                                    fetchArtistsArtworkIds(artistIds, dispatch)
+                                    // fetchArtistsArtworkIds(artistIds, dispatch)
                                 }
                             }
                             else {
@@ -99,25 +99,6 @@ function fetchUserArtists(artistIds, dispatch) {
                     payload: { [artistId]: artistData }
                 });*/
             })
-    }
-}
-
-function fetchArtistsArtworkIds(artistIds, dispatch) {
-    for (let artistId of artistIds) {
-        firebase.database()
-            .ref(`/user-data/artistArtworkIds/${artistId}`)
-            .on('value', snapshot => {
-                const artistArtworkIdsData = snapshot.val();
-                let ids = [];
-                if (artistArtworkIdsData) {
-                    ids = Object.keys(artistArtworkIdsData);
-                }
-
-                dispatch({
-                    type: ARTIST_ARTWORK_IDS_CHANGE,
-                    payload: { [artistId]: ids }
-                });
-            });
     }
 }
 
