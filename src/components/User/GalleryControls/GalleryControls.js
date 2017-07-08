@@ -11,14 +11,24 @@ class GalleryControls extends Component {
         this.state = {
             nextArtworkId: null,
             prevArtworkId: null
-        }
+        };
+
+    }
+
+    componentWillMount(){
+        this.setNextAndPreviousIds(this.props);
     }
 
     // Works out where we are in the gallery so as to set up the next and prev buttons correctly
     componentWillReceiveProps(nextProps) {
-        if (nextProps.gallery && nextProps.gallery.artworks) {
+        this.setNextAndPreviousIds(nextProps)
+
+    }
+
+    setNextAndPreviousIds(nextProps){
+        if (nextProps.galleryArtworks) {
             const currId = nextProps.artworkId;
-            const allIds = Object.keys(nextProps.gallery.artworks);
+            const allIds = Object.keys(nextProps.galleryArtworks);
 
             const currIdIndex = allIds.indexOf(currId);
             let prevId = null;
@@ -46,7 +56,7 @@ class GalleryControls extends Component {
 
     goToArtwork(artworkId) {
         if (artworkId) {
-            this.props.history.push(`/gallery/${this.props.galleryIdFromUrl}/artwork/${artworkId}`);
+            this.props.history.push(`/gallery/${this.props.galleryId}/artwork/${artworkId}`);
         }
         else if (!this.state.prevArtworkId) {
             // we're back to the start, go to the entrance
@@ -59,11 +69,7 @@ class GalleryControls extends Component {
     }
 
     goToGalleryEntrance() {
-        this.props.history.push(`/gallery/${this.props.galleryIdFromUrl}`);
-    }
-
-    goToUserGallery(){
-        this.props.history.push(`/gallery/${this.props.userGalleryId}`);
+        this.props.history.push(`/gallery/${this.props.galleryId}`);
     }
 
     onEditArtworkClick(){
@@ -81,7 +87,7 @@ class GalleryControls extends Component {
         let galleryButtonStyles = {};
         let editArtworkButtonStyles = { display: 'none'};
         
-        if(!this.props.galleryIdFromUrl){
+        if(!this.props.galleryId){
             // only show the next a previous controls inside a gallery
             prevButtonStyles.display = 'none';
             nextButtonStyles.display = 'none';
@@ -103,14 +109,14 @@ class GalleryControls extends Component {
             editArtworkButtonStyles = {};
         }
 
-        if(!this.props.userGalleryId){
+        if(!this.props.galleryId){
             galleryButtonStyles.display = 'none';
         }
 
         return (
             <span>
                 <button style={galleryButtonStyles}
-                        onClick={this.goToUserGallery.bind(this)}>Gallery Home</button>
+                        onClick={this.goToGalleryEntrance.bind(this)}>Gallery Home</button>
 
                 <button style={prevButtonStyles}
                         onClick={this.onPrevClick.bind(this)}>{prevButtonLabel}</button>
@@ -131,7 +137,7 @@ class GalleryControls extends Component {
 
 function mapStateToProps(state) {
     return {
-        gallery: state.gallery
+
     }
 }
 

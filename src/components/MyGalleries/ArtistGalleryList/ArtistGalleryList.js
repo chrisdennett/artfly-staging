@@ -13,6 +13,11 @@ class ArtistList extends Component {
                 {
                     _.map(this.props.artists, (artist, artistId) => {
                         const disableEditing = this.props.artistIdBeingEdited && this.props.artistIdBeingEdited !== artistId;
+
+                        if(!this.props.artistsArtworkIds[artistId]){
+                            return "";
+                        }
+
                         const artistArtworkIds = Object.keys(this.props.artistsArtworkIds[artistId]);
 
                         return (

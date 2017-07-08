@@ -2,9 +2,8 @@ import firebase from '../../firebase/firebaseConfig';
 
 export const NEW_GALLERY_COMING = "newGalleryComing";
 export const FETCH_GALLERY = "fetchGallery";
-export const ARTWORK_CHANGE = "artworkChange";
+export const GALLERY_ARTWORK_CHANGE = "galleryArtworkChange";
 export const ARTIST_CHANGE = "artistChange";
-export const FETCH_GALLERY_ARTISTS = "fetchGalleryArtists";
 export const ARTIST_ARTWORK_IDS_CHANGE = "artistArtworkIdsChange";
 
 export function fetchGalleryUsingID(galleryId, dispatch) {
@@ -22,12 +21,13 @@ export function fetchGalleryUsingID(galleryId, dispatch) {
             });
 
             if (galleryData && galleryData.artistIds) {
-                fetchArtists(Object.keys(galleryData.artistIds), dispatch);
+                fetchGalleryArtists(galleryId, Object.keys(galleryData.artistIds), dispatch);
             }
         })
 }
 
-function fetchArtists(artistIds, dispatch) {
+// TODO: include gallery Id in the dispatch so the reducer can save it against galleryId
+function fetchGalleryArtists(galleryId, artistIds, dispatch) {
     for (let i = 0; i < artistIds.length; i++) {
         firebase.database()
             .ref('/user-data/artists/' + artistIds[i])
@@ -40,18 +40,19 @@ function fetchArtists(artistIds, dispatch) {
                     payload: { [artistId]: artistData }
                 });
 
-                fetchArtistArtworkIds(artistId, dispatch);
+                fetchGalleryArtistArtworkIds(galleryId, artistId, dispatch);
             })
     }
 }
 
+// TODO: this is separate so main function can be called here and from userActions - needs sorting
 export function fetchGallery(galleryId) {
     return (dispatch) => {
         fetchGalleryUsingID(galleryId, dispatch);
     }
 }
-
-function fetchArtistArtworkIds(artistId, dispatch) {
+// TODO: include gallery Id in the dispatch so the reducer can save it against galleryId
+function fetchGalleryArtistArtworkIds(galleryId, artistId, dispatch) {
     firebase.database()
         .ref(`/user-data/artistArtworkIds/${artistId}`)
         .on('value', snapshot => {
@@ -59,6 +60,8 @@ function fetchArtistArtworkIds(artistId, dispatch) {
             let ids = [];
             if (artistArtworkIdsData) {
                 ids = Object.keys(artistArtworkIdsData);
+
+                fetchGalleryArtworks(galleryId, ids, dispatch);
             }
 
             dispatch({
@@ -68,6 +71,20 @@ function fetchArtistArtworkIds(artistId, dispatch) {
         });
 }
 
+function fetchGalleryArtworks(galleryId, artworkIds, dispatch){
+    for (let id of artworkIds){
+    firebase.database()
+        .ref('user-data/artworks/' + id)
+        .on('value', snapshot => {
+            const artworkId = snapshot.key;
+            const artworkData = snapshot.val();
+            dispatch({
+                type: GALLERY_ARTWORK_CHANGE,
+                payload: { galleryId, artworkId, artworkData }
+            })
+        });
+    }
+}
 
 /*function fetchGalleryArtistArtworks(artistList, dispatch) {
  const keys = Object.keys(artistList);
