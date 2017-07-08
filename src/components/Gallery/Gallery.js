@@ -28,7 +28,7 @@ class Gallery extends Component {
         const gallery = this.props.galleries[galleryId];
         const galleryArtists = [];
 
-        if (this.props.artists) {
+        if (this.props.artists && gallery.artistIds) {
             const galleryArtistIds = Object.keys(gallery.artistIds);
             for (let id of galleryArtistIds) {
                 if (this.props.artists[id]) {

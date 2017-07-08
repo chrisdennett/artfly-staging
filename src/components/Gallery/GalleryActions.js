@@ -20,7 +20,9 @@ export function fetchGalleryUsingID(galleryId, dispatch) {
                 payload: { ...galleryData, galleryId }
             });
 
-            fetchArtists(Object.keys(galleryData.artistIds), dispatch);
+            if(galleryData && galleryData.artistIds) {
+                fetchArtists(Object.keys(galleryData.artistIds), dispatch);
+            }
         })
 }
 
