@@ -6,14 +6,15 @@ class ArtworkEditor extends Component {
 
     render() {
         const userStatus = this.props.user.status;
-        const { id } = this.props.artworkToEdit;
+        const { artworkId } = this.props.match.params;
+
         let imgUrl = "";
         let altText = "";
 
-        if (id) {
-            if (this.props.artworks[id]) {
+        if (artworkId) {
+            if (this.props.artworks && this.props.artworks[artworkId]) {
                 // TODO: The artist here is just the id, need to get the artists list as well.
-                const { url, artist } = this.props.artworks[id];
+                const { url, artist } = this.props.artworks[artworkId];
 
                 imgUrl = url;
                 altText = `Artwork by ${artist}`
@@ -27,7 +28,7 @@ class ArtworkEditor extends Component {
         return (
             <div>
                 <h1>ArtworkEditor</h1>
-                <p>Artwork to edit: {this.props.artworkToEdit.id}</p>
+                <p>Artwork to edit: {artworkId}</p>
                 <div style={{width:'50%'}}>
                     <img style={{width:'100%'}} src={imgUrl} alt={altText}/>
                 </div>
@@ -41,10 +42,15 @@ class ArtworkEditor extends Component {
     }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+
+    // get artwork from params
+    //const artworkId = ownProps.match.params.artworkId;
+
     return {
         user: state.user,
-        artworkToEdit: state.artworkToEdit,
+        galleries: state.galleries,
+        artists: state.artists,
         artworks: state.artworks
     }
 }

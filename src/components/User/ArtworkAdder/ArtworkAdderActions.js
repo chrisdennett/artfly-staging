@@ -12,6 +12,9 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
         // use the artwork key as the name for the artwork to ensure it is unique.
         const artworkName = artworkRef.key;
 
+        // trigger callback with artwork id so progress can be shown in calling component
+        if (callback) callback(artworkRef.key);
+
         // image storage
         const imageStorageRef = firebase.storage().ref();
         const userPicturesRef = imageStorageRef.child(`userContent/${userId}/${artworkName}`);
@@ -83,8 +86,6 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
                                         artwork: newArtworkData
                                     }
                                 });
-
-                                if (callback) callback();
                             })
                             .catch(function (error) {
                                 console.log('Synchronization failed', error);

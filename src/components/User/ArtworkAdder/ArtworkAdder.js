@@ -51,10 +51,11 @@ class ArtworkAdder extends Component {
         const imgHeight = event.target.naturalHeight;
 
         // pass all the data needed to the action
-        this.props.uploadImage(this.state.imgFile, this.props.userId, this.state.artistId, imgWidth, imgHeight);
+        this.props.uploadImage(this.state.imgFile, this.props.userId, this.state.artistId, imgWidth, imgHeight, (artworkId) => {
+            this.props.history.push(`/artwork-editor/${artworkId}`);
+        });
 
         // go to the Artwork Editing page
-        this.props.history.push(`/artwork-editor`);
     }
 
     render() {
@@ -69,6 +70,7 @@ class ArtworkAdder extends Component {
             // TODO: Notification box should be it's own component.
 
             if (imageLoading) {
+                imgStyle = { width: 60, height: "100%" };
                 uploadNotificationBox = <span>Image loading: {uploadInfo.progress}%</span>
             }
             else if (isNewArtwork) {
@@ -105,6 +107,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default withRouter(connect(
-    mapStateToProps,
-    { uploadImage })(ArtworkAdder));
+export default withRouter(connect(mapStateToProps, { uploadImage })(ArtworkAdder));

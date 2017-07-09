@@ -18,7 +18,7 @@ export default (
                         <Route path="/gallery/:galleryId/artwork/:artworkId" component={UserControls}/>
                         <Route path="/gallery/:galleryId" component={UserControls}/>
                         <Route path="/myGalleries" component={UserControls}/>
-                        <Route path="/artwork-editor" component={UserControls}/>
+                        <Route path="/artwork-editor/:artworkId" component={UserControls}/>
                         <Route path="/" component={UserControls}/>
                     </Switch>
                 </div>
@@ -28,7 +28,7 @@ export default (
                         <Route path="/gallery/:galleryId/artwork/:artworkId" component={Gallery}/>
                         <Route path="/gallery/:galleryId" component={Gallery}/>
                         <Route path="/myGalleries" component={MyGalleries}/>
-                        <Route path="/artwork-editor" component={ArtworkEditor}/>
+                        <Route path="/artwork-editor/:artworkId" component={ArtworkEditor}/>
                         <Route path="/" component={Home}/>
                     </Switch>
                 </div>

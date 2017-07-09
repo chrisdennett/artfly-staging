@@ -49,7 +49,6 @@ class Gallery extends Component {
 
 function mapStateToProps(state, ownProps) {
     const galleryId = ownProps.match.params.galleryId;
-    const artworkId = ownProps.match.params.artworkId;
 
     return {
         gallery: state.galleries[galleryId],
