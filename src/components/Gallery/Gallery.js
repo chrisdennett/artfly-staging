@@ -7,13 +7,12 @@ import GalleryEntrance from './GalleryEntrance';
 class Gallery extends Component {
 
     render() {
-        const { galleryId, artworkId } = this.props.match.params;
-        const galleryArtworks = this.props.galleryArtworks[galleryId];
+        const { artworkId } = this.props.match.params;
 
         if (artworkId) {
 
-            if (galleryArtworks && galleryArtworks[artworkId]) {
-                const currentArtwork = galleryArtworks[artworkId];
+            if (this.props.galleryArtworks && this.props.galleryArtworks[artworkId]) {
+                const currentArtwork = this.props.galleryArtworks[artworkId];
 
                 return <Artwork currentArtwork={currentArtwork}/>
             }
@@ -22,11 +21,11 @@ class Gallery extends Component {
             }
         }
 
-        if (!galleryId || !this.props.galleries[galleryId]) {
+        if (!this.props.gallery) {
             return <div>Loading Gallery</div>
         }
 
-        const gallery = this.props.galleries[galleryId];
+        const gallery = this.props.gallery;
         const galleryArtists = [];
 
         if (this.props.artists && gallery.artistIds) {
@@ -48,12 +47,15 @@ class Gallery extends Component {
     }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+    const galleryId = ownProps.match.params.galleryId;
+    const artworkId = ownProps.match.params.artworkId;
+
     return {
-        galleries: state.galleries,
+        gallery: state.galleries[galleryId],
         artists: state.artists,
         artistsArtworkIds: state.artistsArtworkIds,
-        galleryArtworks: state.galleryArtworks
+        galleryArtworks: state.galleryArtworks[galleryId]
     }
 }
 
