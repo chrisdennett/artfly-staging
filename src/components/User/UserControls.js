@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 // import Slim from '../slim/slim.react';
 
 import { fetchUserData } from './UserActions';
-import { fetchGallery } from '../Gallery/GalleryActions';
 import { setArtworkId } from '../Gallery/Artwork/ArtworkActions';
 
 import Login from './Login';
@@ -20,15 +19,7 @@ class UserControls extends Component {
 
     componentWillReceiveProps(nextProps) {
         const nextParams = nextProps.match.params;
-        const { galleryId, artworkId } = nextParams;
-
-        if (galleryId) {
-            const gallery = this.props.galleries[galleryId];
-
-            if (!gallery) {
-                this.props.fetchGallery(galleryId);
-            }
-        }
+        const { artworkId } = nextParams;
 
         if (artworkId) {
             this.props.setArtworkId(artworkId)
@@ -144,4 +135,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, { fetchUserData, fetchGallery, setArtworkId })(UserControls);
+export default connect(mapStateToProps, { fetchUserData, setArtworkId })(UserControls);

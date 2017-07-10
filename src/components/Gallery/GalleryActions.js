@@ -6,28 +6,8 @@ export const GALLERY_ARTWORK_CHANGE = "galleryArtworkChange";
 export const ARTIST_CHANGE = "artistChange";
 export const ARTIST_ARTWORK_IDS_CHANGE = "artistArtworkIdsChange";
 
-export function fetchGalleryUsingID(galleryId, dispatch) {
-    // remove any listeners if there are already there
-    firebase.database().ref(`user-data/galleries/${galleryId}`).off();
-
-    // set up a listener for this gallery
-    firebase.database()
-        .ref(`user-data/galleries/${galleryId}`)
-        .on('value', snapshot => {
-            const galleryData = snapshot.val();
-            dispatch({
-                type: FETCH_GALLERY,
-                payload: { ...galleryData, galleryId }
-            });
-
-            if (galleryData && galleryData.artistIds) {
-                fetchGalleryArtists(galleryId, Object.keys(galleryData.artistIds), dispatch);
-            }
-        })
-}
-
 // TODO: include gallery Id in the dispatch so the reducer can save it against galleryId
-function fetchGalleryArtists(galleryId, artistIds, dispatch) {
+function fetchGalleryArtists(artistIds, dispatch) {
     for (let i = 0; i < artistIds.length; i++) {
         firebase.database()
             .ref('/user-data/artists/' + artistIds[i])
@@ -47,8 +27,26 @@ function fetchGalleryArtists(galleryId, artistIds, dispatch) {
 
 // TODO: this is separate so main function can be called here and from userActions - needs sorting
 export function fetchGallery(galleryId) {
+    console.log("fguid > galleryId: ", galleryId);
+
     return (dispatch) => {
-        fetchGalleryUsingID(galleryId, dispatch);
+        // remove any listeners if there are already there
+        firebase.database().ref(`user-data/galleries/${galleryId}`).off();
+
+        // set up a listener for this gallery
+        firebase.database()
+            .ref(`user-data/galleries/${galleryId}`)
+            .on('value', snapshot => {
+                const galleryData = snapshot.val();
+                dispatch({
+                    type: FETCH_GALLERY,
+                    payload: { ...galleryData, galleryId }
+                });
+
+                if (galleryData && galleryData.artistIds) {
+                    fetchGalleryArtists(Object.keys(galleryData.artistIds), dispatch);
+                }
+            })
     }
 }
 // TODO: include gallery Id in the dispatch so the reducer can save it against galleryId
@@ -70,18 +68,18 @@ function fetchGalleryArtistArtworkIds(artistId, dispatch) {
         });
 }
 
-function fetchGalleryArtworks(artworkIds, dispatch){
-    for (let id of artworkIds){
-    firebase.database()
-        .ref('user-data/artworks/' + id)
-        .on('value', snapshot => {
-            const artworkId = snapshot.key;
-            const artworkData = snapshot.val();
-            dispatch({
-                type: GALLERY_ARTWORK_CHANGE,
-                payload: {[artworkId]:artworkData}
-            })
-        });
+function fetchGalleryArtworks(artworkIds, dispatch) {
+    for (let id of artworkIds) {
+        firebase.database()
+            .ref('user-data/artworks/' + id)
+            .on('value', snapshot => {
+                const artworkId = snapshot.key;
+                const artworkData = snapshot.val();
+                dispatch({
+                    type: GALLERY_ARTWORK_CHANGE,
+                    payload: { [artworkId]: artworkData }
+                })
+            });
     }
 }
 

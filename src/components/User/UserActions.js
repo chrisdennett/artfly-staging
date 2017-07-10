@@ -2,8 +2,6 @@ import firebase from '../../firebase/firebaseConfig';
 // TODO: I think I should be able to do away with this through first import
 import * as fb from 'firebase';
 
-import { fetchGalleryUsingID } from '../Gallery/GalleryActions';
-
 export const CREATE_USER = 'create_user';
 export const FETCH_USER = "fetchUser";
 export const LOGIN_USER = "loginUser";
@@ -92,7 +90,7 @@ function fetchUserArtists(artistIds, dispatch) {
                 const artistGalleryId = artistData.artistGalleryId;
 
                 // This has been imported from gallery actions.
-                fetchGalleryUsingID(artistGalleryId, dispatch);
+                // fetchGalleryUsingID(artistGalleryId, dispatch);
 
                 /*dispatch({
                     type: FETCH_USER_ARTISTS,
@@ -101,24 +99,6 @@ function fetchUserArtists(artistIds, dispatch) {
             })
     }
 }
-
-/*export function updateGallery(galleryId, galleryName, callback = null) {
-    return dispatch => {
-        const galleryRef = firebase.database().ref(`user-data/galleries/${galleryId}`);
-        galleryRef.update({ name: galleryName })
-            .then(() => {
-                dispatch({
-                    type: GALLERY_UPDATED,
-                    payload: { name: galleryName }
-                });
-
-                if (callback) callback();
-            })
-            .catch(function (error) {
-                console.log('updateGallery failed: ', error);
-            })
-    }
-}*/
 
 export function addNewArtist(userId, formValues, callback = null) {
     return dispatch => {
