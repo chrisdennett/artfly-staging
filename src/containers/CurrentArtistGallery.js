@@ -1,49 +1,56 @@
 import { connect } from 'react-redux';
 import ArtistGallery from '../components/Gallery/ArtistGallery';
 
-/*
-Gathers all the data needed for the gallery and combines it.
-I'm unsure if combining it is preferable to returning several properties e.g.:
-{
-    gallery: getCurrentGallery,
-    artist: getGalleryArtist,
-    artworks getGalleryArtworks
-}
-*/
+const defaultGallery = { name: "", status: "loading", artistId: null };
+const defaultGalleryArtist = { name: "", status: "loading", artworkIds: [] };
 
-const getCurrentGallery = (currentGalleryId, galleries, artists, artistsArtworkIds, artworks) => {
-    let gallery = { name: "", status: "loading" };
-    let galleryArtist = { name: "", status: "loading" };
-    let galleryArtworks = [];
-
+const getCurrentGallery = (currentGalleryId, galleries) => {
+    let gallery = defaultGallery;
+    let artistId = null;
     if (galleries[currentGalleryId]) {
         gallery = galleries[currentGalleryId];
+        artistId = Object.keys(gallery.artistIds)[0];
+    }
 
-        const artistId = Object.keys(gallery.artistIds)[0];
-        if (artists[artistId]) {
-            galleryArtist = artists[artistId];
+    gallery.artistId = artistId;
+    return gallery;
+};
 
-            if(artistsArtworkIds[artistId]){
-                const artworkIds = artistsArtworkIds[artistId];
+const getGalleryArtist = (artistId, artists, artistsArtworkIds) => {
+    let galleryArtist = defaultGalleryArtist;
+    if (artists[artistId]) {
+        galleryArtist = artists[artistId];
 
-                for(let id of artworkIds){
-                    if(artworks[id]){
-                        galleryArtworks.push(artworks[id]);
-                    }
-                }
+        if(artistsArtworkIds[artistId]){
+            galleryArtist.artworkIds = artistsArtworkIds[artistId];
+        }
+    }
+    return galleryArtist;
+};
+
+const getArtistArtworks = (galleryArtworkIds, artworks) => {
+    let galleryArtworks = [];
+    if (galleryArtworkIds) {
+        for (let id of Object.keys(galleryArtworkIds)) {
+            if (artworks[id]) {
+                galleryArtworks.push(artworks[id]);
             }
         }
     }
-    gallery.artist = galleryArtist;
-    gallery.artworks = galleryArtworks;
 
-    return gallery;
+    return galleryArtworks;
 };
 
 const mapStateToProps = (state, ownProps) => {
     const { galleryId } = ownProps.match.params;
+    const gallery = getCurrentGallery(galleryId, state.galleries);
+    const artist = getGalleryArtist(gallery.artistId, state.artists, state.artistsArtworkIds);
+    const artworks = getArtistArtworks(artist.artworkIds, state.artworks);
+
     return {
-        gallery: getCurrentGallery(galleryId, state.galleries, state.artists, state.artistsArtworkIds, state.artworks)
+        gallery: gallery,
+        artist: artist,
+        artworks: artworks
     }
 };
 

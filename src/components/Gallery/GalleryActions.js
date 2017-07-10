@@ -56,17 +56,16 @@ function fetchGalleryArtistArtworkIds(artistId, dispatch) {
     firebase.database()
         .ref(`/user-data/artistArtworkIds/${artistId}`)
         .on('value', snapshot => {
-            const artistArtworkIdsData = snapshot.val();
+            const artistArtworkIdsData = !snapshot.val() ? {} : snapshot.val();
             let ids = [];
             if (artistArtworkIdsData) {
                 ids = Object.keys(artistArtworkIdsData);
-
                 fetchGalleryArtworks(ids, dispatch);
             }
 
             dispatch({
                 type: ARTIST_ARTWORK_IDS_CHANGE,
-                payload: { [artistId]: ids }
+                payload: { [artistId]: artistArtworkIdsData }
             });
         });
 }
