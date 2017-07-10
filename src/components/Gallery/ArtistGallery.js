@@ -7,6 +7,7 @@ const ArtistGallery = function ({ gallery }) {
             <h1>{gallery.name}</h1>
             <h2>Artist</h2>
             <p>Name: {gallery.artist.name}</p>
+            <p>Total Artworks: {gallery.artworks.length}</p>
 
         </div>
     )
@@ -15,9 +16,19 @@ const ArtistGallery = function ({ gallery }) {
 ArtistGallery.propTypes = {
     gallery: PropTypes.shape({
         name: PropTypes.string.isRequired,
-        artist: PropTypes.shape({
-            name: PropTypes.string.isRequired
-        })
+        artist: PropTypes.shape(
+            {
+                name: PropTypes.string.isRequired
+            }).isRequired,
+        artworks: PropTypes.arrayOf(
+            PropTypes.shape(
+                {
+                    adminId: PropTypes.string,
+                    dateAdded: PropTypes.number,
+                    url: PropTypes.string
+                }
+            )
+        )
     }).isRequired
 };
 

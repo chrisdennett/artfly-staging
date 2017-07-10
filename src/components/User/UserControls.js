@@ -56,7 +56,8 @@ class UserControls extends Component {
         const artworkId = this.props.match.params.artworkId;
         const galleryId = this.props.match.params.galleryId;
         const allowArtworkEditing = this.isArtworkEditingAllowed();
-        const currentGalleryArtworks = this.props.galleryArtworks[galleryId];
+        // const currentGalleryArtworks = this.props.galleryArtworks[galleryId];
+        const currentGalleryArtworks = null;
 
         if (!galleryId) {
             return "";

@@ -40,7 +40,7 @@ function fetchGalleryArtists(galleryId, artistIds, dispatch) {
                     payload: { [artistId]: artistData }
                 });
 
-                fetchGalleryArtistArtworkIds(galleryId, artistId, dispatch);
+                fetchGalleryArtistArtworkIds(artistId, dispatch);
             })
     }
 }
@@ -52,7 +52,7 @@ export function fetchGallery(galleryId) {
     }
 }
 // TODO: include gallery Id in the dispatch so the reducer can save it against galleryId
-function fetchGalleryArtistArtworkIds(galleryId, artistId, dispatch) {
+function fetchGalleryArtistArtworkIds(artistId, dispatch) {
     firebase.database()
         .ref(`/user-data/artistArtworkIds/${artistId}`)
         .on('value', snapshot => {
@@ -61,7 +61,7 @@ function fetchGalleryArtistArtworkIds(galleryId, artistId, dispatch) {
             if (artistArtworkIdsData) {
                 ids = Object.keys(artistArtworkIdsData);
 
-                fetchGalleryArtworks(galleryId, ids, dispatch);
+                fetchGalleryArtworks(ids, dispatch);
             }
 
             dispatch({
@@ -71,7 +71,7 @@ function fetchGalleryArtistArtworkIds(galleryId, artistId, dispatch) {
         });
 }
 
-function fetchGalleryArtworks(galleryId, artworkIds, dispatch){
+function fetchGalleryArtworks(artworkIds, dispatch){
     for (let id of artworkIds){
     firebase.database()
         .ref('user-data/artworks/' + id)
@@ -80,7 +80,7 @@ function fetchGalleryArtworks(galleryId, artworkIds, dispatch){
             const artworkData = snapshot.val();
             dispatch({
                 type: GALLERY_ARTWORK_CHANGE,
-                payload: { galleryId, artworkId, artworkData }
+                payload: {[artworkId]:artworkData}
             })
         });
     }
