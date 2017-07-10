@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import store from '../store';
 import Home from '../components/Home/Home';
 import Gallery from '../components/Gallery/Gallery';
+import CurrentArtistGallery from '../containers/CurrentArtistGallery';
 import UserControls from "../components/User/UserControls";
 import MyGalleries from "../components/MyGalleries/MyGalleries";
 import ArtworkEditor from "../components/ArtworkEditor/ArtworkEditor";
@@ -27,7 +28,7 @@ export default (
 
                 <Switch>
                     <Route path="/gallery/:galleryId/artwork/:artworkId" component={Gallery}/>
-                    <Route path="/gallery/:galleryId" component={Gallery}/>
+                    <Route path="/gallery/:galleryId" component={CurrentArtistGallery}/>
                     <Route path="/myGalleries" component={MyGalleries}/>
                     <Route path="/artwork-editor/:artworkId" component={ArtworkEditor}/>
                     <Route path="/" component={Home}/>
