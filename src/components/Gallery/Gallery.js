@@ -11,8 +11,8 @@ class Gallery extends Component {
 
         if (artworkId) {
 
-            if (this.props.galleryArtworks && this.props.galleryArtworks[artworkId]) {
-                const currentArtwork = this.props.galleryArtworks[artworkId];
+            if (this.props.artworks && this.props.artworks[artworkId]) {
+                const currentArtwork = this.props.artworks[artworkId];
 
                 return <Artwork currentArtwork={currentArtwork}/>
             }
@@ -54,7 +54,7 @@ function mapStateToProps(state, ownProps) {
         gallery: state.galleries[galleryId],
         artists: state.artists,
         artistsArtworkIds: state.artistsArtworkIds,
-        galleryArtworks: state.galleryArtworks[galleryId]
+        artworks: state.artworks
     }
 }
 

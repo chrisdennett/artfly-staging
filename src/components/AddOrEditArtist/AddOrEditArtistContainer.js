@@ -16,7 +16,7 @@ class AddOrEditArtistHolder extends Component {
         }
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate() {
         if (this.props.match.params.artistId) {
             this.props.fetchGallery(this.props.match.params.artistId);
         }

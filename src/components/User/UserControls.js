@@ -48,7 +48,7 @@ class UserControls extends Component {
         const galleryId = this.props.match.params.galleryId;
         const allowArtworkEditing = this.isArtworkEditingAllowed();
         // const currentGalleryArtworks = this.props.galleryArtworks[galleryId];
-        const currentGalleryArtworks = null;
+        const currentGalleryArtworks = this.props.artistsArtworkIds[galleryId];
 
         if (!galleryId) {
             return "";
@@ -131,6 +131,7 @@ function mapStateToProps(state) {
         user: state.user,
         galleries: state.galleries,
         galleryArtworks: state.galleryArtworks,
+        artistsArtworkIds: state.artistsArtworkIds,
         artworkId: state.artwork.artworkId
     }
 }
