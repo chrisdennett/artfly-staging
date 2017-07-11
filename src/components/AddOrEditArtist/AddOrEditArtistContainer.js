@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 
 import { addNewArtist } from '../User/UserActions';
 import AddOrEditArtist from './AddOrEditArtist';
-import { fetchGallery } from '../Gallery/GalleryActions';
-import { updateArtist, updateGallery } from '../Settings/MyGalleriesActions';
+import { fetchGallery } from '../ArtistGallery/GalleryActions';
+import { updateArtist, updateGallery } from '../Settings/SettingsActions';
 
 
 // Created an intermediate component so can trigger the data loading outside

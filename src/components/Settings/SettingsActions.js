@@ -2,9 +2,7 @@ import firebase from '../../firebase/firebaseConfig';
 // TODO: I think I should be able to do away with this through first import
 //import * as fb from 'firebase';
 
-export const CURRENT_ARTIST_UPDATED = 'currentArtistUpdated';
 export const ARTIST_UPDATED = 'artistUpdated';
-export const ARTIST_UPDATE_CANCELLED = 'artistUpdated';
 export const ARTIST_DELETED = 'artistDeleted';
 export const ARTWORK_DELETED = 'artworkDeleted';
 export const GALLERY_UPDATED = 'galleryUpdated';
@@ -27,17 +25,6 @@ export function updateGallery(galleryId, newGalleryData, callback) {
     }
 }
 
-export function setCurrentArtist(artist, artistId, galleryName, callback) {
-    return dispatch => {
-        dispatch({
-            type: CURRENT_ARTIST_UPDATED,
-            payload: { ...artist, artistId: artistId, galleryName }
-        });
-
-        if (callback) callback();
-    }
-}
-
 export function updateArtist(artistId, artistData, callback) {
     return dispatch => {
         const artistRef = firebase.database().ref(`user-data/artists/${artistId}`);
@@ -53,17 +40,6 @@ export function updateArtist(artistId, artistData, callback) {
             .catch(function (error) {
                 console.log('updateArtist failed: ', error);
             })
-    }
-}
-
-export function cancelArtistUpdate(callback) {
-    return dispatch => {
-        dispatch({
-            type: ARTIST_UPDATE_CANCELLED,
-            payload: {}
-        });
-
-        if (callback) callback();
     }
 }
 

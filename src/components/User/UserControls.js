@@ -9,7 +9,7 @@ import { setArtworkId } from '../Artwork/ArtworkActions';
 import Login from './Login';
 import NewUserForm from './NewUserForm';
 import GalleryControls from './GalleryControls/GalleryControls';
-import ArtworkAdder from './ArtworkAdder/ArtworkAdder';
+import ArtworkAdder from '../ArtworkAdder/ArtworkAdder';
 
 class UserControls extends Component {
 

@@ -1,5 +1,5 @@
 import { ARTWORK_TO_EDIT_CHANGE } from './ArtworkEditorActions';
-import { ADD_ARTWORK_UPLOAD_PROGRESS, ADD_ARTWORK_COMPLETE} from '../User/ArtworkAdder/ArtworkAdderActions';
+import { ADD_ARTWORK_UPLOAD_PROGRESS, ADD_ARTWORK_COMPLETE} from '../ArtworkAdder/ArtworkAdderActions';
 
 export default function (state = {}, action) {
     switch (action.type) {

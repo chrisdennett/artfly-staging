@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import MyGalleries from '../components/Settings/Settings';
-import { fetchGallery } from '../components/Gallery/GalleryActions';
+import MyGalleries from './Settings';
+import { fetchGallery } from '../ArtistGallery/GalleryActions';
 
 const getUserArtistGalleries = (artistGalleryIdsObject, artists, galleries, artistsArtworkIds) => {
     const artistGalleryIds = Object.keys(artistGalleryIdsObject);

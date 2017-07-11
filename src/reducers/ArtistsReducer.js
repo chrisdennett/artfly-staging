@@ -1,4 +1,4 @@
-import { ARTIST_CHANGE } from '../components/Gallery/GalleryActions';
+import { ARTIST_CHANGE } from '../components/ArtistGallery/GalleryActions';
 
 export default function (state = {}, action) {
 

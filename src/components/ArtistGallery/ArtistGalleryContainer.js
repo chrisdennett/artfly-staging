@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ArtistGallery from '../components/Gallery/ArtistGallery';
-import { fetchGallery } from '../components/Gallery/GalleryActions';
+import ArtistGallery from './ArtistGallery';
+import { fetchGallery } from './GalleryActions';
 
 const defaultGallery = { name: "", status: "loading", artistId: null };
 const defaultGalleryArtist = { name: "", status: "loading", artworkIds: [] };
