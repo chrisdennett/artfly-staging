@@ -17,10 +17,12 @@ ArtistGallery.propTypes = {
     gallery: PropTypes.shape({
         name: PropTypes.string.isRequired,
     }).isRequired,
+
     artist: PropTypes.shape(
         {
             name: PropTypes.string.isRequired
         }).isRequired,
+
     artworks: PropTypes.arrayOf(
         PropTypes.shape(
             {

@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import store from '../store';
 import ArtistGalleryContainer from '../containers/ArtistGalleryContainer';
 import SettingsContainer from "../containers/SettingsContainer";
+import AddOrEditArtistContainer from "../components/AddOrEditArtist/AddOrEditArtistContainer";
 import Home from '../components/Home/Home';
 import Gallery from '../components/Gallery/Gallery';
 import UserControls from "../components/User/UserControls";
@@ -22,6 +23,7 @@ export default (
                     <Route path="/gallery/:galleryId" component={UserControls}/>
                     <Route path="/settings" component={UserControls}/>
                     <Route path="/artwork-editor/:artworkId" component={UserControls}/>
+                    <Route path="/add-or-edit-artist/:artistId?" component={UserControls}/>
                     <Route path="/" component={UserControls}/>
                 </Switch>
 
@@ -30,6 +32,7 @@ export default (
                     <Route path="/gallery/:galleryId" component={ArtistGalleryContainer}/>
                     <Route path="/settings" component={SettingsContainer}/>
                     <Route path="/artwork-editor/:artworkId" component={ArtworkEditor}/>
+                    <Route path="/add-or-edit-artist/:artistId?" component={AddOrEditArtistContainer}/>
                     <Route path="/" component={Home}/>
                 </Switch>
             </div>

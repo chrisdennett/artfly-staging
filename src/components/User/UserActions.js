@@ -6,13 +6,8 @@ export const CREATE_USER = 'create_user';
 export const FETCH_USER = "fetchUser";
 export const LOGIN_USER = "loginUser";
 export const LOGOUT_USER = "logoutUser";
-// export const FETCH_USER_ARTISTS = "fetchUserArtists";
 export const ARTIST_ARTWORK_IDS_CHANGE = "artistArtworkIdsChange";
-// export const FETCH_USER_GALLERY = "fetchUserGallery";
 export const ADD_USER_ARTIST = 'addUserArtist';
-//TODO: Cancel doesn't feel right here - should this be local state only?
-export const CANCEL_ADD_ARTIST = 'cancelAddArtist';
-// export const GALLERY_UPDATED = 'galleryUpdated'; // also is this used or needed?
 
 export function fetchUserData() {
     return (dispatch) => {
@@ -109,16 +104,6 @@ export function addNewArtist(userId, formValues, callback = null) {
                     console.log('Synchronization failed: ', error);
                 })
             );
-    }
-}
-
-export function cancelAddArtist(callback = null) {
-    return dispatch => {
-        dispatch({
-            type: CANCEL_ADD_ARTIST,
-            payload: "cancel"
-        });
-        if (callback) callback();
     }
 }
 

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import _ from 'lodash';
 
-import AddNewArtistForm from '../ArtistAdder/AddNewArtistForm';
+import AddNewArtistForm from '../../AddOrEditArtist/AddOrEditArtist';
 import ArtistInfo from './ArtistInfo';
 
 class ArtistList extends Component {

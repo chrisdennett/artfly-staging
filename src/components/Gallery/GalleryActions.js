@@ -11,8 +11,8 @@ let galleryListenersRef = [];
 
 export function fetchGallery(galleryId) {
     return (dispatch) => {
-        if (galleryListenersRef.indexOf(galleryId) >= 0) {
 
+        if (galleryListenersRef.indexOf(galleryId) >= 0) {
             dispatch({
                 type: FETCH_GALLERY_ALREADY_CACHED,
                 payload: {}
