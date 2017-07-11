@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import Slim from '../../ArtworkEditor/slim/slim.react';
+import Slim from '../ArtworkEditor/slim/slim.react';
 
 import { startLoadingArtwork, setImageLoaded } from './ArtworkActions';
 

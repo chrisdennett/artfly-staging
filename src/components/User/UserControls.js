@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 // import Slim from '../slim/slim.react';
 
 import { fetchUserData } from './UserActions';
-import { setArtworkId } from '../Gallery/Artwork/ArtworkActions';
+import { setArtworkId } from '../Artwork/ArtworkActions';
 
 import Login from './Login';
 import NewUserForm from './NewUserForm';
