@@ -7,7 +7,9 @@ import ArtistGalleryContainer from '../components/ArtistGallery/ArtistGalleryCon
 import SettingsContainer from "../components/Settings/SettingsContainer";
 import AddOrEditArtistContainer from "../components/AddOrEditArtist/AddOrEditArtistContainer";
 import Home from '../components/Home/Home';
-import Gallery from '../components/ArtistGallery/Gallery';
+// import Gallery from '../components/ArtistGallery/Gallery';
+import ArtworkContainer from '../components/Artwork/ArtworkContainer';
+
 import UserControls from "../components/User/UserControls";
 import ArtworkEditor from "../components/ArtworkEditor/ArtworkEditor";
 
@@ -28,7 +30,7 @@ export default (
                 </Switch>
 
                 <Switch>
-                    <Route path="/gallery/:galleryId/artwork/:artworkId" component={Gallery}/>
+                    <Route path="/gallery/:galleryId/artwork/:artworkId" component={ArtworkContainer}/>
                     <Route path="/gallery/:galleryId" component={ArtistGalleryContainer}/>
                     <Route path="/settings" component={SettingsContainer}/>
                     <Route path="/artwork-editor/:artworkId" component={ArtworkEditor}/>

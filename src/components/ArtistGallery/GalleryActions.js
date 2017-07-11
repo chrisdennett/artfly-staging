@@ -6,8 +6,10 @@ export const FETCH_GALLERY_ALREADY_CACHED = "fetchGalleryAlreadyCached";
 export const GALLERY_ARTWORK_CHANGE = "galleryArtworkChange";
 export const ARTIST_CHANGE = "artistChange";
 export const ARTIST_ARTWORK_IDS_CHANGE = "artistArtworkIdsChange";
+export const FETCH_ARTWORK_ALREADY_CACHED = "fetchArtworkAlreadyCached";
 
 let galleryListenersRef = [];
+let artworkListenersRef = [];
 
 export function fetchGallery(galleryId) {
     return (dispatch) => {
@@ -57,11 +59,11 @@ function fetchGalleryArtistArtworkIds(artistId, dispatch) {
         .ref(`/user-data/artistArtworkIds/${artistId}`)
         .on('value', snapshot => {
             const artistArtworkIdsData = !snapshot.val() ? {} : snapshot.val();
-            let ids = [];
+            /*let ids = [];
             if (artistArtworkIdsData) {
                 ids = Object.keys(artistArtworkIdsData);
                 fetchGalleryArtworks(ids, dispatch);
-            }
+            }*/
 
             dispatch({
                 type: ARTIST_ARTWORK_IDS_CHANGE,
@@ -70,17 +72,35 @@ function fetchGalleryArtistArtworkIds(artistId, dispatch) {
         });
 }
 
-function fetchGalleryArtworks(artworkIds, dispatch) {
+/*function fetchGalleryArtworks(artworkIds, dispatch) {
     for (let id of artworkIds) {
-        firebase.database()
-            .ref('user-data/artworks/' + id)
-            .on('value', snapshot => {
-                const artworkId = snapshot.key;
-                const artworkData = snapshot.val();
-                dispatch({
-                    type: GALLERY_ARTWORK_CHANGE,
-                    payload: { [artworkId]: artworkData }
-                })
-            });
+        fetchArtworkInternal(id, dispatch);
     }
+}*/
+
+export function fetchArtwork(artworkId) {
+    return (dispatch) => {
+        fetchArtworkInternal(artworkId, dispatch);
+    }
+}
+
+export function fetchArtworkInternal(artworkId, dispatch) {
+    if (artworkListenersRef.indexOf(artworkId) >= 0) {
+        dispatch({
+            type: FETCH_ARTWORK_ALREADY_CACHED,
+            payload: {}
+        });
+        return;
+    }
+
+    firebase.database()
+        .ref('user-data/artworks/' + artworkId)
+        .on('value', snapshot => {
+            const artworkId = snapshot.key;
+            const artworkData = snapshot.val();
+            dispatch({
+                type: GALLERY_ARTWORK_CHANGE,
+                payload: { [artworkId]: artworkData }
+            })
+        });
 }

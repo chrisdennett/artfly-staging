@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ArtistGallery = function ({ gallery, artist, artworks }) {
+const ArtistGallery = function ({ gallery, artist, totalArtworks }) {
     return (
         <div>
             <h1>{gallery.name}</h1>
             <h2>Artist</h2>
             <p>Name: {artist.name}</p>
-            <p>Total Artworks: {artworks.length}</p>
+            <p>Total Artworks: {totalArtworks}</p>
 
         </div>
     )

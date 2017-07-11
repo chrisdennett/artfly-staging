@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import ArtistGallery from './ArtistGallery';
 import { fetchGallery } from './GalleryActions';
 
@@ -30,7 +31,11 @@ const getGalleryArtist = (artistId, artists, artistsArtworkIds) => {
     return galleryArtist;
 };
 
-const getArtistArtworks = (galleryArtworkIds, artworks) => {
+const getTotalArworks = (artistArworksIds, artistGalleryId) => {
+    return !artistArworksIds[artistGalleryId] ? "-" : Object.keys(artistArworksIds[artistGalleryId]).length;
+};
+
+/*const getArtistArtworks = (galleryArtworkIds, artworks) => {
     let galleryArtworks = [];
     if (galleryArtworkIds) {
         for (let id of Object.keys(galleryArtworkIds)) {
@@ -39,23 +44,24 @@ const getArtistArtworks = (galleryArtworkIds, artworks) => {
             }
         }
     }
-
     return galleryArtworks;
-};
+};*/
 
 // Intermediary component so ui component isn't required to call data
 class ArtistGalleryHolder extends Component {
     componentDidMount() {
         this.props.fetchGallery(this.props.galleryId);
     }
+
     componentDidUpdate(prevProps) {
         if (this.props.galleryId !== prevProps.galleryId) {
             this.props.fetchGallery(this.props.galleryId);
         }
     }
+
     render() {
-        const {gallery, artist, artworks} = this.props;
-        return <ArtistGallery gallery={gallery} artist={artist} artworks={artworks} />;
+        const { gallery, artist, totalArtworks } = this.props;
+        return <ArtistGallery gallery={gallery} artist={artist} totalArtworks={totalArtworks}/>;
     }
 }
 
@@ -64,13 +70,14 @@ const mapStateToProps = (state, ownProps) => {
     const { galleryId } = ownProps.match.params;
     const gallery = getCurrentGallery(galleryId, state.galleries);
     const artist = getGalleryArtist(gallery.artistId, state.artists, state.artistsArtworkIds);
-    const artworks = getArtistArtworks(artist.artworkIds, state.artworks);
+    const totalArtworks = getTotalArworks(state.artistsArtworkIds, galleryId);
+    // const artworks = getArtistArtworks(artist.artworkIds, state.artworks);
 
     return {
         galleryId: galleryId,
         gallery: gallery,
         artist: artist,
-        artworks: artworks
+        totalArtworks: totalArtworks
     }
 };
 
