@@ -4,7 +4,7 @@ import CommunityReducer from '../components/Home/CommunityReducer';
 import UserReducer from '../components/User/UserReducer';
 import ArtworkReducer from '../components/Gallery/Artwork/ArtworkReducer';
 import ImageUploaderReducer from '../components/User/ArtworkAdder/ArtworkAdderReducer';
-import ControlPanelReducer from '../components/MyGalleries/MyGalleriesReducer';
+import ControlPanelReducer from '../components/Settings/MyGalleriesReducer';
 import ArtworkEditorReducer from '../components/ArtworkEditor/ArtworkEditorReducer';
 import ArtworksReducer from './ArtworksReducer';
 import GalleriesReducer from './GalleriesReducer';

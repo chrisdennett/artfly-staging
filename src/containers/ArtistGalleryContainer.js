@@ -11,7 +11,7 @@ const getCurrentGallery = (currentGalleryId, galleries) => {
     let artistId = null;
     if (galleries[currentGalleryId]) {
         gallery = galleries[currentGalleryId];
-        artistId = Object.keys(gallery.artistIds)[0];
+        artistId = currentGalleryId;
     }
 
     gallery.artistId = artistId;
@@ -43,23 +43,23 @@ const getArtistArtworks = (galleryArtworkIds, artworks) => {
     return galleryArtworks;
 };
 
+// Intermediary component so ui component isn't required to call data
 class ArtistGalleryHolder extends Component {
     componentDidMount() {
         this.props.fetchGallery(this.props.galleryId);
     }
-
     componentDidUpdate(prevProps) {
         if (this.props.galleryId !== prevProps.galleryId) {
             this.props.fetchGallery(this.props.galleryId);
         }
     }
-
     render() {
         const {gallery, artist, artworks} = this.props;
         return <ArtistGallery gallery={gallery} artist={artist} artworks={artworks} />;
     }
 }
 
+// Map state to props maps to the intermediary component which uses or passes them through
 const mapStateToProps = (state, ownProps) => {
     const { galleryId } = ownProps.match.params;
     const gallery = getCurrentGallery(galleryId, state.galleries);
@@ -74,9 +74,9 @@ const mapStateToProps = (state, ownProps) => {
     }
 };
 
-const CurrentArtistGallery = connect(
+const ArtistGalleryContainer = connect(
     mapStateToProps, { fetchGallery }
 )(ArtistGalleryHolder);
 
-export default CurrentArtistGallery;
+export default ArtistGalleryContainer;
 

@@ -31,7 +31,7 @@ class UserControls extends Component {
             return "";
         }
 
-        const allArtistIds = Object.keys(this.props.user.artistIds);
+        const allArtistIds = Object.keys(this.props.user.artistGalleryIds);
         // just use the first one - could add a default artist value later if want to give user more control over this
         const defaultArtistId = allArtistIds[0];
 
@@ -39,7 +39,7 @@ class UserControls extends Component {
                     <ArtworkAdder history={this.props.history}
                                   artistId={defaultArtistId}
                                   userId={this.props.user.uid}/>
-                    <Link to="/myGalleries">My Galleries</Link>
+                    <Link to="/settings">Settings</Link>
                 </span>;
     }
 
