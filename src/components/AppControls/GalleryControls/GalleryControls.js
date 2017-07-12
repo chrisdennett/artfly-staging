@@ -21,14 +21,13 @@ class GalleryControls extends Component {
 
     // Works out where we are in the gallery so as to set up the next and prev buttons correctly
     componentWillReceiveProps(nextProps) {
-        this.setNextAndPreviousIds(nextProps)
-
+        this.setNextAndPreviousIds(nextProps);
     }
 
     setNextAndPreviousIds(nextProps){
-        if (nextProps.galleryArtworks) {
+        if (nextProps.artworkIds) {
             const currId = nextProps.artworkId;
-            const allIds = Object.keys(nextProps.galleryArtworks);
+            const allIds = Object.keys(nextProps.artworkIds);
 
             const currIdIndex = allIds.indexOf(currId);
             let prevId = null;

@@ -1,9 +1,19 @@
 import React from 'react';
 
-const AppControls = function (props) {
+import UserControls from './UserControls/UserControls';
+import GalleryControls from './GalleryControls/GalleryControls';
+
+const AppControls = function ({ user, galleryId, artworkId, history, artworkIds }) {
     return (
         <div>
-            AppControls
+            <GalleryControls history={history}
+                             artworkIds={artworkIds}
+                             galleryId={galleryId}
+                             artworkId={artworkId}/>
+
+            <UserControls user={user}
+                          galleryId={galleryId}
+                          artworkId={artworkId}/>
         </div>
     )
 };

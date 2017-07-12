@@ -7,8 +7,9 @@ import ArtistGalleryContainer from '../components/ArtistGallery/ArtistGalleryCon
 import SettingsContainer from "../components/Settings/SettingsContainer";
 import AddOrEditArtistContainer from "../components/Settings/ArtistEditor/ArtistEditorContainer";
 import ArtworkContainer from '../components/Artwork/ArtworkContainer';
+import AppControlsContainer from '../components/AppControls/AppControlsContainer'
 import Home from '../components/Home/Home';
-import UserControls from "../components/AppControls/UserControls/UserControls";
+// import UserControls from "../components/AppControls/UserControls/UserControls";
 import ArtworkEditor from "../components/Settings/ArtworkEditor/ArtworkEditor";
 
 const routes = [
@@ -32,7 +33,7 @@ export default (
                         <Route
                             key={index}
                             path={route.path}
-                            component={UserControls}
+                            component={AppControlsContainer}
                         />
                     ))}
                 </Switch>

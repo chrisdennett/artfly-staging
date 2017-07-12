@@ -3,18 +3,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 // import Slim from '../slim/slim.react';
 
-import { fetchUserData } from './UserActions';
-
 import Login from './Login';
 import NewUserForm from '../../Settings/UserEditor/NewUserForm';
-import GalleryControls from '../ViewerControls/GalleryControls';
 import ArtworkAdder from '../../Settings/ArtworkAdder/ArtworkAdder';
 
 class UserControls extends Component {
-
-    componentDidMount() {
-        this.props.fetchUserData();
-    }
 
     addUserOnlyControlsIfLoggedIn() {
         if (this.props.user.status === "none" || !this.props.user || !this.props.user.uid) {
@@ -33,9 +26,9 @@ class UserControls extends Component {
                 </span>;
     }
 
-    addGalleryControlsIfNeeded() {
-        const artworkId = this.props.match.params.artworkId;
-        const galleryId = this.props.match.params.galleryId;
+    /*addGalleryControlsIfNeeded() {
+        const artworkId = this.props.artworkId;
+        const galleryId = this.props.galleryId;
         const allowArtworkEditing = this.isArtworkEditingAllowed();
         // const currentGalleryArtworks = this.props.galleryArtworks[galleryId];
         const currentGalleryArtworks = this.props.artistsArtworkIds[galleryId];
@@ -49,9 +42,9 @@ class UserControls extends Component {
                                 allowArtworkEditing={allowArtworkEditing}
                                 galleryArtworks={currentGalleryArtworks}
                                 history={this.props.history}/>
-    }
+    }*/
 
-    isArtworkEditingAllowed() {
+    /*isArtworkEditingAllowed() {
         let allowEdit = false;
 
         if (this.props.galleries && this.props.artworks && this.props.artworkId && this.props.artworks[this.props.artworkId]) {
@@ -63,7 +56,7 @@ class UserControls extends Component {
             }
         }
         return allowEdit;
-    }
+    }*/
 
     /*
      // called when slim has initialized
@@ -108,9 +101,6 @@ class UserControls extends Component {
                 <Link to="/">home</Link>
                 <Login />
                 { this.addUserOnlyControlsIfLoggedIn() }
-
-                { this.addGalleryControlsIfNeeded() }
-
             </div>
         )
     }
@@ -118,11 +108,10 @@ class UserControls extends Component {
 
 function mapStateToProps(state) {
     return {
-        user: state.user,
         galleries: state.galleries,
         galleryArtworks: state.galleryArtworks,
         artistsArtworkIds: state.artistsArtworkIds
     }
 }
 
-export default connect(mapStateToProps, { fetchUserData })(UserControls);
+export default connect(mapStateToProps, {  })(UserControls);
