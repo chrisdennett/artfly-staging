@@ -13,9 +13,6 @@ class Login extends Component {
     }
 
     render() {
-
-
-
         if (!this.props.user || !this.props.user.uid) {
             return (
                 <span>

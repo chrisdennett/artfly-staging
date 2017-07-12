@@ -1,4 +1,4 @@
-import { ADD_ARTWORK_COMPLETE } from '../components/ArtworkAdder/ArtworkAdderActions';
+import { ADD_ARTWORK_COMPLETE } from '../components/Settings/ArtworkAdder/ArtworkAdderActions';
 import { GALLERY_ARTWORK_CHANGE } from '../components/ArtistGallery/ArtistGalleryActions';
 
 export default function (state = {}, action) {

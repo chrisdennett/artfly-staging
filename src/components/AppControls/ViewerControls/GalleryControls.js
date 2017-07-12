@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 
-import { setArtworkToEdit } from '../../ArtworkEditor/ArtworkEditorActions';
+import { setArtworkToEdit } from '../../Settings/ArtworkEditor/ArtworkEditorActions';
 
 class GalleryControls extends Component {
 

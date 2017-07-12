@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
-import FormRenderField from '../global/FormRenderField';
+import FormRenderField from '../../global/FormRenderField';
 import { Link } from 'react-router-dom';
 
-class AddOrEditArtist extends Component {
+class ArtistEditor extends Component {
     render() {
         const { handleSubmit } = this.props; // handleSubmit is added to props by redux-form
 
@@ -44,7 +44,7 @@ class AddOrEditArtist extends Component {
     }
 }
 
-AddOrEditArtist.propTypes = {
+ArtistEditor.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     formType: PropTypes.string.isRequired,
     initialValues: PropTypes.shape({
@@ -82,9 +82,9 @@ const validate = values => {
 };
 
 // Decorate with reduxForm(). It will read the initialValues prop provided by connect()
-AddOrEditArtist = reduxForm({
+ArtistEditor = reduxForm({
     form: 'AddOrEditArtistForm', // a unique identifier for this form
     validate
-})(AddOrEditArtist);
+})(ArtistEditor);
 
-export default AddOrEditArtist;
+export default ArtistEditor;

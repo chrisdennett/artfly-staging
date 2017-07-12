@@ -2,8 +2,8 @@ import { combineReducers } from 'redux';
 
 import CommunityReducer from '../components/Home/CommunityReducer';
 import UserReducer from '../components/AppControls/UserControls/UserReducer';
-import ImageUploaderReducer from '../components/ArtworkAdder/ArtworkAdderReducer';
-import ArtworkEditorReducer from '../components/ArtworkEditor/ArtworkEditorReducer';
+import ImageUploaderReducer from '../components/Settings/ArtworkAdder/ArtworkAdderReducer';
+import ArtworkEditorReducer from '../components/Settings/ArtworkEditor/ArtworkEditorReducer';
 import ArtworksReducer from './ArtworksReducer';
 import GalleriesReducer from './GalleriesReducer';
 import ArtistsReducer from './ArtistsReducer';

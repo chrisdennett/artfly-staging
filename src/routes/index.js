@@ -5,11 +5,11 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import store from '../store';
 import ArtistGalleryContainer from '../components/ArtistGallery/ArtistGalleryContainer';
 import SettingsContainer from "../components/Settings/SettingsContainer";
-import AddOrEditArtistContainer from "../components/AddOrEditArtist/AddOrEditArtistContainer";
+import AddOrEditArtistContainer from "../components/Settings/ArtistEditor/ArtistEditorContainer";
 import ArtworkContainer from '../components/Artwork/ArtworkContainer';
 import Home from '../components/Home/Home';
 import UserControls from "../components/AppControls/UserControls/UserControls";
-import ArtworkEditor from "../components/ArtworkEditor/ArtworkEditor";
+import ArtworkEditor from "../components/Settings/ArtworkEditor/ArtworkEditor";
 
 const routes = [
     { path: "/gallery/:galleryId/artwork/:artworkId", component: ArtworkContainer },

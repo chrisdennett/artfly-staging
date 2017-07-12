@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { addNewArtist } from '../AppControls/UserControls/UserActions';
-import AddOrEditArtist from './AddOrEditArtist';
-import { fetchGallery } from '../ArtistGallery/ArtistGalleryActions';
-import { updateArtist, updateGallery } from '../Settings/SettingsActions';
+import { addNewArtist } from '../../AppControls/UserControls/UserActions';
+import ArtistEditor from './ArtistEditor';
+import { fetchGallery } from '../../ArtistGallery/ArtistGalleryActions';
+import { updateArtist, updateGallery } from '../SettingsActions';
 
 
 // Created an intermediate component so can trigger the data loading outside
-class AddOrEditArtistHolder extends Component {
+class ArtistEditorHolder extends Component {
     componentDidMount() {
         // Fetch artistGallery data if artistId is in params
         if (this.props.match.params.artistId) {
@@ -41,7 +41,7 @@ class AddOrEditArtistHolder extends Component {
             return <div>loading...</div>
         }
 
-        return <AddOrEditArtist
+        return <ArtistEditor
             initialValues={initialValues}
             formType={formType}
             onSubmit={this.onSubmit.bind(this)}/>;
@@ -106,8 +106,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     }
 };
 
-const AddOrEditArtistContainer = connect(
+const ArtistEditorContainer = connect(
     mapStateToProps, mapDispatchToProps
-)(AddOrEditArtistHolder);
+)(ArtistEditorHolder);
 
-export default AddOrEditArtistContainer;
+export default ArtistEditorContainer;

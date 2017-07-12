@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom';
 import { fetchUserData } from './UserActions';
 
 import Login from './Login';
-import NewUserForm from './NewUserForm';
+import NewUserForm from '../../Settings/UserEditor/NewUserForm';
 import GalleryControls from '../ViewerControls/GalleryControls';
-import ArtworkAdder from '../../ArtworkAdder/ArtworkAdder';
+import ArtworkAdder from '../../Settings/ArtworkAdder/ArtworkAdder';
 
 class UserControls extends Component {
 
