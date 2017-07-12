@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 // import Slim from '../slim/slim.react';
 
 import { fetchUserData } from './UserActions';
-import { setArtworkId } from '../Artwork/ArtworkActions';
 
 import Login from './Login';
 import NewUserForm from './NewUserForm';
@@ -15,15 +14,6 @@ class UserControls extends Component {
 
     componentDidMount() {
         this.props.fetchUserData();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const nextParams = nextProps.match.params;
-        const { artworkId } = nextParams;
-
-        if (artworkId) {
-            this.props.setArtworkId(artworkId)
-        }
     }
 
     addUserOnlyControlsIfLoggedIn() {
@@ -131,9 +121,8 @@ function mapStateToProps(state) {
         user: state.user,
         galleries: state.galleries,
         galleryArtworks: state.galleryArtworks,
-        artistsArtworkIds: state.artistsArtworkIds,
-        artworkId: state.artwork.artworkId
+        artistsArtworkIds: state.artistsArtworkIds
     }
 }
 
-export default connect(mapStateToProps, { fetchUserData, setArtworkId })(UserControls);
+export default connect(mapStateToProps, { fetchUserData })(UserControls);

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { fetchArtwork } from '../ArtistGallery/GalleryActions';
-// import { startLoadingArtwork, setImageLoaded } from './ArtworkActions';
 
 import Artwork from './Artwork';
 
@@ -21,7 +20,6 @@ class ArtworkHolder extends Component {
 
     render() {
         const { artwork } = this.props;
-
         return <Artwork artwork={artwork}/>;
     }
 }

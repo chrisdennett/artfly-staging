@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 
 import CommunityReducer from '../components/Home/CommunityReducer';
 import UserReducer from '../components/User/UserReducer';
-import ArtworkReducer from '../components/Artwork/ArtworkReducer';
 import ImageUploaderReducer from '../components/ArtworkAdder/ArtworkAdderReducer';
 import ArtworkEditorReducer from '../components/ArtworkEditor/ArtworkEditorReducer';
 import ArtworksReducer from './ArtworksReducer';
@@ -18,7 +17,6 @@ const rootReducer = combineReducers({
     artists: ArtistsReducer,
     artworks: ArtworksReducer,
     artistsArtworkIds: ArtistArtworkIdsReducer,
-    artwork: ArtworkReducer,
     artworkToEdit: ArtworkEditorReducer,
     imageUploader: ImageUploaderReducer,
     form: FormReducer
