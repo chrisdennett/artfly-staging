@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { addNewArtist } from '../User/UserActions';
+import { addNewArtist } from '../AppControls/UserControls/UserActions';
 import AddOrEditArtist from './AddOrEditArtist';
 import { fetchGallery } from '../ArtistGallery/ArtistGalleryActions';
 import { updateArtist, updateGallery } from '../Settings/SettingsActions';

@@ -7,8 +7,8 @@ import { fetchUserData } from './UserActions';
 
 import Login from './Login';
 import NewUserForm from './NewUserForm';
-import GalleryControls from './GalleryControls/GalleryControls';
-import ArtworkAdder from '../ArtworkAdder/ArtworkAdder';
+import GalleryControls from '../ViewerControls/GalleryControls';
+import ArtworkAdder from '../../ArtworkAdder/ArtworkAdder';
 
 class UserControls extends Component {
 

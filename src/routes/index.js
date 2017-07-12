@@ -8,7 +8,7 @@ import SettingsContainer from "../components/Settings/SettingsContainer";
 import AddOrEditArtistContainer from "../components/AddOrEditArtist/AddOrEditArtistContainer";
 import ArtworkContainer from '../components/Artwork/ArtworkContainer';
 import Home from '../components/Home/Home';
-import UserControls from "../components/User/UserControls";
+import UserControls from "../components/AppControls/UserControls/UserControls";
 import ArtworkEditor from "../components/ArtworkEditor/ArtworkEditor";
 
 const routes = [

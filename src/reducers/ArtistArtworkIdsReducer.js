@@ -1,4 +1,4 @@
-import { ARTIST_ARTWORK_IDS_CHANGE } from '../components/User/UserActions';
+import { ARTIST_ARTWORK_IDS_CHANGE } from '../components/AppControls/UserControls/UserActions';
 
 export default function (state = {}, action) {
 
