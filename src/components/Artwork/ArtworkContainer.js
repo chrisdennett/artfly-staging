@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchArtwork } from '../ArtistGallery/GalleryActions';
+import { fetchArtwork } from '../ArtistGallery/ArtistGalleryActions';
 
 import Artwork from './Artwork';
 

@@ -1,5 +1,5 @@
 import { ADD_ARTWORK_COMPLETE } from '../components/ArtworkAdder/ArtworkAdderActions';
-import { GALLERY_ARTWORK_CHANGE } from '../components/ArtistGallery/GalleryActions';
+import { GALLERY_ARTWORK_CHANGE } from '../components/ArtistGallery/ArtistGalleryActions';
 
 export default function (state = {}, action) {
     switch (action.type) {

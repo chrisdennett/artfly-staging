@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { addNewArtist } from '../User/UserActions';
 import AddOrEditArtist from './AddOrEditArtist';
-import { fetchGallery } from '../ArtistGallery/GalleryActions';
+import { fetchGallery } from '../ArtistGallery/ArtistGalleryActions';
 import { updateArtist, updateGallery } from '../Settings/SettingsActions';
 
 
