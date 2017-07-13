@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import {fetchUserData} from './UserControls/UserActions';
-
-import AppControls from './AppControls';
+import GalleryControls from './GalleryControls';
 
 // Intermediary component so ui component isn't required to call data
-class AppControlsHolder extends Component {
+class GalleryControlsHolder extends Component {
     componentDidMount() {
-        this.props.fetchUserData();
+        // this.props.fetchUserData();
     }
 
     componentDidUpdate(prevProps) {
@@ -19,9 +17,9 @@ class AppControlsHolder extends Component {
 
     render() {
         // const { artwork } = this.props;
-        return <AppControls user={this.props.user}
-                            artworkIds={this.props.artworkIds}
+        return <GalleryControls
                             history={this.props.history}
+                            artworkIds={this.props.artworkIds}
                             galleryId={this.props.galleryId}
                             artworkId={this.props.artworkId} />;
     }
@@ -29,18 +27,17 @@ class AppControlsHolder extends Component {
 
 // Map state to props maps to the intermediary component which uses or passes them through
 const mapStateToProps = (state, ownProps) => {
-    const {galleryId, artworkId} = ownProps.match.params;
+    const {galleryId, artworkId} = ownProps;
 
     return {
-        user: state.user,
         galleryId: galleryId,
         artworkId: artworkId,
         artworkIds: state.artistsArtworkIds[galleryId]
     }
 };
 
-const AppControlsContainer = connect(
-    mapStateToProps, { fetchUserData }
-)(AppControlsHolder);
+const GalleryControlsContainer = connect(
+    mapStateToProps, {  }
+)(GalleryControlsHolder);
 
-export default AppControlsContainer;
+export default GalleryControlsContainer;

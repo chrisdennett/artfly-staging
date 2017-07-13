@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 
-import { uploadImage } from './ArtworkAdderActions';
 import PhotoSelector from './PhotoSelector/PhotoSelector';
 
 /*
@@ -22,7 +19,6 @@ import PhotoSelector from './PhotoSelector/PhotoSelector';
 class ArtworkAdder extends Component {
     constructor(props) {
         super(props);
-
         this.state = { uploadThumb: null, imgHeight: null, imgWidth: null, imgFile: null };
     }
 
@@ -54,20 +50,17 @@ class ArtworkAdder extends Component {
         this.props.uploadImage(this.state.imgFile, this.props.userId, this.state.artistId, imgWidth, imgHeight, (artworkId) => {
             this.props.history.push(`/artwork-editor/${artworkId}`);
         });
-
-        // go to the Artwork Editing page
     }
 
     render() {
         let imgStyle = { display: 'none' };
         let uploadNotificationBox = <span style={{ display: 'none' }}/>;
         let imageLoading = false;
-        const uploadInfo = this.props.imageUploader[this.props.artistId];
+        const {uploadInfo} = this.props;
 
         if (uploadInfo) {
             imageLoading = uploadInfo.progress > 0 && uploadInfo.progress < 100;
             const isNewArtwork = this.state.uploadThumb;
-            // TODO: Notification box should be it's own component.
 
             if (imageLoading) {
                 imgStyle = { width: 60, height: "100%" };
@@ -85,7 +78,6 @@ class ArtworkAdder extends Component {
         return (
             <span>
                 <PhotoSelector id={this.props.artistId}
-                               key={this.props.artistId}
                                disabled={imageLoading}
                                onPhotoSelected={this.onPhotoSelected.bind(this)}/>
 
@@ -101,10 +93,4 @@ class ArtworkAdder extends Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        imageUploader: state.imageUploader
-    }
-}
-
-export default withRouter(connect(mapStateToProps, { uploadImage })(ArtworkAdder));
+export default ArtworkAdder;

@@ -1,19 +1,18 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-import UserControls from './UserControls/UserControls';
-import GalleryControls from './GalleryControls/GalleryControls';
+import UserControlsContainer from './UserControls/UserControlsContainer';
+import GalleryControlsContainer from './GalleryControls/GalleryControlsContainer';
 
-const AppControls = function ({ user, galleryId, artworkId, history, artworkIds }) {
+const AppControls = function ({history, match}) {
+
+    const {galleryId, artworkId} = match.params;
+
     return (
         <div>
-            <GalleryControls history={history}
-                             artworkIds={artworkIds}
-                             galleryId={galleryId}
-                             artworkId={artworkId}/>
-
-            <UserControls user={user}
-                          galleryId={galleryId}
-                          artworkId={artworkId}/>
+            <div className="controls-block"><Link to="/">home</Link></div>
+            <UserControlsContainer history={history} galleryId={galleryId} artworkId={artworkId}/>
+            <GalleryControlsContainer history={history} galleryId={galleryId} artworkId={artworkId} />
         </div>
     )
 };

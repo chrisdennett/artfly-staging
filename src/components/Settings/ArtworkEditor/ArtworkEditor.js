@@ -21,7 +21,7 @@ class ArtworkEditor extends Component {
             }
         }
 
-        if (userStatus === "none" || userStatus === "new" ) {
+        if (userStatus === "none" || userStatus === "new") {
             return (<Redirect to="/"/>)
         }
 
@@ -29,8 +29,8 @@ class ArtworkEditor extends Component {
             <div>
                 <h1>ArtworkEditor</h1>
                 <p>Artwork to edit: {artworkId}</p>
-                <div style={{width:'50%'}}>
-                    <img style={{width:'100%'}} src={imgUrl} alt={altText}/>
+                <div style={{ width: '50%' }}>
+                    <img style={{ width: '100%' }} src={imgUrl} alt={altText}/>
                 </div>
                 <button>Edit Image</button>
                 <hr />
@@ -56,3 +56,31 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default connect(mapStateToProps, {})(ArtworkEditor);
+
+/*
+ // called when slim has initialized
+ slimInit(data, slim) {
+ // slim instance reference
+ console.log(slim);
+
+ // current slim data object and slim reference
+ console.log(data);
+ }
+
+ // called when upload button is pressed or automatically if push is enabled
+ slimService(formdata, progress, success, failure, slim) {
+ // slim instance reference
+ console.log(slim);
+
+ // form data to post to server
+ console.log(formdata);
+
+ // call these methods to handle upload state
+ console.log(progress, success, failure)
+ }
+ */
+
+/*<Slim service={ this.slimService.bind(this) }
+ didInit={ this.slimInit.bind(this) }>
+ <input type="file" accept="image/*" name="artwork"/>
+ </Slim>*/

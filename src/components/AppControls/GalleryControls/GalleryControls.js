@@ -12,7 +12,6 @@ class GalleryControls extends Component {
             nextArtworkId: null,
             prevArtworkId: null
         };
-
     }
 
     componentWillMount(){
@@ -113,7 +112,7 @@ class GalleryControls extends Component {
         }
 
         return (
-            <span>
+            <div className="controls-block">
                 <button style={galleryButtonStyles}
                         onClick={this.goToGalleryEntrance.bind(this)}>Gallery Home</button>
 
@@ -125,7 +124,7 @@ class GalleryControls extends Component {
 
                 <button style={editArtworkButtonStyles}
                         onClick={this.onEditArtworkClick.bind(this)}>Edit artwork</button>
-            </span>
+            </div>
         )
     }
 
