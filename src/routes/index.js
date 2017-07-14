@@ -5,7 +5,8 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import store from '../store';
 import ArtistGalleryContainer from '../components/ArtistGallery/ArtistGalleryContainer';
 import SettingsContainer from "../components/Settings/SettingsContainer";
-import AddOrEditArtistContainer from "../components/Settings/ArtistEditor/ArtistEditorContainer";
+import ArtistEditorContainer from "../components/Settings/ArtistEditor/ArtistEditorContainer";
+import UserEditorContainer from "../components/Settings/UserEditor/UserEditorContainer";
 import ArtworkContainer from '../components/Artwork/ArtworkContainer';
 import AppControls from '../components/AppControls/AppControls'
 import Home from '../components/Home/Home';
@@ -16,7 +17,8 @@ const routes = [
     { path: "/gallery/:galleryId", component: ArtistGalleryContainer },
     { path: "/settings", component: SettingsContainer },
     { path: "/artwork-editor/:artworkId", component: ArtworkEditor },
-    { path: "/add-or-edit-artist/:artistId?", component: AddOrEditArtistContainer },
+    { path: "/add-or-edit-artist/:artistId?", component: ArtistEditorContainer },
+    { path: "/add-or-edit-user/:userId?", component: UserEditorContainer },
     { path: "/", component: Home }
 ];
 

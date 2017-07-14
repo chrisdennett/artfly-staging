@@ -1,39 +1,16 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
-import { createNewUser, logoutUser } from '../../AppControls/UserControls/UserActions';
+
+import FormRenderField from '../../global/FormRenderField'
 
 class NewUserForm extends Component {
-
-    renderField(field) {
-        // pulling meta out of field.  And also pulling touched and error out of meta.
-        const { meta: { touched, error } } = field;
-        const className = `form-group ${touched && error ? 'has-danger' : ''}`;
-
-        return (
-            <div className={className}>
-                <label>{field.label}</label>
-                {/*The es6 {...field.input} links all events to reduxForm
-                 It's a shortcut for dong onChange={field.input.onChange} for all events
-                 */}
-                <input
-                    className="form-control"
-                    type="text"
-                    {...field.input}
-                />
-                <div className="text-help">
-                    { touched ? error : '' }
-                </div>
-            </div>
-        );
-    }
 
     onNewUserFormSubmit(values) {
         this.props.createNewUser(this.props.user.uid, values);
     }
 
     onFormCancel(){
-        this.props.logoutUser();
+        this.props.deleteUser();
     }
 
     render() {
@@ -50,20 +27,20 @@ class NewUserForm extends Component {
                     <Field
                         name="artistName"
                         label="Artist"
-                        component={this.renderField}
+                        component={FormRenderField}
                     />
                     <Field
                         name="email"
                         label="Email"
-                        component={this.renderField}
+                        component={FormRenderField}
                     />
                     <Field
                         name="galleryName"
                         label="Gallery Name"
-                        component={this.renderField}
+                        component={FormRenderField}
                     />
                     <button type="submit" className="btn btn-primary">Submit</button>
-                    <button onClick={this.onFormCancel.bind(this)} className="btn btn-danger">Cancel</button>
+                    <button type="button" onClick={this.onFormCancel.bind(this)} className="btn btn-danger">Cancel</button>
                 </form>
             </div>
         );
@@ -99,17 +76,5 @@ NewUserForm = reduxForm({
     form: 'NewUserForm', // a unique identifier for this form
     validate
 })(NewUserForm);
-
-// You have to connect() to any reducers that you wish to connect to yourself
-NewUserForm = connect(
-    state => ({
-        initialValues: {
-            artistName: state.user.displayName,
-            email: state.user.email,
-            galleryName: `The curious gallery of ${state.user.displayName}`
-        }
-    })
-    , { createNewUser, logoutUser }
-)(NewUserForm);
 
 export default NewUserForm

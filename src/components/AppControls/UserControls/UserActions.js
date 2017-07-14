@@ -6,7 +6,7 @@ export const CREATE_USER = 'create_user';
 export const FETCH_USER = "fetchUser";
 export const LOGIN_USER = "loginUser";
 export const LOGOUT_USER = "logoutUser";
-export const ARTIST_ARTWORK_IDS_CHANGE = "artistArtworkIdsChange";
+export const DELETE_USER = "deleteUser";
 export const ADD_USER_ARTIST = 'addUserArtist';
 
 export function fetchUserData() {
@@ -175,11 +175,24 @@ export function loginUser() {
     }
 }
 
-export function logoutUser() {
+export function logoutUser(user) {
     return dispatch => {
         firebase.auth().signOut().then(function () {
             dispatch({
                 type: LOGOUT_USER,
+                payload: "success"
+            })
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+}
+
+export function deleteUser() {
+    return dispatch => {
+        fb.auth().currentUser.delete().then(function () {
+            dispatch({
+                type: DELETE_USER,
                 payload: "success"
             })
         }).catch((error) => {

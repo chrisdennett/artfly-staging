@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
-import FormRenderField from '../../global/FormRenderField';
 import { Link } from 'react-router-dom';
+
+import FormRenderField from '../../global/FormRenderField';
 
 class ArtistEditor extends Component {
     render() {
@@ -34,8 +35,11 @@ class ArtistEditor extends Component {
                         label="Artist biog: "
                         component={FormRenderField}
                     />
-                    <button type="submit" className="btn btn-primary">
+                    <button type="submit">
                         Submit
+                    </button>
+                    <button type="button" onClick={this.props.deleteArtist.bind(this)}>
+                        Delete
                     </button>
                     <Link to={`/settings/`}>Cancel</Link>
                 </form>

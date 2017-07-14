@@ -5,7 +5,6 @@ import UserControlsContainer from './UserControls/UserControlsContainer';
 import GalleryControlsContainer from './GalleryControls/GalleryControlsContainer';
 
 const AppControls = function ({ history, match }) {
-
     const { galleryId, artworkId } = match.params;
 
     return (

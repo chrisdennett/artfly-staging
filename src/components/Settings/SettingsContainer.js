@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import Settings from './Settings';
 import { fetchGallery, fetchArtist, fetchGalleryArtistArtworkIds } from '../ArtistGallery/ArtistGalleryActions';
@@ -33,19 +34,27 @@ class SettingsHolder extends Component {
     componentDidMount() {
         this.fetchAllGalleries()
     }
-    fetchAllGalleries(){
+
+    fetchAllGalleries() {
         const artistGalleryIds = Object.keys(this.props.artistGalleryIds);
-        for(let artistGalleryId of artistGalleryIds){
+        for (let artistGalleryId of artistGalleryIds) {
             this.props.fetchGallery(artistGalleryId);
             this.props.fetchGallery(artistGalleryId);
             this.props.fetchArtist(artistGalleryId);
             this.props.fetchGalleryArtistArtworkIds(artistGalleryId);
         }
     }
+
     componentDidUpdate(prevProps) {
-        this.fetchAllGalleries()
+        this.fetchAllGalleries();
     }
+
     render() {
+
+        if (this.props.userStatus === "none") {
+            return <Redirect to={'/'}/>
+        }
+
         const { artistGalleries } = this.props;
         return <Settings artistGalleries={artistGalleries}/>;
     }
@@ -56,6 +65,7 @@ const mapStateToProps = (state) => {
     const artistGalleries = getUserArtistGalleries(artistGalleryIds, state.artists, state.galleries, state.artistsArtworkIds);
 
     return {
+        userStatus: state.user.status,
         artistGalleryIds: artistGalleryIds,
         artistGalleries: artistGalleries
     }

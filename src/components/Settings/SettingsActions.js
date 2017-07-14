@@ -1,6 +1,4 @@
 import firebase from '../../firebase/firebaseConfig';
-// TODO: I think I should be able to do away with this through first import
-//import * as fb from 'firebase';
 
 export const ARTIST_UPDATED = 'artistUpdated';
 export const ARTIST_DELETED = 'artistDeleted';
@@ -43,19 +41,19 @@ export function updateArtist(artistId, artistData, callback) {
     }
 }
 
-export function deleteArtist(artistId, userId, galleryId, callback) {
+export function deleteArtist(galleryArtistId, userId, callback) {
     return dispatch => {
         const db = firebase.database();
-        const artistRef = db.ref(`user-data/artists/${artistId}`);
-        const artistArtworkIdsRef = db.ref(`user-data/artistArtworkIds/${artistId}`);
-        const userArtistRef = db.ref(`user-data/users/${userId}/artistIds/${artistId}`);
-        const galleryArtistRef = db.ref(`user-data/galleries/${galleryId}/artistIds/${artistId}`);
+        const artistRef = db.ref(`user-data/artists/${galleryArtistId}`);
+        const artistArtworkIdsRef = db.ref(`user-data/artistArtworkIds/${galleryArtistId}`);
+        const userArtistRef = db.ref(`user-data/users/${userId}/artistGalleryIds/${galleryArtistId}`);
+        const galleryArtistRef = db.ref(`user-data/galleries/${galleryArtistId}`);
 
         artistArtworkIdsRef
             .once('value')
             .then(snapshot => {
                 const artworkIdObj = snapshot.val();
-                if (artworkIdObj) {
+                if (artworkIdObj && snapshot.val()) {
                     const artworkIds = Object.keys(snapshot.val());
                     for (let id of artworkIds) {
                         deleteArtwork(id, userId, dispatch);
@@ -63,17 +61,22 @@ export function deleteArtist(artistId, userId, galleryId, callback) {
                 }
 
                 // delete the artist data
+                console.log("artistRef: ", artistRef);
                 artistRef.remove();
                 // delete the artists artwork Id list
+                console.log("artistArtworkIdsRef: ", artistArtworkIdsRef);
                 artistArtworkIdsRef.remove();
                 // delete the reference to the artist in the user data
+                console.log("userArtistRef: ", userArtistRef);
                 userArtistRef.remove();
                 // delete the reference to the artist in the gallery data
+                console.log("galleryArtistRef: ", galleryArtistRef);
                 galleryArtistRef.remove();
+                console.log("galleryArtistRef - AFTER");
 
                 dispatch({
                     type: ARTIST_DELETED,
-                    payload: artistId
+                    payload: galleryArtistId
                 });
 
                 if (callback) callback();
@@ -84,12 +87,16 @@ export function deleteArtist(artistId, userId, galleryId, callback) {
 function deleteArtwork(artworkId, userId, dispatch) {
     // delete image in storage
     const imageStorageRef = firebase.storage().ref();
+    console.log("imageStorageRef: ", imageStorageRef);
     const userPicturesRef = imageStorageRef.child(`userContent/${userId}/${artworkId}`);
+    console.log("userPicturesRef: ", userPicturesRef);
     userPicturesRef.delete().then(() => {
 
         // delete artwork data
         const artworkDataRef = firebase.database().ref(`user-data/artworks/${artworkId}`);
+        console.log("artworkDataRef: ", artworkDataRef);
         artworkDataRef.remove();
+        console.log("artworkDataRef: AFTER");
 
         dispatch({
             type: ARTWORK_DELETED,

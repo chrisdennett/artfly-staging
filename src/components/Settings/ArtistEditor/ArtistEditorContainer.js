@@ -2,23 +2,31 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { addNewArtist } from '../../AppControls/UserControls/UserActions';
-import ArtistEditor from './ArtistEditor';
-import { fetchGallery } from '../../ArtistGallery/ArtistGalleryActions';
-import { updateArtist, updateGallery } from '../SettingsActions';
+import { fetchGallery, fetchArtist, fetchGalleryArtistArtworkIds } from '../../ArtistGallery/ArtistGalleryActions';
+import { updateArtist, updateGallery, deleteArtist } from '../SettingsActions';
 
+import ArtistEditor from './ArtistEditor';
 
 // Created an intermediate component so can trigger the data loading outside
 class ArtistEditorHolder extends Component {
     componentDidMount() {
         // Fetch artistGallery data if artistId is in params
-        if (this.props.match.params.artistId) {
-            this.props.fetchGallery(this.props.match.params.artistId);
+        const artistGalleryId = this.props.match.params.artistId;
+        if (artistGalleryId) {
+            this.initData(artistGalleryId);
         }
     }
 
+    initData(artistGalleryId){
+        this.props.fetchGallery(artistGalleryId);
+        this.props.fetchArtist(artistGalleryId);
+        this.props.fetchGalleryArtistArtworkIds(artistGalleryId);
+    }
+
     componentDidUpdate() {
-        if (this.props.match.params.artistId) {
-            this.props.fetchGallery(this.props.match.params.artistId);
+        const artistGalleryId = this.props.match.params.artistId;
+        if (artistGalleryId) {
+            this.initData(artistGalleryId);
         }
     }
 
@@ -29,6 +37,14 @@ class ArtistEditorHolder extends Component {
         // imagine there'll be other locations so this should send they back there.
         this.props.onSubmit(userId, formType, values, artistId, () => {
             history.push("/settings/")
+        });
+    }
+
+    deleteArtist(){
+        const {userId, match, history} = this.props;
+        const {artistId} = match.params;
+        this.props.deleteArtist(artistId, userId, () => {
+            history.push(`/settings/`);
         });
     }
 
@@ -44,6 +60,7 @@ class ArtistEditorHolder extends Component {
         return <ArtistEditor
             initialValues={initialValues}
             formType={formType}
+            deleteArtist={this.deleteArtist.bind(this)}
             onSubmit={this.onSubmit.bind(this)}/>;
     }
 }
@@ -86,8 +103,17 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        fetchGallery: (artistId) => {
-            dispatch(fetchGallery(artistId));
+        fetchGallery: (artistGalleryId) => {
+            dispatch(fetchGallery(artistGalleryId));
+        },
+        fetchArtist: (artistGalleryId) => {
+            dispatch(fetchArtist(artistGalleryId));
+        },
+        fetchGalleryArtistArtworkIds: (artistGalleryId) => {
+            dispatch(fetchGalleryArtistArtworkIds(artistGalleryId));
+        },
+        deleteArtist: (artistGalleryId, userId, callback) => {
+            dispatch(deleteArtist(artistGalleryId, userId, callback));
         },
         onSubmit: (userId, formType, values, artistId, callback) => {
             if (formType === "new") {
@@ -101,7 +127,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 dispatch(updateArtist(artistId, newArtistData, callback));
                 dispatch(updateGallery(artistId, newGalleryData, callback));
             }
-
         }
     }
 };

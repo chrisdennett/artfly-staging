@@ -1,7 +1,8 @@
 import {
     FETCH_USER,
     CREATE_USER,
-    LOGOUT_USER
+    LOGOUT_USER,
+    DELETE_USER
 } from './UserActions';
 
 export default function (state = {}, action) {
@@ -9,6 +10,9 @@ export default function (state = {}, action) {
     switch (action.type) {
 
         case LOGOUT_USER:
+            return {status:'none'};
+
+        case DELETE_USER:
             return {};
 
         case FETCH_USER:
