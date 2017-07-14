@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import MyGalleries from './Settings';
-import { fetchGallery } from '../ArtistGallery/ArtistGalleryActions';
+import Settings from './Settings';
+import { fetchGallery, fetchArtist, fetchGalleryArtistArtworkIds } from '../ArtistGallery/ArtistGalleryActions';
 
 const getUserArtistGalleries = (artistGalleryIdsObject, artists, galleries, artistsArtworkIds) => {
     const artistGalleryIds = Object.keys(artistGalleryIdsObject);
@@ -35,8 +35,11 @@ class SettingsHolder extends Component {
     }
     fetchAllGalleries(){
         const artistGalleryIds = Object.keys(this.props.artistGalleryIds);
-        for(let id of artistGalleryIds){
-            this.props.fetchGallery(id);
+        for(let artistGalleryId of artistGalleryIds){
+            this.props.fetchGallery(artistGalleryId);
+            this.props.fetchGallery(artistGalleryId);
+            this.props.fetchArtist(artistGalleryId);
+            this.props.fetchGalleryArtistArtworkIds(artistGalleryId);
         }
     }
     componentDidUpdate(prevProps) {
@@ -44,7 +47,7 @@ class SettingsHolder extends Component {
     }
     render() {
         const { artistGalleries } = this.props;
-        return <MyGalleries artistGalleries={artistGalleries}/>;
+        return <Settings artistGalleries={artistGalleries}/>;
     }
 }
 
@@ -59,7 +62,7 @@ const mapStateToProps = (state) => {
 };
 
 const SettingsContainer = connect(
-    mapStateToProps, { fetchGallery }
+    mapStateToProps, { fetchGallery, fetchArtist, fetchGalleryArtistArtworkIds }
 )(SettingsHolder);
 
 export default SettingsContainer;

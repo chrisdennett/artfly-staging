@@ -2,65 +2,32 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import ArtistGallery from './ArtistGallery';
-import { fetchGallery } from './ArtistGalleryActions';
-
-const defaultGallery = { name: "", status: "loading", artistId: null };
-const defaultGalleryArtist = { name: "", status: "loading", artworkIds: [] };
-
-const getCurrentGallery = (currentGalleryId, galleries) => {
-    let gallery = defaultGallery;
-    let artistId = null;
-    if (galleries[currentGalleryId]) {
-        gallery = galleries[currentGalleryId];
-        artistId = currentGalleryId;
-    }
-
-    gallery.artistId = artistId;
-    return gallery;
-};
-
-const getGalleryArtist = (artistId, artists, artistsArtworkIds) => {
-    let galleryArtist = defaultGalleryArtist;
-    if (artists[artistId]) {
-        galleryArtist = artists[artistId];
-
-        if (artistsArtworkIds[artistId]) {
-            galleryArtist.artworkIds = artistsArtworkIds[artistId];
-        }
-    }
-    return galleryArtist;
-};
-
-const getTotalArworks = (artistArworksIds, artistGalleryId) => {
-    return !artistArworksIds[artistGalleryId] ? "-" : Object.keys(artistArworksIds[artistGalleryId]).length;
-};
-
-/*const getArtistArtworks = (galleryArtworkIds, artworks) => {
-    let galleryArtworks = [];
-    if (galleryArtworkIds) {
-        for (let id of Object.keys(galleryArtworkIds)) {
-            if (artworks[id]) {
-                galleryArtworks.push(artworks[id]);
-            }
-        }
-    }
-    return galleryArtworks;
-};*/
+import { fetchGallery, fetchArtist, fetchGalleryArtistArtworkIds } from './ArtistGalleryActions';
 
 // Intermediary component so ui component isn't required to call data
 class ArtistGalleryHolder extends Component {
     componentDidMount() {
-        this.props.fetchGallery(this.props.galleryId);
+        this.initData(this.props.galleryId);
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.galleryId !== prevProps.galleryId) {
-            this.props.fetchGallery(this.props.galleryId);
+    initData(artistGalleryId){
+        this.props.fetchGallery(artistGalleryId);
+        this.props.fetchArtist(artistGalleryId);
+        this.props.fetchGalleryArtistArtworkIds(artistGalleryId);
+    }
+
+    componentWillUpdate(nextProps) {
+        if (this.props.galleryId !== nextProps.galleryId) {
+            this.initData(nextProps.galleryId);
         }
     }
 
     render() {
         const { gallery, artist, totalArtworks } = this.props;
+        if(!gallery || !artist || !artist){
+            return <div>Artist Gallery Loading</div>;
+        }
+
         return <ArtistGallery gallery={gallery} artist={artist} totalArtworks={totalArtworks}/>;
     }
 }
@@ -68,21 +35,18 @@ class ArtistGalleryHolder extends Component {
 // Map state to props maps to the intermediary component which uses or passes them through
 const mapStateToProps = (state, ownProps) => {
     const { galleryId } = ownProps.match.params;
-    const gallery = getCurrentGallery(galleryId, state.galleries);
-    const artist = getGalleryArtist(gallery.artistId, state.artists, state.artistsArtworkIds);
-    const totalArtworks = getTotalArworks(state.artistsArtworkIds, galleryId);
-    // const artworks = getArtistArtworks(artist.artworkIds, state.artworks);
+    const totalArtworks = !state.artistsArtworkIds[galleryId] ? 0 : Object.keys(state.artistsArtworkIds[galleryId]).length;
 
     return {
         galleryId: galleryId,
-        gallery: gallery,
-        artist: artist,
+        gallery: state.galleries[galleryId],
+        artist: state.artists[galleryId],
         totalArtworks: totalArtworks
     }
 };
 
 const ArtistGalleryContainer = connect(
-    mapStateToProps, { fetchGallery }
+    mapStateToProps, { fetchGallery, fetchArtist, fetchGalleryArtistArtworkIds }
 )(ArtistGalleryHolder);
 
 export default ArtistGalleryContainer;

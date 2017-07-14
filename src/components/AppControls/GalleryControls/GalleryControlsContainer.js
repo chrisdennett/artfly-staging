@@ -1,27 +1,32 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import {fetchGalleryArtistArtworkIds} from '../../ArtistGallery/ArtistGalleryActions';
+
 import GalleryControls from './GalleryControls';
 
 // Intermediary component so ui component isn't required to call data
 class GalleryControlsHolder extends Component {
     componentDidMount() {
-        // this.props.fetchUserData();
+        this.initData(this.props.galleryId);
     }
 
-    componentDidUpdate(prevProps) {
-        /*if (this.props.artworkId !== prevProps.artworkId) {
-            this.props.fetchArtwork(this.props.artworkId);
-        }*/
+    initData(artistGalleryId){
+        this.props.fetchGalleryArtistArtworkIds(artistGalleryId);
+    }
+
+    componentWillUpdate(nextProps) {
+        this.initData(this.props.galleryId);
     }
 
     render() {
-        // const { artwork } = this.props;
+        const {artworkId, galleryId, artworkIds, history} = this.props;
+
         return <GalleryControls
-                            history={this.props.history}
-                            artworkIds={this.props.artworkIds}
-                            galleryId={this.props.galleryId}
-                            artworkId={this.props.artworkId} />;
+                            history={history}
+                            artworkIds={artworkIds}
+                            galleryId={galleryId}
+                            artworkId={artworkId} />;
     }
 }
 
@@ -37,7 +42,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const GalleryControlsContainer = connect(
-    mapStateToProps, {  }
+    mapStateToProps, { fetchGalleryArtistArtworkIds }
 )(GalleryControlsHolder);
 
 export default GalleryControlsContainer;

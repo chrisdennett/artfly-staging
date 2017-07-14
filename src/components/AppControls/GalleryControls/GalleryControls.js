@@ -1,7 +1,4 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
-
-import { setArtworkToEdit } from '../../Settings/ArtworkEditor/ArtworkEditorActions';
 
 class GalleryControls extends Component {
 
@@ -133,10 +130,4 @@ class GalleryControls extends Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {
-
-    }
-}
-
-export default connect(mapStateToProps, { setArtworkToEdit })(GalleryControls);
+export default GalleryControls;

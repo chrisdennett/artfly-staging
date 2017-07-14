@@ -8,8 +8,7 @@ export default function (state = {}, action) {
             return state;
 
         case FETCH_GALLERY:
-            const galleryId = action.payload.galleryId;
-            return {...state, [galleryId]:action.payload};
+            return { ...state, ...action.payload };
 
         default:
             return state;
