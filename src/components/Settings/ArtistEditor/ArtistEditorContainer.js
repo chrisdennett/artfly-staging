@@ -16,38 +16,44 @@ class ArtistEditorHolder extends Component {
             this.initData(artistGalleryId);
         }
     }
-
-    initData(artistGalleryId){
-        this.props.fetchGallery(artistGalleryId);
-        this.props.fetchArtist(artistGalleryId);
-        this.props.fetchGalleryArtistArtworkIds(artistGalleryId);
-    }
-
     componentDidUpdate() {
         const artistGalleryId = this.props.match.params.artistId;
         if (artistGalleryId) {
             this.initData(artistGalleryId);
         }
     }
-
-    onSubmit(values) {
-        const {userId, formType, match, history} = this.props;
-        const {artistId} = match.params;
-        // TODO: Currently they can only get here from settings, but in the future I
-        // imagine there'll be other locations so this should send they back there.
-        this.props.onSubmit(userId, formType, values, artistId, () => {
-            history.push("/settings/")
-        });
+    initData(artistGalleryId) {
+        this.props.fetchGallery(artistGalleryId);
+        this.props.fetchArtist(artistGalleryId);
+        this.props.fetchGalleryArtistArtworkIds(artistGalleryId);
     }
+    onSubmit(values) {
+        const { userId, formType, match, history, addNewArtist, updateArtist, updateGallery } = this.props;
+        const { artistId } = match.params;
 
-    deleteArtist(){
-        const {userId, match, history} = this.props;
-        const {artistId} = match.params;
+        if (formType === "new") {
+            addNewArtist(userId, values, () => {
+                history.push("/settings/");
+            });
+        }
+        else {
+            const { artistName, biog, galleryName } = values;
+            const newArtistData = { name: artistName, biog: biog };
+            const newGalleryData = { name: galleryName };
+            // update artist and gallery
+            updateArtist(artistId, newArtistData);
+            updateGallery(artistId, newGalleryData, () => {
+                history.push("/settings/");
+            });
+        }
+    }
+    deleteArtist() {
+        const { userId, match, history } = this.props;
+        const { artistId } = match.params;
         this.props.deleteArtist(artistId, userId, () => {
             history.push(`/settings/`);
         });
     }
-
     render() {
         const { initialValues, formType, status } = this.props;
 
@@ -101,38 +107,16 @@ const mapStateToProps = (state, ownProps) => {
     }
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        fetchGallery: (artistGalleryId) => {
-            dispatch(fetchGallery(artistGalleryId));
-        },
-        fetchArtist: (artistGalleryId) => {
-            dispatch(fetchArtist(artistGalleryId));
-        },
-        fetchGalleryArtistArtworkIds: (artistGalleryId) => {
-            dispatch(fetchGalleryArtistArtworkIds(artistGalleryId));
-        },
-        deleteArtist: (artistGalleryId, userId, callback) => {
-            dispatch(deleteArtist(artistGalleryId, userId, callback));
-        },
-        onSubmit: (userId, formType, values, artistId, callback) => {
-            if (formType === "new") {
-                dispatch(addNewArtist(userId, values, callback));
-            }
-            else {
-                const { artistName, biog, galleryName } = values;
-                const newArtistData = { name: artistName, biog: biog };
-                const newGalleryData = { name: galleryName };
-                // update artist and gallery
-                dispatch(updateArtist(artistId, newArtistData, callback));
-                dispatch(updateGallery(artistId, newGalleryData, callback));
-            }
-        }
-    }
-};
-
 const ArtistEditorContainer = connect(
-    mapStateToProps, mapDispatchToProps
+    mapStateToProps, {
+        fetchGallery,
+        fetchArtist,
+        fetchGalleryArtistArtworkIds,
+        deleteArtist,
+        addNewArtist,
+        updateArtist,
+        updateGallery
+    }
 )(ArtistEditorHolder);
 
 export default ArtistEditorContainer;
