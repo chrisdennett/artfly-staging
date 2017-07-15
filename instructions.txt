@@ -1,5 +1,23 @@
 ********************************************************************************
 ********************************************************************************
+BUILD AND DEPLOY
+// build the app
+npm run build
+
+// deploy to firebase
+// pick staging or default
+firebase use staging
+firebase use default
+
+firebase deploy
+firebase open hosting:site
+
+// open some other part of the firebase project using
+firebase open
+// and select the option
+
+********************************************************************************
+********************************************************************************
 
 // commit changes to git
 CTRL K - use the version control panel to check changes - and push at the same time

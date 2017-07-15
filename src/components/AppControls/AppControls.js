@@ -6,6 +6,11 @@ import GalleryControlsContainer from './GalleryControls/GalleryControlsContainer
 
 const AppControls = function ({ history, match }) {
     const { galleryId, artworkId } = match.params;
+    const deployToLive = true;
+
+    if(deployToLive){
+        return null;
+    }
 
     return (
         <div>
