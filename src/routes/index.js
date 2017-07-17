@@ -1,7 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-// import createHistory from 'history/createBrowserHistory'
 import ReactGA from 'react-ga';
 ReactGA.initialize('UA-102619335-1'); //Unique Google Analytics tracking number
 
@@ -25,26 +24,11 @@ const routes = [
     { path: "/", component: Home }
 ];
 
-/*
- ~ The two switch statements are the simplest way I've found to ensure parameters are passed to the UserControls
- */
-/*const history = createHistory();
-history.listen((location, action) => {
-    ReactGA.set({ page: location.pathname });
-    ReactGA.pageview(location.pathname);
-});*/
-
 export default (
     <Provider store={store}>
         <BrowserRouter history={history}>
             <div>
                 <Switch>
-                    <Route path="/" render={({location}) => {
-                        console.log("location: ", location);
-                        ReactGA.set({ page: location.pathname });
-                        ReactGA.pageview(location.pathname);
-                        return null;
-                    }} />
                     {routes.map((route, index) => (
                         <Route
                             key={index}
@@ -52,6 +36,12 @@ export default (
                             component={AppControls}
                         />
                     ))}
+                    <Route path="/" render={({location}) => {
+                        console.log("location: ", location);
+                        ReactGA.set({ page: location.pathname });
+                        ReactGA.pageview(location.pathname);
+                        return null;
+                    }} />
                 </Switch>
 
                 <Switch>

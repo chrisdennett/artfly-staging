@@ -2,7 +2,40 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
+import { updateArtwork } from './ArtworkEditorActions';
+import { fetchArtwork, fetchArtist } from '../../ArtistGallery/ArtistGalleryActions';
+
 class ArtworkEditor extends Component {
+
+    componentWillMount() {
+        this.initData();
+    }
+
+    componentDidUpdate() {
+        this.initData();
+    }
+
+    initData() {
+        const { artworkId } = this.props.match.params;
+        // only fetch if not already available
+        this.props.fetchArtwork(artworkId);
+        const {artistGalleryIds} = this.props.user;
+        if(artistGalleryIds){
+            for(let id of Object.keys(artistGalleryIds)){
+                this.props.fetchArtist(id);
+            }
+        }
+    }
+
+    onDone() {
+        const { artworkId } = this.props.match.params;
+        const oldArtworkData = this.props.artworks[artworkId];
+        const newArtworkData = {
+            artistId: "-KpFB1LhNM_2vdhNx9vF"
+        };
+
+        this.props.updateArtwork(artworkId, oldArtworkData, newArtworkData);
+    }
 
     render() {
         const userStatus = this.props.user.status;
@@ -15,7 +48,6 @@ class ArtworkEditor extends Component {
             if (this.props.artworks && this.props.artworks[artworkId]) {
                 // TODO: The artist here is just the id, need to get the artists list as well.
                 const { url, artist } = this.props.artworks[artworkId];
-
                 imgUrl = url;
                 altText = `Artwork by ${artist}`
             }
@@ -34,7 +66,13 @@ class ArtworkEditor extends Component {
                 </div>
                 <button>Edit Image</button>
                 <hr />
-                <button>DONE</button>
+                <select>
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                </select>
+                <button onClick={this.onDone.bind(this)}>DONE</button>
                 <button>Cancel changes</button>
                 <button>Delete Image</button>
             </div>
@@ -55,7 +93,7 @@ function mapStateToProps(state, ownProps) {
     }
 }
 
-export default connect(mapStateToProps, {})(ArtworkEditor);
+export default connect(mapStateToProps, { updateArtwork, fetchArtwork, fetchArtist })(ArtworkEditor);
 
 /*
  // called when slim has initialized

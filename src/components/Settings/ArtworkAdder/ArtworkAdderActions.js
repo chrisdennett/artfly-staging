@@ -63,7 +63,7 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
                 const newArtworkData = {
                     id: artworkRef.key,
                     adminId: userId,
-                    artist: artistId,
+                    artistId: artistId,
                     url: uploadTask.snapshot.downloadURL,
                     imgWidth: imgWidth,
                     imgHeight: imgHeight,
@@ -80,11 +80,7 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
                             .then(() => {
                                 dispatch({
                                     type: ADD_ARTWORK_COMPLETE,
-                                    payload: {
-                                        artistId:artistId,
-                                        progress:100,
-                                        artwork: newArtworkData
-                                    }
+                                    payload: { [artistId]: newArtworkData }
                                 });
                             })
                             .catch(function (error) {

@@ -138,7 +138,6 @@ export function createNewUser(authId, formValues, callback = null) {
                     .set({
                         name: formValues.artistName,
                         biog: "The artists' artist.",
-                        artistGalleryId: artistGalleryRef.key,
                         adminId: authId
                     })
                     .then(() => {
@@ -188,6 +187,8 @@ export function logoutUser(user) {
     }
 }
 
+// TODO: Currently this is just used to clear auth assuming the user has no other data
+// Rename this or update so it deletes all data
 export function deleteUser() {
     return dispatch => {
         fb.auth().currentUser.delete().then(function () {

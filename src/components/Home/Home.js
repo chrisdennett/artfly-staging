@@ -11,11 +11,11 @@ class Home extends Component {
 
     render() {
         const { featuredGallery } = this.props.communityData;
-        const deployToLive = true;
+        /*const deployToLive = false;
 
         if(deployToLive){
             return <h1 style={{width:'100%', textAlign:'centre', padding: 42}}>ArtFly</h1>;
-        }
+        }*/
 
         return (
             <div>

@@ -61,18 +61,13 @@ export function deleteArtist(galleryArtistId, userId, callback) {
                 }
 
                 // delete the artist data
-                console.log("artistRef: ", artistRef);
                 artistRef.remove();
                 // delete the artists artwork Id list
-                console.log("artistArtworkIdsRef: ", artistArtworkIdsRef);
                 artistArtworkIdsRef.remove();
                 // delete the reference to the artist in the user data
-                console.log("userArtistRef: ", userArtistRef);
                 userArtistRef.remove();
-                // delete the reference to the artist in the gallery data
-                console.log("galleryArtistRef: ", galleryArtistRef);
+                // delete the artist gallery
                 galleryArtistRef.remove();
-                console.log("galleryArtistRef - AFTER");
 
                 dispatch({
                     type: ARTIST_DELETED,

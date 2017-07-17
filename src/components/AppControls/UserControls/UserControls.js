@@ -19,7 +19,7 @@ const UserControls = function (props) {
     else {
         renderContent =
             <span>
-                {!props.artworkId ? "" : <button>edit artwork</button>  }
+                {!props.artworkId ? "" : <Link to={`/artwork-editor/${props.artworkId}`}>EDIT</Link> }
 
                 <ArtworkAdderContainer history={props.history}
                                        galleryId={props.galleryId}/>

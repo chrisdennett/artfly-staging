@@ -114,8 +114,12 @@ export function fetchArtworkInternal(artworkId, dispatch) {
             type: FETCH_ARTWORK_ALREADY_CACHED,
             payload: {}
         });
+
+        console.log("already cached -> artworkId: ", artworkId);
         return;
     }
+
+    artworkListenersRef.push(artworkId);
 
     firebase.database()
         .ref('user-data/artworks/' + artworkId)
