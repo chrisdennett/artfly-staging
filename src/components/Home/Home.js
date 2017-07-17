@@ -14,7 +14,7 @@ class Home extends Component {
         const deployToLive = true;
 
         if(deployToLive){
-            return <h1>ArtFly</h1>;
+            return <h1 style={{width:'100%', textAlign:'centre', padding: 42}}>ArtFly</h1>;
         }
 
         return (
