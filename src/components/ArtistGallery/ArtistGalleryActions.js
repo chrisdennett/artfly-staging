@@ -115,7 +115,6 @@ export function fetchArtworkInternal(artworkId, dispatch) {
             payload: {}
         });
 
-        console.log("already cached -> artworkId: ", artworkId);
         return;
     }
 

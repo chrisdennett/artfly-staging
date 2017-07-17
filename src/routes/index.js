@@ -10,15 +10,15 @@ import SettingsContainer from "../components/Settings/SettingsContainer";
 import ArtistEditorContainer from "../components/Settings/ArtistEditor/ArtistEditorContainer";
 import UserEditorContainer from "../components/Settings/UserEditor/UserEditorContainer";
 import ArtworkContainer from '../components/Artwork/ArtworkContainer';
+import ArtworkEditorContainer from "../components/Settings/ArtworkEditor/ArtworkEditorContainer";
 import AppControls from '../components/AppControls/AppControls'
 import Home from '../components/Home/Home';
-import ArtworkEditor from "../components/Settings/ArtworkEditor/ArtworkEditor";
 
 const routes = [
     { path: "/gallery/:galleryId/artwork/:artworkId", component: ArtworkContainer },
     { path: "/gallery/:galleryId", component: ArtistGalleryContainer },
     { path: "/settings", component: SettingsContainer },
-    { path: "/artwork-editor/:artworkId", component: ArtworkEditor },
+    { path: "/artwork-editor/:artworkId", component: ArtworkEditorContainer },
     { path: "/add-or-edit-artist/:artistId?", component: ArtistEditorContainer },
     { path: "/add-or-edit-user/:userId?", component: UserEditorContainer },
     { path: "/", component: Home }

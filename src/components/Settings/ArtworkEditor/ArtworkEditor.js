@@ -1,35 +1,12 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-
-import { updateArtwork } from './ArtworkEditorActions';
-import { fetchArtwork, fetchArtist } from '../../ArtistGallery/ArtistGalleryActions';
+import _ from 'lodash';
 
 class ArtworkEditor extends Component {
 
-    componentWillMount() {
-        this.initData();
-    }
-
-    componentDidUpdate() {
-        this.initData();
-    }
-
-    initData() {
-        const { artworkId } = this.props.match.params;
-        // only fetch if not already available
-        this.props.fetchArtwork(artworkId);
-        const {artistGalleryIds} = this.props.user;
-        if(artistGalleryIds){
-            for(let id of Object.keys(artistGalleryIds)){
-                this.props.fetchArtist(id);
-            }
-        }
-    }
-
     onDone() {
-        const { artworkId } = this.props.match.params;
-        const oldArtworkData = this.props.artworks[artworkId];
+        const { artworkId } = this.props;
+        const oldArtworkData = this.props.artwork; // ERROR HERE
         const newArtworkData = {
             artistId: "-KpFB1LhNM_2vdhNx9vF"
         };
@@ -37,40 +14,51 @@ class ArtworkEditor extends Component {
         this.props.updateArtwork(artworkId, oldArtworkData, newArtworkData);
     }
 
+    onArtistSelectChange(event){
+        console.log("value: ", event.target.value);
+    }
+
     render() {
-        const userStatus = this.props.user.status;
-        const { artworkId } = this.props.match.params;
-
-        let imgUrl = "";
-        let altText = "";
-
-        if (artworkId) {
-            if (this.props.artworks && this.props.artworks[artworkId]) {
-                // TODO: The artist here is just the id, need to get the artists list as well.
-                const { url, artist } = this.props.artworks[artworkId];
-                imgUrl = url;
-                altText = `Artwork by ${artist}`
-            }
-        }
+        const { artwork, userStatus, artist } = this.props;
 
         if (userStatus === "none" || userStatus === "new") {
             return (<Redirect to="/"/>)
         }
 
+        let imgUrl = "";
+        let altText = "";
+        let artistId = null;
+
+        if (artwork && artist) {
+            const { url } = artwork;
+            imgUrl = url;
+            altText = `Artwork by ${artist.name}`;
+            artistId = artwork.artistId;
+        }
+        else{
+            return <div>Loading something...</div>
+        }
+
+
         return (
             <div>
                 <h1>ArtworkEditor</h1>
-                <p>Artwork to edit: {artworkId}</p>
+                <p>Artwork to edit: {this.props.artworkId}</p>
                 <div style={{ width: '50%' }}>
                     <img style={{ width: '100%' }} src={imgUrl} alt={altText}/>
                 </div>
                 <button>Edit Image</button>
                 <hr />
-                <select>
-                    <option value="volvo">Volvo</option>
-                    <option value="saab">Saab</option>
-                    <option value="mercedes">Mercedes</option>
-                    <option value="audi">Audi</option>
+                <select value={artistId} onChange={this.onArtistSelectChange.bind(this)}>
+                    {
+                        _.map(this.props.artists, (artistData, artistId) => {
+
+                            return <option key={artistId}
+                                           value={artistId}>{artistData.name}</option>;
+
+
+                        })
+                    }
                 </select>
                 <button onClick={this.onDone.bind(this)}>DONE</button>
                 <button>Cancel changes</button>
@@ -80,20 +68,7 @@ class ArtworkEditor extends Component {
     }
 }
 
-function mapStateToProps(state, ownProps) {
-
-    // get artwork from params
-    //const artworkId = ownProps.match.params.artworkId;
-
-    return {
-        user: state.user,
-        galleries: state.galleries,
-        artists: state.artists,
-        artworks: state.artworks
-    }
-}
-
-export default connect(mapStateToProps, { updateArtwork, fetchArtwork, fetchArtist })(ArtworkEditor);
+export default ArtworkEditor;
 
 /*
  // called when slim has initialized
