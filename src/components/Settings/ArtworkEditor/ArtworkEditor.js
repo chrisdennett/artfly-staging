@@ -5,7 +5,7 @@ import _ from 'lodash';
 import ImageCropAndRotate from './ImageCropAndRotate';
 
 
-const ArtworkEditor = function({ artwork, artist, artists, onArtistSelected }) {
+const ArtworkEditor = function({ artwork, artists, onArtistSelected }) {
         const { url, artistId } = artwork;
 
         return (

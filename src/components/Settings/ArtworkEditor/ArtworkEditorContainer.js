@@ -48,7 +48,7 @@ class ArtworkEditorHolder extends Component {
             return <div>Loading something...</div>
         }
 
-        const propsForView = {artwork, artist, artists, onArtistSelected};
+        const propsForView = {artwork, artists, onArtistSelected};
         return <ArtworkEditor {...propsForView} onArtistSelected={this.onArtistSelected.bind(this)}/>;
     }
 }
