@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import { fetchGallery, fetchArtist, fetchArtwork } from '../../ArtistGallery/ArtistGalleryActions';
 import { updateArtwork } from './ArtworkEditorActions';
@@ -28,8 +29,27 @@ class ArtworkEditorHolder extends Component {
             }
         }
     }
+    onArtistSelected(artistId){
+        const { artworkId } = this.props;
+        const oldArtworkData = this.props.artwork; // ERROR HERE
+        const newArtworkData = {
+            artistId: artistId
+        };
+
+        this.props.updateArtwork(artworkId, oldArtworkData, newArtworkData);
+    }
     render() {
-        return <ArtworkEditor {...this.props}/>;
+        const { artwork, userStatus, artist, artists, onArtistSelected } = this.props;
+
+        if (userStatus === "none" || userStatus === "new") {
+            return (<Redirect to="/"/>)
+        }
+        if (!artwork || !artist) {
+            return <div>Loading something...</div>
+        }
+
+        const propsForView = {artwork, artist, artists, onArtistSelected};
+        return <ArtworkEditor {...propsForView} onArtistSelected={this.onArtistSelected.bind(this)}/>;
     }
 }
 

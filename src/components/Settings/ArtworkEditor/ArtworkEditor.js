@@ -1,57 +1,19 @@
-import React, { Component } from "react";
-import { Redirect } from 'react-router-dom';
+import React from "react";
+import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
-class ArtworkEditor extends Component {
-
-    onDone() {
-        const { artworkId } = this.props;
-        const oldArtworkData = this.props.artwork; // ERROR HERE
-        const newArtworkData = {
-            artistId: "-KpFB1LhNM_2vdhNx9vF"
-        };
-
-        this.props.updateArtwork(artworkId, oldArtworkData, newArtworkData);
-    }
-
-    onArtistSelectChange(event){
-        console.log("value: ", event.target.value);
-    }
-
-    render() {
-        const { artwork, userStatus, artist } = this.props;
-
-        if (userStatus === "none" || userStatus === "new") {
-            return (<Redirect to="/"/>)
-        }
-
-        let imgUrl = "";
-        let altText = "";
-        let artistId = null;
-
-        if (artwork && artist) {
-            const { url } = artwork;
-            imgUrl = url;
-            altText = `Artwork by ${artist.name}`;
-            artistId = artwork.artistId;
-        }
-        else{
-            return <div>Loading something...</div>
-        }
-
+const ArtworkEditor = function({ artwork, artist, artists, onArtistSelected }) {
+        const { url, artistId } = artwork;
+        const altText = `Artwork by ${artist.name}`;
 
         return (
             <div>
                 <h1>ArtworkEditor</h1>
-                <p>Artwork to edit: {this.props.artworkId}</p>
-                <div style={{ width: '50%' }}>
-                    <img style={{ width: '100%' }} src={imgUrl} alt={altText}/>
-                </div>
-                <button>Edit Image</button>
-                <hr />
-                <select value={artistId} onChange={this.onArtistSelectChange.bind(this)}>
+
+                <label htmlFor="artistSelector">ARTIST: </label>
+                <select value={artistId} onChange={(e) => {onArtistSelected(e.target.value)}}>
                     {
-                        _.map(this.props.artists, (artistData, artistId) => {
+                        _.map(artists, (artistData, artistId) => {
 
                             return <option key={artistId}
                                            value={artistId}>{artistData.name}</option>;
@@ -60,12 +22,17 @@ class ArtworkEditor extends Component {
                         })
                     }
                 </select>
-                <button onClick={this.onDone.bind(this)}>DONE</button>
+                <hr/>
+                <div style={{ width: '50%' }}>
+                    <img style={{ width: '100%' }} src={url} alt={altText}/>
+                </div>
+                <button>Edit Image</button>
+                <hr />
+                <Link to={'/settings/'}>DONE</Link>
                 <button>Cancel changes</button>
                 <button>Delete Image</button>
             </div>
         );
-    }
 }
 
 export default ArtworkEditor;
