@@ -12,6 +12,10 @@ firebase use default
 firebase deploy
 firebase open hosting:site
 
+firebase --only deploy functions
+// can restrict to individual functions and other stuff...
+// https://firebase.google.com/docs/cli/
+
 // open some other part of the firebase project using
 firebase open
 // and select the option
