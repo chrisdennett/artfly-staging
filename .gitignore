@@ -12,6 +12,7 @@
 /_archive_
 /_resources_
 /functions/node_modules
+/functions/node_modules/art-blam-firebase-adminsdk-zebo2-cc2250b8ef.json
 
 
 # misc
@@ -19,5 +20,3 @@
 .env
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
-

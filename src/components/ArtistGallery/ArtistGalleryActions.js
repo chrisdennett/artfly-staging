@@ -37,7 +37,7 @@ export function fetchGallery(artistGalleryId) {
                 const galleryData = snapshot.val();
                 dispatch({
                     type: FETCH_GALLERY,
-                    payload: { [artistGalleryId]:galleryData }
+                    payload: { [artistGalleryId]: galleryData }
                 });
             });
     }
@@ -64,7 +64,7 @@ export function fetchArtist(artistGalleryId) {
             .ref(`/user-data/artists/${artistGalleryId}`)
             .on('value', (snapshot) => {
                 const artistData = snapshot.val();
-                
+
                 dispatch({
                     type: ARTIST_CHANGE,
                     payload: { [artistGalleryId]: artistData }
@@ -114,7 +114,6 @@ export function fetchArtworkInternal(artworkId, dispatch) {
             type: FETCH_ARTWORK_ALREADY_CACHED,
             payload: {}
         });
-
         return;
     }
 
@@ -125,6 +124,7 @@ export function fetchArtworkInternal(artworkId, dispatch) {
         .on('value', snapshot => {
             const artworkId = snapshot.key;
             const artworkData = snapshot.val();
+
             dispatch({
                 type: ARTWORK_CHANGE,
                 payload: { [artworkId]: artworkData }
