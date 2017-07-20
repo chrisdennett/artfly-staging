@@ -1,38 +1,41 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 import Slim from './slim/slim.react';
 
-// Slim Image Cropper - docs - http://slimimagecropper.com/
+import { uploadCanvasBlob } from '../ArtworkAdder/ArtworkAdderActions';
 
+// Slim Image Cropper - docs - http://slimimagecropper.com/
 class ImageCropAndRotate extends Component {
 
-    // called when slim has initialized
-    slimInit(data, slim) {
-        // slim instance reference
-        console.log(slim);
-
-        // current slim data object and slim reference
-        console.log(data);
-    }
-
     slimConfirm(slimData) {
-        const {actions, input, output} = slimData;
-        const {crop, rotation} = actions;
-        console.log("crop: ", crop);
-        console.log("rotation: ", rotation);
-        console.log("actions: ", actions);
-        console.log("input: ", input);
-        console.log("output: ", output);
+        const {output} = slimData;
+        const {image} = output;
+        image.toBlob((blob) => {
+            const {userId} = this.props;
+            this.props.uploadCanvasBlob(blob, userId);
+        })
     }
 
     render() {
         return (
             <Slim download="true"
-                  didConfirm={this.slimConfirm.bind(this)}
-                  didInit={ this.slimInit.bind(this) }>
+                  size="960,960"
+                  didConfirm={this.slimConfirm.bind(this)}>
                 <img src={this.props.url} alt=""/>
             </Slim>
         );
     }
 }
 
-export default ImageCropAndRotate;
+
+const mapStateToProps = (state) => {
+    return {
+        userId: state.user.uid
+    }
+};
+
+const ImageCropAndRotateContainer = connect(
+    mapStateToProps, { uploadCanvasBlob }
+)(ImageCropAndRotate);
+
+export default ImageCropAndRotateContainer;

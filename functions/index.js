@@ -1,89 +1,111 @@
-const functions = require('firebase-functions');
-const mkdirp = require('mkdirp-promise');
-const gcs = require('@google-cloud/storage')({ keyFilename: 'art-blam-firebase-adminsdk-zebo2-cc2250b8ef.json' });
-const exec = require('child-process-promise').exec;
+'use strict';
+const functions = require(`firebase-functions`);
 const admin = require('firebase-admin');
-const LOCAL_TMP_FOLDER = '/tmp/';
-
-// Max height and width of the thumbnail in pixels.
-const THUMB_MAX_HEIGHT = 200;
-const THUMB_MAX_WIDTH = 200;
-// Thumbnail prefix added to file names.
-const THUMB_PREFIX = 'thumb_';
+const gcs = require('@google-cloud/storage')({ keyFilename: 'art-blam-firebase-adminsdk-zebo2-cc2250b8ef.json' });
+const spawn = require(`child-process-promise`).spawn;
 
 admin.initializeApp(functions.config().firebase);
 
-/**
- * When an image is uploaded in the Storage bucket We generate a thumbnail automatically using
- * ImageMagick.
- */
-exports.generateThumbnail = functions.storage.object().onChange(event => {
-    const filePath = event.data.name;
-    const filePathSplit = filePath.split('/');
-    const fileName = filePathSplit.pop();
-    const fileDir = filePathSplit.join('/') + (filePathSplit.length > 0 ? '/' : '');
-    const thumbFilePath = `${fileDir}${THUMB_PREFIX}${fileName}`;
-    const tempLocalDir = `${LOCAL_TMP_FOLDER}${fileDir}`;
-    const tempLocalFile = `${tempLocalDir}${fileName}`;
-    const tempLocalThumbFile = `${LOCAL_TMP_FOLDER}${thumbFilePath}`;
-    const ref = admin.database().ref();
+exports.generateThumbnail = functions.storage.object()
+    .onChange(event => {
+        const object = event.data;
+        const filePath = object.name;
+        const fileName = filePath.split(`/`).pop();
+        const fileBucket = object.bucket;
+        const bucket = gcs.bucket(fileBucket);
+        const tempFilePath = `/tmp/${fileName}`;
+        const ref = admin.database().ref();
 
-    // Exit if this is triggered on a file that is not an image.
-    if (!event.data.contentType.startsWith('image/')) {
-        console.log('This is not an image.');
-        return;
-    }
+        const thumbFilePathLarge = filePath.replace(/(\/)?([^\/]*)$/, '$1large_$2');
+        const thumbFilePathMedium = filePath.replace(/(\/)?([^\/]*)$/, '$1medium_$2');
+        const thumbFilePathTiny = filePath.replace(/(\/)?([^\/]*)$/, '$1thumb_$2');
 
-    // Exit if the image is already a thumbnail.
-    if (fileName.startsWith(THUMB_PREFIX)) {
-        console.log('Already a Thumbnail.');
-        return;
-    }
+        const tempLocalThumbFileLarge = `/tmp/large`;
+        const tempLocalThumbFileMedium = `/tmp/medium`;
+        const tempLocalThumbFileTiny = `/tmp/tiny`;
 
-    // Exit if this is a move or deletion event.
-    if (event.data.resourceState === 'not_exists') {
-        console.log('This is a deletion event.');
-        return;
-    }
 
-    // Create the temp directory where the storage file will be downloaded.
-    return mkdirp(tempLocalDir).then(() => {
-        // Download file from bucket.
-        const bucket = gcs.bucket(event.data.bucket);
-        return bucket.file(filePath).download({
-            destination: tempLocalFile
-        }).then(() => {
-            console.log('The file has been downloaded to', tempLocalFile);
-            // Generate a thumbnail using ImageMagick.
-            return exec(`convert "${tempLocalFile}" -thumbnail '${THUMB_MAX_WIDTH}x${THUMB_MAX_HEIGHT}>' "${tempLocalThumbFile}"`).then(() => {
-                console.log('Thumbnail created at', tempLocalThumbFile);
-                // Uploading the Thumbnail.
-                return bucket.upload(tempLocalThumbFile, {
-                    destination: thumbFilePath
-                }).then(() => {
-                    console.log('Thumbnail uploaded to Storage at', thumbFilePath);
+        // Exit if this is triggered on a file that is not an image.
+        if (!event.data.contentType.startsWith(`image/`)) {
+            console.log(`This is not an image.`);
+            return;
+        }
 
-                    const thumbFile = bucket.file(thumbFilePath);
-                    const config = {
-                        action: 'read',
-                        expires: '02/07/2442'
-                    };
+        // Exit if the image is already a thumbnail.
+        if (fileName.startsWith('url__')) {
+            console.log(`Already a Thumbnail.`);
+            return;
+        }
 
-                    return Promise.all([
-                        thumbFile.getSignedUrl(config)
-                    ])
-                }).then(results => {
-                    const thumbResult = results[0];
-                    const thumbFileUrl = thumbResult[0];
+        // Exit if this is a move or deletion event.
+        if (event.data.resourceState === `not_exists`) {
+            console.log(`This is a deletion event.`);
+            return;
+        }
 
-                    console.log("thumbFileUrl: ", thumbFileUrl);
-                    //art-blam/user-data/artworks/[artworkId]/thumbUrl
+        // download a copy of the original image
+        return bucket.file(filePath).download({ destination: tempFilePath })
+            // user imageMagick to create a thumbnail version
+            .then(() => {
+                return spawn(`convert`, [`-define`, `jpeg:size=100x100`, tempFilePath, `-thumbnail`, `100x100`, tempLocalThumbFileTiny])
+            })
+            // upload the thumbnail version to storage
+            .then(() => {
+                return bucket.upload(tempLocalThumbFileTiny, { destination: thumbFilePathTiny })
+            })
 
-                    ref.child(`user-data/artworks/${fileName}/thumbUrl`).set(thumbFileUrl).then(()=>{
-                        console.log("Wow it worked and stuff: ");
-                    });
-                })
-            });
-        });
+            // do the same for the medium version of the file
+            .then(() => {
+                return spawn(`convert`, [`-define`, `jpeg:size=640x640`, tempFilePath, `-thumbnail`, `640x640`, tempLocalThumbFileMedium])
+            })
+            .then(() => {
+                return bucket.upload(tempLocalThumbFileMedium, { destination: thumbFilePathMedium })
+            })
+
+            // and again for the large version of the file
+            .then(() => {
+                return spawn(`convert`, [`-define`, `jpeg:size=960x960`, tempFilePath, `-thumbnail`, `960x960`, tempLocalThumbFileLarge])
+            })
+            .then(() => {
+                return bucket.upload(tempLocalThumbFileLarge, { destination: thumbFilePathLarge })
+            })
+
+            // then write the urls to the database so they can be accessed
+            .then(() => {
+                const thumbFile = bucket.file(thumbFilePathTiny);
+                const mediumFile = bucket.file(thumbFilePathMedium);
+                const largeFile = bucket.file(thumbFilePathLarge);
+                const config = {
+                    action: 'read',
+                    expires: '02-07-2442'
+                };
+
+                return Promise.all([
+                    thumbFile.getSignedUrl(config),
+                    mediumFile.getSignedUrl(config),
+                    largeFile.getSignedUrl(config)
+                ])
+            })
+            .then(results => {
+                const tinyResult = results[0];
+                const mediumResult = results[1];
+                const largeResult = results[2];
+
+                const tinyUrl = tinyResult[0];
+                const mediumUrl = mediumResult[0];
+                const largeUrl = largeResult[0];
+
+                // the file name is the artworkId
+                ref.child(`user-data/artworks/${fileName}/url__thumb`).set(tinyUrl).then(() => {
+                    // console.log("Wow it worked TINY and stuff: ");
+                });
+
+                ref.child(`user-data/artworks/${fileName}/url__med`).set(mediumUrl).then(() => {
+                    // console.log("Wow it worked MEDIUM and stuff: ");
+                });
+
+                ref.child(`user-data/artworks/${fileName}/url__large`).set(largeUrl).then(() => {
+                    // console.log("Wow it worked LARGE and stuff: ");
+                });
+            })
     });
-});

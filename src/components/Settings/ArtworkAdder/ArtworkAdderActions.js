@@ -5,12 +5,26 @@ import * as fb from 'firebase';
 export const ADD_ARTWORK_UPLOAD_PROGRESS = 'imageUploadProgress';
 export const ADD_ARTWORK_COMPLETE = 'artworkAdded';
 
+export function uploadCanvasBlob(blob, userId) {
+    return dispatch => {
+        const imageStorageRef = firebase.storage().ref();
+        const userPicturesRef = imageStorageRef.child(`userContent/${userId}/test.jpg`);
+        userPicturesRef.put(blob);
+
+        dispatch({
+            type: "dun",
+            payload: {  }
+        });
+    }
+}
+
 export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null) {
     return dispatch => {
+        // const fileExtension = imgFile.name.split('.').pop();
         // Create a new image ref in the database
         const artworkRef = firebase.database().ref('/user-data/artworks').push();
         // use the artwork key as the name for the artwork to ensure it is unique.
-        const artworkName = artworkRef.key;
+        const artworkName = artworkRef.key; // + "." + fileExtension;
 
         // trigger callback with artwork id so progress can be shown in calling component
         if (callback) callback(artworkRef.key);
@@ -26,7 +40,7 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
 
                 dispatch({
                     type: ADD_ARTWORK_UPLOAD_PROGRESS,
-                    payload: {artistId:artistId, id:artworkRef.key, progress:progress}
+                    payload: { artistId: artistId, id: artworkRef.key, progress: progress }
                 });
 
                 switch (snapshot.state) {
@@ -61,7 +75,6 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
                 // Upload completed successfully - save artwork data
                 const dateStamp = Date.now();
                 const newArtworkData = {
-                    id: artworkRef.key,
                     adminId: userId,
                     artistId: artistId,
                     url: uploadTask.snapshot.downloadURL,

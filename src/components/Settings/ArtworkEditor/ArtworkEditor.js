@@ -6,7 +6,7 @@ import ImageCropAndRotate from './ImageCropAndRotate';
 
 
 const ArtworkEditor = function ({ artwork, artists, onArtistSelected }) {
-    const { url, artistId, thumbUrl } = artwork;
+    const { url, artistId, thumb_Url } = artwork;
 
     return (
         <div>
@@ -31,7 +31,7 @@ const ArtworkEditor = function ({ artwork, artists, onArtistSelected }) {
                     <img style={{ width: '100%' }} src={url} alt={altText}/>
                 </div>*/}
 
-            <img src={thumbUrl} alt=""/>
+            <img src={thumb_Url} alt=""/>
 
             <ImageCropAndRotate url={url}/>
 
