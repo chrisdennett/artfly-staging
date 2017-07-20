@@ -26,6 +26,11 @@ exports.generateThumbnail = functions.storage.object()
 
         const databaseUrlPropertyPrefix = 'url__';
 
+        const signedUrlConfig = {
+            action: 'read',
+            expires: '02-07-2442'
+        };
+
 
         // Exit if this is triggered on a file that is not an image.
         if (!event.data.contentType.startsWith(`image/`)) {
@@ -47,13 +52,27 @@ exports.generateThumbnail = functions.storage.object()
 
         // download a copy of the original image
         return bucket.file(filePath).download({ destination: tempFilePath })
-            // user imageMagick to create a thumbnail version
+        // use imageMagick to create a thumbnail version
             .then(() => {
                 return spawn(`convert`, [`-define`, `jpeg:size=100x100`, tempFilePath, `-thumbnail`, `100x100`, tempLocalThumbFile])
             })
             // upload the thumbnail version to storage
             .then(() => {
                 return bucket.upload(tempLocalThumbFile, { destination: thumbImageFilePath })
+                // then get the signed url and write it to the database
+                    .then(() => {
+                        // reference the thumb file path in storage
+                        const thumbFile = bucket.file(thumbImageFilePath);
+                        // get a signed url so it has public access
+                        thumbFile.getSignedUrl(signedUrlConfig)
+                            .then((response) => {
+                                // write the signed url to the database
+                                ref.child(`user-data/artworks/${fileName}/${databaseUrlPropertyPrefix}thumb`).set(response[0])
+                                    .then(() => {
+                                        // console.log("Wow it worked TINY and stuff: ");
+                                    });
+                            })
+                    })
             })
 
             // do the same for the medium version of the file
@@ -62,6 +81,20 @@ exports.generateThumbnail = functions.storage.object()
             })
             .then(() => {
                 return bucket.upload(tempLocalMediumFile, { destination: mediumImageFilePath })
+                // then get the signed url and write it to the database
+                    .then(() => {
+                        // reference the file path in storage
+                        const mediumFile = bucket.file(mediumImageFilePath);
+                        // get a signed url so it has public access
+                        mediumFile.getSignedUrl(signedUrlConfig)
+                            .then((response) => {
+                                // write the signed url to the database
+                                ref.child(`user-data/artworks/${fileName}/${databaseUrlPropertyPrefix}med`).set(response[0])
+                                    .then(() => {
+                                        // console.log("Wow it worked TINY and stuff: ");
+                                    });
+                            })
+                    })
             })
 
             // and again for the large version of the file
@@ -70,44 +103,19 @@ exports.generateThumbnail = functions.storage.object()
             })
             .then(() => {
                 return bucket.upload(tempLocalLargeFile, { destination: largeImageFilePath })
-            })
-
-            // then write the urls to the database so they can be accessed
-            .then(() => {
-                const thumbFile = bucket.file(thumbImageFilePath);
-                const mediumFile = bucket.file(mediumImageFilePath);
-                const largeFile = bucket.file(largeImageFilePath);
-                const config = {
-                    action: 'read',
-                    expires: '02-07-2442'
-                };
-
-                return Promise.all([
-                    thumbFile.getSignedUrl(config),
-                    mediumFile.getSignedUrl(config),
-                    largeFile.getSignedUrl(config)
-                ])
-            })
-            .then(results => {
-                const tinyResult = results[0];
-                const mediumResult = results[1];
-                const largeResult = results[2];
-
-                const tinyUrl = tinyResult[0];
-                const mediumUrl = mediumResult[0];
-                const largeUrl = largeResult[0];
-
-                // the file name is the artworkId
-                ref.child(`user-data/artworks/${fileName}/${databaseUrlPropertyPrefix}thumb`).set(tinyUrl).then(() => {
-                    // console.log("Wow it worked TINY and stuff: ");
-                });
-
-                ref.child(`user-data/artworks/${fileName}/${databaseUrlPropertyPrefix}med`).set(mediumUrl).then(() => {
-                    // console.log("Wow it worked MEDIUM and stuff: ");
-                });
-
-                ref.child(`user-data/artworks/${fileName}/${databaseUrlPropertyPrefix}large`).set(largeUrl).then(() => {
-                    // console.log("Wow it worked LARGE and stuff: ");
-                });
+                // then get the signed url and write it to the database
+                    .then(() => {
+                        // reference the file path in storage
+                        const largeFile = bucket.file(largeImageFilePath);
+                        // get a signed url so it has public access
+                        largeFile.getSignedUrl(signedUrlConfig)
+                            .then((response) => {
+                                // write the signed url to the database
+                                ref.child(`user-data/artworks/${fileName}/${databaseUrlPropertyPrefix}large`).set(response[0])
+                                    .then(() => {
+                                        // console.log("Wow it worked TINY and stuff: ");
+                                    });
+                            })
+                    })
             })
     });
