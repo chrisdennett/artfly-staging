@@ -2,10 +2,10 @@ import { combineReducers } from 'redux';
 
 import CommunityReducer from '../components/Home/CommunityReducer';
 import UserReducer from '../components/AppControls/UserControls/UserReducer';
-import ImageUploaderReducer from '../components/Settings/ArtworkAdder/ArtworkAdderReducer';
 import ArtworksReducer from './ArtworksReducer';
 import GalleriesReducer from './GalleriesReducer';
 import ArtistsReducer from './ArtistsReducer';
+import PhotoSelectorReducer from '../components/PhotoSelector/PhotoSelectorReducer';
 import ArtistArtworkIdsReducer from './ArtistArtworkIdsReducer';
 import FormReducer from './FormReducer';
 
@@ -16,7 +16,7 @@ const rootReducer = combineReducers({
     artists: ArtistsReducer,
     artworks: ArtworksReducer,
     artistsArtworkIds: ArtistArtworkIdsReducer,
-    imageUploader: ImageUploaderReducer,
+    photoSelected: PhotoSelectorReducer,
     form: FormReducer
 });
 

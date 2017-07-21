@@ -39,16 +39,23 @@ class ArtworkEditorHolder extends Component {
         this.props.updateArtwork(artworkId, oldArtworkData, newArtworkData);
     }
     render() {
-        const { artwork, userStatus, artist, artists, onArtistSelected } = this.props;
+        const { artwork, userStatus, artist, artists, onArtistSelected, artworkId } = this.props;
 
         if (userStatus === "none" || userStatus === "new") {
             return (<Redirect to="/"/>)
         }
-        if (!artwork || !artist) {
+
+        const isNewArtwork = artworkId === "new";
+        let newUrl;
+        if(isNewArtwork){
+            newUrl = this.props.photoSelected;
+        }
+
+        if (!isNewArtwork && (!artwork || !artist)) {
             return <div>Loading something...</div>
         }
 
-        const propsForView = {artwork, artists, onArtistSelected};
+        const propsForView = {artwork, artists, onArtistSelected, isNewArtwork, newUrl};
         return <ArtworkEditor {...propsForView} onArtistSelected={this.onArtistSelected.bind(this)}/>;
     }
 }
@@ -64,7 +71,8 @@ const mapStateToProps = (state, ownProps) => {
         artwork: artwork,
         artist: artist,
         artists: state.artists,
-        userStatus: state.user.status
+        userStatus: state.user.status,
+        photoSelected: state.photoSelected
     }
 };
 

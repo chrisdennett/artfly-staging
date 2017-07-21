@@ -15,13 +15,18 @@ class ImageCropAndRotate extends Component {
             this.props.uploadCanvasBlob(blob, userId);
         })
     }
+    /*
+    Can save and pass in crop information
+    */
 
     render() {
         return (
             <Slim download="true"
                   size="960,960"
+                  initialImage={this.props.url}
                   didConfirm={this.slimConfirm.bind(this)}>
-                <img src={this.props.url} alt=""/>
+
+                {/*<img src={this.props.url} alt=""/>*/}
             </Slim>
         );
     }

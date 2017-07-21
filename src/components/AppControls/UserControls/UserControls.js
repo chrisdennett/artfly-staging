@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, Redirect } from 'react-router-dom';
 
-import ArtworkAdderContainer from '../../Settings/ArtworkAdder/ArtworkAdderContainer';
+import PhotoSelector from '../../PhotoSelector/PhotoSelector';
 
 const UserControls = function (props) {
     const { userStatus } = props;
@@ -21,8 +21,9 @@ const UserControls = function (props) {
             <span>
                 {!props.artworkId ? "" : <Link to={`/artwork-editor/${props.artworkId}`}>EDIT</Link> }
 
-                <ArtworkAdderContainer history={props.history}
-                                       galleryId={props.galleryId}/>
+                {/*<ArtworkAdderContainer history={props.history}
+                                       galleryId={props.galleryId}/>*/}
+                <PhotoSelector history={props.history} />
 
                 <Link to="/settings">Settings</Link>
 
