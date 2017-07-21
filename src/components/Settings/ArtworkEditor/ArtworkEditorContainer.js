@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { fetchGallery, fetchArtist, fetchArtwork } from '../../ArtistGallery/ArtistGalleryActions';
-import { updateArtwork } from './ArtworkEditorActions';
+import { updateArtwork, uploadImage } from './ArtworkEditorActions';
 
 import ArtworkEditor from './ArtworkEditor';
 
@@ -38,6 +38,14 @@ class ArtworkEditorHolder extends Component {
 
         this.props.updateArtwork(artworkId, oldArtworkData, newArtworkData);
     }
+    onImageUpdate(imageCropAndRotateData){
+        //export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null)
+
+        const {image, height, width, crop, rotation, type} = imageCropAndRotateData;
+
+        this.props.uploadImage(image, this.props.userId, this.props.artistId, width, height);
+    }
+
     render() {
         const { artwork, userStatus, artist, artists, onArtistSelected, artworkId } = this.props;
 
@@ -56,7 +64,9 @@ class ArtworkEditorHolder extends Component {
         }
 
         const propsForView = {artwork, artists, onArtistSelected, isNewArtwork, newUrl};
-        return <ArtworkEditor {...propsForView} onArtistSelected={this.onArtistSelected.bind(this)}/>;
+        return <ArtworkEditor {...propsForView}
+                              onImageUpdate={this.onImageUpdate.bind(this)}
+                              onArtistSelected={this.onArtistSelected.bind(this)}/>;
     }
 }
 
@@ -82,7 +92,8 @@ const ArtworkEditorContainer = connect(
         fetchGallery,
         fetchArtist,
         fetchArtwork,
-        updateArtwork
+        updateArtwork,
+        uploadImage
     }
 )(ArtworkEditorHolder);
 

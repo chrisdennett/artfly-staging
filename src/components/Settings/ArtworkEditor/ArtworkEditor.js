@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import ImageCropAndRotate from './ImageCropAndRotate';
 
-const ArtworkEditor = function ({ artwork, artists, onArtistSelected, isNewArtwork, newUrl }) {
+const ArtworkEditor = function ({ artwork, artists, onArtistSelected, isNewArtwork, newUrl, onImageUpdate }) {
     let url, artistId;
 
     if (isNewArtwork) {
@@ -15,7 +15,6 @@ const ArtworkEditor = function ({ artwork, artists, onArtistSelected, isNewArtwo
         url = artwork.url;
         artistId = artwork.artistId;
     }
-
 
     return (
         <div>
@@ -44,7 +43,7 @@ const ArtworkEditor = function ({ artwork, artists, onArtistSelected, isNewArtwo
                     <img style={{ width: '100%' }} src={url} alt={altText}/>
                 </div>*/}
 
-            {url && <ImageCropAndRotate url={url}/>  }
+            {url && <div style={{ width: '50%' }}><ImageCropAndRotate url={url} onImageUpdate={onImageUpdate}/></div>  }
 
             <hr/>
             <Link to={'/settings/'}>DONE</Link>
