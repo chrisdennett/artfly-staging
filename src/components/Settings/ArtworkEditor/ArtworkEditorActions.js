@@ -47,6 +47,9 @@ export function uploadCanvasBlob(blob, userId) {
 }
 
 export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null) {
+
+    console.log("userId: ", userId);
+
     return dispatch => {
         // const fileExtension = imgFile.name.split('.').pop();
         // Create a new image ref in the database
@@ -87,14 +90,17 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
                 switch (error.code) {
                     case 'storage/unauthorized':
                         // User doesn't have permission to access the object
+                        console.log("storage/unauthorized");
                         break;
 
                     case 'storage/canceled':
                         // User canceled the upload
+                        console.log("storage/canceled");
                         break;
 
                     case 'storage/unknown':
                         // Unknown error occurred, inspect error.serverResponse
+                        console.log("storage/unknown");
                         break;
                     default:
                         console.log("uncaught error: ", error);

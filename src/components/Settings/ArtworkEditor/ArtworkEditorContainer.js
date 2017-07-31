@@ -38,7 +38,7 @@ class ArtworkEditorHolder extends Component {
 
         this.props.updateArtwork(artworkId, oldArtworkData, newArtworkData);
     }
-    onImageUpdate(imageCropAndRotateData){
+    onImageConfirm(imageCropAndRotateData){
         //export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null)
 
         const {image, height, width, crop, rotation, type} = imageCropAndRotateData;
@@ -47,25 +47,19 @@ class ArtworkEditorHolder extends Component {
     }
 
     render() {
-        const { artwork, userStatus, artist, artists, onArtistSelected, artworkId } = this.props;
+        const { artwork, userStatus, artist, artists, onArtistSelected } = this.props;
 
         if (userStatus === "none" || userStatus === "new") {
             return (<Redirect to="/"/>)
         }
 
-        const isNewArtwork = artworkId === "new";
-        let newUrl;
-        if(isNewArtwork){
-            newUrl = this.props.photoSelected;
-        }
-
-        if (!isNewArtwork && (!artwork || !artist)) {
+        if (!artwork || !artist) {
             return <div>Loading something...</div>
         }
 
-        const propsForView = {artwork, artists, onArtistSelected, isNewArtwork, newUrl};
+        const propsForView = {artwork, artists, onArtistSelected};
         return <ArtworkEditor {...propsForView}
-                              onImageUpdate={this.onImageUpdate.bind(this)}
+                              onImageConfirm={this.onImageConfirm.bind(this)}
                               onArtistSelected={this.onArtistSelected.bind(this)}/>;
     }
 }
@@ -81,8 +75,7 @@ const mapStateToProps = (state, ownProps) => {
         artwork: artwork,
         artist: artist,
         artists: state.artists,
-        userStatus: state.user.status,
-        photoSelected: state.photoSelected
+        userStatus: state.user.status
     }
 };
 

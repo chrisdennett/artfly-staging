@@ -54,6 +54,15 @@ http://slimimagecropper.com/
 ********************************************************************************
 ********************************************************************************
 
+Git commands
+//When adding a remote google repo
+git remote -v // lists all the remote repos use git ui in folder to remove them
+
+
+
+********************************************************************************
+********************************************************************************
+
 // OLD GIT (ho, ho, I mean the previously used GIT process) - LONG-WINDED WAY
 // using terminal
 // add to google ->

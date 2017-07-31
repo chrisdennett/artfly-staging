@@ -11,16 +11,31 @@ class ImageCropAndRotate extends Component {
             const {userId} = this.props;
             this.props.uploadCanvasBlob(blob, userId);
         })*/
-    }
 
-    slimSave(slimData){
-        const {actions, input, output} = slimData;
+        const { actions, input, output } = slimData;
         const { crop, rotation } = actions; // NB crop contains a type property which is set to manual if
         const { image } = output;
         const { type } = input;
         const { height, width } = crop;
 
-        this.props.onImageUpdate({image, height, width, crop, rotation, type});
+        this.props.onImageConfirm({ image, height, width, crop, rotation, type });
+    }
+
+    slimSave(slimData) {
+        /*const {output} = slimData;
+                const {image} = output;
+                image.toBlob((blob) => {
+                    const {userId} = this.props;
+                    this.props.uploadCanvasBlob(blob, userId);
+                })*/
+
+        const { actions, input, output } = slimData;
+        const { crop, rotation } = actions; // NB crop contains a type property which is set to manual if
+        const { image } = output;
+        const { type } = input;
+        const { height, width } = crop;
+
+        this.props.onImageSave({ image, height, width, crop, rotation, type });
     }
 
     /*
@@ -28,9 +43,12 @@ class ImageCropAndRotate extends Component {
     crop={width:300, height:600, x:20, y:40}
     */
 
+
     render() {
+        const showDownload = this.props.showDownload ? this.props.showDownload : false;
+
         return (
-            <Slim download="true"
+            <Slim download={showDownload}
                   size="3500,3500"
                   initialImage={this.props.url}
                   didSave={this.slimSave.bind(this)}

@@ -4,25 +4,15 @@ import _ from 'lodash';
 
 import ImageCropAndRotate from './ImageCropAndRotate';
 
-const ArtworkEditor = function ({ artwork, artists, onArtistSelected, isNewArtwork, newUrl, onImageUpdate }) {
+const ArtworkEditor = function ({ artwork, artists, onArtistSelected, onImageUpdate }) {
     let url, artistId;
 
-    if (isNewArtwork) {
-        url = newUrl;
-        artistId = "";
-    }
-    else {
-        url = artwork.url;
-        artistId = artwork.artistId;
-    }
+    url = artwork.url;
+    artistId = artwork.artistId;
 
     return (
         <div>
             <h1>ArtworkEditor</h1>
-
-            {isNewArtwork &&
-            <p>It's a new artwork y'all!</p>
-            }
 
             <label htmlFor="artistSelector">ARTIST: </label>
             <select value={artistId} onChange={(e) => {onArtistSelected(e.target.value)}}>
@@ -39,11 +29,7 @@ const ArtworkEditor = function ({ artwork, artists, onArtistSelected, isNewArtwo
 
             <hr/>
 
-            {/*<div style={{ width: '50%' }}>
-                    <img style={{ width: '100%' }} src={url} alt={altText}/>
-                </div>*/}
-
-            {url && <div style={{ width: '50%' }}><ImageCropAndRotate url={url} onImageUpdate={onImageUpdate}/></div>  }
+            {url && <div style={{ width: '50%' }}><ImageCropAndRotate url={url} onImageConfirm={onImageUpdate}/></div>}
 
             <hr/>
             <Link to={'/settings/'}>DONE</Link>
@@ -51,6 +37,6 @@ const ArtworkEditor = function ({ artwork, artists, onArtistSelected, isNewArtwo
             <button>Delete Image</button>
         </div>
     );
-}
+};
 
 export default ArtworkEditor;
