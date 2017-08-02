@@ -5,33 +5,28 @@ import Slim from './slim/slim.react';
 class ImageCropAndRotate extends Component {
 
     slimConfirm(slimData) {
-
-        console.log("Confirm slimData: ", slimData);
-
         if (this.props.onCropDataChange) {
             const { actions, input, output } = slimData;
             const { crop, rotation } = actions; // NB crop contains a type property which is set to manual if
             const { type } = input;
             const { height, width } = crop;
 
-            console.log("output: ", output);
-
             this.props.onCropDataChange({ height, width, crop, rotation, type });
         }
     }
 
     didInit(slimData) {
-
-        console.log("Init slimData: ", slimData);
+        // triggers the creation of an image file from default canvas size
+        const cropper = this.cropRef.instance;
+        cropper.upload();
 
         if (this.props.onCropDataChange) {
             const { actions, input } = slimData;
             const { crop, rotation } = actions; // NB crop contains a type property which is set to manual if
-            const { file, type } = input;
+            const { type } = input;
             const { height, width } = crop;
 
             this.props.onCropDataChange({ height, width, crop, rotation, type });
-            this.props.onCropImageSave(file);
         }
     }
 
@@ -74,6 +69,7 @@ class ImageCropAndRotate extends Component {
                       push="true"
                       serviceFormat="file"
                       service={ this.slimService.bind(this) }
+                      ref={(cropRef) => { this.cropRef = cropRef; }}
                       didInit={this.didInit.bind(this)}
                       didConfirm={this.slimConfirm.bind(this)}>
 

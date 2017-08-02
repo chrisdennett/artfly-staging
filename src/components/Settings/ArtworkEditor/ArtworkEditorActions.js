@@ -33,6 +33,13 @@ export function updateArtwork(artworkId, oldArtworkData, newArtworkData) {
     }
 }
 
+/*
+"https://firebasestorage.googleapis.com/v0/b/art-blam.appspot.com/o/userContent/F08pXRSgkZAQsn7q9Qvum15QC2Nj1/-KqXM_Q_Z38ZTWXIwwXV?alt=media&token=e5d0c60b-cfe2-468d-bef4-72bdb1c5d09c"
+"https://storage.googleapis.com/art-blam.appspot.com/userContent%2F08pXRSgkZAQsn7q9Qvum15QC2Nj1%2Flarge_-KqXM_Q_Z38ZTWXIwwXV?GoogleAccessId=firebase-adminsdk-zebo2@art-blam.iam.gserviceaccount.com&Expires=14898124800&Signature=k4NmILMdeyyyy1U6oOsELS6fL9N8PVoSemHbthPUW1dEJuNkjM62vnMv6EEiLBXezQlesyCnxWwo1vfGaU77Dqn6%2FJgW7Z7T4VZr0mnd9w4dYoQnb4PSYt7EdiPno19Gg9iCiaXCPrRZOVsT35H4gnFhAgq8ZUlOCJvEGyDHXyOlkvHqZGwHrBSWlPn2AJuewnZ3u0gZqYw2BvGns00g5fQcS%2FbNqI9tFkbHj8KuIVztBn3GfMzlGQ2I4ae%2Fm2u6D9ws6N9Rr6sGcpaLdFjZLd4esozAl7%2F8CstEtHStXIcjJkgoNpJ3ZNl0kz3UeMuWgUvwWODfynkmzoNzKCF%2BTg%3D%3D"
+*/
+
+
+
 export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null) {
 
     return dispatch => {
@@ -49,13 +56,7 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
         const imageStorageRef = firebase.storage().ref();
         const userPicturesRef = imageStorageRef.child(`userContent/${userId}/${artworkName}`);
 
-        // get raw image data
-        // const base64ImgData = imgFile.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
-        // const uploadTask = userPicturesRef.putString(base64ImgData, 'base64');
-
         // store the image data
-        console.log("upload image > imgFile: ", imgFile);
-
         const uploadTask = userPicturesRef.put(imgFile);
         //const uploadTask = userPicturesRef.putString(imgFile);
 
@@ -103,6 +104,9 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
             }, function () {
                 // Upload completed successfully - save artwork data
                 const dateStamp = Date.now();
+
+                console.log("uploadTask.snapshot: ", uploadTask.snapshot);
+
                 const newArtworkData = {
                     adminId: userId,
                     artistId: artistId,
