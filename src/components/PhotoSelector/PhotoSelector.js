@@ -14,8 +14,7 @@ class PhotoSelector extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { imgSrc: null, imgIsSelected: false, selectedArtistId:null, imgData:null };
-
+        this.state = { imgSrc: null, cropImg:null, cropData:null , imgIsSelected: false, selectedArtistId:null};
         this.onArtistSelected = this.onArtistSelected.bind(this);
     }
 
@@ -40,7 +39,6 @@ class PhotoSelector extends Component {
         event.preventDefault();
 
         if (event.target.files[0]) {
-
             this.setState({ imgIsSelected: true });
 
             const imgFile = event.target.files[0];
@@ -55,17 +53,25 @@ class PhotoSelector extends Component {
         }
     }
 
-    onImageSave(imageCropAndRotateData){
-        this.setState({imgData:imageCropAndRotateData});
+    onCropImageSave(cropImg){
+        console.log("cropImg: ", cropImg);
+        this.setState({cropImg:cropImg});
+    }
+
+    onCropDataChange(imageCropAndRotateData){
+        console.log("imageCropAndRotateData: ", imageCropAndRotateData);
+        this.setState({cropData:imageCropAndRotateData});
     }
 
     onSave(){
         // set up the new artwork
         // use a call back to set up confirmation message
         //export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null)
-        const {image, height, width } = this.state.imgData;
+        const {height, width } = this.state.cropData;
 
-        this.props.uploadImage(image, this.props.user.uid, this.state.selectedArtistId, width, height);
+        console.log("this.state.cropImg: ", this.state.cropImg);
+
+        this.props.uploadImage(this.state.cropImg, this.props.user.uid, this.state.selectedArtistId, width, height);
     }
 
     onCancel(){
@@ -97,7 +103,6 @@ class PhotoSelector extends Component {
                 left: '2%'
             };
 
-
             return (
                 <div style={fullScreenStyle}>
                     <div style={contentStyle}>
@@ -121,7 +126,8 @@ class PhotoSelector extends Component {
                         {this.state.imgSrc &&
                             <div style={{ width: '50%' }}>
                                 <ImageCropAndRotate url={this.state.imgSrc}
-                                                    onImageSave={this.onImageSave.bind(this)}/>
+                                                    onCropDataChange={this.onCropDataChange.bind(this)}
+                                                    onCropImageSave={this.onCropImageSave.bind(this)}/>
                             </div>
                         }
                     </div>

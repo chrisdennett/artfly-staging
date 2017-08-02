@@ -33,22 +33,7 @@ export function updateArtwork(artworkId, oldArtworkData, newArtworkData) {
     }
 }
 
-export function uploadCanvasBlob(blob, userId) {
-    return dispatch => {
-        const imageStorageRef = firebase.storage().ref();
-        const userPicturesRef = imageStorageRef.child(`userContent/${userId}/test.jpg`);
-        userPicturesRef.put(blob);
-
-        dispatch({
-            type: "dun",
-            payload: {  }
-        });
-    }
-}
-
 export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null) {
-
-    console.log("userId: ", userId);
 
     return dispatch => {
         // const fileExtension = imgFile.name.split('.').pop();
@@ -63,7 +48,17 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
         // image storage
         const imageStorageRef = firebase.storage().ref();
         const userPicturesRef = imageStorageRef.child(`userContent/${userId}/${artworkName}`);
-        const uploadTask = userPicturesRef.putString(imgFile);
+
+        // get raw image data
+        // const base64ImgData = imgFile.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
+        // const uploadTask = userPicturesRef.putString(base64ImgData, 'base64');
+
+        // store the image data
+        console.log("upload image > imgFile: ", imgFile);
+
+        const uploadTask = userPicturesRef.put(imgFile);
+        //const uploadTask = userPicturesRef.putString(imgFile);
+
 
         uploadTask.on(fb.storage.TaskEvent.STATE_CHANGED,
             function (snapshot) {

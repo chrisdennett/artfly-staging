@@ -1,5 +1,5 @@
 /*
- * Slim v4.11.0 - Image Cropping Made Easy
+ * Slim v4.13.0 - Image Cropping Made Easy
  * Copyright (c) 2017 Rik Schennink - http://slimimagecropper.com
  */
 // Necessary React Modules

@@ -24,13 +24,12 @@ exports.generateThumbnail = functions.storage.object()
         const tempLocalMediumFile = `/tmp/medium`;
         const tempLocalThumbFile = `/tmp/tiny`;
 
-        const databaseUrlPropertyPrefix = 'url__';
+        const databaseUrlPropertyPrefix = 'url_';
 
         const signedUrlConfig = {
             action: 'read',
             expires: '02-07-2442'
         };
-
 
         // Exit if this is triggered on a file that is not an image.
         if (!event.data.contentType.startsWith(`image/`)) {
@@ -39,7 +38,7 @@ exports.generateThumbnail = functions.storage.object()
         }
 
         // Exit if the image is already a thumbnail.
-        if (fileName.startsWith(databaseUrlPropertyPrefix)) {
+        if (fileName.startsWith("large_")|| fileName.startsWith("medium_")|| fileName.startsWith("thumb_")) {
             console.log(`Already a Thumbnail.`);
             return;
         }

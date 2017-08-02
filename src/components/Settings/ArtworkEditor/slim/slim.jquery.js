@@ -2,7 +2,15 @@
  * Slim v4.13.0 - Image Cropping Made Easy
  * Copyright (c) 2017 Rik Schennink - http://slimimagecropper.com
  */
-module.exports = (function() {
+(function($,undefined){
+
+	'use strict';
+
+	// if no jquery, stop here
+	if (!$) {return;}
+
+	// library reference
+	var Slim = (function() {
 
 // custom event polyfill for IE10
 (function() {
@@ -8794,3 +8802,81 @@ var Slim = function () {
 })();
     return Slim;
 }());
+
+	// helpers
+	function argsToArray(args) {
+		return Array.prototype.slice.call(args);
+	}
+
+	function isConstructor(parameters) {
+		return typeof parameters[0] === 'object' || parameters.length === 0;
+	}
+
+	function isGetter(slim, method, parameters) {
+		var descriptor = Object.getOwnPropertyDescriptor(Slim.prototype, method);
+		return descriptor ? typeof descriptor.get !== 'undefined' : false;
+	}
+
+	function isSetter(slim, method, parameters) {
+		var descriptor = Object.getOwnPropertyDescriptor(Slim.prototype, method);
+		return descriptor ? typeof descriptor.set !== 'undefined' : false;
+	}
+
+	function isMethod(slim, method) {
+		return typeof slim[method] === 'function';
+	}
+
+	// plugin
+	$.fn['slim'] = function() {
+
+		// get arguments as array
+		var parameters = argsToArray(arguments);
+
+		// is method
+		if (isConstructor(parameters)) {
+			return this.each(function(){
+				Slim.create(this, parameters[0]);
+			});
+		}
+		else {
+			var method = parameters.shift();
+			switch (method) {
+				case 'supported':
+					return Slim.supported;
+				case 'destroy':
+					return this.each(function(){
+						Slim.destroy(this);
+					});
+				case 'parse':
+					return this.each(function(){
+						Slim.parse(this);
+					});
+				default:
+					var results = [];
+					this.each(function(){
+
+						var slim = Slim.find(this);
+						if (!slim) {
+							return;
+						}
+
+						if (isMethod(slim, method)) {
+							results.push(slim[method].apply(slim, parameters));
+						}
+
+						else if (isGetter(slim, method)) {
+							results.push(slim[method]);
+						}
+
+						else if (isSetter(slim, method)) {
+							results.push(slim[method] = parameters[0]);
+						}
+
+					});
+					return results;
+			}
+		}
+
+	};
+
+}(window.jQuery));

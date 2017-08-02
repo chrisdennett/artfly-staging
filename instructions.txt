@@ -12,7 +12,7 @@ firebase use default
 firebase deploy
 firebase open hosting:site
 
-firebase --only deploy functions
+firebase deploy --only functions
 // can restrict to individual functions and other stuff...
 // https://firebase.google.com/docs/cli/
 
@@ -117,3 +117,23 @@ Delete the Cloud Source Repositories cookie from the Git cookie file.
 
 Delete the line you identified in Step 2. Save the Git cookie file and close your editor.
 Learn more about using Cloud Source Repositories.
+
+********************************************************************************
+
+Storage rules:
+function isCurrentUser(uid){
+	return request.auth.uid == uid;
+}
+function isImage(){
+	return request.resource.contentType.matches("image/.*");
+}
+service firebase.storage {
+  match /b/art-blam.appspot.com/o {
+    match /userContent/{uid}/{filename} {
+      allow read;
+      allow write: if request.resource == null ||
+      								isCurrentUser(uid) &&
+                      request.resource != null;
+    }
+  }
+}

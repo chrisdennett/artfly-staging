@@ -2,7 +2,10 @@
  * Slim v4.13.0 - Image Cropping Made Easy
  * Copyright (c) 2017 Rik Schennink - http://slimimagecropper.com
  */
-module.exports = (function() {
+(function(angular){
+
+	// Slim Lib
+	var Slim = (function() {
 
 // custom event polyfill for IE10
 (function() {
@@ -8794,3 +8797,87 @@ var Slim = function () {
 })();
     return Slim;
 }());
+
+	// Create scope
+	var scopeDef = {};
+	for (var key in Slim.options()) {
+		if (/^(did|will)/.test(key)) {
+			scopeDef[key] = '=';
+		}
+	}
+	scopeDef['service'] = '=';
+
+	// Setters
+	var setters = ['rotation', 'size', 'ratio'];
+	for (var i=0; i<setters.length; i++) {
+		scopeDef[setters[i]] = '@';
+	}
+	setters.push('service');
+
+	function setOptionsFromObjectToObject(source, target) {
+		for (var key in source) {
+			if (!source[key]) {
+				continue;
+			}
+			target[key] = source[key];
+		}
+	}
+
+	// Angular Directive
+	angular
+		.module('slim', [])
+		.directive('slim', function() {
+			return {
+				restrict: 'EC',
+				scope: scopeDef,
+				link: function(scope, element, attrs) {
+
+					var slim = null;
+					var options = null;
+					var container = element[0];
+
+					// setup root element
+					var root = document.createElement('div');
+					root.className = 'slim';
+					var inner = container.innerHTML;
+					container.innerHTML = '';
+					container.appendChild(root);
+					root.innerHTML = inner;
+
+					// create initial image if set
+					if (attrs.initialImage) {
+						var image = document.createElement('img');
+						image.src = attrs.initialImage;
+						image.setAttribute('alt', '');
+						root.appendChild(image);
+					}
+
+					// gets options from container
+					options = Slim.getOptionsFromAttributes(container);
+
+					// override with options from scope
+					for (var key in scopeDef) {
+						if (!scope[key]) {
+							continue;
+						}
+						options[key] = scope[key];
+					}
+
+					// create the cropper
+					slim = Slim.create(root, options);
+
+					// watch for setter changes
+					setters.forEach(function(setter){
+						scope.$watch(setter, function(newValue, oldValue) {
+							if (newValue === oldValue) {
+								return;
+							}
+							slim[setter] = newValue;
+						}, true);
+					});
+
+				}
+			};
+		});
+
+}(angular));

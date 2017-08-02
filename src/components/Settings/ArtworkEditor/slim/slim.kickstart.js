@@ -1,5 +1,5 @@
 /*
- * Slim v4.11.0 - Image Cropping Made Easy
+ * Slim v4.13.0 - Image Cropping Made Easy
  * Copyright (c) 2017 Rik Schennink - http://slimimagecropper.com
  */
 (function(root, undefined){
@@ -2948,12 +2948,13 @@ var resourceIsBase64Data = function resourceIsBase64Data(resource) {
 	);
 };
 
-var loadRemoteURL = function loadRemoteURL(fetcher, url, err, cb) {
+var loadRemoteURL = function loadRemoteURL(fetcher, fetchRequestDecorator, loadRequestDecorator, url, err, cb) {
 
 	fetcher = '' + fetcher + (fetcher.indexOf('?') !== -1 ? '&' : '?') + 'url=' + url;
 
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', fetcher, true);
+	fetchRequestDecorator(xhr);
 	xhr.responseType = 'json';
 	xhr.onload = function () {
 
@@ -2962,16 +2963,17 @@ var loadRemoteURL = function loadRemoteURL(fetcher, url, err, cb) {
 			return;
 		}
 
-		loadURL(this.response.body, cb);
+		loadURL(this.response.body, loadRequestDecorator, cb);
 	};
 
 	xhr.send();
 };
 
-var loadURL = function loadURL(url, cb) {
+var loadURL = function loadURL(url, requestDecorator, cb) {
 
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', url, true);
+	requestDecorator(xhr);
 	xhr.responseType = 'blob';
 	xhr.onload = function (e) {
 
@@ -3277,11 +3279,14 @@ function scaleCanvas(canvas, scalar, bounds, min) {
 		return;
 	}
 
-	var targetWidth = Math.max(min.width, Math.min(bounds.width, Math.round(canvas.width * scalar)));
-	var targetHeight = Math.max(min.height, Math.min(bounds.height, Math.round(canvas.height * scalar)));
+	// min must fit in bounds but respect aspect ratio of canvas
 	var w = canvas.width;
 	var h = canvas.height;
-	var tmp = canvas;
+
+	// calculate
+	var targetWidth = Math.max(min.width, Math.min(bounds.width, Math.round(canvas.width * scalar)));
+	var targetHeight = Math.max(min.height, Math.min(bounds.height, Math.round(canvas.height * scalar)));
+	var tmp = cloneCanvas(canvas);
 	var c = void 0;
 	var ctx = void 0;
 
@@ -3309,6 +3314,7 @@ function scaleCanvas(canvas, scalar, bounds, min) {
 
 	canvas.width = targetWidth;
 	canvas.height = targetHeight;
+
 	ctx = canvas.getContext('2d');
 	ctx.drawImage(tmp, 0, 0, targetWidth, targetHeight);
 }
@@ -3415,7 +3421,7 @@ var cloneCanvasScaled = function cloneCanvasScaled(original, scalar) {
 	duplicate.width = original.width;
 	duplicate.height = original.height;
 	ctx.drawImage(original, 0, 0);
-	if (scalar > 0 && scalar != 1) {
+	if (scalar > 0 && scalar !== 1) {
 		scaleCanvas(duplicate, scalar, {
 			width: Math.round(original.width * scalar),
 			height: Math.round(original.height * scalar)
@@ -5938,7 +5944,7 @@ var Slim = function () {
 				this._initialCrop = this._options.crop;
 			}
 
-			this._load(src, callback);
+			this._load(src, callback, { blockPush: options.blockPush });
 		}
 	}, {
 		key: 'upload',
@@ -6620,6 +6626,7 @@ var Slim = function () {
 
 			// no preview, so possible to drop file
 			if (list.contains('slim-file-hopper')) {
+				e.preventDefault();
 				this._openFileDialog();
 				return;
 			}
@@ -6830,8 +6837,11 @@ var Slim = function () {
 
 	}, {
 		key: '_load',
-		value: function _load(resource, callback, options) {
+		value: function _load(resource, callback) {
 			var _this18 = this;
+
+			var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
 
 			// stop here
 			if (this._isBeingDestroyed) {
@@ -6907,7 +6917,7 @@ var Slim = function () {
 					load();
 
 					// resource is url, load with XHR
-					loadURL(resource, function (file) {
+					loadURL(resource, this._options.willLoad, function (file) {
 						// continue with file object
 						_this18._load(file, callback, options);
 					});
@@ -6917,7 +6927,7 @@ var Slim = function () {
 				return;
 			} else if (typeof resource.remote !== 'undefined' && this._options.fetcher) {
 
-				loadRemoteURL(this._options.fetcher, resource.remote, function (error) {
+				loadRemoteURL(this._options.fetcher, this._options.willFetch, resource.remote, function (error) {
 
 					exit();
 
@@ -7121,13 +7131,23 @@ var Slim = function () {
 					}
 
 					_this18._removeState('busy');
+				},
+
+				// options for canvas load
+				{
+					blockPush: options.blockPush
 				});
 			});
 		}
 	}, {
 		key: '_loadCanvas',
-		value: function _loadCanvas(image, ready, complete) {
+		value: function _loadCanvas(image, ready, complete, options) {
 			var _this19 = this;
+
+			// set default options object if not supplied
+			if (!options) {
+				options = {};
+			}
 
 			// halt here if cropper is currently being destroyed
 			if (this._isBeingDestroyed) {
@@ -7189,7 +7209,7 @@ var Slim = function () {
 				var willUpload = false;
 
 				// can only do auto upload when service is defined and push is enabled...
-				if (_this19._options.service && _this19._options.push) {
+				if (_this19._options.service && _this19._options.push && !options.blockPush) {
 
 					// ...and is not transformation of initial image
 					// + is not instant edit mode
@@ -7245,7 +7265,16 @@ var Slim = function () {
 			actions.filters = {
 				sharpen: this._options.filterSharpen / 100
 			};
-			actions.minSize = this._options.minSize;
+
+			// if should force minimum size on output image
+			if (this._options.forceMinSize) {
+				actions.minSize = this._options.minSize;
+			} else {
+				actions.minSize = {
+					width: 0,
+					height: 0
+				};
+			}
 
 			transformCanvas(image, actions, function (transformedImage) {
 
@@ -7263,7 +7292,8 @@ var Slim = function () {
 				}
 
 				// make sure min size is respected when size is equal to min size
-				if (_this20._options.size && _this20._options.minSize.width === _this20._options.size.width && _this20._options.minSize.height === _this20._options.size.height && (outputImage.width < _this20._options.minSize.width || outputImage.height < _this20._options.minSize.height)) {
+				if (_this20._options.forceMinSize && _this20._options.size && _this20._options.minSize.width === _this20._options.size.width && _this20._options.minSize.height === _this20._options.size.height && (outputImage.width < _this20._options.minSize.width || outputImage.height < _this20._options.minSize.height)) {
+
 					var w = Math.max(outputImage.width, _this20._options.minSize.width);
 					var h = Math.max(outputImage.height, _this20._options.minSize.height);
 					outputImage = create('canvas');
@@ -7672,41 +7702,7 @@ var Slim = function () {
 		value: function _upload(data, callback) {
 			var _this25 = this;
 
-			// done parsing input file
-			var inputParsed = function inputParsed(imageData) {
-
-				var formData = new FormData();
-
-				// if image data is defined, turn it into a file object (we can send files if we're uploading)
-				if (_this25._data.output.image !== null && _this25._options.uploadBase64 === false) {
-
-					var output = base64ToBlob(data.output.image, data.output.name);
-
-					// if image head available, inject in output
-					if (imageData.imageHead && _this25._options.copyImageHead) {
-
-						try {
-
-							output = new Blob([imageData.imageHead, loadImage.blobSlice.call(output, 20)], { type: getMimeTypeFromDataURI(data.output.image) });
-
-							output = blobToFile(output, data.output.name);
-						} catch (e) {}
-					}
-
-					var field = 'slim_output_' + _this25._uid;
-					data.output.image = null;
-					data.output.field = field;
-					formData.append(field, output, data.output.name);
-				}
-
-				// output dataset
-				formData.append(_this25._output.name, JSON.stringify(data));
-
-				// if input should be posted along, append data
-				// to FormData object as file
-				if (inArray('input', _this25._options.post)) {
-					formData.append(_this25._inputReference, _this25._data.input.file, _this25._data.input.file.name);
-				}
+			this.requestOutput(function (fileData, formData) {
 
 				var statusNode = _this25._element.querySelector('.slim-upload-status');
 
@@ -7768,15 +7764,79 @@ var Slim = function () {
 				if (typeof _this25._options.service === 'string') {
 					send(_this25._options.service, formData, requestDecorator, onProgress, onSuccess, onError);
 				} else if (typeof _this25._options.service === 'function') {
-					_this25._options.service.apply(_this25, [formData, onProgress, // function(loaded, total) {}   // loaded bytes (number), total bytes (number)
+					_this25._options.service.apply(_this25, [_this25._options.serviceFormat === 'file' ? fileData : formData, onProgress, // function(loaded, total) {}   // loaded bytes (number), total bytes (number)
 					onSuccess, // function(response) {} 		// response (object or string)
 					onError // function(error) {} 			// error message (string)
 					]);
 				}
-			};
+			}, data);
+		}
+	}, {
+		key: 'requestOutput',
+		value: function requestOutput(cb, data) {
+			var _this26 = this;
+
+			if (!this._data.input.file) {
+				cb(null, null);
+				return;
+			}
+
+			if (!data) {
+				data = this.dataBase64;
+			}
 
 			// copy the meta data of the original file to the output
-			loadImage.parseMetaData(this._data.input.file, inputParsed, {
+			loadImage.parseMetaData(this._data.input.file,
+
+			// receives image data from input file
+			function (imageData) {
+
+				var fileData = [];
+				var formData = new FormData();
+
+				// if input should be posted along, append data
+				// to FormData object as file
+				if (inArray('input', _this26._options.post)) {
+
+					// add to data array
+					fileData.push(_this26._data.input.file);
+
+					// add to formdata
+					formData.append(_this26._inputReference, _this26._data.input.file, _this26._data.input.file.name);
+				}
+
+				// if image data is defined, turn it into a file object (we can send files if we're uploading)
+				if (inArray('output', _this26._options.post) && _this26._data.output.image !== null && _this26._options.uploadBase64 === false) {
+
+					var output = base64ToBlob(data.output.image, data.output.name);
+
+					// if image head available, inject in output
+					if (imageData.imageHead && _this26._options.copyImageHead) {
+
+						try {
+
+							output = new Blob([imageData.imageHead, loadImage.blobSlice.call(output, 20)], { type: getMimeTypeFromDataURI(data.output.image) });
+
+							output = blobToFile(output, data.output.name);
+						} catch (e) {}
+					}
+
+					// add to data array
+					fileData.push(output);
+
+					// add to formdata
+					var field = 'slim_output_' + _this26._uid;
+					data.output.image = null;
+					data.output.field = field;
+					formData.append(field, output, data.output.name);
+				}
+
+				// output dataset
+				formData.append(_this26._output.name, JSON.stringify(data));
+
+				// done
+				cb(fileData, formData);
+			}, {
 				maxMetaDataSize: 262144,
 				disableImageHead: false
 			});
@@ -7914,7 +7974,7 @@ var Slim = function () {
 	}, {
 		key: '_hideButtons',
 		value: function _hideButtons(callback) {
-			var _this26 = this;
+			var _this27 = this;
 
 			if (!this._btnGroup) {
 				return;
@@ -7926,7 +7986,7 @@ var Slim = function () {
 				fromOpacity: 1,
 				opacity: 0,
 				allDone: function allDone() {
-					_this26._btnGroup.style.display = 'none';
+					_this27._btnGroup.style.display = 'none';
 					if (callback) {
 						callback();
 					}
@@ -7955,7 +8015,7 @@ var Slim = function () {
 	}, {
 		key: '_doEdit',
 		value: function _doEdit() {
-			var _this27 = this;
+			var _this28 = this;
 
 			// if no input data available, can't edit anything
 			if (!this._data.input.image) {
@@ -7994,17 +8054,17 @@ var Slim = function () {
 			// handle editor load
 			function () {
 
-				_this27._showEditor();
+				_this28._showEditor();
 
-				_this27._hideButtons();
+				_this28._hideButtons();
 
-				_this27._hideStatus();
+				_this28._hideStatus();
 			});
 		}
 	}, {
 		key: '_doRemove',
 		value: function _doRemove(done) {
-			var _this28 = this;
+			var _this29 = this;
 
 			// cannot remove when is only one image
 			if (this._isImageOnly()) {
@@ -8036,20 +8096,20 @@ var Slim = function () {
 
 			var timer = setTimeout(function () {
 
-				if (_this28._isBeingDestroyed) {
+				if (_this29._isBeingDestroyed) {
 					return;
 				}
 
-				_this28._hideButtons(function () {
+				_this29._hideButtons(function () {
 
-					_this28._toggleButton('upload', true);
+					_this29._toggleButton('upload', true);
 				});
 
-				_this28._hideStatus();
+				_this29._hideStatus();
 
-				_this28._hideResult();
+				_this29._hideResult();
 
-				_this28._options.didRemove.apply(_this28, [data, _this28]);
+				_this29._options.didRemove.apply(_this29, [data, _this29]);
 
 				if (done) {
 					done();
@@ -8063,7 +8123,7 @@ var Slim = function () {
 	}, {
 		key: '_doUpload',
 		value: function _doUpload(callback) {
-			var _this29 = this;
+			var _this30 = this;
 
 			// if no input data available, can't upload anything
 			if (!this._data.input.image) {
@@ -8076,22 +8136,22 @@ var Slim = function () {
 			this._hideButtons(function () {
 
 				// block upload button
-				_this29._toggleButton('upload', false);
+				_this30._toggleButton('upload', false);
 
-				_this29._save(function (err, data, res) {
+				_this30._save(function (err, data, res) {
 
-					_this29._removeState('upload');
-					_this29._stopProgress();
+					_this30._removeState('upload');
+					_this30._stopProgress();
 
 					if (callback) {
-						callback.apply(_this29, [err, data, res]);
+						callback.apply(_this30, [err, data, res]);
 					}
 
 					if (err) {
-						_this29._toggleButton('upload', true);
+						_this30._toggleButton('upload', true);
 					}
 
-					_this29._showButtons();
+					_this30._showButtons();
 				});
 			});
 		}
@@ -8109,7 +8169,7 @@ var Slim = function () {
 	}, {
 		key: '_doDestroy',
 		value: function _doDestroy() {
-			var _this30 = this;
+			var _this31 = this;
 
 			// set destroy flag to halt any running functionality
 			this._isBeingDestroyed = true;
@@ -8126,7 +8186,7 @@ var Slim = function () {
 			// this removes the image hopper if it's attached
 			if (this._imageHopper) {
 				HopperEvents.forEach(function (e) {
-					_this30._imageHopper.element.removeEventListener(e, _this30);
+					_this31._imageHopper.element.removeEventListener(e, _this31);
 				});
 				this._imageHopper.destroy();
 				this._imageHopper = null;
@@ -8135,7 +8195,7 @@ var Slim = function () {
 			// this block removes the image editor
 			if (this._imageEditor) {
 				ImageEditorEvents.forEach(function (e) {
-					_this30._imageEditor.element.removeEventListener(e, _this30);
+					_this31._imageEditor.element.removeEventListener(e, _this31);
 				});
 				this._imageEditor.destroy();
 				this._imageEditor = null;
@@ -8143,7 +8203,7 @@ var Slim = function () {
 
 			// remove button event listeners
 			nodeListToArray(this._btnGroup.children).forEach(function (btn) {
-				btn.removeEventListener('click', _this30);
+				btn.removeEventListener('click', _this31);
 			});
 
 			// stop listening to input
@@ -8168,12 +8228,12 @@ var Slim = function () {
 			attributes.forEach(function (attribute) {
 
 				// if attribute  is contained in original element attribute list and is the same, don't remove
-				if (matchesAttributeInList(attribute, _this30._originalElementAttributes)) {
+				if (matchesAttributeInList(attribute, _this31._originalElementAttributes)) {
 					return;
 				}
 
 				// else remove
-				_this30._originalElement.removeAttribute(attribute.name);
+				_this31._originalElement.removeAttribute(attribute.name);
 			});
 
 			this._originalElementAttributes.forEach(function (attribute) {
@@ -8184,7 +8244,7 @@ var Slim = function () {
 				}
 
 				// add attribute
-				_this30._originalElement.setAttribute(attribute.name, attribute.value);
+				_this31._originalElement.setAttribute(attribute.name, attribute.value);
 			});
 
 			// now destroyed this counter so the total Slim count can be lowered
@@ -8279,6 +8339,7 @@ var Slim = function () {
 
 				// call this service to submit cropped data
 				service: null,
+				serviceFormat: null,
 
 				// sharpen filter value, really low values might improve image output
 				filterSharpen: 0,
@@ -8312,6 +8373,8 @@ var Slim = function () {
 
 				// the forced output size of the image
 				forceSize: null,
+
+				forceMinSize: true,
 
 				// disable drop to replace
 				dropReplace: true,
@@ -8371,7 +8434,9 @@ var Slim = function () {
 				willRemove: function willRemove(data, cb) {
 					cb();
 				},
-				willRequest: function willRequest(xhr) {}
+				willRequest: function willRequest(xhr) {},
+				willFetch: function willFetch(xhr) {},
+				willLoad: function willLoad(xhr) {}
 
 			};
 
@@ -8505,6 +8570,8 @@ var Slim = function () {
 		// the forced output size of the image
 		'forceSize': defaultSize,
 
+		'forceMinSize': defaultTrue,
+
 		// the internal data canvas size
 		'internalCanvasSize': defaultSize,
 
@@ -8518,6 +8585,11 @@ var Slim = function () {
 				return fn;
 			}
 			return v;
+		},
+
+		// format of service data
+		'serviceFormat': function serviceFormat(v) {
+			return typeof v === 'undefined' ? null : v;
 		},
 
 		// url to fetch service
@@ -8609,7 +8681,7 @@ var Slim = function () {
 	});
 
 	// the will callbacks
-	['Transform', 'Save', 'Remove', 'Request'].forEach(function (cb) {
+	['Transform', 'Save', 'Remove', 'Request', 'Load', 'Fetch'].forEach(function (cb) {
 		defaults['will' + cb] = defaultFunction;
 	});
 

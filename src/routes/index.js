@@ -2,7 +2,6 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import ReactGA from 'react-ga';
-ReactGA.initialize('UA-102619335-1'); //Unique Google Analytics tracking number
 
 import store from '../store';
 import ArtistGalleryContainer from '../components/ArtistGallery/ArtistGalleryContainer';
@@ -13,6 +12,8 @@ import ArtworkContainer from '../components/Artwork/ArtworkContainer';
 import ArtworkEditorContainer from "../components/Settings/ArtworkEditor/ArtworkEditorContainer";
 import AppControls from '../components/AppControls/AppControls'
 import Home from '../components/Home/Home';
+
+ReactGA.initialize('UA-102619335-1'); //Unique Google Analytics tracking number
 
 const routes = [
     { path: "/gallery/:galleryId/artwork/:artworkId", component: ArtworkContainer },
@@ -26,7 +27,7 @@ const routes = [
 
 export default (
     <Provider store={store}>
-        <BrowserRouter history={history}>
+        <BrowserRouter>
             <div>
                 <Switch>
                     {routes.map((route, index) => (
@@ -37,7 +38,6 @@ export default (
                         />
                     ))}
                     <Route path="/" render={({location}) => {
-                        console.log("location: ", location);
                         ReactGA.set({ page: location.pathname });
                         ReactGA.pageview(location.pathname);
                         return null;
