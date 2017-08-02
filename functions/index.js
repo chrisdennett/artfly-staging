@@ -53,7 +53,7 @@ exports.generateThumbnail = functions.storage.object()
         return bucket.file(filePath).download({ destination: tempFilePath })
         // use imageMagick to create a thumbnail version
             .then(() => {
-                return spawn(`convert`, [`-define`, `jpeg:size=100x100`, tempFilePath, `-thumbnail`, `100x100`, tempLocalThumbFile])
+                return spawn(`convert`, [tempFilePath, `-thumbnail`, `100x100`, tempLocalThumbFile])
             })
             // upload the thumbnail version to storage
             .then(() => {
@@ -76,7 +76,7 @@ exports.generateThumbnail = functions.storage.object()
 
             // do the same for the medium version of the file
             .then(() => {
-                return spawn(`convert`, [`-define`, `jpeg:size=640x640`, tempFilePath, `-thumbnail`, `640x640`, tempLocalMediumFile])
+                return spawn(`convert`, [tempFilePath, `-thumbnail`, `640x640>`, tempLocalMediumFile])
             })
             .then(() => {
                 return bucket.upload(tempLocalMediumFile, { destination: mediumImageFilePath })
@@ -98,7 +98,7 @@ exports.generateThumbnail = functions.storage.object()
 
             // and again for the large version of the file
             .then(() => {
-                return spawn(`convert`, [`-define`, `jpeg:size=960x960`, tempFilePath, `-thumbnail`, `960x960`, tempLocalLargeFile])
+                return spawn(`convert`, [tempFilePath, `-thumbnail`, `960x960>`, tempLocalLargeFile])
             })
             .then(() => {
                 return bucket.upload(tempLocalLargeFile, { destination: largeImageFilePath })
