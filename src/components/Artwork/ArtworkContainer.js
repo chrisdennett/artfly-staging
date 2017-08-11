@@ -20,6 +20,10 @@ class ArtworkHolder extends Component {
 
     render() {
         const { artwork } = this.props;
+        if(!artwork){
+            return <div>Artwork Loading screen goes here...</div>
+        }
+
         return <Artwork artwork={artwork}/>;
     }
 }

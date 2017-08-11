@@ -20,9 +20,9 @@ exports.generateThumbnail = functions.storage.object()
         const mediumImageFilePath = filePath.replace(/(\/)?([^\/]*)$/, '$1medium_$2');
         const thumbImageFilePath = filePath.replace(/(\/)?([^\/]*)$/, '$1thumb_$2');
 
-        const tempLocalLargeFile = `/tmp/large.png`;
-        const tempLocalMediumFile = `/tmp/medium.png`;
-        const tempLocalThumbFile = `/tmp/tiny.png`;
+        const tempLocalLargeFile = `/tmp/large.jpg`;
+        const tempLocalMediumFile = `/tmp/medium.jpg`;
+        const tempLocalThumbFile = `/tmp/tiny.jpg`;
 
         const databaseUrlPropertyPrefix = 'url_';
 

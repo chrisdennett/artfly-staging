@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 
-import FormRenderField from '../../global/FormRenderField';
+import FormRenderField from '../global/FormRenderField';
 
 class ArtistEditor extends Component {
     render() {

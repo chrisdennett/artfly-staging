@@ -17,3 +17,11 @@ a{
 .controls-block-user{
     float: right;
 }
+
+.slim-btn-group{
+    display: none;
+}
+
+.slim-btn {
+    border-radius: 0;
+}

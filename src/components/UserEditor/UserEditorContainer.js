@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { createNewUser, deleteUser } from '../../AppControls/UserControls/UserActions';
+import { createNewUser, deleteUser } from '../AppControls/UserControls/UserActions';
 
 import UserEditor from './UserEditor';
 

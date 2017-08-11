@@ -6,10 +6,10 @@ import ReactGA from 'react-ga';
 import store from '../store';
 import ArtistGalleryContainer from '../components/ArtistGallery/ArtistGalleryContainer';
 import SettingsContainer from "../components/Settings/SettingsContainer";
-import ArtistEditorContainer from "../components/Settings/ArtistEditor/ArtistEditorContainer";
-import UserEditorContainer from "../components/Settings/UserEditor/UserEditorContainer";
+import ArtistEditorContainer from "../components/ArtistEditor/ArtistEditorContainer";
+import UserEditorContainer from "../components/UserEditor/UserEditorContainer";
 import ArtworkContainer from '../components/Artwork/ArtworkContainer';
-import ArtworkEditorContainer from "../components/Settings/ArtworkEditor/ArtworkEditorContainer";
+import ArtworkEditorContainer from "../components/ArtworkEditor/ArtworkEditorContainer";
 import AppControls from '../components/AppControls/AppControls'
 import Home from '../components/Home/Home';
 

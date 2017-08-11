@@ -3,9 +3,12 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import "./photo-selector-styles.css";
-import ImageCropAndRotate from '../Settings/ArtworkEditor/ImageCropAndRotate';
+
+import ImageCropAndRotate from '../ArtworkEditor/ImageCropAndRotate';
+// import PhotoEditor from '../PhotoEditor/PhotoEditor';
+
 import { fetchArtist } from '../ArtistGallery/ArtistGalleryActions';
-import { uploadImage } from '../Settings/ArtworkEditor/ArtworkEditorActions';
+import { uploadImage } from '../ArtworkEditor/ArtworkEditorActions';
 
 // The role of this component is to:
 // - create a custom file input button with a given label and id
@@ -14,13 +17,14 @@ class PhotoSelector extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { imgSrc: null, cropImg:null, cropData:null , imgIsSelected: false, selectedArtistId:null};
+        this.state = { imgSrc: null, cropImg:null, cropData:null , imgIsSelected: false, selectedArtistId:null, openEditImage:false};
         this.onArtistSelected = this.onArtistSelected.bind(this);
     }
 
     componentWillMount() {
         this.initData();
     }
+
     initData() {
         const { user } = this.props;
         if (user) {
@@ -54,12 +58,10 @@ class PhotoSelector extends Component {
     }
 
     onCropImageSave(cropImg){
-        console.log("cropImg: ", cropImg);
         this.setState({cropImg:cropImg});
     }
 
     onCropDataChange(imageCropAndRotateData){
-        console.log("imageCropAndRotateData: ", imageCropAndRotateData);
         this.setState({cropData:imageCropAndRotateData});
     }
 
@@ -68,9 +70,6 @@ class PhotoSelector extends Component {
         // use a call back to set up confirmation message
         //export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null)
         const {height, width } = this.state.cropData;
-
-        console.log("this.state.cropImg: ", this.state.cropImg);
-
         this.props.uploadImage(this.state.cropImg, this.props.user.uid, this.state.selectedArtistId, width, height);
     }
 
@@ -80,6 +79,10 @@ class PhotoSelector extends Component {
 
     onArtistSelected(artistId){
         this.setState({selectedArtistId:artistId})
+    }
+
+    onCropAndRotateClick(){
+        this.setState({openEditImage:true})
     }
 
     render() {
@@ -125,7 +128,10 @@ class PhotoSelector extends Component {
                         <hr/>
                         {this.state.imgSrc &&
                             <div style={{ width: '50%' }}>
+                                <button onClick={() => { this.cropper.openEditScreen(); }}>Crop or Rotate picture</button>
                                 <ImageCropAndRotate url={this.state.imgSrc}
+                                                    ref={instance => { this.cropper = instance; }}
+                                                    openEditImage={this.state.openEditImage}
                                                     onCropDataChange={this.onCropDataChange.bind(this)}
                                                     onCropImageSave={this.onCropImageSave.bind(this)}/>
                             </div>
@@ -143,11 +149,6 @@ class PhotoSelector extends Component {
                        onChange={this.handleImageChange.bind(this)}
                        type="file" accept="image/*"
                        name={this.props.id} id={id}/>
-
-                {/*<input className="inputfile"
-                       onChange={this.handleImageChange.bind(this)}
-                       type="file" accept="image/*" capture="camera"
-                       name={this.props.id} id={this.props.id}/>*/}
 
                 <label disabled={this.props.disabled}
                        className={this.props.disabled ? 'disabled' : ''}

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { addNewArtist } from '../../AppControls/UserControls/UserActions';
-import { fetchGallery, fetchArtist, fetchGalleryArtistArtworkIds } from '../../ArtistGallery/ArtistGalleryActions';
-import { updateArtist, updateGallery, deleteArtist } from '../SettingsActions';
+import { addNewArtist } from '../AppControls/UserControls/UserActions';
+import { fetchGallery, fetchArtist, fetchGalleryArtistArtworkIds } from '../ArtistGallery/ArtistGalleryActions';
+import { updateArtist, updateGallery, deleteArtist } from '../Settings/SettingsActions';
 
 import ArtistEditor from './ArtistEditor';
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 
-import FormRenderField from '../../global/FormRenderField'
+import FormRenderField from '../global/FormRenderField'
 
 class NewUserForm extends Component {
 

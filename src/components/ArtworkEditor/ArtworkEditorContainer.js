@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { fetchGallery, fetchArtist, fetchArtwork } from '../../ArtistGallery/ArtistGalleryActions';
+import { fetchGallery, fetchArtist, fetchArtwork } from '../ArtistGallery/ArtistGalleryActions';
 import { updateArtwork, uploadImage } from './ArtworkEditorActions';
 
 import ArtworkEditor from './ArtworkEditor';
@@ -41,9 +41,18 @@ class ArtworkEditorHolder extends Component {
     onImageConfirm(imageCropAndRotateData){
         //export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null)
 
-        const {image, height, width, crop, rotation, type} = imageCropAndRotateData;
+        // const {image, height, width, crop, rotation, type} = imageCropAndRotateData;
+        const {image, height, width } = imageCropAndRotateData;
 
         this.props.uploadImage(image, this.props.userId, this.props.artistId, width, height);
+    }
+
+    onCropImageSave(cropImg){
+        console.log("cropImg: ", cropImg);
+    }
+
+    onCropDataChange(imageCropAndRotateData){
+        console.log("imageCropAndRotateData: ", imageCropAndRotateData);
     }
 
     render() {
@@ -59,7 +68,8 @@ class ArtworkEditorHolder extends Component {
 
         const propsForView = {artwork, artists, onArtistSelected};
         return <ArtworkEditor {...propsForView}
-                              onImageConfirm={this.onImageConfirm.bind(this)}
+                              onCropDataChange={this.onCropDataChange.bind(this)}
+                              onCropImageSave={this.onCropImageSave.bind(this)}
                               onArtistSelected={this.onArtistSelected.bind(this)}/>;
     }
 }

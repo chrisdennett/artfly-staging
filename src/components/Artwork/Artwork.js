@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 
 class Artwork extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state = {imageLoading:false};
+        this.state = { imageLoading: false };
     }
 
     componentWillMount() {
-        this.setState({imageLoading:true});
+        this.setState({ imageLoading: true });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -17,24 +17,33 @@ class Artwork extends Component {
         const nextArtwork = nextProps.artwork;
 
         if (currentArtwork !== nextArtwork) {
-            this.setState({imageLoading:true});
+            this.setState({ imageLoading: true });
         }
     }
 
     onImageLoad() {
-        this.setState({imageLoading:false});
+        this.setState({ imageLoading: false });
     }
 
     render() {
-        const {artwork} = this.props;
+        const { artwork } = this.props;
 
         let imgStyle = {
             width: '100%',
             height: 'auto'
         };
 
-        if(!artwork || this.state.imageLoading){
+        if (this.state.imageLoading) {
             imgStyle.display = 'none';
+        }
+
+        const { url, url_large, url_med, url_thumb } = artwork;
+        // set the image url to the full sized source image
+        let artworkUrl = url;
+        // if the large one has been created use that instead
+        // TODO if the image area is smaller than the medium sized image use that instead
+        if (url_large) {
+            artworkUrl = url_large;
         }
 
         return (
@@ -47,7 +56,7 @@ class Artwork extends Component {
 
                 {!artwork
                     ? ""
-                    : <img alt="user artwork" onLoad={this.onImageLoad.bind(this)} style={imgStyle} src={artwork.url}/>
+                    : <img alt="user artwork" onLoad={this.onImageLoad.bind(this)} style={imgStyle} src={artworkUrl}/>
                 }
             </div>
         )

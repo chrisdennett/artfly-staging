@@ -1,4 +1,4 @@
-import firebase from '../../../firebase/firebaseConfig';
+import firebase from '../../firebase/firebaseConfig';
 // TODO: I think I should be able to do away with this through first import
 import * as fb from 'firebase';
 
@@ -39,8 +39,7 @@ export function updateArtwork(artworkId, oldArtworkData, newArtworkData) {
 */
 
 
-
-export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null) {
+export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, crop, rotation, type, callback = null) {
 
     return dispatch => {
         // const fileExtension = imgFile.name.split('.').pop();

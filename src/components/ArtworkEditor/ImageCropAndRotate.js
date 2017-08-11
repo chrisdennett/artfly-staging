@@ -6,7 +6,7 @@ class ImageCropAndRotate extends Component {
 
     slimConfirm(slimData) {
         if (this.props.onCropDataChange) {
-            const { actions, input, output } = slimData;
+            const { actions, input } = slimData;
             const { crop, rotation } = actions; // NB crop contains a type property which is set to manual if
             const { type } = input;
             const { height, width } = crop;
@@ -33,17 +33,7 @@ class ImageCropAndRotate extends Component {
     /*
     Can save and pass in crop information
     crop={width:300, height:600, x:20, y:40}
-    */
-
-    /*
-    Here's a way to manually trigger the cropper if want to.
-    doThing(){
-        const cropper = this.cropRef.instance;
-        cropper.upload();
-    }
-
-    <Slim download={  ref={(cropRef) => { this.cropRef = cropRef; }}
-                      ...>
+    slim-upload-status
     */
 
       // called when upload button is pressed or automatically if push is enabled
@@ -54,8 +44,12 @@ class ImageCropAndRotate extends Component {
 
         // call these methods to handle upload state
         // console.log(progress, success, failure);
-
         success(null);
+    }
+
+    openEditScreen(){
+        const cropper = this.cropRef.instance;
+        cropper.edit();
     }
 
     render() {
@@ -63,13 +57,14 @@ class ImageCropAndRotate extends Component {
 
         return (
             <div>
+                {/*<button onClick={this.onCropAndRotateClick.bind(this)}>Crop or Rotate picture</button>*/}
                 <Slim download={showDownload}
+                      ref={(cropRef) => { this.cropRef = cropRef; }}
                       size="3500,3500"
                       initialImage={this.props.url}
-                      push="true"
                       serviceFormat="file"
+                      statusUploadSuccess=""
                       service={ this.slimService.bind(this) }
-                      ref={(cropRef) => { this.cropRef = cropRef; }}
                       didInit={this.didInit.bind(this)}
                       didConfirm={this.slimConfirm.bind(this)}>
 
