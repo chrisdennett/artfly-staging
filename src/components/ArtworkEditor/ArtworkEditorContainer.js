@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { fetchGallery, fetchArtist, fetchArtwork } from '../ArtistGallery/ArtistGalleryActions';
-import { updateArtwork, uploadImage } from './ArtworkEditorActions';
+import { fetchGallery, fetchArtist, fetchArtwork } from '../../actions/ArtistGalleryActions';
+import { updateArtwork, uploadImage } from '../../actions/ArtworkEditorActions';
 
 import ArtworkEditor from './ArtworkEditor';
 

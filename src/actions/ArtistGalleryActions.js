@@ -1,4 +1,4 @@
-import firebase from '../../firebase/firebaseConfig';
+import firebase from '../firebase/firebaseConfig';
 
 export const NEW_GALLERY_COMING = "newGalleryComing";
 export const FETCH_GALLERY = "fetchGallery";

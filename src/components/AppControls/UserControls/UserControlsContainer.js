@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchUserData, loginUser, logoutUser } from './UserActions';
+import { fetchUserData, loginUser, logoutUser } from '../../../actions/UserActions';
 
 import UserControls from './UserControls';
 

@@ -1,4 +1,4 @@
-import { FETCH_COMMUNITY_DATA } from './CommunityActions';
+import { FETCH_COMMUNITY_DATA } from '../actions/CommunityActions';
 
 export default function (state = {}, action) {
     switch (action.type) {

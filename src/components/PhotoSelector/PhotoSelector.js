@@ -4,11 +4,11 @@ import _ from 'lodash';
 
 import "./photo-selector-styles.css";
 
-import ImageCropAndRotate from '../ArtworkEditor/ImageCropAndRotate';
+import ImageCropAndRotate from '../ImageCropAndRotate/ImageCropAndRotate';
 // import PhotoEditor from '../PhotoEditor/PhotoEditor';
 
-import { fetchArtist } from '../ArtistGallery/ArtistGalleryActions';
-import { uploadImage } from '../ArtworkEditor/ArtworkEditorActions';
+import { fetchArtist } from '../../actions/ArtistGalleryActions';
+import { uploadImage } from '../../actions/ArtworkEditorActions';
 
 // The role of this component is to:
 // - create a custom file input button with a given label and id
@@ -143,7 +143,6 @@ class PhotoSelector extends Component {
                 </div>
             )
         }
-
 
         const id = !this.props.id ? "123" : this.props.id;
         return (

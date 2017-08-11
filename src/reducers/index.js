@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
-import CommunityReducer from '../components/Home/CommunityReducer';
-import UserReducer from '../components/AppControls/UserControls/UserReducer';
+import CommunityReducer from './CommunityReducer';
+import UserReducer from './UserReducer';
 import ArtworksReducer from './ArtworksReducer';
 import GalleriesReducer from './GalleriesReducer';
 import ArtistsReducer from './ArtistsReducer';
-import PhotoSelectorReducer from '../components/PhotoSelector/PhotoSelectorReducer';
+import PhotoSelectorReducer from './PhotoSelectorReducer';
 import ArtistArtworkIdsReducer from './ArtistArtworkIdsReducer';
 import FormReducer from './FormReducer';
 

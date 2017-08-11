@@ -3,7 +3,7 @@ import {
     CREATE_USER,
     LOGOUT_USER,
     DELETE_USER
-} from './UserActions';
+} from '../actions/UserActions';
 
 export default function (state = {}, action) {
 

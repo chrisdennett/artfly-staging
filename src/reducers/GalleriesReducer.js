@@ -1,4 +1,4 @@
-import { NEW_GALLERY_COMING, FETCH_GALLERY } from '../components/ArtistGallery/ArtistGalleryActions';
+import { NEW_GALLERY_COMING, FETCH_GALLERY } from '../actions/ArtistGalleryActions';
 
 export default function (state = {}, action) {
     switch (action.type) {

@@ -1,7 +1,7 @@
 import React from "react";
 import _ from 'lodash';
 
-import ImageCropAndRotate from '../ArtworkEditor/ImageCropAndRotate';
+import ImageCropAndRotate from '../ImageCropAndRotate/ImageCropAndRotate';
 
 const PhotoEditor = function (props) {
 

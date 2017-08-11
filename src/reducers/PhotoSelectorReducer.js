@@ -1,4 +1,4 @@
-import { NEW_PHOTO_SELECTED, CLEAR_PHOTO_SELECTED } from './PhotoSelectorActions';
+import { NEW_PHOTO_SELECTED, CLEAR_PHOTO_SELECTED } from '../actions/PhotoSelectorActions';
 
 export default function (state = null, action) {
     switch (action.type) {

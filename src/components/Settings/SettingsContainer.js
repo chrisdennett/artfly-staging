@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import Settings from './Settings';
-import { fetchGallery, fetchArtist, fetchGalleryArtistArtworkIds } from '../ArtistGallery/ArtistGalleryActions';
+import { fetchGallery, fetchArtist, fetchGalleryArtistArtworkIds } from '../../actions/ArtistGalleryActions';
 
 const getUserArtistGalleries = (artistGalleryIdsObject, artists, galleries, artistsArtworkIds) => {
     const artistGalleryIds = Object.keys(artistGalleryIdsObject);

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
-import ImageCropAndRotate from './ImageCropAndRotate';
+import ImageCropAndRotate from '../ImageCropAndRotate/ImageCropAndRotate';
 
 class ArtworkEditor extends Component {
 

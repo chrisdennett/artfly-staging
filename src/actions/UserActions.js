@@ -1,4 +1,4 @@
-import firebase from '../../../firebase/firebaseConfig';
+import firebase from '../firebase/firebaseConfig';
 // TODO: I think I should be able to do away with this through first import
 import * as fb from 'firebase';
 

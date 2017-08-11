@@ -1,4 +1,4 @@
-import { ARTIST_ARTWORK_IDS_CHANGE } from '../components/ArtistGallery/ArtistGalleryActions';
+import { ARTIST_ARTWORK_IDS_CHANGE } from '../actions/ArtistGalleryActions';
 
 export default function (state = {}, action) {
 

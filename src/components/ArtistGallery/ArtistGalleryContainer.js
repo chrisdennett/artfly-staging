@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import ArtistGallery from './ArtistGallery';
-import { fetchGallery, fetchArtist, fetchGalleryArtistArtworkIds } from './ArtistGalleryActions';
+import { fetchGallery, fetchArtist, fetchGalleryArtistArtworkIds } from '../../actions/ArtistGalleryActions';
 
 // Intermediary component so ui component isn't required to call data
 class ArtistGalleryHolder extends Component {

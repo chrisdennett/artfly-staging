@@ -1,4 +1,4 @@
-import firebase from '../../firebase/firebaseConfig';
+import firebase from '../firebase/firebaseConfig';
 
 export const ARTIST_UPDATED = 'artistUpdated';
 export const ARTIST_DELETED = 'artistDeleted';

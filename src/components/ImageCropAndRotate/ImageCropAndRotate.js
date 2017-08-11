@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Slim from './slim/slim.react';
+import Slim from '../ArtworkEditor/slim/slim.react';
 
 // Slim Image Cropper - docs - http://slimimagecropper.com/
 class ImageCropAndRotate extends Component {
