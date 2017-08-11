@@ -37,7 +37,8 @@ class Artwork extends Component {
             imgStyle.display = 'none';
         }
 
-        const { url, url_large, url_med, url_thumb } = artwork;
+        // const { url, url_large, url_med, url_thumb } = artwork;
+        const { url, url_large } = artwork;
         // set the image url to the full sized source image
         let artworkUrl = url;
         // if the large one has been created use that instead

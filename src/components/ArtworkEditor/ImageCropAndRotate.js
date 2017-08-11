@@ -42,8 +42,6 @@ class ImageCropAndRotate extends Component {
         // this.props.onCropImageSave({ image, height, width, crop, rotation, type });
         this.props.onCropImageSave(blob);
 
-        console.log("formdata: ", formdata);
-
         // call these methods to handle upload state
         // console.log(progress, success, failure);
         success(null);

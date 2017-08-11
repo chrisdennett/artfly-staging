@@ -62,7 +62,7 @@ class PhotoSelector extends Component {
     }
 
     onCropDataChange(imageCropAndRotateData){
-        this.setState({cropData:imageCropAndRotateData});
+        this.setState({cropData:imageCropAndRotateData, cropImg:null});
     }
 
     onSave(){
@@ -106,11 +106,16 @@ class PhotoSelector extends Component {
                 left: '2%'
             };
 
+            let buttonStyle = { display: 'none'};
+            if(this.state.cropImg){
+                buttonStyle = {};
+            }
+
             return (
                 <div style={fullScreenStyle}>
                     <div style={contentStyle}>
-                        <h1>New image to add</h1>
-                        <button onClick={this.onSave.bind(this)}>SAVE</button>
+                        <h1>New Image:</h1>
+                        <button disabled={!this.state.cropImg} onClick={this.onSave.bind(this)}>SAVE</button>
                         <button onClick={this.onCancel.bind(this)}>CANCEL</button>
                         <label htmlFor="artistSelector">ARTIST: </label>
                         <select value={this.state.selectedArtistId} onChange={(e) => {this.onArtistSelected(e.target.value)}}>
@@ -119,8 +124,6 @@ class PhotoSelector extends Component {
 
                                     return <option key={artistId}
                                                    value={artistId}>{artistData.name}</option>;
-
-
                                 })
                             }
                         </select>
@@ -128,7 +131,7 @@ class PhotoSelector extends Component {
                         <hr/>
                         {this.state.imgSrc &&
                             <div style={{ width: '50%' }}>
-                                <button onClick={() => { this.cropper.openEditScreen(); }}>Crop or Rotate picture</button>
+                                <button disabled={!this.state.cropImg}  onClick={() => { this.cropper.openEditScreen(); }}>Crop or Rotate picture</button>
                                 <ImageCropAndRotate url={this.state.imgSrc}
                                                     ref={instance => { this.cropper = instance; }}
                                                     openEditImage={this.state.openEditImage}
