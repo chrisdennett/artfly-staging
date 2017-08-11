@@ -5,6 +5,7 @@ import * as fb from 'firebase';
 export const UPDATE_ARTWORK_COMPLETE = 'updateArtworkComplete';
 export const ADD_ARTWORK_UPLOAD_PROGRESS = 'imageUploadProgress';
 export const ADD_ARTWORK_COMPLETE = 'artworkAdded';
+export const CLEAR_IMAGE_UPLOAD = 'clearImageUpload';
 
 export function updateArtwork(artworkId, oldArtworkData, newArtworkData) {
     return dispatch => {
@@ -38,6 +39,14 @@ export function updateArtwork(artworkId, oldArtworkData, newArtworkData) {
 "https://storage.googleapis.com/art-blam.appspot.com/userContent%2F08pXRSgkZAQsn7q9Qvum15QC2Nj1%2Flarge_-KqXM_Q_Z38ZTWXIwwXV?GoogleAccessId=firebase-adminsdk-zebo2@art-blam.iam.gserviceaccount.com&Expires=14898124800&Signature=k4NmILMdeyyyy1U6oOsELS6fL9N8PVoSemHbthPUW1dEJuNkjM62vnMv6EEiLBXezQlesyCnxWwo1vfGaU77Dqn6%2FJgW7Z7T4VZr0mnd9w4dYoQnb4PSYt7EdiPno19Gg9iCiaXCPrRZOVsT35H4gnFhAgq8ZUlOCJvEGyDHXyOlkvHqZGwHrBSWlPn2AJuewnZ3u0gZqYw2BvGns00g5fQcS%2FbNqI9tFkbHj8KuIVztBn3GfMzlGQ2I4ae%2Fm2u6D9ws6N9Rr6sGcpaLdFjZLd4esozAl7%2F8CstEtHStXIcjJkgoNpJ3ZNl0kz3UeMuWgUvwWODfynkmzoNzKCF%2BTg%3D%3D"
 */
 
+export function clearImageUpload(callback=null){
+    return dispatch => {
+        dispatch({
+            type: CLEAR_IMAGE_UPLOAD,
+            payload: {  }
+        });
+    }
+}
 
 export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, crop, rotation, type, callback = null) {
     return dispatch => {

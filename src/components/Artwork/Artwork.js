@@ -12,15 +12,6 @@ class Artwork extends Component {
         this.setState({ imageLoading: true });
     }
 
-    componentWillReceiveProps(nextProps) {
-        const currentArtwork = this.props.artwork;
-        const nextArtwork = nextProps.artwork;
-
-        if (currentArtwork !== nextArtwork) {
-            this.setState({ imageLoading: true });
-        }
-    }
-
     onImageLoad() {
         this.setState({ imageLoading: false });
     }
@@ -50,15 +41,12 @@ class Artwork extends Component {
         return (
             <div>
                 <h1>Artwork</h1>
-                {!artwork || this.state.imageLoading
+                {this.state.imageLoading
                     ? <div>Loading artwork...</div>
                     : ""
                 }
 
-                {!artwork
-                    ? ""
-                    : <img alt="user artwork" onLoad={this.onImageLoad.bind(this)} style={imgStyle} src={artworkUrl}/>
-                }
+                <img alt="user artwork" onLoad={this.onImageLoad.bind(this)} style={imgStyle} src={artworkUrl}/>
             </div>
         )
     }

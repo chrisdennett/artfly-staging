@@ -1,15 +1,13 @@
-import { NEW_PHOTO_SELECTED, CLEAR_PHOTO_SELECTED } from '../actions/PhotoSelectorActions';
+import { ADD_ARTWORK_UPLOAD_PROGRESS, CLEAR_IMAGE_UPLOAD } from '../actions/ArtworkEditorActions';
 
 export default function (state = null, action) {
     switch (action.type) {
 
-        case NEW_PHOTO_SELECTED:
-            const imageFile = action.payload;
+        case ADD_ARTWORK_UPLOAD_PROGRESS:
+            return action.payload;
 
-            return imageFile;
-
-        case CLEAR_PHOTO_SELECTED:
-            return null;
+        case CLEAR_IMAGE_UPLOAD:
+            return action.payload;
 
         default:
             return state;
