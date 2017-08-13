@@ -1,5 +1,4 @@
 import firebase from '../firebase/firebaseConfig';
-// import * as fb from 'firebase';
 
 export const FETCH_COMMUNITY_DATA = "fetchCommunityData";
 

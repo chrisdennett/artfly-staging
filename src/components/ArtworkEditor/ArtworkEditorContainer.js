@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { fetchGallery, fetchArtist, fetchArtwork } from '../../actions/ArtistGalleryActions';
-import { updateArtwork, uploadImage } from '../../actions/ArtworkEditorActions';
+import { updateArtwork, uploadImage } from '../../actions/ArtistGalleryActions';
 
 import ArtworkEditor from './ArtworkEditor';
 

@@ -6,8 +6,7 @@ import "./photo-selector-styles.css";
 
 import ImageCropAndRotate from '../ImageCropAndRotate/ImageCropAndRotate';
 
-import { fetchArtist } from '../../actions/ArtistGalleryActions';
-import { uploadImage, clearImageUpload } from '../../actions/ArtworkEditorActions';
+import { fetchArtist, uploadImage, clearImageUpload } from '../../actions/ArtistGalleryActions';
 
 // The role of this component is to:
 // - create a custom file input button with a given label and id

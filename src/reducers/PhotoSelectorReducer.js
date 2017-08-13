@@ -1,4 +1,4 @@
-import { ADD_ARTWORK_UPLOAD_PROGRESS, CLEAR_IMAGE_UPLOAD } from '../actions/ArtworkEditorActions';
+import { ADD_ARTWORK_UPLOAD_PROGRESS, CLEAR_IMAGE_UPLOAD } from '../actions/ArtistGalleryActions';
 
 export default function (state = null, action) {
     switch (action.type) {
