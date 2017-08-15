@@ -4,7 +4,6 @@ import { Link, Redirect } from 'react-router-dom';
 import PhotoSelector from '../../PhotoSelector/PhotoSelector';
 
 const UserControls = function (props) {
-    console.log("props: ", props);
     const { userStatus } = props;
     const onArtworkEditorPage = props.history.location.pathname.indexOf("artwork-editor") > -1;
 
