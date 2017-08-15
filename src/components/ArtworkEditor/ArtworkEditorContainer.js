@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import queryString from 'query-string';
 
 import { fetchGallery, fetchArtist, fetchArtwork } from '../../actions/ArtistGalleryActions';
 import { updateArtwork, uploadImage } from '../../actions/ArtistGalleryActions';
@@ -22,7 +21,6 @@ class ArtworkEditorHolder extends Component {
     }
 
     componentDidMount() {
-        console.log("ArtworkEditorContainer > DidMount");
         this.initData();
     }
 
