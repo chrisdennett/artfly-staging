@@ -4,7 +4,10 @@ import { Link, Redirect } from 'react-router-dom';
 import PhotoSelector from '../../PhotoSelector/PhotoSelector';
 
 const UserControls = function (props) {
+    console.log("props: ", props);
     const { userStatus } = props;
+    const onArtworkEditorPage = props.history.location.pathname.indexOf("artwork-editor") > -1;
+
     let renderContent;
 
     if (!userStatus || userStatus === "pending") {
@@ -19,10 +22,8 @@ const UserControls = function (props) {
     else {
         renderContent =
             <span>
-                {!props.artworkId ? "" : <Link to={`/artwork-editor/${props.artworkId}`}>EDIT</Link> }
+                {(!props.artworkId || onArtworkEditorPage) ? "" : <Link to={`/artwork-editor/${props.artworkId}`}>EDIT</Link> }
 
-                {/*<ArtworkAdderContainer history={props.history}
-                                       galleryId={props.galleryId}/>*/}
                 <PhotoSelector history={props.history} />
 
                 <Link to="/settings">Settings</Link>
