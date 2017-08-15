@@ -113,34 +113,32 @@ export function fetchGalleryArtistArtworkIds(artistGalleryId) {
     }
 }
 
-export function fetchArtwork(artworkId) {
+export function fetchArtwork(artworkId, callback) {
     return (dispatch) => {
-        fetchArtworkInternal(artworkId, dispatch);
-    }
-}
-
-export function fetchArtworkInternal(artworkId, dispatch) {
-    if (artworkListenersRef.indexOf(artworkId) >= 0) {
-        dispatch({
-            type: FETCH_ARTWORK_ALREADY_CACHED,
-            payload: {}
-        });
-        return;
-    }
-
-    artworkListenersRef.push(artworkId);
-
-    firebase.database()
-        .ref('user-data/artworks/' + artworkId)
-        .on('value', snapshot => {
-            const artworkId = snapshot.key;
-            const artworkData = snapshot.val();
-
+        if (artworkListenersRef.indexOf(artworkId) >= 0) {
             dispatch({
-                type: ARTWORK_CHANGE,
-                payload: { [artworkId]: artworkData }
-            })
-        });
+                type: FETCH_ARTWORK_ALREADY_CACHED,
+                payload: {}
+            });
+            return;
+        }
+
+        artworkListenersRef.push(artworkId);
+
+        firebase.database()
+            .ref('user-data/artworks/' + artworkId)
+            .on('value', snapshot => {
+                const artworkId = snapshot.key;
+                const artworkData = {...snapshot.val(), id:artworkId};
+
+                dispatch({
+                    type: ARTWORK_CHANGE,
+                    payload: { [artworkId]: artworkData }
+                });
+
+                if(callback) callback(artworkData);
+            });
+    }
 }
 
 export function updateGallery(galleryId, newGalleryData, callback) {
