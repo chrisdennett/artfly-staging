@@ -5,7 +5,8 @@ import PhotoSelector from '../../PhotoSelector/PhotoSelector';
 
 const UserControls = function (props) {
     const { userStatus } = props;
-    const onArtworkEditorPage = props.history.location.pathname.indexOf("artwork-editor") > -1;
+    const currentPath = props.history.location.pathname;
+    const onArtworkEditorPage = currentPath.indexOf("artwork-editor") > -1;
 
     let renderContent;
 

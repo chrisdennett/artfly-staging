@@ -5,8 +5,12 @@ import ArtistSelector from "../ArtistSelector/ArtistSelector";
 
 class ArtworkEditor extends Component {
 
+    onDeleteArtwork(){
+        console.log("Display delete confirmation");
+    }
+
     render() {
-        const { url, artistId, artists, onArtistSelected, onCropDataConfirm, onCropImageSave, onSaveChanges } = this.props;
+        const { url, artistId, artists, onArtistSelected, onCropDataConfirm, onCropImageSave, onSaveChanges, onCancelChanges } = this.props;
 
         return (
 
@@ -30,8 +34,8 @@ class ArtworkEditor extends Component {
 
                 <hr/>
                 <button onClick={onSaveChanges}>SAVE</button>
-                <button>CANCEL</button>
-                <button>Delete Image</button>
+                <button onClick={onCancelChanges}>CANCEL</button>
+                <button onClick={this.onDeleteArtwork.bind(this)}>Delete Image</button>
             </div>
         );
     }

@@ -72,9 +72,9 @@ class PhotoSelector extends Component {
         // set up the new artwork
         // use a call back to set up confirmation message
         //export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null)
-        const { height, width, rotation } = this.state.cropData;
+        const { height, width } = this.state.cropData;
 
-        this.props.uploadImage(this.state.cropImg, this.props.user.uid, this.state.selectedArtistId, width, height, rotation);
+        this.props.uploadImage(this.state.cropImg, this.props.user.uid, this.state.selectedArtistId, width, height);
     }
 
     onCancel() {

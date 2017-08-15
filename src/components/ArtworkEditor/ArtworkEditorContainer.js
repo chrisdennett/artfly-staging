@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import queryString from 'query-string';
 
 import { fetchGallery, fetchArtist, fetchArtwork } from '../../actions/ArtistGalleryActions';
 import { updateArtwork, uploadImage } from '../../actions/ArtistGalleryActions';
@@ -21,19 +22,21 @@ class ArtworkEditorHolder extends Component {
     }
 
     componentDidMount() {
+        console.log("ArtworkEditorContainer > DidMount");
         this.initData();
     }
 
     initData() {
         const { artworkId, user } = this.props;
+
         // only fetch if not already available
         if (!this.state.selectedArtistId && this.props.artwork && this.props.artwork.id === artworkId) {
-            this.setState({ selectedArtistId: this.props.artwork.artistId })
+            this.setState({ selectedArtistId: this.props.artwork.artistId });
         }
         else {
             if (!this.state.selectedArtistId && artworkId) {
                 this.props.fetchArtwork(artworkId, (artworkData) => {
-                    this.setState({ selectedArtistId: artworkData.artistId })
+                    this.setState({ selectedArtistId: artworkData.artistId });
                 });
             }
         }
@@ -52,13 +55,13 @@ class ArtworkEditorHolder extends Component {
         this.setState({ selectedArtistId: artistId });
     }
 
-    hasCropDataChanged(){
+    hasCropDataChanged() {
         let cropDataChanged = false;
 
         if (this.state.cropData) {
             const { rotation, width, height } = this.state.cropData;
 
-            let rotationChanged = rotation !== this.props.artwork.rotation;
+            let rotationChanged = rotation && rotation !== 0;
             let widthChanged = width !== this.props.artwork.imgWidth;
             let heightChanged = height !== this.props.artwork.imgHeight;
             if (rotationChanged || widthChanged || heightChanged) {
@@ -66,6 +69,20 @@ class ArtworkEditorHolder extends Component {
             }
         }
         return cropDataChanged;
+    }
+
+    getReturnUrl() {
+        const {artworkId} = this.props;
+        const artistId = this.state.selectedArtistId;
+
+        let returnUrl = `/gallery/${artistId}/artwork/${artworkId}`;
+
+        return returnUrl;
+    }
+
+    onCancelChanges() {
+        const returnUrl = this.getReturnUrl();
+        this.props.history.push(returnUrl);
     }
 
     onSaveChanges() {
@@ -101,20 +118,11 @@ class ArtworkEditorHolder extends Component {
                 this.uploadCurrentImage(newArtworkData.artistId, artworkId);
             });
         }
-
-
-        //export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null)
-
-        // const {image, height, width, crop, rotation, type} = imageCropAndRotateData;
-        // const {image, height, width } = imageCropAndRotateData;
-
-        // this.props.uploadImage(image, this.props.userId, this.props.artistId, width, height);
     }
 
-    uploadCurrentImage(artistId, artworkId){
-        const { rotation, width, height } = this.state.cropData;
-        this.props.uploadImage(this.state.cropImg, this.props.user.uid, artistId, width, height, rotation, artworkId)
-
+    uploadCurrentImage(artistId, artworkId) {
+        const { width, height } = this.state.cropData;
+        this.props.uploadImage(this.state.cropImg, this.props.user.uid, artistId, width, height, artworkId)
     }
 
     onCropImageSave(cropImg) {
@@ -141,6 +149,7 @@ class ArtworkEditorHolder extends Component {
         const propsForView = { artists, onArtistSelected, url, artistId };
         return <ArtworkEditor {...propsForView}
                               onSaveChanges={this.onSaveChanges.bind(this)}
+                              onCancelChanges={this.onCancelChanges.bind(this)}
                               onCropDataConfirm={this.onCropDataConfirm.bind(this)}
                               onCropImageSave={this.onCropImageSave.bind(this)}
                               onArtistSelected={this.onArtistSelected.bind(this)}/>;

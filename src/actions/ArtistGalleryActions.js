@@ -281,7 +281,7 @@ export function clearImageUpload(callback = null) {
     }
 }
 //                          cropImg, uid,  selectedArtistId, width, height, rotation)
-export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, rotation, artworkId = null, callback = null) {
+export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artworkId = null, callback = null) {
     return dispatch => {
         let artworkRef = '';
         if (artworkId) {
@@ -351,7 +351,6 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, rota
             }, function () {
                 // Upload completed successfully - save artwork data
                 const dateStamp = Date.now();
-                if (!rotation) rotation = 0;
 
                 const newArtworkData = {
                     adminId: userId,
@@ -359,7 +358,6 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, rota
                     url: uploadTask.snapshot.downloadURL,
                     imgWidth: imgWidth,
                     imgHeight: imgHeight,
-                    rotation: rotation,
                     dateAdded: dateStamp
                 };
 
