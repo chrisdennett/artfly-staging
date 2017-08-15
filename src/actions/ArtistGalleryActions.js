@@ -125,6 +125,9 @@ export function fetchArtwork(artworkId, callback) {
 
         artworkListenersRef.push(artworkId);
 
+        // remove any listeners if there are already there (shouldn't be)
+        firebase.database().ref(`user-data/artworks/${artworkId}`).off();
+
         firebase.database()
             .ref('user-data/artworks/' + artworkId)
             .on('value', snapshot => {
