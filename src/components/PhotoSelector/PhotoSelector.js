@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import "./photo-selector-styles.css";
-
 import ImageCropAndRotate from '../ImageCropAndRotate/ImageCropAndRotate';
 
 import { fetchArtist, uploadImage, clearImageUpload } from '../../actions/ArtistGalleryActions';

@@ -25,3 +25,41 @@ a{
 .slim-btn {
     border-radius: 0;
 }
+
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputfile + label {
+    font-size: 13px;
+    color: white;
+    background-color: black;
+    display: inline-block;
+    padding: 3px 10px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.inputfile + label * {
+    pointer-events: none;
+}
+
+.inputfile + label:hover {
+    background-color: red;
+}
+
+label.disabled{
+    background-color: aliceblue;
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+/*
+.inputfile:focus + label{
+    background-color: red;
+}*/
