@@ -85,16 +85,21 @@ class ArtworkEditorHolder extends Component {
             return;
         }
 
-        if (artistChanged) {
+        // if just the artist has changed
+        if (artistChanged && imageChanged === false) {
             newArtworkData.artistId = this.state.selectedArtistId;
-        }
-
-        if (imageChanged) {
-            const { rotation, width, height } = this.state.cropData;
-            this.props.uploadImage(this.state.cropImg, this.props.user.uid, newArtworkData.artistId, width, height, rotation, artworkId)
-        }
-        else {
             this.props.updateArtwork(artworkId, oldArtworkData, newArtworkData);
+        }
+        // if just the image cropping has changed
+        else if (imageChanged && artistChanged === false) {
+            this.uploadCurrentImage(newArtworkData.artistId, artworkId);
+        }
+        // if both the artist and the image has changed
+        else {
+            newArtworkData.artistId = this.state.selectedArtistId;
+            this.props.updateArtwork(artworkId, oldArtworkData, newArtworkData, () => {
+                this.uploadCurrentImage(newArtworkData.artistId, artworkId);
+            });
         }
 
 
@@ -104,6 +109,12 @@ class ArtworkEditorHolder extends Component {
         // const {image, height, width } = imageCropAndRotateData;
 
         // this.props.uploadImage(image, this.props.userId, this.props.artistId, width, height);
+    }
+
+    uploadCurrentImage(artistId, artworkId){
+        const { rotation, width, height } = this.state.cropData;
+        this.props.uploadImage(this.state.cropImg, this.props.user.uid, artistId, width, height, rotation, artworkId)
+
     }
 
     onCropImageSave(cropImg) {

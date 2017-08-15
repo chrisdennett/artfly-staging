@@ -242,7 +242,7 @@ function deleteArtwork(artworkId, userId, dispatch) {
     });
 }
 
-export function updateArtwork(artworkId, oldArtworkData, newArtworkData) {
+export function updateArtwork(artworkId, oldArtworkData, newArtworkData, callback) {
     return dispatch => {
         // get the current artwork data
         // get the artistId from the artwork data
@@ -260,11 +260,14 @@ export function updateArtwork(artworkId, oldArtworkData, newArtworkData) {
         }
 
         artworkRef.update(newArtworkData)
-            .then(
-                dispatch({
-                    type: UPDATE_ARTWORK_COMPLETE,
-                    payload: newArtworkData
-                })
+            .then(() => {
+                    dispatch({
+                        type: UPDATE_ARTWORK_COMPLETE,
+                        payload: newArtworkData
+                    });
+
+                    if (callback) callback();
+                }
             )
     }
 }
@@ -277,11 +280,11 @@ export function clearImageUpload(callback = null) {
         });
     }
 }
-
+//                          cropImg, uid,  selectedArtistId, width, height, rotation)
 export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, rotation, artworkId = null, callback = null) {
     return dispatch => {
         let artworkRef = '';
-        if (artistId) {
+        if (artworkId) {
             // reference the image to update
             artworkRef = firebase.database().ref(`/user-data/artworks/${artworkId}`);
             console.log("artworkRef: ", artworkRef);
@@ -289,6 +292,7 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, rota
         else {
             // Or create a new image ref in the database
             artworkRef = firebase.database().ref('/user-data/artworks').push();
+            console.log("new artwork");
         }
 
         // use the artwork key as the name for the artwork to ensure it is unique.
