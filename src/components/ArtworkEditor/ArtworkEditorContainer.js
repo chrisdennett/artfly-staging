@@ -58,15 +58,44 @@ class ArtworkEditorHolder extends Component {
         // overwriting the source image which will then create new smaller images.
 
         const artistChanged = this.state.selectedArtistId && (this.state.selectedArtistId !== this.props.artwork.artistId);
-        /*let cropDataChanged = false;
-        if()*/
+        let imageChanged = false;
+        const { artworkId } = this.props;
+        const oldArtworkData = this.props.artwork;
+        let newArtworkData = { ...oldArtworkData };
+
+        if (this.state.cropData) {
+            const { rotation, width, height } = this.state.cropData;
+
+            let rotationChanged = rotation !== this.props.artwork.rotation;
+            let widthChanged = width !== this.props.artwork.imgWidth;
+            let heightChanged = height !== this.props.artwork.imgHeight;
+            if (rotationChanged || widthChanged || heightChanged) {
+                imageChanged = true;
+            }
+        }
+
+
+        if (!imageChanged && artistChanged) {
+            //TODO should diable save button if nothing has changed.
+            console.log("nothing has changed so don't save anything new");
+            return;
+        }
+
 
         if (artistChanged) {
-            const { artworkId } = this.props;
-            const oldArtworkData = this.props.artwork; // ERROR HERE
-            const newArtworkData = {
-                artistId: this.state.selectedArtistId
-            };
+            newArtworkData.artistId = this.state.selectedArtistId;
+        }
+
+        if (imageChanged) {
+            const { rotation, width, height } = this.state.cropData;
+
+            newArtworkData.url_large = null;
+            newArtworkData.url_med = null;
+            newArtworkData.url_thumb = null;
+
+            this.props.uploadImage(this.state.cropImg, this.props.user.uid, newArtworkData.artistId, width, height, rotation, artworkId)
+        }
+        else {
             this.props.updateArtwork(artworkId, oldArtworkData, newArtworkData);
         }
 

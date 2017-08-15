@@ -132,14 +132,14 @@ export function fetchArtwork(artworkId, callback) {
             .ref('user-data/artworks/' + artworkId)
             .on('value', snapshot => {
                 const artworkId = snapshot.key;
-                const artworkData = {...snapshot.val(), id:artworkId};
+                const artworkData = { ...snapshot.val(), id: artworkId };
 
                 dispatch({
                     type: ARTWORK_CHANGE,
                     payload: { [artworkId]: artworkData }
                 });
 
-                if(callback) callback(artworkData);
+                if (callback) callback(artworkData);
             });
     }
 }
@@ -269,20 +269,28 @@ export function updateArtwork(artworkId, oldArtworkData, newArtworkData) {
     }
 }
 
-export function clearImageUpload(callback=null){
+export function clearImageUpload(callback = null) {
     return dispatch => {
         dispatch({
             type: CLEAR_IMAGE_UPLOAD,
-            payload: {  }
+            payload: {}
         });
     }
 }
 
-export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, crop, rotation, type, callback = null) {
+export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, rotation, artworkId = null, callback = null) {
     return dispatch => {
-        // const fileExtension = imgFile.name.split('.').pop();
-        // Create a new image ref in the database
-        const artworkRef = firebase.database().ref('/user-data/artworks').push();
+        let artworkRef = '';
+        if (artistId) {
+            // reference the image to update
+            artworkRef = firebase.database().ref(`/user-data/artworks/${artworkId}`);
+            console.log("artworkRef: ", artworkRef);
+        }
+        else {
+            // Or create a new image ref in the database
+            artworkRef = firebase.database().ref('/user-data/artworks').push();
+        }
+
         // use the artwork key as the name for the artwork to ensure it is unique.
         const artworkName = artworkRef.key; // + "." + fileExtension;
 
@@ -295,8 +303,6 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, crop
 
         // store the image data
         const uploadTask = userPicturesRef.put(imgFile);
-        //const uploadTask = userPicturesRef.putString(imgFile);
-
 
         uploadTask.on(fb.storage.TaskEvent.STATE_CHANGED,
             function (snapshot) {
@@ -341,8 +347,7 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, crop
             }, function () {
                 // Upload completed successfully - save artwork data
                 const dateStamp = Date.now();
-
-                console.log("uploadTask.snapshot: ", uploadTask.snapshot);
+                if (!rotation) rotation = 0;
 
                 const newArtworkData = {
                     adminId: userId,
@@ -350,6 +355,7 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, crop
                     url: uploadTask.snapshot.downloadURL,
                     imgWidth: imgWidth,
                     imgHeight: imgHeight,
+                    rotation: rotation,
                     dateAdded: dateStamp
                 };
 
