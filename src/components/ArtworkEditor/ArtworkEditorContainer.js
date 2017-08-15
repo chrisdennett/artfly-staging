@@ -52,16 +52,8 @@ class ArtworkEditorHolder extends Component {
         this.setState({ selectedArtistId: artistId });
     }
 
-    onSaveChanges() {
-        // if only the artist has changed, just change the artistId on the artwork
-        // if the image has been cropped, need to clear the image urls on the artwork data before
-        // overwriting the source image which will then create new smaller images.
-
-        const artistChanged = this.state.selectedArtistId && (this.state.selectedArtistId !== this.props.artwork.artistId);
-        let imageChanged = false;
-        const { artworkId } = this.props;
-        const oldArtworkData = this.props.artwork;
-        let newArtworkData = { ...oldArtworkData };
+    hasCropDataChanged(){
+        let cropDataChanged = false;
 
         if (this.state.cropData) {
             const { rotation, width, height } = this.state.cropData;
@@ -70,17 +62,28 @@ class ArtworkEditorHolder extends Component {
             let widthChanged = width !== this.props.artwork.imgWidth;
             let heightChanged = height !== this.props.artwork.imgHeight;
             if (rotationChanged || widthChanged || heightChanged) {
-                imageChanged = true;
+                cropDataChanged = true;
             }
         }
+        return cropDataChanged;
+    }
 
+    onSaveChanges() {
+        // if only the artist has changed, just change the artistId on the artwork
+        // if the image has been cropped, need to clear the image urls on the artwork data before
+        // overwriting the source image which will then create new smaller images.
+
+        const artistChanged = this.state.selectedArtistId && (this.state.selectedArtistId !== this.props.artwork.artistId);
+        const imageChanged = this.hasCropDataChanged();
+        const { artworkId } = this.props;
+        const oldArtworkData = this.props.artwork;
+        let newArtworkData = { ...oldArtworkData };
 
         if (!imageChanged && !artistChanged) {
-            //TODO should diable save button if nothing has changed.
+            //TODO should disable save button if nothing has changed.
             console.log("nothing has changed so don't save anything new");
             return;
         }
-
 
         if (artistChanged) {
             newArtworkData.artistId = this.state.selectedArtistId;
@@ -88,11 +91,6 @@ class ArtworkEditorHolder extends Component {
 
         if (imageChanged) {
             const { rotation, width, height } = this.state.cropData;
-
-            newArtworkData.url_large = null;
-            newArtworkData.url_med = null;
-            newArtworkData.url_thumb = null;
-
             this.props.uploadImage(this.state.cropImg, this.props.user.uid, newArtworkData.artistId, width, height, rotation, artworkId)
         }
         else {
