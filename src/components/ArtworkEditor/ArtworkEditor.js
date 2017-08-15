@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
-import _ from 'lodash';
 
 import ImageCropAndRotate from '../ImageCropAndRotate/ImageCropAndRotate';
+import ArtistSelector from "../ArtistSelector/ArtistSelector";
 
 class ArtworkEditor extends Component {
 
@@ -19,18 +19,9 @@ class ArtworkEditor extends Component {
             <div>
                 <h1>ArtworkEditor</h1>
 
-                <label htmlFor="artistSelector">ARTIST: </label>
-                <select value={artistId} onChange={(e) => {onArtistSelected(e.target.value)}}>
-                    {
-                        _.map(artists, (artistData, artistId) => {
-
-                            return <option key={artistId}
-                                           value={artistId}>{artistData.name}</option>;
-
-
-                        })
-                    }
-                </select>
+                <ArtistSelector artists={artists}
+                                selectedArtistId={artistId}
+                                onArtistSelected={onArtistSelected}/>
 
                 <hr/>
 

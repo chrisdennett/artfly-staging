@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import _ from 'lodash';
 
 import ImageCropAndRotate from '../ImageCropAndRotate/ImageCropAndRotate';
 
 import { fetchArtist, uploadImage, clearImageUpload } from '../../actions/ArtistGalleryActions';
+import ArtistSelector from "../ArtistSelector/ArtistSelector";
 
 // The role of this component is to:
 // - create a custom file input button with a given label and id
@@ -142,19 +142,13 @@ class PhotoSelector extends Component {
 
                         <button disabled={!this.state.cropImg} onClick={this.onSave.bind(this)}>SAVE</button>
                         <button onClick={this.onCancel.bind(this)}>CANCEL</button>
-                        <label htmlFor="artistSelector">ARTIST: </label>
-                        <select value={this.state.selectedArtistId}
-                                onChange={(e) => {this.onArtistSelected(e.target.value)}}>
-                            {
-                                _.map(this.props.artists, (artistData, artistId) => {
 
-                                    return <option key={artistId}
-                                                   value={artistId}>{artistData.name}</option>;
-                                })
-                            }
-                        </select>
+                        <ArtistSelector artists={this.props.artists}
+                                        selectedArtistId={this.state.selectedArtistId}
+                                        onArtistSelected={this.onArtistSelected}/>
 
                         <hr/>
+
                         {this.state.imgSrc &&
                         <div style={{ width: '50%' }}>
                             <button disabled={!this.state.cropImg} onClick={() => { this.cropper.openEditScreen(); }}>
