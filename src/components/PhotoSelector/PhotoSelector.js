@@ -18,8 +18,7 @@ class PhotoSelector extends Component {
             cropImg: null,
             cropData: null,
             imgIsSelected: false,
-            selectedArtistId: null,
-            openEditImage: false
+            selectedArtistId: null
         };
         this.onArtistSelected = this.onArtistSelected.bind(this);
     }
@@ -105,7 +104,6 @@ class PhotoSelector extends Component {
                 overflowX: 'hidden',
                 transition: '0.5s mode'
             };
-
             const contentStyle = {
                 position: 'relative',
                 color: '#fff',
@@ -156,8 +154,9 @@ class PhotoSelector extends Component {
                             </button>
                             <ImageCropAndRotate url={this.state.imgSrc}
                                                 ref={instance => { this.cropper = instance; }}
-                                                openEditImage={this.state.openEditImage}
-                                                onCropDataChange={this.onCropDataChange.bind(this)}
+                                                callSaveOnImageLoad="true"
+                                                onCropDataInit={this.onCropDataChange.bind(this)}
+                                                onCropDataConfirm={this.onCropDataChange.bind(this)}
                                                 onCropImageSave={this.onCropImageSave.bind(this)}/>
                         </div>
                         }
