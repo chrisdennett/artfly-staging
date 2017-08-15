@@ -75,7 +75,7 @@ class ArtworkEditorHolder extends Component {
         }
 
 
-        if (!imageChanged && artistChanged) {
+        if (!imageChanged && !artistChanged) {
             //TODO should diable save button if nothing has changed.
             console.log("nothing has changed so don't save anything new");
             return;
