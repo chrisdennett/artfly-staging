@@ -87,11 +87,11 @@ class PhotoSelector extends Component {
 
     showPictureInGallery() {
         this.setState({ imgSrc: null, imgIsSelected: false });
-        this.props.history.push(`/gallery/${this.props.photoSelected.artistId}/artwork/${this.props.photoSelected.id}`);
+        this.props.history.push(`/gallery/${this.props.imageUploadInfo.artistId}/artwork/${this.props.imageUploadInfo.id}`);
         this.props.clearImageUpload();
     }
 
-    //this.props.photoSelected: { artistId: artistId, id: artworkRef.key, progress: progress }
+    //this.props.imageUploadInfo: { artistId: artistId, id: artworkRef.key, progress: progress }
     render() {
 
         if (this.state.imgIsSelected) {
@@ -113,8 +113,8 @@ class PhotoSelector extends Component {
                 left: '2%'
             };
 
-            if (this.props.photoSelected && this.props.photoSelected.progress) {
-                const { progress } = this.props.photoSelected;
+            if (this.props.imageUploadInfo && this.props.imageUploadInfo.progress) {
+                const { progress } = this.props.imageUploadInfo;
 
                 return (
                     <div style={fullScreenStyle}>
@@ -189,7 +189,7 @@ const mapStateToProps = (state) => {
     return {
         user: state.user,
         artists: state.artists,
-        photoSelected: state.photoSelected
+        imageUploadInfo: state.imageUploadInfo
     }
 };
 

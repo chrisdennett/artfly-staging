@@ -14,7 +14,7 @@ export const ARTIST_DELETED = 'artistDeleted';
 export const ARTWORK_DELETED = 'artworkDeleted';
 export const GALLERY_UPDATED = 'galleryUpdated';
 export const UPDATE_ARTWORK_COMPLETE = 'updateArtworkComplete';
-export const ADD_ARTWORK_UPLOAD_PROGRESS = 'imageUploadProgress';
+export const IMAGE_UPLOAD_PROGRESS = 'imageUploadProgress';
 export const ADD_ARTWORK_COMPLETE = 'artworkAdded';
 export const CLEAR_IMAGE_UPLOAD = 'clearImageUpload';
 
@@ -280,6 +280,7 @@ export function clearImageUpload(callback = null) {
         });
     }
 }
+
 //                          cropImg, uid,  selectedArtistId, width, height, rotation)
 export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artworkId = null, callback = null) {
     return dispatch => {
@@ -312,8 +313,10 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artw
             function (snapshot) {
                 const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
 
+                console.log("snapshot: ", snapshot);
+
                 dispatch({
-                    type: ADD_ARTWORK_UPLOAD_PROGRESS,
+                    type: IMAGE_UPLOAD_PROGRESS,
                     payload: { artistId: artistId, id: artworkRef.key, progress: progress }
                 });
 
@@ -369,6 +372,9 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artw
                         artistArtworkIdsRef
                             .set('true')
                             .then(() => {
+
+                                console.log("artistArtworkIdsRef: ", artistArtworkIdsRef);
+
                                 dispatch({
                                     type: ADD_ARTWORK_COMPLETE,
                                     payload: { [artistId]: newArtworkData }

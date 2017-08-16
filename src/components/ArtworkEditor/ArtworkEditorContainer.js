@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { fetchGallery, fetchArtist, fetchArtwork } from '../../actions/ArtistGalleryActions';
-import { updateArtwork, uploadImage } from '../../actions/ArtistGalleryActions';
+import { fetchGallery, fetchArtist, fetchArtwork, updateArtwork, uploadImage } from '../../actions/ArtistGalleryActions';
 
 import ArtworkEditor from './ArtworkEditor';
 
@@ -18,9 +17,11 @@ class ArtworkEditorHolder extends Component {
             cropData: null,
             selectedArtistId: null
         };
+
+        console.log("props: ", props);
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.initData();
     }
 
@@ -72,10 +73,7 @@ class ArtworkEditorHolder extends Component {
     getReturnUrl() {
         const {artworkId} = this.props;
         const artistId = this.state.selectedArtistId;
-
-        let returnUrl = `/gallery/${artistId}/artwork/${artworkId}`;
-
-        return returnUrl;
+        return `/gallery/${artistId}/artwork/${artworkId}`;
     }
 
     onCancelChanges() {
@@ -132,7 +130,7 @@ class ArtworkEditorHolder extends Component {
     }
 
     render() {
-        const { artwork, userStatus, artists, onArtistSelected } = this.props;
+        const { artwork, userStatus, artists, onArtistSelected, imageUploadInfo } = this.props;
 
         if (userStatus === "none" || userStatus === "new") {
             return (<Redirect to="/"/>)
@@ -144,7 +142,7 @@ class ArtworkEditorHolder extends Component {
 
         const url = artwork.url;
         const artistId = this.state.selectedArtistId;
-        const propsForView = { artists, onArtistSelected, url, artistId };
+        const propsForView = { artists, onArtistSelected, url, artistId, imageUploadInfo };
         return <ArtworkEditor {...propsForView}
                               onSaveChanges={this.onSaveChanges.bind(this)}
                               onCancelChanges={this.onCancelChanges.bind(this)}
@@ -163,7 +161,8 @@ const mapStateToProps = (state, ownProps) => {
         artworkId: artworkId,
         artwork: artwork,
         artists: state.artists,
-        userStatus: state.user.status
+        userStatus: state.user.status,
+        imageUploadInfo: state.imageUploadInfo
     }
 };
 
