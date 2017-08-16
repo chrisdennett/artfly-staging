@@ -36,9 +36,31 @@ exports.removeImagesOnDelete = functions.storage.object()
         const mediumImageFilePath = filePath.replace(fileName, "medium_" + fileName);
         const thumbImageFilePath = filePath.replace(fileName, "thumb_" + fileName);
 
-        bucket.file(largeImageFilePath).delete();
-        bucket.file(mediumImageFilePath).delete();
-        bucket.file(thumbImageFilePath).delete();
+        const largeFile = bucket.file(largeImageFilePath);
+        const mediumFile = bucket.file(mediumImageFilePath);
+        const thumbFile = bucket.file(thumbImageFilePath);
+
+        largeFile.exists().then((data) => {
+            let exists = data[0];
+            if (exists) {
+                largeFile.delete();
+            }
+        });
+
+        mediumFile.exists().then((data) => {
+            let exists = data[0];
+            if (exists) {
+                mediumFile.delete();
+            }
+        });
+
+        thumbFile.exists().then((data) => {
+            let exists = data[0];
+            if (exists) {
+                thumbFile.delete();
+            }
+        });
+
     });
 
 exports.generateDifferentImageSizes = functions.storage.object()
@@ -97,15 +119,29 @@ exports.generateDifferentImageSizes = functions.storage.object()
                     .then(() => {
                         // reference the thumb file path in storage
                         const thumbFile = bucket.file(thumbImageFilePath);
-                        // get a signed url so it has public access
-                        thumbFile.getSignedUrl(signedUrlConfig)
-                            .then((response) => {
-                                // write the signed url to the database
-                                ref.child(`user-data/artworks/${fileName}/${databaseUrlPropertyPrefix}thumb`).set(response[0])
-                                    .then(() => {
-                                        // console.log("Wow it worked TINY and stuff: ");
-                                    });
-                            })
+
+                        // while this image was being created the source image may have been deleted
+                        // if so we should delete it and stop the database reference from happening.
+                        const sourceFile = bucket.file(filePath);
+                        sourceFile.exists().then(data => {
+                            let exists = data[0];
+                            console.log("THUMB Pic made > source path exists: ", exists);
+
+                            if (exists === false) {
+                                thumbFile.delete();
+                                return;
+                            }
+
+                            // get a signed url so it has public access
+                            thumbFile.getSignedUrl(signedUrlConfig)
+                                .then((response) => {
+                                    // write the signed url to the database
+                                    ref.child(`user-data/artworks/${fileName}/${databaseUrlPropertyPrefix}thumb`).set(response[0])
+                                        .then(() => {
+                                            // console.log("Wow it worked TINY and stuff: ");
+                                        });
+                                })
+                        });
                     })
             })
 
@@ -119,15 +155,27 @@ exports.generateDifferentImageSizes = functions.storage.object()
                     .then(() => {
                         // reference the file path in storage
                         const mediumFile = bucket.file(mediumImageFilePath);
-                        // get a signed url so it has public access
-                        mediumFile.getSignedUrl(signedUrlConfig)
-                            .then((response) => {
-                                // write the signed url to the database
-                                ref.child(`user-data/artworks/${fileName}/${databaseUrlPropertyPrefix}med`).set(response[0])
-                                    .then(() => {
-                                        // console.log("Wow it worked TINY and stuff: ");
-                                    });
-                            })
+
+                        const sourceFile = bucket.file(filePath);
+                        sourceFile.exists().then(data => {
+                            let exists = data[0];
+                            console.log("MEDIUM Pic made > source path exists: ", exists);
+
+                            if (exists === false) {
+                                mediumFile.delete();
+                                return;
+                            }
+
+                            // get a signed url so it has public access
+                            mediumFile.getSignedUrl(signedUrlConfig)
+                                .then((response) => {
+                                    // write the signed url to the database
+                                    ref.child(`user-data/artworks/${fileName}/${databaseUrlPropertyPrefix}med`).set(response[0])
+                                        .then(() => {
+                                            // console.log("Wow it worked TINY and stuff: ");
+                                        });
+                                })
+                        });
                     })
             })
 
@@ -141,15 +189,29 @@ exports.generateDifferentImageSizes = functions.storage.object()
                     .then(() => {
                         // reference the file path in storage
                         const largeFile = bucket.file(largeImageFilePath);
-                        // get a signed url so it has public access
-                        largeFile.getSignedUrl(signedUrlConfig)
-                            .then((response) => {
-                                // write the signed url to the database
-                                ref.child(`user-data/artworks/${fileName}/${databaseUrlPropertyPrefix}large`).set(response[0])
-                                    .then(() => {
-                                        // console.log("Wow it worked TINY and stuff: ");
-                                    });
-                            })
+
+                        // while this image was being created the source image may have been deleted
+                        // if so we should delete it and stop the database reference from happening.
+                        const sourceFile = bucket.file(filePath);
+                        sourceFile.exists().then(data => {
+                            let exists = data[0];
+                            console.log("LARGE Pic made > source path exists: ", exists);
+
+                            if (exists === false) {
+                                largeFile.delete();
+                                return;
+                            }
+
+                            // get a signed url so it has public access
+                            largeFile.getSignedUrl(signedUrlConfig)
+                                .then((response) => {
+                                    // write the signed url to the database
+                                    ref.child(`user-data/artworks/${fileName}/${databaseUrlPropertyPrefix}large`).set(response[0])
+                                        .then(() => {
+                                            // console.log("Wow it worked TINY and stuff: ");
+                                        });
+                                })
+                        });
                     })
             })
     });
