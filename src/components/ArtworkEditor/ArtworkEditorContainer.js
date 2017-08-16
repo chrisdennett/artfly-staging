@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { fetchGallery, fetchArtist, fetchArtwork, updateArtwork, uploadImage } from '../../actions/ArtistGalleryActions';
+import {
+    fetchGallery,
+    fetchArtist,
+    fetchArtwork,
+    updateArtwork,
+    uploadImage,
+    deleteArtwork
+} from '../../actions/ArtistGalleryActions';
 
 import ArtworkEditor from './ArtworkEditor';
 
@@ -60,7 +67,7 @@ class ArtworkEditorHolder extends Component {
     }
 
     getReturnUrl() {
-        const {artworkId} = this.props;
+        const { artworkId } = this.props;
         const artistId = this.state.selectedArtistId;
         return `/gallery/${artistId}/artwork/${artworkId}`;
     }
@@ -100,6 +107,13 @@ class ArtworkEditorHolder extends Component {
         }
     }
 
+    onConfirmDeleteArtwork() {
+        const { artworkId } = this.props;
+        const { artistId } = this.props.artwork;
+        const { uid } = this.props.user;
+        this.props.deleteArtwork(artworkId, artistId, uid);
+    }
+
     uploadCurrentImage(artistId, artworkId) {
         const { width, height } = this.state.cropData;
         this.props.uploadImage(this.state.cropImg, this.props.user.uid, artistId, width, height, artworkId)
@@ -125,13 +139,14 @@ class ArtworkEditorHolder extends Component {
         }
 
         let artistId = this.state.selectedArtistId;
-        if(!artistId){
+        if (!artistId) {
             artistId = artwork.artistId;
         }
 
         const url = artwork.url;
         const propsForView = { artists, onArtistSelected, url, artistId, imageUploadInfo };
         return <ArtworkEditor {...propsForView}
+                              onConfirmDeleteArtwork={this.onConfirmDeleteArtwork.bind(this)}
                               onSaveChanges={this.onSaveChanges.bind(this)}
                               onCancelChanges={this.onCancelChanges.bind(this)}
                               onCropDataConfirm={this.onCropDataConfirm.bind(this)}
@@ -161,7 +176,8 @@ const ArtworkEditorContainer = connect(
         fetchArtist,
         fetchArtwork,
         updateArtwork,
-        uploadImage
+        uploadImage,
+        deleteArtwork
     }
 )(ArtworkEditorHolder);
 

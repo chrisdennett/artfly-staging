@@ -5,8 +5,23 @@ import ArtistSelector from "../ArtistSelector/ArtistSelector";
 
 class ArtworkEditor extends Component {
 
+    constructor(props){
+        super(props);
+
+        this.state = {deleteConfirmIsShowing:false};
+    }
+
+
     onDeleteArtwork() {
-        console.log("Display delete confirmation");
+        this.setState({deleteConfirmIsShowing:true});
+    }
+
+    onDeleteCancel(){
+        this.setState({deleteConfirmIsShowing:false});
+    }
+
+    onDeleteConfirm(){
+        this.props.onConfirmDeleteArtwork()
     }
 
     render() {
@@ -37,7 +52,7 @@ class ArtworkEditor extends Component {
                 <hr/>
 
                 <div style={{ width: '50%' }}>
-                    <button onClick={() => { this.cropper.openEditScreen(); }}>Crop or Rotate picture</button>
+                    <button onClick={() => { this.cropper.openEditScreen(); }}>Crop or Rotate Image</button>
                     <ImageCropAndRotate url={url}
                                         ref={instance => { this.cropper = instance; }}
                                         onCropDataConfirm={onCropDataConfirm}
@@ -50,9 +65,22 @@ class ArtworkEditor extends Component {
                 <div>saving: {progress}</div>
                 }
 
-                <button onClick={onSaveChanges}>SAVE</button>
-                <button onClick={onCancelChanges}>CANCEL</button>
-                <button onClick={this.onDeleteArtwork.bind(this)}>Delete Image</button>
+                {this.state.deleteConfirmIsShowing &&
+                <div>
+                    <p>Are you sure you want to delete this artwork?</p>
+                    <button onClick={this.onDeleteConfirm.bind(this)}>Yes, delete it</button>
+                    <button onClick={this.onDeleteCancel.bind(this)}>No, do not delete</button>
+                </div>
+                }
+
+                {!this.state.deleteConfirmIsShowing &&
+                <div>
+                    <button onClick={onSaveChanges}>SAVE</button>
+                    <button onClick={onCancelChanges}>CANCEL</button>
+                    <button onClick={this.onDeleteArtwork.bind(this)}>Delete Image</button>
+                </div>
+                }
+
             </div>
         );
     }

@@ -195,7 +195,7 @@ export function deleteArtist(galleryArtistId, userId, callback) {
                 if (artworkIdObj && snapshot.val()) {
                     const artworkIds = Object.keys(snapshot.val());
                     for (let id of artworkIds) {
-                        deleteArtwork(id, userId, dispatch);
+                        deleteArtwork(id, galleryArtistId, userId, dispatch);
                     }
                 }
 
@@ -218,28 +218,37 @@ export function deleteArtist(galleryArtistId, userId, callback) {
     }
 }
 
-function deleteArtwork(artworkId, userId, dispatch) {
-    // delete image in storage
-    const imageStorageRef = firebase.storage().ref();
-    console.log("imageStorageRef: ", imageStorageRef);
-    const userPicturesRef = imageStorageRef.child(`userContent/${userId}/${artworkId}`);
-    console.log("userPicturesRef: ", userPicturesRef);
-    userPicturesRef.delete().then(() => {
+export function deleteArtwork(artworkId, artistId, userId, callback = null) {
+    return dispatch => {
 
-        // delete artwork data
+        // delete image in storage
+        const imageStorageRef = firebase.storage().ref();
+        const userPicturesRef = imageStorageRef.child(`userContent/${userId}/${artworkId}`);
         const artworkDataRef = firebase.database().ref(`user-data/artworks/${artworkId}`);
-        console.log("artworkDataRef: ", artworkDataRef);
-        artworkDataRef.remove();
-        console.log("artworkDataRef: AFTER");
+        const artistArtworkIdRef = firebase.database().ref(`user-data/artistArtworkIds/${artistId}/${artworkId}`);
 
-        dispatch({
-            type: ARTWORK_DELETED,
-            payload: artworkId
-        });
+        userPicturesRef.delete()
+            .then(() => {
+                // delete artwork data
+                artworkDataRef.remove()
+                    .then(() => {
+                        // delete the artistArtworkId
+                        artistArtworkIdRef.remove()
+                            .then(() => {
+                                dispatch({
+                                    type: ARTWORK_DELETED,
+                                    payload: artworkId
+                                });
 
-    }).catch(function (error) {
-        console.log("ControlPanelActions > deleteArtwork > error: ", error);
-    });
+                                if (callback) callback();
+                            })
+                    })
+
+            })
+            .catch(function (error) {
+                console.log("ControlPanelActions > deleteArtwork > error: ", error);
+            });
+    }
 }
 
 export function updateArtwork(artworkId, oldArtworkData, newArtworkData, callback) {
@@ -309,7 +318,7 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artw
         // ensures the progress starts afresh
         dispatch({
             type: CLEAR_IMAGE_UPLOAD,
-            payload: {  }
+            payload: {}
         });
 
         uploadTask.on(fb.storage.TaskEvent.STATE_CHANGED,
@@ -321,16 +330,16 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artw
                     payload: { artistId: artistId, id: artworkRef.key, progress: progress }
                 });
 
-               /* switch (snapshot.state) {
-                    case fb.storage.TaskState.PAUSED:
-                        console.log('Upload is paused');
-                        break;
-                    case fb.storage.TaskState.RUNNING:
-                        console.log('Upload is running');
-                        break;
-                    default:
-                        console.log("uncaught snapshot state: ", snapshot.state);
-                }*/
+                /* switch (snapshot.state) {
+                     case fb.storage.TaskState.PAUSED:
+                         console.log('Upload is paused');
+                         break;
+                     case fb.storage.TaskState.RUNNING:
+                         console.log('Upload is running');
+                         break;
+                     default:
+                         console.log("uncaught snapshot state: ", snapshot.state);
+                 }*/
             }, function (error) {
                 // A full list of error codes is available at
                 // https://firebase.google.com/docs/storage/web/handle-errors

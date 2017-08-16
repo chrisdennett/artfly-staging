@@ -6,7 +6,42 @@ const spawn = require(`child-process-promise`).spawn;
 
 admin.initializeApp(functions.config().firebase);
 
-exports.generateThumbnail = functions.storage.object()
+exports.removeImagesOnDelete = functions.storage.object()
+    .onChange(event => {
+        const object = event.data;
+        const fileBucket = object.bucket;
+        const bucket = gcs.bucket(fileBucket);
+        const filePath = object.name;
+        const fileName = filePath.split(`/`).pop();
+
+        // If it's not a deletion event I'm not interested.
+        if (event.data.resourceState !== `not_exists`) {
+            console.log(`This is not a deletion event - take no action.`);
+            return;
+        }
+
+        // Exit if this is triggered on a file that is not an image.
+        if (!event.data.contentType.startsWith(`image/`)) {
+            console.log(`This is not an image - take no action.`);
+            return;
+        }
+
+        // Exit if the image is already a thumbnail.
+        if (fileName.startsWith("large_") || fileName.startsWith("medium_") || fileName.startsWith("thumb_")) {
+            console.log(`A thumbnail is being deleted - take no action.`);
+            return;
+        }
+
+        const largeImageFilePath = filePath.replace(fileName, "large_" + fileName);
+        const mediumImageFilePath = filePath.replace(fileName, "medium_" + fileName);
+        const thumbImageFilePath = filePath.replace(fileName, "thumb_" + fileName);
+
+        bucket.file(largeImageFilePath).delete();
+        bucket.file(mediumImageFilePath).delete();
+        bucket.file(thumbImageFilePath).delete();
+    });
+
+exports.generateDifferentImageSizes = functions.storage.object()
     .onChange(event => {
         const object = event.data;
         const filePath = object.name;
@@ -37,15 +72,15 @@ exports.generateThumbnail = functions.storage.object()
             return;
         }
 
-        // Exit if the image is already a thumbnail.
-        if (fileName.startsWith("large_")|| fileName.startsWith("medium_")|| fileName.startsWith("thumb_")) {
-            console.log(`Already a Thumbnail.`);
-            return;
-        }
-
         // Exit if this is a move or deletion event.
         if (event.data.resourceState === `not_exists`) {
             console.log(`This is a deletion event.`);
+            return;
+        }
+
+        // Exit if the image is already a thumbnail.
+        if (fileName.startsWith("large_") || fileName.startsWith("medium_") || fileName.startsWith("thumb_")) {
+            console.log(`Already a Thumbnail.`);
             return;
         }
 
