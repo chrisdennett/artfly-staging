@@ -111,7 +111,9 @@ class ArtworkEditorHolder extends Component {
         const { artworkId } = this.props;
         const { artistId } = this.props.artwork;
         const { uid } = this.props.user;
-        this.props.deleteArtwork(artworkId, artistId, uid);
+        this.props.deleteArtwork(artworkId, artistId, uid, () => {
+            this.props.history.push("/settings");
+        });
     }
 
     uploadCurrentImage(artistId, artworkId) {
