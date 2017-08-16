@@ -281,7 +281,6 @@ export function clearImageUpload(callback = null) {
     }
 }
 
-//                          cropImg, uid,  selectedArtistId, width, height, rotation)
 export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artworkId = null, callback = null) {
     return dispatch => {
         let artworkRef = '';
@@ -306,6 +305,12 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artw
 
         // store the image data
         const uploadTask = userPicturesRef.put(imgFile);
+
+        // ensures the progress starts afresh
+        dispatch({
+            type: CLEAR_IMAGE_UPLOAD,
+            payload: {  }
+        });
 
         uploadTask.on(fb.storage.TaskEvent.STATE_CHANGED,
             function (snapshot) {

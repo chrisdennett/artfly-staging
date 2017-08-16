@@ -43,6 +43,7 @@ class PhotoSelector extends Component {
 
     handleImageChange(event) {
         event.preventDefault();
+        this.props.clearImageUpload();
 
         if (event.target.files[0]) {
             this.setState({ imgIsSelected: true });
