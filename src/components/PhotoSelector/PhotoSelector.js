@@ -64,7 +64,6 @@ class PhotoSelector extends Component {
     }
 
     onCropDataChange(imageCropAndRotateData) {
-        console.log("imageCropAndRotateData: ", imageCropAndRotateData);
         this.setState({ cropData: imageCropAndRotateData, cropImg: null });
     }
 

@@ -288,12 +288,10 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artw
         if (artworkId) {
             // reference the image to update
             artworkRef = firebase.database().ref(`/user-data/artworks/${artworkId}`);
-            console.log("artworkRef: ", artworkRef);
         }
         else {
             // Or create a new image ref in the database
             artworkRef = firebase.database().ref('/user-data/artworks').push();
-            console.log("new artwork");
         }
 
         // use the artwork key as the name for the artwork to ensure it is unique.
@@ -313,14 +311,12 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artw
             function (snapshot) {
                 const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
 
-                console.log("snapshot: ", snapshot);
-
                 dispatch({
                     type: IMAGE_UPLOAD_PROGRESS,
                     payload: { artistId: artistId, id: artworkRef.key, progress: progress }
                 });
 
-                switch (snapshot.state) {
+               /* switch (snapshot.state) {
                     case fb.storage.TaskState.PAUSED:
                         console.log('Upload is paused');
                         break;
@@ -329,7 +325,7 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artw
                         break;
                     default:
                         console.log("uncaught snapshot state: ", snapshot.state);
-                }
+                }*/
             }, function (error) {
                 // A full list of error codes is available at
                 // https://firebase.google.com/docs/storage/web/handle-errors
@@ -372,9 +368,6 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artw
                         artistArtworkIdsRef
                             .set('true')
                             .then(() => {
-
-                                console.log("artistArtworkIdsRef: ", artistArtworkIdsRef);
-
                                 dispatch({
                                     type: ADD_ARTWORK_COMPLETE,
                                     payload: { [artistId]: newArtworkData }
