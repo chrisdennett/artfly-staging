@@ -27,7 +27,7 @@ class ArtworkEditor extends Component {
     render() {
         const {
                   url, artistId, artists, onArtistSelected, onCropDataConfirm,
-                  onCropImageSave, onSaveChanges, onCancelChanges, imageUploadInfo
+                  onCropImageSave, onSaveChanges, onCancelChanges
               } = this.props;
 
         if (this.state.artworkDeleted) {
@@ -39,7 +39,7 @@ class ArtworkEditor extends Component {
 
         let confirmDeleteStyle = { display: 'none' };
         let actionButtonsStyle = {};
-        let cropperStyle = { maxWidth: 450};
+        let cropperStyle = { maxWidth: 450 };
         let artistSelectorStyle = {};
         if (this.state.deleteConfirmIsShowing) {
             confirmDeleteStyle = {};
@@ -50,10 +50,10 @@ class ArtworkEditor extends Component {
 
         let saveButtonLabel = "All Saved";
 
-        if(this.props.isSaving) {
+        if (this.props.isSaving) {
             saveButtonLabel = "Saving";
         }
-        if(this.props.changesUnsaved){
+        else if (this.props.changesUnsaved) {
             saveButtonLabel = "Save changes";
         }
 

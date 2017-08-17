@@ -21,6 +21,7 @@ class ArtworkEditorHolder extends Component {
         this.state = {
             cropImg: null,
             cropData: null,
+            savedCropData: null,
             selectedArtistId: null,
             isSaving: false
         };
@@ -52,19 +53,7 @@ class ArtworkEditorHolder extends Component {
     }
 
     hasCropDataChanged() {
-        let cropDataChanged = false;
-
-        if (this.state.cropData) {
-            const { rotation, width, height } = this.state.cropData;
-
-            let rotationChanged = rotation && rotation !== 0;
-            let widthChanged = width !== this.props.artwork.imgWidth;
-            let heightChanged = height !== this.props.artwork.imgHeight;
-            if (rotationChanged || widthChanged || heightChanged) {
-                cropDataChanged = true;
-            }
-        }
-        return cropDataChanged;
+        return this.state.cropData !== this.state.savedCropData;
     }
 
     hasArtistChanged(){
@@ -88,6 +77,8 @@ class ArtworkEditorHolder extends Component {
     }
 
     onSaveChanges() {
+        this.setState({isSaving:true});
+
         const artistChanged = this.hasArtistChanged();
         const imageChanged = this.hasCropDataChanged();
         const { artworkId } = this.props;
@@ -98,12 +89,15 @@ class ArtworkEditorHolder extends Component {
         if (!imageChanged && !artistChanged) {
             //TODO should disable save button if nothing has changed.
             console.log("nothing has changed so don't save anything new");
+            this.setState({isSaving:false});
             return;
         }
 
         // if just the artist has changed
         if (artistChanged && imageChanged === false) {
-            this.props.updateArtwork(artworkId, oldArtworkData, newArtworkData);
+            this.props.updateArtwork(artworkId, oldArtworkData, newArtworkData, () => {
+                this.setState({isSaving:false});
+            });
         }
         // if just the image cropping has changed
         else if (imageChanged && artistChanged === false) {
@@ -128,9 +122,9 @@ class ArtworkEditorHolder extends Component {
 
     uploadCurrentImage(artistId, artworkId) {
         const { width, height } = this.state.cropData;
-        this.setState({isSaving:true});
+
         this.props.uploadImage(this.state.cropImg, this.props.user.uid, artistId, width, height, artworkId, () => {
-            this.setState({isSaving:false});
+            this.setState({isSaving:false, savedCropData:this.state.cropData});
         })
     }
 
@@ -143,7 +137,7 @@ class ArtworkEditorHolder extends Component {
     }
 
     render() {
-        const { artwork, userStatus, artists, onArtistSelected, imageUploadInfo } = this.props;
+        const { artwork, userStatus, artists, onArtistSelected } = this.props;
 
         if (userStatus === "none" || userStatus === "new") {
             return (<Redirect to="/"/>)
@@ -161,7 +155,7 @@ class ArtworkEditorHolder extends Component {
         const url = artwork.url;
         const changesUnsaved = this.hasArtistChanged() || this.hasCropDataChanged();
         const isSaving = this.state.isSaving;
-        const propsForView = { artists, onArtistSelected, url, artistId, imageUploadInfo, changesUnsaved, isSaving };
+        const propsForView = { artists, onArtistSelected, url, artistId, changesUnsaved, isSaving };
         return <ArtworkEditor {...propsForView}
                               onConfirmDeleteArtwork={this.onConfirmDeleteArtwork.bind(this)}
                               onSaveChanges={this.onSaveChanges.bind(this)}
@@ -181,8 +175,7 @@ const mapStateToProps = (state, ownProps) => {
         artworkId: artworkId,
         artwork: artwork,
         artists: state.artists,
-        userStatus: state.user.status,
-        imageUploadInfo: state.imageUploadInfo
+        userStatus: state.user.status
     }
 };
 
