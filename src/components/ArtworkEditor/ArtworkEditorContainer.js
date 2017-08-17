@@ -160,7 +160,6 @@ class ArtworkEditorHolder extends Component {
         const url = artwork.url;
         const changesUnsaved = this.hasArtistChanged() || this.hasCropDataChanged();
         const isSaving = this.state.isSaving;
-        console.log("isSaving: ", isSaving);
         const propsForView = { artists, onArtistSelected, url, artistId, imageUploadInfo, changesUnsaved, isSaving };
         return <ArtworkEditor {...propsForView}
                               onConfirmDeleteArtwork={this.onConfirmDeleteArtwork.bind(this)}
