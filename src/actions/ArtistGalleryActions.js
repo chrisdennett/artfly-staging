@@ -74,12 +74,22 @@ export function fetchArtist(artistGalleryId) {
             .ref(`/user-data/artists/${artistGalleryId}`)
             .on('value', (snapshot) => {
                 let artistData = snapshot.val();
-                artistData.artistId = snapshot.key;
+                // There'll be no data if the artist has just been deleted.
+                if (artistData) {
+                    artistData.artistId = snapshot.key;
+                }
 
                 dispatch({
                     type: ARTIST_CHANGE,
                     payload: { [artistGalleryId]: artistData }
                 });
+
+                // if the artist has been deleted stop listening for changes
+                // I wasn't sure about this so I've commented it out - cjd - 17/08/2017
+                /*if(!artistData){
+                    firebase.database().ref(`user-data/artists/${artistGalleryId}`).off();
+                    console.log("remove listener");
+                }*/
             });
     }
 }
@@ -182,6 +192,9 @@ export function updateArtist(artistId, artistData, callback) {
 
 export function deleteArtist(galleryArtistId, userId, callback) {
     return dispatch => {
+
+        console.log("galleryArtistId: ", galleryArtistId);
+
         const db = firebase.database();
         const artistRef = db.ref(`user-data/artists/${galleryArtistId}`);
         const artistArtworkIdsRef = db.ref(`user-data/artistArtworkIds/${galleryArtistId}`);
@@ -195,18 +208,23 @@ export function deleteArtist(galleryArtistId, userId, callback) {
                 if (artworkIdObj && snapshot.val()) {
                     const artworkIds = Object.keys(snapshot.val());
                     for (let id of artworkIds) {
-                        deleteArtwork(id, galleryArtistId, userId, dispatch);
+                        // the false here stops the artwork trying to delete a value from data that will have already been removed
+                        deleteArtworkInternal(dispatch, id, galleryArtistId, userId, false);
                     }
                 }
+            })
+            .then(() => {
+                // delete the artists artwork Id list
+                artistArtworkIdsRef.remove();
 
                 // delete the artist data
                 artistRef.remove();
-                // delete the artists artwork Id list
-                artistArtworkIdsRef.remove();
-                // delete the reference to the artist in the user data
-                userArtistRef.remove();
+
                 // delete the artist gallery
                 galleryArtistRef.remove();
+
+                // delete the reference to the artist in the user data
+                userArtistRef.remove();
 
                 dispatch({
                     type: ARTIST_DELETED,
@@ -214,41 +232,58 @@ export function deleteArtist(galleryArtistId, userId, callback) {
                 });
 
                 if (callback) callback();
-            });
+            })
     }
 }
 
 export function deleteArtwork(artworkId, artistId, userId, callback = null) {
     return dispatch => {
+        return deleteArtworkInternal(dispatch, artworkId, artistId, userId, true, callback);
+    }
+}
 
-        // delete image in storage
-        const imageStorageRef = firebase.storage().ref();
-        const userPicturesRef = imageStorageRef.child(`userContent/${userId}/${artworkId}`);
-        const artworkDataRef = firebase.database().ref(`user-data/artworks/${artworkId}`);
-        const artistArtworkIdRef = firebase.database().ref(`user-data/artistArtworkIds/${artistId}/${artworkId}`);
+//FIREBASE WARNING: set at /user-data/artistArtworkIds/-Krkn6kFuQ5hAoHzqbVW/-KrknUmy5jSKrV24i1fN failed: permission_denied
+//Uncaught (in promise) Error: PERMISSION_DENIED: Permission denied
+function deleteArtworkInternal(dispatch, artworkId, artistId, userId, removeArtistArtworkId = true, callback = null) {
+    // delete image in storage
+    const imageStorageRef = firebase.storage().ref();
+    const userPicturesRef = imageStorageRef.child(`userContent/${userId}/${artworkId}`);
+    const artworkDataRef = firebase.database().ref(`user-data/artworks/${artworkId}`);
+    const artistArtworkIdRef = firebase.database().ref(`user-data/artistArtworkIds/${artistId}/${artworkId}`);
 
-        userPicturesRef.delete()
-            .then(() => {
-                // delete artwork data
-                artworkDataRef.remove()
-                    .then(() => {
-                        // delete the artistArtworkId
+    userPicturesRef.delete()
+        .then(() => {
+            // delete artwork data
+            artworkDataRef.remove()
+                .then(() => {
+                    // delete the artistArtworkId
+                    if (removeArtistArtworkId) {
                         artistArtworkIdRef.remove()
                             .then(() => {
                                 dispatch({
                                     type: ARTWORK_DELETED,
                                     payload: artworkId
                                 });
+                                console.log("artwork deleted > artworkId: ", artworkId);
 
                                 if (callback) callback();
                             })
-                    })
+                    }
+                    else{
+                        dispatch({
+                            type: ARTWORK_DELETED,
+                            payload: artworkId
+                        });
+                        console.log("artwork deleted without IDS > artworkId: ", artworkId);
 
-            })
-            .catch(function (error) {
-                console.log("ControlPanelActions > deleteArtwork > error: ", error);
-            });
-    }
+                        if (callback) callback();
+                    }
+                })
+
+        })
+        .catch(function (error) {
+            console.log("ControlPanelActions > deleteArtwork > error: ", error);
+        });
 }
 
 export function updateArtwork(artworkId, oldArtworkData, newArtworkData, callback) {
@@ -330,16 +365,16 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artw
                     payload: { artistId: artistId, id: artworkRef.key, progress: progress }
                 });
 
-                 /*switch (snapshot.state) {
-                     case fb.storage.TaskState.PAUSED:
-                         console.log('Upload is paused');
-                         break;
-                     case fb.storage.TaskState.RUNNING:
-                         console.log('Upload is running');
-                         break;
-                     default:
-                         console.log("uncaught snapshot state: ", snapshot.state);
-                 }*/
+                /*switch (snapshot.state) {
+                    case fb.storage.TaskState.PAUSED:
+                        console.log('Upload is paused');
+                        break;
+                    case fb.storage.TaskState.RUNNING:
+                        console.log('Upload is running');
+                        break;
+                    default:
+                        console.log("uncaught snapshot state: ", snapshot.state);
+                }*/
             }, function (error) {
                 // A full list of error codes is available at
                 // https://firebase.google.com/docs/storage/web/handle-errors
