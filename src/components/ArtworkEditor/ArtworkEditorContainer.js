@@ -77,7 +77,8 @@ class ArtworkEditorHolder extends Component {
 
     getReturnUrl() {
         const { artworkId } = this.props;
-        const artistId = this.state.selectedArtistId;
+        let artistId = this.state.selectedArtistId;
+        if(!artistId) artistId = this.props.artwork.artistId;
         return `/gallery/${artistId}/artwork/${artworkId}`;
     }
 

@@ -39,12 +39,12 @@ class ArtworkEditor extends Component {
 
         let confirmDeleteStyle = { display: 'none' };
         let actionButtonsStyle = {};
-        let cropperStyle = {};
+        let cropperStyle = { maxWidth: 450};
         let artistSelectorStyle = {};
         if (this.state.deleteConfirmIsShowing) {
             confirmDeleteStyle = {};
             actionButtonsStyle = { display: 'none' };
-            cropperStyle = { display: 'none' };
+            cropperStyle.display = 'none';
             artistSelectorStyle = { display: 'none' };
         }
 
@@ -81,7 +81,7 @@ class ArtworkEditor extends Component {
 
                 <div style={actionButtonsStyle}>
                     <SaveProgressButton label={saveButtonLabel} onClick={onSaveChanges}/>
-                    <button onClick={onCancelChanges}>CANCEL</button>
+                    <button onClick={onCancelChanges}>Done</button>
                     <button onClick={this.onDeleteArtwork.bind(this)}>Delete Image</button>
                 </div>
 
