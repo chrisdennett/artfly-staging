@@ -58,8 +58,3 @@ label.disabled{
     opacity: 0.8;
     cursor: not-allowed;
 }
-
-/*
-.inputfile:focus + label{
-    background-color: red;
-}*/

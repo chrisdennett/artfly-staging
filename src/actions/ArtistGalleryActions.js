@@ -306,7 +306,7 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artw
         const artworkName = artworkRef.key; // + "." + fileExtension;
 
         // trigger callback with artwork id so progress can be shown in calling component
-        if (callback) callback(artworkRef.key);
+        //if (callback) callback(artworkRef.key);
 
         // image storage
         const imageStorageRef = firebase.storage().ref();
@@ -330,7 +330,7 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artw
                     payload: { artistId: artistId, id: artworkRef.key, progress: progress }
                 });
 
-                /* switch (snapshot.state) {
+                 /*switch (snapshot.state) {
                      case fb.storage.TaskState.PAUSED:
                          console.log('Upload is paused');
                          break;
@@ -386,6 +386,8 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artw
                                     type: ADD_ARTWORK_COMPLETE,
                                     payload: { [artistId]: newArtworkData }
                                 });
+
+                                if (callback) callback();
                             })
                             .catch(function (error) {
                                 console.log('Synchronization failed', error);

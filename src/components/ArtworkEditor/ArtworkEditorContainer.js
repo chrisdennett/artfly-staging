@@ -21,7 +21,8 @@ class ArtworkEditorHolder extends Component {
         this.state = {
             cropImg: null,
             cropData: null,
-            selectedArtistId: null
+            selectedArtistId: null,
+            isSaving: false
         };
     }
 
@@ -66,6 +67,14 @@ class ArtworkEditorHolder extends Component {
         return cropDataChanged;
     }
 
+    hasArtistChanged(){
+        let selectedArtistChanged = false;
+        if(this.state.selectedArtistId && (this.state.selectedArtistId !== this.props.artwork.artistId)){
+            selectedArtistChanged = true;
+        }
+        return selectedArtistChanged;
+    }
+
     getReturnUrl() {
         const { artworkId } = this.props;
         const artistId = this.state.selectedArtistId;
@@ -78,7 +87,7 @@ class ArtworkEditorHolder extends Component {
     }
 
     onSaveChanges() {
-        const artistChanged = this.state.selectedArtistId && (this.state.selectedArtistId !== this.props.artwork.artistId);
+        const artistChanged = this.hasArtistChanged();
         const imageChanged = this.hasCropDataChanged();
         const { artworkId } = this.props;
         const oldArtworkData = this.props.artwork;
@@ -118,7 +127,10 @@ class ArtworkEditorHolder extends Component {
 
     uploadCurrentImage(artistId, artworkId) {
         const { width, height } = this.state.cropData;
-        this.props.uploadImage(this.state.cropImg, this.props.user.uid, artistId, width, height, artworkId)
+        this.setState({isSaving:true});
+        this.props.uploadImage(this.state.cropImg, this.props.user.uid, artistId, width, height, artworkId, () => {
+            this.setState({isSaving:false});
+        })
     }
 
     onCropImageSave(cropImg) {
@@ -146,7 +158,10 @@ class ArtworkEditorHolder extends Component {
         }
 
         const url = artwork.url;
-        const propsForView = { artists, onArtistSelected, url, artistId, imageUploadInfo };
+        const changesUnsaved = this.hasArtistChanged() || this.hasCropDataChanged();
+        const isSaving = this.state.isSaving;
+        console.log("isSaving: ", isSaving);
+        const propsForView = { artists, onArtistSelected, url, artistId, imageUploadInfo, changesUnsaved, isSaving };
         return <ArtworkEditor {...propsForView}
                               onConfirmDeleteArtwork={this.onConfirmDeleteArtwork.bind(this)}
                               onSaveChanges={this.onSaveChanges.bind(this)}
