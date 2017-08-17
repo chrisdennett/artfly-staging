@@ -19,7 +19,7 @@ const Settings = function ({ artistGalleries }) {
                             <p>Artist biog: {artist.biog}</p>
                             <p>Total artworks: {totalArtworks}</p>
                             <Link to={`/gallery/${id}`}>Open Gallery</Link>
-                            <Link to={`/add-or-edit-artist/${id}`}>Edit Gallery</Link>
+                            <Link to={`/add-or-edit-artist/${id}`}>Edit Artist Gallery</Link>
                         </div>)
                 })
             }

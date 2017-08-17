@@ -11,9 +11,11 @@ class ArtistEditor extends Component {
 
         // I'm using the same form for editing and adding new artists
         // formType tells me which it is
-        let formTitle = "Add New Artist";
+        let formTitle = "Add New Artist Gallery";
+        let deleteButtonStyle = {display:'none'};
         if(this.props.formType === "edit"){
             formTitle = "Edit Artist";
+            deleteButtonStyle = {};
         }
 
         return (
@@ -38,7 +40,7 @@ class ArtistEditor extends Component {
                     <button type="submit">
                         Submit
                     </button>
-                    <button type="button" onClick={this.props.deleteArtist.bind(this)}>
+                    <button type="button" style={deleteButtonStyle} onClick={this.props.deleteArtist.bind(this)}>
                         Delete
                     </button>
                     <Link to={`/settings/`}>Cancel</Link>
