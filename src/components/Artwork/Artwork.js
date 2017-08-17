@@ -28,6 +28,8 @@ class Artwork extends Component {
             imgStyle.display = 'none';
         }
 
+        
+
         // const { url, url_large, url_med, url_thumb } = artwork;
         const { url, url_large } = artwork;
         // set the image url to the full sized source image
