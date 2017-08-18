@@ -299,7 +299,7 @@ export function updateArtwork(artworkId, oldArtworkData, newArtworkData, callbac
             const oldArtistArtworkIdsRef = firebase.database().ref(`/user-data/artistArtworkIds/${oldArtworkData.artistId}/${artworkId}`);
             const newArtistArtworkIdsRef = firebase.database().ref(`/user-data/artistArtworkIds/${newArtworkData.artistId}/${artworkId}`);
 
-            newArtistArtworkIdsRef.set('true');
+            newArtistArtworkIdsRef.set(oldArtworkData.dateAdded);
             oldArtistArtworkIdsRef.remove();
         }
 
@@ -415,7 +415,7 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artw
                     .set(newArtworkData)
                     .then(
                         artistArtworkIdsRef
-                            .set('true')
+                            .set(dateStamp)
                             .then(() => {
                                 dispatch({
                                     type: ADD_ARTWORK_COMPLETE,
