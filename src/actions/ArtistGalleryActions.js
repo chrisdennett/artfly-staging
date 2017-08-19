@@ -94,7 +94,7 @@ export function fetchArtist(artistGalleryId) {
     }
 }
 
-export function fetchGalleryArtistArtworkIds(artistGalleryId) {
+export function fetchGalleryArtistArtworkIds(artistGalleryId, callback=null) {
     return (dispatch) => {
         if (artistArtworkIdsListenersRef.indexOf(artistGalleryId) >= 0) {
             dispatch({
@@ -119,6 +119,8 @@ export function fetchGalleryArtistArtworkIds(artistGalleryId) {
                     type: ARTIST_ARTWORK_IDS_CHANGE,
                     payload: { [artistGalleryId]: artistArtworkIdsData }
                 });
+
+                if(callback) callback(artistArtworkIdsData);
             });
     }
 }

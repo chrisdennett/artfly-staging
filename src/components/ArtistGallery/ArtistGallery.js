@@ -1,36 +1,28 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import _ from 'lodash';
 
-const ArtistGallery = function ({ gallery, artist, totalArtworks }) {
+import ArtworkThumb from "./ArtworkThumb";
+
+const ArtistGallery = function ({ gallery, artist, totalArtworks, artworks, onThumbClick }) {
     return (
         <div>
             <h1>{gallery.name}</h1>
             <h2>Artist</h2>
             <p>Name: {artist.name}</p>
             <p>Total Artworks: {totalArtworks}</p>
+            {
+                _.map(artworks, (artwork) => {
+                    if (artwork.artistId === artist.artistId) {
+                        return (
+                            <div key={artwork.id}>
+                                <ArtworkThumb onThumbClick={onThumbClick.bind(this)} artwork={artwork}/>
+                            </div>)
+                    }
+                })
+            }
+
 
         </div>
-    )
-};
-
-ArtistGallery.propTypes = {
-    gallery: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-    }).isRequired,
-
-    artist: PropTypes.shape(
-        {
-            name: PropTypes.string.isRequired
-        }).isRequired,
-
-    artworks: PropTypes.arrayOf(
-        PropTypes.shape(
-            {
-                adminId: PropTypes.string,
-                dateAdded: PropTypes.number,
-                url: PropTypes.string
-            }
-        )
     )
 };
 
