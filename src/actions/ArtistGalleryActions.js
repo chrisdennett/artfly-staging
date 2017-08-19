@@ -114,7 +114,6 @@ export function fetchGalleryArtistArtworkIds(artistGalleryId, callback=null) {
             .ref(`/user-data/artistArtworkIds/${artistGalleryId}`)
             .on('value', snapshot => {
                 const artistArtworkIdsData = !snapshot.val() ? {} : snapshot.val();
-
                 dispatch({
                     type: ARTIST_ARTWORK_IDS_CHANGE,
                     payload: { [artistGalleryId]: artistArtworkIdsData }

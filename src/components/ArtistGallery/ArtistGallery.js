@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 import ArtworkThumb from "./ArtworkThumb";
 
-const ArtistGallery = function ({ gallery, artist, totalArtworks, artworks, onThumbClick }) {
+const ArtistGallery = function ({ gallery, artist, totalArtworks, artworks, onThumbClick, artworkIds }) {
     return (
         <div>
             <h1>{gallery.name}</h1>
@@ -11,11 +11,11 @@ const ArtistGallery = function ({ gallery, artist, totalArtworks, artworks, onTh
             <p>Name: {artist.name}</p>
             <p>Total Artworks: {totalArtworks}</p>
             {
-                _.map(artworks, (artwork) => {
-                    if (artwork.artistId === artist.artistId) {
+                _.map(artworkIds, (id) => {
+                    if (artworks[id]) {
                         return (
-                            <div key={artwork.id}>
-                                <ArtworkThumb onThumbClick={onThumbClick.bind(this)} artwork={artwork}/>
+                            <div key={id}>
+                                <ArtworkThumb onThumbClick={onThumbClick.bind(this)} artwork={artworks[id]}/>
                             </div>)
                     }
                 })

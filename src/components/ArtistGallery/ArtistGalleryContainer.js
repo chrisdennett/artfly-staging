@@ -36,12 +36,12 @@ class ArtistGalleryHolder extends Component {
     }
 
     render() {
-        const { gallery, artist, totalArtworks, artworks } = this.props;
+        const { gallery, artist, totalArtworks, artworks, artworkIds } = this.props;
         if (!gallery || !artist || !artist) {
             return <div>Artist Gallery Loading</div>;
         }
 
-        return <ArtistGallery gallery={gallery} artist={artist} totalArtworks={totalArtworks} artworks={artworks} onThumbClick={this.onThumbClick.bind(this)}/>;
+        return <ArtistGallery gallery={gallery} artist={artist} totalArtworks={totalArtworks} artworkIds={artworkIds} artworks={artworks} onThumbClick={this.onThumbClick.bind(this)}/>;
     }
 }
 
@@ -51,7 +51,11 @@ const mapStateToProps = (state, ownProps) => {
 
     let artworkIds = [];
     if (state.artistsArtworkIds && state.artistsArtworkIds[galleryId]) {
-        artworkIds = Object.keys(state.artistsArtworkIds[galleryId]);
+        // sort the ids in reverse order.
+        const artworkIdsAfter = state.artistsArtworkIds[galleryId];
+        artworkIds = Object.keys(artworkIdsAfter).sort((a, b) => {
+            return artworkIdsAfter[b] - artworkIdsAfter[a]
+        });
     }
 
     const totalArtworks = !state.artistsArtworkIds[galleryId] ? 0 : Object.keys(state.artistsArtworkIds[galleryId]).length;
