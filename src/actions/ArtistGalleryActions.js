@@ -38,11 +38,11 @@ export function fetchGallery(artistGalleryId) {
         galleryListenersRef.push(artistGalleryId);
 
         // remove any listeners if there are already there
-        firebase.database().ref(`user-data/galleries/${artistGalleryId}`).off();
+        firebase.database().ref(`user-data/artistGalleries/${artistGalleryId}`).off();
 
         // set up a listener for this gallery
         firebase.database()
-            .ref(`user-data/galleries/${artistGalleryId}`)
+            .ref(`user-data/artistGalleries/${artistGalleryId}`)
             .on('value', snapshot => {
                 const galleryData = snapshot.val();
                 dispatch({
@@ -156,7 +156,7 @@ export function fetchArtwork(artworkId, callback) {
 
 export function updateGallery(galleryId, newGalleryData, callback) {
     return dispatch => {
-        const artistRef = firebase.database().ref(`user-data/galleries/${galleryId}`);
+        const artistRef = firebase.database().ref(`user-data/artistGalleries/${galleryId}`);
         artistRef.update({ ...newGalleryData })
             .then(() => {
                 dispatch({
@@ -199,7 +199,7 @@ export function deleteArtist(galleryArtistId, userId, callback) {
         const artistRef = db.ref(`user-data/artists/${galleryArtistId}`);
         const artistArtworkIdsRef = db.ref(`user-data/artistArtworkIds/${galleryArtistId}`);
         const userArtistRef = db.ref(`user-data/users/${userId}/artistGalleryIds/${galleryArtistId}`);
-        const galleryArtistRef = db.ref(`user-data/galleries/${galleryArtistId}`);
+        const galleryArtistRef = db.ref(`user-data/artistGalleries/${galleryArtistId}`);
 
         artistArtworkIdsRef
             .once('value')

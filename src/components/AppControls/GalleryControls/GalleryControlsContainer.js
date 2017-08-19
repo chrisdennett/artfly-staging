@@ -24,8 +24,6 @@ class GalleryControlsHolder extends Component {
         let prevId = null;
         let nextId = null;
 
-
-
         if (artworkIds) {
 
             // sort the ids in reverse order.

@@ -73,7 +73,7 @@ export function addNewArtist(userId, formValues, callback = null) {
         const artistId = artistRef.key;
         // Artist gallery has the same id as the artist as they are inextricably linked.
         const userArtistRef = firebase.database().ref(`/user-data/users/${userId}/artistGalleryIds/${artistId}`);
-        const artistGalleryRef = firebase.database().ref(`/user-data/galleries/${artistId}`);
+        const artistGalleryRef = firebase.database().ref(`/user-data/artistGalleries/${artistId}`);
         const galleryName = !formValues.galleryName ? `The amazing gallery of ${formValues.artistName}` : formValues.galleryName;
 
         const newArtistData = {
@@ -113,7 +113,7 @@ export function createNewUser(authId, formValues, callback = null) {
         const artistRef = firebase.database().ref('/user-data/artists').push();
         const artistId = artistRef.key;
         // Artist gallery has the same id as the artist as they are inextricably linked.
-        const artistGalleryRef = firebase.database().ref(`/user-data/galleries/${artistId}`);
+        const artistGalleryRef = firebase.database().ref(`/user-data/artistGalleries/${artistId}`);
         const userArtistsObj = {};
         userArtistsObj[artistId] = 'true';
 
