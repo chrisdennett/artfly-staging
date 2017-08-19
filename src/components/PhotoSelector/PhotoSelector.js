@@ -91,9 +91,14 @@ class PhotoSelector extends Component {
         this.props.clearImageUpload();
     }
 
-    //this.props.imageUploadInfo: { artistId: artistId, id: artworkRef.key, progress: progress }
-    render() {
+    handleAddAnotherImageSelect(event) {
+        event.preventDefault();
+        this.setState({ imgSrc: null, imgIsSelected: false });
+        this.props.clearImageUpload();
+        this.handleImageChange(event);
+    }
 
+    render() {
         if (this.state.imgIsSelected) {
             const fullScreenStyle = {
                 height: '100%',
@@ -128,6 +133,18 @@ class PhotoSelector extends Component {
                             <div>
                                 <p>Artwork saved</p>
                                 <button onClick={this.showPictureInGallery.bind(this)}>Open in Gallery</button>
+                                <span>
+                                    <input className="inputfile"
+                                           onChange={this.handleAddAnotherImageSelect.bind(this)}
+                                           type="file" accept="image/*"
+                                           name={this.props.id} id="new-upload"/>
+
+                                    <label disabled={this.props.disabled}
+                                           className={this.props.disabled ? 'disabled' : ''}
+                                           htmlFor="new-upload">
+                                        Add Another Artwork
+                                    </label>
+                                </span>
                             </div>
                             }
                         </div>
@@ -167,6 +184,7 @@ class PhotoSelector extends Component {
             )
         }
 
+        // the add artwork button needs an id but this is only important if more than one are used at the same time
         const id = !this.props.id ? "123" : this.props.id;
         return (
             <span>
