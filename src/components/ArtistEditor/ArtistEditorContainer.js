@@ -16,17 +16,20 @@ class ArtistEditorHolder extends Component {
             this.initData(artistGalleryId);
         }
     }
+
     componentDidUpdate() {
         const artistGalleryId = this.props.match.params.artistId;
         if (artistGalleryId) {
             this.initData(artistGalleryId);
         }
     }
+
     initData(artistGalleryId) {
         this.props.fetchGallery(artistGalleryId);
         this.props.fetchArtist(artistGalleryId);
         this.props.fetchGalleryArtistArtworkIds(artistGalleryId);
     }
+
     onSubmit(values) {
         const { userId, formType, match, history, addNewArtist, updateArtist, updateGallery } = this.props;
         const { artistId } = match.params;
@@ -47,6 +50,7 @@ class ArtistEditorHolder extends Component {
             });
         }
     }
+
     deleteArtist() {
         const { userId, match, history } = this.props;
         const { artistId } = match.params;
@@ -54,18 +58,25 @@ class ArtistEditorHolder extends Component {
             history.push(`/settings/`);
         });
     }
+
     render() {
-        const { initialValues, formType, status } = this.props;
+        const { initialValues, formType, status, userArtistGalleryIds } = this.props;
 
         // Form doesn't update if you render it and then update the values
         // so need to wait until they are all present and correct
-        if (status === "waiting") {
+        if (status === "waiting" || !userArtistGalleryIds) {
             return <div>loading...</div>
+        }
+
+        let allowDelete = true;
+        if (userArtistGalleryIds && Object.keys(userArtistGalleryIds).length < 2) {
+            allowDelete = false;
         }
 
         return <ArtistEditor
             initialValues={initialValues}
             formType={formType}
+            allowDelete={allowDelete}
             deleteArtist={this.deleteArtist.bind(this)}
             onSubmit={this.onSubmit.bind(this)}/>;
     }
@@ -103,7 +114,8 @@ const mapStateToProps = (state, ownProps) => {
         status: status,
         userId: state.user.uid,
         formType: formType,
-        initialValues: initialFormValues
+        initialValues: initialFormValues,
+        userArtistGalleryIds: state.user.artistGalleryIds
     }
 };
 

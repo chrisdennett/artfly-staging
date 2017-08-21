@@ -44,6 +44,23 @@ class ArtistEditor extends Component {
             deleteButtonStyle = {display:'none'};
         }
 
+        // Delete confirmation content - don't allow delete if last artist.
+        let deleteConfirmationContent = (
+            <div>
+                <p>Are you sure you want to delete this artist and all their artworks?</p>
+                <button type="button"  onClick={this.onDeleteConfirm.bind(this)}>Yes, delete away</button>
+                <button type="button"  onClick={this.onDeleteCancel.bind(this)}>No do not delete</button>
+            </div>
+        );
+        if(this.props.allowDelete === false){
+            deleteConfirmationContent = (
+                <div>
+                    <p>Sorry, you you always need at least one artist - Create a new artist first if you want to get rid of this one.</p>
+                    <button type="button"  onClick={this.onDeleteCancel.bind(this)}>Close message</button>
+                </div>
+            );
+        }
+
         return (
             <div>
                 <h1>{formTitle}</h1>
@@ -70,9 +87,7 @@ class ArtistEditor extends Component {
                         Delete
                     </button>
                     <div style={deleteConfirmationStyle}>
-                        <p>Are you sure you want to delete this artist and all their artworks?</p>
-                        <button type="button"  onClick={this.onDeleteConfirm.bind(this)}>Yes, delete away</button>
-                        <button type="button"  onClick={this.onDeleteCancel.bind(this)}>No do not delete</button>
+                        {deleteConfirmationContent}
                     </div>
 
                     <Link style={formButtonStyle} to={`/settings/`}>Cancel</Link>
