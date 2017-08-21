@@ -55,8 +55,8 @@ class SettingsHolder extends Component {
             return <Redirect to={'/'}/>
         }
 
-        const { artistGalleries } = this.props;
-        return <Settings artistGalleries={artistGalleries}/>;
+        const { artistGalleries, userId } = this.props;
+        return <Settings artistGalleries={artistGalleries} userId={userId}/>;
     }
 }
 
@@ -65,6 +65,7 @@ const mapStateToProps = (state) => {
     const artistGalleries = getUserArtistGalleries(artistGalleryIds, state.artists, state.galleries, state.artistsArtworkIds);
 
     return {
+        userId: state.user.uid,
         userStatus: state.user.status,
         artistGalleryIds: artistGalleryIds,
         artistGalleries: artistGalleries

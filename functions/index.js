@@ -215,3 +215,46 @@ exports.generateDifferentImageSizes = functions.storage.object()
                     })
             })
     });
+
+// listen for Paddle subsription events
+exports.subscriptionEvent = functions.https.onRequest((request, response) => {
+    console.log("request: ", request.body);
+    response.send("hello from the other side: ");
+});
+
+
+// SUBSCRIPTION CREATED
+/*
+let body = {
+    alert_id: '1704388',
+    alert_name: 'subscription_created',
+    cancel_url: 'https://checkout.paddle.com/subscription/cancel?user=239588&subscription=223920&hash=eyJpdiI6Ikg4RjdwVGZDemxIaUZRSGhma0FtTFJhZUQyWkFYclA2dVVqUU9nTTJCZGc9IiwidmFsdWUiOiJ0SE93S0FHTjVKZHlnR1YxQjNiNHlLbCtscnp1TGxcL052NXJ3N0czWHZ4WjB4Mkk3bVNhUk5YaTdYSEM1bE9lVFJCTDRrRHpxcHlIXC9PV3cyWlNrZXN3PT0iLCJtYWMiOiJlOWZkYWM4YjM4YTVhYjhkZmEwMjA3YjkyNWEzNGQ1MGMyZTg2Njc1NTRlMDczYjliYTAyNzE1NDFlMDQ4YjlmIn0%253D',
+    checkout_id: '9090568-chrede047665065-97f566f50f',
+    currency: 'GBP',
+    email: 'chrisdennett@gmail.com',
+    event_time: '2017-08-21 14:42:21',
+    next_bill_date: '2017-08-31',
+    passthrough: '08pXRSgkZAQsn7q9Qvum15QC2Nj1',
+    status: 'trialing',
+    subscription_id: '223920',
+    subscription_plan_id: '516947',
+    update_url: 'https://checkout.paddle.com/subscription/update?user=239588&subscription=223920&hash=eyJpdiI6ImJcL3JOODBKakdBMFwvczJUdXUxQktnT2FRbXIxMlJrSHdoV1dzOFYrOTE5UT0iLCJ2YWx1ZSI6IkZXU3N5ZENnd3p6RVB6SWZzUWpFV2dWcnJNXC9zUnFkcVd6TjlJbXZrSlhWM0NCV1VvRitWVEFWVlBFSHF6TnpYNm8rekFcL1BpOWNxMjFSZnZjRkJQREE9PSIsIm1hYyI6IjBmNmI1MmZmZTk3ZTM1M2Q3MjcyMmRjM2FkY2I3MGY1MTQxNWM3YTJkYjI0NDM2M2EwYjk3NGEzOWM0Y2ZlMzYifQ%253D%253D',
+    p_signature: 'hpAaWafnCLtSBN5jj3gLI8DiDwfFqyQccw11FfZv5B6uxIW/Fh6mlguvDtYJjzSjWmV3rfKEbe3eExeMzERL04iMkUESHzRBpGjYjX76J9VjQ92mMLRbZIsrHW5uaxaeqbW6l3KR4wiBGzLbEmMVe9TNAU/I3GRASDYSKcqMTbQs+iCEhK8jd8lXOsTqeveJ3w0w1IZBmAn/+4CRmeYrCPO2nawvawNuGqojVnzMAH2zqHiIDIQ2AohCvKy71CgNZweYKf6v9SmmcolbYsq6VapevQe43B7vkLZrbFqzKlkCFq9UqyZUoes2y++7OPh/fFprhF4G8LkJTJDeBJ7Kd+bzSnMNKG8jWB5i/xHxL/nDHDLcZHhPyaZfNZixONRDaGYoellw1vJFHjweGRMg7crYyCrjnfvwKzIozj5BpWc67sSyANc8N0WoLUCpc0i9G2G5DrQ89+MlVJ0lG7Jmh9b9HlL2mloDHhsQo2QqqkYo/lVNszIuQvo/KdhjSvTUZYS7hiE0jCKpTvRdliV6Ro90MwLOxqf5P/0jMsP53XOpNSp6YVCbTNo5I9LD2OqWYi/7fCPUWIlQyCnUmYQIqzoDcVlGRywvUZxUOSkwWv+t8vQwA8tmk3Qlw99si49ZS0sEgAUNoZfR3FuxBhswD4qedMHzi2FfFVQOt1sEzR8='
+};
+
+//SUBSCRIPTION CANCELLED
+body = {
+    alert_id: '1704550',
+    alert_name: 'subscription_cancelled',
+    cancellation_effective_date: '2017-08-31',
+    checkout_id: '9090568-chrede047665065-97f566f50f',
+    email: 'chrisdennett@gmail.com',
+    event_time: '2017-08-21 14:57:37',
+    passthrough: '08pXRSgkZAQsn7q9Qvum15QC2Nj1',
+    status: 'deleted',
+    subscription_id: '223920',
+    subscription_plan_id: '516947',
+    user_id: '239588',
+    p_signature: 'prtNXviDqm0bKeEdwDQgY+CeIDGsLZREqc3myHsbOyRi/1b5kjf/H51lnnZn6wmPCfr7OZQZpyKi8f9DZs94G+RHXsUp7YWh9TQQWJDUoHmJ+3IRokxtcWiU83I/7WbeHw3fOGJtO+dRO/Jqp9E63kgo8+BOX1eafIe3WwgyPGWYkB24UnMiQIKE1CRxQ2FLAY9Pzdp2czXgNU0RaPTR650FHOoHOBqzObqJgxGo1Op2BC27V6kum5gBT4YjGrypSERRuMoVlFAtjfHkOrhRcE4bFh6oxOxgcrmTfh2pgIXFHDZhR+B4/pJYvclVkRdobHYlw+230f9WnW9nUht7CvoTswDFtThsNciNaSqvOUiy6Ra2TngxUeLq/WZ5u3+fSUUkBOXIOvudgmSZ2OOSHZBIQ54xYeO8Dld2lqKiE7eKdw6woPWPGW+Mb/POIlH3criVx+jzerusaKVK8A5eAvGpxQ4iwv7ZnUMXfzsZp5y1LY2AsflqM81yq00yzwmOhpi71IthxYWyUDw4TyaefJk9XV8nApUBYibsLmbTQXepArUebJLt70QT8KQQotX3k0V6wknLPdW72IpwdIDA19haDkZgrj2RWz1D8/xJG0xg0m2e+5knRUD3O5TZGVg8O5lRU2qrIXzwJ6BNNSQbXy6k4LlTINILt2ph2x41PRI='
+};
+*/

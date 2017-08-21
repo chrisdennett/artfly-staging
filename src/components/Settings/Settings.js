@@ -3,10 +3,21 @@ import { Link } from 'react-router-dom'
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 
-const Settings = function ({ artistGalleries }) {
+const Settings = function ({ artistGalleries, userId }) {
+
+    console.log("userId: ", userId);
+
     return (
         <div>
             <h1>Settings</h1>
+            <hr/>
+            <h2>Current plan: free</h2>
+            <p>{userId}</p>
+            <a href="https://pay.paddle.com/checkout/516947"
+               className="paddle_button"
+               data-passthrough={userId}
+               data-product="516947">Subscribe</a>
+            <hr/>
             <Link to={`/add-or-edit-artist/`} >Add New Artist</Link>
             {
                 _.map(artistGalleries, (artistGallery) => {
