@@ -218,7 +218,26 @@ exports.generateDifferentImageSizes = functions.storage.object()
 
 // listen for Paddle subsription events
 exports.subscriptionEvent = functions.https.onRequest((request, response) => {
-    console.log("request: ", request.body);
+    const ref = admin.database().ref();
+    const alertName = request.body.alert_name;
+    const userId = request.body.passthrough;
+
+    if (alertName === 'subscription_created') {
+        const cancelUrl = request.body.cancel_url;
+        const updatedUrl = request.body.update_url;
+        const paidUntil = request.body.next_bill_date;
+        const status = request.body.status; // status can be trailing, cancelled
+
+        // TODO: look up how to set multiple properties at once - set urls and paid until date
+        // TODO: save data for other events as well - subscription update, cancellation, [check paddle for others]
+        // TODO: return a success response if data has correctly been updated otherwise send a different response.
+
+        ref.child(`user-data/users/${userId}/subscriptionStatus`).set(status);
+    }
+    else if (alertName === 'subscription_cancelled') {
+
+    }
+
     response.send("hello from the other side: ");
 });
 
