@@ -221,24 +221,36 @@ exports.subscriptionEvent = functions.https.onRequest((request, response) => {
     const ref = admin.database().ref();
     const alertName = request.body.alert_name;
     const userId = request.body.passthrough;
+    const subscriptionObject = {};
+    subscriptionObject.status = request.body.status; // status can be active, trailing, past_due, deleted
+    subscriptionObject.subscriptionId = request.body.subscription_id;
+    subscriptionObject.email = request.body.email;
+    subscriptionObject.planId = request.body.subscription_plan_id;
 
-    if (alertName === 'subscription_created') {
-        const cancelUrl = request.body.cancel_url;
-        const updatedUrl = request.body.update_url;
-        const paidUntil = request.body.next_bill_date;
-        const status = request.body.status; // status can be trailing, cancelled
+    // TODO: return a success response if data has correctly been updated otherwise send a different response.
 
-        // TODO: look up how to set multiple properties at once - set urls and paid until date
-        // TODO: save data for other events as well - subscription update, cancellation, [check paddle for others]
-        // TODO: return a success response if data has correctly been updated otherwise send a different response.
-
-        ref.child(`user-data/users/${userId}/subscriptionStatus`).set(status);
+    switch (alertName) {
+        case 'subscription_created':
+            subscriptionObject.cancelUrl = request.body.cancel_url;
+            subscriptionObject.updateUrl = request.body.update_url;
+            subscriptionObject.paidUntil = request.body.next_bill_date;
+            break;
+        case 'subscription_cancelled':
+            subscriptionObject.cancellationEffectiveDate = request.body.cancellation_effective_date;
+            break;
+        case 'subscription_updated':
+            subscriptionObject.paidUntil = request.body.next_bill_date;
+            break;
+        case 'subscription_payment_succeeded':
+            subscriptionObject.paidUntil = request.body.next_bill_date;
+            break;
+        case 'subscription_payment_failed':
+            break;
     }
-    else if (alertName === 'subscription_cancelled') {
 
-    }
+    ref.child(`user-data/users/${userId}/subscription`).update(subscriptionObject);
 
-    response.send("hello from the other side: ");
+    response.send("update success");
 });
 
 

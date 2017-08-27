@@ -3,22 +3,63 @@ import { Link } from 'react-router-dom'
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 
-const Settings = function ({ artistGalleries, userId }) {
+const Settings = function ({ artistGalleries, userId, subscription, userEmail }) {
+    let subscriptionContent;
+    const productId = "516947";
+    let checkoutRef = `https://pay.paddle.com/checkout/${productId}?passthrough=${userId}`;
+    if (userEmail) {
+        checkoutRef += `&guest_email=${userEmail}`;
+    }
 
-    console.log("userId: ", userId);
+    // if subscription is undefined show a subscribe button
+    if (!subscription) {
+        subscriptionContent = (
+            <div>
+                <p>Subscribe for £2.75 a month to save up to 1000 artworks</p>
+                <a href={checkoutRef} target="_blank">Subscribe</a>
+            </div>
+        )
+    }
+    // if the subscription is active it's an ongoing paid up subscription
+    else if(subscription.status === 'active') {
+        subscriptionContent = (
+            <div>
+                <p>You're a monthly subscriber - next payment will be taken on: {subscription.paidUntil}</p>
+                <a href={subscription.cancelUrl} target="_blank">Cancel subscription</a>
+                <a href={subscription.updateUrl} target="_blank">Update subscription</a>
+            </div>
+        )
+    }
+    // if status is past_due it means their payment has failed.
+    else if(subscription.status === 'past_due') {
+        subscriptionContent = (
+            <div>
+                <p>You're a monthly subscriber, but you last payment has failed. We'll try to collect the payment again soon.</p>
+                <a href={subscription.cancelUrl} target="_blank">Cancel subscription</a>
+                <a href={subscription.updateUrl} target="_blank">Update subscription</a>
+            </div>
+        )
+    }
+    // if status is deleted
+    else if(subscription.status === 'deleted') {
+        subscriptionContent = (
+            <div>
+                <p>You've cancelled your subscription - you can access your account until: {subscription.paidUntil}</p>
+                <a href={checkoutRef} target="_blank">Re-subscribe</a>
+            </div>
+        )
+    }
 
     return (
         <div>
             <h1>Settings</h1>
             <hr/>
-            <h2>Current plan: free</h2>
-            <p>{userId}</p>
-            <a href="https://pay.paddle.com/checkout/516947"
-               className="paddle_button"
-               data-passthrough={userId}
-               data-product="516947">Subscribe</a>
+            <h2>Subscription:</h2>
+
+            {subscriptionContent}
+
             <hr/>
-            <Link to={`/add-or-edit-artist/`} >Add New Artist</Link>
+            <Link to={`/add-or-edit-artist/`}>Add New Artist</Link>
             {
                 _.map(artistGalleries, (artistGallery) => {
                     const { artist, gallery, id, totalArtworks } = artistGallery;

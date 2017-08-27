@@ -32,7 +32,7 @@ const getUserArtistGalleries = (artistGalleryIdsObject, artists, galleries, arti
 // Created an intermediate component so can trigger the data loading outside
 class SettingsHolder extends Component {
     componentDidMount() {
-        this.fetchAllGalleries()
+        this.fetchAllGalleries();
     }
 
     fetchAllGalleries() {
@@ -55,8 +55,12 @@ class SettingsHolder extends Component {
             return <Redirect to={'/'}/>
         }
 
-        const { artistGalleries, userId } = this.props;
-        return <Settings artistGalleries={artistGalleries} userId={userId}/>;
+        const { artistGalleries, userId, subscription, userEmail } = this.props;
+        if(!userId){
+            return <div>Loading...</div>;
+        }
+
+        return <Settings artistGalleries={artistGalleries} userId={userId} subscription={subscription} userEmail={userEmail}/>;
     }
 }
 
@@ -66,9 +70,11 @@ const mapStateToProps = (state) => {
 
     return {
         userId: state.user.uid,
+        userEmail: state.user.email,
         userStatus: state.user.status,
         artistGalleryIds: artistGalleryIds,
-        artistGalleries: artistGalleries
+        artistGalleries: artistGalleries,
+        subscription: state.user.subscription
     }
 };
 

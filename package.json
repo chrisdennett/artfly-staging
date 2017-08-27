@@ -17,6 +17,9 @@
     "redux-form": "^6.7.0",
     "redux-thunk": "^2.2.0"
   },
+  "externals": {
+    "Paddle": "Paddle"
+  },
   "devDependencies": {
     "@storybook/react": "^3.2.3",
     "react-scripts": "0.9.5"
