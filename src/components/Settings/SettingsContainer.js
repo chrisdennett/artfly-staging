@@ -31,6 +31,12 @@ const getUserArtistGalleries = (artistGalleryIdsObject, artists, galleries, arti
 
 // Created an intermediate component so can trigger the data loading outside
 class SettingsHolder extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = { price: '' }
+    }
+
     componentDidMount() {
         this.fetchAllGalleries();
     }
@@ -47,6 +53,46 @@ class SettingsHolder extends Component {
 
     componentDidUpdate(prevProps) {
         this.fetchAllGalleries();
+
+        if (this.state.price === '') {
+            const Paddle = window.Paddle;
+            Paddle.Product.Prices(516947, function (prices) {
+                const localPrice = prices.price.gross;
+                this.setState({price: localPrice})
+            }.bind(this));
+        }
+    }
+
+    onSubscribe() {
+        const Paddle = window.Paddle;
+        const { userId } = this.props;
+        const productId = "516947";
+
+        let checkoutSetupData = {};
+        checkoutSetupData.product = productId;
+        checkoutSetupData.passthrough = userId;
+
+        if (this.props.user.email) {
+            checkoutSetupData.email = this.props.user.email;
+        }
+
+        Paddle.Checkout.open(checkoutSetupData);
+    }
+
+    onCancelSubscription() {
+        const Paddle = window.Paddle;
+        const cancelUrl = this.props.user.subscription.cancelUrl;
+        Paddle.Checkout.open({
+            override: cancelUrl
+        });
+    }
+
+    onUpdateSubscription() {
+        const Paddle = window.Paddle;
+        const updateUrl = this.props.user.subscription.updateUrl;
+        Paddle.Checkout.open({
+            override: updateUrl
+        });
     }
 
     render() {
@@ -55,12 +101,17 @@ class SettingsHolder extends Component {
             return <Redirect to={'/'}/>
         }
 
-        const { artistGalleries, userId, subscription, userEmail } = this.props;
-        if(!userId){
+        const { artistGalleries, userId, subscription } = this.props;
+        if (!userId) {
             return <div>Loading...</div>;
         }
 
-        return <Settings artistGalleries={artistGalleries} userId={userId} subscription={subscription} userEmail={userEmail}/>;
+        return <Settings onSubscribe={this.onSubscribe.bind(this)}
+                         onCancelSubscription={this.onCancelSubscription.bind(this)}
+                         onUpdateSubscription={this.onUpdateSubscription.bind(this)}
+                         artistGalleries={artistGalleries}
+                         price={this.state.price}
+                         subscription={subscription}/>;
     }
 }
 
@@ -69,6 +120,7 @@ const mapStateToProps = (state) => {
     const artistGalleries = getUserArtistGalleries(artistGalleryIds, state.artists, state.galleries, state.artistsArtworkIds);
 
     return {
+        user: state.user,
         userId: state.user.uid,
         userEmail: state.user.email,
         userStatus: state.user.status,

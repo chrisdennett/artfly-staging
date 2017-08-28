@@ -1,22 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import _ from 'lodash';
-import PropTypes from 'prop-types';
 
-const Settings = function ({ artistGalleries, userId, subscription, userEmail }) {
+const Settings = function ({ artistGalleries, subscription, price, onSubscribe, onCancelSubscription, onUpdateSubscription }) {
     let subscriptionContent;
-    const productId = "516947";
-    let checkoutRef = `https://pay.paddle.com/checkout/${productId}?passthrough=${userId}`;
-    if (userEmail) {
-        checkoutRef += `&guest_email=${userEmail}`;
-    }
 
     // if subscription is undefined show a subscribe button
     if (!subscription) {
         subscriptionContent = (
             <div>
-                <p>Subscribe for £2.75 a month to save up to 1000 artworks</p>
-                <a href={checkoutRef} target="_blank">Subscribe</a>
+                <p>Subscribe for {price} a month to save up to 1000 artworks</p>
+                <button onClick={onSubscribe}>Subscribe</button>
             </div>
         )
     }
@@ -24,9 +18,9 @@ const Settings = function ({ artistGalleries, userId, subscription, userEmail })
     else if(subscription.status === 'active') {
         subscriptionContent = (
             <div>
-                <p>You're a monthly subscriber - next payment will be taken on: {subscription.paidUntil}</p>
-                <a href={subscription.cancelUrl} target="_blank">Cancel subscription</a>
-                <a href={subscription.updateUrl} target="_blank">Update subscription</a>
+                <p>You're a monthly subscriber</p>
+                <button onClick={onCancelSubscription}>Cancel subscription</button>
+                <button onClick={onUpdateSubscription}>Update subscription</button>
             </div>
         )
     }
@@ -35,8 +29,8 @@ const Settings = function ({ artistGalleries, userId, subscription, userEmail })
         subscriptionContent = (
             <div>
                 <p>You're a monthly subscriber, but you last payment has failed. We'll try to collect the payment again soon.</p>
-                <a href={subscription.cancelUrl} target="_blank">Cancel subscription</a>
-                <a href={subscription.updateUrl} target="_blank">Update subscription</a>
+                <button onClick={onCancelSubscription}>Cancel subscription</button>
+                <button onClick={onUpdateSubscription}>Update subscription</button>
             </div>
         )
     }
@@ -45,7 +39,8 @@ const Settings = function ({ artistGalleries, userId, subscription, userEmail })
         subscriptionContent = (
             <div>
                 <p>You've cancelled your subscription - you can access your account until: {subscription.paidUntil}</p>
-                <a href={checkoutRef} target="_blank">Re-subscribe</a>
+                <p>Subscribe for {price} a month to save up to 1000 artworks</p>
+                <button onClick={onSubscribe}>Subscribe</button>
             </div>
         )
     }
@@ -77,24 +72,6 @@ const Settings = function ({ artistGalleries, userId, subscription, userEmail })
             }
         </div>
     )
-};
-
-Settings.propTypes = {
-    artistGalleries: PropTypes.arrayOf(
-        PropTypes.shape(
-            {
-                id: PropTypes.string.isRequired,
-                artist: PropTypes.shape(
-                    {
-                        name: PropTypes.string
-                    }
-                ),
-                gallery: PropTypes.shape({
-                    name: PropTypes.string
-                })
-            }
-        )
-    ).isRequired
 };
 
 export default Settings;
