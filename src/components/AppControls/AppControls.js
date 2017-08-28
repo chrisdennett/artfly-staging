@@ -9,11 +9,15 @@ const AppControls = function ({ history, match }) {
 
     return (
         <div>
-            <div className="controls-block"><Link to="/">home</Link></div>
-            <UserControlsContainer history={history} galleryId={galleryId} artworkId={artworkId}/>
+            <div style={{ position: 'absolute', top:0, zIndex: 1001 }}>
+                <div className="controls-block"><Link to="/">home</Link></div>
+                <UserControlsContainer history={history} galleryId={galleryId} artworkId={artworkId}/>
+            </div>
 
             {galleryId &&
-            <GalleryControlsContainer history={history} galleryId={galleryId} artworkId={artworkId}/>
+            <div style={{ position: 'absolute', top:0, right:0, zIndex: 1000 }}>
+                <GalleryControlsContainer history={history} galleryId={galleryId} artworkId={artworkId}/>
+            </div>
             }
         </div>
     )

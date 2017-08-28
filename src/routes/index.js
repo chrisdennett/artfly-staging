@@ -29,6 +29,7 @@ export default (
     <Provider store={store}>
         <BrowserRouter>
             <div>
+
                 <Switch>
                     {routes.map((route, index) => (
                         <Route
@@ -53,6 +54,8 @@ export default (
                         />
                     ))}
                 </Switch>
+
+
             </div>
         </BrowserRouter>
     </Provider>
