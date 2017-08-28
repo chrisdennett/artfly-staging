@@ -58,3 +58,7 @@ label.disabled{
     opacity: 0.8;
     cursor: not-allowed;
 }
+
+.no-scroll-bars{
+    overflow: hidden;
+}

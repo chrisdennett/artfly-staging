@@ -9,12 +9,17 @@ import Artwork from './Artwork';
 class ArtworkHolder extends Component {
     componentDidMount() {
         this.props.fetchArtwork(this.props.artworkId);
+        document.body.classList.toggle('no-scroll-bars', true);
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.artworkId !== prevProps.artworkId) {
             this.props.fetchArtwork(this.props.artworkId);
         }
+    }
+
+    componentWillUnmount() {
+        document.body.classList.remove('no-scroll-bars');
     }
 
     render() {
