@@ -8,14 +8,36 @@ class Artwork extends Component {
     constructor(props) {
         super(props);
         this.state = { imageLoading: false };
+
+        this.updateDimensions = this.updateDimensions.bind(this);
     }
 
     componentWillMount() {
-        this.setState({ imageLoading: true });
+        this.updateDimensions();
+        // this.setState({ imageLoading: true });
+    }
+
+    componentDidMount(){
+        window.addEventListener("resize", this.updateDimensions);
+    }
+
+    componentWillUnmount(){
+        window.removeEventListener("resize", this.updateDimensions);
     }
 
     onImageLoad() {
         this.setState({ imageLoading: false });
+    }
+
+    updateDimensions() {
+        const w = window,
+            d = document,
+            documentElement = d.documentElement,
+            body = d.getElementsByTagName('body')[0],
+            width = w.innerWidth || documentElement.clientWidth || body.clientWidth,
+            height = w.innerHeight|| documentElement.clientHeight|| body.clientHeight;
+
+        this.setState({width, height});
     }
 
     render() {
@@ -31,8 +53,8 @@ class Artwork extends Component {
         }
 
         // work out max picture width
-        const w = window.innerWidth;
-        const h = window.innerHeight;
+        const w = this.state.width;
+        const h = this.state.height;
         const mountThickness = 40;
         const frameThickness = 20;
         let paddingLeft = 30;
