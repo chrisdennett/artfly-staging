@@ -33,14 +33,14 @@ class Artwork extends Component {
         // work out max picture width
         const w = window.innerWidth;
         const h = window.innerHeight;
-        const paddingLeft = 30;
+        const mountThickness = 40;
+        const frameThickness = 20;
+        let paddingLeft = 30;
         const paddingRight = 30;
-        const paddingTop = 60;
-        const paddingBottom = 80;
+        let paddingTop = 60;
+        const paddingBottom = 120;
         const verticalPadding = paddingTop + paddingBottom;
         const horizontalPadding = paddingLeft + paddingRight;
-        const frameThickness = 20;
-        const mountThickness = 40;
         const combinedFrameWidth = ((frameThickness + mountThickness) * 2);
         const maxImgWidth = w - (combinedFrameWidth + horizontalPadding);
         const maxImgHeight = h - (combinedFrameWidth + verticalPadding);
@@ -56,6 +56,13 @@ class Artwork extends Component {
             imgHeight = maxImgHeight;
             imgWidth = imgHeight * heightToWidthMultiplier;
         }
+
+        // if there is extra space around the frame, center the image
+        const extraHorizontalSpace = w - (imgWidth + combinedFrameWidth + paddingLeft + paddingRight);
+        paddingLeft += extraHorizontalSpace / 2;
+
+        const extraVerticalSpace = h - (imgHeight + combinedFrameWidth + paddingTop + paddingBottom);
+        paddingTop += extraVerticalSpace / 2;
 
         const imgX = frameThickness + mountThickness + paddingLeft;
         const imgY = frameThickness + mountThickness + paddingTop;
