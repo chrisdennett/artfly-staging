@@ -7,7 +7,7 @@ class Artwork extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { imageLoading: false };
+        this.state = { imageLoading: true };
 
         this.updateDimensions = this.updateDimensions.bind(this);
     }
@@ -23,6 +23,12 @@ class Artwork extends Component {
 
     componentWillUnmount() {
         window.removeEventListener("resize", this.updateDimensions);
+    }
+
+    componentWillUpdate(nextProps) {
+        if (nextProps.artwork.url !== this.props.artwork.url) {
+            this.setState({ imageLoading: true });
+        }
     }
 
     onImageLoad() {
@@ -115,7 +121,13 @@ class Artwork extends Component {
         return (
             <div>
                 {this.state.imageLoading
-                    ? <div>Loading artwork...</div>
+                    ? <div style={{
+                        position: 'absolute',
+                        zIndex: 2000,
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translateX(-50%)'
+                    }}>Loading artwork...</div>
                     : ""
                 }
 
