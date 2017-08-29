@@ -17,11 +17,11 @@ class Artwork extends Component {
         // this.setState({ imageLoading: true });
     }
 
-    componentDidMount(){
+    componentDidMount() {
         window.addEventListener("resize", this.updateDimensions);
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         window.removeEventListener("resize", this.updateDimensions);
     }
 
@@ -30,27 +30,18 @@ class Artwork extends Component {
     }
 
     updateDimensions() {
-        const w = window,
-            d = document,
-            documentElement = d.documentElement,
-            body = d.getElementsByTagName('body')[0],
-            width = w.innerWidth || documentElement.clientWidth || body.clientWidth,
-            height = w.innerHeight|| documentElement.clientHeight|| body.clientHeight;
+        const w               = window,
+              d               = document,
+              documentElement = d.documentElement,
+              body            = d.getElementsByTagName('body')[0],
+              width           = w.innerWidth || documentElement.clientWidth || body.clientWidth,
+              height          = w.innerHeight || documentElement.clientHeight || body.clientHeight;
 
-        this.setState({width, height});
+        this.setState({ width, height });
     }
 
     render() {
         const { artwork } = this.props;
-        // const { url, url_large, url_med, url_thumb } = artwork;
-        const { url, url_large } = artwork;
-        // set the image url to the full sized source image
-        let artworkUrl = url;
-        // if the large one has been created use that instead
-        // TODO if the image area is smaller than the medium sized image use that instead
-        if (url_large) {
-            artworkUrl = url_large;
-        }
 
         // work out max picture width
         const w = this.state.width;
@@ -74,7 +65,7 @@ class Artwork extends Component {
         let imgWidth = maxImgWidth;
         let imgHeight = imgWidth * widthToHeightMultiplier;
 
-        if(imgHeight > maxImgHeight){
+        if (imgHeight > maxImgHeight) {
             imgHeight = maxImgHeight;
             imgWidth = imgHeight * heightToWidthMultiplier;
         }
@@ -97,6 +88,26 @@ class Artwork extends Component {
             left: imgX
         };
 
+        //source:   3500x3500 (max)
+        //large:    960x960
+        //medium:   640x640
+        //thumb:    100x100
+        const { url, url_large, url_med, url_thumb } = artwork;
+        let artworkUrl;
+        const largestImgEdge = imgWidth > imgHeight ? imgWidth : imgHeight;
+        if (largestImgEdge <= 100 && url_thumb) {
+            artworkUrl = url_thumb;
+        }
+        else if (largestImgEdge <= 640 && url_med) {
+            artworkUrl = url_med;
+        }
+        else if (largestImgEdge <= 960 && url_large) {
+            artworkUrl = url_large;
+        }
+        else {
+            artworkUrl = url;
+        }
+
         if (this.state.imageLoading) {
             imgStyle.display = 'none';
         }
@@ -112,7 +123,7 @@ class Artwork extends Component {
                     <Room width={w} height={h}/>
                 </div>
 
-                <div style={{ position: 'absolute', top:paddingTop, left:paddingLeft }}>
+                <div style={{ position: 'absolute', top: paddingTop, left: paddingLeft }}>
                     <PictureFrame
                         frameThickness={frameThickness}
                         mountThickness={mountThickness}

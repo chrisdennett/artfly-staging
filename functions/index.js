@@ -77,9 +77,9 @@ exports.generateDifferentImageSizes = functions.storage.object()
         const mediumImageFilePath = filePath.replace(/(\/)?([^\/]*)$/, '$1medium_$2');
         const thumbImageFilePath = filePath.replace(/(\/)?([^\/]*)$/, '$1thumb_$2');
 
-        const tempLocalLargeFile = `/tmp/large.jpg`;
-        const tempLocalMediumFile = `/tmp/medium.jpg`;
-        const tempLocalThumbFile = `/tmp/tiny.jpg`;
+        const tempLocalLargeFile = `/tmp/large.jpg`;    //960x960  //max source size 3500x3500
+        const tempLocalMediumFile = `/tmp/medium.jpg`;  //640x640
+        const tempLocalThumbFile = `/tmp/tiny.jpg`;     //100x100
 
         const databaseUrlPropertyPrefix = 'url_';
 
