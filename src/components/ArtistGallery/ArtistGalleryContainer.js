@@ -11,14 +11,18 @@ import {
 
 // Intermediary component so ui component isn't required to call data
 class ArtistGalleryHolder extends Component {
-    componentDidMount() {
-        this.initData(this.props.galleryId);
+    constructor(props) {
+        super(props);
+
+        this.state = { pageWidth: 0 };
     }
 
-    initData(artistGalleryId) {
-        this.props.fetchGallery(artistGalleryId);
-        this.props.fetchArtist(artistGalleryId);
-        this.props.fetchGalleryArtistArtworkIds(artistGalleryId);
+
+    componentDidMount() {
+        this.initData(this.props.galleryId);
+        this.getContentHeight();
+
+        window.onresize = this.getContentHeight.bind(this);
     }
 
     componentWillUpdate(nextProps) {
@@ -31,6 +35,18 @@ class ArtistGalleryHolder extends Component {
         }
     }
 
+    initData(artistGalleryId) {
+        this.props.fetchGallery(artistGalleryId);
+        this.props.fetchArtist(artistGalleryId);
+        this.props.fetchGalleryArtistArtworkIds(artistGalleryId);
+    }
+
+    getContentHeight() {
+        this.setState({
+            pageWidth: window.innerWidth
+        })
+    }
+
     onThumbClick(artworkId){
         this.props.history.push(`/gallery/${this.props.galleryId}/artwork/${artworkId}`);
     }
@@ -41,7 +57,7 @@ class ArtistGalleryHolder extends Component {
             return <div>Artist Gallery Loading</div>;
         }
 
-        return <ArtistGallery gallery={gallery} artist={artist} totalArtworks={totalArtworks} artworkIds={artworkIds} artworks={artworks} onThumbClick={this.onThumbClick.bind(this)}/>;
+        return <ArtistGallery pageWidth={this.state.pageWidth} gallery={gallery} artist={artist} totalArtworks={totalArtworks} artworkIds={artworkIds} artworks={artworks} onThumbClick={this.onThumbClick.bind(this)}/>;
     }
 }
 

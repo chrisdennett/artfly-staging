@@ -1,0 +1,81 @@
+.gallery-scene{
+    display: flex;
+    justify-content: center;
+}
+
+.gallery {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.gallery svg {
+    /*border: 1px solid #f3f2ff; !* For debugging *!*/
+    /*align-items: stretch;*/
+    /*background-color: #ff00ed;*/
+}
+
+.gallery-background{
+    position: absolute;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.gallery-top {
+    display: flex;
+    justify-content: center;
+    /*background-color: #9ac4ff;*/
+    /*border: 1px solid #ff0010; !* For debugging *!*/
+}
+
+.gallery-top svg {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    max-width: 800px;
+}
+
+
+.gallery-middle {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    /*background-color: #91b9f4;*/
+    /*border: 1px solid #00ff03; !* For debugging *!*/
+}
+
+.gallery-middle2{
+    max-width: 800px;
+    display: flex;
+    flex-grow: 1;
+    /*background-color: #411257;*/
+}
+
+.gallery-middle-windows{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: center;
+    background-color: #ffffff;
+    /*max-width: 800px;*/
+}
+
+.gallery-middle svg{
+    flex-grow: 1;
+}
+
+.gallery-bottom {
+    display: flex;
+    justify-content: center;
+    /*background-color: #89b0ea;*/
+    /*border: 1px solid #0005ff; !* For debugging *!*/
+}
+
+.gallery-bottom svg {
+    width: 100%;
+    height: 100%;
+    max-width: 800px;
+}
