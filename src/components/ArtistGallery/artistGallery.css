@@ -40,27 +40,16 @@
 
 .gallery-middle {
     display: flex;
-    justify-content: center;
-    width: 100%;
-    /*background-color: #91b9f4;*/
-    /*border: 1px solid #00ff03; !* For debugging *!*/
-}
-
-.gallery-middle2{
     max-width: 800px;
-    display: flex;
-    flex-grow: 1;
-    /*background-color: #411257;*/
+    /*border: 1px solid #00ff03; !* For debugging *!*/
 }
 
 .gallery-middle-windows{
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
-    width: 100%;
+    flex-grow: 1;
     align-items: center;
-    background-color: #ffffff;
-    /*max-width: 800px;*/
+    background-color: #ff3d96;
 }
 
 .gallery-middle svg{

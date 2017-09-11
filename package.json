@@ -4,6 +4,11 @@
   "private": true,
   "dependencies": {
     "firebase": "^3.9.0",
+    "gulp": "^3.9.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.6.1",
+    "gulp-svg-inject": "^1.0.0",
+    "gulp-svgmin": "^1.2.4",
     "lodash": "^4.17.4",
     "prop-types": "^15.5.10",
     "query-string": "^5.0.0",

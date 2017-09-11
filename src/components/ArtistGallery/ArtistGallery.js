@@ -3,12 +3,12 @@ import _ from 'lodash';
 
 import './artistGallery.css';
 
-import SvgGalleryTitle from './SvgGalleryTitle';
-import SvgWindow from './SvgWindow';
-import SvgGalleryBottom from './SvgGalleryBottom';
-import SvgLeftWall from "./SvgLeftWall";
-import SvgRightWall from "./SvgRightWall";
-import SvgBackground from "./SvgBackground";
+import SvgGalleryTitle from './assets/SvgGalleryTitle';
+import SvgWindow from './assets/SvgWindow';
+import SvgGalleryBottom from './assets/SvgGalleryBottom';
+import SvgLeftWall from "./assets/SvgLeftWall";
+import SvgRightWall from "./assets/SvgRightWall";
+import SvgBackground from "./assets/SvgBackground";
 
 // import ArtworkThumb from "./ArtworkThumb";
 
@@ -41,10 +41,16 @@ class ArtistGallery extends Component {
         const { artworkIds, artworks, onThumbClick } = this.props;
         const windowWidth = 139;
         const windowX = 330;
-        let galleryHeight = 500;
+        let galleryHeight = 0;
+        let windowsHeight = 0;
 
-        if (this.refs.content) {
-            galleryHeight = this.refs.content.offsetHeight;
+
+        if (this.refs.gallery) {
+            galleryHeight = this.refs.gallery.offsetHeight;
+        }
+
+        if (this.refs.middleWindows) {
+            windowsHeight = 20;
         }
 
         // console.log("this.refs: ", this.refs);
@@ -54,49 +60,34 @@ class ArtistGallery extends Component {
 
                 <SvgBackground galleryHeight={galleryHeight} pageWidth={this.props.pageWidth}/>
 
-                <div className="gallery" ref='content'>
+                <div className="gallery" ref='gallery'>
                     <div className="gallery-top">
                         <SvgGalleryTitle/>
                     </div>
 
                     <div className="gallery-middle">
-                        <div className="gallery-middle2">
 
-                            <SvgLeftWall/>
+                        <SvgLeftWall height={windowsHeight}/>
 
-                            <div className="gallery-middle-windows">
-
-                                {
-                                    _.map(artworkIds, (id) => {
-                                        if (artworks[id]) {
-                                            return (
-                                                <SvgWindow key={id}
-                                                           viewBox={`${windowX} 0 ${windowWidth} 109.72265`}
-                                                           className="galleryTitle"
-                                                           onThumbClick={onThumbClick.bind(this)}
-                                                           artwork={artworks[id]}/>
-                                            )
-                                        }
-                                    })
-                                }
-
-
-                                {/*<SvgWindow viewBox={`${windowX} 0 ${windowWidth} 109.72265`} className="galleryTitle"/>
-                                <SvgWindow viewBox={`${windowX} 0 ${windowWidth} 109.72265`} className="galleryTitle"/>
-                                <SvgWindow viewBox={`${windowX} 0 ${windowWidth} 109.72265`} className="galleryTitle"/>
-                                <SvgWindow viewBox={`${windowX} 0 ${windowWidth} 109.72265`} className="galleryTitle"/>
-                                <SvgWindow viewBox={`${windowX} 0 ${windowWidth} 109.72265`} className="galleryTitle"/>
-                                <SvgWindow viewBox={`${windowX} 0 ${windowWidth} 109.72265`} className="galleryTitle"/>
-                                <SvgWindow viewBox={`${windowX} 0 ${windowWidth} 109.72265`} className="galleryTitle"/>
-                                <SvgWindow viewBox={`${windowX} 0 ${windowWidth} 109.72265`} className="galleryTitle"/>
-                                <SvgWindow viewBox={`${windowX} 0 ${windowWidth} 109.72265`} className="galleryTitle"/>
-                                <SvgWindow viewBox={`${windowX} 0 ${windowWidth} 109.72265`} className="galleryTitle"/>
-                                <SvgWindow viewBox={`${windowX} 0 ${windowWidth} 109.72265`} className="galleryTitle"/>*/}
-                            </div>
-
-                            <SvgRightWall/>
-
+                        <div className="gallery-middle-windows" ref='middleWindows'>
+                            {
+                                _.map(artworkIds, (id) => {
+                                    if (artworks[id]) {
+                                        return (
+                                            <SvgWindow key={id}
+                                                       viewBox={`${windowX} 0 ${windowWidth} 109.72265`}
+                                                       className="galleryTitle"
+                                                       onThumbClick={onThumbClick.bind(this)}
+                                                       artwork={artworks[id]}/>
+                                        )
+                                    }
+                                })
+                            }
                         </div>
+
+                        <SvgRightWall height={windowsHeight}/>
+
+
                     </div>
 
                     <div className="gallery-bottom">

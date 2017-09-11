@@ -1,0 +1,67 @@
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="368.93" width="582.17" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 582.17456 368.92725">
+ <title>gallery-title</title>
+ <g stroke="#000">
+  <g transform="translate(9.4894,-9.1126e-4)">
+   <path stroke-linejoin="round" style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m275.86.5009c-13.649 0-24.713 11.104-24.713 24.801.01 8.4357 8.9159 15.458 10.397 23.761l.96914 5.4318c.56829 3.1851.65786 5.8402 3.8822 5.8402h18.929c3.2244 0 3.31-2.6556 3.8813-5.8402l.96914-5.4023c1.4912-8.3126 10.398-15.345 10.397-23.791 0-13.697-11.064-24.801-24.713-24.801z" stroke-linecap="round" fill="#fff"/>
+   <g fill="none">
+    <path d="m274.85 34.349-9.4577 5.6543"/>
+    <path d="m271.23 41.619-.20123.20194 5.2319-6.0582-.20123 6.866"/>
+    <path d="m276.63 34.349 9.4577 5.6543"/>
+    <path d="m280.25 41.619.20123.20194-5.2319-6.0582.20123 6.866"/>
+    <path d="m275.01 23.779-9.4577-5.6543"/>
+    <path d="m270.42 16.509-.20123-.20194 5.2319 6.0582-.20123-6.866"/>
+    <path d="m276.79 23.779 9.4577-5.6543"/>
+    <path d="m281.38 16.509.20123-.20194-5.2319 6.0582.20123-6.866"/>
+   </g>
+   <g stroke-linejoin="round" stroke-linecap="round">
+    <g fill="#fff">
+     <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx="2.4267" ry="2.4267" height="25.848" width="3.2196" y="21.19" x="274.25"/>
+     <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx="2.4267" ry="2.4267" height="15.347" width="10.263" y="45.423" x="270.72"/>
+     <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx="2.4267" ry="2.4267" height="3.7762" width="9.2976" y="72.193" x="271.21"/>
+    </g>
+    <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx="2.3632" ry="2.3632" height="3.6773" width="13.823" y="70.297" x="268.94"/>
+    <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx="2.3129" ry="2.3129" height="3.5992" width="22.676" y="60.42" x="264.52" fill="#6c5d53"/>
+    <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx="2.3129" ry="2.3129" height="3.5992" width="22.676" y="64.106" x="264.52" fill="#ac9d93"/>
+    <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx="2.3129" ry="2.3129" height="3.5992" width="22.676" y="67.745" x="264.52" fill="#c8beb7"/>
+    <g fill="#fff">
+     <ellipse style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx=".92452" ry=".92779" cy="18.492" cx="265.47"/>
+     <ellipse style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx=".92452" ry=".92779" cy="15.915" cx="269.78"/>
+     <ellipse style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx=".92452" ry=".92779" cy="15.296" cx="275.02"/>
+     <ellipse style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx=".92452" ry=".92779" cy="15.296" cx="276.96"/>
+     <ellipse style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx=".92452" ry=".92779" cy="15.811" cx="282.21"/>
+     <ellipse style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx=".92452" ry=".92779" cy="17.873" cx="286.73"/>
+     <ellipse style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx=".92452" ry=".92779" cy="40.14" cx="286.42"/>
+     <ellipse style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx=".92452" ry=".92779" cy="42.202" cx="280.77"/>
+     <ellipse style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx=".92452" ry=".92779" cy="42.511" cx="270.6"/>
+     <ellipse style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx=".92452" ry=".92779" cy="39.728" cx="264.95"/>
+    </g>
+   </g>
+   <path stroke-width="1px" fill="#c8beb7" d="m28.301 331.94 506.03.0449 36.447 36.447h-579.03c12.377-11.96 24.049-24.66 36.551-36.49z" fill-rule="evenodd"/>
+  </g>
+  <g stroke-linejoin="round" stroke-linecap="round" transform="translate(9.4894,-9.1126e-4)">
+   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m256.15 283.21h36.397c-17.693 27.339 0 55.397 0 55.397h-36.397s18.704-28.058 0-55.397z" fill="#c8beb7"/>
+   <ellipse style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx="20.12" ry="13.12" cy="312.41" cx="275.34" fill="#800080"/>
+   <rect ry="12.042" style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" transform="scale(1,-1)" height="24.084" width="86.084" y="-287.45" x="232.3" fill="#fc0"/>
+   <rect ry="12" style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" transform="scale(1,-1)" height="24" width="103" y="-273.41" x="223.34" fill="#d4aa00"/>
+   <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" ry="12.042" height="24.084" width="43.562" y="74.364" x="254.71" fill="#d38d5f"/>
+   <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" ry="12.848" height="25.696" width="52.122" y="86.71" x="250.17" fill="#c83737"/>
+  </g>
+  <g stroke-linejoin="round" stroke-linecap="round" transform="translate(9.4894,-9.1126e-4)">
+   <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" ry="12" height="167" width="522.87" y="94.406" x="26.205" fill="#fff"/>
+   <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" fill-opacity=".99685" ry="12" height="145" width="502.44" y="105.4" x="36.42" fill="#fc0"/>
+  </g>
+ </g>
+ <g transform="translate(9.4894,-9.1126e-4)">
+  <text style="word-spacing:0px;letter-spacing:0px" xml:space="preserve" font-size="45px" stroke="#000000" y="163.40572" x="283.96814" font-family="&apos;Futura Md BT&apos;" line-height="125%" fill="#806600"><tspan y="163.40572" x="290.77966" style="text-anchor:middle;text-align:center">The Curious Gallery </tspan><tspan y="219.65572" x="283.96814" style="text-anchor:middle;text-align:center">of Christopher Dennett</tspan></text>
+ </g>
+ <g stroke-linejoin="round" stroke="#000" stroke-linecap="round" transform="translate(9.4894,-9.1126e-4)">
+  <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m22.185 69.032a20 20 0 0 0 -20 20 20 20 0 0 0 20 20 20 20 0 0 0 20 -20 20 20 0 0 0 -20 -20zm0 11.023a8.9764 8.9764 0 0 1 8.9746 8.9766 8.9764 8.9764 0 0 1 -8.9746 8.9766 8.9764 8.9764 0 0 1 -8.9766 -8.9766 8.9764 8.9764 0 0 1 8.9766 -8.9766z" fill="#f60"/>
+  <circle style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" cy="75.229" cx="6.0846" r="5.5846" fill="#fff"/>
+  <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m22.185 285.61a20 20 0 0 1 -20 -20 20 20 0 0 1 20 -20 20 20 0 0 1 20 20 20 20 0 0 1 -20 20zm0-11.023a8.9764 8.9764 0 0 0 8.9746 -8.9766 8.9764 8.9764 0 0 0 -8.9746 -8.9766 8.9764 8.9764 0 0 0 -8.9766 8.9766 8.9764 8.9764 0 0 0 8.9766 8.9766z" fill="#808000"/>
+  <circle style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" cx="6.0846" transform="scale(1,-1)" cy="-279.41" r="5.5846" fill="#fff"/>
+  <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m550.5 69.032a20 20 0 0 1 20 20 20 20 0 0 1 -20 20 20 20 0 0 1 -20 -20 20 20 0 0 1 20 -20zm0 11.023a8.9764 8.9764 0 0 0 -8.9746 8.9766 8.9764 8.9764 0 0 0 8.9746 8.9766 8.9764 8.9764 0 0 0 8.9766 -8.9766 8.9764 8.9764 0 0 0 -8.98 -8.976z" fill="#784421"/>
+  <circle style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" cx="-566.6" transform="scale(-1,1)" cy="75.229" r="5.5846" fill="#fff"/>
+  <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m550.5 285.61a20 20 0 0 0 20 -20 20 20 0 0 0 -20 -20 20 20 0 0 0 -20 20 20 20 0 0 0 20 20zm0-11.023a8.9764 8.9764 0 0 1 -8.9746 -8.9766 8.9764 8.9764 0 0 1 8.9746 -8.9766 8.9764 8.9764 0 0 1 8.9766 8.9766 8.9764 8.9764 0 0 1 -8.9766 8.9766z" fill="#d35f5f"/>
+  <circle style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" cx="-566.6" transform="scale(-1)" cy="-279.41" r="5.5846" fill="#fff"/>
+ </g>
+</svg>

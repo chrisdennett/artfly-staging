@@ -1,3 +1,7 @@
+Upgrading npm.  Follow the instructions here:
+https://github.com/felixrieseberg/npm-windows-upgrade
+
+
 ********************************************************************************
 ********************************************************************************
 BUILD AND DEPLOY

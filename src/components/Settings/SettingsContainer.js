@@ -54,13 +54,13 @@ class SettingsHolder extends Component {
     componentDidUpdate(prevProps) {
         this.fetchAllGalleries();
 
-        if (this.state.price === '') {
+        /*if (this.state.price === '') {
             const Paddle = window.Paddle;
             Paddle.Product.Prices(516947, function (prices) {
                 const localPrice = prices.price.gross;
                 this.setState({price: localPrice})
             }.bind(this));
-        }
+        }*/
     }
 
     onSubscribe() {

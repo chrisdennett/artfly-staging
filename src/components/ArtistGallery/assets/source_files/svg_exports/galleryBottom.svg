@@ -1,0 +1,19 @@
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="309.07" width="580.38" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 580.38143 309.069">
+ <g transform="translate(12.111 -691.1)">
+  <g fill-opacity=".99685">
+   <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" ry="0" height="243.83" width="508.81" y="706.23" x="23.673" fill="#e3dbdb"/>
+   <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="233.49" width="105.88" y="725.3" x="265.14" fill="#ccc"/>
+   <ellipse style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx="8.8234" ry="10.113" cy="870.03" cx="351.95" fill="#666"/>
+   <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="23.597" width="537.24" y="950.06" x="9.4573" fill="#999"/>
+   <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="23.597" width="554.89" y="965.66" x=".63393" fill="#666"/>
+   <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="18.913" width="580.38" y="981.26" x="-12.111" fill="#808080"/>
+   <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="172.5" width="183.03" stroke="#ccc" y="727.3" x="54.152" stroke-width="4" fill="#fff"/>
+  </g>
+  <g font-family="sans-serif" fill="#000000">
+   <text style="word-spacing:0px;letter-spacing:0px" xml:space="preserve" font-size="40px" y="800.17017" x="66.300011" line-height="125%"><tspan font-size="20px" y="800.17017" x="66.300011">Works by artist:</tspan></text>
+   <text style="word-spacing:0px;letter-spacing:0px" xml:space="preserve" font-size="30px" y="840.17017" x="142.14738" line-height="125%"><tspan style="text-anchor:middle;text-align:center" y="840.17017" x="142.14738">Chris</tspan><tspan style="text-anchor:middle;text-align:center" y="877.67017" x="142.14738">Dennett</tspan></text>
+   <text style="word-spacing:0px;letter-spacing:0px" xml:space="preserve" font-size="40px" y="766.17017" x="142.14738" line-height="125%"><tspan style="text-anchor:middle;text-align:center" font-size="30px" y="766.17017" x="142.14738">57</tspan></text>
+  </g>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" transform="scale(1,-1)" fill-opacity=".99685" ry="0" height="17.131" width="528.46" y="-708.23" x="13.849" fill="#c8b7b7"/>
+ </g>
+</svg>
