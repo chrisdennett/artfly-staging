@@ -4,6 +4,7 @@
 }
 
 .gallery {
+    top: 64px;
     position: absolute;
     display: flex;
     justify-content: center;
@@ -37,9 +38,14 @@
     max-width: 800px;
 }
 
+.gallery-top svg text{
+    font-family: 'Source Code Pro', monospace;
+}
+
 
 .gallery-middle {
     display: flex;
+    width: 100%;
     max-width: 800px;
     /*border: 1px solid #00ff03; !* For debugging *!*/
 }
@@ -49,7 +55,8 @@
     flex-wrap: wrap;
     flex-grow: 1;
     align-items: center;
-    background-color: #ff3d96;
+    max-width: 800px;
+    background-color: #ffffff;
 }
 
 .gallery-middle svg{

@@ -2,30 +2,14 @@ import React from 'react';
 
 const SvgGalleryBottom = function (props) {
     return (
-        <svg {...props} height="309.07" width="580.38" viewBox="0 0 580.38143 309.069">
-    <g transform="translate(12.111 -691.1)">
-        <g fillOpacity=".997" color="#000">
-            <rect ry="0" height="243.83" width="508.81" y="706.23" x="23.673" fill="#e3dbdb"/>
-            <path fill="#ccc" d="M265.14 725.3h105.88v233.49H265.14z"/>
-            <ellipse rx="8.823" ry="10.113" cy="870.03" cx="351.95" fill="#666"/>
-            <path fill="#999" d="M9.457 950.06h537.24v23.597H9.457z"/>
-            <path fill="#666" d="M.634 965.66h554.89v23.597H.634z"/>
-            <path fill="gray" d="M-12.111 981.26h580.38v18.913h-580.38z"/>
-            <path stroke="#ccc" strokeWidth="4" fill="#fff" d="M54.152 727.3h183.03v172.5H54.152z"/>
-        </g>
-        <g fontFamily="sans-serif" wordSpacing="0" letterSpacing="0">
-            <text fontSize="40" y="800.17" x="66.3">
-                <tspan fontSize="20" y="800.17" x="66.3">Works by artist:</tspan>
-            </text>
-            <text fontSize="30" y="840.17" x="142.147">
-                <tspan style={{textAlign:"center"}} y="840.17" x="142.147" textAnchor="middle">Chris</tspan><tspan style={{textAlign:"center"}} y="877.67" x="142.147" textAnchor="middle">Dennett</tspan>
-            </text>
-            <text fontSize="40" y="766.17" x="142.147">
-                <tspan style={{textAlign:"center"}} fontSize="30" y="766.17" x="142.147" textAnchor="middle">57</tspan>
-            </text>
-        </g>
-        <rect transform="scale(1 -1)" fillOpacity=".997" ry="0" height="17.131" width="528.46" y="-708.23" x="13.849" fill="#c8b7b7" color="#000"/>
-    </g>
+        <svg {...props} height="300" width="800" viewBox="0 0 800.00196 299.99902">
+    <rect fillOpacity=".997" ry="0" height="243.8" width="790" y="6.057" x="5" fill="#e3dbdb" color="#000"/>
+    <path fillOpacity=".997" fill="#ccc" color="#000" d="M328.3 39.66H453v219H328.3z"/>
+    <ellipse fillOpacity=".997" rx="9.678" ry="10.11" cy="149.9" cx="437.2" fill="#666" color="#000"/>
+    <path fillOpacity=".997" fill="#999" color="#000" d="M0 249.9h800v23.6H0z"/>
+    <path fillOpacity=".997" fill="#666" color="#000" d="M0 265.5h800v23.6H0z"/>
+    <path fillOpacity=".997" fill="gray" color="#000" d="M0 281.1h800v18.91H0z"/>
+    <rect ry="0" height="17.13" width="800" y="-.001" x=".38" fill="#999" color="#000"/>
 </svg>
     )
 };

@@ -1,19 +1,104 @@
-<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="309.07" width="580.38" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 580.38143 309.069">
- <g transform="translate(12.111 -691.1)">
-  <g fill-opacity=".99685">
-   <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" ry="0" height="243.83" width="508.81" y="706.23" x="23.673" fill="#e3dbdb"/>
-   <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="233.49" width="105.88" y="725.3" x="265.14" fill="#ccc"/>
-   <ellipse style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" rx="8.8234" ry="10.113" cy="870.03" cx="351.95" fill="#666"/>
-   <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="23.597" width="537.24" y="950.06" x="9.4573" fill="#999"/>
-   <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="23.597" width="554.89" y="965.66" x=".63393" fill="#666"/>
-   <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="18.913" width="580.38" y="981.26" x="-12.111" fill="#808080"/>
-   <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="172.5" width="183.03" stroke="#ccc" y="727.3" x="54.152" stroke-width="4" fill="#fff"/>
-  </g>
-  <g font-family="sans-serif" fill="#000000">
-   <text style="word-spacing:0px;letter-spacing:0px" xml:space="preserve" font-size="40px" y="800.17017" x="66.300011" line-height="125%"><tspan font-size="20px" y="800.17017" x="66.300011">Works by artist:</tspan></text>
-   <text style="word-spacing:0px;letter-spacing:0px" xml:space="preserve" font-size="30px" y="840.17017" x="142.14738" line-height="125%"><tspan style="text-anchor:middle;text-align:center" y="840.17017" x="142.14738">Chris</tspan><tspan style="text-anchor:middle;text-align:center" y="877.67017" x="142.14738">Dennett</tspan></text>
-   <text style="word-spacing:0px;letter-spacing:0px" xml:space="preserve" font-size="40px" y="766.17017" x="142.14738" line-height="125%"><tspan style="text-anchor:middle;text-align:center" font-size="30px" y="766.17017" x="142.14738">57</tspan></text>
-  </g>
-  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" transform="scale(1,-1)" fill-opacity=".99685" ry="0" height="17.131" width="528.46" y="-708.23" x="13.849" fill="#c8b7b7"/>
- </g>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="300"
+   width="800"
+   version="1.1"
+   viewBox="0 0 800.00196 299.99902"
+   id="svg4136"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="galleryBottom.svg">
+  <metadata
+     id="metadata4178">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs4176" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     id="namedview4174"
+     showgrid="false"
+     inkscape:zoom="1.169618"
+     inkscape:cx="367.69553"
+     inkscape:cy="125.24228"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4136"
+     borderlayer="true"
+     inkscape:showpageshadow="false" />
+  <rect
+     style="color:#000000;isolation:auto;mix-blend-mode:normal;solid-color:#000000;fill:#e3dbdb;fill-opacity:0.99684999;color-rendering:auto;image-rendering:auto;shape-rendering:auto"
+     ry="0"
+     height="243.83"
+     width="790.00195"
+     y="6.056819"
+     x="5.000001"
+     id="rect4142" />
+  <rect
+     style="color:#000000;isolation:auto;mix-blend-mode:normal;solid-color:#000000;fill:#cccccc;fill-opacity:0.99684999;color-rendering:auto;image-rendering:auto;shape-rendering:auto"
+     height="218.95531"
+     width="124.68961"
+     y="39.661518"
+     x="328.25137"
+     id="rect4144" />
+  <ellipse
+     style="color:#000000;isolation:auto;mix-blend-mode:normal;solid-color:#000000;fill:#666666;fill-opacity:0.99684999;color-rendering:auto;image-rendering:auto;shape-rendering:auto"
+     rx="9.6783819"
+     ry="10.113"
+     cy="149.85687"
+     cx="437.20627"
+     id="ellipse4146" />
+  <rect
+     style="color:#000000;isolation:auto;mix-blend-mode:normal;solid-color:#000000;fill:#999999;fill-opacity:0.99684999;color-rendering:auto;image-rendering:auto;shape-rendering:auto"
+     height="23.597"
+     width="800.00195"
+     y="249.88686"
+     x="0"
+     id="rect4148" />
+  <rect
+     style="color:#000000;isolation:auto;mix-blend-mode:normal;solid-color:#000000;fill:#666666;fill-opacity:0.99684999;color-rendering:auto;image-rendering:auto;shape-rendering:auto"
+     height="23.597"
+     width="800.00195"
+     y="265.48682"
+     x="0"
+     id="rect4150" />
+  <rect
+     style="color:#000000;isolation:auto;mix-blend-mode:normal;solid-color:#000000;fill:#808080;fill-opacity:0.99684999;color-rendering:auto;image-rendering:auto;shape-rendering:auto"
+     height="18.913"
+     width="800.00195"
+     y="281.08685"
+     x="0"
+     id="rect4152" />
+  <rect
+     id="rect4172"
+     x="0.37957826"
+     y="-0.00085449428"
+     width="800.00195"
+     height="17.131001"
+     ry="0"
+     style="color:#000000;isolation:auto;mix-blend-mode:normal;solid-color:#000000;fill:#999999;fill-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto" />
 </svg>
