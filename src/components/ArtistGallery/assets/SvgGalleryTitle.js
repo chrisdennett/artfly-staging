@@ -2,7 +2,7 @@ import React from 'react';
 
 const SvgGalleryTitle = function (props) {
     return (
-            <svg {...props} height="314.6" width="800" viewBox="0 0 800.00629 314.62175">
+            <svg height="314.6" width="800" viewBox="0 0 800.00629 314.62175">
     <title>
         gallery-title
     </title>
@@ -143,7 +143,7 @@ const SvgGalleryTitle = function (props) {
     <rect ry="13.99" height="194.7" width="752.2" stroke="#ccc" y="65.78" x="22.61" fill="#fff" color="#000"/>
     <rect fillOpacity=".997" ry="14.93" height="180.4" width="738.7" y="72.92" x="28.21" fill="#fc0" color="#000"/>
     <text fontSize="45" y="54.43" x="392.961" fontFamily="&apos;Futura Md BT&apos;" wordSpacing="0" letterSpacing="0">
-        <tspan style={{textAlign:"center"}} font-weight="900" fontSize="30" y="54.43" x="399.772" fontFamily="&apos;Source Code Pro&apos;" textAnchor="middle">The awesome art of</tspan>
+        <tspan style={{textAlign:"center"}} fontWeight="900" fontSize="30" y="54.43" x="399.772" fontFamily="&apos;Source Code Pro&apos;" textAnchor="middle">The awesome art of</tspan>
     </text>
     <g stroke="#000" color="#000">
         <path d="M20.5 36.1a20 20 0 0 0-20 20 20 20 0 0 0 20 20 20 20 0 0 0 20-20 20 20 0 0 0-20-20zm0 11.02a8.976 8.976 0 0 1 8.975 8.977 8.976 8.976 0 0 1-8.975 8.977 8.976 8.976 0 0 1-8.977-8.977A8.976 8.976 0 0 1 20.5 47.12z" fill="#f60"/>
@@ -162,10 +162,10 @@ const SvgGalleryTitle = function (props) {
         <circle cx="-793.9" transform="scale(-1)" cy="-276.5" r="5.585" fill="#fff"/>
     </g>
     <text fontSize="45" stroke="#000" y="154.525" x="393.09" fontFamily="&apos;Futura Md BT&apos;" fill="#f60" wordSpacing="0" letterSpacing="0">
-        <tspan style={{textAlign:"center"}} font-weight="900" fontSize="75" y="154.525" x="399.901" fontFamily="&apos;Source Code Pro&apos;" textAnchor="middle">Christopher</tspan>
+        <tspan style={{textAlign:"center"}} fontWeight="900" fontSize="75" y="154.525" x="399.901" fontFamily="&apos;Source Code Pro&apos;" textAnchor="middle">{props.firstName}</tspan>
     </text>
     <text fontSize="45" stroke="#000" y="226.903" x="393.09" fontFamily="&apos;Futura Md BT&apos;" fill="#f60" wordSpacing="0" letterSpacing="0">
-        <tspan style={{textAlign:"center"}} font-weight="900" fontSize="75" y="226.903" x="399.901" fontFamily="&apos;Source Code Pro&apos;" textAnchor="middle">John Dennett</tspan>
+        <tspan style={{textAlign:"center"}} fontWeight="900" fontSize="75" y="226.903" x="399.901" fontFamily="&apos;Source Code Pro&apos;" textAnchor="middle">{props.lastName}</tspan>
     </text>
     <rect ry="0" height="16.16" width="800" y="298.5" fill="#666" color="#000"/>
 </svg>

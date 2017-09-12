@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { addNewArtist } from '../../actions/UserActions';
-import { fetchGallery, fetchArtist, fetchGalleryArtistArtworkIds } from '../../actions/ArtistGalleryActions';
-import { updateArtist, updateGallery, deleteArtist } from '../../actions/ArtistGalleryActions';
+import { fetchArtist, fetchGalleryArtistArtworkIds } from '../../actions/ArtistGalleryActions';
+import { updateArtist, deleteArtist } from '../../actions/ArtistGalleryActions';
 
 import ArtistEditor from './ArtistEditor';
 
@@ -25,13 +25,12 @@ class ArtistEditorHolder extends Component {
     }
 
     initData(artistGalleryId) {
-        this.props.fetchGallery(artistGalleryId);
         this.props.fetchArtist(artistGalleryId);
         this.props.fetchGalleryArtistArtworkIds(artistGalleryId);
     }
 
     onSubmit(values) {
-        const { userId, formType, match, history, addNewArtist, updateArtist, updateGallery } = this.props;
+        const { userId, formType, match, history, addNewArtist, updateArtist } = this.props;
         const { artistId } = match.params;
 
         if (formType === "new") {
@@ -40,12 +39,10 @@ class ArtistEditorHolder extends Component {
             });
         }
         else {
-            const { artistName, biog, galleryName } = values;
-            const newArtistData = { name: artistName, biog: biog };
-            const newGalleryData = { name: galleryName };
-            // update artist and gallery
-            updateArtist(artistId, newArtistData);
-            updateGallery(artistId, newGalleryData, () => {
+            const { firstName, lastName } = values;
+            const newArtistData = { firstName: firstName, lastName: lastName };
+            // update artist
+            updateArtist(artistId, newArtistData, () => {
                 history.push("/settings/");
             });
         }
@@ -88,21 +85,19 @@ const mapStateToProps = (state, ownProps) => {
     let status = "";
 
     let initialFormValues = {
-        galleryName: "Mrs Galleryina",
-        artistName: "Donald",
-        biog: "Simply magical with felt tips."
+        firstName: "First name",
+        lastName: "Last name"
     };
 
     if (artistId) {
         formType = "edit";
 
-        if (state.artists[artistId] && state.galleries[artistId]) {
+        if (state.artists[artistId]) {
             const artist = state.artists[artistId];
-            const gallery = state.galleries[artistId];
 
-            initialFormValues.galleryName = gallery.name;
-            initialFormValues.artistName = artist.name;
-            initialFormValues.biog = artist.biog;
+            initialFormValues.firstName = artist.firstName;
+            initialFormValues.lastName = artist.lastName;
+
             status = "done";
         }
         else {
@@ -121,13 +116,11 @@ const mapStateToProps = (state, ownProps) => {
 
 const ArtistEditorContainer = connect(
     mapStateToProps, {
-        fetchGallery,
         fetchArtist,
         fetchGalleryArtistArtworkIds,
         deleteArtist,
         addNewArtist,
-        updateArtist,
-        updateGallery
+        updateArtist
     }
 )(ArtistEditorHolder);
 

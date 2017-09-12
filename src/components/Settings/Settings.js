@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import _ from 'lodash';
 
-const Settings = function ({ artistGalleries, subscription, price, onSubscribe, onCancelSubscription, onUpdateSubscription }) {
+const Settings = function ({ userArtists, subscription, price, onSubscribe, onCancelSubscription, onUpdateSubscription }) {
     let subscriptionContent;
 
     // if subscription is undefined show a subscribe button
@@ -15,7 +15,7 @@ const Settings = function ({ artistGalleries, subscription, price, onSubscribe, 
         )
     }
     // if the subscription is active it's an ongoing paid up subscription
-    else if(subscription.status === 'active') {
+    else if (subscription.status === 'active') {
         subscriptionContent = (
             <div>
                 <p>You're a monthly subscriber</p>
@@ -25,17 +25,18 @@ const Settings = function ({ artistGalleries, subscription, price, onSubscribe, 
         )
     }
     // if status is past_due it means their payment has failed.
-    else if(subscription.status === 'past_due') {
+    else if (subscription.status === 'past_due') {
         subscriptionContent = (
             <div>
-                <p>You're a monthly subscriber, but you last payment has failed. We'll try to collect the payment again soon.</p>
+                <p>You're a monthly subscriber, but you last payment has failed. We'll try to collect the payment again
+                    soon.</p>
                 <button onClick={onCancelSubscription}>Cancel subscription</button>
                 <button onClick={onUpdateSubscription}>Update subscription</button>
             </div>
         )
     }
     // if status is deleted
-    else if(subscription.status === 'deleted') {
+    else if (subscription.status === 'deleted') {
         subscriptionContent = (
             <div>
                 <p>You've cancelled your subscription - you can access your account until: {subscription.paidUntil}</p>
@@ -54,19 +55,19 @@ const Settings = function ({ artistGalleries, subscription, price, onSubscribe, 
             {subscriptionContent}
 
             <hr/>
+            <h2>Artists</h2>
             <Link to={`/add-or-edit-artist/`}>Add New Artist</Link>
             {
-                _.map(artistGalleries, (artistGallery) => {
-                    const { artist, gallery, id, totalArtworks } = artistGallery;
+                _.map(userArtists, (artistGallery) => {
+                    const { artist, id, totalArtworks } = artistGallery;
 
                     return (
                         <div key={id}>
-                            <h2>{gallery.name}</h2>
-                            <p>Artist: {artist.name}</p>
-                            <p>Artist biog: {artist.biog}</p>
+                            <p>First name: {artist.firstName}</p>
+                            <p>Last name: {artist.lastName}</p>
                             <p>Total artworks: {totalArtworks}</p>
                             <Link to={`/gallery/${id}`}>Open Gallery</Link>
-                            <Link to={`/add-or-edit-artist/${id}`}>Edit Artist Gallery</Link>
+                            <Link to={`/add-or-edit-artist/${id}`}>Edit Artist</Link>
                         </div>)
                 })
             }

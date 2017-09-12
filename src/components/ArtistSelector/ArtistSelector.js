@@ -11,7 +11,7 @@ const ArtistSelector = function (props) {
                     _.map(props.artists, (artistData, artistId) => {
 
                         return <option key={artistId}
-                                       value={artistId}>{artistData.name}</option>;
+                                       value={artistId}>{artistData.firstName} {artistData.lastName}</option>;
                     })
                 }
             </select>

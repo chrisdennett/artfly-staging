@@ -14,31 +14,7 @@ import SvgBackground from "./assets/SvgBackground";
 
 class ArtistGallery extends Component {
     render() {
-
-        /*
-        { gallery, artist, totalArtworks, artworks, onThumbClick, artworkIds }
-        const oldGalleryContent = (
-            <div>
-                <h1>{gallery.name}</h1>
-                <h2>Artist</h2>
-                <p>Name: {artist.name}</p>
-                <p>Total Artworks: {totalArtworks}</p>
-                {
-                    _.map(artworkIds, (id) => {
-                        if (artworks[id]) {
-                            return (
-                                <div key={id}>
-                                    <ArtworkThumb onThumbClick={onThumbClick.bind(this)} artwork={artworks[id]}/>
-                                </div>)
-                        }
-                    })
-                }
-
-
-            </div>
-        );*/
-
-        const { artworkIds, artworks, onThumbClick } = this.props;
+        const { artist, artworkIds, artworks, onThumbClick } = this.props;
         const windowWidth = 139;
         const windowX = 330;
         let galleryHeight = 0;
@@ -62,7 +38,7 @@ class ArtistGallery extends Component {
 
                 <div className="gallery" ref='gallery'>
                     <div className="gallery-top">
-                        <SvgGalleryTitle/>
+                        <SvgGalleryTitle firstName={artist.firstName} lastName={artist.lastName}/>
                     </div>
 
                     <div className="gallery-middle">

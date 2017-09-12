@@ -3,30 +3,28 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import Settings from './Settings';
-import { fetchGallery, fetchArtist, fetchGalleryArtistArtworkIds } from '../../actions/ArtistGalleryActions';
+import { fetchArtist, fetchGalleryArtistArtworkIds } from '../../actions/ArtistGalleryActions';
 
-const getUserArtistGalleries = (artistGalleryIdsObject, artists, galleries, artistsArtworkIds) => {
-    const artistGalleryIds = Object.keys(artistGalleryIdsObject);
-    const artistGalleriesArray = [];
+const getUserArtists = (artistIdsObject, artists, artistsArtworkIds) => {
+    const artistIds = Object.keys(artistIdsObject);
+    const artistArray = [];
 
-    for (let id of artistGalleryIds) {
+    for (let id of artistIds) {
         const artist = artists[id];
-        const gallery = galleries[id];
         const artworkIds = artistsArtworkIds[id];
 
-        if (artist && gallery && artworkIds) {
-            const galleryData = {};
+        if (artist && artworkIds) {
+            const artistData = {};
 
-            galleryData.artist = artist;
-            galleryData.gallery = gallery;
-            galleryData.id = id;
-            galleryData.totalArtworks = Object.keys(artworkIds).length;
+            artistData.artist = artist;
+            artistData.id = id;
+            artistData.totalArtworks = Object.keys(artworkIds).length;
 
-            artistGalleriesArray.push(galleryData);
+            artistArray.push(artistData);
         }
     }
 
-    return artistGalleriesArray;
+    return artistArray;
 };
 
 // Created an intermediate component so can trigger the data loading outside
@@ -38,21 +36,19 @@ class SettingsHolder extends Component {
     }
 
     componentDidMount() {
-        this.fetchAllGalleries();
+        this.fetchAllArtistData();
     }
 
-    fetchAllGalleries() {
+    fetchAllArtistData() {
         const artistGalleryIds = Object.keys(this.props.artistGalleryIds);
         for (let artistGalleryId of artistGalleryIds) {
-            this.props.fetchGallery(artistGalleryId);
-            this.props.fetchGallery(artistGalleryId);
             this.props.fetchArtist(artistGalleryId);
             this.props.fetchGalleryArtistArtworkIds(artistGalleryId);
         }
     }
 
     componentDidUpdate(prevProps) {
-        this.fetchAllGalleries();
+        this.fetchAllArtistData();
 
         /*if (this.state.price === '') {
             const Paddle = window.Paddle;
@@ -101,7 +97,7 @@ class SettingsHolder extends Component {
             return <Redirect to={'/'}/>
         }
 
-        const { artistGalleries, userId, subscription } = this.props;
+        const { userArtists, userId, subscription } = this.props;
         if (!userId) {
             return <div>Loading...</div>;
         }
@@ -109,7 +105,7 @@ class SettingsHolder extends Component {
         return <Settings onSubscribe={this.onSubscribe.bind(this)}
                          onCancelSubscription={this.onCancelSubscription.bind(this)}
                          onUpdateSubscription={this.onUpdateSubscription.bind(this)}
-                         artistGalleries={artistGalleries}
+                         userArtists={userArtists}
                          price={this.state.price}
                          subscription={subscription}/>;
     }
@@ -117,7 +113,7 @@ class SettingsHolder extends Component {
 
 const mapStateToProps = (state) => {
     const artistGalleryIds = !state.user.artistGalleryIds ? {} : state.user.artistGalleryIds;
-    const artistGalleries = getUserArtistGalleries(artistGalleryIds, state.artists, state.galleries, state.artistsArtworkIds);
+    const userArtists = getUserArtists(artistGalleryIds, state.artists, state.artistsArtworkIds);
 
     return {
         user: state.user,
@@ -125,13 +121,13 @@ const mapStateToProps = (state) => {
         userEmail: state.user.email,
         userStatus: state.user.status,
         artistGalleryIds: artistGalleryIds,
-        artistGalleries: artistGalleries,
+        userArtists: userArtists,
         subscription: state.user.subscription
     }
 };
 
 const SettingsContainer = connect(
-    mapStateToProps, { fetchGallery, fetchArtist, fetchGalleryArtistArtworkIds }
+    mapStateToProps, { fetchArtist, fetchGalleryArtistArtworkIds }
 )(SettingsHolder);
 
 export default SettingsContainer;

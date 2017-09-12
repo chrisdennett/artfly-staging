@@ -2,12 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import ArtistGallery from './ArtistGallery';
-import {
-    fetchGallery,
-    fetchArtist,
-    fetchGalleryArtistArtworkIds,
-    fetchArtwork
-} from '../../actions/ArtistGalleryActions';
+import { fetchArtist, fetchGalleryArtistArtworkIds, fetchArtwork } from '../../actions/ArtistGalleryActions';
 
 // Intermediary component so ui component isn't required to call data
 class ArtistGalleryHolder extends Component {
@@ -36,7 +31,6 @@ class ArtistGalleryHolder extends Component {
     }
 
     initData(artistGalleryId) {
-        this.props.fetchGallery(artistGalleryId);
         this.props.fetchArtist(artistGalleryId);
         this.props.fetchGalleryArtistArtworkIds(artistGalleryId);
     }
@@ -52,12 +46,12 @@ class ArtistGalleryHolder extends Component {
     }
 
     render() {
-        const { gallery, artist, totalArtworks, artworks, artworkIds } = this.props;
-        if (!gallery || !artist || !artist) {
+        const { artist, totalArtworks, artworks, artworkIds } = this.props;
+        if (!artist || !artworks) {
             return <div>Artist Gallery Loading</div>;
         }
 
-        return <ArtistGallery pageWidth={this.state.pageWidth} gallery={gallery} artist={artist} totalArtworks={totalArtworks} artworkIds={artworkIds} artworks={artworks} onThumbClick={this.onThumbClick.bind(this)}/>;
+        return <ArtistGallery pageWidth={this.state.pageWidth} artist={artist} totalArtworks={totalArtworks} artworkIds={artworkIds} artworks={artworks} onThumbClick={this.onThumbClick.bind(this)}/>;
     }
 }
 
@@ -88,7 +82,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const ArtistGalleryContainer = connect(
-    mapStateToProps, { fetchGallery, fetchArtist, fetchGalleryArtistArtworkIds, fetchArtwork }
+    mapStateToProps, { fetchArtist, fetchGalleryArtistArtworkIds, fetchArtwork }
 )(ArtistGalleryHolder);
 
 export default ArtistGalleryContainer;

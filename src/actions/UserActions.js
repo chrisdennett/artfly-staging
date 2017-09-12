@@ -73,24 +73,14 @@ export function addNewArtist(userId, formValues, callback = null) {
         const artistId = artistRef.key;
         // Artist gallery has the same id as the artist as they are inextricably linked.
         const userArtistRef = firebase.database().ref(`/user-data/users/${userId}/artistGalleryIds/${artistId}`);
-        const artistGalleryRef = firebase.database().ref(`/user-data/artistGalleries/${artistId}`);
-        const galleryName = !formValues.galleryName ? `The amazing gallery of ${formValues.artistName}` : formValues.galleryName;
 
         const newArtistData = {
-            name: formValues.artistName,
-            biog: formValues.biog,
+            firstName: formValues.firstName,
+            lastName: formValues.lastName,
             adminId: userId
         };
 
         userArtistRef.set('true')
-            .then(
-                artistGalleryRef
-                    .set({
-                        type: "artistGallery",
-                        name: galleryName,
-                        adminId: userId
-                    })
-            )
             .then(artistRef.set(newArtistData)
                 .then(() => {
                     dispatch({
@@ -112,8 +102,6 @@ export function createNewUser(authId, formValues, callback = null) {
         const userRef = firebase.database().ref(`/user-data/users/${authId}`);
         const artistRef = firebase.database().ref('/user-data/artists').push();
         const artistId = artistRef.key;
-        // Artist gallery has the same id as the artist as they are inextricably linked.
-        const artistGalleryRef = firebase.database().ref(`/user-data/artistGalleries/${artistId}`);
         const userArtistsObj = {};
         userArtistsObj[artistId] = 'true';
 
@@ -126,18 +114,10 @@ export function createNewUser(authId, formValues, callback = null) {
         userRef
             .set(newUserData)
             .then(
-                artistGalleryRef
-                    .set({
-                        type: "artistGallery",
-                        name: formValues.galleryName,
-                        adminId: authId
-                    })
-            )
-            .then(
                 artistRef
                     .set({
-                        name: formValues.artistName,
-                        biog: "The artists' artist.",
+                        firstName: formValues.artistName,
+                        lastName: formValues.lastName,
                         adminId: authId
                     })
                     .then(() => {

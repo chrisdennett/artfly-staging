@@ -62,8 +62,33 @@ gulp.task('optimise-artist-gallery-svgs', function () {
         .pipe(gulp.dest('src/gallery/'));
 });*/
 
-gulp.task('inject-svgs-into-components', function () {
-    gulp.src('src/components/ArtistGallery/assets/source_files/component_templates/SvgGallery*__source.js')
+gulp.task('inject-svg-title-into-component', function () {
+    gulp.src('src/components/ArtistGallery/assets/source_files/component_templates/SvgGalleryTitle__source.js')
+        .pipe(svgInject())
+        .pipe(rename(function (path) {
+            path.basename = path.basename.replace("__source", "");
+        }))
+
+        .pipe(replace("style=\"text-align:center\"", 'style={{textAlign:"center"}}'))
+        .pipe(replace("font-size", 'fontSize'))
+        .pipe(replace("font-family", 'fontFamily'))
+        .pipe(replace("font-weight", 'fontWeight'))
+        .pipe(replace("word-spacing", 'wordSpacing'))
+        .pipe(replace("letter-spacing", 'letterSpacing'))
+        .pipe(replace("text-anchor", 'textAnchor'))
+        .pipe(replace("fill-opacity", 'fillOpacity'))
+        .pipe(replace("stroke-width", 'strokeWidth'))
+        .pipe(replace("fill-rule", 'fillRule'))
+        .pipe(replace("viewbox", 'viewBox'))
+
+        .pipe(replace("Christopher", '{props.firstName}'))
+        .pipe(replace("John Dennett", '{props.lastName}'))
+
+        .pipe(gulp.dest('src/components/ArtistGallery/assets/'));
+});
+
+gulp.task('inject-svg-bottom-into-components', function () {
+    gulp.src('src/components/ArtistGallery/assets/source_files/component_templates/SvgGalleryBottom__source.js')
         .pipe(svgInject())
         .pipe(rename(function (path) {
             path.basename = path.basename.replace("__source", "");
@@ -74,6 +99,7 @@ gulp.task('inject-svgs-into-components', function () {
         .pipe(replace("style=\"text-align:center\"", 'style={{textAlign:"center"}}'))
         .pipe(replace("font-size", 'fontSize'))
         .pipe(replace("font-family", 'fontFamily'))
+        .pipe(replace("font-weight", 'fontWeight'))
         .pipe(replace("word-spacing", 'wordSpacing'))
         .pipe(replace("letter-spacing", 'letterSpacing'))
         .pipe(replace("text-anchor", 'textAnchor'))

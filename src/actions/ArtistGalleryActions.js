@@ -12,18 +12,18 @@ export const FETCH_ARTWORK_ALREADY_CACHED = "fetchArtworkAlreadyCached";
 export const ARTIST_UPDATED = 'artistUpdated';
 export const ARTIST_DELETED = 'artistDeleted';
 export const ARTWORK_DELETED = 'artworkDeleted';
-export const GALLERY_UPDATED = 'galleryUpdated';
+// export const GALLERY_UPDATED = 'galleryUpdated';
 export const UPDATE_ARTWORK_COMPLETE = 'updateArtworkComplete';
 export const IMAGE_UPLOAD_PROGRESS = 'imageUploadProgress';
 export const ADD_ARTWORK_COMPLETE = 'artworkAdded';
 export const CLEAR_IMAGE_UPLOAD = 'clearImageUpload';
 
-let galleryListenersRef = [];
+// let galleryListenersRef = [];
 let artistListenersRef = [];
 let artworkListenersRef = [];
 let artistArtworkIdsListenersRef = [];
 
-export function fetchGallery(artistGalleryId) {
+/*export function fetchGallery(artistGalleryId) {
     return (dispatch) => {
 
         if (galleryListenersRef.indexOf(artistGalleryId) >= 0) {
@@ -38,11 +38,11 @@ export function fetchGallery(artistGalleryId) {
         galleryListenersRef.push(artistGalleryId);
 
         // remove any listeners if there are already there
-        firebase.database().ref(`user-data/artistGalleries/${artistGalleryId}`).off();
+        firebase.database().ref(`user-data/userArtists/${artistGalleryId}`).off();
 
         // set up a listener for this gallery
         firebase.database()
-            .ref(`user-data/artistGalleries/${artistGalleryId}`)
+            .ref(`user-data/userArtists/${artistGalleryId}`)
             .on('value', snapshot => {
                 const galleryData = snapshot.val();
                 dispatch({
@@ -51,7 +51,7 @@ export function fetchGallery(artistGalleryId) {
                 });
             });
     }
-}
+}*/
 
 export function fetchArtist(artistGalleryId) {
     return (dispatch) => {
@@ -155,9 +155,9 @@ export function fetchArtwork(artworkId, callback) {
     }
 }
 
-export function updateGallery(galleryId, newGalleryData, callback) {
+/*export function updateGallery(galleryId, newGalleryData, callback) {
     return dispatch => {
-        const artistRef = firebase.database().ref(`user-data/artistGalleries/${galleryId}`);
+        const artistRef = firebase.database().ref(`user-data/userArtists/${galleryId}`);
         artistRef.update({ ...newGalleryData })
             .then(() => {
                 dispatch({
@@ -171,7 +171,7 @@ export function updateGallery(galleryId, newGalleryData, callback) {
                 console.log('updateGallery failed: ', error);
             })
     }
-}
+}*/
 
 export function updateArtist(artistId, artistData, callback) {
     return dispatch => {

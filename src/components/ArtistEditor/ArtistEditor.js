@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 
@@ -66,18 +65,13 @@ class ArtistEditor extends Component {
                 <h1>{formTitle}</h1>
                 <form onSubmit={handleSubmit(this.props.onSubmit.bind(this))}>
                     <Field
-                        name="galleryName"
-                        label="Gallery Name: "
+                        name="firstName"
+                        label="First Name: "
                         component={FormRenderField}
                     />
                     <Field
-                        name="artistName"
-                        label="Artist Name: "
-                        component={FormRenderField}
-                    />
-                    <Field
-                        name="biog"
-                        label="Artist biog: "
+                        name="lastName"
+                        label="Last Name: "
                         component={FormRenderField}
                     />
                     <button style={formButtonStyle} type="submit">
@@ -97,38 +91,21 @@ class ArtistEditor extends Component {
     }
 }
 
-ArtistEditor.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-    formType: PropTypes.string.isRequired,
-    initialValues: PropTypes.shape({
-        galleryName: PropTypes.string,
-        artistName: PropTypes.string,
-        biog: PropTypes.string
-    })
-};
-
 const validate = values => {
     const errors = {};
 
-    if (!values.galleryName) {
-        errors.galleryName = 'Required'
+    if (!values.firstName) {
+        errors.firstName = 'Required'
     }
-    else if (values.galleryName.length > 42) {
-        errors.galleryName = 'Must be 42 characters or less'
-    }
-
-    if (!values.artistName) {
-        errors.artistName = 'Required'
-    }
-    else if (values.artistName.length > 15) {
-        errors.artistName = 'Must be 15 characters or less'
+    else if (values.firstName.length > 15) {
+        errors.firstName = 'Must be 15 characters or less'
     }
 
-    if (!values.biog) {
-        errors.biog = 'Required'
+    if (!values.lastName) {
+        errors.lastName = 'Required'
     }
-    else if (values.biog.length > 200) {
-        errors.artistName = 'Must be 200 characters or less'
+    else if (values.lastName.length > 15) {
+        errors.lastName = 'Must be 15 characters or less'
     }
 
     return errors
