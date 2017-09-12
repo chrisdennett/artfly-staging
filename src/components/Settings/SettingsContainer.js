@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import Settings from './Settings';
-import { fetchArtist, fetchGalleryArtistArtworkIds } from '../../actions/ArtistGalleryActions';
+import { fetchArtist, fetchArtistArtworkIds } from '../../actions/ArtistGalleryActions';
 
 const getUserArtists = (artistIdsObject, artists, artistsArtworkIds) => {
     const artistIds = Object.keys(artistIdsObject);
@@ -40,8 +40,8 @@ class SettingsHolder extends Component {
     }
 
     fetchAllArtistData() {
-        const artistGalleryIds = Object.keys(this.props.artistGalleryIds);
-        for (let artistGalleryId of artistGalleryIds) {
+        const artistIds = Object.keys(this.props.artistIds);
+        for (let artistGalleryId of artistIds) {
             this.props.fetchArtist(artistGalleryId);
             this.props.fetchGalleryArtistArtworkIds(artistGalleryId);
         }
@@ -112,22 +112,22 @@ class SettingsHolder extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const artistGalleryIds = !state.user.artistGalleryIds ? {} : state.user.artistGalleryIds;
-    const userArtists = getUserArtists(artistGalleryIds, state.artists, state.artistsArtworkIds);
+    const artistIds = !state.user.artistIds ? {} : state.user.artistIds;
+    const userArtists = getUserArtists(artistIds, state.artists, state.artistsArtworkIds);
 
     return {
         user: state.user,
         userId: state.user.uid,
         userEmail: state.user.email,
         userStatus: state.user.status,
-        artistGalleryIds: artistGalleryIds,
+        artistIds: artistIds,
         userArtists: userArtists,
         subscription: state.user.subscription
     }
 };
 
 const SettingsContainer = connect(
-    mapStateToProps, { fetchArtist, fetchGalleryArtistArtworkIds }
+    mapStateToProps, { fetchArtist, fetchGalleryArtistArtworkIds: fetchArtistArtworkIds }
 )(SettingsHolder);
 
 export default SettingsContainer;

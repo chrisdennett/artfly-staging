@@ -94,7 +94,7 @@ export function fetchArtist(artistGalleryId) {
     }
 }
 
-export function fetchGalleryArtistArtworkIds(artistGalleryId, callback=null) {
+export function fetchArtistArtworkIds(artistGalleryId, callback =null) {
     return (dispatch) => {
         if (artistArtworkIdsListenersRef.indexOf(artistGalleryId) >= 0) {
             dispatch({
@@ -194,13 +194,10 @@ export function updateArtist(artistId, artistData, callback) {
 export function deleteArtist(galleryArtistId, userId, callback) {
     return dispatch => {
 
-        console.log("galleryArtistId: ", galleryArtistId);
-
         const db = firebase.database();
         const artistRef = db.ref(`user-data/artists/${galleryArtistId}`);
         const artistArtworkIdsRef = db.ref(`user-data/artistArtworkIds/${galleryArtistId}`);
-        const userArtistRef = db.ref(`user-data/users/${userId}/artistGalleryIds/${galleryArtistId}`);
-        const galleryArtistRef = db.ref(`user-data/artistGalleries/${galleryArtistId}`);
+        const userArtistRef = db.ref(`user-data/users/${userId}/artistIds/${galleryArtistId}`);
 
         artistArtworkIdsRef
             .once('value')
@@ -220,9 +217,6 @@ export function deleteArtist(galleryArtistId, userId, callback) {
 
                 // delete the artist data
                 artistRef.remove();
-
-                // delete the artist gallery
-                galleryArtistRef.remove();
 
                 // delete the reference to the artist in the user data
                 userArtistRef.remove();

@@ -30,13 +30,13 @@ class PhotoSelector extends Component {
     initData() {
         const { user } = this.props;
         if (user) {
-            const { artistGalleryIds } = this.props.user;
-            if (artistGalleryIds) {
-                for (let id of Object.keys(artistGalleryIds)) {
+            const { artistIds } = this.props.user;
+            if (artistIds) {
+                for (let id of Object.keys(artistIds)) {
                     this.props.fetchArtist(id);
                 }
 
-                this.setState({ selectedArtistId: Object.keys(artistGalleryIds)[0] })
+                this.setState({ selectedArtistId: Object.keys(artistIds)[0] })
             }
         }
     }

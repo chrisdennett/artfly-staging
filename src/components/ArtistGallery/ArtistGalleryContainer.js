@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import ArtistGallery from './ArtistGallery';
-import { fetchArtist, fetchGalleryArtistArtworkIds, fetchArtwork } from '../../actions/ArtistGalleryActions';
+import { fetchArtist, fetchArtistArtworkIds, fetchArtwork } from '../../actions/ArtistGalleryActions';
 
 // Intermediary component so ui component isn't required to call data
 class ArtistGalleryHolder extends Component {
@@ -32,7 +32,7 @@ class ArtistGalleryHolder extends Component {
 
     initData(artistGalleryId) {
         this.props.fetchArtist(artistGalleryId);
-        this.props.fetchGalleryArtistArtworkIds(artistGalleryId);
+        this.props.fetchArtistArtworkIds(artistGalleryId);
     }
 
     getContentHeight() {
@@ -82,7 +82,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const ArtistGalleryContainer = connect(
-    mapStateToProps, { fetchArtist, fetchGalleryArtistArtworkIds, fetchArtwork }
+    mapStateToProps, { fetchArtist, fetchArtistArtworkIds, fetchArtwork }
 )(ArtistGalleryHolder);
 
 export default ArtistGalleryContainer;

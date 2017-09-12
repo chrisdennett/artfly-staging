@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchGalleryArtistArtworkIds } from '../../../actions/ArtistGalleryActions';
+import { fetchArtistArtworkIds } from '../../../actions/ArtistGalleryActions';
 
 import GalleryControls from './GalleryControls';
 
@@ -64,7 +64,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const GalleryControlsContainer = connect(
-    mapStateToProps, { fetchGalleryArtistArtworkIds }
+    mapStateToProps, { fetchGalleryArtistArtworkIds: fetchArtistArtworkIds }
 )(GalleryControlsHolder);
 
 export default GalleryControlsContainer;

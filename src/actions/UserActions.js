@@ -72,7 +72,7 @@ export function addNewArtist(userId, formValues, callback = null) {
         const artistRef = firebase.database().ref('/user-data/artists').push();
         const artistId = artistRef.key;
         // Artist gallery has the same id as the artist as they are inextricably linked.
-        const userArtistRef = firebase.database().ref(`/user-data/users/${userId}/artistGalleryIds/${artistId}`);
+        const userArtistRef = firebase.database().ref(`/user-data/users/${userId}/artistIds/${artistId}`);
 
         const newArtistData = {
             firstName: formValues.firstName,
@@ -107,7 +107,7 @@ export function createNewUser(authId, formValues, callback = null) {
 
         const newUserData = {
             email: formValues.email,
-            artistGalleryIds: userArtistsObj
+            artistIds: userArtistsObj
         };
 
         // set the user data first, then add the gallery, then add the artist

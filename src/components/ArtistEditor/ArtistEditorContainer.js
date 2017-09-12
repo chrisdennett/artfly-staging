@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { addNewArtist } from '../../actions/UserActions';
-import { fetchArtist, fetchGalleryArtistArtworkIds } from '../../actions/ArtistGalleryActions';
+import { fetchArtist, fetchArtistArtworkIds } from '../../actions/ArtistGalleryActions';
 import { updateArtist, deleteArtist } from '../../actions/ArtistGalleryActions';
 
 import ArtistEditor from './ArtistEditor';
@@ -110,14 +110,14 @@ const mapStateToProps = (state, ownProps) => {
         userId: state.user.uid,
         formType: formType,
         initialValues: initialFormValues,
-        userArtistGalleryIds: state.user.artistGalleryIds
+        userArtistGalleryIds: state.user.artistIds
     }
 };
 
 const ArtistEditorContainer = connect(
     mapStateToProps, {
         fetchArtist,
-        fetchGalleryArtistArtworkIds,
+        fetchGalleryArtistArtworkIds: fetchArtistArtworkIds,
         deleteArtist,
         addNewArtist,
         updateArtist
