@@ -17,7 +17,7 @@ gulp.task('watch', function () {
 });
 
 // ArtistGallery assets - generate optimised svgs
-gulp.task('optimise-artist-gallery-svgs', function () {
+gulp.task('optimise-svgs', function () {
     gulp.src('src/components/ArtistGallery/assets/source_files/svg_exports/*.svg')
         .pipe(replace('xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"', ''))
         .pipe(replace(" xmlns=\"http://www.w3.org/2000/svg\"", ''))
@@ -39,28 +39,24 @@ gulp.task('optimise-artist-gallery-svgs', function () {
         .pipe(gulp.dest('src/components/ArtistGallery/assets/source_files/svg_optimised/'));
 });
 
-/*gulp.task('inject-svgs-background-into-component', function () {
-    gulp.src('src/svg__source/SvgBackground__source.js')
-        .pipe(svgInject())
-        .pipe(rename(function (path) {
-            path.basename = path.basename.replace("__source", "");
-        }))
+gulp.task('make-svgs-react-ready', function () {
+   gulp.src('src/components/ArtistGallery/assets/source_files/svg_optimised/*svg')
+       .pipe(replace("style=\"text-align:center\"", 'style={{textAlign:"center"}}'))
+       .pipe(replace("font-size", 'fontSize'))
+       .pipe(replace("font-family", 'fontFamily'))
+       .pipe(replace("font-weight", 'fontWeight'))
+       .pipe(replace("word-spacing", 'wordSpacing'))
+       .pipe(replace("letter-spacing", 'letterSpacing'))
+       .pipe(replace("text-anchor", 'textAnchor'))
+       .pipe(replace("fill-opacity", 'fillOpacity'))
+       .pipe(replace("stroke-width", 'strokeWidth'))
+       .pipe(replace("fill-rule", 'fillRule'))
+       .pipe(replace("viewbox", 'viewBox'))
 
-        .pipe(replace("<svg ", '<svg {...props} '))
+       .pipe(gulp.dest('src/components/ArtistGallery/assets/source_files/svg_reactReady/'));
+});
 
-        .pipe(replace("style=\"text-align:center\"", 'style={{textAlign:"center"}}'))
-        .pipe(replace("font-size", 'fontSize'))
-        .pipe(replace("font-family", 'fontFamily'))
-        .pipe(replace("word-spacing", 'wordSpacing'))
-        .pipe(replace("letter-spacing", 'letterSpacing'))
-        .pipe(replace("text-anchor", 'textAnchor'))
-        .pipe(replace("fill-opacity", 'fillOpacity'))
-        .pipe(replace("stroke-width", 'strokeWidth'))
-        .pipe(replace("fill-rule", 'fillRule'))
-        .pipe(replace("viewbox", 'viewBox'))
 
-        .pipe(gulp.dest('src/gallery/'));
-});*/
 
 gulp.task('inject-svg-title-into-component', function () {
     gulp.src('src/components/ArtistGallery/assets/source_files/component_templates/SvgGalleryTitle__source.js')

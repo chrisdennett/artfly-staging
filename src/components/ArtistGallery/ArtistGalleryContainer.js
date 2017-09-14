@@ -9,15 +9,15 @@ class ArtistGalleryHolder extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { pageWidth: 0 };
+        this.state = { pageWidth: 0, pageHeight:0 };
     }
 
 
     componentDidMount() {
         this.initData(this.props.galleryId);
-        this.getContentHeight();
+        this.getWindowSize();
 
-        window.onresize = this.getContentHeight.bind(this);
+        window.onresize = this.getWindowSize.bind(this);
     }
 
     componentWillUpdate(nextProps) {
@@ -35,9 +35,10 @@ class ArtistGalleryHolder extends Component {
         this.props.fetchArtistArtworkIds(artistGalleryId);
     }
 
-    getContentHeight() {
+    getWindowSize() {
         this.setState({
-            pageWidth: window.innerWidth
+            pageWidth: window.innerWidth,
+            pageHeight: window.innerHeight
         })
     }
 
@@ -51,7 +52,13 @@ class ArtistGalleryHolder extends Component {
             return <div>Artist Gallery Loading</div>;
         }
 
-        return <ArtistGallery pageWidth={this.state.pageWidth} artist={artist} totalArtworks={totalArtworks} artworkIds={artworkIds} artworks={artworks} onThumbClick={this.onThumbClick.bind(this)}/>;
+        return <ArtistGallery pageWidth={this.state.pageWidth}
+                              pageHeight={this.state.pageHeight}
+                              artist={artist}
+                              totalArtworks={totalArtworks}
+                              artworkIds={artworkIds}
+                              artworks={artworks}
+                              onThumbClick={this.onThumbClick.bind(this)}/>;
     }
 }
 

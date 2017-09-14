@@ -1,0 +1,15 @@
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="125.3" width="166.7" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 166.70672 125.29118">
+ <g>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" fill-opacity=".2" height="2.916" width="137.7" y="120.6" x="28.49"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="87.69" width="19.21" y="32.6" x="4.789" fill="#6a707d"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="20.88" width="11.69" y="20.91" x="8.547" fill="#6a707d"/>
+  <path d="m26.7 37.81s53 60 139 0" stroke="#6a707d" stroke-linecap="round" stroke-width="2" fill="none"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="9.186" width="28.39" y="32.6" x=".1958" fill="#ff8080"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="9.186" width="28.39" y="112.6" x=".1958" fill="#ff8080"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="1.332" width="19.2" y="41.78" x="4.782" fill="#40434b"/>
+  <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m8.547 29.19a17.95 17.95 0 0 0 .5391 .1973 17.95 17.95 0 0 0 1.74 .4433 17.95 17.95 0 0 0 1.773 .2696 17.95 17.95 0 0 0 1.793 .09 17.95 17.95 0 0 0 1.27 -.047 17.95 17.95 0 0 0 1.783 -.2148 17.95 17.95 0 0 0 1.75 -.3926 17.95 17.95 0 0 0 1.043 -.3477v-8.846h-11.69v8.848z" fill="#40434b"/>
+  <circle style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" cx="14.3" cy="14.3" r="14.3" fill="#6a707d"/>
+  <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m14.3.000006544c-7.898-0.0001-14.3 6.402-14.3 14.3.003004.10.007004.20.01170.30 6.934-2.96 20.19-3.84 28.59-.30 0-7.898-6.4-14.3-14.3-14.3z" fill="#7c818f"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" fill-opacity=".2" height="3.679" width="28.39" y="121.6" x=".1958"/>
+ </g>
+</svg>

@@ -14,7 +14,7 @@ import SvgBackground from "./assets/SvgBackground";
 
 class ArtistGallery extends Component {
     render() {
-        const { artist, artworkIds, artworks, onThumbClick } = this.props;
+        const { artist, artworkIds, artworks, onThumbClick, pageWidth, pageHeight } = this.props;
         const windowWidth = 139;
         const windowX = 330;
         let galleryHeight = 0;
@@ -34,9 +34,9 @@ class ArtistGallery extends Component {
         return (
             <div className={'gallery-scene'}>
 
-                <SvgBackground galleryHeight={galleryHeight} pageWidth={this.props.pageWidth}/>
+                <SvgBackground galleryHeight={galleryHeight} pageWidth={pageWidth} pageHeight={pageHeight}/>
 
-                <div className="gallery" ref='gallery'>
+                <div className="gallery" ref='gallery' style={{opacity:0.2}}>
                     <div className="gallery-top">
                         <SvgGalleryTitle firstName={artist.firstName} lastName={artist.lastName}/>
                     </div>
