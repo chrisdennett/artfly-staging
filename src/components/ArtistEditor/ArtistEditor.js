@@ -2,25 +2,27 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 
+import './artistEditor.css';
+
 import FormRenderField from '../global/FormRenderField';
 
 class ArtistEditor extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
-        this.state = {showDeleteConfirmation:false};
+        this.state = { showDeleteConfirmation: false };
     }
 
-    onDeleteClick(){
-        this.setState({showDeleteConfirmation:true});
+    onDeleteClick() {
+        this.setState({ showDeleteConfirmation: true });
     }
 
-    onDeleteConfirm(){
+    onDeleteConfirm() {
         this.props.deleteArtist();
     }
 
-    onDeleteCancel(){
-        this.setState({showDeleteConfirmation:false});
+    onDeleteCancel() {
+        this.setState({ showDeleteConfirmation: false });
     }
 
     render() {
@@ -28,64 +30,73 @@ class ArtistEditor extends Component {
 
         // I'm using the same form for editing and adding new artists
         // formType tells me which it is
-        let formTitle = "Add New Artist Gallery";
-        let deleteButtonStyle = {display:'none'};
-        let deleteConfirmationStyle = {display:'none'};
+        let formTitle = "Add New Artist";
+        let deleteButtonStyle = { display: 'none' };
+        let deleteConfirmationStyle = { display: 'none' };
         let formButtonStyle = {};
-        if(this.props.formType === "edit"){
-            formTitle = "Edit Artist Gallery";
+        let submitButtonText = 'Add Artist';
+        if (this.props.formType === "edit") {
+            formTitle = "Edit Artist";
+            submitButtonText = 'Update Artist'
             deleteButtonStyle = {};
         }
 
-        if(this.state.showDeleteConfirmation){
+        if (this.state.showDeleteConfirmation) {
             deleteConfirmationStyle = {};
-            formButtonStyle = {display:'none'};
-            deleteButtonStyle = {display:'none'};
+            formButtonStyle = { display: 'none' };
+            deleteButtonStyle = { display: 'none' };
         }
 
         // Delete confirmation content - don't allow delete if last artist.
         let deleteConfirmationContent = (
             <div>
                 <p>Are you sure you want to delete this artist and all their artworks?</p>
-                <button type="button"  onClick={this.onDeleteConfirm.bind(this)}>Yes, delete away</button>
-                <button type="button"  onClick={this.onDeleteCancel.bind(this)}>No do not delete</button>
+                <button className={'butt'} type="button" onClick={this.onDeleteConfirm.bind(this)}>Yes, delete away
+                </button>
+                <button className={'butt'} type="button" onClick={this.onDeleteCancel.bind(this)}>No do not delete
+                </button>
             </div>
         );
-        if(this.props.allowDelete === false){
+        if (this.props.allowDelete === false) {
             deleteConfirmationContent = (
                 <div>
-                    <p>Sorry, you you always need at least one artist - Create a new artist first if you want to get rid of this one.</p>
-                    <button type="button"  onClick={this.onDeleteCancel.bind(this)}>Close message</button>
+                    <p>Sorry, you you always need at least one artist - Create a new artist first if you want to get rid
+                        of this one.</p>
+                    <button className={'butt'} type="button" onClick={this.onDeleteCancel.bind(this)}>Close message
+                    </button>
                 </div>
             );
         }
 
         return (
-            <div>
-                <h1>{formTitle}</h1>
-                <form onSubmit={handleSubmit(this.props.onSubmit.bind(this))}>
-                    <Field
-                        name="firstName"
-                        label="First Name: "
-                        component={FormRenderField}
-                    />
-                    <Field
-                        name="lastName"
-                        label="Last Name: "
-                        component={FormRenderField}
-                    />
-                    <button style={formButtonStyle} type="submit">
-                        Submit
-                    </button>
-                    <button type="button" style={deleteButtonStyle} onClick={this.onDeleteClick.bind(this)}>
-                        Delete
-                    </button>
-                    <div style={deleteConfirmationStyle}>
-                        {deleteConfirmationContent}
-                    </div>
+            <div className={'artist-editor'}>
+                <div className={'artist-editor-form'}>
+                    <h1>{formTitle}</h1>
+                    <form onSubmit={handleSubmit(this.props.onSubmit.bind(this))}>
+                        <Field
+                            name="firstName"
+                            label="First Name: "
+                            component={FormRenderField}
+                        />
+                        <Field
+                            name="lastName"
+                            label="Last Name: "
+                            component={FormRenderField}
+                        />
+                        <button className={'butt'} style={formButtonStyle} type="submit">
+                            {submitButtonText}
+                        </button>
+                        <button className={'butt'} type="button" style={deleteButtonStyle}
+                                onClick={this.onDeleteClick.bind(this)}>
+                            Delete
+                        </button>
+                        <div style={deleteConfirmationStyle}>
+                            {deleteConfirmationContent}
+                        </div>
 
-                    <Link style={formButtonStyle} to={`/settings/`}>Cancel</Link>
-                </form>
+                        <Link className={'butt'} style={formButtonStyle} to={`/settings/`}>Cancel</Link>
+                    </form>
+                </div>
             </div>
         )
     }

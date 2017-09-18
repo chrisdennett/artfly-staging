@@ -1,0 +1,24 @@
+.artist-editor{
+    background-color: #704cb0;
+    color: white;
+    /*padding: 20px 30px;*/
+    min-height: 100vh;
+}
+
+.artist-editor-form {
+    padding: 20px 30px;
+}
+
+.artist-editor-form form {
+    padding-top: 1.5em;
+    display: flex;
+    flex-direction: column;
+}
+
+@media only screen and (max-width: 500px) {
+    .artist-editor-form{
+        padding: 30px 20px;
+    }
+}
+
+

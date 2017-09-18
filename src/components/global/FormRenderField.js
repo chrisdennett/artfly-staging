@@ -5,7 +5,7 @@ const FormRenderField = function (field) {
     const className = `form-group ${touched && error ? 'has-danger' : ''}`;
     return (
         <div className={className}>
-            <label>{field.label}</label>
+            <label className={'form-field'}>{field.label}</label>
             {/*The es6 {...field.input} links all events to reduxForm
              It's a shortcut for dong onChange={field.input.onChange} for all events
              */}

@@ -85,8 +85,8 @@ const mapStateToProps = (state, ownProps) => {
     let status = "";
 
     let initialFormValues = {
-        firstName: "First name",
-        lastName: "Last name"
+        firstName: "",
+        lastName: ""
     };
 
     if (artistId) {

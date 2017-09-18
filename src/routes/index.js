@@ -28,7 +28,7 @@ const routes = [
 export default (
     <Provider store={store}>
         <BrowserRouter>
-            <div>
+            <div id={'routes-holder'}>
 
                 <Switch>
                     {routes.map((route, index) => (
