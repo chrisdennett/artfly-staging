@@ -27,16 +27,23 @@ h2{
     margin-bottom: 0.3em;
 }
 
-p, li, form {
+p, li, form, label, select {
     font-size: 1.5em;
     line-height: 1.4em;
+}
+
+select{
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: none;
 }
 
 input{
     font-size: 1.2em;
     padding: 10px;
     margin-bottom: 20px;
-    border-radius: 5;
+    border-radius: 5px;
     border: none;
 }
 
@@ -106,7 +113,7 @@ label.disabled{
 }
 
 .form-field{
-    opacity: 0.6;
+    opacity: 0.7;
 }
 
 .butt{
@@ -132,6 +139,36 @@ label.disabled{
     box-shadow: 0 5px rgba(0, 0, 0, 0.6);
 }
 
+.slim-image-editor .slim-editor-btn-group button {
+    text-decoration: none;
+    font-size: 20px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    color: #000;
+    background-color: #ecf0f1;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.slim-image-editor .slim-editor-utils-group button{
+    width:auto;
+    padding: 0 1em;
+    background-image: none;
+    color: #000;
+    background-color: #ecf0f1;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 5px rgba(0, 0, 0, 0.5);
+    content: 'whatever it is you want to add';
+}
+
+.slim-image-editor .slim-editor-utils-group button:after{
+    content: 'Rotate';
+}
+
 @media only screen and (max-width: 500px) {
     h1 {
         font-size: 2.5em;
@@ -151,7 +188,7 @@ label.disabled{
         font-size: 0.9em;
         padding: 10px;
         margin-bottom: 20px;
-        border-radius: 5;
+        border-radius: 5px;
         border: none;
     }
 }

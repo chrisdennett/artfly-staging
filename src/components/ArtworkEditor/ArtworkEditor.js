@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+import './artworkEditor.css';
 import ImageCropAndRotate from '../ImageCropAndRotate/ImageCropAndRotate';
 import ArtistSelector from "../ArtistSelector/ArtistSelector";
 import SaveProgressButton from "../global/SaveProgressButton";
@@ -39,7 +40,7 @@ class ArtworkEditor extends Component {
 
         let confirmDeleteStyle = { display: 'none' };
         let actionButtonsStyle = {};
-        let cropperStyle = { maxWidth: 450 };
+        let cropperStyle = { maxWidth: 250 };
         let artistSelectorStyle = {};
         if (this.state.deleteConfirmIsShowing) {
             confirmDeleteStyle = {};
@@ -48,49 +49,51 @@ class ArtworkEditor extends Component {
             artistSelectorStyle = { display: 'none' };
         }
 
-        let saveButtonLabel = "All Saved";
+        let saveButtonLabel = "Save changes";
 
         if (this.props.isSaving) {
             saveButtonLabel = "Saving";
         }
         else if (this.props.changesUnsaved) {
-            saveButtonLabel = "Save changes";
+            saveButtonLabel = "*Save changes";
         }
 
         return (
 
-            <div>
-                <h1>Artwork Editor</h1>
+            <div className={'artwork-editor'}>
+                <div className={'artwork-editor-contents'}>
+                    <h1>Artwork Editor</h1>
 
-                <ArtistSelector artists={artists}
-                                style={artistSelectorStyle}
-                                selectedArtistId={artistId}
-                                onArtistSelected={onArtistSelected}/>
+                    <div className={'artwork-editor-artist-section'}>
+                        <ArtistSelector artists={artists}
+                                        style={artistSelectorStyle}
+                                        selectedArtistId={artistId}
+                                        onArtistSelected={onArtistSelected}/>
+                    </div>
 
-                <hr/>
+                    <div className={'artwork-editor-image-section'} style={cropperStyle}>
+                        <ImageCropAndRotate url={url}
+                                            ref={instance => { this.cropper = instance; }}
+                                            onCropDataConfirm={onCropDataConfirm}
+                                            onCropImageSave={onCropImageSave}/>
+                        <button className={'butt'} onClick={() => { this.cropper.openEditScreen(); }}>
+                            Edit Image
+                        </button>
+                    </div>
 
-                <div style={cropperStyle}>
-                    <button onClick={() => { this.cropper.openEditScreen(); }}>Crop or Rotate Image</button>
-                    <ImageCropAndRotate url={url}
-                                        ref={instance => { this.cropper = instance; }}
-                                        onCropDataConfirm={onCropDataConfirm}
-                                        onCropImageSave={onCropImageSave}/>
+                    <div style={actionButtonsStyle}>
+                        <SaveProgressButton className={'butt'} label={saveButtonLabel} onClick={onSaveChanges}/>
+                        <button className={'butt'} onClick={onCancelChanges}>Done</button>
+                        <button className={'butt'} onClick={this.onDeleteArtwork.bind(this)}>Delete Image</button>
+                    </div>
+
+                    <div style={confirmDeleteStyle}>
+                        <p>Are you sure you want to delete this artwork?</p>
+                        <button className={'butt'} onClick={this.onDeleteConfirm.bind(this)}>Yes, delete it</button>
+                        <button className={'butt'} onClick={this.onDeleteCancel.bind(this)}>No, do not delete</button>
+                    </div>
+
                 </div>
-
-                <hr/>
-
-                <div style={actionButtonsStyle}>
-                    <SaveProgressButton label={saveButtonLabel} onClick={onSaveChanges}/>
-                    <button onClick={onCancelChanges}>Done</button>
-                    <button onClick={this.onDeleteArtwork.bind(this)}>Delete Image</button>
-                </div>
-
-                <div style={confirmDeleteStyle}>
-                    <p>Are you sure you want to delete this artwork?</p>
-                    <button onClick={this.onDeleteConfirm.bind(this)}>Yes, delete it</button>
-                    <button onClick={this.onDeleteCancel.bind(this)}>No, do not delete</button>
-                </div>
-
             </div>
         );
     }

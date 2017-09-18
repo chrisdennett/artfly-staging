@@ -1,0 +1,21 @@
+.artwork-editor{
+    background-color: #27ae60;
+    color: white;
+    min-height: 100vh;
+}
+
+.artwork-editor-contents{
+    padding: 20px 30px;
+}
+
+.artwork-editor-artist-section{
+    padding: 20px 0;
+}
+
+.artwork-editor-image-section{
+    display: flex;
+    flex-direction: column;
+    border: solid 2px white;
+    padding: 20px;
+    border-radius: 5px;
+}
