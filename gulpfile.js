@@ -49,6 +49,7 @@ gulp.task('make-svgs-react-ready', function () {
        .pipe(replace("letter-spacing", 'letterSpacing'))
        .pipe(replace("text-anchor", 'textAnchor'))
        .pipe(replace("fill-opacity", 'fillOpacity'))
+       .pipe(replace("stroke-opacity", 'strokeOpacity'))
        .pipe(replace("stroke-width", 'strokeWidth'))
        .pipe(replace("fill-rule", 'fillRule'))
        .pipe(replace("viewbox", 'viewBox'))
@@ -125,7 +126,7 @@ gulp.task('inject-svg-window-into-component', function () {
         .pipe(replace("fill-rule", 'fillRule'))
         .pipe(replace("viewbox", 'viewBox'))
 
-        .pipe(replace(/ width="[0-9.]*" viewBox="[[0-9. ]*"/, ''))
+        // .pipe(replace(/ width="[0-9.]*" viewBox="[[0-9. ]*"/, ''))
         .pipe(replace("<svg ", '<svg {...props} '))
 
         .pipe(gulp.dest('src/components/ArtistGallery/assets/'));

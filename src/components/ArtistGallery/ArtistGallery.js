@@ -9,6 +9,8 @@ import SvgGalleryBottom from './assets/SvgGalleryBottom';
 import SvgLeftWall from "./assets/SvgLeftWall";
 import SvgRightWall from "./assets/SvgRightWall";
 import SvgBackground from "./assets/SvgBackground";
+import BuildingSection from "./assets/buildingSection/BuildingSection";
+import Roof from "./assets/source_files/Roof";
 
 // import ArtworkThumb from "./ArtworkThumb";
 
@@ -19,6 +21,12 @@ class ArtistGallery extends Component {
         const windowX = 330;
         let galleryHeight = 0;
         let windowsHeight = 0;
+        const minGalleryPadding = 25;
+        let galleryWidth = 800;
+        if ((pageWidth - (minGalleryPadding * 2)) < galleryWidth) {
+            galleryWidth = pageWidth - (minGalleryPadding * 2);
+        }
+        const galleryX = ((pageWidth - galleryWidth) / 2);
 
 
         if (this.refs.gallery) {
@@ -29,19 +37,26 @@ class ArtistGallery extends Component {
             windowsHeight = 20;
         }
 
-        // console.log("this.refs: ", this.refs);
+        const hue = 185;
+        const saturation = 34;
+        const lightness = 61;
+        // const alpha = 255;
 
         return (
-            <div className={'gallery-scene'}>
+            <div>
 
                 <SvgBackground galleryHeight={galleryHeight} pageWidth={pageWidth} pageHeight={pageHeight}/>
 
-                <div className="gallery" ref='gallery' style={{opacity:0.2}}>
+                <div className="gallery" ref='gallery' style={{ paddingLeft: galleryX }}>
+
+
                     <div className="gallery-top">
-                        <SvgGalleryTitle firstName={artist.firstName} lastName={artist.lastName}/>
+
+                        <Roof/>
+                        {/*<SvgGalleryTitle firstName={artist.firstName} lastName={artist.lastName}/>*/}
                     </div>
 
-                    <div className="gallery-middle">
+                    {/*<div className="gallery-middle">
 
                         <SvgLeftWall height={windowsHeight}/>
 
@@ -64,10 +79,18 @@ class ArtistGallery extends Component {
                         <SvgRightWall height={windowsHeight}/>
 
 
-                    </div>
+                    </div>*/}
+
+                    <BuildingSection galleryWidth={galleryWidth}
+                                     artworkIds={artworkIds}
+                                     artworks={artworks}
+                                     hue={hue}
+                                     saturation={saturation}
+                                     lightness={lightness}
+                                     onThumbClick={onThumbClick.bind(this)}/>
 
                     <div className="gallery-bottom">
-                        <SvgGalleryBottom/>
+                        <SvgGalleryBottom />
                     </div>
                 </div>
 

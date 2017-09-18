@@ -34,7 +34,7 @@ class SvgBackground extends Component {
 
         return (
             <div className={'gallery-background'}>
-                <svg width={pageWidth} height={backgroundHeight} viewBox={`0 0 ${pageWidth} ${pageHeight}`}>
+                <svg width={pageWidth} height={backgroundHeight} viewBox={`0 0 ${pageWidth} ${backgroundHeight}`}>
 
                     <rect id="sky" height={backgroundHeight} width={pageWidth} fill="#f3f7fa"/>
 

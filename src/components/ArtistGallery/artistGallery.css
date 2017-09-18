@@ -66,6 +66,7 @@
 .gallery-bottom {
     display: flex;
     justify-content: center;
+
     /*background-color: #89b0ea;*/
     /*border: 1px solid #0005ff; !* For debugging *!*/
 }

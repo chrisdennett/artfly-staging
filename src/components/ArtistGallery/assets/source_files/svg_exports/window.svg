@@ -1,46 +1,56 @@
-<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="109.7" width="800" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 799.99974 109.72265">
- <g stroke="#000" transform="translate(206.1 -154.5)">
-  <rect stroke-linejoin="round" style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" ry="5.566" height="77.9" width="107.6" stroke-linecap="round" y="170" x="139.5" fill="#e6e6e6"/>
-  <g fill="none">
-   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m263 256.7a6.752 6.752 0 0 0 -.3848 -.0195 6.752 6.752 0 0 0 -.4785 .0176 6.752 6.752 0 0 0 -.6699 .0801 6.752 6.752 0 0 0 -.6582 .1484 6.752 6.752 0 0 0 -.6406 .2129 6.752 6.752 0 0 0 -.6152 .2754 6.752 6.752 0 0 0 -.5859 .3359 6.752 6.752 0 0 0 -.5488 .3926 6.752 6.752 0 0 0 -.5078 .4453 6.752 6.752 0 0 0 -.4590 .4941 6.752 6.752 0 0 0 -.4082 .5371 6.752 6.752 0 0 0 -.3535 .5762 6.752 6.752 0 0 0 -.2930 .6074 6.752 6.752 0 0 0 -.2324 .6328 6.752 6.752 0 0 0 -.1660 .6543 6.752 6.752 0 0 0 -.1016 .6680 6.752 6.752 0 0 0 -.0332 .6738 6.752 6.752 0 0 0 .0117 .2988h7.125v-7.031z"/>
-   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m131.4 263.7a6.752 6.752 0 0 0 .0156 -.2988 6.752 6.752 0 0 0 -.0176 -.4766 6.752 6.752 0 0 0 -.0801 -.6699 6.752 6.752 0 0 0 -.1484 -.6602 6.752 6.752 0 0 0 -.2129 -.6406 6.752 6.752 0 0 0 -.2754 -.6152 6.752 6.752 0 0 0 -.3359 -.5859 6.752 6.752 0 0 0 -.3926 -.5488 6.752 6.752 0 0 0 -.4453 -.5059 6.752 6.752 0 0 0 -.4941 -.4609 6.752 6.752 0 0 0 -.5371 -.4082 6.752 6.752 0 0 0 -.5762 -.3535 6.752 6.752 0 0 0 -.6074 -.2930 6.752 6.752 0 0 0 -.6328 -.2305 6.752 6.752 0 0 0 -.6543 -.1680 6.752 6.752 0 0 0 -.6680 -.1016 6.752 6.752 0 0 0 -.4453 -.0215v7.039h6.508z"/>
-   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m138.2 162.2a6.033 5.879 0 0 1 .014 .3690 6.033 5.879 0 0 1 -.0296 .5867 6.033 5.879 0 0 1 -.0908 .5816 6.033 5.879 0 0 1 -.1501 .5697 6.033 5.879 0 0 1 -.2059 .5510 6.033 5.879 0 0 1 -.2618 .5289 6.033 5.879 0 0 1 -.3159 .5017 6.033 5.879 0 0 1 -.3648 .4677 6.033 5.879 0 0 1 -.4118 .4303 6.033 5.879 0 0 1 -.452 .3877 6.033 5.879 0 0 1 -.4904 .3418 6.033 5.879 0 0 1 -.5236 .2925 6.033 5.879 0 0 1 -.5497 .2398 6.033 5.879 0 0 1 -.5724 .1854 6.033 5.879 0 0 1 -.5898 .1292 6.033 5.879 0 0 1 -.5986 .0697 6.033 5.879 0 0 1 -.2216 .008v82.3a6.033 5.879 0 0 1 .3979 .0187 6.033 5.879 0 0 1 .5968 .0884 6.033 5.879 0 0 1 .5846 .1462 6.033 5.879 0 0 1 .5654 .2007 6.033 5.879 0 0 1 .5428 .2551 6.033 5.879 0 0 1 .5148 .3078 6.033 5.879 0 0 1 .4799 .3554 6.033 5.879 0 0 1 .4415 .4014 6.033 5.879 0 0 1 .3979 .4405 6.033 5.879 0 0 1 .3508 .4779 6.033 5.879 0 0 1 .3002 .5102 6.033 5.879 0 0 1 .2461 .5357 6.033 5.879 0 0 1 .1902 .5578 6.033 5.879 0 0 1 .1326 .5748 6.033 5.879 0 0 1 .0715 .5833 6.033 5.879 0 0 1 .0158 .4150 6.033 5.879 0 0 1 -.014 .2602h111.3a6.033 5.879 0 0 1 -.0103 -.2602 6.033 5.879 0 0 1 .0296 -.5867 6.033 5.879 0 0 1 .0908 -.5816 6.033 5.879 0 0 1 .1483 -.5697 6.033 5.879 0 0 1 .2077 -.5510 6.033 5.879 0 0 1 .2618 -.5289 6.033 5.879 0 0 1 .3159 -.5017 6.033 5.879 0 0 1 .3648 -.4677 6.033 5.879 0 0 1 .4101 -.4303 6.033 5.879 0 0 1 .4538 -.3877 6.033 5.879 0 0 1 .4904 -.3418 6.033 5.879 0 0 1 .5236 -.2925 6.033 5.879 0 0 1 .5497 -.2398 6.033 5.879 0 0 1 .5724 -.1854 6.033 5.879 0 0 1 .5881 -.1292 6.033 5.879 0 0 1 .5986 -.0697 6.033 5.879 0 0 1 .4276 -.0153 6.033 5.879 0 0 1 .3438 .017v-82.31a6.033 5.879 0 0 1 -.3438 .0119 6.033 5.879 0 0 1 -.6021 -.0289 6.033 5.879 0 0 1 -.5968 -.0884 6.033 5.879 0 0 1 -.5846 -.1446 6.033 5.879 0 0 1 -.5654 -.2024 6.033 5.879 0 0 1 -.5428 -.2551 6.033 5.879 0 0 1 -.5148 -.3078 6.033 5.879 0 0 1 -.4799 -.3554 6.033 5.879 0 0 1 -.4415 -.3996 6.033 5.879 0 0 1 -.3979 -.4422 6.033 5.879 0 0 1 -.3508 -.4779 6.033 5.879 0 0 1 -.3002 -.5102 6.033 5.879 0 0 1 -.2460 -.5357 6.033 5.879 0 0 1 -.1902 -.5578 6.033 5.879 0 0 1 -.1326 -.5731 6.033 5.879 0 0 1 -.0715 -.5833 6.033 5.879 0 0 1 -.0158 -.4166 6.033 5.879 0 0 1 .0192 -.3690h-111.3z"/>
-   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m255.9 155a6.752 6.752 0 0 0 -.0215 .4238 6.752 6.752 0 0 0 .0176 .4785 6.752 6.752 0 0 0 .0801 .6699 6.752 6.752 0 0 0 .1484 .6582 6.752 6.752 0 0 0 .2129 .6406 6.752 6.752 0 0 0 .2754 .6152 6.752 6.752 0 0 0 .3359 .5859 6.752 6.752 0 0 0 .3926 .5488 6.752 6.752 0 0 0 .4453 .5078 6.752 6.752 0 0 0 .4941 .4590 6.752 6.752 0 0 0 .5371 .4082 6.752 6.752 0 0 0 .5762 .3535 6.752 6.752 0 0 0 .6074 .2930 6.752 6.752 0 0 0 .6328 .2324 6.752 6.752 0 0 0 .6543 .1660 6.752 6.752 0 0 0 .6680 .1016 6.752 6.752 0 0 0 .6738 .0332 6.752 6.752 0 0 0 .3848 -.0137v-7.162h-7.115z"/>
-   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m124.9 162.1a6.752 6.752 0 0 0 .2480 -.01 6.752 6.752 0 0 0 .6699 -.0801 6.752 6.752 0 0 0 .6602 -.1484 6.752 6.752 0 0 0 .6406 -.2129 6.752 6.752 0 0 0 .6152 -.2754 6.752 6.752 0 0 0 .5859 -.3359 6.752 6.752 0 0 0 .5488 -.3926 6.752 6.752 0 0 0 .5059 -.4453 6.752 6.752 0 0 0 .4609 -.4941 6.752 6.752 0 0 0 .4082 -.5371 6.752 6.752 0 0 0 .3535 -.5762 6.752 6.752 0 0 0 .2930 -.6074 6.752 6.752 0 0 0 .2305 -.6328 6.752 6.752 0 0 0 .1680 -.6543 6.752 6.752 0 0 0 .1016 -.6680 6.752 6.752 0 0 0 .0332 -.6738 6.752 6.752 0 0 0 -.0156 -.4238h-6.508v7.168z"/>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="231" width="212.3" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 212.31675 231.00558">
+ <rect id="surroundHightlight" style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" ry="10.55" height="231" width="212.3" y=".00001695" x="-.002602" fill="#ebdcb9"/>
+ <path id="surroundLowlight" style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m209.5 3.048s2.864 4.563 2.864 7.504v209.9c0 5.846-4.321 10.55-9.688 10.55h-192.7c-2.857 0-7.187-3.462-7.187-3.462z" fill="#bfac89"/>
+ <rect id="surround" style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" ry="7.638" height="219.1" width="199.7" y="5.517" x="5.515" fill="#e2cba1"/>
+ <rect id="surroundInnerLowlight" style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" ry="5.352" height="165.4" width="165.4" y="22.5" x="24.12" fill="#bfac89"/>
+ <path id="surroundInnderHighlight" style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m25.38 185.9c.7414 1.008 2.221 1.913 4.087 1.913h154.6c2.965 0 5.352-2.388 5.352-5.354v-154.6c0-1.865-.4743-2.554-1.479-3.656z" fill="#ebdcb9"/>
+ <text id="artworkNumber" style="word-spacing:0px;letter-spacing:0px" line-height="125%" xml:space="preserve" transform="scale(1.002 .9984)" font-size="48.88px" y="218.37242" x="93.878105" font-family="sans-serif" fill="#bfac89"><tspan font-weight="900" font-size="36.66px" y="218.37242" x="93.878105" font-family="&apos;Source Code Pro&apos;" fill="#bfac89">1</tspan></text>
+ <rect id="windowInside" style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="151" width="150.3" y="27.47" x="31.53" fill="#fff"/>
+ <g id="blinds">
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="14.93" width="145.2" y="33.15" x="33.51" fill="#ececec"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="14.93" width="145.2" y="47.46" x="33.51" fill="#ececec"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" transform="scale(1,-1)" height="1.324" width="145.2" y="-48.67" x="33.51" fill="#b3b3b3"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="14.93" width="145.2" y="61.29" x="33.51" fill="#ececec"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" transform="scale(1,-1)" height="1.324" width="145.2" y="-62.5" x="33.51" fill="#b3b3b3"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="14.93" width="145.2" y="75.12" x="33.51" fill="#ececec"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" transform="scale(1,-1)" height="1.324" width="145.2" y="-76.33" x="33.51" fill="#b3b3b3"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="14.93" width="145.2" y="89.18" x="33.51" fill="#ececec"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" transform="scale(1,-1)" height="1.324" width="145.2" y="-90.39" x="33.51" fill="#b3b3b3"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="14.93" width="145.2" y="103.7" x="33.51" fill="#ececec"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" transform="scale(1,-1)" height="1.324" width="145.2" y="-104.9" x="33.51" fill="#b3b3b3"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="14.93" width="145.2" y="146.2" x="33.51" fill="#ececec"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="14.93" width="145.2" y="118.3" x="33.51" fill="#ececec"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" transform="scale(1,-1)" height="1.324" width="145.2" y="-119.5" x="33.51" fill="#b3b3b3"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="14.93" width="145.2" y="160" x="33.51" fill="#ececec"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="14.93" width="145.2" y="132.3" x="33.51" fill="#ececec"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" transform="scale(1,-1)" height="1.324" width="145.2" y="-161.2" x="33.51" fill="#b3b3b3"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" transform="scale(1,-1)" height="1.324" width="145.2" y="-133.6" x="33.51" fill="#b3b3b3"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" transform="scale(1,-1)" height="1.324" width="145.2" y="-175.5" x="33.51" fill="#b3b3b3"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" transform="scale(1,-1)" height="1.324" width="145.2" y="-147.4" x="33.51" fill="#b3b3b3"/>
+ </g>
+ <g id="frameGroup">
+  <g id="frameLowlights" fill="#333">
+   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m37.96 34.5v12.51h2v-10.51h11.4v-2h-13.4z"/>
+   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m55.36 34.5v12.51h2v-10.51h102v-2h-104z"/>
+   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m163.4 34.5v12.51h2v-10.51h10.51v-2h-12.51z"/>
+   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m37.96 51v105.4h2v-103.4h11.4v-2h-13.4z"/>
+   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m55.36 51v105.4h2v-103.4h102v-2h-104z"/>
+   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m163.4 51v105.4h2v-103.4h10.51v-2h-12.51z"/>
+   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m37.96 160.4v12.74h2v-10.74h11.4v-2h-13.4z"/>
+   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m55.36 160.4v12.74h2v-10.74h102v-2h-104z"/>
+   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m163.4 160.4v12.74h2v-10.74h10.51v-2h-12.51z"/>
   </g>
-  <g stroke-width="1px" fill="none">
-   <path d="m124.4 209.3h5.164"/>
-   <path d="m258.4 209.3h5.164"/>
-   <path d="m193.9 154.5v5.164"/>
-   <path d="m193.9 259v5.164"/>
+  <path id="frame" style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m29.09 26.31v155h155.7v-155h-155.7zm8.881 8.19h13.4v12.51h-13.4v-12.51zm17.4 0h104v12.51h-104v-12.51zm108 0h12.51v12.51h-12.51v-12.51zm-125.4 16.51h13.4v105.4h-13.4v-105.4zm17.4 0h104v105.4h-104v-105.4zm108 0h12.51v105.4h-12.51v-105.4zm-125.4 109.4h13.4v12.74h-13.4v-12.74zm17.4 0h104v12.74h-104v-12.74zm108 0h12.51v12.74h-12.51v-12.74z" fill="#808080"/>
+  <g id="frameHighlights" fill="#ccc">
+   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m49.36 34.48v10.51h-11.4v2h13.4v-12.51h-2z"/>
+   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m157.4 34.48v10.51h-102v2h104v-12.51h-2z"/>
+   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m173.9 34.48v10.51h-10.51v2h12.51v-12.51h-2z"/>
+   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m49.36 50.99v103.4h-11.4v2h13.4v-105.4h-2z"/>
+   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m157.4 50.99v103.4h-102v2h104v-105.4h-2z"/>
+   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m173.9 50.99v103.4h-10.51v2h12.51v-105.4h-2z"/>
+   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m49.36 160.4v10.74h-11.4v2h13.4v-12.74h-2z"/>
+   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m157.4 160.4v10.74h-102v2h104v-12.74h-2z"/>
+   <path style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m173.9 160.4v10.74h-10.51v2h12.51v-12.74h-2z"/>
   </g>
  </g>
- <path d="m312.8 5.324v99.08" stroke="#000" stroke-width="1px" fill="none"/>
- <path d="m285.3 20.88v67.96" stroke="#000" stroke-width="1px" fill="none"/>
- <path d="m257.9 8.599v92.52" stroke="#000" stroke-width="1px" fill="none"/>
- <path d="m230.5 38.08v33.57" stroke="#000" stroke-width="1px" fill="none"/>
- <g transform="translate(-20.58)" stroke="#000" stroke-width="1px" fill="none">
-  <path d="m224.1 20.47h-60.59"/>
-  <path d="m224.1 88.47h-60.59"/>
-  <path d="m224.1 54.47h-60.59"/>
- </g>
- <path d="m116 5.324v99.08" stroke="#000" stroke-width="1px" fill="none"/>
- <path d="m88.54 20.88v67.96" stroke="#000" stroke-width="1px" fill="none"/>
- <path d="m61.1 8.599v92.52" stroke="#000" stroke-width="1px" fill="none"/>
- <path d="m33.66 38.08v33.57" stroke="#000" stroke-width="1px" fill="none"/>
- <path d="m6.215 8.599v92.52" stroke="#000" stroke-width="1px" fill="none"/>
- <path d="m478.2 5.324v99.08" stroke="#000" stroke-width="1px" fill="none"/>
- <path d="m505.7 20.88v67.96" stroke="#000" stroke-width="1px" fill="none"/>
- <path d="m533.1 8.599v92.52" stroke="#000" stroke-width="1px" fill="none"/>
- <path d="m560.5 38.08v33.57" stroke="#000" stroke-width="1px" fill="none"/>
- <g transform="matrix(-1 0 0 1 811.6 3.684e-8)" stroke="#000" stroke-width="1px" fill="none">
-  <path d="m224.1 20.47h-60.59"/>
-  <path d="m224.1 88.47h-60.59"/>
-  <path d="m224.1 54.47h-60.59"/>
- </g>
- <path d="m675 5.324v99.08" stroke="#000" stroke-width="1px" fill="none"/>
- <path d="m702.5 20.88v67.96" stroke="#000" stroke-width="1px" fill="none"/>
- <path d="m729.9 8.599v92.52" stroke="#000" stroke-width="1px" fill="none"/>
- <path d="m757.3 38.08v33.57" stroke="#000" stroke-width="1px" fill="none"/>
- <path d="m784.8 8.599v92.52" stroke="#000" stroke-width="1px" fill="none"/>
 </svg>
