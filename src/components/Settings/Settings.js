@@ -1,4 +1,7 @@
 import React from 'react';
+
+import './settings.css';
+
 import { Link } from 'react-router-dom'
 import _ from 'lodash';
 
@@ -41,36 +44,49 @@ const Settings = function ({ userArtists, subscription, price, onSubscribe, onCa
             <div>
                 <p>You've cancelled your subscription - you can access your account until: {subscription.paidUntil}</p>
                 <p>Subscribe for {price} a month to save up to 1000 artworks</p>
-                <button onClick={onSubscribe}>Subscribe</button>
+                <button className={'settings-button'} onClick={onSubscribe}>Subscribe</button>
             </div>
         )
     }
 
     return (
-        <div>
+        <div className={'settings'}>
             <h1>Settings</h1>
-            <hr/>
-            <h2>Subscription:</h2>
 
-            {subscriptionContent}
+            <section className={'settings-subscription-section'}>
+                <h2>Subscription</h2>
+                {subscriptionContent}
+            </section>
 
-            <hr/>
-            <h2>Artists</h2>
-            <Link to={`/add-or-edit-artist/`}>Add New Artist</Link>
-            {
-                _.map(userArtists, (artistGallery) => {
-                    const { artist, id, totalArtworks } = artistGallery;
+            <section>
+                <h2>Artists</h2>
+                <section className={'settings-add-new-artist-section'}>
+                    <Link className={'settings-button'} to={`/add-or-edit-artist/`}>Add New Artist</Link>
+                </section>
+                <section className={'settings-artists-section'}>
+                    {
+                        _.map(userArtists, (artistGallery) => {
+                            const { artist, id, totalArtworks } = artistGallery;
 
-                    return (
-                        <div key={id}>
-                            <p>First name: {artist.firstName}</p>
-                            <p>Last name: {artist.lastName}</p>
-                            <p>Total artworks: {totalArtworks}</p>
-                            <Link to={`/gallery/${id}`}>Open Gallery</Link>
-                            <Link to={`/add-or-edit-artist/${id}`}>Edit Artist</Link>
-                        </div>)
-                })
-            }
+                            return (
+                                <div key={id} className={"settings-artist"}>
+                                    <p><span className={'settings-artist-field'}>First name:</span> {artist.firstName}
+                                    </p>
+                                    <p><span className={'settings-artist-field'}>Last name:</span> {artist.lastName}</p>
+                                    <p><span className={'settings-artist-field'}>Total artworks:</span> {totalArtworks}
+                                    </p>
+                                    <div className={'settings-artist-buttons'}>
+                                        <Link className={'settings-button'} to={`/gallery/${id}`}>Open Gallery</Link>
+                                        <Link className={'settings-button'} to={`/add-or-edit-artist/${id}`}>Edit
+                                            Artist</Link>
+                                    </div>
+                                </div>)
+                        })
+                    }
+                </section>
+            </section>
+
+
         </div>
     )
 };

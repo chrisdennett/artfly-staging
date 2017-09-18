@@ -1,0 +1,74 @@
+.settings{
+    background-color: #2cb1a0;
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.settings section{
+    margin-bottom: 20px;
+}
+
+.settings p{
+    padding: 0;
+    margin: 0.3em;
+}
+
+.settings-add-new-artist-section{
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.settings-artists-section{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.settings-artist{
+    background-color: #2cb1a0;
+    border: solid white 2px;
+    border-radius: 5px;
+    padding: 1.5em;
+    margin: 1em;
+}
+
+.settings-artist-field{
+    opacity: 0.6;
+}
+
+.settings-artist-buttons{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.settings-button{
+    flex-grow: 1;
+    text-decoration: none;
+    padding: 15px 25px;
+    margin: 10px;
+    font-size: 24px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.settings-button:hover {background-color: rgba(0, 0, 0, 0.4);}
+
+.settings-button:active {
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 5px rgba(0, 0, 0, 0.6);
+}
+
+@media only screen and (max-width: 500px) {
+    .settings{
+        padding: 20px 10px;
+    }
+}
