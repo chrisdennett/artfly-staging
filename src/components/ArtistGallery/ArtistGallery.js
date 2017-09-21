@@ -6,6 +6,7 @@ import SvgBackground from "./assets/SvgBackground";
 import BuildingSection from "./assets/BuildingSection";
 import Roof from "./assets/source_files/Roof";
 import WindowsSection from "./assets/WindowSection";
+import NameSection from "./assets/NameSection";
 
 class ArtistGallery extends Component {
     render() {
@@ -33,6 +34,8 @@ class ArtistGallery extends Component {
         const lightness = 61;
         // const alpha = 255;
 
+        const nameSectionHue = 290;
+
         return (
             <div>
 
@@ -45,6 +48,12 @@ class ArtistGallery extends Component {
                         <Roof/>
                         {/*<SvgGalleryTitle firstName={artist.firstName} lastName={artist.lastName}/>*/}
                     </div>
+
+                    <NameSection galleryWidth={galleryWidth}
+                                 hue={nameSectionHue}
+                                 saturation={saturation}
+                                 lightness={lightness}/>
+
 
                     {/*<div className="gallery-middle">
 

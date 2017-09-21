@@ -1,0 +1,15 @@
+<svg height="350" width="800" viewBox="0 0 800.00001 350">
+    <path d="M37.08 37.82h717.7" strokeOpacity=".124" stroke="#000" strokeWidth="3" fill="none"/>
+    <path d="M37.08 39.82h717.7" strokeOpacity=".507" stroke="#000" fill="none"/>
+    <path d="M37.08 35.82h717.7" strokeOpacity=".468" fillRule="evenodd" stroke="#fff" fill="#fff"/>
+
+    <text fontSize="40" y="114.634" x="395.199" fontFamily="sans-serif" fill="#579c9e" wordSpacing="0" letterSpacing="0">
+        <tspan fontWeight="900" fontSize="45" y="114.634" x="395.199" fontFamily="'Source Code Pro'"><tspan style={{textAlign:"center"}} textAnchor="middle">GALLERY OF AWESOME ART B</tspan>Y</tspan>
+    </text>
+    <text fontSize="33.3" y="196.397" x="395.127" fontFamily="sans-serif" fill="#579c9e" wordSpacing="0" letterSpacing="0">
+        <tspan style={{textAlign:"center"}} fontWeight="900" fontSize="104.1" y="196.397" x="395.127" fontFamily="'Source Code Pro'" textAnchor="middle">123456789012</tspan>
+    </text>
+    <text fontSize="33.3" y="278.397" x="395.127" fontFamily="sans-serif" fill="#579c9e" wordSpacing="0" letterSpacing="0">
+        <tspan style={{textAlign:"center"}} fontWeight="900" fontSize="104.1" y="278.397" x="395.127" fontFamily="'Source Code Pro'" textAnchor="middle">123456789012</tspan>
+    </text>
+</svg>
