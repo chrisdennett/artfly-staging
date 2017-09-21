@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import './addArtwork.css';
 
 import ImageCropAndRotate from '../ImageCropAndRotate/ImageCropAndRotate';
 
 import { fetchArtist, uploadImage, clearImageUpload } from '../../actions/ArtistGalleryActions';
 import ArtistSelector from "../ArtistSelector/ArtistSelector";
+import AddArtButton from "../AppControls/UserControls/assets/AddArtButton";
 
 // The role of this component is to:
 // - create a custom file input button with a given label and id
@@ -100,39 +102,21 @@ class PhotoSelector extends Component {
 
     render() {
         if (this.state.imgIsSelected) {
-            const fullScreenStyle = {
-                height: '100%',
-                width: '100%',
-                position: 'fixed',
-                zIndex: 1,
-                left: 0,
-                top: 0,
-                backgroundColor: 'rgb(0,0,0)',
-                overflowX: 'hidden',
-                transition: '0.5s mode'
-            };
-            const contentStyle = {
-                position: 'relative',
-                color: '#fff',
-                top: '2%',
-                left: '2%'
-            };
 
             if (this.props.imageUploadInfo && this.props.imageUploadInfo.progress) {
                 const { progress } = this.props.imageUploadInfo;
 
                 return (
-                    <div style={fullScreenStyle}>
-                        <div style={contentStyle}>
-                            <h1>Saving:</h1>
+                    <div className={'add-artwork-screen'}>
+                        <div className={'add-artwork-screen-content'}>
+                            <h1>Artwork Added</h1>
                             {progress < 100 &&
                             <div>progress: {progress}%</div>
                             }
 
                             {progress === 100 &&
                             <div>
-                                <p>Artwork saved</p>
-                                <button onClick={this.showPictureInGallery.bind(this)}>Open in Gallery</button>
+                                <button className={'butt'} onClick={this.showPictureInGallery.bind(this)}>Open in Gallery</button>
                                 <span>
                                     <input className="inputfile"
                                            onChange={this.handleAddAnotherImageSelect.bind(this)}
@@ -153,23 +137,15 @@ class PhotoSelector extends Component {
             }
 
             return (
-                <div style={fullScreenStyle}>
-                    <div style={contentStyle}>
-                        <h1>New Image:</h1>
-
-                        <button disabled={!this.state.cropImg} onClick={this.onSave.bind(this)}>SAVE</button>
-                        <button onClick={this.onCancel.bind(this)}>CANCEL</button>
-
-                        <ArtistSelector artists={this.props.artists}
-                                        selectedArtistId={this.state.selectedArtistId}
-                                        onArtistSelected={this.onArtistSelected}/>
-
-                        <hr/>
+                <div className={'add-artwork-screen'}>
+                    <div className={'add-artwork-screen-content'}>
+                        <h1>Add Artwork</h1>
 
                         {this.state.imgSrc &&
-                        <div style={{ width: '50%' }}>
-                            <button disabled={!this.state.cropImg} onClick={() => { this.cropper.openEditScreen(); }}>
-                                Crop or Rotate picture
+                        <div className={'add-artwork-image-section'}>
+                            <button className={'butt'} disabled={!this.state.cropImg}
+                                    onClick={() => { this.cropper.openEditScreen(); }}>
+                                Edit picture
                             </button>
                             <ImageCropAndRotate url={this.state.imgSrc}
                                                 ref={instance => { this.cropper = instance; }}
@@ -179,6 +155,16 @@ class PhotoSelector extends Component {
                                                 onCropImageSave={this.onCropImageSave.bind(this)}/>
                         </div>
                         }
+                        <div className={'artwork-editor-artist-section'}>
+                            <ArtistSelector artists={this.props.artists}
+                                            selectedArtistId={this.state.selectedArtistId}
+                                            onArtistSelected={this.onArtistSelected}/>
+                        </div>
+                        <button className={'butt'} disabled={!this.state.cropImg} onClick={this.onSave.bind(this)}>
+                            SAVE
+                        </button>
+                        <button className={'butt'} onClick={this.onCancel.bind(this)}>CANCEL</button>
+
                     </div>
                 </div>
             )
@@ -196,7 +182,7 @@ class PhotoSelector extends Component {
                 <label disabled={this.props.disabled}
                        className={this.props.disabled ? 'disabled' : ''}
                        htmlFor={id}>
-                    Add Artwork
+                    <AddArtButton/>
                 </label>
             </span>
         );

@@ -1,24 +1,14 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
-
 import './artistGallery.css';
 
-import SvgGalleryTitle from './assets/SvgGalleryTitle';
-import SvgWindow from './assets/SvgWindow';
 import SvgGalleryBottom from './assets/SvgGalleryBottom';
-import SvgLeftWall from "./assets/SvgLeftWall";
-import SvgRightWall from "./assets/SvgRightWall";
 import SvgBackground from "./assets/SvgBackground";
 import BuildingSection from "./assets/buildingSection/BuildingSection";
 import Roof from "./assets/source_files/Roof";
 
-// import ArtworkThumb from "./ArtworkThumb";
-
 class ArtistGallery extends Component {
     render() {
         const { artist, artworkIds, artworks, onThumbClick, pageWidth, pageHeight } = this.props;
-        const windowWidth = 139;
-        const windowX = 330;
         let galleryHeight = 0;
         let windowsHeight = 0;
         const minGalleryPadding = 25;

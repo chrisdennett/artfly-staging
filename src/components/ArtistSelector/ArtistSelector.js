@@ -4,7 +4,7 @@ import _ from 'lodash';
 const ArtistSelector = function (props) {
     return (
         <div>
-            <label className={'form-field'} htmlFor="artistSelector">Artist: </label>
+            <label className={'form-field'} htmlFor="artistSelector">Select Artist: </label>
             <select value={props.selectedArtistId}
                     onChange={(e) => {props.onArtistSelected(e.target.value)}}>
                 {

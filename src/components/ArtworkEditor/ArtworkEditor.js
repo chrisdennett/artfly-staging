@@ -77,7 +77,7 @@ class ArtworkEditor extends Component {
                                             onCropDataConfirm={onCropDataConfirm}
                                             onCropImageSave={onCropImageSave}/>
                         <button className={'butt'} onClick={() => { this.cropper.openEditScreen(); }}>
-                            Edit Image
+                            Crop / Rotate
                         </button>
                     </div>
 

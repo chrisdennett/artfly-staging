@@ -52,6 +52,7 @@ gulp.task('make-svgs-react-ready', function () {
        .pipe(replace("stroke-opacity", 'strokeOpacity'))
        .pipe(replace("stroke-width", 'strokeWidth'))
        .pipe(replace("fill-rule", 'fillRule'))
+       .pipe(replace("stroke-linejoin", 'strokeLinejoin'))
        .pipe(replace("viewbox", 'viewBox'))
 
        .pipe(gulp.dest('src/components/ArtistGallery/assets/source_files/svg_reactReady/'));

@@ -51,42 +51,42 @@ const Settings = function ({ userArtists, subscription, price, onSubscribe, onCa
 
     return (
         <div className={'settings'}>
-            <h1>Settings</h1>
+            <div className={'settings-content'}>
+                <h1>Settings</h1>
 
-            <section className={'settings-subscription-section'}>
-                <h2>Subscription</h2>
-                {subscriptionContent}
-            </section>
-
-            <section>
-                <h2>Artists</h2>
-                <section className={'settings-add-new-artist-section'}>
-                    <Link className={'butt'} to={`/add-or-edit-artist/`}>Add New Artist</Link>
+                <section className={'settings-subscription-section'}>
+                    <h2>Subscription</h2>
+                    {subscriptionContent}
                 </section>
-                <section className={'settings-artists-section'}>
-                    {
-                        _.map(userArtists, (artistGallery) => {
-                            const { artist, id, totalArtworks } = artistGallery;
 
-                            return (
-                                <div key={id} className={"settings-artist"}>
-                                    <p><span className={'form-field'}>First name:</span> {artist.firstName}
-                                    </p>
-                                    <p><span className={'form-field'}>Last name:</span> {artist.lastName}</p>
-                                    <p><span className={'form-field'}>Total artworks:</span> {totalArtworks}
-                                    </p>
-                                    <div className={'settings-artist-buttons'}>
-                                        <Link className={'butt'} to={`/gallery/${id}`}>Open Gallery</Link>
-                                        <Link className={'butt'} to={`/add-or-edit-artist/${id}`}>Edit
-                                            Artist</Link>
-                                    </div>
-                                </div>)
-                        })
-                    }
+                <section>
+                    <h2>Artists</h2>
+                    <section className={'settings-add-new-artist-section'}>
+                        <Link className={'butt'} to={`/add-or-edit-artist/`}>Add New Artist</Link>
+                    </section>
+                    <section className={'settings-artists-section'}>
+                        {
+                            _.map(userArtists, (artistGallery) => {
+                                const { artist, id, totalArtworks } = artistGallery;
+
+                                return (
+                                    <div key={id} className={"settings-artist"}>
+                                        <p><span className={'form-field'}>First name:</span> {artist.firstName}
+                                        </p>
+                                        <p><span className={'form-field'}>Last name:</span> {artist.lastName}</p>
+                                        <p><span className={'form-field'}>Total artworks:</span> {totalArtworks}
+                                        </p>
+                                        <div className={'settings-artist-buttons'}>
+                                            <Link className={'butt'} to={`/gallery/${id}`}>Open Gallery</Link>
+                                            <Link className={'butt'} to={`/add-or-edit-artist/${id}`}>Edit
+                                                Artist</Link>
+                                        </div>
+                                    </div>)
+                            })
+                        }
+                    </section>
                 </section>
-            </section>
-
-
+            </div>
         </div>
     )
 };

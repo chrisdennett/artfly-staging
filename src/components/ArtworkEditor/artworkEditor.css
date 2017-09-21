@@ -19,3 +19,7 @@
     padding: 20px;
     border-radius: 5px;
 }
+
+.slim-area{
+    background-color: rgba(0, 0, 0, 0.73);
+}

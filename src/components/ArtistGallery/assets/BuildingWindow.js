@@ -34,9 +34,9 @@ const BuildingWindow = function (props) {
 
             <image onClick={() => {props.onThumbClick(props.artwork.id)}}
                    x={58}
-                   y={70}
+                   y={53}
                    width={100}
-                   height={70}
+                   height={100}
                    href={props.artwork.url_thumb}/>
 
             <g id="frameGroup">

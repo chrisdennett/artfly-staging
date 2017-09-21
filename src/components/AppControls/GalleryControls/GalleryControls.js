@@ -1,5 +1,8 @@
 import React from "react";
 import { Link } from 'react-router-dom'
+import GalleryButton from "./assets/GalleryButton";
+import PrevButton from "./assets/PrevButton";
+import NextButton from "./assets/NextButton";
 
 const GalleryControls = function (props) {
     const { artworkId, galleryId, nextArtworkId, prevArtworkId } = props;
@@ -19,16 +22,16 @@ const GalleryControls = function (props) {
         nextButtonStyles.display = 'none';
     }
     else if (!artworkId) {
-        nextButtonLabel = "Enter >";
+        nextButtonLabel = "enter";
         prevButtonStyles.display = 'none';
     }
     else {
         if (!nextArtworkId) {
-            nextButtonLabel = 'exit >';
+            nextButtonLabel = 'exit';
             nextPath = `/gallery/${galleryId}`;
         }
         if (!prevArtworkId) {
-            prevButtonLabel = '< entrance';
+            prevButtonLabel = 'exit';
             prevPath = `/gallery/${galleryId}`;
         }
     }
@@ -39,9 +42,11 @@ const GalleryControls = function (props) {
 
     return (
         <div className="controls-block">
-            <Link to={`/gallery/${galleryId}`}>Gallery Home</Link>
-            <Link to={prevPath}>{prevButtonLabel}</Link>
-            <Link to={nextPath}>{nextButtonLabel}</Link>
+            <Link to={`/gallery/${galleryId}`}><GalleryButton/></Link>
+            {/*<Link to={prevPath}>{prevButtonLabel}</Link>*/}
+            <Link to={prevPath}><PrevButton label={prevButtonLabel}/></Link>
+            {/*<Link to={nextPath}>{nextButtonLabel}</Link>*/}
+            <Link to={nextPath}><NextButton label={nextButtonLabel}/></Link>
         </div>
     )
 };

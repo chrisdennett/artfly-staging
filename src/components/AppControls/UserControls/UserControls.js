@@ -1,7 +1,10 @@
 import React from "react";
 import { Link, Redirect } from 'react-router-dom';
 
-import PhotoSelector from '../../PhotoSelector/PhotoSelector';
+import AddArtwork from '../../AddArtwork/AddArtwork';
+import LoginButton from "./assets/LoginButton";
+import LogoutButton from "./assets/LogoutButton";
+import SettingsButton from "./assets/SettingsButton";
 
 const UserControls = function (props) {
     const { userStatus } = props;
@@ -17,18 +20,19 @@ const UserControls = function (props) {
         return <Redirect to={'/add-or-edit-user/'}/>
     }
     else if (userStatus === "none") {
-        renderContent = <button onClick={props.login}>Sign up / Log in</button>
+        // renderContent = <button onClick={props.login}><LoginButton/></button>
+        renderContent = <LoginButton onClick={props.login}/>
     }
     else {
         renderContent =
             <span>
                 {(!props.artworkId || onArtworkEditorPage) ? "" : <Link to={`/artwork-editor/${props.artworkId}`}>EDIT</Link> }
 
-                <PhotoSelector history={props.history} />
+                <AddArtwork history={props.history} />
 
-                <Link to="/settings">Settings</Link>
+                <Link to="/settings"><SettingsButton/></Link>
 
-                <button onClick={props.logout}>Log out</button>
+                <LogoutButton onClick={props.logout}/>
             </span>
     }
 

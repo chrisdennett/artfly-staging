@@ -47,19 +47,7 @@ input{
     border: none;
 }
 
-.descriptions{
-    line-height: 1.3em;
-    font-weight: 400;
-    font-size: 2em;
-}
-
-a{
-    padding: 5px;
-}
-
 .controls-block{
-    padding: 10px;
-    border: solid 1px #000;
     display: inline-block;
 }
 
@@ -85,13 +73,10 @@ a{
 }
 
 .inputfile + label {
-    font-size: 13px;
-    color: white;
-    background-color: black;
     display: inline-block;
-    padding: 3px 10px;
     margin: 0;
     cursor: pointer;
+    line-height: 0;
 }
 
 .inputfile + label * {
@@ -99,7 +84,7 @@ a{
 }
 
 .inputfile + label:hover {
-    background-color: red;
+    /*background-color: red;*/
 }
 
 label.disabled{
@@ -114,6 +99,15 @@ label.disabled{
 
 .form-field{
     opacity: 0.7;
+}
+
+.main-butt{
+    padding: 0;
+    margin: 0;
+    border: none;
+    outline: none;
+    width: 65px;
+    display: inline-block;
 }
 
 .butt{
