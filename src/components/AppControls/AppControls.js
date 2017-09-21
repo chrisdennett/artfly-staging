@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import UserControlsContainer from './UserControls/UserControlsContainer';
 import GalleryControlsContainer from './GalleryControls/GalleryControlsContainer';
-import Logo from "./Logo";
+import HomeButton from "./Logo";
 
 const AppControls = function ({ history, match }) {
     const { galleryId, artworkId } = match.params;
@@ -11,12 +11,9 @@ const AppControls = function ({ history, match }) {
     return (
         <div>
             <div style={{ position: 'fixed', top: 0, zIndex: 1001 }}>
-
-
-                    <Link to="/">
-                        <Logo/>
-                    </Link>
-
+                <Link to="/">
+                    <HomeButton/>
+                </Link>
             </div>
 
             <div style={{ position: 'fixed', top: 0, right: 0, zIndex: 1002 }}>

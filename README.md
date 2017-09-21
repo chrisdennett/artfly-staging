@@ -484,7 +484,7 @@ console.log(logo); // /logo.84287d09.png
 
 function Header() {
   // Import result is the URL of your image
-  return <img src={logo} alt="Logo" />;
+  return <img src={logo} alt="HomeButton" />;
 }
 
 export default Header;
@@ -495,7 +495,7 @@ This ensures that when the project is built, Webpack will correctly move the ima
 This works in CSS too:
 
 ```css
-.Logo {
+.HomeButton {
   background-image: url(./logo.png);
 }
 ```

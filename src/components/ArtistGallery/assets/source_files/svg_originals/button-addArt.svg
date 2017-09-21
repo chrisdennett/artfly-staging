@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="67.437508"
+   height="65"
+   viewBox="0 0 67.437508 65.000001"
+   id="svg8088"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="button-addArt.svg">
+  <defs
+     id="defs8090" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ebebeb"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.5253345"
+     inkscape:cx="32.127872"
+     inkscape:cy="24.167894"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="px"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata8093">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       id="rect8640-8-2-4"
+       width="67.489159"
+       height="65"
+       x="0"
+       y="0"
+       ry="7.7186708" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:9.66967773px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="8.6173019"
+       y="56.825848"
+       id="text6917"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan6919"
+         x="8.6173019"
+         y="56.825848"
+         style="font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;font-size:11.85503292px;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Heavy'">add art</tspan></text>
+    <path
+       id="path6693"
+       d="m 45.298391,36.111504 -23.159385,0 c -1.475842,0 -2.67223,-1.183351 -2.67223,-2.643132 l 0,-15.85874 c 0,-1.459776 1.196388,-2.643126 2.67223,-2.643126 l 23.159385,0 c 1.475842,0 2.67223,1.18335 2.67223,2.643126 l 0,15.85874 c 0,1.459781 -1.196388,2.643132 -2.67223,2.643132 z M 25.701969,18.050154 c -1.721805,0 -3.11758,1.380609 -3.11758,3.083653 0,1.703044 1.395775,3.083649 3.11758,3.083649 1.721843,0 3.117613,-1.380605 3.117613,-3.083649 0,-1.703044 -1.39577,-3.083653 -3.117613,-3.083653 z m -2.672231,14.537175 21.377887,0 0,-6.167264 -4.872077,-4.819024 c -0.260902,-0.258032 -0.683875,-0.258032 -0.944811,0 l -7.544269,7.462117 -3.090612,-3.056936 c -0.260903,-0.258037 -0.683871,-0.258037 -0.944811,0 l -3.981307,3.93798 0,2.643127 z"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       id="rect7622"
+       width="38.236805"
+       height="30.052284"
+       x="14.600298"
+       y="10.512864"
+       ry="5.4667058" />
+  </g>
+</svg>

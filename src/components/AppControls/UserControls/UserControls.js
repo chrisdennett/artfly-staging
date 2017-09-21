@@ -5,6 +5,7 @@ import AddArtwork from '../../AddArtwork/AddArtwork';
 import LoginButton from "./assets/LoginButton";
 import LogoutButton from "./assets/LogoutButton";
 import SettingsButton from "./assets/SettingsButton";
+import EditButton from "../GalleryControls/assets/EditButton";
 
 const UserControls = function (props) {
     const { userStatus } = props;
@@ -26,7 +27,7 @@ const UserControls = function (props) {
     else {
         renderContent =
             <span>
-                {(!props.artworkId || onArtworkEditorPage) ? "" : <Link to={`/artwork-editor/${props.artworkId}`}>EDIT</Link> }
+                {(!props.artworkId || onArtworkEditorPage) ? "" : <Link to={`/artwork-editor/${props.artworkId}`}><EditButton/></Link> }
 
                 <AddArtwork history={props.history} />
 
