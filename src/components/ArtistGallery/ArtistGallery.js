@@ -3,8 +3,9 @@ import './artistGallery.css';
 
 import SvgGalleryBottom from './assets/SvgGalleryBottom';
 import SvgBackground from "./assets/SvgBackground";
-import BuildingSection from "./assets/buildingSection/BuildingSection";
+import BuildingSection from "./assets/BuildingSection";
 import Roof from "./assets/source_files/Roof";
+import WindowsSection from "./assets/WindowsSection";
 
 class ArtistGallery extends Component {
     render() {
@@ -39,7 +40,6 @@ class ArtistGallery extends Component {
 
                 <div className="gallery" ref='gallery' style={{ paddingLeft: galleryX }}>
 
-
                     <div className="gallery-top">
 
                         <Roof/>
@@ -71,13 +71,13 @@ class ArtistGallery extends Component {
 
                     </div>*/}
 
-                    <BuildingSection galleryWidth={galleryWidth}
-                                     artworkIds={artworkIds}
-                                     artworks={artworks}
-                                     hue={hue}
-                                     saturation={saturation}
-                                     lightness={lightness}
-                                     onThumbClick={onThumbClick.bind(this)}/>
+                    <WindowsSection galleryWidth={galleryWidth}
+                                    artworkIds={artworkIds}
+                                    artworks={artworks}
+                                    hue={hue}
+                                    saturation={saturation}
+                                    lightness={lightness}
+                                    onThumbClick={onThumbClick.bind(this)}/>
 
                     <div className="gallery-bottom">
                         <SvgGalleryBottom />
