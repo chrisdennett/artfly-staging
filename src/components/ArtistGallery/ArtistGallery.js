@@ -5,7 +5,7 @@ import SvgGalleryBottom from './assets/SvgGalleryBottom';
 import SvgBackground from "./assets/SvgBackground";
 import BuildingSection from "./assets/BuildingSection";
 import Roof from "./assets/source_files/Roof";
-import WindowsSection from "./assets/WindowsSection";
+import WindowsSection from "./assets/WindowSection";
 
 class ArtistGallery extends Component {
     render() {

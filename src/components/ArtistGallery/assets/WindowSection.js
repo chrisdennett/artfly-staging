@@ -4,7 +4,7 @@ import _ from 'lodash';
 import BuildingWindow from "./BuildingWindow";
 import BuildingSection from "./BuildingSection";
 
-class WindowsSection extends Component {
+class WindowSection extends Component {
 
     constructor(props) {
         super(props);
@@ -62,21 +62,22 @@ class WindowsSection extends Component {
         const { galleryWidth, hue, saturation, lightness, artworks, artworkIds } = this.props;
 
         const wallColour = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-        // const featureColour = `hsl(${hue}, ${saturation}%, ${lightness - 5}%)`;
+        const featureColour = `hsl(${hue}, ${saturation}%, ${lightness - 5}%)`;
         const highlight = `hsl(${hue}, ${saturation}%, ${lightness + 10}%)`;
         const lowlight = `hsl(${hue}, ${saturation}%, ${lightness - 10}%)`;
 
         const buildingWindows = this.createBuildingWindows(artworkIds, artworks, wallColour, highlight, lowlight, galleryWidth);
 
+        const buildingSectionProps = {
+            galleryWidth, wallColour, featureColour, highlight, lowlight
+        };
+
         return (
-            <BuildingSection galleryWidth={galleryWidth}
+            <BuildingSection {...buildingSectionProps}
                              height={this.sectionHeight}
-                             content={buildingWindows}
-                             hue={hue}
-                             saturation={saturation}
-                             lightness={lightness}/>
+                             content={buildingWindows}/>
         )
     }
 }
 
-export default WindowsSection;
+export default WindowSection;

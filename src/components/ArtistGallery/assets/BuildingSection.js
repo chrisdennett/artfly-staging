@@ -26,12 +26,7 @@ class BuildingSection extends Component {
 
 
     render() {
-        const { galleryWidth, height, hue, saturation, lightness, content } = this.props;
-
-        const wallColour = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-        const featureColour = `hsl(${hue}, ${saturation}%, ${lightness - 5}%)`;
-        const highlight = `hsl(${hue}, ${saturation}%, ${lightness + 10}%)`;
-        const lowlight = `hsl(${hue}, ${saturation}%, ${lightness - 10}%)`;
+        const { galleryWidth, height, wallColour, featureColour, highlight, lowlight, content } = this.props;
 
         const barHeight = 20;
         const barRoundedEdgeHeight = 10;
