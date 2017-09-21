@@ -11,15 +11,18 @@ class NameSection extends Component {
         this.sectionHeight = 0;
     }
 
-    createNameContent(galleryWidth, featureColour, lowlight, highlight) {
-        return (
-            <svg y={20} height="350" width="800" viewBox="0 0 800 350">
+    createNameContent(featureColour, lowlight, highlight, firstName, lastName) {
 
-                <SectionLine x={40} y={32} width={720} featureColour={featureColour} lowlight={lowlight} highlight={highlight}/>
-                <SectionLine x={40} y={40} width={720} featureColour={featureColour} lowlight={lowlight} highlight={highlight}/>
+        const lineWidth = 720;
+
+        return (
+            <svg width={'100%'} viewBox="0 0 800 350">
+
+                <SectionLine x={40} y={32} width={lineWidth} featureColour={featureColour} lowlight={lowlight} highlight={highlight}/>
+                <SectionLine x={40} y={40} width={lineWidth} featureColour={featureColour} lowlight={lowlight} highlight={highlight}/>
 
                 <SectionText x={400}
-                             y={100}
+                             y={90}
                              text={"GALLERY OF AWESOME ART BY"}
                              fontSize={45}
                              shadingOffset={1}
@@ -27,20 +30,20 @@ class NameSection extends Component {
 
                 <SectionText x={400}
                              y={180}
-                             text={"CHRISTOPHER"}
+                             text={firstName}
                              fontSize={100}
                              shadingOffset={2}
                              featureColour={featureColour} lowlight={lowlight} highlight={highlight}/>
 
                 <SectionText x={400}
                              y={260}
-                             text={"DENNETT"}
+                             text={lastName}
                              fontSize={100}
                              shadingOffset={2}
                              featureColour={featureColour} lowlight={lowlight} highlight={highlight}/>
 
-                <SectionLine x={40} y={290} width={720} featureColour={featureColour} lowlight={lowlight} highlight={highlight}/>
-                <SectionLine x={40} y={298} width={720} featureColour={featureColour} lowlight={lowlight} highlight={highlight}/>
+                <SectionLine x={40} y={290} width={lineWidth} featureColour={featureColour} lowlight={lowlight} highlight={highlight}/>
+                <SectionLine x={40} y={298} width={lineWidth} featureColour={featureColour} lowlight={lowlight} highlight={highlight}/>
 
             </svg>
         )
@@ -48,14 +51,21 @@ class NameSection extends Component {
 
     render() {
 
-        const { galleryWidth, hue, saturation, lightness } = this.props;
+        const { galleryWidth, hue, saturation, lightness, firstName, lastName } = this.props;
 
         const wallColour = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
         const featureColour = `hsl(${hue}, ${saturation}%, ${lightness - 5}%)`;
         const highlight = `hsl(${hue}, ${saturation}%, ${lightness + 10}%)`;
         const lowlight = `hsl(${hue}, ${saturation}%, ${lightness - 10}%)`;
 
-        const nameContent = this.createNameContent(galleryWidth, featureColour, lowlight, highlight);
+        const nameContent = this.createNameContent(featureColour, lowlight, highlight, firstName, lastName);
+
+        const maxHeight = 370;
+        const maxWidth = 700;
+        const percentageSize = galleryWidth / maxWidth;
+        const currentHeight = maxHeight * percentageSize;
+        // const currentY = 34;
+
 
         const buildingSectionProps = {
             galleryWidth, wallColour, featureColour, highlight, lowlight
@@ -63,7 +73,7 @@ class NameSection extends Component {
 
         return (
             <BuildingSection {...buildingSectionProps}
-                             height={370}
+                             height={currentHeight}
                              content={nameContent}/>
         )
     }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Brick from "./Brick";
 
 
 class BuildingSection extends Component {
@@ -24,6 +25,31 @@ class BuildingSection extends Component {
                    z    `
     }
 
+    getLeftBricks(side, galleryWidth, height, featureColour, highlight, lowlight) {
+        let bricks = [];
+        let y = 35;
+        const brickHeight = 18;
+        const gap = 3;
+        let x = 3;
+        if (side === 'right') {
+            x = 700;
+        }
+        const totalBrickHeight = height - y;
+
+        while (y+(brickHeight+gap) < totalBrickHeight) {
+            bricks.push(<Brick key={y} x={x} y={y} width={25} height={brickHeight} featureColour={featureColour} highlight={highlight} lowlight={lowlight}/>);
+
+            y += brickHeight + gap;
+
+            if(y+(brickHeight+gap) < totalBrickHeight){
+                bricks.push(<Brick key={y} x={x} y={y} width={18} height={brickHeight} featureColour={featureColour} highlight={highlight} lowlight={lowlight}/>);
+                y += brickHeight + gap;
+            }
+        }
+
+        return bricks;
+    }
+
 
     render() {
         const { galleryWidth, height, wallColour, featureColour, highlight, lowlight, content } = this.props;
@@ -33,11 +59,14 @@ class BuildingSection extends Component {
 
         const roundedCornerSize = 10;
 
+        const leftBricks = this.getLeftBricks('left', galleryWidth, height, featureColour, highlight, lowlight);
+
         const topRoundedRect = this.getTopRoundedRect(0, height - (barHeight + barRoundedEdgeHeight), galleryWidth, barRoundedEdgeHeight, roundedCornerSize);
         const bottomRoundedRect = this.getBottomRoundedRect(0, barHeight, galleryWidth, barRoundedEdgeHeight, roundedCornerSize);
 
         return (
             <svg width={galleryWidth} height={height}>
+
                 <rect fill={wallColour}
                       x={roundedCornerSize}
                       width={galleryWidth - (roundedCornerSize * 2)}
@@ -59,6 +88,20 @@ class BuildingSection extends Component {
                       y={height - barHeight}
                       width={'100%'}
                       height={barHeight}/>
+
+                {/*<rect ry={5} x={3} y={59.5} width={30} height={20} fill={highlight} />
+                <rect ry={5} x={4} y={61} width={30} height={20} fill={lowlight} />
+                <rect ry={5} x={3} y={60} width={30} height={20} fill={featureColour} />
+
+                <rect ry={5} x={3} y={85.5} width={22} height={20} fill={highlight} />
+                <rect ry={5} x={4} y={87} width={22} height={20} fill={lowlight} />
+                <rect ry={5} x={3} y={86} width={22} height={20} fill={featureColour} />*/}
+
+                {
+                    leftBricks
+                }
+
+
             </svg>
         )
     }

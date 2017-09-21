@@ -50,6 +50,8 @@ class ArtistGallery extends Component {
                     </div>
 
                     <NameSection galleryWidth={galleryWidth}
+                                 firstName={artist.firstName}
+                                 lastName={artist.lastName}
                                  hue={nameSectionHue}
                                  saturation={saturation}
                                  lightness={lightness}/>

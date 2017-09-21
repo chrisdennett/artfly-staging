@@ -58,7 +58,6 @@ class WindowSection extends Component {
     }
 
     render() {
-
         const { galleryWidth, hue, saturation, lightness, artworks, artworkIds } = this.props;
 
         const wallColour = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
