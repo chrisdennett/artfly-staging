@@ -26,7 +26,7 @@ class ArtistEditorHolder extends Component {
 
     initData(artistGalleryId) {
         this.props.fetchArtist(artistGalleryId);
-        this.props.fetchGalleryArtistArtworkIds(artistGalleryId);
+        this.props.fetchArtistArtworkIds(artistGalleryId);
     }
 
     onSubmit(values) {
@@ -85,8 +85,8 @@ const mapStateToProps = (state, ownProps) => {
     let status = "";
 
     let initialFormValues = {
-        firstName: "",
-        lastName: ""
+        firstName: '',
+        lastName: ''
     };
 
     if (artistId) {
@@ -117,7 +117,7 @@ const mapStateToProps = (state, ownProps) => {
 const ArtistEditorContainer = connect(
     mapStateToProps, {
         fetchArtist,
-        fetchGalleryArtistArtworkIds: fetchArtistArtworkIds,
+        fetchArtistArtworkIds,
         deleteArtist,
         addNewArtist,
         updateArtist

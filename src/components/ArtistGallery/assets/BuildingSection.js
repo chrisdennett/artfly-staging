@@ -25,24 +25,25 @@ class BuildingSection extends Component {
                    z    `
     }
 
-    getLeftBricks(side, galleryWidth, height, featureColour, highlight, lowlight) {
+    getBricks(alignRight, galleryWidth, height, featureColour, highlight, lowlight) {
         let bricks = [];
         let y = 35;
         const brickHeight = 18;
         const gap = 3;
         let x = 3;
-        if (side === 'right') {
-            x = 700;
+
+        if (alignRight) {
+            x = galleryWidth-3;
         }
         const totalBrickHeight = height - y;
 
         while (y+(brickHeight+gap) < totalBrickHeight) {
-            bricks.push(<Brick key={y} x={x} y={y} width={25} height={brickHeight} featureColour={featureColour} highlight={highlight} lowlight={lowlight}/>);
+            bricks.push(<Brick key={y} x={x} y={y} alignRight={alignRight} width={25} height={brickHeight} featureColour={featureColour} highlight={highlight} lowlight={lowlight}/>);
 
             y += brickHeight + gap;
 
             if(y+(brickHeight+gap) < totalBrickHeight){
-                bricks.push(<Brick key={y} x={x} y={y} width={18} height={brickHeight} featureColour={featureColour} highlight={highlight} lowlight={lowlight}/>);
+                bricks.push(<Brick key={y} x={x} y={y} alignRight={alignRight} width={18} height={brickHeight} featureColour={featureColour} highlight={highlight} lowlight={lowlight}/>);
                 y += brickHeight + gap;
             }
         }
@@ -59,7 +60,8 @@ class BuildingSection extends Component {
 
         const roundedCornerSize = 10;
 
-        const leftBricks = this.getLeftBricks('left', galleryWidth, height, featureColour, highlight, lowlight);
+        const leftBricks = this.getBricks(false, galleryWidth, height, featureColour, highlight, lowlight);
+        const rightBricks = this.getBricks(true, galleryWidth, height, featureColour, highlight, lowlight);
 
         const topRoundedRect = this.getTopRoundedRect(0, height - (barHeight + barRoundedEdgeHeight), galleryWidth, barRoundedEdgeHeight, roundedCornerSize);
         const bottomRoundedRect = this.getBottomRoundedRect(0, barHeight, galleryWidth, barRoundedEdgeHeight, roundedCornerSize);
@@ -97,9 +99,8 @@ class BuildingSection extends Component {
                 <rect ry={5} x={4} y={87} width={22} height={20} fill={lowlight} />
                 <rect ry={5} x={3} y={86} width={22} height={20} fill={featureColour} />*/}
 
-                {
-                    leftBricks
-                }
+                { leftBricks  }
+                { rightBricks  }
 
 
             </svg>

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import {
-    fetchGallery,
     fetchArtist,
     fetchArtwork,
     updateArtwork,
@@ -182,7 +181,6 @@ const mapStateToProps = (state, ownProps) => {
 const ArtworkEditorContainer = connect(
     mapStateToProps,
     {
-        fetchGallery,
         fetchArtist,
         fetchArtwork,
         updateArtwork,

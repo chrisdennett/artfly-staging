@@ -1,22 +1,26 @@
 .artist-editor{
     background-color: #704cb0;
     color: white;
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
 }
 
-.artist-editor-form {
-    padding: 20px 30px;
+.artist-editor-content {
+    padding: 60px 30px;
+    max-width: 960px;
+    margin: 0 auto;
 }
 
-.artist-editor-form form {
-    padding-top: 1.5em;
-    display: flex;
-    flex-direction: column;
-}
+.artist-editor-content form {
+     padding-top: 1.5em;
+     display: flex;
+     flex-direction: column;
+ }
 
 @media only screen and (max-width: 500px) {
-    .artist-editor-form{
-        padding: 30px 20px;
+    .artist-editor-content{
+        /*padding: 30px 20px;*/
     }
 }
 

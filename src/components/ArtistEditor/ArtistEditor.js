@@ -9,7 +9,6 @@ import FormRenderField from '../global/FormRenderField';
 class ArtistEditor extends Component {
     constructor(props) {
         super(props);
-
         this.state = { showDeleteConfirmation: false };
     }
 
@@ -70,7 +69,7 @@ class ArtistEditor extends Component {
 
         return (
             <div className={'artist-editor'}>
-                <div className={'artist-editor-form'}>
+                <div className={'artist-editor-content'}>
                     <h1>{formTitle}</h1>
                     <form onSubmit={handleSubmit(this.props.onSubmit.bind(this))}>
                         <Field

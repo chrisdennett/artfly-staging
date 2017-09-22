@@ -27,9 +27,29 @@ h2{
     margin-bottom: 0.3em;
 }
 
-p, li, form, label, select {
+p, li, fieldset, label, select {
     font-size: 1.5em;
     line-height: 1.4em;
+}
+
+
+.form-field{
+    opacity: 0.7;
+    display: inline-block;
+    padding-right: 20px;
+}
+
+.form-group{
+    margin: 0 0 20px 20px;
+}
+
+.form-group .text-help{
+    /*display: inline-block;*/
+    padding: 10px 10px 0 0;
+}
+
+.form-group-has-danger input{
+    background-color: #ffae80;
 }
 
 select{
@@ -42,7 +62,6 @@ select{
 input{
     font-size: 1.2em;
     padding: 10px;
-    margin-bottom: 20px;
     border-radius: 5px;
     border: none;
 }
@@ -95,10 +114,6 @@ label.disabled{
 
 .no-scroll-bars{
     overflow: hidden;
-}
-
-.form-field{
-    opacity: 0.7;
 }
 
 .main-butt{

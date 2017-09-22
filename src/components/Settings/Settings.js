@@ -13,7 +13,7 @@ const Settings = function ({ userArtists, subscription, price, onSubscribe, onCa
         subscriptionContent = (
             <div>
                 <p>Subscribe for {price} a month to save up to 1000 artworks</p>
-                <button onClick={onSubscribe}>Subscribe</button>
+                <button className={'butt'} onClick={onSubscribe}>Subscribe</button>
             </div>
         )
     }
@@ -22,8 +22,8 @@ const Settings = function ({ userArtists, subscription, price, onSubscribe, onCa
         subscriptionContent = (
             <div>
                 <p>You're a monthly subscriber</p>
-                <button onClick={onCancelSubscription}>Cancel subscription</button>
-                <button onClick={onUpdateSubscription}>Update subscription</button>
+                <button className={'butt'} onClick={onCancelSubscription}>Cancel subscription</button>
+                <button className={'butt'} onClick={onUpdateSubscription}>Update subscription</button>
             </div>
         )
     }
@@ -33,8 +33,8 @@ const Settings = function ({ userArtists, subscription, price, onSubscribe, onCa
             <div>
                 <p>You're a monthly subscriber, but you last payment has failed. We'll try to collect the payment again
                     soon.</p>
-                <button onClick={onCancelSubscription}>Cancel subscription</button>
-                <button onClick={onUpdateSubscription}>Update subscription</button>
+                <button className={'butt'} onClick={onCancelSubscription}>Cancel subscription</button>
+                <button className={'butt'} onClick={onUpdateSubscription}>Update subscription</button>
             </div>
         )
     }

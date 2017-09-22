@@ -1,12 +1,13 @@
 .settings{
     background-color: #2cb1a0;
     color: white;
-    padding: 20px 30px;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
 }
 
 .settings-content{
+    padding: 60px 30px;
     max-width: 960px;
     margin: 0 auto;
 }

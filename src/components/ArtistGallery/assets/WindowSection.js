@@ -13,7 +13,7 @@ class WindowSection extends Component {
 
     createBuildingWindows(artworkIds, artworks, wallColour, highlight, lowlight, galleryWidth) {
         let windowCount = 0;
-        const leftPadding = 40;
+        const leftPadding = 45;
         const topPadding = 60;
         const windowHorizontalSpace = galleryWidth;
         const windowWidth = 250;

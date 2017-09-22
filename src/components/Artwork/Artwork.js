@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
 import Room from './Room/Room';
 import PictureFrame from './PictureFrame/PictureFrame';
 
@@ -150,11 +149,5 @@ class Artwork extends Component {
         )
     }
 }
-
-Artwork.propTypes = {
-    artwork: PropTypes.shape({
-        url: PropTypes.string.isRequired
-    })
-};
 
 export default Artwork;

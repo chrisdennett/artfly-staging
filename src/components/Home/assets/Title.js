@@ -8,12 +8,7 @@ const Title = function (props) {
                     <text fontSize="156.7" stroke="#000" strokeWidth="4" style={{ textAlign: "center" }}
                           fontWeight="900" fontFamily="'Source Code Pro'" y="128.661" x="452.368" textAnchor="middle">
                         <tspan y="128.661" x="452.368">
-                            <tspan>A</tspan>
-                            <tspan>r</tspan>
-                            <tspan>t</tspan>
-                            <tspan>F</tspan>
-                            <tspan>l</tspan>
-                            <tspan>y</tspan>
+                            <tspan>ArtFly</tspan>
                         </tspan>
                     </text>
                     <text fontSize="156.7" stroke="#000" strokeWidth="4" fill="none" style={{ textAlign: "center" }}

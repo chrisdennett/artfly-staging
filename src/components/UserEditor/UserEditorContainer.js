@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { createNewUser, deleteUser } from '../../actions/UserActions';
+import { createNewUser, logoutUser } from '../../actions/UserActions';
 
 import UserEditor from './UserEditor';
 
@@ -12,7 +12,7 @@ class UserEditorHolder extends Component {
     }
 
     render() {
-        const {user, createNewUser, deleteUser} = this.props;
+        const {user, createNewUser, logoutUser} = this.props;
         const {status} = user;
 
         if(status === "none"){
@@ -27,14 +27,14 @@ class UserEditorHolder extends Component {
 
         let initialValues = {
             email: user.email,
-            artistName: user.displayName,
-            galleryName: `The curious gallery of ${user.displayName}`
+            firstName: '',
+            lastName: ''
         };
 
         return <UserEditor user={user}
                            initialValues={initialValues}
                            createNewUser={createNewUser}
-                           deleteUser={deleteUser}/>;
+                           logoutUser={logoutUser}/>;
     }
 }
 
@@ -46,7 +46,7 @@ const mapStateToProps = (state) => {
 };
 
 const UserEditorContainer = connect(
-    mapStateToProps, { createNewUser, deleteUser }
+    mapStateToProps, { createNewUser, logoutUser }
 )(UserEditorHolder);
 
 export default UserEditorContainer;
