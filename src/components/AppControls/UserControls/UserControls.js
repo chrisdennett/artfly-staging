@@ -6,6 +6,7 @@ import LoginButton from "./assets/LoginButton";
 import LogoutButton from "./assets/LogoutButton";
 import SettingsButton from "./assets/SettingsButton";
 import EditButton from "../GalleryControls/assets/EditButton";
+import LoadingOverlay from "../../LoadingOverlay/LoadingOverlay";
 
 const UserControls = function (props) {
     const { userStatus } = props;
@@ -15,7 +16,7 @@ const UserControls = function (props) {
     let renderContent;
 
     if (!userStatus || userStatus === "pending") {
-        renderContent = <div>Checking the salad draw...</div>
+        return <LoadingOverlay/>
     }
     else if (userStatus === "new") {
         return <Redirect to={'/add-or-edit-user/'}/>
