@@ -2,7 +2,7 @@ import React from 'react';
 
 const Logo = function (props) {
     return (
-        <div className={'main-butt'}>
+        <div className={'sketch-butt'}>
             <svg width={'100%'} height={'100%'} viewBox="0 0 67.489159 65.000001">
                 <rect ry="0" height="65" width="67.49" fill="#fff" color="#000"/>
                 <path

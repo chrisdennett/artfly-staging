@@ -3,7 +3,6 @@ import './artistGallery.css';
 
 import SvgGalleryBottom from './assets/SvgGalleryBottom';
 import SvgBackground from "./assets/SvgBackground";
-import BuildingSection from "./assets/BuildingSection";
 import Roof from "./assets/source_files/Roof";
 import WindowsSection from "./assets/WindowSection";
 import NameSection from "./assets/NameSection";
@@ -12,7 +11,6 @@ class ArtistGallery extends Component {
     render() {
         const { artist, artworkIds, artworks, onThumbClick, pageWidth, pageHeight } = this.props;
         let galleryHeight = 0;
-        let windowsHeight = 0;
         const minGalleryPadding = 25;
         let galleryWidth = 800;
         if ((pageWidth - (minGalleryPadding * 2)) < galleryWidth) {
@@ -25,14 +23,9 @@ class ArtistGallery extends Component {
             galleryHeight = this.refs.gallery.offsetHeight;
         }
 
-        if (this.refs.middleWindows) {
-            windowsHeight = 20;
-        }
-
         const hue = 185;
         const saturation = 34;
         const lightness = 61;
-        // const alpha = 255;
 
         const nameSectionHue = 290;
 

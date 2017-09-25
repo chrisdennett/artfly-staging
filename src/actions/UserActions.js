@@ -135,9 +135,28 @@ export function createNewUser(authId, formValues, callback = null) {
     }
 }
 
-export function loginUser() {
+export function loginWithGoogle() {
     const provider = new fb.auth.GoogleAuthProvider();
-    fb.auth().signInWithRedirect(provider);
+    fb.auth().signInWithPopup(provider);
+
+    return dispatch => {
+        fb.auth()
+            .getRedirectResult()
+            .then(result => {
+                dispatch({
+                    type: LOGIN_USER,
+                    payload: result.user
+                });
+            })
+            .catch(error => {
+                console.log("log in error: ", error);
+            });
+    }
+}
+
+export function loginWithFacebook() {
+    const provider = new fb.auth.FacebookAuthProvider();
+    fb.auth().signInWithPopup(provider);
 
     return dispatch => {
         fb.auth()

@@ -2,7 +2,7 @@ import React from 'react';
 
 const SettingsButton = function (props) {
     return (
-        <div className={'main-butt'}>
+        <div className={'sketch-butt'}>
             <svg width={'100%'} height={'100%'} viewBox="0 0 67 65">
                 <rect height="65" width="67" fill="#fff" color="#000"/>
                 <path

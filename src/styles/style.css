@@ -116,15 +116,6 @@ label.disabled{
     overflow: hidden;
 }
 
-.main-butt{
-    padding: 0;
-    margin: 0;
-    border: none;
-    outline: none;
-    width: 65px;
-    display: inline-block;
-}
-
 .butt{
     flex-grow: 1;
     text-decoration: none;
@@ -139,6 +130,16 @@ label.disabled{
     border: none;
     border-radius: 5px;
     box-shadow: 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.sketch-butt{
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    border: none;
+    outline: none;
+    width: 65px;
+    display: inline-block;
 }
 
 .butt:hover {background-color: rgba(0, 0, 0, 0.4);}

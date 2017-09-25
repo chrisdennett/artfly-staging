@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchUserData, loginUser, logoutUser } from '../../../actions/UserActions';
+import { fetchUserData, logoutUser } from '../../../actions/UserActions';
 
 import UserControls from './UserControls';
 
@@ -16,7 +16,6 @@ class UserControlsHolder extends Component {
         // status can be undefined, pending, complete, none
         return <UserControls userStatus={status}
                              history={this.props.history}
-                             login={this.props.loginUser}
                              logout={this.props.logoutUser}
                              galleryId={this.props.galleryId}
                              artworkId={this.props.artworkId}/>;
@@ -35,7 +34,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const UserControlsContainer = connect(
-    mapStateToProps, { fetchUserData, loginUser, logoutUser }
+    mapStateToProps, { fetchUserData, logoutUser }
 )(UserControlsHolder);
 
 export default UserControlsContainer;

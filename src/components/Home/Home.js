@@ -28,7 +28,7 @@ class Home extends Component {
                     <section>
                         <h2>What?</h2>
                         <p>A website</p>
-                        <img style={{ maxWidth: '100%' }} src={'../gallery-example.png'}/>
+                        <img style={{ maxWidth: '100%' }} src={'../gallery-example.png'} alt={`gallery`}/>
 
                         <h2>How?</h2>
                         <ul>

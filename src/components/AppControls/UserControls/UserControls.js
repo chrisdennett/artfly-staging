@@ -2,11 +2,11 @@ import React from "react";
 import { Link, Redirect } from 'react-router-dom';
 
 import AddArtwork from '../../AddArtwork/AddArtwork';
-import LoginButton from "./assets/LoginButton";
-import LogoutButton from "./assets/LogoutButton";
+import SignOutButton from "./assets/SignOutButton";
 import SettingsButton from "./assets/SettingsButton";
 import EditButton from "../GalleryControls/assets/EditButton";
 import LoadingOverlay from "../../LoadingOverlay/LoadingOverlay";
+import SignInContainer from "../../SignIn/SignInContainer";
 
 const UserControls = function (props) {
     const { userStatus } = props;
@@ -22,8 +22,7 @@ const UserControls = function (props) {
         return <Redirect to={'/add-or-edit-user/'}/>
     }
     else if (userStatus === "none") {
-        // renderContent = <button onClick={props.login}><LoginButton/></button>
-        renderContent = <LoginButton onClick={props.login}/>
+        renderContent = <SignInContainer/>
     }
     else {
         renderContent =
@@ -34,7 +33,7 @@ const UserControls = function (props) {
 
                 <Link to="/settings"><SettingsButton/></Link>
 
-                <LogoutButton onClick={props.logout}/>
+                <SignOutButton onClick={props.logout}/>
             </span>
     }
 

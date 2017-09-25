@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Cloud from "./Cloud";
-import Sun from "./Sun";
-import Ground from "./Ground";
+// import Cloud from "./Cloud";
+// import Sun from "./Sun";
+// import Ground from "./Ground";
 
 
 class SvgBackground extends Component {
@@ -13,11 +13,6 @@ class SvgBackground extends Component {
         if (pageHeight > backgroundHeight) {
             backgroundHeight = pageHeight;
         }
-
-        const groundY = galleryHeight - 250;
-        const groundWidth = 2350;
-        /*copied from InkScape property*/
-        const groundX = 0 - ((groundWidth - pageWidth) / 2);
 
         const roadHeight = 130;
         const kerbHeight = 24;

@@ -2,7 +2,7 @@ import React from 'react';
 
 const PrevButton = function (props) {
     return (
-        <div className={'main-butt'}>
+        <div className={'sketch-butt'}>
             <svg onClick={props.onClick} width={'100%'} height={'100%'} viewBox="0 0 67 65">
                 <rect ry="0" height="65" width="67.49" fill="#fff" color="#000"/>
                 <text fontSize="9.67" y="56.826" x="20.026" fontFamily="sans-serif" wordSpacing="0" letterSpacing="0">
