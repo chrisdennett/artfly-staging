@@ -4,6 +4,7 @@ import _ from 'lodash';
 import './settings.css';
 import Butt from "../global/Butt";
 import LinkButt from "../global/LinkButt";
+import SettingsIcon from '../global/SettingsIcon';
 
 const Settings = function ({ userArtists, subscription, price, onSubscribe, onCancelSubscription, onUpdateSubscription }) {
     let subscriptionContent;
@@ -51,15 +52,19 @@ const Settings = function ({ userArtists, subscription, price, onSubscribe, onCa
 
     return (
         <div className={'settings'}>
-            <div className={'settings-content'}>
-                <h1>Settings</h1>
 
-                <section className={'settings-subscription-section'}>
+            <div className={'page-title'}>
+                <h1><SettingsIcon height={50}/> Settings</h1>
+            </div>
+
+            <div className={'settings-content'}>
+
+                <section className={'settings-main-section'}>
                     <h2>Subscription</h2>
                     {subscriptionContent}
                 </section>
 
-                <section>
+                <section className={'settings-main-section'}>
                     <h2>Artists</h2>
 
                     <section className={'settings-add-new-artist-section'}>

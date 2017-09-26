@@ -27,6 +27,7 @@ const GoogleSignInButton = function (props) {
               onClick={props.onClick}
               label={'Sign in with Google'}
               backgroundColour={'#fff'}
+              shadowColour={'#aaa'}
               labelColour={'#666'}/>
     )
 };

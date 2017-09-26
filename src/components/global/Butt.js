@@ -21,7 +21,7 @@ class Butt extends Component {
 
     render() {
 
-        const { label, svgIcon, backgroundColour, labelColour, showAsLink, ...rest } = this.props;
+        const { label, svgIcon, backgroundColour, shadowColour, labelColour, showAsLink, ...rest } = this.props;
 
         const labelPadding = svgIcon ? 20 : 0;
         const labelStyle = { paddingLeft: labelPadding };
@@ -45,6 +45,9 @@ class Butt extends Component {
 
         if (backgroundColour)
             buttonStyle.backgroundColor = backgroundColour;
+
+        if(shadowColour)
+            buttonStyle.boxShadow = `0 5px ${shadowColour}`;
 
         if (labelColour)
             buttonStyle.color = labelColour;

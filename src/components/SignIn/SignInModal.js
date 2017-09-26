@@ -1,8 +1,9 @@
 import React, { Component } from "react";
+import { loginWithGoogle, loginWithFacebook } from '../../actions/UserActions';
+
+import Butt from "../global/Butt";
 import FacebookSignInButton from "./assets/FacebookSignInButton";
 import GoogleSignInButton from "./assets/GoogleSignInButton";
-import { loginWithGoogle, loginWithFacebook } from '../../actions/UserActions';
-import Butt from "../global/Butt";
 import Modal from "../global/Modal";
 
 class SignInModal extends Component {
@@ -12,7 +13,6 @@ class SignInModal extends Component {
 
         this.onGoogleSelect = this.onGoogleSelect.bind(this);
         this.onFacebookSelect = this.onFacebookSelect.bind(this);
-        ;
     }
 
     onGoogleSelect() {
