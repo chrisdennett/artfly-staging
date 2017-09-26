@@ -1,29 +1,7 @@
-.settings {
-    background-color: #2dc1b0;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-.settings .page-title h1 {
-    padding: 60px 30px 20px 30px;
-    margin-bottom: 60px;
-    text-align: center;
-}
-
-.page-title{
-    background-color: #2cb1a0;
-    border-bottom: 1px solid rgba(0,0,0,0.2);
-}
-
-.settings-content {
-    max-width: 960px;
-    margin: 40px auto;
-}
-
 .settings-main-section {
     margin-bottom: 60px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .settings h2 {

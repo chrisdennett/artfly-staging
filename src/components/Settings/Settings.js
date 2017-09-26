@@ -5,6 +5,7 @@ import './settings.css';
 import Butt from "../global/Butt";
 import LinkButt from "../global/LinkButt";
 import SettingsIcon from '../global/SettingsIcon';
+import Page from "../global/Page";
 
 const Settings = function ({ userArtists, subscription, price, onSubscribe, onCancelSubscription, onUpdateSubscription }) {
     let subscriptionContent;
@@ -51,6 +52,48 @@ const Settings = function ({ userArtists, subscription, price, onSubscribe, onCa
     }
 
     return (
+        <Page title={'Settings'} icon={<SettingsIcon height={50}/>}>
+            <section className={'settings-main-section'}>
+                <h2>Subscription</h2>
+                {subscriptionContent}
+            </section>
+
+            <section className={'settings-main-section'}>
+                <h2>Artists</h2>
+
+                <section className={'settings-add-new-artist-section'}>
+                    <LinkButt label={'Add New Artist'} linkTo={`/add-or-edit-artist/`}/>
+                </section>
+
+                <section className={'settings-artists-section'}>
+                    {
+                        _.map(userArtists, (artistGallery) => {
+                            const { artist, id, totalArtworks } = artistGallery;
+
+                            return (
+                                <div key={id} className={"settings-artist"}>
+                                    <p><span className={'form-field'}>First name:</span> {artist.firstName}
+                                    </p>
+                                    <p><span className={'form-field'}>Last name:</span> {artist.lastName}</p>
+                                    <p><span className={'form-field'}>Total artworks:</span> {totalArtworks}
+                                    </p>
+                                    <div className={'settings-artist-buttons'}>
+                                        <LinkButt label={'Open Gallery'} linkTo={`/gallery/${id}`}/>
+                                        <LinkButt label={'Edit Artist'} linkTo={`/add-or-edit-artist/${id}`}/>
+                                    </div>
+                                </div>)
+                        })
+                    }
+                </section>
+            </section>
+        </Page>
+    )
+};
+
+export default Settings;
+
+/*
+return (
         <div className={'settings'}>
 
             <div className={'page-title'}>
@@ -95,6 +138,4 @@ const Settings = function ({ userArtists, subscription, price, onSubscribe, onCa
             </div>
         </div>
     )
-};
-
-export default Settings;
+*/
