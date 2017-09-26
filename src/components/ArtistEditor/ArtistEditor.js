@@ -32,11 +32,8 @@ class ArtistEditor extends Component {
         // I'm using the same form for editing and adding new artists
         // formType tells me which it is
         let formTitle = "Add New Artist";
-        let formButtonStyle = {};
-        let submitButtonText = 'Add Artist';
         if (this.props.formType === "edit") {
             formTitle = "Edit Artist";
-            submitButtonText = 'Update Artist'
         }
 
         // Delete confirmation content - don't allow delete if last artist.
@@ -77,12 +74,16 @@ class ArtistEditor extends Component {
                             label="Last Name: "
                             component={FormRenderField}
                         />
-                        <div style={formButtonStyle}>
-                            <Butt type="submit" label={submitButtonText}/>
-                            <Butt type="button" label={'Delete'} onClick={this.onDeleteClick.bind(this)}/>
+                        <div>
+                            <Butt type="submit" label={'Done'}/>
+                            <LinkButt label={`Cancel`} linkTo={`/settings/`}/>
+                            <Butt type="button"
+                                  label={'Delete Artist'}
+                                  backgroundColour={'#a60000'}
+                                  shadowColour={'#540000'}
+                                  onClick={this.onDeleteClick.bind(this)}/>
                         </div>
 
-                        <LinkButt label={`Cancel`} style={formButtonStyle} linkTo={`/settings/`}/>
                     </form>
                 </div>
             </div>
