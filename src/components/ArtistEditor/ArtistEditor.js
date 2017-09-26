@@ -6,6 +6,7 @@ import './artistEditor.css';
 import FormRenderField from '../global/FormRenderField';
 import Butt from "../global/Butt";
 import LinkButt from "../global/LinkButt";
+import Modal from "../global/Modal";
 
 class ArtistEditor extends Component {
     constructor(props) {
@@ -31,7 +32,6 @@ class ArtistEditor extends Component {
         // I'm using the same form for editing and adding new artists
         // formType tells me which it is
         let formTitle = "Add New Artist";
-        let deleteConfirmationStyle = { display: 'none' };
         let formButtonStyle = {};
         let submitButtonText = 'Add Artist';
         if (this.props.formType === "edit") {
@@ -39,31 +39,31 @@ class ArtistEditor extends Component {
             submitButtonText = 'Update Artist'
         }
 
-        if (this.state.showDeleteConfirmation) {
-            deleteConfirmationStyle = {};
-            formButtonStyle = { display: 'none' };
-        }
-
         // Delete confirmation content - don't allow delete if last artist.
-        let deleteConfirmationContent = (
-            <div>
+        let modal = (
+            <Modal isOpen={this.state.showDeleteConfirmation}
+                   title={"Delete Artist"}>
                 <p>Are you sure you want to delete this artist and all their artworks?</p>
                 <Butt type={'button'} label={'Yes, delete away'} onClick={this.onDeleteConfirm.bind(this)}/>
                 <Butt type={'button'} label={'No do not delete'} onClick={this.onDeleteCancel.bind(this)}/>
-            </div>
+            </Modal>
         );
         if (this.props.allowDelete === false) {
-            deleteConfirmationContent = (
-                <div>
+            modal = (
+                <Modal isOpen={this.state.showDeleteConfirmation}
+                       title={"Artist can't be deleted"}>
                     <p>Sorry, you you always need at least one artist - Create a new artist first if you want to get rid
                         of this one.</p>
-                    <Butt label={'Close message'} type="button" onClick={this.onDeleteCancel.bind(this)} />
-                </div>
+                    <Butt label={'Close message'} type="button" onClick={this.onDeleteCancel.bind(this)}/>
+                </Modal>
             );
         }
 
         return (
             <div className={'artist-editor'}>
+
+                {modal}
+
                 <div className={'artist-editor-content'}>
                     <h1>{formTitle}</h1>
                     <form onSubmit={handleSubmit(this.props.onSubmit.bind(this))}>
@@ -80,9 +80,6 @@ class ArtistEditor extends Component {
                         <div style={formButtonStyle}>
                             <Butt type="submit" label={submitButtonText}/>
                             <Butt type="button" label={'Delete'} onClick={this.onDeleteClick.bind(this)}/>
-                        </div>
-                        <div style={deleteConfirmationStyle}>
-                            {deleteConfirmationContent}
                         </div>
 
                         <LinkButt label={`Cancel`} style={formButtonStyle} linkTo={`/settings/`}/>
