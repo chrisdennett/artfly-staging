@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import './artworkEditor.css';
 import ImageCropAndRotate from '../ImageCropAndRotate/ImageCropAndRotate';
 import ArtistSelector from "../ArtistSelector/ArtistSelector";
-import SaveProgressButton from "../global/SaveProgressButton";
+import Butt from "../global/Butt";
 
 class ArtworkEditor extends Component {
 
@@ -76,21 +76,21 @@ class ArtworkEditor extends Component {
                                             ref={instance => { this.cropper = instance; }}
                                             onCropDataConfirm={onCropDataConfirm}
                                             onCropImageSave={onCropImageSave}/>
-                        <button className={'butt'} onClick={() => { this.cropper.openEditScreen(); }}>
-                            Crop / Rotate
-                        </button>
+                        <Butt label={`Crop / Rotate`} onClick={() => { this.cropper.openEditScreen(); }}/>
+                            
                     </div>
 
                     <div style={actionButtonsStyle}>
-                        <SaveProgressButton className={'butt'} label={saveButtonLabel} onClick={onSaveChanges}/>
-                        <button className={'butt'} onClick={onCancelChanges}>Done</button>
-                        <button className={'butt'} onClick={this.onDeleteArtwork.bind(this)}>Delete Image</button>
+                        <Butt label={saveButtonLabel} onClick={onSaveChanges}/>
+                        
+                        <Butt label={'Done'} onClick={onCancelChanges}/>
+                        <Butt label={'Delete Image'} onClick={this.onDeleteArtwork.bind(this)}/>
                     </div>
 
                     <div style={confirmDeleteStyle}>
                         <p>Are you sure you want to delete this artwork?</p>
-                        <button className={'butt'} onClick={this.onDeleteConfirm.bind(this)}>Yes, delete it</button>
-                        <button className={'butt'} onClick={this.onDeleteCancel.bind(this)}>No, do not delete</button>
+                        <Butt label={'Yes, delete it'} onClick={this.onDeleteConfirm.bind(this)}/>
+                        <Butt label={'No, do not delete'} onClick={this.onDeleteCancel.bind(this)}/>
                     </div>
 
                 </div>

@@ -3,6 +3,7 @@ import { Field, reduxForm } from 'redux-form';
 import './userEditor.css';
 
 import FormRenderField from '../global/FormRenderField'
+import Butt from "../global/Butt";
 
 class NewUserForm extends Component {
 
@@ -42,9 +43,8 @@ class NewUserForm extends Component {
                             label="Last Name: "
                             component={FormRenderField}
                         />
-                        <button className={'butt'} type="submit" >Submit</button>
-                        <button className={'butt'} type="button" onClick={this.onFormCancel.bind(this)}>Cancel
-                        </button>
+                        <Butt label={'Submit'} type="submit" />
+                        <Butt label={'Cancel'} type="button" onClick={this.onFormCancel.bind(this)}/>
                     </form>
                 </div>
             </div>

@@ -7,6 +7,7 @@ import ImageCropAndRotate from '../ImageCropAndRotate/ImageCropAndRotate';
 import { fetchArtist, uploadImage, clearImageUpload } from '../../actions/ArtistGalleryActions';
 import ArtistSelector from "../ArtistSelector/ArtistSelector";
 import AddArtButton from "../AppControls/UserControls/assets/AddArtButton";
+import Butt from "../global/Butt";
 
 // The role of this component is to:
 // - create a custom file input button with a given label and id
@@ -27,6 +28,8 @@ class PhotoSelector extends Component {
 
     componentWillMount() {
         this.initData();
+
+        // localStorage.getItem()
     }
 
     initData() {
@@ -49,8 +52,10 @@ class PhotoSelector extends Component {
 
         if (event.target.files[0]) {
             this.setState({ imgIsSelected: true });
+            this.setState({ imgIsSelected: true });
 
             const imgFile = event.target.files[0];
+            console.log("event.target.files: ", event.target.files);
             const reader = new FileReader();
 
             reader.onload = function (event) {
@@ -116,7 +121,7 @@ class PhotoSelector extends Component {
 
                             {progress === 100 &&
                             <div>
-                                <button className={'butt'} onClick={this.showPictureInGallery.bind(this)}>Open in Gallery</button>
+                                <Butt label={'Open in Gallery'} onClick={this.showPictureInGallery.bind(this)}/>
                                 <span>
                                     <input className="inputfile"
                                            onChange={this.handleAddAnotherImageSelect.bind(this)}
@@ -142,28 +147,26 @@ class PhotoSelector extends Component {
                         <h1>Add Artwork</h1>
 
                         {this.state.imgSrc &&
-                        <div className={'add-artwork-image-section'}>
-                            <button className={'butt'} disabled={!this.state.cropImg}
-                                    onClick={() => { this.cropper.openEditScreen(); }}>
-                                Edit picture
-                            </button>
-                            <ImageCropAndRotate url={this.state.imgSrc}
-                                                ref={instance => { this.cropper = instance; }}
-                                                callSaveOnImageLoad="true"
-                                                onCropDataInit={this.onCropDataChange.bind(this)}
-                                                onCropDataConfirm={this.onCropDataChange.bind(this)}
-                                                onCropImageSave={this.onCropImageSave.bind(this)}/>
-                        </div>
+                            <div className={'add-artwork-image-section'}>
+                                <Butt label={'Edit picture'}
+                                      disabled={!this.state.cropImg}
+                                      onClick={() => { this.cropper.openEditScreen(); }}/>
+
+                                <ImageCropAndRotate url={this.state.imgSrc}
+                                                    ref={instance => { this.cropper = instance; }}
+                                                    callSaveOnImageLoad="true"
+                                                    onCropDataInit={this.onCropDataChange.bind(this)}
+                                                    onCropDataConfirm={this.onCropDataChange.bind(this)}
+                                                    onCropImageSave={this.onCropImageSave.bind(this)}/>
+                            </div>
                         }
                         <div className={'artwork-editor-artist-section'}>
                             <ArtistSelector artists={this.props.artists}
                                             selectedArtistId={this.state.selectedArtistId}
                                             onArtistSelected={this.onArtistSelected}/>
                         </div>
-                        <button className={'butt'} disabled={!this.state.cropImg} onClick={this.onSave.bind(this)}>
-                            SAVE
-                        </button>
-                        <button className={'butt'} onClick={this.onCancel.bind(this)}>CANCEL</button>
+                        <Butt label={'SAVE'} disabled={!this.state.cropImg} onClick={this.onSave.bind(this)}/>
+                        <Butt label={'CANCEL'} onClick={this.onCancel.bind(this)}/>
 
                     </div>
                 </div>

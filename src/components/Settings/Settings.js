@@ -1,9 +1,9 @@
 import React from 'react';
+import _ from 'lodash';
 
 import './settings.css';
-
-import { Link } from 'react-router-dom'
-import _ from 'lodash';
+import Butt from "../global/Butt";
+import LinkButt from "../global/LinkButt";
 
 const Settings = function ({ userArtists, subscription, price, onSubscribe, onCancelSubscription, onUpdateSubscription }) {
     let subscriptionContent;
@@ -13,7 +13,7 @@ const Settings = function ({ userArtists, subscription, price, onSubscribe, onCa
         subscriptionContent = (
             <div>
                 <p>Subscribe for {price} a month to save up to 1000 artworks</p>
-                <button className={'butt'} onClick={onSubscribe}>Subscribe</button>
+                <Butt label={`Subscribe`} onClick={onSubscribe}/>
             </div>
         )
     }
@@ -22,8 +22,8 @@ const Settings = function ({ userArtists, subscription, price, onSubscribe, onCa
         subscriptionContent = (
             <div>
                 <p>You're a monthly subscriber</p>
-                <button className={'butt'} onClick={onCancelSubscription}>Cancel subscription</button>
-                <button className={'butt'} onClick={onUpdateSubscription}>Update subscription</button>
+                <Butt onClick={onCancelSubscription} label={`Cancel subscription`}/>
+                <Butt onClick={onUpdateSubscription} label={`Update subscription`}/>
             </div>
         )
     }
@@ -33,8 +33,8 @@ const Settings = function ({ userArtists, subscription, price, onSubscribe, onCa
             <div>
                 <p>You're a monthly subscriber, but you last payment has failed. We'll try to collect the payment again
                     soon.</p>
-                <button className={'butt'} onClick={onCancelSubscription}>Cancel subscription</button>
-                <button className={'butt'} onClick={onUpdateSubscription}>Update subscription</button>
+                <Butt onClick={onCancelSubscription} label={`Cancel subscription`}/>
+                <Butt onClick={onUpdateSubscription} label={`Update subscription`}/>
             </div>
         )
     }
@@ -43,8 +43,8 @@ const Settings = function ({ userArtists, subscription, price, onSubscribe, onCa
         subscriptionContent = (
             <div>
                 <p>You've cancelled your subscription - you can access your account until: {subscription.paidUntil}</p>
-                <p>Subscribe for {price} a month to save up to 1000 artworks</p>
-                <button className={'butt'} onClick={onSubscribe}>Subscribe</button>
+                <p>Re-subscribe for {price} a month to save up to 1000 artworks</p>
+                <Butt label={`Subscribe`} onClick={onSubscribe}/>
             </div>
         )
     }
@@ -61,9 +61,11 @@ const Settings = function ({ userArtists, subscription, price, onSubscribe, onCa
 
                 <section>
                     <h2>Artists</h2>
+
                     <section className={'settings-add-new-artist-section'}>
-                        <Link className={'butt'} to={`/add-or-edit-artist/`}>Add New Artist</Link>
+                        <LinkButt label={'Add New Artist'} linkTo={`/add-or-edit-artist/`}/>
                     </section>
+
                     <section className={'settings-artists-section'}>
                         {
                             _.map(userArtists, (artistGallery) => {
@@ -77,9 +79,8 @@ const Settings = function ({ userArtists, subscription, price, onSubscribe, onCa
                                         <p><span className={'form-field'}>Total artworks:</span> {totalArtworks}
                                         </p>
                                         <div className={'settings-artist-buttons'}>
-                                            <Link className={'butt'} to={`/gallery/${id}`}>Open Gallery</Link>
-                                            <Link className={'butt'} to={`/add-or-edit-artist/${id}`}>Edit
-                                                Artist</Link>
+                                            <LinkButt label={'Open Gallery'} linkTo={`/gallery/${id}`}/>
+                                            <LinkButt label={'Edit Artist'} linkTo={`/add-or-edit-artist/${id}`}/>
                                         </div>
                                     </div>)
                             })

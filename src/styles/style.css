@@ -116,7 +116,7 @@ label.disabled{
     overflow: hidden;
 }
 
-.butt{
+/*.butt{
     flex-grow: 1;
     text-decoration: none;
     padding: 15px 25px;
@@ -130,7 +130,7 @@ label.disabled{
     border: none;
     border-radius: 5px;
     box-shadow: 0 5px rgba(0, 0, 0, 0.5);
-}
+}*/
 
 .sketch-butt{
     cursor: pointer;
@@ -142,12 +142,12 @@ label.disabled{
     display: inline-block;
 }
 
-.butt:hover {background-color: rgba(0, 0, 0, 0.4);}
+/*.butt:hover {background-color: rgba(0, 0, 0, 0.4);}
 
 .butt:active {
     background-color: rgba(0, 0, 0, 0.5);
     box-shadow: 0 5px rgba(0, 0, 0, 0.6);
-}
+}*/
 
 .slim-image-editor .slim-editor-btn-group button {
     text-decoration: none;

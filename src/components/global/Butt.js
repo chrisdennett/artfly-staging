@@ -21,7 +21,7 @@ class Butt extends Component {
 
     render() {
 
-        const { label, onClick, svgIcon, backgroundColour, labelColour, showAsLink } = this.props;
+        const { label, svgIcon, backgroundColour, labelColour, showAsLink, ...rest } = this.props;
 
         const labelPadding = svgIcon ? 20 : 0;
         const labelStyle = { paddingLeft: labelPadding };
@@ -52,7 +52,6 @@ class Butt extends Component {
         if (showAsLink) {
             buttonStyle.backgroundColor = 'rgba(0,0,0,0)';
             buttonStyle.boxShadow = 'none';
-            // buttonStyle.hover(textDecoration = 'underline');
         }
 
         if (this.state.hover) {
@@ -60,7 +59,7 @@ class Butt extends Component {
         }
 
         return (
-            <button onClick={onClick}
+            <button {...rest}
                     style={buttonStyle}
                     onMouseEnter={this.onMouseEnter}
                     onMouseLeave={this.onMouseLeave}>
