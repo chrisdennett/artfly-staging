@@ -52,7 +52,7 @@ const Settings = function ({ userArtists, subscription, price, onSubscribe, onCa
     }
 
     return (
-        <Page title={'Settings'} icon={<SettingsIcon height={50}/>}>
+        <Page title={'Settings'} icon={<SettingsIcon height={50}/>} backgroundHue={168}>
             <section className={'settings-main-section'}>
                 <h2>Subscription</h2>
                 {subscriptionContent}

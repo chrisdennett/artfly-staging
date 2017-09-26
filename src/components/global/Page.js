@@ -1,9 +1,15 @@
 import React from 'react';
 
-const Page = function (props) {
+const Page = function ({icon, title, children, backgroundHue}) {
+
+    const hue = backgroundHue;
+    const saturation = 72;
+    const lightness = 42;
+    const bgCol = `hsl(${hue},${saturation}%,${lightness}%)`;
+    const lighterBg = `hsl(${hue},${saturation}%,${lightness-2}%)`;
 
     const pageStyle = {
-        backgroundColor: '#2dc1b0',
+        backgroundColor: lighterBg,
         color: '#fff',
         display: 'flex',
         flexDirection: 'column',
@@ -11,7 +17,7 @@ const Page = function (props) {
     };
 
     const titleStyle = {
-        backgroundColor: '#2cb1a0',
+        backgroundColor: bgCol,
         borderBottom: '1px solid rgba(0,0,0,0.2)'
     };
 
@@ -29,10 +35,10 @@ const Page = function (props) {
     return (
         <div style={pageStyle}>
             <div style={titleStyle}>
-                <h1 style={headingStyle}>{props.icon} {props.title}</h1>
+                <h1 style={headingStyle}>{icon} {title}</h1>
             </div>
             <div style={contentStyle}>
-                {props.children}
+                {children}
             </div>
         </div>
     )

@@ -7,6 +7,7 @@ import FormRenderField from '../global/FormRenderField';
 import Butt from "../global/Butt";
 import LinkButt from "../global/LinkButt";
 import Modal from "../global/Modal";
+import Page from "../global/Page";
 
 class ArtistEditor extends Component {
     constructor(props) {
@@ -57,12 +58,11 @@ class ArtistEditor extends Component {
         }
 
         return (
-            <div className={'artist-editor'}>
+            <Page backgroundHue={210} title={formTitle}>
 
                 {modal}
 
-                <div className={'artist-editor-content'}>
-                    <h1>{formTitle}</h1>
+                <section className={'settings-main-section'}>
                     <form onSubmit={handleSubmit(this.props.onSubmit.bind(this))}>
                         <Field
                             name="firstName"
@@ -74,19 +74,23 @@ class ArtistEditor extends Component {
                             label="Last Name: "
                             component={FormRenderField}
                         />
-                        <div>
-                            <Butt type="submit" label={'Done'}/>
-                            <LinkButt label={`Cancel`} linkTo={`/settings/`}/>
+
+                        <Butt type="submit" label={'Done'}/>
+
+                        <LinkButt label={`Cancel`} linkTo={`/settings/`}/>
+
+                        {
+                            this.props.formType === 'edit' &&
                             <Butt type="button"
                                   label={'Delete Artist'}
-                                  backgroundColour={'#a60000'}
+                                  backgroundColour={'#920000'}
                                   shadowColour={'#540000'}
                                   onClick={this.onDeleteClick.bind(this)}/>
-                        </div>
+                        }
 
                     </form>
-                </div>
-            </div>
+                </section>
+            </Page>
         )
     }
 }
