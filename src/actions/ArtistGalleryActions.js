@@ -23,36 +23,6 @@ let artistListenersRef = [];
 let artworkListenersRef = [];
 let artistArtworkIdsListenersRef = [];
 
-/*export function fetchGallery(artistGalleryId) {
-    return (dispatch) => {
-
-        if (galleryListenersRef.indexOf(artistGalleryId) >= 0) {
-            dispatch({
-                type: ALREADY_CACHED,
-                payload: {}
-            });
-            return;
-        }
-
-        // keep track of galleryIds that have had listeners attached
-        galleryListenersRef.push(artistGalleryId);
-
-        // remove any listeners if there are already there
-        firebase.database().ref(`user-data/userArtists/${artistGalleryId}`).off();
-
-        // set up a listener for this gallery
-        firebase.database()
-            .ref(`user-data/userArtists/${artistGalleryId}`)
-            .on('value', snapshot => {
-                const galleryData = snapshot.val();
-                dispatch({
-                    type: FETCH_GALLERY,
-                    payload: { [artistGalleryId]: galleryData }
-                });
-            });
-    }
-}*/
-
 export function fetchArtist(artistGalleryId) {
     return (dispatch) => {
         if (artistListenersRef.indexOf(artistGalleryId) >= 0) {
@@ -154,24 +124,6 @@ export function fetchArtwork(artworkId, callback) {
             });
     }
 }
-
-/*export function updateGallery(galleryId, newGalleryData, callback) {
-    return dispatch => {
-        const artistRef = firebase.database().ref(`user-data/userArtists/${galleryId}`);
-        artistRef.update({ ...newGalleryData })
-            .then(() => {
-                dispatch({
-                    type: GALLERY_UPDATED,
-                    payload: newGalleryData
-                });
-
-                if (callback) callback();
-            })
-            .catch(function (error) {
-                console.log('updateGallery failed: ', error);
-            })
-    }
-}*/
 
 export function updateArtist(artistId, artistData, callback) {
     return dispatch => {

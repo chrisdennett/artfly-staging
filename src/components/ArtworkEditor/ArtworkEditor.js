@@ -4,12 +4,13 @@ import './artworkEditor.css';
 import ImageCropAndRotate from '../ImageCropAndRotate/ImageCropAndRotate';
 import ArtistSelector from "../ArtistSelector/ArtistSelector";
 import Butt from "../global/Butt";
+import Modal from "../global/Modal";
 
 class ArtworkEditor extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { deleteConfirmIsShowing: false, artworkDeleted: false };
+        this.state = { deleteConfirmIsShowing: false, artworkDeleting: false };
     }
 
     onDeleteArtwork() {
@@ -21,33 +22,14 @@ class ArtworkEditor extends Component {
     }
 
     onDeleteConfirm() {
-        this.setState({ deleteConfirmIsShowing: false, artworkDeleted: true });
+        this.setState({ deleteConfirmIsShowing: false, artworkDeleting: true });
         this.props.onConfirmDeleteArtwork()
     }
 
     render() {
-        const {
-                  url, artistId, artists, onArtistSelected, onCropDataConfirm,
-                  onCropImageSave, onSaveChanges, onCancelChanges
-              } = this.props;
+        const { url, artistId, artists, onArtistSelected, onCropDataConfirm, onCropImageSave, onSaveChanges, onCancelChanges } = this.props;
 
-        if (this.state.artworkDeleted) {
-            return (
-                <div>
-                    Artwork Deleting
-                </div>);
-        }
-
-        let confirmDeleteStyle = { display: 'none' };
-        let actionButtonsStyle = {};
         let cropperStyle = { maxWidth: 250 };
-        let artistSelectorStyle = {};
-        if (this.state.deleteConfirmIsShowing) {
-            confirmDeleteStyle = {};
-            actionButtonsStyle = { display: 'none' };
-            cropperStyle.display = 'none';
-            artistSelectorStyle = { display: 'none' };
-        }
 
         let saveButtonLabel = "Save changes";
 
@@ -62,11 +44,19 @@ class ArtworkEditor extends Component {
 
             <div className={'artwork-editor'}>
                 <div className={'artwork-editor-contents'}>
+
+                    <Modal title={'Delete Artwork?'} isOpen={this.state.deleteConfirmIsShowing}>
+                        <p>Are you sure you want to delete the artwork?</p>
+                        <Butt label={'Yes, delete it'} onClick={this.onDeleteConfirm.bind(this)}/>
+                        <Butt label={'No, do not delete'} onClick={this.onDeleteCancel.bind(this)}/>
+                    </Modal>
+
+                    <Modal title={'Artwork deleting...'} isOpen={this.state.artworkDeleting}/>
+
                     <h1>Artwork Editor</h1>
 
                     <div className={'artwork-editor-artist-section'}>
                         <ArtistSelector artists={artists}
-                                        style={artistSelectorStyle}
                                         selectedArtistId={artistId}
                                         onArtistSelected={onArtistSelected}/>
                     </div>
@@ -77,22 +67,15 @@ class ArtworkEditor extends Component {
                                             onCropDataConfirm={onCropDataConfirm}
                                             onCropImageSave={onCropImageSave}/>
                         <Butt label={`Crop / Rotate`} onClick={() => { this.cropper.openEditScreen(); }}/>
-                            
+
                     </div>
 
-                    <div style={actionButtonsStyle}>
+                    <div>
                         <Butt label={saveButtonLabel} onClick={onSaveChanges}/>
-                        
+
                         <Butt label={'Done'} onClick={onCancelChanges}/>
                         <Butt label={'Delete Image'} onClick={this.onDeleteArtwork.bind(this)}/>
                     </div>
-
-                    <div style={confirmDeleteStyle}>
-                        <p>Are you sure you want to delete this artwork?</p>
-                        <Butt label={'Yes, delete it'} onClick={this.onDeleteConfirm.bind(this)}/>
-                        <Butt label={'No, do not delete'} onClick={this.onDeleteCancel.bind(this)}/>
-                    </div>
-
                 </div>
             </div>
         );
