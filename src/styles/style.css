@@ -116,21 +116,18 @@ label.disabled{
     overflow: hidden;
 }
 
-/*.butt{
-    flex-grow: 1;
-    text-decoration: none;
-    padding: 15px 25px;
-    margin: 10px;
-    font-size: 24px;
-    text-align: center;
-    cursor: pointer;
-    outline: none;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.3);
-    border: none;
-    border-radius: 5px;
-    box-shadow: 0 5px rgba(0, 0, 0, 0.5);
-}*/
+.page-main-section {
+    margin-bottom: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-main-section form {
+    display: flex;
+    flex-direction: column;
+}
 
 .sketch-butt{
     cursor: pointer;
@@ -141,13 +138,6 @@ label.disabled{
     width: 65px;
     display: inline-block;
 }
-
-/*.butt:hover {background-color: rgba(0, 0, 0, 0.4);}
-
-.butt:active {
-    background-color: rgba(0, 0, 0, 0.5);
-    box-shadow: 0 5px rgba(0, 0, 0, 0.6);
-}*/
 
 .slim-image-editor .slim-editor-btn-group button {
     text-decoration: none;
@@ -200,6 +190,20 @@ label.disabled{
         margin-bottom: 20px;
         border-radius: 5px;
         border: none;
+    }
+
+    .page .page-title h1 {
+        padding: 60px 30px 0 30px;
+        margin-bottom: 60px;
+        text-align: center;
+    }
+
+    .slim-image-editor .slim-editor-utils-group button{
+        font-size: 16px;
+    }
+
+    .slim-image-editor .slim-editor-btn-group button {
+        font-size: 16px;
     }
 }
 

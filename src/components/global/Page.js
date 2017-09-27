@@ -1,12 +1,15 @@
 import React from 'react';
 
-const Page = function ({icon, title, children, backgroundHue}) {
+const Page = function ({icon, title, children, hue, saturation, brightness}) {
 
-    const hue = backgroundHue;
-    const saturation = 72;
-    const lightness = 42;
-    const bgCol = `hsl(${hue},${saturation}%,${lightness}%)`;
-    const lighterBg = `hsl(${hue},${saturation}%,${lightness-2}%)`;
+    // Set defaults if no values provided
+    const h = hue ? hue : 233;
+    const s = saturation ? saturation : 51;
+    const l = brightness ? brightness : 42;
+
+    // Set colour values
+    const bgCol = `hsl(${h},${s}%,${l}%)`;
+    const lighterBg = `hsl(${h},${s}%,${l-2}%)`;
 
     const pageStyle = {
         backgroundColor: lighterBg,
@@ -29,7 +32,7 @@ const Page = function ({icon, title, children, backgroundHue}) {
 
     const contentStyle = {
         maxWidth: 960,
-        margin: '40px auto'
+        margin: '6vh auto'
     };
 
     return (

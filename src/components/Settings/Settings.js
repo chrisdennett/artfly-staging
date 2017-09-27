@@ -52,13 +52,13 @@ const Settings = function ({ userArtists, subscription, price, onSubscribe, onCa
     }
 
     return (
-        <Page title={'Settings'} icon={<SettingsIcon height={50}/>} backgroundHue={168}>
-            <section className={'settings-main-section'}>
+        <Page title={'Settings'} icon={<SettingsIcon height={50}/>} hue={168}>
+            <section className={'page-main-section'}>
                 <h2>Subscription</h2>
                 {subscriptionContent}
             </section>
 
-            <section className={'settings-main-section'}>
+            <section className={'page-main-section'}>
                 <h2>Artists</h2>
 
                 <section className={'settings-add-new-artist-section'}>
@@ -102,12 +102,12 @@ return (
 
             <div className={'settings-content'}>
 
-                <section className={'settings-main-section'}>
+                <section className={'page-main-section'}>
                     <h2>Subscription</h2>
                     {subscriptionContent}
                 </section>
 
-                <section className={'settings-main-section'}>
+                <section className={'page-main-section'}>
                     <h2>Artists</h2>
 
                     <section className={'settings-add-new-artist-section'}>

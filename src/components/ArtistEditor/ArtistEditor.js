@@ -58,11 +58,11 @@ class ArtistEditor extends Component {
         }
 
         return (
-            <Page backgroundHue={210} title={formTitle}>
+            <Page hue={210} title={formTitle}>
 
                 {modal}
 
-                <section className={'settings-main-section'}>
+                <section className={'page-main-section'}>
                     <form onSubmit={handleSubmit(this.props.onSubmit.bind(this))}>
                         <Field
                             name="firstName"
