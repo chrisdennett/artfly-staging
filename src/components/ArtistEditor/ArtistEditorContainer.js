@@ -9,24 +9,22 @@ import ArtistEditor from './ArtistEditor';
 
 // Created an intermediate component so can trigger the data loading outside
 class ArtistEditorHolder extends Component {
+
     componentDidMount() {
         // Fetch artistGallery data if artistId is in params
-        const artistGalleryId = this.props.match.params.artistId;
-        if (artistGalleryId) {
-            this.initData(artistGalleryId);
-        }
+        this.initData();
     }
 
     componentDidUpdate() {
-        const artistGalleryId = this.props.match.params.artistId;
-        if (artistGalleryId) {
-            this.initData(artistGalleryId);
-        }
+        this.initData();
     }
 
-    initData(artistGalleryId) {
-        this.props.fetchArtist(artistGalleryId);
-        this.props.fetchArtistArtworkIds(artistGalleryId);
+    initData() {
+        const artistGalleryId = this.props.match.params.artistId;
+        if (artistGalleryId) {
+            this.props.fetchArtist(artistGalleryId);
+            this.props.fetchArtistArtworkIds(artistGalleryId);
+        }
     }
 
     onSubmit(values) {

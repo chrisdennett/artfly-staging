@@ -12,6 +12,7 @@ import Page from "../global/Page";
 class ArtistEditor extends Component {
     constructor(props) {
         super(props);
+
         this.state = { showDeleteConfirmation: false };
     }
 
