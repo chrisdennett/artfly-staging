@@ -26,7 +26,11 @@ class ArtworkEditorHolder extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
+        this.initData();
+    }
+
+    componentDidUpdate() {
         this.initData();
     }
 
