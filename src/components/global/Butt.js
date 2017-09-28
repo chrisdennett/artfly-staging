@@ -61,6 +61,10 @@ class Butt extends Component {
             buttonStyle.textDecoration = 'underline';
         }
 
+        if(rest.style){
+            buttonStyle = {...buttonStyle, ...rest.style}
+        }
+
         return (
             <button {...rest}
                     style={buttonStyle}

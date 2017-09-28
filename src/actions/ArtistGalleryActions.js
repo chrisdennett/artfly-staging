@@ -299,8 +299,8 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artw
 
         // ensures the progress starts afresh
         dispatch({
-            type: CLEAR_IMAGE_UPLOAD,
-            payload: {}
+            type: IMAGE_UPLOAD_PROGRESS,
+            payload: { artistId: artistId, id: artworkRef.key, progress: 0 }
         });
 
         uploadTask.on(fb.storage.TaskEvent.STATE_CHANGED,
@@ -366,10 +366,10 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artw
                             .then(() => {
                                 dispatch({
                                     type: ADD_ARTWORK_COMPLETE,
-                                    payload: { [artistId]: newArtworkData }
+                                    payload: { progress:100 }
                                 });
 
-                                if (callback) callback();
+                                if (callback) callback({...newArtworkData, artworkId: artworkRef.key});
                             })
                             .catch(function (error) {
                                 console.log('Synchronization failed', error);

@@ -2,11 +2,15 @@ import React from 'react';
 import _ from 'lodash';
 
 const ArtistSelector = function (props) {
+
+    console.log("props: ", props.labelText);
+
     const selectedArtistId = props.selectedArtistId ? props.selectedArtistId : '';
+    const labelText = props.labelText !== undefined ? props.labelText : 'Select Artist: ';
 
     return (
-        <div>
-            <label className={'form-field'} htmlFor="artistSelector">Select Artist: </label>
+        <div style={props.style}>
+            <label className={'form-field'} htmlFor="artistSelector">{labelText} </label>
             <select value={selectedArtistId}
                     onChange={(e) => {props.onArtistSelected(e.target.value)}}>
                 {

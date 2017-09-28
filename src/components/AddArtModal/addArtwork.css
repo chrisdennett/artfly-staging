@@ -1,8 +1,8 @@
 .add-artwork-screen{
     background-color: cadetblue;
+    position: fixed;
     height: 100%;
     width: 100%;
-    position: fixed;
     z-index: 1;
     left: 0;
     top: 0;
@@ -23,5 +23,5 @@
     border: solid 2px white;
     padding: 20px;
     border-radius: 5px;
-    max-width: 250px;
+    max-width: 100px;
 }

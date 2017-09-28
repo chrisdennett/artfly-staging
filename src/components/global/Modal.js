@@ -1,26 +1,33 @@
 import React from "react";
 
-const Modal = function ({ children, title, isOpen }) {
+const Modal = function ({ children, title, isOpen, allowScrolling }) {
 
-    const modalStyle = {
+    let modalStyle = {
         position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
         zIndex: '9999',
+        color: '#fff',
+        textAlign: 'center',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
     };
+
+    if(allowScrolling){
+        modalStyle.height = '100%';
+    }
 
     const backdropStyle = {
         position: 'fixed',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-around',
         width: '100%',
         height: '100%',
         top: '0px',
         left: '0px',
         zIndex: '9998',
         backgroundColor: '#0288D1',
-        background: 'radial-gradient(circle, #039BE5, #01579b)'
+        background: 'radial-gradient(circle, #039BE5, #01579b)',
+        overflowX: 'hidden'
     };
 
     if (isOpen === false) {
@@ -36,7 +43,6 @@ const Modal = function ({ children, title, isOpen }) {
             </div>
         );
     }
-
 };
 
 export default Modal;

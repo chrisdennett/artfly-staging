@@ -27,6 +27,12 @@ class ArtworkEditor extends Component {
         this.props.onConfirmDeleteArtwork()
     }
 
+    /*showPictureInGallery() {
+        this.setState({ imgIsSelected: false });
+        this.props.history.push(`/gallery/${this.props.imageUploadInfo.artistId}/artwork/${this.props.imageUploadInfo.id}`);
+        this.props.clearImageUpload();
+    }*/
+
     render() {
         const { url, artistId, artists, onArtistSelected, onCropDataConfirm, onCropImageSave, onSaveChanges, onCancelChanges } = this.props;
 

@@ -59,7 +59,7 @@ class ImageCropAndRotate extends Component {
         const callSaveOnImageLoad = this.props.callSaveOnImageLoad ? this.props.callSaveOnImageLoad : false;
 
         return (
-            <div>
+            <div style={this.props.style}>
                 {/*<button onClick={this.onCropAndRotateClick.bind(this)}>Crop or Rotate picture</button>*/}
                 <Slim download={showDownload}
                       ref={(cropRef) => { this.cropRef = cropRef; }}

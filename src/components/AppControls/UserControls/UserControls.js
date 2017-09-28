@@ -1,12 +1,12 @@
 import React from "react";
 import { Link, Redirect } from 'react-router-dom';
 
-import AddArtwork from '../../AddArtwork/AddArtwork';
 import SignOutButton from "./assets/SignOutButton";
 import SettingsButton from "./assets/SettingsButton";
 import EditButton from "../GalleryControls/assets/EditButton";
 import LoadingOverlay from "../../LoadingOverlay/LoadingOverlay";
 import SignInContainer from "../../SignIn/SignInContainer";
+import AddArtInputButton from "./assets/AddArtInputButton";
 
 const UserControls = function (props) {
     const { userStatus } = props;
@@ -29,7 +29,7 @@ const UserControls = function (props) {
             <span>
                 {(!props.artworkId || onArtworkEditorPage) ? "" : <Link to={`/artwork-editor/${props.artworkId}`}><EditButton/></Link> }
 
-                <AddArtwork history={props.history} />
+                <AddArtInputButton history={props.history} />
 
                 <Link to="/settings"><SettingsButton/></Link>
 
