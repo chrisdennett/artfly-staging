@@ -2,10 +2,12 @@ import React from 'react';
 import _ from 'lodash';
 
 const ArtistSelector = function (props) {
+    const selectedArtistId = props.selectedArtistId ? props.selectedArtistId : '';
+
     return (
         <div>
             <label className={'form-field'} htmlFor="artistSelector">Select Artist: </label>
-            <select value={props.selectedArtistId}
+            <select value={selectedArtistId}
                     onChange={(e) => {props.onArtistSelected(e.target.value)}}>
                 {
                     _.map(props.artists, (artistData, artistId) => {
