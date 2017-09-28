@@ -189,9 +189,6 @@ export function logoutUser(user) {
 // TODO: Currently this is just used to clear auth assuming the user has no other data
 // Rename this or update so it deletes all data
 export function deleteUser() {
-
-    console.log("deleteUser called ");
-
     return dispatch => {
         fb.auth().currentUser.delete().then(function () {
             dispatch({

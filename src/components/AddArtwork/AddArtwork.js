@@ -55,7 +55,6 @@ class PhotoSelector extends Component {
             this.setState({ imgIsSelected: true });
 
             const imgFile = event.target.files[0];
-            console.log("event.target.files: ", event.target.files);
             const reader = new FileReader();
 
             reader.onload = function (event) {
