@@ -8,7 +8,6 @@ import { fetchArtist, fetchArtistArtworkIds, fetchArtwork } from '../../actions/
 class ArtistGalleryHolder extends Component {
     constructor(props) {
         super(props);
-
         this.state = { pageWidth: 0, pageHeight:0 };
     }
 

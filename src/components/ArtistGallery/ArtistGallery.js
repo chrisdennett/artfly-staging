@@ -1,17 +1,24 @@
 import React, { Component } from 'react';
 import './artistGallery.css';
 
-import SvgGalleryBottom from './assets/SvgGalleryBottom';
 import SvgBackground from "./assets/SvgBackground";
-import Roof from "./assets/source_files/Roof";
-import WindowsSection from "./assets/WindowSection";
-import NameSection from "./assets/NameSection";
+import SvgGallery from "./assets/SvgGallery";
 
 class ArtistGallery extends Component {
+
+    componentDidMount() {
+        // document.body.classList.toggle('no-scroll-bars', true);
+    }
+
+    componentWillUnmount() {
+        document.body.classList.remove('no-scroll-bars');
+    }
+
+
     render() {
         const { artist, artworkIds, artworks, onThumbClick, pageWidth, pageHeight } = this.props;
         let galleryHeight = 0;
-        const minGalleryPadding = 25;
+        const minGalleryPadding = 0;
         let galleryWidth = 800;
         if ((pageWidth - (minGalleryPadding * 2)) < galleryWidth) {
             galleryWidth = pageWidth - (minGalleryPadding * 2);
@@ -19,77 +26,49 @@ class ArtistGallery extends Component {
         const galleryX = ((pageWidth - galleryWidth) / 2);
 
 
-        if (this.refs.gallery) {
-            galleryHeight = this.refs.gallery.offsetHeight;
+        if (this.refs.section) {
+            galleryHeight = this.refs.section.sectionHeight;
         }
 
-        const hue = 185;
-        const saturation = 34;
-        const lightness = 61;
+        if (pageHeight < 1 || pageWidth < 1) {
+            return <div>Loading gallery...</div>
+        }
 
-        const nameSectionHue = 290;
+        const maxGalleryWidth = 800;
+        let viewBoxWidth = pageWidth < maxGalleryWidth ? maxGalleryWidth : pageWidth;
+        const fullGalleryHeight = 3156;
+        let currentHeight = fullGalleryHeight;
+        const showFullGallery = false;
+
+        if (showFullGallery) {
+            currentHeight = pageHeight;
+            viewBoxWidth = pageWidth;
+            document.body.classList.toggle('no-scroll-bars', true);
+        }
+
+        const currentGalleryScale = currentHeight / fullGalleryHeight;
+        console.log("currentGalleryScale: ", currentGalleryScale);
 
         return (
-            <div>
 
-                <SvgBackground galleryHeight={galleryHeight} pageWidth={pageWidth} pageHeight={pageHeight}/>
+            <svg viewBox={`0 0 ${viewBoxWidth} ${currentHeight}`}>
 
-                <div className="gallery" ref='gallery' style={{ paddingLeft: galleryX }}>
+                {/*<g>
+                    <rect y={currentHeight - 20} width={viewBoxWidth} height={20} fill={'#ff00ff'}/>
+                    <rect x={0} width={viewBoxWidth} height={20} fill={'#0000ff'}/>
+                    <rect x={0} width={20} height={currentHeight} fill={'#00ff00'}/>
+                    <rect x={viewBoxWidth - 20} width={20} height={currentHeight} fill={'#ff0000'}/>
+                </g>*/}
 
-                    <div className="gallery-top">
+                <SvgBackground height={currentHeight} width={viewBoxWidth} galleryScale={currentGalleryScale}/>
 
-                        <Roof/>
-                        {/*<SvgGalleryTitle firstName={artist.firstName} lastName={artist.lastName}/>*/}
-                    </div>
+                <SvgGallery artist={artist}
+                            artworkIds={artworkIds}
+                            artworks={artworks}
+                            pageWidth={pageWidth}
+                            onThumbClick={onThumbClick}/>
 
-                    <NameSection galleryWidth={galleryWidth}
-                                 firstName={artist.firstName}
-                                 lastName={artist.lastName}
-                                 hue={nameSectionHue}
-                                 saturation={saturation}
-                                 lightness={lightness}/>
-
-
-                    {/*<div className="gallery-middle">
-
-                        <SvgLeftWall height={windowsHeight}/>
-
-                        <div className="gallery-middle-windows" ref='middleWindows'>
-                            {
-                                _.map(artworkIds, (id) => {
-                                    if (artworks[id]) {
-                                        return (
-                                            <SvgWindow key={id}
-                                                       viewBox={`${windowX} 0 ${windowWidth} 109.72265`}
-                                                       className="galleryTitle"
-                                                       onThumbClick={onThumbClick.bind(this)}
-                                                       artwork={artworks[id]}/>
-                                        )
-                                    }
-                                })
-                            }
-                        </div>
-
-                        <SvgRightWall height={windowsHeight}/>
-
-
-                    </div>*/}
-
-                    <WindowsSection galleryWidth={galleryWidth}
-                                    artworkIds={artworkIds}
-                                    artworks={artworks}
-                                    hue={hue}
-                                    saturation={saturation}
-                                    lightness={lightness}
-                                    onThumbClick={onThumbClick.bind(this)}/>
-
-                    <div className="gallery-bottom">
-                        <SvgGalleryBottom />
-                    </div>
-                </div>
-
-
-            </div>
+            </svg>
         )
     }
 };

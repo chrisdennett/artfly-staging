@@ -16,7 +16,7 @@ class NameSection extends Component {
         const lineWidth = 720;
 
         return (
-            <svg width={'100%'} viewBox="0 0 800 350">
+            <svg viewBox="0 0 800 350">
 
                 <SectionLine x={40} y={32} width={lineWidth} featureColour={featureColour} lowlight={lowlight} highlight={highlight}/>
                 <SectionLine x={40} y={40} width={lineWidth} featureColour={featureColour} lowlight={lowlight} highlight={highlight}/>

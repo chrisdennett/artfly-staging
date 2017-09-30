@@ -3,8 +3,6 @@ import _ from 'lodash';
 
 const ArtistSelector = function (props) {
 
-    console.log("props: ", props.labelText);
-
     const selectedArtistId = props.selectedArtistId ? props.selectedArtistId : '';
     const labelText = props.labelText !== undefined ? props.labelText : 'Select Artist: ';
 
