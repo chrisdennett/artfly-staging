@@ -7,7 +7,9 @@ class SvgBackground extends Component {
 
     render() {
         const { height, width, galleryScale } = this.props;
+
         let backgroundHeight = height + (150 * galleryScale);
+        if(isNaN(backgroundHeight)) return null;
 
         const treesHeight = 314 * galleryScale;
         const bollardsHeight = 126 * galleryScale;
@@ -24,7 +26,6 @@ class SvgBackground extends Component {
         const bollardsY = pathY - (80 * galleryScale);
         const treesY = bollardsY - (200 * galleryScale);
         const cityscapeY = pathY - cityscapeHeight;
-
 
         return (
             <g>

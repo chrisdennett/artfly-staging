@@ -46,13 +46,14 @@ class ArtistGalleryHolder extends Component {
     }
 
     render() {
-        const { artist, totalArtworks, artworks, artworkIds } = this.props;
+        const { artist, totalArtworks, artworks, artworkIds, galleryHeight } = this.props;
         if (!artist || !artworks) {
             return <div>Artist Gallery Loading</div>;
         }
 
         return <ArtistGallery pageWidth={this.state.pageWidth}
                               pageHeight={this.state.pageHeight}
+                              galleryHeight={galleryHeight}
                               artist={artist}
                               totalArtworks={totalArtworks}
                               artworkIds={artworkIds}
@@ -78,6 +79,7 @@ const mapStateToProps = (state, ownProps) => {
     let artworks = state.artworks;
 
     return {
+        galleryHeight: state.ui.galleryHeight,
         galleryId: galleryId,
         gallery: state.galleries[galleryId],
         artist: state.artists[galleryId],

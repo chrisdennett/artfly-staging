@@ -16,19 +16,7 @@ class ArtistGallery extends Component {
 
 
     render() {
-        const { artist, artworkIds, artworks, onThumbClick, pageWidth, pageHeight } = this.props;
-        let galleryHeight = 0;
-        const minGalleryPadding = 0;
-        let galleryWidth = 800;
-        if ((pageWidth - (minGalleryPadding * 2)) < galleryWidth) {
-            galleryWidth = pageWidth - (minGalleryPadding * 2);
-        }
-        const galleryX = ((pageWidth - galleryWidth) / 2);
-
-
-        if (this.refs.section) {
-            galleryHeight = this.refs.section.sectionHeight;
-        }
+        const { artist, artworkIds, artworks, onThumbClick, pageWidth, pageHeight, galleryHeight } = this.props;
 
         if (pageHeight < 1 || pageWidth < 1) {
             return <div>Loading gallery...</div>
@@ -36,8 +24,7 @@ class ArtistGallery extends Component {
 
         const maxGalleryWidth = 800;
         let viewBoxWidth = pageWidth < maxGalleryWidth ? maxGalleryWidth : pageWidth;
-        const fullGalleryHeight = 3156;
-        let currentHeight = fullGalleryHeight;
+        let currentHeight = galleryHeight ? galleryHeight : 0;
         const showFullGallery = false;
 
         if (showFullGallery) {
@@ -46,19 +33,11 @@ class ArtistGallery extends Component {
             document.body.classList.toggle('no-scroll-bars', true);
         }
 
-        const currentGalleryScale = currentHeight / fullGalleryHeight;
-        console.log("currentGalleryScale: ", currentGalleryScale);
+        const currentGalleryScale = currentHeight / galleryHeight;
 
         return (
 
             <svg viewBox={`0 0 ${viewBoxWidth} ${currentHeight}`}>
-
-                {/*<g>
-                    <rect y={currentHeight - 20} width={viewBoxWidth} height={20} fill={'#ff00ff'}/>
-                    <rect x={0} width={viewBoxWidth} height={20} fill={'#0000ff'}/>
-                    <rect x={0} width={20} height={currentHeight} fill={'#00ff00'}/>
-                    <rect x={viewBoxWidth - 20} width={20} height={currentHeight} fill={'#ff0000'}/>
-                </g>*/}
 
                 <SvgBackground height={currentHeight} width={viewBoxWidth} galleryScale={currentGalleryScale}/>
 
@@ -67,7 +46,6 @@ class ArtistGallery extends Component {
                             artworks={artworks}
                             pageWidth={pageWidth}
                             onThumbClick={onThumbClick}/>
-
             </svg>
         )
     }

@@ -8,7 +8,18 @@ const config = {
     messagingSenderId: "156669954952"
 };
 
+/*const stagingOnlyConfig = {
+    apiKey: "AIzaSyBw4JO9UT1KXpDpnb6gvF2DfkIrXXQ4Vac",
+    authDomain: "artfly-staging.firebaseapp.com",
+    databaseURL: "https://artfly-staging.firebaseio.com",
+    storageBucket: "artfly-staging.appspot.com",
+    messagingSenderId: "133898795032"
+};
+const artflyFirebase = firebase.initializeApp(stagingOnlyConfig);*/
+
 const artflyFirebase = firebase.initializeApp(config);
+
+
 // const database = firebase.database();
 // const auth = firebase.auth();
 
