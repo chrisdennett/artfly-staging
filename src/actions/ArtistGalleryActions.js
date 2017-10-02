@@ -71,6 +71,7 @@ export function fetchArtistArtworkIds(artistGalleryId, callback =null) {
                 type: ALREADY_CACHED,
                 payload: {}
             });
+            if(callback) callback();
             return;
         }
 

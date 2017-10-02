@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import ArtistGallery from './ArtistGallery';
 import { fetchArtist, fetchArtistArtworkIds, fetchArtwork } from '../../actions/ArtistGalleryActions';
+import { getGalleryParams } from "../../actions/UiActions";
 
 // Intermediary component so ui component isn't required to call data
 class ArtistGalleryHolder extends Component {
@@ -19,13 +20,14 @@ class ArtistGalleryHolder extends Component {
         window.onresize = this.getWindowSize.bind(this);
     }
 
-    componentWillUpdate(nextProps) {
-        if (this.props.galleryId !== nextProps.galleryId) {
-            this.initData(nextProps.galleryId);
-        }
+    componentDidUpdate(nextProps, prevProps) {
 
-        for (let id of nextProps.artworkIds) {
-            this.props.fetchArtwork(id);
+        if (!prevProps.galleryId) {
+            this.initData(nextProps.galleryId);
+            this.props.getGalleryParams(nextProps.artworkIds.length);
+            for (let id of nextProps.artworkIds) {
+                this.props.fetchArtwork(id);
+            }
         }
     }
 
@@ -46,14 +48,14 @@ class ArtistGalleryHolder extends Component {
     }
 
     render() {
-        const { artist, totalArtworks, artworks, artworkIds, galleryHeight } = this.props;
+        const { artist, totalArtworks, artworks, artworkIds, galleryParams } = this.props;
         if (!artist || !artworks) {
             return <div>Artist Gallery Loading</div>;
         }
 
         return <ArtistGallery pageWidth={this.state.pageWidth}
                               pageHeight={this.state.pageHeight}
-                              galleryHeight={galleryHeight}
+                              galleryParams={galleryParams}
                               artist={artist}
                               totalArtworks={totalArtworks}
                               artworkIds={artworkIds}
@@ -79,7 +81,7 @@ const mapStateToProps = (state, ownProps) => {
     let artworks = state.artworks;
 
     return {
-        galleryHeight: state.ui.galleryHeight,
+        galleryParams: state.ui.galleryParams,
         galleryId: galleryId,
         gallery: state.galleries[galleryId],
         artist: state.artists[galleryId],
@@ -90,7 +92,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const ArtistGalleryContainer = connect(
-    mapStateToProps, { fetchArtist, fetchArtistArtworkIds, fetchArtwork }
+    mapStateToProps, { fetchArtist, fetchArtistArtworkIds, fetchArtwork, getGalleryParams }
 )(ArtistGalleryHolder);
 
 export default ArtistGalleryContainer;
