@@ -21,10 +21,10 @@ class WindowSection extends Component {
         let x = 0;
         let y = 0;
 
-        let xStart = windowsSectionPadding.left;
-        let yStart = windowsSectionPadding.top;
-        let windowWidthWithPadding = windowWidth;
-        let windowHeightWithPadding = windowHeight;
+        let xStart = windowsSectionPadding.left + windowPadding.left;
+        let yStart = windowsSectionPadding.top + windowPadding.top;
+        let windowWidthWithPadding = windowWidth + windowPadding.left + windowPadding.right;
+        let windowHeightWithPadding = windowHeight + windowPadding.top + windowPadding.bottom;
 
         return _.map(artworkIds, (id) => {
             if (artworks[id]) {
@@ -39,7 +39,7 @@ class WindowSection extends Component {
                 x = xStart + (colCount * windowWidthWithPadding);
                 y = yStart + (rowCount * windowHeightWithPadding);
 
-                this.sectionHeight = y + windowHeight + windowsSectionPadding.bottom;
+                this.sectionHeight = y + windowHeightWithPadding + windowsSectionPadding.bottom;
 
                 windowCount++;
                 colCount++;
