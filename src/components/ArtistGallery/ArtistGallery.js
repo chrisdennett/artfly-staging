@@ -17,7 +17,6 @@ class ArtistGallery extends Component {
     render() {
         const { artist, artworkIds, artworks, onThumbClick, pageWidth, pageHeight, galleryParams } = this.props;
 
-
         if (pageHeight < 1 || pageWidth < 1 || !galleryParams) {
             return <div>Loading gallery...</div>
         }

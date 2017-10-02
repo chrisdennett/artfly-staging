@@ -3,6 +3,7 @@ export const GET_GALLERY_PARAMS = "getGalleryParams";
 export const ALREADY_CACHED = "alreadyCached";
 
 let currentGalleryArtworks = null;
+let currentInMobileMode = null;
 
 export function setGalleryHeight(galleryHeight) {
 
@@ -14,10 +15,10 @@ export function setGalleryHeight(galleryHeight) {
     }
 }
 
-export function getGalleryParams(totalArtworks) {
+export function getGalleryParams(totalArtworks, inMobileMode) {
 
     return dispatch => {
-        if(currentGalleryArtworks === totalArtworks){
+        if(inMobileMode === currentInMobileMode && currentGalleryArtworks === totalArtworks){
             dispatch({
                 type: ALREADY_CACHED,
                 payload: {}
@@ -26,6 +27,8 @@ export function getGalleryParams(totalArtworks) {
         }
 
         currentGalleryArtworks = totalArtworks;
+        currentInMobileMode = inMobileMode;
+
         const hue = 185;
         const saturation = 34;
         const lightness = 61;
@@ -35,9 +38,23 @@ export function getGalleryParams(totalArtworks) {
         const roofHeight = 364;
         const nameHeight = 422;
         const bottomHeight = 500;
-        const windowHeight = 250;
+
+        // Windows sections
+        const windowsSectionPadding = {top:60, right:45, bottom:60, left:45};
+
         const verticalPadding = 60;
-        const windowsPerFloor = 3;
+        const windowsPerFloor = inMobileMode ? 2 : 3;
+        const origWindowWidth = 190;
+        const origWindowHeight = 206;
+
+        const mobileScaleUp = 1.7;
+        const windowFrameWidth = inMobileMode ? origWindowWidth*mobileScaleUp : origWindowWidth;
+        const windowFrameHeight = inMobileMode ? origWindowHeight*mobileScaleUp : origWindowHeight;
+
+        const windowPadding =  {top:60, right:45, bottom:60, left:45};
+        const windowWidth = windowFrameWidth + windowPadding.left;
+        const windowHeight = windowFrameHeight + windowPadding.bottom;
+
         const floors = Math.ceil(totalArtworks / windowsPerFloor);
 
         const windowsHeight = (floors * windowHeight) + (verticalPadding * 2);
@@ -46,8 +63,8 @@ export function getGalleryParams(totalArtworks) {
         const galleryWidth = 800;
 
         const galleryParams = {
-            hue, saturation, lightness,nameSectionHue, roofHeight,
-            nameHeight, windowsHeight, bottomHeight, galleryWidth, galleryHeight
+            hue, saturation, lightness, nameSectionHue, roofHeight, windowWidth, windowsSectionPadding,
+            windowPadding, windowHeight, nameHeight, windowsHeight, bottomHeight, galleryWidth, galleryHeight
         };
 
         dispatch({

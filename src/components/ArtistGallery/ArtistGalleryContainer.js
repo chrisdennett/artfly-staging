@@ -9,38 +9,38 @@ import { getGalleryParams } from "../../actions/UiActions";
 class ArtistGalleryHolder extends Component {
     constructor(props) {
         super(props);
-        this.state = { pageWidth: 0, pageHeight:0 };
+        this.state = { pageWidth: 0, pageHeight:0, inMobileMode:null };
     }
 
 
     componentDidMount() {
-        this.initData(this.props.galleryId);
+        this.props.fetchArtist(this.props.galleryId);
+        this.props.fetchArtistArtworkIds(this.props.galleryId);
+
         this.getWindowSize();
 
         window.onresize = this.getWindowSize.bind(this);
     }
 
-    componentDidUpdate(nextProps, prevProps) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.totalArtworks !== this.props.totalArtworks ||
+            prevState.inMobileMode !== this.state.inMobileMode) {
 
-        if (!prevProps.galleryId) {
-            this.initData(nextProps.galleryId);
-            this.props.getGalleryParams(nextProps.artworkIds.length);
-            for (let id of nextProps.artworkIds) {
+            this.props.getGalleryParams(this.props.totalArtworks, this.state.inMobileMode);
+        }
+
+        if(prevProps.artworkIds !== this.props.artworkIds){
+            for (let id of this.props.artworkIds) {
                 this.props.fetchArtwork(id);
             }
         }
     }
 
-    initData(artistGalleryId) {
-        this.props.fetchArtist(artistGalleryId);
-        this.props.fetchArtistArtworkIds(artistGalleryId);
-    }
-
     getWindowSize() {
-        this.setState({
-            pageWidth: window.innerWidth,
-            pageHeight: window.innerHeight
-        })
+        const pageWidth = window.innerWidth;
+        const pageHeight = window.innerHeight;
+
+        this.setState({pageWidth, pageHeight, inMobileMode:pageWidth<500});
     }
 
     onThumbClick(artworkId){

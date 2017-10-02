@@ -11,32 +11,35 @@ class WindowSection extends Component {
         this.sectionHeight = 0;
     }
 
-    createBuildingWindows(artworkIds, artworks, wallColour, highlight, lowlight, galleryWidth) {
+    createBuildingWindows(artworkIds, artworks, wallColour, highlight, lowlight, galleryWidth,
+                          windowWidth, windowHeight, windowsSectionPadding, windowPadding) {
+
         let windowCount = 0;
-        const leftPadding = 45;
-        const topPadding = 60;
         const windowHorizontalSpace = galleryWidth;
-        const windowWidth = 250;
-        const windowHeight = 250;
         let colCount = 0;
         let rowCount = 0;
         let x = 0;
         let y = 0;
 
+        let xStart = windowsSectionPadding.left;
+        let yStart = windowsSectionPadding.top;
+        let windowWidthWithPadding = windowWidth;
+        let windowHeightWithPadding = windowHeight;
+
         return _.map(artworkIds, (id) => {
             if (artworks[id]) {
 
-                x = leftPadding + (colCount * windowWidth);
+                x = xStart + (colCount * windowWidthWithPadding);
 
-                if (x + windowWidth > windowHorizontalSpace) {
+                if (x + windowWidthWithPadding > windowHorizontalSpace) {
                     colCount = 0;
                     rowCount++;
                 }
 
-                x = leftPadding + (colCount * windowWidth);
-                y = topPadding + (rowCount * windowHeight);
+                x = xStart + (colCount * windowWidthWithPadding);
+                y = yStart + (rowCount * windowHeightWithPadding);
 
-                this.sectionHeight = y + windowHeight + topPadding;
+                this.sectionHeight = y + windowHeight + windowsSectionPadding.bottom;
 
                 windowCount++;
                 colCount++;
@@ -45,6 +48,8 @@ class WindowSection extends Component {
                     <BuildingWindow key={id}
                                     x={x}
                                     y={y}
+                                    width={windowWidth}
+                                    height={windowHeight}
                                     number={windowCount}
                                     artwork={artworks[id]}
                                     onThumbClick={this.props.onThumbClick.bind(this)}
@@ -58,14 +63,14 @@ class WindowSection extends Component {
     }
 
     render() {
-        const { galleryWidth, hue, saturation, lightness, artworks, artworkIds } = this.props;
+        const { galleryWidth, hue, saturation, lightness, artworks, artworkIds, windowWidth, windowHeight, windowsSectionPadding, windowPadding } = this.props;
 
         const wallColour = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
         const featureColour = `hsl(${hue}, ${saturation}%, ${lightness - 5}%)`;
         const highlight = `hsl(${hue}, ${saturation}%, ${lightness + 10}%)`;
         const lowlight = `hsl(${hue}, ${saturation}%, ${lightness - 10}%)`;
 
-        const buildingWindows = this.createBuildingWindows(artworkIds, artworks, wallColour, highlight, lowlight, galleryWidth);
+        const buildingWindows = this.createBuildingWindows(artworkIds, artworks, wallColour, highlight, lowlight, galleryWidth, windowWidth, windowHeight, windowsSectionPadding, windowPadding);
 
         const buildingSectionProps = {
             galleryWidth, wallColour, featureColour, highlight, lowlight
