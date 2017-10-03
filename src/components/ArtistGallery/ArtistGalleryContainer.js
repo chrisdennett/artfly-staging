@@ -12,7 +12,6 @@ class ArtistGalleryHolder extends Component {
         this.state = { pageWidth: 0, pageHeight:0, inMobileMode:null };
     }
 
-
     componentDidMount() {
         this.props.fetchArtist(this.props.galleryId);
         this.props.fetchArtistArtworkIds(this.props.galleryId);
@@ -20,6 +19,10 @@ class ArtistGalleryHolder extends Component {
         this.getWindowSize();
 
         window.onresize = this.getWindowSize.bind(this);
+    }
+
+    componentWillUnmount(){
+        document.body.classList.remove('no-scroll-bars');
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -32,6 +35,15 @@ class ArtistGalleryHolder extends Component {
         if(prevProps.artworkIds !== this.props.artworkIds){
             for (let id of this.props.artworkIds) {
                 this.props.fetchArtwork(id);
+            }
+        }
+
+        if(prevProps.galleryIsZoomedOut !== this.props.galleryIsZoomedOut){
+            if(this.props.galleryIsZoomedOut){
+                document.body.classList.toggle('no-scroll-bars', true);
+            }
+            else{
+                document.body.classList.remove('no-scroll-bars');
             }
         }
     }

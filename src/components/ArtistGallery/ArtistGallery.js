@@ -1,53 +1,41 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './artistGallery.css';
 
 import SvgBackground from "./assets/SvgBackground";
 import SvgGallery from "./assets/SvgGallery";
 
-class ArtistGallery extends Component {
+const ArtistGallery = function (props) {
+    const { artist, artworkIds, artworks, onThumbClick, pageWidth, pageHeight, galleryParams, galleryIsZoomedOut } = props;
 
-    componentDidMount() {
-        // document.body.classList.toggle('no-scroll-bars', true);
+    if (pageHeight < 1 || pageWidth < 1 || !galleryParams) {
+        return <div>Loading gallery...</div>
     }
 
-    componentWillUnmount() {
-        document.body.classList.remove('no-scroll-bars');
+    const galleryHeight = galleryParams.galleryHeight;
+    const maxGalleryWidth = galleryParams.galleryWidth;
+    let viewBoxWidth = pageWidth < maxGalleryWidth ? maxGalleryWidth : pageWidth;
+    let currentHeight = galleryHeight ? galleryHeight : 0;
+
+    if (galleryIsZoomedOut) {
+        currentHeight = pageHeight;
+        viewBoxWidth = pageWidth;
     }
 
-    render() {
-        const { artist, artworkIds, artworks, onThumbClick, pageWidth, pageHeight, galleryParams, galleryIsZoomedOut } = this.props;
+    const currentGalleryScale = currentHeight / galleryHeight;
 
-        if (pageHeight < 1 || pageWidth < 1 || !galleryParams) {
-            return <div>Loading gallery...</div>
-        }
+    return (
+        <svg viewBox={`0 0 ${viewBoxWidth} ${currentHeight}`}>
 
-        const galleryHeight = galleryParams.galleryHeight;
-        const maxGalleryWidth = galleryParams.galleryWidth;
-        let viewBoxWidth = pageWidth < maxGalleryWidth ? maxGalleryWidth : pageWidth;
-        let currentHeight = galleryHeight ? galleryHeight : 0;
+            <SvgBackground height={currentHeight} width={viewBoxWidth} galleryScale={currentGalleryScale}/>
 
-        if (galleryIsZoomedOut) {
-            currentHeight = pageHeight;
-            viewBoxWidth = pageWidth;
-            document.body.classList.toggle('no-scroll-bars', true);
-        }
-
-        const currentGalleryScale = currentHeight / galleryHeight;
-
-        return (
-            <svg viewBox={`0 0 ${viewBoxWidth} ${currentHeight}`}>
-
-                <SvgBackground height={currentHeight} width={viewBoxWidth} galleryScale={currentGalleryScale}/>
-
-                <SvgGallery artist={artist}
-                            galleryParams={galleryParams}
-                            artworkIds={artworkIds}
-                            artworks={artworks}
-                            pageWidth={pageWidth}
-                            onThumbClick={onThumbClick}/>
-            </svg>
-        )
-    }
+            <SvgGallery artist={artist}
+                        galleryParams={galleryParams}
+                        artworkIds={artworkIds}
+                        artworks={artworks}
+                        pageWidth={pageWidth}
+                        onThumbClick={onThumbClick}/>
+        </svg>
+    )
 };
 
 export default ArtistGallery;
