@@ -10,7 +10,7 @@ class SvgBackground extends Component {
 
         this.tick = this.tick.bind(this);
 
-        this.state = { request: 0, totalClouds: 6, cloudSpeedPercent: 0.0008 };
+        this.state = { request: 0, totalClouds: 6, maxCloudSpeedPercent: 0.0008, minCloudSpeedPercent: 0.0004 };
     }
 
     componentDidMount() {
@@ -24,8 +24,9 @@ class SvgBackground extends Component {
             for (let i = 0; i < state.totalClouds; i++) {
                 newCloudXPositions[`c${i}`] = {
                     key: `c${i}`,
+                    speedPercent: state.minCloudSpeedPercent + (Math.random() * state.maxCloudSpeedPercent),
                     x: Math.random() * props.width,
-                    y: Math.random() * (props.height * 0.4)
+                    y: Math.random() * (props.height * 0.3)
                 }
             }
 
@@ -46,11 +47,11 @@ class SvgBackground extends Component {
             let newCloudXPositions = { ...state.cloudXPositions };
             for (let i = 0; i < state.totalClouds; i++) {
                 let cl = newCloudXPositions[`c${i}`];
-                let newX = cl.x + (props.width * state.cloudSpeedPercent);
+                let newX = cl.x + (props.width * cl.speedPercent);
 
                 if (newX > props.width + 100) {
                     newX = 0 - 100;
-                    cl.y = Math.random() * (props.height * 0.4);
+                    cl.y = Math.random() * (props.height * 0.3);
                 }
                 cl.x = newX;
             }
