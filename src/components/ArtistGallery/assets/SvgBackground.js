@@ -29,7 +29,7 @@ class SvgBackground extends Component {
 
         return (
             <g>
-                <rect id="sky" height={backgroundHeight} width={width} fill="#f3f7fa"/>
+                <rect id="sky" height={backgroundHeight} width={width} fill="url(#skyGradient)"/>
 
                 <g transform={`translate(0 ${cityscapeY})`}>
                     <rect fill="url(#cityscape)" width={width} height={cityscapeHeight}/>
@@ -54,8 +54,13 @@ class SvgBackground extends Component {
                 </g>
 
                 <defs>
-                    <pattern id="bollards" width={167 * galleryScale} height={126 * galleryScale}
-                             patternUnits="userSpaceOnUse">
+                    <linearGradient id={'skyGradient'} x1="0" x2="0" y1="1" y2="0">
+                        <stop offset={'0%'} stopColor={'#f3f7fa'}/>
+                        <stop offset={'50%'} stopColor={'#f3f7fa'}/>
+                        <stop offset={'100%'} stopColor={'#90e4ff'}/>
+                    </linearGradient>
+
+                    <pattern id="bollards" width={167 * galleryScale} height={126 * galleryScale} patternUnits="userSpaceOnUse">
                         <g transform={`scale(${galleryScale})`}>
                             <path fillOpacity=".2" d="M28.49 120.6h137.7v2.916H28.49z"/>
                             <path fill="#6a707d" d="M4.789 32.6h19.21v87.69H4.789z"/>
@@ -72,8 +77,7 @@ class SvgBackground extends Component {
                             <path fillOpacity=".2" d="M.196 121.6h28.39v3.679H.196z"/>
                         </g>
                     </pattern>
-                    <pattern id="trees" width={607.7 * galleryScale} height={314 * galleryScale}
-                             patternUnits="userSpaceOnUse">
+                    <pattern id="trees" width={607.7 * galleryScale} height={316 * galleryScale} patternUnits="userSpaceOnUse">
                         <g transform={`scale(${galleryScale})`}>
                             <path fill="gray" d="M378.2 294.1h70v5.965h-70z"/>
                             <rect ry="3.769" height="7.537" width="70" y="295.3" x="378.2" fill="gray"/>
@@ -97,7 +101,7 @@ class SvgBackground extends Component {
                                 fill="#947b68"/>
                         </g>
                     </pattern>
-                    <pattern id="cityscape" height={744 * galleryScale} width={300 * galleryScale}
+                    <pattern id="cityscape" height={746 * galleryScale} width={300 * galleryScale}
                              patternUnits="userSpaceOnUse">
                         <g transform={`scale(${galleryScale})`}>
                             <path

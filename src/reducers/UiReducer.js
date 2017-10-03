@@ -1,7 +1,6 @@
 import { GET_GALLERY_PARAMS, SET_GALLERY_ZOOM } from '../actions/UiActions';
 
-export default function (state = {}, action) {
-
+export default function (state = {galleryIsZoomedOut:true}, action) {
     switch (action.type) {
         case GET_GALLERY_PARAMS:
             return {...state, galleryParams:action.payload};
