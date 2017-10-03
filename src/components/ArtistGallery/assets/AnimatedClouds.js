@@ -50,7 +50,7 @@ class AnimatedClouds extends Component {
                 let newX = cl.x + (props.width * cl.speedPercent);
 
                 if (newX > props.width + 100) {
-                    newX = 0 - 100;
+                    newX = 0 - (300 * props.cloudScale);
                     cl.y = Math.random() * (props.height * 0.3);
                 }
                 cl.x = newX;
