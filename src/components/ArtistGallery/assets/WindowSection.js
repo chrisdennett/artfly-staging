@@ -11,8 +11,11 @@ class WindowSection extends Component {
         this.sectionHeight = 0;
     }
 
-    createBuildingWindows(artworkIds, artworks, wallColour, highlight, lowlight, galleryWidth,
-                          windowWidth, windowHeight, windowsSectionPadding, windowPadding) {
+    createBuildingWindows(artworkIds, artworks, wallColour, highlight, lowlight, galleryWidth, windowParams) {
+        const {
+                  windowWidth, windowsSectionPadding, windowPadding, windowHeight,
+                  windowWidthWithPadding, windowHeightWithPadding,
+              } = windowParams;
 
         let windowCount = 0;
         const windowHorizontalSpace = galleryWidth;
@@ -23,8 +26,6 @@ class WindowSection extends Component {
 
         let xStart = windowsSectionPadding.left + windowPadding.left;
         let yStart = windowsSectionPadding.top + windowPadding.top;
-        let windowWidthWithPadding = windowWidth + windowPadding.left + windowPadding.right;
-        let windowHeightWithPadding = windowHeight + windowPadding.top + windowPadding.bottom;
 
         return _.map(artworkIds, (id) => {
             if (artworks[id]) {
@@ -63,14 +64,14 @@ class WindowSection extends Component {
     }
 
     render() {
-        const { galleryWidth, hue, saturation, lightness, artworks, artworkIds, windowWidth, windowHeight, windowsSectionPadding, windowPadding } = this.props;
+        const { galleryWidth, hue, saturation, lightness, artworks, artworkIds, windowParams } = this.props;
 
         const wallColour = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
         const featureColour = `hsl(${hue}, ${saturation}%, ${lightness - 5}%)`;
         const highlight = `hsl(${hue}, ${saturation}%, ${lightness + 10}%)`;
         const lowlight = `hsl(${hue}, ${saturation}%, ${lightness - 10}%)`;
 
-        const buildingWindows = this.createBuildingWindows(artworkIds, artworks, wallColour, highlight, lowlight, galleryWidth, windowWidth, windowHeight, windowsSectionPadding, windowPadding);
+        const buildingWindows = this.createBuildingWindows(artworkIds, artworks, wallColour, highlight, lowlight, galleryWidth, windowParams);
 
         const buildingSectionProps = {
             galleryWidth, wallColour, featureColour, highlight, lowlight

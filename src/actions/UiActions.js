@@ -58,19 +58,23 @@ export function getGalleryParams(totalArtworks, inMobileMode) {
 
         const windowWidth = windowFrameWidth;
         const windowHeight = windowFrameHeight;
-        const windowWidthWidthPadding = windowWidth + windowPadding.left + windowPadding.right;
-        const windowHeightWidthPadding = windowHeight + windowPadding.top + windowPadding.bottom;
+        const windowWidthWithPadding = windowWidth + windowPadding.left + windowPadding.right;
+        const windowHeightWithPadding = windowHeight + windowPadding.top + windowPadding.bottom;
 
         const floors = Math.ceil(totalArtworks / windowsPerFloor);
 
-        const windowsHeight = (floors * windowHeightWidthPadding) + (windowsSectionPadding.top + windowsSectionPadding.bottom);
+        const windowsHeight = (floors * windowHeightWithPadding) + (windowsSectionPadding.top + windowsSectionPadding.bottom);
 
         const galleryHeight = roofHeight + nameHeight + windowsHeight + bottomHeight;
         const galleryWidth = 800;
 
+        const windowParams = {
+            windowWidth, windowsSectionPadding, windowPadding, windowHeight,
+            windowWidthWithPadding, windowHeightWithPadding,
+        };
+
         const galleryParams = {
-            hue, saturation, lightness, nameSectionHue, roofHeight, windowWidth, windowsSectionPadding,
-            windowPadding, windowHeight, nameHeight, windowsHeight, bottomHeight, galleryWidth, galleryHeight
+            windowParams, hue, saturation, lightness, nameSectionHue, roofHeight, nameHeight, windowsHeight, bottomHeight, galleryWidth, galleryHeight
         };
 
         dispatch({

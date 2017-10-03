@@ -13,9 +13,8 @@ class SvgGallery extends Component {
         const {
                   hue, saturation, lightness, nameSectionHue, roofHeight,
                   nameHeight, windowsHeight, galleryWidth, galleryHeight,
-                  windowWidth, windowHeight, windowPadding, windowsSectionPadding
+                  windowParams
               } = galleryParams;
-
 
         return (
             <svg viewBox={`0,0,${galleryWidth}, ${galleryHeight}`}>
@@ -37,10 +36,7 @@ class SvgGallery extends Component {
                                     ref={'section'}
                                     artworkIds={artworkIds}
                                     artworks={artworks}
-                                    windowWidth={windowWidth}
-                                    windowHeight={windowHeight}
-                                    windowsSectionPadding={windowsSectionPadding}
-                                    windowPadding={windowPadding}
+                                    windowParams={windowParams}
                                     hue={hue}
                                     saturation={saturation}
                                     lightness={lightness}
