@@ -3,27 +3,29 @@ import { Link } from 'react-router-dom'
 import GalleryButton from "./assets/GalleryButton";
 import PrevButton from "./assets/PrevButton";
 import NextButton from "./assets/NextButton";
+import Butt from "../../global/Butt";
+import LinkButt from "../../global/LinkButt";
 
 const GalleryControls = function (props) {
-    const { artworkId, galleryId, nextArtworkId, prevArtworkId } = props;
+    const { artworkId, galleryId, nextArtworkId, prevArtworkId, galleryIsZoomedOut } = props;
+
+    // const currentPath = props.history.location.pathname;
+    const onGalleryPage = !artworkId;
 
     let prevPath = `/gallery/${galleryId}/artwork/${prevArtworkId}`;
     let nextPath = `/gallery/${galleryId}/artwork/${nextArtworkId}`;
 
     let nextButtonLabel = 'next';
     let prevButtonLabel = 'prev';
-    let prevButtonStyles = {};
-    let nextButtonStyles = {};
-    let galleryButtonStyles = {};
 
-    if (!galleryId) {
-        // only show the next a previous controls inside a gallery
-        prevButtonStyles.display = 'none';
-        nextButtonStyles.display = 'none';
-    }
-    else if (!artworkId) {
+    let controls = [];
+
+    if (onGalleryPage) {
         nextButtonLabel = "enter";
-        prevButtonStyles.display = 'none';
+        controls.push([
+            <Butt key={1} onClick={props.onZoomClick} label={galleryIsZoomedOut ? 'zoom in' : 'zoom out'} />,
+            <LinkButt key={2} linkTo={nextPath} label={nextButtonLabel}/>
+        ]);
     }
     else {
         if (!nextArtworkId) {
@@ -34,19 +36,17 @@ const GalleryControls = function (props) {
             prevButtonLabel = 'exit';
             prevPath = `/gallery/${galleryId}`;
         }
-    }
 
-    if (!galleryId) {
-        galleryButtonStyles.display = 'none';
+        controls.push([
+            <Link key={3} to={`/gallery/${galleryId}`}><GalleryButton/></Link>,
+            <Link key={4} to={prevPath}><PrevButton label={prevButtonLabel}/></Link>,
+            <Link key={5} to={nextPath}><NextButton label={nextButtonLabel}/></Link>]
+        );
     }
 
     return (
         <div className="controls-block">
-            <Link to={`/gallery/${galleryId}`}><GalleryButton/></Link>
-            {/*<Link to={prevPath}>{prevButtonLabel}</Link>*/}
-            <Link to={prevPath}><PrevButton label={prevButtonLabel}/></Link>
-            {/*<Link to={nextPath}>{nextButtonLabel}</Link>*/}
-            <Link to={nextPath}><NextButton label={nextButtonLabel}/></Link>
+            {controls}
         </div>
     )
 };

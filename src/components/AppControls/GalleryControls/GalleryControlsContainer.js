@@ -2,25 +2,35 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { fetchArtistArtworkIds } from '../../../actions/ArtistGalleryActions';
+import { setGalleryZoom } from '../../../actions/UiActions';
 
 import GalleryControls from './GalleryControls';
 
 // Intermediary component so ui component isn't required to call data
 class GalleryControlsHolder extends Component {
+    constructor(props){
+        super(props);
+        this.onZoomClick = this.onZoomClick.bind(this);
+    }
+
     componentDidMount() {
         this.initData(this.props.galleryId);
     }
 
     initData(artistGalleryId) {
-        this.props.fetchGalleryArtistArtworkIds(artistGalleryId);
+        this.props.fetchArtistArtworkIds(artistGalleryId);
     }
 
-    componentWillUpdate(nextProps) {
+    componentWillUpdate() {
         this.initData(this.props.galleryId);
     }
 
+    onZoomClick(){
+        this.props.setGalleryZoom(!this.props.galleryIsZoomedOut);
+    }
+
     render() {
-        const { artworkId, galleryId, artworkIds, history } = this.props;
+        const { artworkId, galleryId, artworkIds, history, galleryIsZoomedOut } = this.props;
         let prevId = null;
         let nextId = null;
 
@@ -44,6 +54,8 @@ class GalleryControlsHolder extends Component {
 
         return <GalleryControls
             history={history}
+            galleryIsZoomedOut={galleryIsZoomedOut}
+            onZoomClick={this.onZoomClick}
             nextArtworkId={nextId}
             prevArtworkId={prevId}
             artworkIds={artworkIds}
@@ -59,12 +71,13 @@ const mapStateToProps = (state, ownProps) => {
     return {
         galleryId: galleryId,
         artworkId: artworkId,
-        artworkIds: state.artistsArtworkIds[galleryId]
+        artworkIds: state.artistsArtworkIds[galleryId],
+        galleryIsZoomedOut: state.ui.galleryIsZoomedOut
     }
 };
 
 const GalleryControlsContainer = connect(
-    mapStateToProps, { fetchGalleryArtistArtworkIds: fetchArtistArtworkIds }
+    mapStateToProps, { fetchArtistArtworkIds, setGalleryZoom }
 )(GalleryControlsHolder);
 
 export default GalleryControlsContainer;

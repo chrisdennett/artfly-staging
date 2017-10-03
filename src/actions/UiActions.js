@@ -1,16 +1,15 @@
-export const SET_GALLERY_HEIGHT = "setGalleryHeight";
 export const GET_GALLERY_PARAMS = "getGalleryParams";
+export const SET_GALLERY_ZOOM = "setGalleryZoom";
 export const ALREADY_CACHED = "alreadyCached";
 
 let currentGalleryArtworks = null;
 let currentInMobileMode = null;
 
-export function setGalleryHeight(galleryHeight) {
-
+export function setGalleryZoom(isZoomedOut){
     return dispatch => {
         dispatch({
-            type: SET_GALLERY_HEIGHT,
-            payload: galleryHeight
+            type: SET_GALLERY_ZOOM,
+            payload: isZoomedOut
         })
     }
 }

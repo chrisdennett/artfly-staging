@@ -15,7 +15,7 @@ class ArtistGallery extends Component {
     }
 
     render() {
-        const { artist, artworkIds, artworks, onThumbClick, pageWidth, pageHeight, galleryParams } = this.props;
+        const { artist, artworkIds, artworks, onThumbClick, pageWidth, pageHeight, galleryParams, galleryIsZoomedOut } = this.props;
 
         if (pageHeight < 1 || pageWidth < 1 || !galleryParams) {
             return <div>Loading gallery...</div>
@@ -25,9 +25,8 @@ class ArtistGallery extends Component {
         const maxGalleryWidth = galleryParams.galleryWidth;
         let viewBoxWidth = pageWidth < maxGalleryWidth ? maxGalleryWidth : pageWidth;
         let currentHeight = galleryHeight ? galleryHeight : 0;
-        const showFullGallery = false;
 
-        if (showFullGallery) {
+        if (galleryIsZoomedOut) {
             currentHeight = pageHeight;
             viewBoxWidth = pageWidth;
             document.body.classList.toggle('no-scroll-bars', true);
@@ -36,7 +35,6 @@ class ArtistGallery extends Component {
         const currentGalleryScale = currentHeight / galleryHeight;
 
         return (
-
             <svg viewBox={`0 0 ${viewBoxWidth} ${currentHeight}`}>
 
                 <SvgBackground height={currentHeight} width={viewBoxWidth} galleryScale={currentGalleryScale}/>
