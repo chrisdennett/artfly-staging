@@ -9,7 +9,7 @@ import { getGalleryParams } from "../../actions/UiActions";
 class ArtistGalleryHolder extends Component {
     constructor(props) {
         super(props);
-        this.state = { pageWidth: 0, pageHeight:0, inMobileMode:null };
+        this.state = { pageWidth: 0, pageHeight: 0, inMobileMode: null };
     }
 
     componentDidMount() {
@@ -19,9 +19,18 @@ class ArtistGalleryHolder extends Component {
         this.getWindowSize();
 
         window.onresize = this.getWindowSize.bind(this);
+
+
+        if (this.props.galleryIsZoomedOut) {
+            document.body.classList.toggle('no-scroll-bars', true);
+        }
+        else {
+            document.body.classList.remove('no-scroll-bars');
+        }
+
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         document.body.classList.remove('no-scroll-bars');
     }
 
@@ -32,17 +41,17 @@ class ArtistGalleryHolder extends Component {
             this.props.getGalleryParams(this.props.totalArtworks, this.state.inMobileMode);
         }
 
-        if(prevProps.artworkIds !== this.props.artworkIds){
+        if (prevProps.artworkIds !== this.props.artworkIds) {
             for (let id of this.props.artworkIds) {
                 this.props.fetchArtwork(id);
             }
         }
 
-        if(prevProps.galleryIsZoomedOut !== this.props.galleryIsZoomedOut){
-            if(this.props.galleryIsZoomedOut){
+        if (prevProps.galleryIsZoomedOut !== this.props.galleryIsZoomedOut) {
+            if (this.props.galleryIsZoomedOut) {
                 document.body.classList.toggle('no-scroll-bars', true);
             }
-            else{
+            else {
                 document.body.classList.remove('no-scroll-bars');
             }
         }
@@ -52,10 +61,10 @@ class ArtistGalleryHolder extends Component {
         const pageWidth = window.innerWidth;
         const pageHeight = window.innerHeight;
 
-        this.setState({pageWidth, pageHeight, inMobileMode:pageWidth<500});
+        this.setState({ pageWidth, pageHeight, inMobileMode: pageWidth < 500 });
     }
 
-    onThumbClick(artworkId){
+    onThumbClick(artworkId) {
         this.props.history.push(`/gallery/${this.props.galleryId}/artwork/${artworkId}`);
     }
 
@@ -100,7 +109,7 @@ const mapStateToProps = (state, ownProps) => {
         artist: state.artists[galleryId],
         totalArtworks: totalArtworks,
         artworkIds: artworkIds,
-        artworks:artworks,
+        artworks: artworks,
         galleryIsZoomedOut: state.ui.galleryIsZoomedOut
     }
 };

@@ -1,15 +1,73 @@
 import React, { Component } from 'react';
-// import Cloud from "./Cloud";
-// import Sun from "./Sun";
-// import Ground from "./Ground";
+import _ from 'lodash';
+
+import Sun from "./Sun";
+import Cloud from "./Cloud";
 
 class SvgBackground extends Component {
+    constructor(props) {
+        super(props);
+
+        this.tick = this.tick.bind(this);
+
+        this.state = { request: 0, totalClouds: 6, cloudSpeedPercent: 0.0008 };
+    }
+
+    componentDidMount() {
+        this.setCloudStartPositions();
+    }
+
+    setCloudStartPositions() {
+        this.setState((state, props) => {
+
+            let newCloudXPositions = {};
+            for (let i = 0; i < state.totalClouds; i++) {
+                newCloudXPositions[`c${i}`] = {
+                    key: `c${i}`,
+                    x: Math.random() * props.width,
+                    y: Math.random() * (props.height * 0.4)
+                }
+            }
+
+            return {
+                cloudXPositions: newCloudXPositions,
+                request: requestAnimationFrame(this.tick)
+            }
+        });
+    }
+
+    componentWillUnmount() {
+        cancelAnimationFrame(this.state.request);
+    }
+
+    tick() {
+        this.setState((state, props) => {
+
+            let newCloudXPositions = { ...state.cloudXPositions };
+            for (let i = 0; i < state.totalClouds; i++) {
+                let cl = newCloudXPositions[`c${i}`];
+                let newX = cl.x + (props.width * state.cloudSpeedPercent);
+
+                if (newX > props.width + 100) {
+                    newX = 0 - 100;
+                    cl.y = Math.random() * (props.height * 0.4);
+                }
+                cl.x = newX;
+            }
+
+            return {
+                cloudXPositions: newCloudXPositions,
+                request: requestAnimationFrame(this.tick)
+            }
+        });
+    }
+
 
     render() {
         const { height, width, galleryScale } = this.props;
 
         let backgroundHeight = height + (150 * galleryScale);
-        if(isNaN(backgroundHeight)) return null;
+        if (isNaN(backgroundHeight)) return null;
 
         const treesHeight = 314 * galleryScale;
         const bollardsHeight = 126 * galleryScale;
@@ -27,9 +85,21 @@ class SvgBackground extends Component {
         const treesY = bollardsY - (200 * galleryScale);
         const cityscapeY = pathY - cityscapeHeight;
 
+        const sunScale = galleryScale;
+        const cloudScale = galleryScale / 1.2;
+
         return (
             <g>
                 <rect id="sky" height={backgroundHeight} width={width} fill="url(#skyGradient)"/>
+
+                <Sun x={50} y={20} scale={sunScale}/>
+
+                {
+                    _.map(this.state.cloudXPositions, (pos) => {
+                        return <Cloud key={pos.key} x={pos.x} y={pos.y} scale={cloudScale}/>
+                    })
+                }
+
 
                 <g transform={`translate(0 ${cityscapeY})`}>
                     <rect fill="url(#cityscape)" width={width} height={cityscapeHeight}/>
@@ -56,11 +126,13 @@ class SvgBackground extends Component {
                 <defs>
                     <linearGradient id={'skyGradient'} x1="0" x2="0" y1="1" y2="0">
                         <stop offset={'0%'} stopColor={'#f3f7fa'}/>
-                        <stop offset={'50%'} stopColor={'#f3f7fa'}/>
-                        <stop offset={'100%'} stopColor={'#90e4ff'}/>
+                        <stop offset={'60%'} stopColor={'#f3f7fa'}/>
+                        <stop offset={'75%'} stopColor={'#90e4ff'}/>
+                        <stop offset={'100%'} stopColor={'#55bbe3'}/>
                     </linearGradient>
 
-                    <pattern id="bollards" width={167 * galleryScale} height={126 * galleryScale} patternUnits="userSpaceOnUse">
+                    <pattern id="bollards" width={167 * galleryScale} height={126 * galleryScale}
+                             patternUnits="userSpaceOnUse">
                         <g transform={`scale(${galleryScale})`}>
                             <path fillOpacity=".2" d="M28.49 120.6h137.7v2.916H28.49z"/>
                             <path fill="#6a707d" d="M4.789 32.6h19.21v87.69H4.789z"/>
@@ -77,7 +149,8 @@ class SvgBackground extends Component {
                             <path fillOpacity=".2" d="M.196 121.6h28.39v3.679H.196z"/>
                         </g>
                     </pattern>
-                    <pattern id="trees" width={607.7 * galleryScale} height={316 * galleryScale} patternUnits="userSpaceOnUse">
+                    <pattern id="trees" width={607.7 * galleryScale} height={316 * galleryScale}
+                             patternUnits="userSpaceOnUse">
                         <g transform={`scale(${galleryScale})`}>
                             <path fill="gray" d="M378.2 294.1h70v5.965h-70z"/>
                             <rect ry="3.769" height="7.537" width="70" y="295.3" x="378.2" fill="gray"/>
