@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchCommunityData } from '../../actions/CommunityActions';
 import Title from "./assets/Title";
+import LinkButt from "../global/LinkButt";
 
 class Home extends Component {
 
@@ -12,12 +13,7 @@ class Home extends Component {
     }
 
     render() {
-        const { featuredGallery } = this.props.communityData;
-        /*const deployToLive = false;
-
-        if(deployToLive){
-            return <h1 style={{width:'100%', textAlign:'centre', padding: 42}}>ArtFly</h1>;
-        }*/
+        const { featuredGallery, featuredGallery2 } = this.props.communityData;
 
         return (
             <div className={'home'}>
@@ -27,7 +23,25 @@ class Home extends Component {
                         FREE.</p>
                     <section>
                         <h2>What?</h2>
-                        <p>A website</p>
+                        <p>I originally made this for my own children. If you want to check out their galleries you can
+                            see them here:</p>
+
+                        <LinkButt linkTo={`/gallery/${featuredGallery}`}
+                                  label={'Holly\'s Gallery'}
+                                  backgroundColour={'#4b962e'}
+                                  shadowColour={'#2a5421'}
+                                  style={{display:'inline-block'}}
+                                  fullWidth={false}/>
+
+                        <LinkButt linkTo={`/gallery/${featuredGallery2}`}
+                                  label={'Dot\'s Gallery'}
+                                  backgroundColour={'#2f8194'}
+                                  shadowColour={'#22485a'}
+                                  style={{display:'inline-block'}}
+                                  fullWidth={false}/>
+
+                        <p>Here are some screenshots and stuff:</p>
+
                         <img style={{ maxWidth: '100%' }} src={'../gallery-example.png'} alt={`gallery`}/>
 
                         <h2>How?</h2>
