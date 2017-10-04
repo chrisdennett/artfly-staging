@@ -13,16 +13,17 @@ class SvgGallery extends Component {
         const {
                   hue, saturation, lightness, nameSectionHue, roofHeight,
                   nameHeight, windowsHeight, galleryWidth, galleryHeight,
-                  windowParams
+                  galleryPaddingTop, windowParams
               } = galleryParams;
 
         return (
-            <svg viewBox={`0,0,${galleryWidth}, ${galleryHeight}`}>
-                <g transform={`translate(0,0)`}>
+            <svg viewBox={`${galleryPaddingTop},0,${galleryWidth}, ${galleryHeight}`}>
+
+                <g transform={`translate(0,${galleryPaddingTop})`}>
                     <Roof/>
                 </g>
 
-                <g transform={`translate(0,${roofHeight})`}>
+                <g transform={`translate(0,${roofHeight+galleryPaddingTop})`}>
                     <NameSection galleryWidth={galleryWidth}
                                  firstName={artist.firstName}
                                  lastName={artist.lastName}
@@ -31,7 +32,7 @@ class SvgGallery extends Component {
                                  lightness={lightness}/>
                 </g>
 
-                <g transform={`translate(0,${roofHeight + nameHeight})`}>
+                <g transform={`translate(0,${roofHeight + nameHeight + galleryPaddingTop})`}>
                     <WindowsSection galleryWidth={galleryWidth}
                                     ref={'section'}
                                     artworkIds={artworkIds}
@@ -43,7 +44,7 @@ class SvgGallery extends Component {
                                     onThumbClick={onThumbClick.bind(this)}/>
                 </g>
 
-                <g transform={`translate(0,${roofHeight + nameHeight + windowsHeight})`}>
+                <g transform={`translate(0,${roofHeight + nameHeight + windowsHeight + galleryPaddingTop})`}>
                     <SvgGalleryBottom/>
                 </g>
             </svg>

@@ -9,7 +9,8 @@ const SvgBackground = function (props) {
 
     const { height, width, galleryScale } = props;
 
-    let backgroundHeight = height + (150 * galleryScale);
+    // let backgroundHeight = height + (150 * galleryScale);
+    let backgroundHeight = height;
     if (isNaN(backgroundHeight)) return null;
 
     const treesHeight = 314 * galleryScale;
@@ -32,7 +33,7 @@ const SvgBackground = function (props) {
     const cloudScale = galleryScale / 1.2;
 
     return (
-        <g>
+        <svg>
             <rect id="sky" height={backgroundHeight} width={width} fill="url(#skyGradient)"/>
 
             <Sun x={50} y={20} scale={sunScale}/>
@@ -126,8 +127,8 @@ const SvgBackground = function (props) {
                     </g>
                 </pattern>
             </defs>
-        </g>
+        </svg>
     );
-}
+};
 
 export default SvgBackground;
