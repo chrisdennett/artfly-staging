@@ -19,8 +19,8 @@ class Home extends Component {
             <div className={'home'}>
                 <div className={'home-content'}>
                     <Title/>
-                    <p className={'descriptions'}>Don't let artistic creations languish in a drawer. Let your ART FLY
-                        FREE.</p>
+                    <p className={'descriptions'}>Don't let artistic creations languish in a drawer. Let the Art Fly
+                        free!</p>
                     <section>
                         <h2>What?</h2>
                         <p>I originally made this for my own children. If you want to check out their galleries you can

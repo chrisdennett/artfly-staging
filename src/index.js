@@ -1,7 +1,7 @@
 import ReactDom from 'react-dom';
 import routes from './routes';
 
-import './styles/style.css';
+import './style.css';
 
 const app = document.getElementById('root');
 
