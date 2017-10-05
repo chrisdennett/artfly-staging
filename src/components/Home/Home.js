@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import './home.css';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { fetchCommunityData } from '../../actions/CommunityActions';
 import Title from "./assets/Title";
 import LinkButt from "../global/LinkButt";

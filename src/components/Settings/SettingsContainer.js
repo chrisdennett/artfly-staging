@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 
 import Settings from './Settings';
 import { fetchArtist, fetchArtistArtworkIds } from '../../actions/ArtistGalleryActions';
+import { subscribeUser } from '../../actions/PaddleActions';
 
 const getUserArtists = (artistIdsObject, artists, artistsArtworkIds) => {
     const artistIds = Object.keys(artistIdsObject);
@@ -38,7 +39,7 @@ class SettingsHolder extends Component {
         const artistIds = Object.keys(this.props.artistIds);
         for (let artistGalleryId of artistIds) {
             this.props.fetchArtist(artistGalleryId);
-            this.props.fetchGalleryArtistArtworkIds(artistGalleryId);
+            this.props.fetchArtistArtworkIds(artistGalleryId);
         }
     }
 
@@ -47,20 +48,8 @@ class SettingsHolder extends Component {
     }
 
     onSubscribe() {
-        const Paddle = window.Paddle;
-
         const { userId } = this.props;
-        const productId = "516947";
-
-        let checkoutSetupData = {};
-        checkoutSetupData.product = productId;
-        checkoutSetupData.passthrough = userId;
-
-        if (this.props.user.email) {
-            checkoutSetupData.email = this.props.user.email;
-        }
-
-        Paddle.Checkout.open(checkoutSetupData);
+        this.props.subscribeUser(userId, this.props.userEmail);
     }
 
     onCancelSubscription() {
@@ -85,7 +74,7 @@ class SettingsHolder extends Component {
             return <Redirect to={'/'}/>
         }
 
-        const { userArtists, userId, subscription, localPrice } = this.props;
+        const { userArtists, userId, subscription, localPrice, newSubscriptionStatus } = this.props;
         if (!userId) {
             return <div>Loading...</div>;
         }
@@ -93,6 +82,7 @@ class SettingsHolder extends Component {
         return <Settings onSubscribe={this.onSubscribe.bind(this)}
                          onCancelSubscription={this.onCancelSubscription.bind(this)}
                          onUpdateSubscription={this.onUpdateSubscription.bind(this)}
+                         newSubscriptionStatus={newSubscriptionStatus}
                          userArtists={userArtists}
                          price={localPrice}
                          subscription={subscription}/>;
@@ -106,6 +96,7 @@ const mapStateToProps = (state) => {
     return {
         user: state.user,
         localPrice: state.paddle.localPrice,
+        newSubscriptionStatus: state.paddle.newSubscriptionStatus,
         userId: state.user.uid,
         userEmail: state.user.email,
         userStatus: state.user.status,
@@ -116,7 +107,7 @@ const mapStateToProps = (state) => {
 };
 
 const SettingsContainer = connect(
-    mapStateToProps, { fetchArtist, fetchGalleryArtistArtworkIds: fetchArtistArtworkIds }
+    mapStateToProps, { subscribeUser, fetchArtist, fetchArtistArtworkIds }
 )(SettingsHolder);
 
 export default SettingsContainer;

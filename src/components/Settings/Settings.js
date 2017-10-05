@@ -7,11 +7,16 @@ import LinkButt from "../global/LinkButt";
 import SettingsIcon from '../global/SettingsIcon';
 import Page from "../global/Page";
 
-const Settings = function ({ userArtists, subscription, price, onSubscribe, onCancelSubscription, onUpdateSubscription }) {
+const Settings = function ({ userArtists, newSubscriptionStatus, subscription, price, onSubscribe, onCancelSubscription, onUpdateSubscription }) {
     let subscriptionContent;
 
+    console.log("newSubscriptionStatus: ", newSubscriptionStatus);
+
     // if subscription is undefined show a subscribe button
-    if (!subscription) {
+    if(newSubscriptionStatus === "triggered"){
+        subscriptionContent = <p>Hopefully there's a pop-up with instructions to follow...</p>
+    }
+    else if (!subscription && newSubscriptionStatus !== "success") {
         subscriptionContent = (
             <div>
                 <p>Subscribe for {price} a month to save up to 1000 artworks</p>
@@ -28,6 +33,9 @@ const Settings = function ({ userArtists, subscription, price, onSubscribe, onCa
                 <Butt onClick={onUpdateSubscription} label={`Update subscription`}/>
             </div>
         )
+    }
+    else if(newSubscriptionStatus !== "success"){
+        subscriptionContent = <p>Setting things up. Should be done in a mo...</p>
     }
     // if status is past_due it means their payment has failed.
     else if (subscription.status === 'past_due') {
