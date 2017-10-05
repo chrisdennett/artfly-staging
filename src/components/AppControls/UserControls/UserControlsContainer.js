@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchUserData, logoutUser } from '../../../actions/UserActions';
+import { logoutUser } from '../../../actions/UserActions';
 
 import UserControls from './UserControls';
 
 // Intermediary component so ui component isn't required to call data
 class UserControlsHolder extends Component {
-    componentDidMount() {
-        this.props.fetchUserData();
-    }
-
     render() {
         const { status } = this.props.user;
         // status can be undefined, pending, complete, none
@@ -34,7 +30,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const UserControlsContainer = connect(
-    mapStateToProps, { fetchUserData, logoutUser }
+    mapStateToProps, { logoutUser }
 )(UserControlsHolder);
 
 export default UserControlsContainer;

@@ -15,12 +15,12 @@ const config = {
     storageBucket: "artfly-staging.appspot.com",
     messagingSenderId: "133898795032"
 };
-const artflyFirebase = firebase.initializeApp(stagingOnlyConfig);*/
+const artflyFirebase = libs.initializeApp(stagingOnlyConfig);*/
 
 const artflyFirebase = firebase.initializeApp(config);
 
 
-// const database = firebase.database();
-// const auth = firebase.auth();
+// const database = libs.database();
+// const auth = libs.auth();
 
 export default artflyFirebase;

@@ -30,20 +30,8 @@ const getUserArtists = (artistIdsObject, artists, artistsArtworkIds) => {
 // Created an intermediate component so can trigger the data loading outside
 class SettingsHolder extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = { price: '' }
-    }
-
     componentDidMount() {
         this.fetchAllArtistData();
-        if (this.state.price === '') {
-            const Paddle = window.Paddle;
-            Paddle.Product.Prices(516947, function (prices) {
-                const localPrice = prices.price.gross;
-                this.setState({price: localPrice})
-            }.bind(this));
-        }
     }
 
     fetchAllArtistData() {
@@ -54,12 +42,13 @@ class SettingsHolder extends Component {
         }
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate() {
         this.fetchAllArtistData();
     }
 
     onSubscribe() {
         const Paddle = window.Paddle;
+
         const { userId } = this.props;
         const productId = "516947";
 
@@ -96,7 +85,7 @@ class SettingsHolder extends Component {
             return <Redirect to={'/'}/>
         }
 
-        const { userArtists, userId, subscription } = this.props;
+        const { userArtists, userId, subscription, localPrice } = this.props;
         if (!userId) {
             return <div>Loading...</div>;
         }
@@ -105,7 +94,7 @@ class SettingsHolder extends Component {
                          onCancelSubscription={this.onCancelSubscription.bind(this)}
                          onUpdateSubscription={this.onUpdateSubscription.bind(this)}
                          userArtists={userArtists}
-                         price={this.state.price}
+                         price={localPrice}
                          subscription={subscription}/>;
     }
 }
@@ -116,6 +105,7 @@ const mapStateToProps = (state) => {
 
     return {
         user: state.user,
+        localPrice: state.paddle.localPrice,
         userId: state.user.uid,
         userEmail: state.user.email,
         userStatus: state.user.status,

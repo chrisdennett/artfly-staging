@@ -1,4 +1,4 @@
-import firebase from '../firebase/firebaseConfig';
+import firebase from '../libs/firebaseConfig';
 // TODO: I think I should be able to do away with this through first import
 import * as fb from 'firebase';
 
@@ -9,7 +9,7 @@ export const LOGOUT_USER = "logoutUser";
 export const DELETE_USER = "deleteUser";
 export const ADD_USER_ARTIST = 'addUserArtist';
 
-export function fetchUserData() {
+export function fetchUserData(callback) {
     return (dispatch) => {
         dispatch({
             type: FETCH_USER,
@@ -53,6 +53,8 @@ export function fetchUserData() {
                                     }
                                 });
                             }
+
+                            if(callback) callback(uid);
                         })
                 }
                 // user not authorised or not logged in
@@ -61,6 +63,8 @@ export function fetchUserData() {
                         type: FETCH_USER,
                         payload: { status: "none" }
                     });
+
+                    if(callback) callback(null);
                 }
 
             })

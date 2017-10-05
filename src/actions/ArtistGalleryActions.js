@@ -1,4 +1,4 @@
-import firebase from '../firebase/firebaseConfig';
+import firebase from '../libs/firebaseConfig';
 // TODO: I think I should be able to do away with this through first import
 import * as fb from 'firebase';
 
@@ -57,7 +57,7 @@ export function fetchArtist(artistGalleryId) {
                 // if the artist has been deleted stop listening for changes
                 // I wasn't sure about this so I've commented it out - cjd - 17/08/2017
                 /*if(!artistData){
-                    firebase.database().ref(`user-data/artists/${artistGalleryId}`).off();
+                    libs.database().ref(`user-data/artists/${artistGalleryId}`).off();
                     console.log("remove listener");
                 }*/
             });

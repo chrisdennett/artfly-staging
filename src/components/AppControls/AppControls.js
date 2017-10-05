@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import UserControlsContainer from './UserControls/UserControlsContainer';
 import GalleryControlsContainer from './GalleryControls/GalleryControlsContainer';
 import HomeButton from "./Logo";
-import GalleryControlsSplat from "./GalleryControls/assets/GalleryControlsSplat";
+// import GalleryControlsSplat from "./GalleryControls/assets/GalleryControlsSplat";
 
 const AppControls = function ({ history, match }) {
     const { galleryId, artworkId } = match.params;

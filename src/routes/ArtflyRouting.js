@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Component } from "react";
+import { connect } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import ArtistGalleryContainer from '../components/ArtistGallery/ArtistGalleryContainer';
 import SettingsContainer from "../components/Settings/SettingsContainer";
@@ -9,50 +10,67 @@ import ArtworkEditorContainer from "../components/ArtworkEditor/ArtworkEditorCon
 import AppControls from '../components/AppControls/AppControls'
 import Home from '../components/Home/Home';
 import ReactGA from 'react-ga';
+import { fetchUserData } from '../actions/UserActions';
+import { fetchLocalPrice } from '../actions/PaddleActions';
 
-const ArtflyRouting = function () {
-    const routes = [
-        { path: "/gallery/:galleryId/artwork/:artworkId", component: ArtworkContainer },
-        { path: "/gallery/:galleryId", component: ArtistGalleryContainer },
-        { path: "/settings", component: SettingsContainer },
-        { path: "/artwork-editor/:artworkId", component: ArtworkEditorContainer },
-        { path: "/add-or-edit-artist/:artistId?", component: ArtistEditorContainer },
-        { path: "/add-or-edit-user/:userId?", component: UserEditorContainer },
-        { path: "/", component: Home }
-    ];
+class ArtflyRouting extends Component {
 
-    return (
-        <BrowserRouter>
-            <div id={'routes-holder'}>
+    constructor(props) {
+        super(props);
 
-                <Switch>
-                    {routes.map((route, index) => (
-                        <Route
-                            key={index}
-                            path={route.path}
-                            component={AppControls}
-                        />
-                    ))}
-                    <Route path="/" render={({ location }) => {
-                        ReactGA.set({ page: location.pathname });
-                        ReactGA.pageview(location.pathname);
-                        return null;
-                    }}/>
-                </Switch>
+        props.fetchUserData();
+        props.fetchLocalPrice();
+    }
 
-                <Switch>
-                    {routes.map((route, index) => (
-                        <Route
-                            key={index}
-                            path={route.path}
-                            component={route.component}
-                        />
-                    ))}
-                </Switch>
+    render() {
+        const routes = [
+            { path: "/gallery/:galleryId/artwork/:artworkId", component: ArtworkContainer },
+            { path: "/gallery/:galleryId", component: ArtistGalleryContainer },
+            { path: "/settings", component: SettingsContainer },
+            { path: "/artwork-editor/:artworkId", component: ArtworkEditorContainer },
+            { path: "/add-or-edit-artist/:artistId?", component: ArtistEditorContainer },
+            { path: "/add-or-edit-user/:userId?", component: UserEditorContainer },
+            { path: "/", component: Home }
+        ];
 
-            </div>
-        </BrowserRouter>
-    );
+        return (
+            <BrowserRouter>
+                <div id={'routes-holder'}>
+
+                    <Switch>
+                        {routes.map((route, index) => (
+                            <Route
+                                key={index}
+                                path={route.path}
+                                component={AppControls}
+                            />
+                        ))}
+                        <Route path="/" render={({ location }) => {
+                            ReactGA.set({ page: location.pathname });
+                            ReactGA.pageview(location.pathname);
+                            return null;
+                        }}/>
+                    </Switch>
+
+                    <Switch>
+                        {routes.map((route, index) => (
+                            <Route
+                                key={index}
+                                path={route.path}
+                                component={route.component}
+                            />
+                        ))}
+                    </Switch>
+
+                </div>
+            </BrowserRouter>
+        );
+    }
 };
 
-export default ArtflyRouting;
+// export default ArtflyRouting;
+const ArtflyRoutingContainer = connect(
+    null, { fetchUserData, fetchLocalPrice }
+)(ArtflyRouting);
+
+export default ArtflyRoutingContainer;

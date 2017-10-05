@@ -1,7 +1,7 @@
 'use strict';
 const functions = require(`firebase-functions`);
 const admin = require('firebase-admin');
-const gcs = require('@google-cloud/storage')({ keyFilename: 'art-blam-firebase-adminsdk-zebo2-cc2250b8ef.json' });
+const gcs = require('@google-cloud/storage')({ keyFilename: 'art-blam-libs-adminsdk-zebo2-cc2250b8ef.json' });
 const spawn = require(`child-process-promise`).spawn;
 
 admin.initializeApp(functions.config().firebase);

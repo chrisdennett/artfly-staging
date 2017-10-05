@@ -19,7 +19,7 @@ export default function (state = {}, action) {
             return { ...state, ...action.payload };
 
         case CREATE_USER:
-            // Doesn't need to return anything because there is a firebase listener on the user
+            // Doesn't need to return anything because there is a libs listener on the user
             // that will trigger FETCH_USER
             return state;
 
