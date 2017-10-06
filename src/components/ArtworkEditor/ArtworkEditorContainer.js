@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import {
-    fetchArtist,
     fetchArtwork,
     updateArtwork,
     uploadImage,
@@ -35,19 +34,10 @@ class ArtworkEditorHolder extends Component {
     }
 
     initData() {
-        const { artworkId, user } = this.props;
+        const { artworkId } = this.props;
 
         if (artworkId) {
             this.props.fetchArtwork(artworkId);
-        }
-
-        if (user) {
-            const { artistIds } = this.props.user;
-            if (artistIds) {
-                for (let id of Object.keys(artistIds)) {
-                    this.props.fetchArtist(id);
-                }
-            }
         }
     }
 
@@ -185,7 +175,6 @@ const mapStateToProps = (state, ownProps) => {
 const ArtworkEditorContainer = connect(
     mapStateToProps,
     {
-        fetchArtist,
         fetchArtwork,
         updateArtwork,
         uploadImage,

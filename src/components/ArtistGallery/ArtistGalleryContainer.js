@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import ArtistGallery from './ArtistGallery';
-import { fetchArtist, fetchArtistArtworkIds, fetchArtwork } from '../../actions/ArtistGalleryActions';
+import { fetchArtwork } from '../../actions/ArtistGalleryActions';
 import { getGalleryParams } from "../../actions/UiActions";
 
 // Intermediary component so ui component isn't required to call data
@@ -13,8 +13,6 @@ class ArtistGalleryHolder extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchArtist(this.props.galleryId);
-        this.props.fetchArtistArtworkIds(this.props.galleryId);
 
         this.getWindowSize();
 
@@ -115,7 +113,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const ArtistGalleryContainer = connect(
-    mapStateToProps, { fetchArtist, fetchArtistArtworkIds, fetchArtwork, getGalleryParams }
+    mapStateToProps, { fetchArtwork, getGalleryParams }
 )(ArtistGalleryHolder);
 
 export default ArtistGalleryContainer;

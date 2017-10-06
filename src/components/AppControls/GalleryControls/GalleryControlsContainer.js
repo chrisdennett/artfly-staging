@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchArtistArtworkIds } from '../../../actions/ArtistGalleryActions';
 import { setGalleryZoom } from '../../../actions/UiActions';
 
 import GalleryControls from './GalleryControls';
@@ -11,18 +10,6 @@ class GalleryControlsHolder extends Component {
     constructor(props){
         super(props);
         this.onZoomClick = this.onZoomClick.bind(this);
-    }
-
-    componentDidMount() {
-        this.initData(this.props.galleryId);
-    }
-
-    initData(artistGalleryId) {
-        this.props.fetchArtistArtworkIds(artistGalleryId);
-    }
-
-    componentWillUpdate() {
-        this.initData(this.props.galleryId);
     }
 
     onZoomClick(){
@@ -77,7 +64,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const GalleryControlsContainer = connect(
-    mapStateToProps, { fetchArtistArtworkIds, setGalleryZoom }
+    mapStateToProps, { setGalleryZoom }
 )(GalleryControlsHolder);
 
 export default GalleryControlsContainer;

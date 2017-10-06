@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import Settings from './Settings';
-import { fetchArtist, fetchArtistArtworkIds } from '../../actions/ArtistGalleryActions';
 import { subscribeUser, updateSubscription, cancelSubscription } from '../../actions/PaddleActions';
 
 const getUserArtists = (artistIdsObject, artists, artistsArtworkIds) => {
@@ -30,22 +29,6 @@ const getUserArtists = (artistIdsObject, artists, artistsArtworkIds) => {
 
 // Created an intermediate component so can trigger the data loading outside
 class SettingsHolder extends Component {
-
-    componentDidMount() {
-        this.fetchAllArtistData();
-    }
-
-    fetchAllArtistData() {
-        const artistIds = Object.keys(this.props.artistIds);
-        for (let artistGalleryId of artistIds) {
-            this.props.fetchArtist(artistGalleryId);
-            this.props.fetchArtistArtworkIds(artistGalleryId);
-        }
-    }
-
-    componentDidUpdate() {
-        this.fetchAllArtistData();
-    }
 
     onSubscribe() {
         const { userId } = this.props;
@@ -101,7 +84,7 @@ const mapStateToProps = (state) => {
 };
 
 const SettingsContainer = connect(
-    mapStateToProps, { subscribeUser, updateSubscription, cancelSubscription, fetchArtist, fetchArtistArtworkIds }
+    mapStateToProps, { subscribeUser, updateSubscription, cancelSubscription }
 )(SettingsHolder);
 
 export default SettingsContainer;

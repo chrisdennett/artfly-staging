@@ -4,7 +4,7 @@ import './addArtwork.css';
 
 import ImageCropAndRotate from '../ImageCropAndRotate/ImageCropAndRotate';
 
-import { fetchArtist, uploadImage, clearImageUpload } from '../../actions/ArtistGalleryActions';
+import { uploadImage, clearImageUpload } from '../../actions/ArtistGalleryActions';
 import ArtistSelector from "../ArtistSelector/ArtistSelector";
 import Butt from "../global/Butt";
 import Modal from "../global/Modal";
@@ -28,16 +28,8 @@ class AddArtModal extends Component {
     }
 
     initData() {
-        const { user } = this.props;
-        if (user) {
-            const { artistIds } = this.props.user;
-            if (artistIds) {
-                for (let id of Object.keys(artistIds)) {
-                    this.props.fetchArtist(id);
-                }
-
-                this.setState({ selectedArtistId: Object.keys(artistIds)[0] })
-            }
+        if (this.props.user && this.props.user.artistIds) {
+            this.setState({ selectedArtistId: Object.keys(this.props.user.artistIds)[0] })
         }
     }
 
@@ -63,14 +55,14 @@ class AddArtModal extends Component {
     }
 
     onSave() {
-        this.setState({saveTriggered: true})
+        this.setState({ saveTriggered: true })
         // set up the new artwork
         // use a call back to set up confirmation message
         //export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null)
         const { height, width } = this.state.cropData;
 
         this.props.uploadImage(this.state.cropImg, this.props.user.uid, this.state.selectedArtistId, width, height, null, (newArtworkData) => {
-            this.setState({saveTriggered: false})
+            this.setState({ saveTriggered: false })
             this.props.onSaveComplete(newArtworkData);
             this.props.clearImageUpload();
         });
@@ -117,7 +109,7 @@ class AddArtModal extends Component {
 
                 <div style={modalContentStyle}>
 
-                    {imgSaving && <h2 style={{margin:'42 auto'}}>Saving: {this.props.imageUploadInfo.progress}%</h2>}
+                    {imgSaving && <h2 style={{ margin: '42 auto' }}>Saving: {this.props.imageUploadInfo.progress}%</h2>}
 
                     {imgLoading && <p>loading picture...</p>}
 
@@ -167,4 +159,4 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps, { uploadImage, fetchArtist, clearImageUpload })(AddArtModal);
+export default connect(mapStateToProps, { uploadImage, clearImageUpload })(AddArtModal);

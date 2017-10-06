@@ -2,30 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { addNewArtist } from '../../actions/UserActions';
-import { fetchArtist, fetchArtistArtworkIds } from '../../actions/ArtistGalleryActions';
 import { updateArtist, deleteArtist } from '../../actions/ArtistGalleryActions';
 
 import ArtistEditor from './ArtistEditor';
 
 // Created an intermediate component so can trigger the data loading outside
 class ArtistEditorHolder extends Component {
-
-    componentDidMount() {
-        // Fetch artistGallery data if artistId is in params
-        this.initData();
-    }
-
-    componentDidUpdate() {
-        this.initData();
-    }
-
-    initData() {
-        const artistGalleryId = this.props.match.params.artistId;
-        if (artistGalleryId) {
-            this.props.fetchArtist(artistGalleryId);
-            this.props.fetchArtistArtworkIds(artistGalleryId);
-        }
-    }
 
     onSubmit(values) {
         const { userId, formType, match, history, addNewArtist, updateArtist } = this.props;
@@ -114,8 +96,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const ArtistEditorContainer = connect(
     mapStateToProps, {
-        fetchArtist,
-        fetchArtistArtworkIds,
         deleteArtist,
         addNewArtist,
         updateArtist

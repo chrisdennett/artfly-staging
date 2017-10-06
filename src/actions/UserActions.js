@@ -20,18 +20,21 @@ export function fetchUserData(callback) {
             .onAuthStateChanged((result) => {
                 // if authorised (result is not null) get user data
                 if (result) {
-                    const { photoURL, displayName, email, uid } = result;
+                    let userData = null;
+                    const { photoURL, displayName, email, uid, providerData } = result;
+                    const signedInWith = providerData[0].providerId || null;
                     // "on" sets up a listener for user so this is called every time user data changes
                     firebase.database()
                         .ref(`/user-data/users/${uid}`)
                         .on('value', (snapshot) => {
-                            const userData = snapshot.val();
+                            userData = snapshot.val();
                             // only include the data needed
                             if (userData) {
                                 dispatch({
                                     type: FETCH_USER,
                                     payload: {
                                         ...userData,
+                                        signedInWith,
                                         photoURL,
                                         displayName,
                                         email,
@@ -45,6 +48,7 @@ export function fetchUserData(callback) {
                                 dispatch({
                                     type: FETCH_USER,
                                     payload: {
+                                        signedInWith,
                                         photoURL,
                                         displayName,
                                         email,
@@ -54,7 +58,8 @@ export function fetchUserData(callback) {
                                 });
                             }
 
-                            if(callback) callback(uid);
+                            // not user
+                            if(callback) callback(userData);
                         })
                 }
                 // user not authorised or not logged in

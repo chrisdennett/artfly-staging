@@ -1,5 +1,3 @@
-import React from 'react';
-
 const ArtflyAccountTypes = {
     free:{
         maxArtworks: 7,

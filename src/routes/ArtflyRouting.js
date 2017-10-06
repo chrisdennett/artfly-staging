@@ -10,15 +10,26 @@ import ArtworkEditorContainer from "../components/ArtworkEditor/ArtworkEditorCon
 import AppControls from '../components/AppControls/AppControls'
 import Home from '../components/Home/Home';
 import ReactGA from 'react-ga';
+
 import { fetchUserData } from '../actions/UserActions';
 import { fetchLocalPrice } from '../actions/PaddleActions';
+import { fetchArtist, fetchArtistArtworkIds } from "../actions/ArtistGalleryActions";
 
 class ArtflyRouting extends Component {
 
     constructor(props) {
         super(props);
 
-        props.fetchUserData();
+        props.fetchUserData((userData) => {
+            // get artist Ids to can load artist data and artist artworkIds
+            // add an action to calculate total artworks and make sure this is called if artistArtworkIds change
+            if(userData){
+                for(let artistId of Object.keys(userData.artistIds)){
+                    props.fetchArtist(artistId);
+                    props.fetchArtistArtworkIds(artistId);
+                }
+            }
+        } );
         props.fetchLocalPrice();
     }
 
@@ -70,7 +81,7 @@ class ArtflyRouting extends Component {
 
 // export default ArtflyRouting;
 const ArtflyRoutingContainer = connect(
-    null, { fetchUserData, fetchLocalPrice }
+    null, { fetchUserData, fetchLocalPrice, fetchArtist, fetchArtistArtworkIds }
 )(ArtflyRouting);
 
 export default ArtflyRoutingContainer;

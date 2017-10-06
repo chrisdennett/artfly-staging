@@ -9,14 +9,18 @@ import Page from "../global/Page";
 import ArtflyAccountTypes from "../global/ArtflyAccountTypes";
 
 const Settings = function ({ userArtists, newSubscriptionStatus, subscription, price, onSubscribe, onCancelSubscription, onUpdateSubscription }) {
-    let subscriptionContent;
+
+    if(newSubscriptionStatus) console.log("newSubscriptionStatus: ", newSubscriptionStatus);
     let totalArtworks = 0;
+    for (let artist of userArtists) {
+        totalArtworks += artist.totalArtworks;
+    }
     const accountType = !subscription ? 'free' : 'family';
     const maxArtworksAllowed = ArtflyAccountTypes[accountType].maxArtworks;
     let subscriptionButtons;
     const infoStyle = {
         fontSize: 16, margin: '0 0 10px 10px', opacity: 0.9
-    }
+    };
 
     if (accountType === 'free') {
         subscriptionButtons = (
@@ -37,9 +41,6 @@ const Settings = function ({ userArtists, newSubscriptionStatus, subscription, p
         )
     }
 
-    for (let artist of userArtists) {
-        totalArtworks += artist.totalArtworks;
-    }
 
     /*if (subscription.status === 'past_due') {
         subscriptionContent = (
