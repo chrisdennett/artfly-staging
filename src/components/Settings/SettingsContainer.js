@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 
 import Settings from './Settings';
 import { fetchArtist, fetchArtistArtworkIds } from '../../actions/ArtistGalleryActions';
-import { subscribeUser } from '../../actions/PaddleActions';
+import { subscribeUser, updateSubscription, cancelSubscription } from '../../actions/PaddleActions';
 
 const getUserArtists = (artistIdsObject, artists, artistsArtworkIds) => {
     const artistIds = Object.keys(artistIdsObject);
@@ -53,19 +53,13 @@ class SettingsHolder extends Component {
     }
 
     onCancelSubscription() {
-        const Paddle = window.Paddle;
         const cancelUrl = this.props.user.subscription.cancelUrl;
-        Paddle.Checkout.open({
-            override: cancelUrl
-        });
+        this.props.cancelSubscription(cancelUrl);
     }
 
     onUpdateSubscription() {
-        const Paddle = window.Paddle;
         const updateUrl = this.props.user.subscription.updateUrl;
-        Paddle.Checkout.open({
-            override: updateUrl
-        });
+        this.props.updateSubscription(updateUrl);
     }
 
     render() {
@@ -107,7 +101,7 @@ const mapStateToProps = (state) => {
 };
 
 const SettingsContainer = connect(
-    mapStateToProps, { subscribeUser, fetchArtist, fetchArtistArtworkIds }
+    mapStateToProps, { subscribeUser, updateSubscription, cancelSubscription, fetchArtist, fetchArtistArtworkIds }
 )(SettingsHolder);
 
 export default SettingsContainer;
