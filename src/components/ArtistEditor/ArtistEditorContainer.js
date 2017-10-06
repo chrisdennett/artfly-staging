@@ -10,8 +10,7 @@ import ArtistEditor from './ArtistEditor';
 class ArtistEditorHolder extends Component {
 
     onSubmit(values) {
-        const { userId, formType, match, history, addNewArtist, updateArtist } = this.props;
-        const { artistId } = match.params;
+        const { userId, artistId, formType, history, addNewArtist, updateArtist } = this.props;
 
         if (formType === "new") {
             addNewArtist(userId, values, () => {
@@ -29,8 +28,7 @@ class ArtistEditorHolder extends Component {
     }
 
     deleteArtist() {
-        const { userId, match, history } = this.props;
-        const { artistId } = match.params;
+        const { userId, artistId, history } = this.props;
         this.props.deleteArtist(artistId, userId, () => {
             history.push(`/settings/`);
         });
@@ -60,7 +58,7 @@ class ArtistEditorHolder extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const { artistId } = ownProps.match.params;
+    const { artistId } = ownProps;
     let formType = "new";
     let status = "";
 

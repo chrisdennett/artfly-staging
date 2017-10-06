@@ -20,7 +20,6 @@ class Butt extends Component {
     }
 
     render() {
-
         const { label, inline, size, svgIcon, backgroundColour, shadowColour, labelColour, showAsLink, fullWidth, ...rest } = this.props;
 
         const labelPadding = svgIcon ? 20 : 0;
@@ -86,6 +85,7 @@ class Butt extends Component {
                     onMouseLeave={this.onMouseLeave}>
                 <span>{svgIcon}</span>
                 <span style={labelStyle}>{label}</span>
+                {this.props.children}
             </button>
         )
     }

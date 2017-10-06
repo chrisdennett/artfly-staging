@@ -37,7 +37,7 @@ class ArtworkHolder extends Component {
 
 // Map state to props maps to the intermediary component which uses or passes them through
 const mapStateToProps = (state, ownProps) => {
-    const { artworkId } = ownProps.match.params;
+    const { artworkId } = ownProps;
     const artwork = state.artworks[artworkId];
 
     return {

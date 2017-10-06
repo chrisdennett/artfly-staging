@@ -86,19 +86,20 @@ class ArtistGalleryHolder extends Component {
 
 // Map state to props maps to the intermediary component which uses or passes them through
 const mapStateToProps = (state, ownProps) => {
-    const { galleryId } = ownProps.match.params;
+    const { galleryId } = ownProps;
+    console.log("galleryId: ", galleryId);
 
-    let artworkIds = [];
-    if (state.artistsArtworkIds && state.artistsArtworkIds[galleryId]) {
+    let sortedArtworkIds = [];
+    let totalArtworks = 0;
+    if (state.artists[galleryId] && state.artists[galleryId].artworkIds) {
         // sort the ids in reverse order.
-        const artworkIdsAfter = state.artistsArtworkIds[galleryId];
-        artworkIds = Object.keys(artworkIdsAfter).sort((a, b) => {
-            return artworkIdsAfter[b] - artworkIdsAfter[a]
+        const {artworkIds} = state.artists[galleryId];
+        totalArtworks = state.artists[galleryId].totalArtworks;
+
+        sortedArtworkIds = artworkIds.sort((a, b) => {
+            return artworkIds[b] - artworkIds[a]
         });
     }
-
-    const totalArtworks = !state.artistsArtworkIds[galleryId] ? 0 : Object.keys(state.artistsArtworkIds[galleryId]).length;
-    let artworks = state.artworks;
 
     return {
         galleryParams: state.ui.galleryParams,
@@ -106,8 +107,8 @@ const mapStateToProps = (state, ownProps) => {
         gallery: state.galleries[galleryId],
         artist: state.artists[galleryId],
         totalArtworks: totalArtworks,
-        artworkIds: artworkIds,
-        artworks: artworks,
+        artworkIds: sortedArtworkIds,
+        artworks: state.artworks,
         galleryIsZoomedOut: state.ui.galleryIsZoomedOut
     }
 };

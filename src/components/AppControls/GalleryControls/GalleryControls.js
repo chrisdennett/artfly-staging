@@ -1,10 +1,11 @@
 import React from "react";
-import { Link } from 'react-router-dom'
+
 import GalleryButton from "./assets/GalleryButton";
 import PrevButton from "./assets/PrevButton";
 import NextButton from "./assets/NextButton";
 import ZoomButton from "./assets/ZoomButton";
 import EnterGalleryButton from "./assets/EnterGalleryButton";
+import Link from "../../global/Link";
 
 const GalleryControls = function (props) {
     const { artworkId, galleryId, nextArtworkId, prevArtworkId, galleryIsZoomedOut } = props;
@@ -43,9 +44,9 @@ const GalleryControls = function (props) {
         }
 
         controls.push([
-            <Link key={3} to={`/gallery/${galleryId}`}><GalleryButton/></Link>,
-            <Link key={4} to={prevPath}><PrevButton label={prevButtonLabel}/></Link>,
-            <Link key={5} to={nextPath}><NextButton label={nextButtonLabel}/></Link>]
+            <Link key={3} linkTo={`/gallery/${galleryId}`}><GalleryButton/></Link>,
+            <Link key={4} linkTo={prevPath}><PrevButton label={prevButtonLabel}/></Link>,
+            <Link key={5} linkTo={nextPath}><NextButton label={nextButtonLabel}/></Link>]
         );
     }
 

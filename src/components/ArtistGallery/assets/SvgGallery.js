@@ -36,6 +36,7 @@ class SvgGallery extends Component {
                     <WindowsSection galleryWidth={galleryWidth}
                                     ref={'section'}
                                     artworkIds={artworkIds}
+                                    windowsHeight={windowsHeight}
                                     artworks={artworks}
                                     windowParams={windowParams}
                                     hue={hue}

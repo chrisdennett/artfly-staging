@@ -1,5 +1,4 @@
 import React from "react";
-import { Link, Redirect } from 'react-router-dom';
 
 import SignOutButton from "./assets/SignOutButton";
 import SettingsButton from "./assets/SettingsButton";
@@ -7,6 +6,7 @@ import EditButton from "../GalleryControls/assets/EditButton";
 import LoadingOverlay from "../../LoadingOverlay/LoadingOverlay";
 import SignInContainer from "../../SignIn/SignInContainer";
 import AddArtInputButton from "./assets/AddArtInputButton";
+import Link from "../../global/Link";
 
 const UserControls = function (props) {
     const { userStatus } = props;
@@ -19,7 +19,7 @@ const UserControls = function (props) {
         return <LoadingOverlay/>
     }
     else if (userStatus === "new") {
-        return <Redirect to={'/add-or-edit-user/'}/>
+        // return <Redirect to={'/add-or-edit-user/'}/>
     }
     else if (userStatus === "none") {
         renderContent = <SignInContainer/>
@@ -27,11 +27,11 @@ const UserControls = function (props) {
     else {
         renderContent =
             <span>
-                {(!props.artworkId || onArtworkEditorPage) ? "" : <Link to={`/artwork-editor/${props.artworkId}`}><EditButton/></Link> }
+                {(!props.artworkId || onArtworkEditorPage) ? "" : <Link linkTo={`/artwork-editor/${props.artworkId}`}><EditButton/></Link> }
 
                 <AddArtInputButton history={props.history} />
 
-                <Link to="/settings"><SettingsButton/></Link>
+                <Link linkTo="/settings"><SettingsButton/></Link>
 
                 <SignOutButton onClick={props.logout}/>
             </span>

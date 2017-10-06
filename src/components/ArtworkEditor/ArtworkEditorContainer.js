@@ -160,7 +160,7 @@ class ArtworkEditorHolder extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const { artworkId } = ownProps.match.params;
+    const { artworkId } = ownProps;
     const artwork = state.artworks[artworkId];
 
     return {

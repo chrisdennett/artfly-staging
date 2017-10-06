@@ -1,20 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import history from '../global/history';
 
 import UserControlsContainer from './UserControls/UserControlsContainer';
 import GalleryControlsContainer from './GalleryControls/GalleryControlsContainer';
 import HomeButton from "./Logo";
-// import GalleryControlsSplat from "./GalleryControls/assets/GalleryControlsSplat";
+import Link from "../global/Link";
 
-const AppControls = function ({ history, match }) {
-    const { galleryId, artworkId } = match.params;
+const AppControls = function ({ galleryId, artworkId }) {
 
     return (
         <div>
             <div style={{ position: 'fixed', top: 0, zIndex: 1001 }}>
-                <Link to="/">
-                    <HomeButton/>
-                </Link>
+                <Link linkTo={'/'}><HomeButton/></Link>
             </div>
 
             <div style={{ position: 'fixed', top: 0, right: 0, zIndex: 1002 }}>

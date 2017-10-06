@@ -11,7 +11,8 @@ class WindowSection extends Component {
         this.sectionHeight = 0;
     }
 
-    createBuildingWindows(artworkIds, artworks, wallColour, highlight, lowlight, galleryWidth, windowParams) {
+    createBuildingWindows(wallColour, highlight, lowlight) {
+        const {artworkIds, artworks, galleryWidth, windowParams} = this.props;
         const {
                   windowWidth, windowsSectionPadding, windowPadding, windowHeight,
                   windowWidthWithPadding, windowHeightWithPadding,
@@ -40,7 +41,7 @@ class WindowSection extends Component {
                 x = xStart + (colCount * windowWidthWithPadding);
                 y = yStart + (rowCount * windowHeightWithPadding);
 
-                this.sectionHeight = y + windowHeightWithPadding + windowsSectionPadding.bottom;
+                this.sectionHeight = this.props.windowsHeight;
 
                 windowCount++;
                 colCount++;
@@ -64,14 +65,14 @@ class WindowSection extends Component {
     }
 
     render() {
-        const { galleryWidth, hue, saturation, lightness, artworks, artworkIds, windowParams } = this.props;
+        const { galleryWidth, hue, saturation, lightness } = this.props;
 
         const wallColour = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
         const featureColour = `hsl(${hue}, ${saturation}%, ${lightness - 5}%)`;
         const highlight = `hsl(${hue}, ${saturation}%, ${lightness + 10}%)`;
         const lowlight = `hsl(${hue}, ${saturation}%, ${lightness - 10}%)`;
 
-        const buildingWindows = this.createBuildingWindows(artworkIds, artworks, wallColour, highlight, lowlight, galleryWidth, windowParams);
+        const buildingWindows = this.createBuildingWindows(wallColour,highlight,lowlight);
 
         const buildingSectionProps = {
             galleryWidth, wallColour, featureColour, highlight, lowlight

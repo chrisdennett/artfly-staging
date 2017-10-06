@@ -84,13 +84,13 @@ export function fetchArtistArtworkIds(artistGalleryId, callback =null) {
         firebase.database()
             .ref(`/user-data/artistArtworkIds/${artistGalleryId}`)
             .on('value', snapshot => {
-                const artistArtworkIdsData = !snapshot.val() ? {} : snapshot.val();
+                const artistArtworkIds = !snapshot.val() ? {} : Object.keys(snapshot.val());
                 dispatch({
                     type: ARTIST_ARTWORK_IDS_CHANGE,
-                    payload: { [artistGalleryId]: artistArtworkIdsData }
+                    payload: { artistId:artistGalleryId, artworkIds:artistArtworkIds }
                 });
 
-                if(callback) callback(artistArtworkIdsData);
+                if(callback) callback(artistArtworkIds);
             });
     }
 }

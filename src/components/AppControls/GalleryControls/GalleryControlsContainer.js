@@ -23,7 +23,7 @@ class GalleryControlsHolder extends Component {
 
         if (artworkIds) {
             // sort the ids in reverse order.
-            const allIds = Object.keys(artworkIds).sort((a,b) => {
+            const allIds = artworkIds.sort((a,b) => {
                 return artworkIds[b]-artworkIds[a]
             });
 
@@ -54,11 +54,13 @@ class GalleryControlsHolder extends Component {
 // Map state to props maps to the intermediary component which uses or passes them through
 const mapStateToProps = (state, ownProps) => {
     const { galleryId, artworkId } = ownProps;
+    const artist = state.artists[galleryId] || {};
+    const artworkIds = artist.artworkIds || [];
 
     return {
         galleryId: galleryId,
         artworkId: artworkId,
-        artworkIds: state.artistsArtworkIds[galleryId],
+        artworkIds: artworkIds,
         galleryIsZoomedOut: state.ui.galleryIsZoomedOut
     }
 };

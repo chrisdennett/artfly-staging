@@ -1,23 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
+import history from './history';
 
 import Butt from "./Butt";
 
-const LinkButt = function ({linkTo, fullWidth, ...rest}) {
-    let linkStyle = {
-        textDecoration: 'none',
-        color: '#fff'
-    };
-
-    if(fullWidth){
-        linkStyle.flexGrow = 1;
-        linkStyle.display = "flex";
-    }
-
+const LinkButt = function ({ children, linkTo, fullWidth, ...rest }) {
     return (
-        <Link to={linkTo} style={linkStyle}>
-            <Butt {...rest} fullWidth={fullWidth}/>
-        </Link>
+        <Butt onClick={() => {history.push(linkTo)}} {...rest} fullWidth={fullWidth}>
+            {children}
+        </Butt>
     )
 };
 

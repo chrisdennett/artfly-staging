@@ -5,20 +5,19 @@ import { Redirect } from 'react-router-dom';
 import Settings from './Settings';
 import { subscribeUser, updateSubscription, cancelSubscription } from '../../actions/PaddleActions';
 
-const getUserArtists = (artistIdsObject, artists, artistsArtworkIds) => {
+const getUserArtists = (artistIdsObject, artists) => {
     const artistIds = Object.keys(artistIdsObject);
     const artistArray = [];
 
     for (let id of artistIds) {
         const artist = artists[id];
-        const artworkIds = artistsArtworkIds[id];
 
-        if (artist && artworkIds) {
+        if (artist) {
             const artistData = {};
 
             artistData.artist = artist;
             artistData.id = id;
-            artistData.totalArtworks = Object.keys(artworkIds).length;
+            artistData.totalArtworks = artist.totalArtworks;
 
             artistArray.push(artistData);
         }
@@ -68,7 +67,7 @@ class SettingsHolder extends Component {
 
 const mapStateToProps = (state) => {
     const artistIds = !state.user.artistIds ? {} : state.user.artistIds;
-    const userArtists = getUserArtists(artistIds, state.artists, state.artistsArtworkIds);
+    const userArtists = getUserArtists(artistIds, state.artists);
 
     return {
         user: state.user,
