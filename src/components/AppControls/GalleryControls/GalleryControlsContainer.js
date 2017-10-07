@@ -21,7 +21,7 @@ class GalleryControlsHolder extends Component {
         let prevId = null;
         let nextId = null;
 
-        if (artworkIds) {
+        if (artworkIds && artworkIds.length > 0) {
             // sort the ids in reverse order.
             const allIds = artworkIds.sort((a,b) => {
                 return artworkIds[b]-artworkIds[a]

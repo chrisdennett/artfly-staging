@@ -1,31 +1,15 @@
 // Externals
 import React, { Component } from "react";
-import { connect } from 'react-redux';
 import ga from '../libs/googleAnalyticsConfig';
 // Components
 import history from '../components/global/history';
 import App from "../components/App";
-// Actions
-import { fetchUserData } from '../actions/UserActions';
-import { fetchLocalPrice } from '../actions/PaddleActions';
-import { fetchArtist, fetchArtistArtworkIds } from "../actions/ArtistGalleryActions";
 
 class ArtflyRouting extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = { unlisten: null, galleryId: null, artworkId: null, artistId: null };
-
-        props.fetchUserData((userData) => {
-            if (userData) {
-                for (let artistId of Object.keys(userData.artistIds)) {
-                    props.fetchArtist(artistId);
-                    props.fetchArtistArtworkIds(artistId);
-                }
-            }
-        });
-        props.fetchLocalPrice();
     }
 
     componentDidMount() {
@@ -89,8 +73,4 @@ class ArtflyRouting extends Component {
     }
 }
 
-const ArtflyRoutingContainer = connect(
-    null, { fetchUserData, fetchLocalPrice, fetchArtist, fetchArtistArtworkIds }
-)(ArtflyRouting);
-
-export default ArtflyRoutingContainer;
+export default ArtflyRouting;

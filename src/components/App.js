@@ -1,5 +1,6 @@
 // Externals
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 // Components
 import AppControls from "../components/AppControls/AppControls";
 import ArtistGalleryContainer from '../components/ArtistGallery/ArtistGalleryContainer';
@@ -9,11 +10,26 @@ import UserEditorContainer from "../components/UserEditor/UserEditorContainer";
 import ArtworkContainer from '../components/Artwork/ArtworkContainer';
 import ArtworkEditorContainer from "../components/ArtworkEditor/ArtworkEditorContainer";
 import Home from '../components/Home/Home';
+// Actions
+import { fetchUserData } from '../actions/UserActions';
+import { fetchLocalPrice } from '../actions/PaddleActions';
+import { fetchArtist, fetchArtistArtworkIds } from "../actions/ArtistGalleryActions";
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.getComponent = this.getComponent.bind(this);
+
+
+        props.fetchUserData((userData) => {
+            if (userData) {
+                for (let artistId of Object.keys(userData.artistIds)) {
+                    props.fetchArtist(artistId);
+                    props.fetchArtistArtworkIds(artistId);
+                }
+            }
+        });
+        props.fetchLocalPrice();
     }
 
     getComponent(page, params) {
@@ -41,4 +57,8 @@ class App extends Component {
     }
 }
 
-export default App;
+const AppContainer = connect(
+    null, { fetchUserData, fetchLocalPrice, fetchArtist, fetchArtistArtworkIds }
+)(App);
+
+export default AppContainer;

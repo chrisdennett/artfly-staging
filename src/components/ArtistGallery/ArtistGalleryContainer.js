@@ -87,11 +87,10 @@ class ArtistGalleryHolder extends Component {
 // Map state to props maps to the intermediary component which uses or passes them through
 const mapStateToProps = (state, ownProps) => {
     const { galleryId } = ownProps;
-    console.log("galleryId: ", galleryId);
 
     let sortedArtworkIds = [];
     let totalArtworks = 0;
-    if (state.artists[galleryId] && state.artists[galleryId].artworkIds) {
+    if (state.artists[galleryId] && state.artists[galleryId].artworkIds && state.artists[galleryId].totalArtworks > 0) {
         // sort the ids in reverse order.
         const {artworkIds} = state.artists[galleryId];
         totalArtworks = state.artists[galleryId].totalArtworks;
