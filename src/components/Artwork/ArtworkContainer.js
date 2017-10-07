@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+// import { Redirect } from 'react-router-dom';
 
 import { fetchArtwork } from '../../actions/ArtistGalleryActions';
 
@@ -28,7 +28,7 @@ class ArtworkHolder extends Component {
             return <div>Artwork Loading screen goes here...</div>
         }
         else if(!artwork.url){
-            return <Redirect to="/settings/" />;
+            // return <Redirect to="/settings/" />;
         }
 
         return <Artwork artwork={artwork}/>;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+// import { Redirect } from 'react-router-dom';
 
 import { createNewUser, logoutUser } from '../../actions/UserActions';
 
@@ -15,13 +15,13 @@ class UserEditorHolder extends Component {
         const {user, createNewUser, logoutUser} = this.props;
         const {status} = user;
 
-        if(status === "none"){
+        /*if(status === "none"){
             return <Redirect to={`/`} />
         }
         else if(status === "complete"){
             return <Redirect to={`/settings/`} />
-        }
-        else if(status === "pending"){
+        }*/
+        if(status === "pending"){
             return <div>loading new user form...</div>;
         }
 

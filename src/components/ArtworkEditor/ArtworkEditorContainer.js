@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+// import { Redirect } from 'react-router-dom';
 
 import {
     fetchArtwork,
@@ -132,9 +132,9 @@ class ArtworkEditorHolder extends Component {
     render() {
         const { artwork, userStatus, artists, onArtistSelected } = this.props;
 
-        if (userStatus === "none" || userStatus === "new") {
+        /*if (userStatus === "none" || userStatus === "new") {
             return (<Redirect to="/"/>)
-        }
+        }*/
 
         if (!artwork) {
             return <div>Loading artwork...</div>

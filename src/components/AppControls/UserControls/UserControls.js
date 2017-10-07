@@ -11,7 +11,7 @@ import Link from "../../global/Link";
 const UserControls = function (props) {
     const { userStatus } = props;
     const currentPath = props.history.location.pathname;
-    const onArtworkEditorPage = currentPath.indexOf("artwork-editor") > -1;
+    const onArtworkEditorPage = currentPath.indexOf("artworkEditor") > -1;
 
     let renderContent;
 
@@ -19,7 +19,7 @@ const UserControls = function (props) {
         return <LoadingOverlay/>
     }
     else if (userStatus === "new") {
-        // return <Redirect to={'/add-or-edit-user/'}/>
+        // return <Redirect to={'/addOrEditUser/'}/>
     }
     else if (userStatus === "none") {
         renderContent = <SignInContainer/>
@@ -27,7 +27,7 @@ const UserControls = function (props) {
     else {
         renderContent =
             <span>
-                {(!props.artworkId || onArtworkEditorPage) ? "" : <Link linkTo={`/artwork-editor/${props.artworkId}`}><EditButton/></Link> }
+                {(!props.artworkId || onArtworkEditorPage) ? "" : <Link linkTo={`/artworkEditor/${props.artworkId}`}><EditButton/></Link> }
 
                 <AddArtInputButton history={props.history} />
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+// import { Redirect } from 'react-router-dom';
 
 import Settings from './Settings';
 import { subscribeUser, updateSubscription, cancelSubscription } from '../../actions/PaddleActions';
@@ -46,9 +46,9 @@ class SettingsHolder extends Component {
 
     render() {
 
-        if (this.props.userStatus === "none") {
+       /* if (this.props.userStatus === "none") {
             return <Redirect to={'/'}/>
-        }
+        }*/
 
         const { userArtists, userId, subscription, localPrice, newSubscriptionStatus } = this.props;
         if (!userId) {

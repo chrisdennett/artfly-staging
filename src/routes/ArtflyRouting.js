@@ -46,13 +46,13 @@ class ArtflyRouting extends Component {
                     params.artworkId = sections[3];
                 }
             }
-            else if (page === 'artwork-editor') {
+            else if (page === 'artworkEditor') {
                 params.artworkId = sections[1];
             }
-            else if (page === 'add-or-edit-artist') {
+            else if (page === 'addOrEditArtist') {
                 params.artistId = sections[1];
             }
-            else if (page === 'add-or-edit-user') {
+            else if (page === 'addOrEditUser') {
                 params.userId = sections[1];
             }
         }

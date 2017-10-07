@@ -14,12 +14,22 @@ import Home from '../components/Home/Home';
 import { fetchUserData } from '../actions/UserActions';
 import { fetchLocalPrice } from '../actions/PaddleActions';
 import { fetchArtist, fetchArtistArtworkIds } from "../actions/ArtistGalleryActions";
+import FourOhFour from "./FourOhFour/FourOhFour";
+import AppDataFetcher from "./AppDataFetcher";
+
+const routes = {
+    home: { component: Home },
+    settings: { component: SettingsContainer },
+    gallery: { component: ArtistGalleryContainer },
+    artwork: { component: ArtworkContainer },
+    artworkEditor: { component: ArtworkEditorContainer },
+    addOrEditArtist: { component: ArtistEditorContainer },
+    addOrEditUser: { component: UserEditorContainer }
+};
 
 class App extends Component {
     constructor(props) {
         super(props);
-        this.getComponent = this.getComponent.bind(this);
-
 
         props.fetchUserData((userData) => {
             if (userData) {
@@ -32,27 +42,19 @@ class App extends Component {
         props.fetchLocalPrice();
     }
 
-    getComponent(page, params) {
-        let component = null;
-        if (page === 'home') component = <Home/>;
-        else if (page === 'settings') component = <SettingsContainer/>;
-        else if (page === 'artwork') component = <ArtworkContainer artworkId={params.artworkId}/>;
-        else if (page === 'gallery') component = <ArtistGalleryContainer history={this.props.history} galleryId={params.galleryId}/>;
-        else if (page === 'artwork-editor') component = <ArtworkEditorContainer history={this.props.history} artworkId={params.artworkId}/>;
-        else if (page === 'add-or-edit-artist') component = <ArtistEditorContainer history={this.props.history} artistId={params.artistId}/>;
-        else if (page === 'add-or-edit-user') component = <UserEditorContainer userId={params.userId}/>;
-
-        return component;
-    }
+    getComponentWithProps = () => {
+        const PageComponent = routes[this.props.page] ? routes[this.props.page].component : FourOhFour;
+        return (<PageComponent history={this.props.history} {...this.props.params}/>);
+    };
 
     render() {
-        const PageComponent = this.getComponent(this.props.page, this.props.params);
+        const PageComponentWithProps = this.getComponentWithProps();
 
         return (
-            <div>
+            <AppDataFetcher>
                 <AppControls {...this.props.params}/>
-                {PageComponent}
-            </div>
+                {PageComponentWithProps}
+            </AppDataFetcher>
         );
     }
 }

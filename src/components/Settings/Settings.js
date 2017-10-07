@@ -11,6 +11,7 @@ import ArtflyAccountTypes from "../global/ArtflyAccountTypes";
 const Settings = function ({ userArtists, newSubscriptionStatus, subscription, price, onSubscribe, onCancelSubscription, onUpdateSubscription }) {
 
     if(newSubscriptionStatus) console.log("newSubscriptionStatus: ", newSubscriptionStatus);
+
     let totalArtworks = 0;
     for (let artist of userArtists) {
         totalArtworks += artist.totalArtworks;
@@ -83,7 +84,7 @@ const Settings = function ({ userArtists, newSubscriptionStatus, subscription, p
                 <h2>Artists</h2>
 
                 <section className={'settings-add-new-artist-section'}>
-                    <LinkButt size={'small'} label={'Add New Artist'} linkTo={`/add-or-edit-artist/`}/>
+                    <LinkButt size={'small'} label={'Add New Artist'} linkTo={`/addOrEditArtist/`}/>
                 </section>
 
                 <section className={'settings-artists-section'}>
@@ -101,7 +102,7 @@ const Settings = function ({ userArtists, newSubscriptionStatus, subscription, p
                                             <LinkButt inline={true} size={'small'} label={'Open Gallery'}
                                                       linkTo={`/gallery/${id}`}/>
                                             <LinkButt inline={true} size={'small'} label={'Edit Artist'}
-                                                      linkTo={`/add-or-edit-artist/${id}`}/>
+                                                      linkTo={`/addOrEditArtist/${id}`}/>
                                         </li>
                                     </ul>
                                 </div>)
@@ -134,7 +135,7 @@ return (
                     <h2>Artists</h2>
 
                     <section className={'settings-add-new-artist-section'}>
-                        <LinkButt label={'Add New Artist'} linkTo={`/add-or-edit-artist/`}/>
+                        <LinkButt label={'Add New Artist'} linkTo={`/addOrEditArtist/`}/>
                     </section>
 
                     <section className={'settings-artists-section'}>
@@ -151,7 +152,7 @@ return (
                                         </p>
                                         <div className={'settings-artist-buttons'}>
                                             <LinkButt label={'Open Gallery'} linkTo={`/gallery/${id}`}/>
-                                            <LinkButt label={'Edit Artist'} linkTo={`/add-or-edit-artist/${id}`}/>
+                                            <LinkButt label={'Edit Artist'} linkTo={`/addOrEditArtist/${id}`}/>
                                         </div>
                                     </div>)
                             })
