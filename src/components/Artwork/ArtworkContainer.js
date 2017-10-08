@@ -5,15 +5,7 @@ import { connect } from 'react-redux';
 import Artwork from './Artwork';
 
 class ArtworkHolder extends Component {
-    componentDidMount() {
-        document.body.classList.toggle('no-scroll-bars', true);
-    }
-
-    componentWillUnmount() {
-        document.body.classList.remove('no-scroll-bars');
-    }
-
-    render() {
+   render() {
         const { artwork } = this.props;
         if(!artwork){
             return <div>Artwork Loading screen goes here...</div>
