@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Room from './Room/Room';
 import PictureFrame from './PictureFrame/PictureFrame';
-import ScrollbarRemover from "../global/ScrollbarRemover";
+import WindowController from "../global/WindowController";
 
 class Artwork extends Component {
 
@@ -118,7 +118,7 @@ class Artwork extends Component {
         }
 
         return (
-            <ScrollbarRemover>
+            <WindowController showScrollbars={false}>
                 {this.state.imageLoading
                     ? <div style={{
                         position: 'absolute',
@@ -145,7 +145,7 @@ class Artwork extends Component {
                 <img alt="user artwork"
                      onLoad={this.onImageLoad.bind(this)}
                      style={imgStyle} src={artworkUrl}/>
-            </ScrollbarRemover>
+            </WindowController>
         )
     }
 }

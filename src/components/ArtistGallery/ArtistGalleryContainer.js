@@ -6,30 +6,6 @@ import ArtistGallery from './ArtistGallery';
 // Intermediary component so ui component isn't required to call data
 class ArtistGalleryHolder extends Component {
 
-    componentDidMount() {
-        if (this.props.galleryIsZoomedOut) {
-            document.body.classList.toggle('no-scroll-bars', true);
-        }
-        else {
-            document.body.classList.remove('no-scroll-bars');
-        }
-    }
-
-    componentWillUnmount() {
-        document.body.classList.remove('no-scroll-bars');
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.galleryIsZoomedOut !== this.props.galleryIsZoomedOut) {
-            if (this.props.galleryIsZoomedOut) {
-                document.body.classList.toggle('no-scroll-bars', true);
-            }
-            else {
-                document.body.classList.remove('no-scroll-bars');
-            }
-        }
-    }
-
     onThumbClick(artworkId) {
         this.props.history.push(`/gallery/${this.props.galleryId}/artwork/${artworkId}`);
     }
