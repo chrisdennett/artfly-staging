@@ -1,11 +1,11 @@
+// Externals
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+// Actions
 import { setGalleryZoom } from '../../../actions/UiActions';
-
+// Components
 import GalleryControls from './GalleryControls';
 
-// Intermediary component so ui component isn't required to call data
 class GalleryControlsHolder extends Component {
     constructor(props){
         super(props);
@@ -21,13 +21,8 @@ class GalleryControlsHolder extends Component {
         let prevId = null;
         let nextId = null;
 
-        if (artworkIds && artworkIds.length > 0) {
-            // sort the ids in reverse order.
-            const allIds = artworkIds.sort((a,b) => {
-                return artworkIds[b]-artworkIds[a]
-            });
-
-            // const allIds = Object.keys(artworkIds);
+        if (artworkIds && Object.keys(artworkIds).length > 0) {
+            const allIds = Object.keys(artworkIds);
             const currIdIndex = allIds.indexOf(artworkId);
 
             if (currIdIndex > 0) {
