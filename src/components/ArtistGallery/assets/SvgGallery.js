@@ -18,7 +18,7 @@ class SvgGallery extends Component {
 
 
         return (
-            <svg viewBox={`${galleryPaddingTop},0,${galleryWidth}, ${galleryHeight}`}>
+            <svg viewBox={`0, 0, ${galleryWidth}, ${galleryHeight}`}>
 
                 <g transform={`translate(0,${galleryPaddingTop})`}>
                     <Roof/>
