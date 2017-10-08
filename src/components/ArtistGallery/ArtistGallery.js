@@ -1,7 +1,7 @@
 import React from 'react';
 import './artistGallery.css';
 
-import WindowController from "../global/WindowController";
+import ScrollbarRemover from "../global/ScrollbarRemover";
 import SvgBackground from "./assets/SvgBackground";
 import SvgGallery from "./assets/SvgGallery";
 
@@ -21,7 +21,7 @@ const ArtistGallery = function (props) {
     const currentGalleryScale = currentHeight / galleryHeight;
 
     return (
-        <WindowController showScrollbars={!galleryIsZoomedOut}>
+        <ScrollbarRemover showScrollbars={!galleryIsZoomedOut}>
             <svg viewBox={`0 0 ${viewBoxWidth} ${currentHeight}`}>
 
                 <SvgBackground height={currentHeight} width={viewBoxWidth} galleryScale={currentGalleryScale}/>
@@ -33,7 +33,7 @@ const ArtistGallery = function (props) {
                             pageWidth={pageWidth}
                             onThumbClick={onThumbClick}/>
             </svg>
-        </WindowController>
+        </ScrollbarRemover>
     )
 };
 

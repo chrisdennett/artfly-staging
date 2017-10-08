@@ -1,27 +1,14 @@
 import React, { Component } from "react";
+// components
 import Room from './Room/Room';
 import PictureFrame from './PictureFrame/PictureFrame';
-import WindowController from "../global/WindowController";
+import ScrollbarRemover from "../global/ScrollbarRemover";
 
 class Artwork extends Component {
 
     constructor(props) {
         super(props);
         this.state = { imageLoading: true };
-
-        this.updateDimensions = this.updateDimensions.bind(this);
-    }
-
-    componentWillMount() {
-        this.updateDimensions();
-    }
-
-    componentDidMount() {
-        window.addEventListener("resize", this.updateDimensions);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener("resize", this.updateDimensions);
     }
 
     componentWillUpdate(nextProps) {
@@ -34,23 +21,12 @@ class Artwork extends Component {
         this.setState({ imageLoading: false });
     }
 
-    updateDimensions() {
-        const w               = window,
-              d               = document,
-              documentElement = d.documentElement,
-              body            = d.getElementsByTagName('body')[0],
-              width           = w.innerWidth || documentElement.clientWidth || body.clientWidth,
-              height          = w.innerHeight || documentElement.clientHeight || body.clientHeight;
-
-        this.setState({ width, height });
-    }
-
     render() {
-        const { artwork } = this.props;
+        const { artwork, windowSize } = this.props;
 
         // work out max picture width
-        const w = this.state.width;
-        const h = this.state.height;
+        const w = windowSize.windowWidth;
+        const h = windowSize.windowHeight;
         const mountThickness = 40;
         const frameThickness = 20;
         let paddingLeft = 30;
@@ -118,7 +94,7 @@ class Artwork extends Component {
         }
 
         return (
-            <WindowController showScrollbars={false}>
+            <ScrollbarRemover showScrollbars={false}>
                 {this.state.imageLoading
                     ? <div style={{
                         position: 'absolute',
@@ -145,7 +121,7 @@ class Artwork extends Component {
                 <img alt="user artwork"
                      onLoad={this.onImageLoad.bind(this)}
                      style={imgStyle} src={artworkUrl}/>
-            </WindowController>
+            </ScrollbarRemover>
         )
     }
 }

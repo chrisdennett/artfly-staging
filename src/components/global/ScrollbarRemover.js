@@ -1,3 +1,4 @@
+// externals
 import React, { Component } from "react";
 
 class ScrollbarRemover extends Component {
@@ -6,7 +7,7 @@ class ScrollbarRemover extends Component {
         this.updateScrollbars();
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         this.updateScrollbars();
     }
 
@@ -15,10 +16,10 @@ class ScrollbarRemover extends Component {
     }
 
     updateScrollbars = () => {
-        if(this.props.showScrollbars){
+        if (this.props.showScrollbars === true) {
             this.allowScrollbars();
         }
-        else{
+        else {
             this.hideScrollbars();
         }
     };

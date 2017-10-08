@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 // Actions
 import { fetchUserData } from '../actions/UserActions';
 import { fetchLocalPrice } from '../actions/PaddleActions';
-import { getGalleryParams, setWindowSize } from "../actions/UiActions";
+import { getGalleryParams } from "../actions/UiActions";
 import { fetchArtist, fetchArtistArtworkIds, fetchArtwork } from "../actions/ArtistGalleryActions";
 
 class AppDataFetcher extends Component {
@@ -16,8 +16,6 @@ class AppDataFetcher extends Component {
 
     componentWillMount() {
         this.fetchGlobalData();
-        this.getWindowSize();
-        window.onresize = this.getWindowSize.bind(this);
     }
 
     componentDidUpdate() {
@@ -29,13 +27,12 @@ class AppDataFetcher extends Component {
         }
     }
 
-    // Code smell > feels a bit odd this being here, it's setting data not fetching it.
-    getWindowSize() {
+   /* getWindowSize() {
         const pageWidth = window.innerWidth;
         const pageHeight = window.innerHeight;
 
         this.props.setWindowSize(pageWidth, pageHeight);
-    }
+    }*/
 
     fetchGlobalData = () => {
         this.props.fetchUserData((userData) => {
@@ -85,7 +82,7 @@ class AppDataFetcher extends Component {
     };
 
     fetchGalleryParams = () => {
-        if (this.props.artist && this.props.artist.artworkIds) {
+        if (this.props.artist && this.props.artist.artworkIds && this.props.windowSize) {
             const totalArtworks = Object.keys(this.props.artist.artworkIds).length || 0;
             const inMobileMode = this.props.windowSize.windowWidth < 500;
 
@@ -121,7 +118,6 @@ export default connect(
         fetchArtist,
         fetchArtistArtworkIds,
         fetchArtwork,
-        getGalleryParams,
-        setWindowSize
+        getGalleryParams
     }
 )(AppDataFetcher);

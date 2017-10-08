@@ -10,8 +10,6 @@ import Link from "../../global/Link";
 const GalleryControls = function (props) {
     const { artworkId, galleryId, nextArtworkId, prevArtworkId, galleryIsZoomedOut } = props;
 
-    console.log("nextArtworkId: ", nextArtworkId);
-
     const onGalleryPage = !artworkId;
     let prevPath = `/gallery/${galleryId}/artwork/${prevArtworkId}`;
     let nextPath = `/gallery/${galleryId}/artwork/${nextArtworkId}`;

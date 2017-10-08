@@ -12,17 +12,21 @@ class ArtistGalleryHolder extends Component {
 
     render() {
         const { artist, artworks, galleryParams, galleryIsZoomedOut, windowSize } = this.props;
-        if (!artist || !artworks || windowSize.windowWidth < 1 || windowSize.windowHeight < 1 || !galleryParams) {
+        if (!artist || !artworks || !windowSize || windowSize.windowWidth < 1 || windowSize.windowHeight < 1 || !galleryParams) {
             return <div>Artist Gallery Loading</div>;
         }
 
-        return <ArtistGallery pageWidth={windowSize.windowWidth}
-                              pageHeight={windowSize.windowHeight}
-                              galleryIsZoomedOut={galleryIsZoomedOut}
-                              galleryParams={galleryParams}
-                              artist={artist}
-                              artworks={artworks}
-                              onThumbClick={this.onThumbClick.bind(this)}/>;
+        return (
+
+                <ArtistGallery pageWidth={windowSize.windowWidth}
+                               pageHeight={windowSize.windowHeight}
+                               galleryIsZoomedOut={galleryIsZoomedOut}
+                               galleryParams={galleryParams}
+                               artist={artist}
+                               artworks={artworks}
+                               onThumbClick={this.onThumbClick.bind(this)}/>
+
+        )
     }
 }
 
@@ -38,7 +42,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const ArtistGalleryContainer = connect(
-    mapStateToProps, { }
+    mapStateToProps, {}
 )(ArtistGalleryHolder);
 
 export default ArtistGalleryContainer;

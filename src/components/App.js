@@ -1,6 +1,7 @@
 // Externals
 import React from "react";
 // Components
+import WindowController from "./global/WindowDimensionsTracker";
 import AppControls from "../components/AppControls/AppControls";
 import ArtistGalleryContainer from '../components/ArtistGallery/ArtistGalleryContainer';
 import SettingsContainer from "../components/Settings/SettingsContainer";
@@ -31,7 +32,9 @@ const App = ({page, history, params}) => {
     return (
         <AppDataFetcher pageDataRequired={pageDataRequired} {...params}>
             <AppControls {...params}/>
+            <WindowController>
             {PageComponentWithProps}
+            </WindowController>
         </AppDataFetcher>
     );
 };
