@@ -16,7 +16,7 @@ const routes = {
     home: { component: Home },
     settings: { component: SettingsContainer },
     gallery: { component: ArtistGalleryContainer, pageDataRequired: ['artistArtworks', 'galleryParams'] },
-    artwork: { component: ArtworkContainer },
+    artwork: { component: ArtworkContainer, pageDataRequired: ['artwork'] },
     artworkEditor: { component: ArtworkEditorContainer },
     addOrEditArtist: { component: ArtistEditorContainer },
     addOrEditUser: { component: UserEditorContainer }

@@ -2,20 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // import { Redirect } from 'react-router-dom';
 
-import { fetchArtwork } from '../../actions/ArtistGalleryActions';
-
 import Artwork from './Artwork';
 
 class ArtworkHolder extends Component {
     componentDidMount() {
-        this.props.fetchArtwork(this.props.artworkId);
         document.body.classList.toggle('no-scroll-bars', true);
-    }
-
-    componentDidUpdate(prevProps) {
-        if (this.props.artworkId !== prevProps.artworkId) {
-            this.props.fetchArtwork(this.props.artworkId);
-        }
     }
 
     componentWillUnmount() {
@@ -37,17 +28,13 @@ class ArtworkHolder extends Component {
 
 // Map state to props maps to the intermediary component which uses or passes them through
 const mapStateToProps = (state, ownProps) => {
-    const { artworkId } = ownProps;
-    const artwork = state.artworks[artworkId];
-
     return {
-        artworkId: artworkId,
-        artwork: artwork
+        artwork: state.artworks[ownProps.artworkId]
     }
 };
 
 const ArtworkContainer = connect(
-    mapStateToProps, { fetchArtwork }
+    mapStateToProps, {  }
 )(ArtworkHolder);
 
 export default ArtworkContainer;

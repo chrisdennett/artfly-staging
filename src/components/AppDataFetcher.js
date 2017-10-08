@@ -29,6 +29,7 @@ class AppDataFetcher extends Component {
         }
     }
 
+    // Code smell > feels a bit odd this being here, it's setting data not fetching it.
     getWindowSize() {
         const pageWidth = window.innerWidth;
         const pageHeight = window.innerHeight;
@@ -56,6 +57,9 @@ class AppDataFetcher extends Component {
             case 'galleryParams':
                 this.fetchGalleryParams();
                 break;
+            case 'artwork':
+                this.fetchArtwork();
+                break;
             default:
                 return;
         }
@@ -71,6 +75,12 @@ class AppDataFetcher extends Component {
             for (let id of ids) {
                 this.props.fetchArtwork(id);
             }
+        }
+    };
+
+    fetchArtwork = () => {
+        if(this.props.artworkId){
+            this.props.fetchArtwork(this.props.artworkId);
         }
     };
 
