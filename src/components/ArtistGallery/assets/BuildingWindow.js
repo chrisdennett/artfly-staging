@@ -2,8 +2,12 @@ import React from 'react';
 
 const BuildingWindow = function (props) {
 
+    const svgStyle = {
+        cursor: 'pointer'
+    };
+
     return (
-        <svg x={props.x} y={props.y} height={props.height} width={props.width} viewBox="0 0 212.31675 231.00558">
+        <svg style={svgStyle} x={props.x} y={props.y} height={props.height} width={props.width} viewBox="0 0 212.31675 231.00558">
             <rect id="surroundHightlight" ry="10.55" height="231" width="212.3" x="-.003" fill={props.highlight}/>
             <path id="surroundLowlight" d="M209.5 3.048s2.864 4.563 2.864 7.504v209.9c0 5.846-4.321 10.55-9.688 10.55H9.976c-2.857 0-7.187-3.462-7.187-3.462z" fill={props.lowlight}/>
             <rect id="surround" ry="7.638" height="219.1" width="199.7" y="5.517" x="5.515" fill={props.wallColour}/>
