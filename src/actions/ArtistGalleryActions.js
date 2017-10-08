@@ -84,7 +84,8 @@ export function fetchArtistArtworkIds(artistGalleryId, callback =null) {
         firebase.database()
             .ref(`/user-data/artistArtworkIds/${artistGalleryId}`)
             .on('value', snapshot => {
-                const artistArtworkIds = !snapshot.val() ? {} : Object.keys(snapshot.val());
+                // const artistArtworkIds = !snapshot.val() ? {} : Object.keys(snapshot.val());
+                const artistArtworkIds = snapshot.val();
                 dispatch({
                     type: ARTIST_ARTWORK_IDS_CHANGE,
                     payload: { artistId:artistGalleryId, artworkIds:artistArtworkIds }

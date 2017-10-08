@@ -15,7 +15,7 @@ import AppDataFetcher from "./AppDataFetcher";
 const routes = {
     home: { component: Home },
     settings: { component: SettingsContainer },
-    gallery: { component: ArtistGalleryContainer, dataRequired: ['artistArtworks'] },
+    gallery: { component: ArtistGalleryContainer, pageDataRequired: ['artistArtworks', 'galleryParams'] },
     artwork: { component: ArtworkContainer },
     artworkEditor: { component: ArtworkEditorContainer },
     addOrEditArtist: { component: ArtistEditorContainer },
@@ -24,10 +24,12 @@ const routes = {
 
 const App = ({page, history, params}) => {
     const PageComponent = routes[page] ? routes[page].component : FourOhFour;
-    const PageComponentWithProps = <PageComponent history={history} {...params}/>;
+    const pageDataRequired = routes[page] ? routes[page].pageDataRequired : {};
+
+    const PageComponentWithProps = <PageComponent history={history} {...params} />;
 
     return (
-        <AppDataFetcher>
+        <AppDataFetcher pageDataRequired={pageDataRequired} {...params}>
             <AppControls {...params}/>
             {PageComponentWithProps}
         </AppDataFetcher>

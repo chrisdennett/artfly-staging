@@ -16,6 +16,7 @@ class SvgGallery extends Component {
                   galleryPaddingTop, windowParams
               } = galleryParams;
 
+
         return (
             <svg viewBox={`${galleryPaddingTop},0,${galleryWidth}, ${galleryHeight}`}>
 

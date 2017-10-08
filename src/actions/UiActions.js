@@ -1,5 +1,6 @@
 export const GET_GALLERY_PARAMS = "getGalleryParams";
 export const SET_GALLERY_ZOOM = "setGalleryZoom";
+export const SET_WINDOW_SIZE = "setWindowSize";
 export const ALREADY_CACHED = "alreadyCached";
 
 let currentGalleryArtworks = null;
@@ -10,6 +11,15 @@ export function setGalleryZoom(isZoomedOut) {
         dispatch({
             type: SET_GALLERY_ZOOM,
             payload: isZoomedOut
+        })
+    }
+}
+
+export function setWindowSize(w,h){
+    return dispatch => {
+        dispatch({
+            type: SET_WINDOW_SIZE,
+            payload: {windowWidth:w, windowHeight:h}
         })
     }
 }

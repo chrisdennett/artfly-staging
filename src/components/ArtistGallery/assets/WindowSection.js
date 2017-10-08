@@ -28,7 +28,7 @@ class WindowSection extends Component {
         let xStart = windowsSectionPadding.left + windowPadding.left;
         let yStart = windowsSectionPadding.top + windowPadding.top;
 
-        return _.map(artworkIds, (id) => {
+        return _.map(artworkIds, (date, id) => {
             if (artworks[id]) {
 
                 x = xStart + (colCount * windowWidthWithPadding);
@@ -47,7 +47,7 @@ class WindowSection extends Component {
                 colCount++;
 
                 return (
-                    <BuildingWindow key={id}
+                    <BuildingWindow key={date}
                                     x={x}
                                     y={y}
                                     width={windowWidth}
