@@ -5,11 +5,7 @@ import SvgBackground from "./assets/SvgBackground";
 import SvgGallery from "./assets/SvgGallery";
 
 const ArtistGallery = function (props) {
-    const { artist, artworkIds, artworks, onThumbClick, pageWidth, pageHeight, galleryParams, galleryIsZoomedOut } = props;
-
-    if (pageHeight < 1 || pageWidth < 1 || !galleryParams) {
-        return <div>Loading gallery...</div>
-    }
+    const { artist, artworks, onThumbClick, pageWidth, pageHeight, galleryParams, galleryIsZoomedOut } = props;
 
     const galleryHeight = galleryParams.galleryHeight;
     const maxGalleryWidth = galleryParams.galleryWidth;
@@ -30,7 +26,7 @@ const ArtistGallery = function (props) {
 
             <SvgGallery artist={artist}
                         galleryParams={galleryParams}
-                        artworkIds={artworkIds}
+                        artworkIds={artist.artworkIds}
                         artworks={artworks}
                         pageWidth={pageWidth}
                         onThumbClick={onThumbClick}/>

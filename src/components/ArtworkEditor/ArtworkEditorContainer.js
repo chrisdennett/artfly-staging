@@ -132,6 +132,7 @@ class ArtworkEditorHolder extends Component {
     render() {
         const { artwork, userStatus, artists, onArtistSelected } = this.props;
 
+        console.log("userStatus: ", userStatus);
         /*if (userStatus === "none" || userStatus === "new") {
             return (<Redirect to="/"/>)
         }*/
