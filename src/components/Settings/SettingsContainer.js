@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // import { Redirect } from 'react-router-dom';
 // actions
-import { subscribeUser, updateSubscription, cancelSubscription } from '../../actions/PaddleActions';
+import { updateSubscription, cancelSubscription } from '../../actions/PaddleActions';
 // components
 import Settings from './Settings';
 
@@ -22,11 +22,6 @@ const getUserArtists = (artistIdsObject, artists) => {
 
 // Created an intermediate component so can trigger the data loading outside
 class SettingsHolder extends Component {
-
-    onSubscribe() {
-        const { userId } = this.props;
-        this.props.subscribeUser(userId, this.props.userEmail);
-    }
 
     onCancelSubscription() {
         const cancelUrl = this.props.user.subscription.cancelUrl;
@@ -49,8 +44,7 @@ class SettingsHolder extends Component {
             return <div>Loading...</div>;
         }
 
-        return <Settings onSubscribe={this.onSubscribe.bind(this)}
-                         onCancelSubscription={this.onCancelSubscription.bind(this)}
+        return <Settings onCancelSubscription={this.onCancelSubscription.bind(this)}
                          onUpdateSubscription={this.onUpdateSubscription.bind(this)}
                          newSubscriptionStatus={newSubscriptionStatus}
                          userArtists={userArtists}
@@ -69,7 +63,6 @@ const mapStateToProps = (state) => {
         localPrice: state.paddle.localPrice,
         newSubscriptionStatus: state.paddle.newSubscriptionStatus,
         userId: state.user.uid,
-        userEmail: state.user.email,
         userStatus: state.user.status,
         artistIds: artistIds,
         userArtists: userArtists,
@@ -78,7 +71,7 @@ const mapStateToProps = (state) => {
 };
 
 const SettingsContainer = connect(
-    mapStateToProps, { subscribeUser, updateSubscription, cancelSubscription }
+    mapStateToProps, { updateSubscription, cancelSubscription }
 )(SettingsHolder);
 
 export default SettingsContainer;

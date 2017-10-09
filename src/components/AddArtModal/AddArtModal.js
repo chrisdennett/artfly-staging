@@ -110,7 +110,7 @@ class AddArtModal extends Component {
 
                 <div style={modalContentStyle}>
 
-                    {imgSaving && <h2 style={{ margin: '42 auto' }}>Saving: {this.props.imageUploadInfo.progress}%</h2>}
+                    {imgSaving && this.props.imageUploadInfo && <h2 style={{ margin: '42 auto' }}>Saving: {this.props.imageUploadInfo.progress}%</h2>}
 
                     {imgLoading && <p>loading picture...</p>}
 
