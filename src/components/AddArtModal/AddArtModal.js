@@ -101,8 +101,9 @@ class AddArtModal extends Component {
         };
 
         const selectArtistSectionStyle = { paddingTop: 20 };
-        const artistSelectorStyle = { textAlign: 'center' };
+        const artistSelectorStyle = { textAlign: 'center', display: 'inline-block' };
         const title = imgSaving ? 'Saving Artwork' : 'Add Artwork';
+        const artistLabelStyle = { display: 'inline-block',margin: 0};
 
         return (
             <Modal isOpen={this.props.isOpen} title={title} allowScrolling={true}>
@@ -124,8 +125,6 @@ class AddArtModal extends Component {
                                             onCropImageSave={this.onCropImageSave.bind(this)}/>
 
 
-                        <p>Step 1: Edit the picture if needed.</p>
-
                         <div style={imageSectionStyle}>
                             <Butt label={'Trim / Rotate'}
                                   style={{ flex: 'none' }}
@@ -134,7 +133,7 @@ class AddArtModal extends Component {
                         </div>
 
                         <div style={selectArtistSectionStyle}>
-                            <p>Step 2: Select the artist.</p>
+                            <p style={ artistLabelStyle }>Artist:</p>
                             <ArtistSelector artists={this.props.artists}
                                             labelText={''}
                                             style={artistSelectorStyle}
