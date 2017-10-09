@@ -10,6 +10,7 @@ class UserControlsHolder extends Component {
     render() {
         // status can be undefined, pending, complete, none
         return <UserControls userStatus={this.props.userStatus}
+                             maxArtworksReached={this.props.maxArtworksReached}
                              history={this.props.history}
                              logout={this.props.logoutUser}
                              galleryId={this.props.galleryId}
@@ -19,7 +20,8 @@ class UserControlsHolder extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userStatus: state.user.status
+        userStatus: state.user.status,
+        maxArtworksReached: state.user.maxArtworksReached
     }
 };
 

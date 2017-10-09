@@ -39,13 +39,14 @@ class SettingsHolder extends Component {
             return <Redirect to={'/'}/>
         }*/
 
-        const { totalArtworks, userArtists, userId, subscription, localPrice, newSubscriptionStatus } = this.props;
+        const { totalArtworks, maxArtworksReached, userArtists, userId, subscription, localPrice, newSubscriptionStatus } = this.props;
         if (!userId) {
             return <div>Loading...</div>;
         }
 
         return <Settings onCancelSubscription={this.onCancelSubscription.bind(this)}
                          onUpdateSubscription={this.onUpdateSubscription.bind(this)}
+                         maxArtworksReached={maxArtworksReached}
                          newSubscriptionStatus={newSubscriptionStatus}
                          userArtists={userArtists}
                          totalArtworks={totalArtworks}
@@ -59,6 +60,7 @@ const mapStateToProps = (state) => {
     const userArtists = getUserArtists(artistIds, state.artists);
 
     return {
+        maxArtworksReached: state.user.maxArtworksReached,
         totalArtworks: state.user.totalArtworks,
         localPrice: state.paddle.localPrice,
         newSubscriptionStatus: state.paddle.newSubscriptionStatus,

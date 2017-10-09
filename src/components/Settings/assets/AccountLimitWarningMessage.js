@@ -3,7 +3,7 @@ import React from 'react';
 // components
 import SubscribeButton from '../../global/SubscribeButton';
 
-const AccountLimitWarningMessage = function ({totalArtworks, maxArtworksAllowed}) {
+const AccountLimitWarningMessage = function ({maxArtworksReached}) {
 
     const warningStyle = {
         background: '#8f2727',
@@ -20,7 +20,7 @@ const AccountLimitWarningMessage = function ({totalArtworks, maxArtworksAllowed}
     };
 
     let warning = null;
-    if(totalArtworks >= maxArtworksAllowed){
+    if(maxArtworksReached){
         warning =(
             <div style={warningStyle}>
                 <p style={paragraphStyle}>Warning: It looks like you've reached the maximum number of artworks for your account.</p>

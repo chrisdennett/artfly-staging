@@ -10,7 +10,7 @@ import ArtistsSettings from "./assets/ArtistsSettings";
 import AccountSettings from "./assets/AccountSettings";
 import AccountLimitWarningMessage from "./assets/AccountLimitWarningMessage";
 
-const Settings = function ({ totalArtworks, userArtists, newSubscriptionStatus, subscription, ...rest }) {
+const Settings = function ({ maxArtworksReached, totalArtworks, userArtists, newSubscriptionStatus, subscription, ...rest }) {
 
     if(newSubscriptionStatus) console.log("newSubscriptionStatus: ", newSubscriptionStatus);
 
@@ -20,7 +20,7 @@ const Settings = function ({ totalArtworks, userArtists, newSubscriptionStatus, 
     return (
         <Page title={'Settings'} icon={<SettingsIcon height={50}/>} hue={168}>
 
-            <AccountLimitWarningMessage totalArtworks={totalArtworks} maxArtworksAllowed={maxArtworksAllowed}/>
+            <AccountLimitWarningMessage maxArtworksReached={maxArtworksReached}/>
 
             <section className={'page-main-section'}>
                <AccountSettings artflyAccountTypes={ArtflyAccountTypes} maxArtworksAllowed={maxArtworksAllowed} subscription={subscription} accountType={accountType} totalArtworks={totalArtworks} {...rest}/>

@@ -9,6 +9,7 @@ import AddArtInputButton from "./assets/AddArtInputButton";
 import Link from "../../global/Link";
 
 const UserControls = function (props) {
+
     const { userStatus } = props;
     const currentPath = props.history.location.pathname;
     const onArtworkEditorPage = currentPath.indexOf("artworkEditor") > -1;
@@ -29,7 +30,7 @@ const UserControls = function (props) {
             <span>
                 {(!props.artworkId || onArtworkEditorPage) ? "" : <Link linkTo={`/artworkEditor/${props.artworkId}`}><EditButton/></Link> }
 
-                <AddArtInputButton history={props.history} />
+                <AddArtInputButton history={props.history} maxArtworksReached={props.maxArtworksReached} />
 
                 <Link linkTo="/settings"><SettingsButton/></Link>
 

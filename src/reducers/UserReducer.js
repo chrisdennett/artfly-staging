@@ -4,6 +4,7 @@ import {
     LOGOUT_USER,
     DELETE_USER
 } from '../actions/UserActions';
+import ArtflyAccountTypes from '../components/global/ArtflyAccountTypes';
 
 import {ARTIST_ARTWORK_IDS_CHANGE} from '../actions/ArtistGalleryActions';
 
@@ -35,7 +36,16 @@ export default function (state = {}, action) {
                 total += currentArtistTotals[id];
             }
 
-            return { ...state, artistArtworkTotals: currentArtistTotals, totalArtworks:total };
+            let userAccountType = 'free';
+            // TODO: Store subscription.planId for each subscription type as the key and put names like 'family' as a field
+            if(state.subscription && state.subscription.status === 'active'){
+                userAccountType = 'family'
+            }
+
+            const maxArtworksAllowed = ArtflyAccountTypes[userAccountType].maxArtworks;
+            const maxArtworksReached = total >= maxArtworksAllowed;
+
+            return { ...state, artistArtworkTotals: currentArtistTotals, totalArtworks:total, maxArtworksReached:maxArtworksReached };
 
         default:
             return state;

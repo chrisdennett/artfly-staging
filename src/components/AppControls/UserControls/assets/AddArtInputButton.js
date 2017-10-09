@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import history from '../../../global/history';
 import AddArtModal from "../../../AddArtModal/AddArtModal";
 
 class AddArtInputButton extends Component {
@@ -11,8 +12,16 @@ class AddArtInputButton extends Component {
         this.state = { modalOpen: false, imgSrc: null };
     }
 
+    onClick(event){
+        if(this.props.maxArtworksReached){
+            event.preventDefault();
+            history.push('/settings');
+        }
+    }
+
     handleImageChange(event) {
         event.preventDefault();
+
         // this.props.clearImageUpload();
         this.setState({ modalOpen: true });
 
@@ -48,6 +57,7 @@ class AddArtInputButton extends Component {
                 <AddArtModal imgSrc={this.state.imgSrc} isOpen={this.state.modalOpen} onSaveComplete={this.onSaveComplete} onCancel={this.onCancel}/>
 
                 <input className="inputfile"
+                       onClick={this.onClick.bind(this)}
                        onChange={this.handleImageChange.bind(this)}
                        type="file" accept="image/*"
                        name={this.props.id} id={id}/>
@@ -57,7 +67,7 @@ class AddArtInputButton extends Component {
                        htmlFor={id}>
 
                     <div className={'sketch-butt'}>
-                        <svg onClick={this.props.onClick} width={'100%'} height={'100%'} viewBox="0 0 67 65">
+                        <svg width={'100%'} height={'100%'} viewBox="0 0 67 65">
                             <rect height="65" width="67" fill="#fff"/>
                             <path
                                 d="M45.3 36.11H22.14c-1.476 0-2.672-1.183-2.672-2.643v-15.86c0-1.46 1.196-2.643 2.672-2.643H45.3c1.476 0 2.672 1.183 2.672 2.643v15.86c0 1.46-1.196 2.643-2.672 2.643zM25.7 18.05c-1.722 0-3.118 1.381-3.118 3.084s1.396 3.084 3.118 3.084 3.118-1.381 3.118-3.084-1.396-3.084-3.118-3.084zm-2.672 14.54h21.38v-6.167l-4.872-4.819a.673.673 0 0 0-.945 0l-7.544 7.462-3.09-3.057a.673.673 0 0 0-.946 0l-3.98 3.938v2.643z"/>
