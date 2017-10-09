@@ -1,5 +1,7 @@
 // Externals
 import React from "react";
+// global styles
+import './style.css';
 // Components
 import WindowController from "./global/WindowDimensionsTracker";
 import AppControls from "../components/AppControls/AppControls";
@@ -18,7 +20,7 @@ const routes = {
     settings: { component: SettingsContainer },
     gallery: { component: ArtistGalleryContainer, pageDataRequired: ['artistArtworks', 'galleryParams'] },
     artwork: { component: ArtworkContainer, pageDataRequired: ['artwork'] },
-    artworkEditor: { component: ArtworkEditorContainer },
+    artworkEditor: { component: ArtworkEditorContainer, pageDataRequired: ['artwork']  },
     addOrEditArtist: { component: ArtistEditorContainer },
     addOrEditUser: { component: UserEditorContainer }
 };

@@ -27,13 +27,6 @@ class AppDataFetcher extends Component {
         }
     }
 
-   /* getWindowSize() {
-        const pageWidth = window.innerWidth;
-        const pageHeight = window.innerHeight;
-
-        this.props.setWindowSize(pageWidth, pageHeight);
-    }*/
-
     fetchGlobalData = () => {
         this.props.fetchUserData((userData) => {
             if (userData) {

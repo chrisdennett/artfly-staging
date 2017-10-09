@@ -1,16 +1,15 @@
+// externals
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+// actions
 import { logoutUser } from '../../../actions/UserActions';
-
+// components
 import UserControls from './UserControls';
 
-// Intermediary component so ui component isn't required to call data
 class UserControlsHolder extends Component {
     render() {
-        const { status } = this.props.user;
         // status can be undefined, pending, complete, none
-        return <UserControls userStatus={status}
+        return <UserControls userStatus={this.props.userStatus}
                              history={this.props.history}
                              logout={this.props.logoutUser}
                              galleryId={this.props.galleryId}
@@ -18,14 +17,9 @@ class UserControlsHolder extends Component {
     }
 }
 
-// Map state to props maps to the intermediary component which uses or passes them through
-const mapStateToProps = (state, ownProps) => {
-    const { galleryId, artworkId } = ownProps;
-
+const mapStateToProps = (state) => {
     return {
-        user: state.user,
-        galleryId: galleryId,
-        artworkId: artworkId
+        userStatus: state.user.status
     }
 };
 

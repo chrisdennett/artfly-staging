@@ -2,8 +2,8 @@
 import React, { Component } from "react";
 import ga from '../libs/googleAnalyticsConfig';
 // Components
-import history from '../components/global/history';
-import App from "../components/App";
+import history from './global/history';
+import App from "./App";
 
 class ArtflyRouting extends Component {
 

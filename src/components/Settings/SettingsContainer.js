@@ -17,7 +17,6 @@ const getUserArtists = (artistIdsObject, artists) => {
 
             artistData.artist = artist;
             artistData.id = id;
-            artistData.totalArtworks = artist.totalArtworks;
 
             artistArray.push(artistData);
         }

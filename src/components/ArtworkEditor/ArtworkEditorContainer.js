@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 // import { Redirect } from 'react-router-dom';
 
 import {
-    fetchArtwork,
     updateArtwork,
     uploadImage,
     deleteArtwork
@@ -23,22 +22,6 @@ class ArtworkEditorHolder extends Component {
             selectedArtistId: null,
             isSaving: false
         };
-    }
-
-    componentDidMount() {
-        this.initData();
-    }
-
-    componentDidUpdate() {
-        this.initData();
-    }
-
-    initData() {
-        const { artworkId } = this.props;
-
-        if (artworkId) {
-            this.props.fetchArtwork(artworkId);
-        }
     }
 
     onArtistSelected(artistId) {
@@ -176,7 +159,6 @@ const mapStateToProps = (state, ownProps) => {
 const ArtworkEditorContainer = connect(
     mapStateToProps,
     {
-        fetchArtwork,
         updateArtwork,
         uploadImage,
         deleteArtwork
