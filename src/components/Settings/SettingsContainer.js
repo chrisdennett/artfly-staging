@@ -13,10 +13,8 @@ const getUserArtists = (artistIdsObject, artists) => {
     const artistArray = [];
 
     for (let id of artistIds) {
-        const artist = artists[id];
-
-        if (artist) {
-            artistArray.push(artist);
+        if (artists[id]) {
+            artistArray.push(artists[id]);
         }
     }
     return artistArray;
@@ -46,7 +44,7 @@ class SettingsHolder extends Component {
             return <Redirect to={'/'}/>
         }*/
 
-        const { userArtists, userId, subscription, localPrice, newSubscriptionStatus } = this.props;
+        const { totalArtworks, userArtists, userId, subscription, localPrice, newSubscriptionStatus } = this.props;
         if (!userId) {
             return <div>Loading...</div>;
         }
@@ -56,6 +54,7 @@ class SettingsHolder extends Component {
                          onUpdateSubscription={this.onUpdateSubscription.bind(this)}
                          newSubscriptionStatus={newSubscriptionStatus}
                          userArtists={userArtists}
+                         totalArtworks={totalArtworks}
                          price={localPrice}
                          subscription={subscription}/>;
     }
@@ -66,7 +65,7 @@ const mapStateToProps = (state) => {
     const userArtists = getUserArtists(artistIds, state.artists);
 
     return {
-        user: state.user,
+        totalArtworks: state.user.totalArtworks,
         localPrice: state.paddle.localPrice,
         newSubscriptionStatus: state.paddle.newSubscriptionStatus,
         userId: state.user.uid,

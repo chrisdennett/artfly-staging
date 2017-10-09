@@ -8,14 +8,10 @@ import SettingsIcon from '../global/SettingsIcon';
 import Page from "../global/Page";
 import ArtflyAccountTypes from "../global/ArtflyAccountTypes";
 
-const Settings = function ({ userArtists, newSubscriptionStatus, subscription, price, onSubscribe, onCancelSubscription, onUpdateSubscription }) {
+const Settings = function ({ totalArtworks, userArtists, newSubscriptionStatus, subscription, price, onSubscribe, onCancelSubscription, onUpdateSubscription }) {
 
     if(newSubscriptionStatus) console.log("newSubscriptionStatus: ", newSubscriptionStatus);
 
-    let totalArtworks = 0;
-    for (let artist of userArtists) {
-        totalArtworks += artist.totalArtworks;
-    }
     const accountType = !subscription ? 'free' : 'family';
     const maxArtworksAllowed = ArtflyAccountTypes[accountType].maxArtworks;
     let subscriptionButtons;
