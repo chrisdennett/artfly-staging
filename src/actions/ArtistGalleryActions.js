@@ -86,9 +86,10 @@ export function fetchArtistArtworkIds(artistGalleryId, callback =null) {
             .on('value', snapshot => {
                 // const artistArtworkIds = !snapshot.val() ? {} : Object.keys(snapshot.val());
                 const artistArtworkIds = snapshot.val();
+                const totalArtworks = !artistArtworkIds ? 0 : Object.keys(artistArtworkIds).length;
                 dispatch({
                     type: ARTIST_ARTWORK_IDS_CHANGE,
-                    payload: { artistId:artistGalleryId, artworkIds:artistArtworkIds }
+                    payload: { artistId:artistGalleryId, artworkIds:artistArtworkIds, totalArtworks:totalArtworks }
                 });
 
                 if(callback) callback(artistArtworkIds);

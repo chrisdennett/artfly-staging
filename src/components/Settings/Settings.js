@@ -89,20 +89,19 @@ const Settings = function ({ userArtists, newSubscriptionStatus, subscription, p
 
                 <section className={'settings-artists-section'}>
                     {
-                        _.map(userArtists, (artistGallery) => {
-                            const { artist, id, totalArtworks } = artistGallery;
+                        _.map(userArtists, (artist) => {
 
                             return (
-                                <div key={id} style={{ minWidth: '100%' }}>
+                                <div key={artist.artistId} style={{ minWidth: '100%' }}>
                                     <ul>
                                         <li><span>First name:</span> {artist.firstName}</li>
                                         <li><span>Last name:</span> {artist.lastName}</li>
-                                        <li><span>Total artworks:</span> {totalArtworks}</li>
+                                        <li><span>Total artworks:</span> {artist.totalArtworks}</li>
                                         <li>
                                             <LinkButt inline={true} size={'small'} label={'Open Gallery'}
-                                                      linkTo={`/gallery/${id}`}/>
+                                                      linkTo={`/gallery/${artist.artistId}`}/>
                                             <LinkButt inline={true} size={'small'} label={'Edit Artist'}
-                                                      linkTo={`/addOrEditArtist/${id}`}/>
+                                                      linkTo={`/addOrEditArtist/${artist.artistId}`}/>
                                         </li>
                                     </ul>
                                 </div>)

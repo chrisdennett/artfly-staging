@@ -1,10 +1,13 @@
+// externals
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // import { Redirect } from 'react-router-dom';
-
-import Settings from './Settings';
+// actions
 import { subscribeUser, updateSubscription, cancelSubscription } from '../../actions/PaddleActions';
+// components
+import Settings from './Settings';
 
+// helper function
 const getUserArtists = (artistIdsObject, artists) => {
     const artistIds = Object.keys(artistIdsObject);
     const artistArray = [];
@@ -13,15 +16,9 @@ const getUserArtists = (artistIdsObject, artists) => {
         const artist = artists[id];
 
         if (artist) {
-            const artistData = {};
-
-            artistData.artist = artist;
-            artistData.id = id;
-
-            artistArray.push(artistData);
+            artistArray.push(artist);
         }
     }
-
     return artistArray;
 };
 

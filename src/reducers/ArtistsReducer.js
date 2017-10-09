@@ -9,10 +9,10 @@ export default function (state = {}, action) {
 
         case ARTIST_ARTWORK_IDS_CHANGE:
             //NB The ids data value is the date added which is used for sorting
-            const {artistId, artworkIds} = action.payload;
+            const {artistId, artworkIds, totalArtworks} = action.payload;
             let artistData = {...state[artistId]};
             artistData.artworkIds = artworkIds;
-            artistData.totalArtworks = artworkIds ? Object.keys(artworkIds).length : 0;
+            artistData.totalArtworks = totalArtworks;
 
             return { ...state, [artistId]:artistData };
 
