@@ -2,77 +2,46 @@ import firebase from '../libs/firebaseConfig';
 // TODO: I think I should be able to do away with this through first import
 import * as fb from 'firebase';
 
+import { removeAllFirebaseListeners, fetchFirebaseUser, fetchFirebaseUserAuth } from "./FirebaseActions";
+
 export const CREATE_USER = 'create_user';
 export const FETCH_USER = "fetchUser";
 export const LOGIN_USER = "loginUser";
 export const LOGOUT_USER = "logoutUser";
 export const DELETE_USER = "deleteUser";
 export const ADD_USER_ARTIST = 'addUserArtist';
+export const CLEAR_USER_DATA = 'clearUserData';
 
-export function fetchUserData(callback) {
+export function fetchUserData() {
     return (dispatch) => {
         dispatch({
             type: FETCH_USER,
             payload: { status: "pending" }
         });
 
-        firebase.auth()
-            .onAuthStateChanged((result) => {
-                // if authorised (result is not null) get user data
-                if (result) {
-                    let userData = null;
-                    const { photoURL, displayName, email, uid, providerData } = result;
-                    const signedInWith = providerData[0].providerId || null;
-                    // "on" sets up a listener for user so this is called every time user data changes
-                    firebase.database()
-                        .ref(`/user-data/users/${uid}`)
-                        .on('value', (snapshot) => {
-                            userData = snapshot.val();
-                            // only include the data needed
-                            if (userData) {
-                                dispatch({
-                                    type: FETCH_USER,
-                                    payload: {
-                                        ...userData,
-                                        signedInWith,
-                                        photoURL,
-                                        displayName,
-                                        email,
-                                        uid,
-                                        status: "complete"
-                                    }
-                                });
-                            }
-                            else {
-                                // TODO: Figure out if I need to do something with this
-                                dispatch({
-                                    type: FETCH_USER,
-                                    payload: {
-                                        signedInWith,
-                                        photoURL,
-                                        displayName,
-                                        email,
-                                        uid,
-                                        status: "new"
-                                    }
-                                });
-                            }
+        fetchFirebaseUserAuth((authData) => {
+            if (authData) {
+                dispatch({
+                    type: FETCH_USER,
+                    payload: { ...authData, status: "auth" }
+                });
 
-                            // not user
-                            if(callback) callback(userData);
-                        })
-                }
-                // user not authorised or not logged in
-                else {
-                    dispatch({
-                        type: FETCH_USER,
-                        payload: { status: "none" }
-                    });
-
-                    if(callback) callback(null);
-                }
-
-            })
+                fetchFirebaseUser(authData.uid, (userData) => {
+                    if (userData) {
+                        dispatch({
+                            type: FETCH_USER,
+                            payload: { ...userData, status: "complete" }
+                        });
+                    }
+                })
+            }
+            else {
+                dispatch({
+                    type: FETCH_USER,
+                    payload: { status: "none" }
+                });
+            }
+        });
     }
 }
 
@@ -182,9 +151,17 @@ export function loginWithFacebook() {
     }
 }
 
-export function logoutUser(user) {
+export function logoutUser() {
     return dispatch => {
         firebase.auth().signOut().then(function () {
+
+            removeAllFirebaseListeners(() => {
+                dispatch({
+                    type: CLEAR_USER_DATA,
+                    payload: ""
+                })
+            });
+
             dispatch({
                 type: LOGOUT_USER,
                 payload: "success"

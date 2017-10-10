@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 // Actions
 import { fetchUserData } from '../actions/UserActions';
 import { fetchLocalPrice } from '../actions/PaddleActions';
-import { getGalleryParams } from "../actions/UiActions";
-import { fetchArtist, fetchArtistArtworkIds, fetchArtwork } from "../actions/ArtistGalleryActions";
+import { fetchArtist } from "../actions/ArtistGalleryActions";
 
 class AppDataFetcher extends Component {
+    dataFetched = false;
 
     constructor(props) {
         super(props);
@@ -18,72 +18,40 @@ class AppDataFetcher extends Component {
         this.fetchGlobalData();
     }
 
-    componentDidUpdate() {
-        const { pageDataRequired } = this.props;
-        if (pageDataRequired) {
-            for (let dataName of pageDataRequired) {
-                this.fetchPageData(dataName);
-            }
+    componentWillUpdate(nextProps){
+        if(this.dataFetched === false && nextProps.userId !== this.props.userId){
+            // this.fetchGlobalData();
+            console.log("nextProps.userStatus: ", nextProps.userId);
+            console.log("nextProps.userStatus: ", this.props.userId);
         }
+    }
+
+    componentWillUnmount(){
+        console.log("unmounted: ");
     }
 
     fetchGlobalData = () => {
         this.props.fetchUserData((userData) => {
             if (userData) {
-                for (let artistId of Object.keys(userData.artistIds)) {
+                this.dataFetched = true;
+                /*for (let artistId of Object.keys(userData.artistIds)) {
                     this.props.fetchArtist(artistId);
                     this.props.fetchArtistArtworkIds(artistId);
-                }
+                }*/
             }
         });
         this.props.fetchLocalPrice();
     };
 
-    fetchPageData = (dataName) => {
-        switch (dataName) {
-            case 'artistArtworks':
-                this.fetchArtistArtworks();
-                break;
-            case 'galleryParams':
-                this.fetchGalleryParams();
-                break;
-            case 'artwork':
-                this.fetchArtwork();
-                break;
-            default:
-                return;
-        }
-    };
-
-    fetchArtistArtworks = () => {
-        // NB: galleryId and artistId are identical
-        if (this.props.artist && this.props.artist.artworkIds) {
-            // Actions take care not to call the same artwork twice.
-            // NB: artworkIds is a collection artworkIds:{id:date, id2:date2}
-            const ids = Object.keys(this.props.artist.artworkIds);
-
-            for (let id of ids) {
-                this.props.fetchArtwork(id);
+    render() {
+        // If it's an admin only page wait for user data and only let through if have a uid
+        if(this.props.adminOnly){
+            // TODO add redirect code if status is 'none' or 'new'
+            if(!this.props.user || this.props.user.status !== 'complete'){
+                return <div> waiting for godot...</div>
             }
         }
-    };
 
-    fetchArtwork = () => {
-        if(this.props.artworkId){
-            this.props.fetchArtwork(this.props.artworkId);
-        }
-    };
-
-    fetchGalleryParams = () => {
-        if (this.props.artist && this.props.artist.artworkIds && this.props.windowSize) {
-            const totalArtworks = Object.keys(this.props.artist.artworkIds).length || 0;
-            const inMobileMode = this.props.windowSize.windowWidth < 500;
-
-            this.props.getGalleryParams(totalArtworks, inMobileMode);
-        }
-    };
-
-    render() {
         return (
             <div>
                 {this.props.children}
@@ -92,15 +60,9 @@ class AppDataFetcher extends Component {
     }
 }
 
-// Map state to props maps to the intermediary component which uses or passes them through
 const mapStateToProps = (state, ownProps) => {
-    const artist = state.artists[ownProps.galleryId] || [];
-
     return {
-        artist: artist,
-        userArtists: state.artists,
-        windowWidth: state.windowWidth,
-        windowSize: state.ui.windowSize
+        user: state.user,
     }
 };
 
@@ -108,9 +70,6 @@ export default connect(
     mapStateToProps, {
         fetchUserData,
         fetchLocalPrice,
-        fetchArtist,
-        fetchArtistArtworkIds,
-        fetchArtwork,
-        getGalleryParams
+        fetchArtist
     }
 )(AppDataFetcher);

@@ -17,22 +17,22 @@ import AppDataFetcher from "./AppDataFetcher";
 
 const routes = {
     home: { component: Home },
-    settings: { component: SettingsContainer },
-    gallery: { component: ArtistGalleryContainer, pageDataRequired: ['artistArtworks', 'galleryParams'] },
-    artwork: { component: ArtworkContainer, pageDataRequired: ['artwork'] },
-    artworkEditor: { component: ArtworkEditorContainer, pageDataRequired: ['artwork']  },
+    settings: { component: SettingsContainer, adminOnly:true },
+    gallery: { component: ArtistGalleryContainer },
+    artwork: { component: ArtworkContainer },
+    artworkEditor: { component: ArtworkEditorContainer },
     addOrEditArtist: { component: ArtistEditorContainer },
     addOrEditUser: { component: UserEditorContainer }
 };
 
 const App = ({page, history, params}) => {
     const PageComponent = routes[page] ? routes[page].component : FourOhFour;
-    const pageDataRequired = routes[page] ? routes[page].pageDataRequired : {};
+    const adminOnly = routes[page] && routes[page].adminOnly ? routes[page].adminOnly : false;
 
     const PageComponentWithProps = <PageComponent history={history} {...params} />;
 
     return (
-        <AppDataFetcher pageDataRequired={pageDataRequired} {...params}>
+        <AppDataFetcher adminOnly={adminOnly} {...params}>
             <AppControls {...params}/>
             <WindowController>
             {PageComponentWithProps}

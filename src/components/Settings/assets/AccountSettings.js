@@ -5,19 +5,20 @@ import Butt from "../../global/Butt";
 import SubscribeButton from '../../global/SubscribeButton';
 
 const AccountSettings = function (props) {
-    const {artflyAccountTypes, totalArtworks, accountType, maxArtworksAllowed, subscription, price, onCancelSubscription, onUpdateSubscription } = props;
+    const {artflyAccountTypes, totalArtworks, accountType, maxArtworks, subscription, price, onCancelSubscription, onUpdateSubscription } = props;
 
     let subscriptionButtons;
     const infoStyle = {
         fontSize: 16, margin: '0 0 10px 10px', opacity: 0.9
     };
+    const familyPlanId = 253185;
 
     if (accountType === 'free') {
         subscriptionButtons = (
             <span>
                 <SubscribeButton />
                 <p style={infoStyle}>
-                    (Subscribe for {price} a month to save up to {artflyAccountTypes.family.maxArtworks} artworks)
+                    (Subscribe for {price} a month to save up to {artflyAccountTypes[familyPlanId].maxArtworks} artworks)
                 </p>
             </span>
         )
@@ -38,10 +39,10 @@ const AccountSettings = function (props) {
                 <li>Account type: {!subscription ? 'free' : 'subscriber'} {subscriptionButtons}</li>
                 <li>Total artworks added: {totalArtworks}
                     <p style={infoStyle}>
-                        (the limit is {maxArtworksAllowed})
+                        (the limit is {maxArtworks})
                     </p>
                 </li>
-                <li>Remaining spaces available: {maxArtworksAllowed - totalArtworks}</li>
+                <li>Remaining spaces available: {maxArtworks - totalArtworks}</li>
             </ul>
         </div>
     )

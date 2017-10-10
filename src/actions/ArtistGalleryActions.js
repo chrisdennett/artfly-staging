@@ -1,130 +1,54 @@
 import firebase from '../libs/firebaseConfig';
-// TODO: I think I should be able to do away with this through first import
-import * as fb from 'firebase';
+//
+import {
+    addArtworkIdToFirebase,
+    addArtworkToFirebase,
+    addArtworkToFirebaseStorage, fetchFirebaseArtist, fetchFirebaseArtistArtworkIds,
+    fetchFirebaseArtwork, getFirebaseArtworkRef
+} from "./FirebaseActions";
 
-export const NEW_GALLERY_COMING = "newGalleryComing";
-export const FETCH_GALLERY = "fetchGallery";
-export const ALREADY_CACHED = "alreadyCached";
 export const ARTWORK_CHANGE = "artworkChange";
 export const ARTIST_CHANGE = "artistChange";
 export const ARTIST_ARTWORK_IDS_CHANGE = "artistArtworkIdsChange";
-export const FETCH_ARTWORK_ALREADY_CACHED = "fetchArtworkAlreadyCached";
 export const ARTIST_UPDATED = 'artistUpdated';
 export const ARTIST_DELETED = 'artistDeleted';
 export const ARTWORK_DELETED = 'artworkDeleted';
-// export const GALLERY_UPDATED = 'galleryUpdated';
 export const UPDATE_ARTWORK_COMPLETE = 'updateArtworkComplete';
 export const IMAGE_UPLOAD_PROGRESS = 'imageUploadProgress';
 export const ADD_ARTWORK_COMPLETE = 'artworkAdded';
 export const CLEAR_IMAGE_UPLOAD = 'clearImageUpload';
 
-// let galleryListenersRef = [];
-let artistListenersRef = [];
-let artworkListenersRef = [];
-let artistArtworkIdsListenersRef = [];
 
 export function fetchArtist(artistGalleryId) {
     return (dispatch) => {
-        if (artistListenersRef.indexOf(artistGalleryId) >= 0) {
+        fetchFirebaseArtist(artistGalleryId, (artistData) => {
             dispatch({
-                type: ALREADY_CACHED,
-                payload: {}
+                type: ARTIST_CHANGE,
+                payload: { ...artistData, artistId: artistGalleryId }
             });
-            return;
-        }
-
-        // keep track of galleryIds that have had listeners attached
-        artistListenersRef.push(artistGalleryId);
-
-        // remove any listeners if there are already there (shouldn't be)
-        firebase.database().ref(`user-data/artists/${artistGalleryId}`).off();
-
-        // set up a listener for this artist
-        firebase.database()
-            .ref(`/user-data/artists/${artistGalleryId}`)
-            .on('value', (snapshot) => {
-                let artistData = snapshot.val();
-                // There'll be no data if the artist has just been deleted.
-                if (artistData) {
-                    artistData.artistId = snapshot.key;
-                }
-
-                dispatch({
-                    type: ARTIST_CHANGE,
-                    payload: { [artistGalleryId]: artistData }
-                });
-
-                // if the artist has been deleted stop listening for changes
-                // I wasn't sure about this so I've commented it out - cjd - 17/08/2017
-                /*if(!artistData){
-                    libs.database().ref(`user-data/artists/${artistGalleryId}`).off();
-                    console.log("remove listener");
-                }*/
-            });
+        })
     }
 }
 
-export function fetchArtistArtworkIds(artistGalleryId, callback =null) {
+export function fetchArtistArtworkIds(artistGalleryId) {
     return (dispatch) => {
-        if (artistArtworkIdsListenersRef.indexOf(artistGalleryId) >= 0) {
+        fetchFirebaseArtistArtworkIds(artistGalleryId, (artistArtworkIdsData) => {
             dispatch({
-                type: ALREADY_CACHED,
-                payload: {}
+                type: ARTIST_ARTWORK_IDS_CHANGE,
+                payload: { artistId: artistGalleryId, artworkIds: artistArtworkIdsData }
             });
-            if(callback) callback();
-            return;
-        }
-
-        // keep track of galleryIds that have had listeners attached
-        artistArtworkIdsListenersRef.push(artistGalleryId);
-
-        // remove any listeners if there are already there
-        firebase.database().ref(`user-data/artistArtworkIds/${artistGalleryId}`).off();
-
-        firebase.database()
-            .ref(`/user-data/artistArtworkIds/${artistGalleryId}`)
-            .on('value', snapshot => {
-                // const artistArtworkIds = !snapshot.val() ? {} : Object.keys(snapshot.val());
-                const artistArtworkIds = snapshot.val();
-                const totalArtworks = !artistArtworkIds ? 0 : Object.keys(artistArtworkIds).length;
-                dispatch({
-                    type: ARTIST_ARTWORK_IDS_CHANGE,
-                    payload: { artistId:artistGalleryId, artworkIds:artistArtworkIds, totalArtworks:totalArtworks }
-                });
-
-                if(callback) callback(artistArtworkIds);
-            });
+        });
     }
 }
 
-export function fetchArtwork(artworkId, callback) {
+export function fetchArtwork(artworkId) {
     return (dispatch) => {
-        if (artworkListenersRef.indexOf(artworkId) >= 0) {
+        fetchFirebaseArtwork(artworkId, (artworkData) => {
             dispatch({
-                type: FETCH_ARTWORK_ALREADY_CACHED,
-                payload: {}
+                type: ARTWORK_CHANGE,
+                payload: { [artworkId]: artworkData }
             });
-            return;
-        }
-
-        artworkListenersRef.push(artworkId);
-
-        // remove any listeners if there are already there (shouldn't be)
-        firebase.database().ref(`user-data/artworks/${artworkId}`).off();
-
-        firebase.database()
-            .ref('user-data/artworks/' + artworkId)
-            .on('value', snapshot => {
-                const artworkId = snapshot.key;
-                const artworkData = { ...snapshot.val(), id: artworkId };
-
-                dispatch({
-                    type: ARTWORK_CHANGE,
-                    payload: { [artworkId]: artworkData }
-                });
-
-                if (callback) callback(artworkData);
-            });
+        })
     }
 }
 
@@ -219,7 +143,7 @@ function deleteArtworkInternal(dispatch, artworkId, artistId, userId, removeArti
                                 if (callback) callback();
                             })
                     }
-                    else{
+                    else {
                         dispatch({
                             type: ARTWORK_DELETED,
                             payload: artworkId
@@ -277,108 +201,41 @@ export function clearImageUpload(callback = null) {
 
 export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artworkId = null, callback = null) {
     return dispatch => {
-        let artworkRef = '';
-        if (artworkId) {
-            // reference the image to update
-            artworkRef = firebase.database().ref(`/user-data/artworks/${artworkId}`);
-        }
-        else {
-            // Or create a new image ref in the database
-            artworkRef = firebase.database().ref('/user-data/artworks').push();
-        }
+        // First get the database reference so the image can be named the same
+        const artworkDatabaseRef = getFirebaseArtworkRef(artworkId);
+        const artworkDatabaseKey = artworkDatabaseRef.key;
 
-        // use the artwork key as the name for the artwork to ensure it is unique.
-        const artworkName = artworkRef.key; // + "." + fileExtension;
-
-        // trigger callback with artwork id so progress can be shown in calling component
-        //if (callback) callback(artworkRef.key);
-
-        // image storage
-        const imageStorageRef = firebase.storage().ref();
-        const userPicturesRef = imageStorageRef.child(`userContent/${userId}/${artworkName}`);
-
-        // store the image data
-        const uploadTask = userPicturesRef.put(imgFile);
-
-        // ensures the progress starts afresh
-        dispatch({
-            type: IMAGE_UPLOAD_PROGRESS,
-            payload: { artistId: artistId, id: artworkRef.key, progress: 0 }
-        });
-
-        uploadTask.on(fb.storage.TaskEvent.STATE_CHANGED,
-            function (snapshot) {
-                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-
+        // add the image to storage and dispatch progress events
+        addArtworkToFirebaseStorage(imgFile, userId, artworkDatabaseKey, (uploadData) => {
+            if (uploadData.status === 'uploading') {
                 dispatch({
                     type: IMAGE_UPLOAD_PROGRESS,
-                    payload: { artistId: artistId, id: artworkRef.key, progress: progress }
+                    payload: { artistId: artistId, id: artworkDatabaseKey, progress: uploadData.progress }
                 });
-
-                /*switch (snapshot.state) {
-                    case fb.storage.TaskState.PAUSED:
-                        console.log('Upload is paused');
-                        break;
-                    case fb.storage.TaskState.RUNNING:
-                        console.log('Upload is running');
-                        break;
-                    default:
-                        console.log("uncaught snapshot state: ", snapshot.state);
-                }*/
-            }, function (error) {
-                // A full list of error codes is available at
-                // https://firebase.google.com/docs/storage/web/handle-errors
-                switch (error.code) {
-                    case 'storage/unauthorized':
-                        // User doesn't have permission to access the object
-                        console.log("storage/unauthorized");
-                        break;
-
-                    case 'storage/canceled':
-                        // User canceled the upload
-                        console.log("storage/canceled");
-                        break;
-
-                    case 'storage/unknown':
-                        // Unknown error occurred, inspect error.serverResponse
-                        console.log("storage/unknown");
-                        break;
-                    default:
-                        console.log("uncaught error: ", error);
-                }
-            }, function () {
-                // Upload completed successfully - save artwork data
-                const dateStamp = Date.now();
-
+            }
+            else if (uploadData.status === 'complete') {
                 const newArtworkData = {
                     adminId: userId,
                     artistId: artistId,
-                    url: uploadTask.snapshot.downloadURL,
+                    url: uploadData.downloadURL,
                     imgWidth: imgWidth,
                     imgHeight: imgHeight,
-                    dateAdded: dateStamp
+                    dateAdded: uploadData.dateStamp
                 };
 
-                // save artwork to database and add artwork to artistArtworkIds
-                const artistArtworkIdsRef = firebase.database().ref(`/user-data/artistArtworkIds/${artistId}/${artworkRef.key}`);
-                artworkRef
-                    .set(newArtworkData)
-                    .then(
-                        artistArtworkIdsRef
-                            .set(dateStamp)
-                            .then(() => {
-                                dispatch({
-                                    type: ADD_ARTWORK_COMPLETE,
-                                    payload: { progress:100 }
-                                });
+                // add artwork data to the database
+                addArtworkToFirebase(artworkDatabaseRef, newArtworkData, () => {
+                    // add artwork ID to the database
+                    addArtworkIdToFirebase(artistId, artworkDatabaseKey, uploadData.dateStamp, userId, () => {
+                        dispatch({
+                            type: ADD_ARTWORK_COMPLETE,
+                            payload: { progress: 100 }
+                        });
 
-                                if (callback) callback({...newArtworkData, artworkId: artworkRef.key});
-                            })
-                            .catch(function (error) {
-                                console.log('Synchronization failed', error);
-                            })
-                    );
-            });
-
+                        if (callback) callback({ ...newArtworkData, artworkId: artworkDatabaseKey });
+                    })
+                });
+            }
+        });
     }
 }

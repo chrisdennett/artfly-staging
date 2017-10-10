@@ -62,7 +62,7 @@ class AddArtModal extends Component {
         const { height, width } = this.state.cropData;
 
         this.props.uploadImage(this.state.cropImg, this.props.user.uid, this.state.selectedArtistId, width, height, null, (newArtworkData) => {
-            this.setState({ saveTriggered: false })
+            this.setState({ saveTriggered: false });
             this.props.onSaveComplete(newArtworkData);
             this.props.clearImageUpload();
         });

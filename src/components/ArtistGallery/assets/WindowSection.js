@@ -13,6 +13,7 @@ class WindowSection extends Component {
 
     createBuildingWindows(wallColour, highlight, lowlight) {
         const {artworkIds, artworks, galleryWidth, windowParams} = this.props;
+
         const {
                   windowWidth, windowsSectionPadding, windowPadding, windowHeight,
                   windowWidthWithPadding, windowHeightWithPadding,
@@ -54,7 +55,7 @@ class WindowSection extends Component {
                                     height={windowHeight}
                                     number={windowCount}
                                     artwork={artworks[id]}
-                                    onThumbClick={this.props.onThumbClick.bind(this)}
+                                    onThumbClick={() => {this.props.onThumbClick(id)}}
                                     wallColour={wallColour}
                                     highlight={highlight}
                                     lowlight={lowlight}/>
