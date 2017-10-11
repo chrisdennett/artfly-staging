@@ -1,12 +1,12 @@
+// externals
 import React from 'react';
-import history from '../global/history';
-
+// components
 import UserControlsContainer from './UserControls/UserControlsContainer';
 import GalleryControlsContainer from './GalleryControls/GalleryControlsContainer';
 import HomeButton from "./Logo";
 import Link from "../global/Link";
 
-const AppControls = function ({ galleryId, artworkId }) {
+const AppControls = function ({ galleryId, artworkId, user }) {
 
     return (
         <div>
@@ -15,13 +15,13 @@ const AppControls = function ({ galleryId, artworkId }) {
             </div>
 
             <div style={{ position: 'fixed', top: 0, right: 0, zIndex: 1002 }}>
-                <UserControlsContainer history={history} galleryId={galleryId} artworkId={artworkId}/>
+                <UserControlsContainer galleryId={galleryId} artworkId={artworkId}/>
             </div>
 
             {galleryId &&
             <div>
                 <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1004 }}>
-                    <GalleryControlsContainer history={history} galleryId={galleryId} artworkId={artworkId}/>
+                    <GalleryControlsContainer galleryId={galleryId} artworkId={artworkId}/>
                 </div>
             </div>
             }

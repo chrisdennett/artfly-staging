@@ -114,7 +114,7 @@ class ArtflyRouting extends Component {
 
         return (
             <div>
-                <AppControls {...params}/>
+                <AppControls {...params} user={this.props.user}/>
                 <WindowController>
                     {PageComponentWithProps}
                 </WindowController>

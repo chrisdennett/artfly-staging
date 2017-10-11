@@ -4,23 +4,20 @@ import React from "react";
 import SignOutButton from "./assets/SignOutButton";
 import SettingsButton from "./assets/SettingsButton";
 import EditButton from "../GalleryControls/assets/EditButton";
-import LoadingOverlay from "../../LoadingOverlay/LoadingOverlay";
 import SignInContainer from "../../SignIn/SignInContainer";
 import AddArtInputButton from "./assets/AddArtInputButton";
 import Link from "../../global/Link";
+import history from '../../global/history';
 
 const UserControls = function (props) {
 
     const { userStatus } = props;
-    const currentPath = props.history.location.pathname;
+    // TODO: page name can now be passed into this component
+    const currentPath = history.location.pathname;
     const onArtworkEditorPage = currentPath.indexOf("artworkEditor") > -1;
-
     let renderContent;
 
-    if (!userStatus || userStatus === "pending") {
-        return <LoadingOverlay/>
-    }
-    else if (userStatus === "none") {
+    if (userStatus === "none") {
         renderContent = <SignInContainer/>
     }
     else {
@@ -28,7 +25,7 @@ const UserControls = function (props) {
             <span>
                 {(!props.artworkId || onArtworkEditorPage) ? "" : <Link linkTo={`/artworkEditor/${props.artworkId}`}><EditButton/></Link> }
 
-                <AddArtInputButton history={props.history} maxArtworksReached={props.maxArtworksReached} />
+                <AddArtInputButton maxArtworksReached={props.maxArtworksReached} />
 
                 <Link linkTo="/settings"><SettingsButton/></Link>
 

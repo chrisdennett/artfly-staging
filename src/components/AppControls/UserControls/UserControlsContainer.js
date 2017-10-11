@@ -11,7 +11,6 @@ class UserControlsHolder extends Component {
         // status can be undefined, pending, complete, none
         return <UserControls userStatus={this.props.userStatus}
                              maxArtworksReached={this.props.maxArtworksReached}
-                             history={this.props.history}
                              logout={this.props.logoutUser}
                              galleryId={this.props.galleryId}
                              artworkId={this.props.artworkId}/>;

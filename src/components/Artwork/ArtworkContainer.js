@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
-import { fetchArtwork } from '../../actions/ArtistGalleryActions';
+import { fetchArtwork, fetchArtistArtworkIds } from '../../actions/ArtistGalleryActions';
 // components
 import Artwork from './Artwork';
 
@@ -10,6 +10,13 @@ class ArtworkHolder extends Component {
 
     componentDidMount() {
         this.props.fetchArtwork(this.props.artworkId);
+        this.props.fetchArtistArtworkIds(this.props.galleryId);
+    }
+
+    componentWillUpdate(nextProps){
+        if(this.props.artworkId !== nextProps.artworkId){
+            this.props.fetchArtwork(nextProps.artworkId);
+        }
     }
 
     render() {
@@ -31,7 +38,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const ArtworkContainer = connect(
-    mapStateToProps, { fetchArtwork }
+    mapStateToProps, { fetchArtwork, fetchArtistArtworkIds }
 )(ArtworkHolder);
 
 export default ArtworkContainer;

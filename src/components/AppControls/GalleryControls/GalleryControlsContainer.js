@@ -17,7 +17,7 @@ class GalleryControlsHolder extends Component {
     }
 
     render() {
-        const { artworkId, galleryId, artworkIds, history, galleryIsZoomedOut } = this.props;
+        const { artworkId, galleryId, artworkIds, galleryIsZoomedOut } = this.props;
         let prevId = null;
         let nextId = null;
 
@@ -35,7 +35,6 @@ class GalleryControlsHolder extends Component {
         }
 
         return <GalleryControls
-            history={history}
             galleryIsZoomedOut={galleryIsZoomedOut}
             onZoomClick={this.onZoomClick}
             nextArtworkId={nextId}
@@ -48,14 +47,8 @@ class GalleryControlsHolder extends Component {
 
 // Map state to props maps to the intermediary component which uses or passes them through
 const mapStateToProps = (state, ownProps) => {
-    const { galleryId, artworkId } = ownProps;
-    const artist = state.artists[galleryId] || {};
-    const artworkIds = artist.artworkIds || [];
-
     return {
-        galleryId: galleryId,
-        artworkId: artworkId,
-        artworkIds: artworkIds,
+        artworkIds: state.artistArtworkIds[ownProps.galleryId],
         galleryIsZoomedOut: state.ui.galleryIsZoomedOut
     }
 };
