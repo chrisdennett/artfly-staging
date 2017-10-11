@@ -39,7 +39,7 @@ export function fetchArtistArtworkIds(artistGalleryId, callback) {
             else {
                 dispatch({
                     type: ARTIST_ARTWORK_IDS_CHANGE,
-                    payload: { [artistGalleryId]: artistArtworkIdsData }
+                    payload: {[artistGalleryId]:artistArtworkIdsData}
                 });
 
                 if (callback) callback(artistArtworkIdsData);

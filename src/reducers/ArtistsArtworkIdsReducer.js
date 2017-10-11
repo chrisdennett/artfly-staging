@@ -5,7 +5,7 @@ export default function (state = {}, action) {
     switch (action.type) {
 
         case ARTIST_ARTWORK_IDS_CHANGE:
-            return action.payload;
+            return { ...state, ...action.payload };
 
         default:
             return state;
