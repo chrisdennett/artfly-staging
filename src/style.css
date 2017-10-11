@@ -146,23 +146,23 @@ label.disabled{
     cursor: pointer;
     outline: none;
     color: #000;
-    background-color: #ecf0f1;
+    background-color: #ecf0f1 !important;
     border: none;
     border-radius: 5px;
     box-shadow: 0 5px rgba(0, 0, 0, 0.5);
 }
 
 .slim-image-editor .slim-editor-utils-group button{
-    width:auto;
-    padding: 0 1em;
+    width:auto !important;
+    padding: 0 1em !important;
     background-image: none;
     color: #000;
-    background-color: #ecf0f1;
-    font-size: 20px;
+    background-color: #f170dd !important;
+    font-size: 20px !important;
     border: none;
     border-radius: 5px;
     box-shadow: 0 5px rgba(0, 0, 0, 0.5);
-    content: 'whatever it is you want to add';
+    content: 'Rotate';
 }
 
 .slim-image-editor .slim-editor-utils-group button:after{

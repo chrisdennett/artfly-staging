@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
-import { updateArtwork, uploadImage, deleteArtwork } from '../../actions/ArtistGalleryActions';
+import { fetchArtwork, fetchArtist, updateArtwork, uploadImage, deleteArtwork } from '../../actions/ArtistGalleryActions';
 // components
 import ArtworkEditor from './ArtworkEditor';
 import history from '../global/history';
@@ -19,6 +19,13 @@ class ArtworkEditorHolder extends Component {
             selectedArtistId: null,
             isSaving: false
         };
+    }
+
+    componentWillMount(){
+        this.props.fetchArtwork(this.props.artworkId);
+        for(let artistId of this.props.userArtistIds){
+            this.props.fetchArtist(artistId);
+        }
     }
 
     onArtistSelected(artistId) {
@@ -135,20 +142,22 @@ class ArtworkEditorHolder extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const { artworkId } = ownProps;
-    const artwork = state.artworks[artworkId];
+    const userArtistIds = Object.keys(state.user.artistIds);
+
 
     return {
         userId: state.user.uid,
-        artworkId: artworkId,
-        artwork: artwork,
-        artists: state.artists
+        artwork: state.artworks[ownProps.artworkId],
+        artists: state.artists,
+        userArtistIds: userArtistIds
     }
 };
 
 const ArtworkEditorContainer = connect(
     mapStateToProps,
     {
+        fetchArtwork,
+        fetchArtist,
         updateArtwork,
         uploadImage,
         deleteArtwork
