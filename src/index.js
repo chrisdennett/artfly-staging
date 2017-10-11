@@ -13,7 +13,10 @@ import AppRouting from "./AppRouting";
 const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)));
 
 // Provider allows any child component to connect to the redux store
-const provider = (<Provider store={store}><AppRouting/></Provider>);
+const provider = (
+    <Provider store={store}>
+        <AppRouting/>
+    </Provider>);
 
 // Render the app to the element in public > index.html with the root id
 ReactDom.render(
