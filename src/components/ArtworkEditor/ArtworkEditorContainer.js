@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { updateArtwork, uploadImage, deleteArtwork } from '../../actions/ArtistGalleryActions';
 // components
 import ArtworkEditor from './ArtworkEditor';
+import history from '../global/history';
 
 // store the image data from the cropper, but only update if crop data has changed.
 // Created an intermediate component so can trigger the data loading outside
@@ -45,7 +46,7 @@ class ArtworkEditorHolder extends Component {
 
     onCancelChanges() {
         const returnUrl = this.getReturnUrl();
-        this.props.history.push(returnUrl);
+        history.push(returnUrl);
     }
 
     onSaveChanges() {
@@ -87,7 +88,7 @@ class ArtworkEditorHolder extends Component {
         const { artworkId } = this.props;
         const { artistId } = this.props.artwork;
         this.props.deleteArtwork(artworkId, artistId, this.props.userId, () => {
-            this.props.history.push("/settings");
+            history.push("/settings");
         });
     }
 

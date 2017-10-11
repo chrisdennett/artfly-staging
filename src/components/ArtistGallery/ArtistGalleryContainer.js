@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { fetchArtistArtworkIds, fetchArtist, fetchArtwork } from '../../actions/ArtistGalleryActions';
 // components
 import ArtistGallery from './ArtistGallery';
+import history from '../global/history';
 
 class ArtistGalleryHolder extends Component {
 
@@ -20,7 +21,7 @@ class ArtistGalleryHolder extends Component {
     }
 
     onThumbClick(artworkId) {
-        this.props.history.push(`/gallery/${this.props.galleryId}/artwork/${artworkId}`);
+        history.push(`/gallery/${this.props.galleryId}/artwork/${artworkId}`);
     }
 
     render() {

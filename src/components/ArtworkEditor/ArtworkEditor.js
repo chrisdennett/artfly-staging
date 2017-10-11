@@ -29,7 +29,7 @@ class ArtworkEditor extends Component {
 
     /*showPictureInGallery() {
         this.setState({ imgIsSelected: false });
-        this.props.history.push(`/gallery/${this.props.imageUploadInfo.artistId}/artwork/${this.props.imageUploadInfo.id}`);
+        history.push(`/gallery/${this.props.imageUploadInfo.artistId}/artwork/${this.props.imageUploadInfo.id}`);
         this.props.clearImageUpload();
     }*/
 

@@ -42,7 +42,7 @@ class AddArtInputButton extends Component {
 
     onSaveComplete(newArtworkData){
         this.setState({ modalOpen: false, imgSrc: null });
-        this.props.history.push(`/gallery/${newArtworkData.artistId}/artwork/${newArtworkData.artworkId}`);
+        history.push(`/gallery/${newArtworkData.artistId}/artwork/${newArtworkData.artworkId}`);
     }
 
     onCancel() {
