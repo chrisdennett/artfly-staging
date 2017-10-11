@@ -19,11 +19,7 @@ const AppControls = function ({ galleryId, artworkId, user }) {
             </div>
 
             {galleryId &&
-            <div>
-                <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1004 }}>
-                    <GalleryControlsContainer galleryId={galleryId} artworkId={artworkId}/>
-                </div>
-            </div>
+            <GalleryControlsContainer galleryId={galleryId} artworkId={artworkId}/>
             }
         </div>
     )

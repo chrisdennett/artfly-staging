@@ -18,13 +18,10 @@ const GalleryControls = function (props) {
     let controls = [];
 
     const controlBlockStyle = {
-        margin: 'auto',
         width: onGalleryPage ? 200 : 250,
         background: 'rgba(0,0,0,0.4)',
         borderRadius: '10px 10px 0 0',
-        display: 'flex',
-        alignItems: 'stretch',
-        justifyContent: 'center'
+        display: 'flex'
     };
 
     if (onGalleryPage) {
@@ -51,9 +48,11 @@ const GalleryControls = function (props) {
     }
 
     return (
+        <div style={{ position: 'fixed', bottom: 0,  width:200 ,margin: '0 0 0 -100px', left:'50%', zIndex: 1004 }}>
             <div style={controlBlockStyle}>
                 {controls}
             </div>
+        </div>
     )
 };
 
