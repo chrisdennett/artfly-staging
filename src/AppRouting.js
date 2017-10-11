@@ -112,6 +112,10 @@ class ArtflyRouting extends Component {
             }
         }
 
+        if(!this.props.user.status){
+            return <LoadingOverlay/>
+        }
+
         return (
             <div>
                 <AppControls {...params} user={this.props.user}/>

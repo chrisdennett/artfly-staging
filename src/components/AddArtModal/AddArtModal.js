@@ -24,10 +24,6 @@ class AddArtModal extends Component {
     }
 
     componentWillMount() {
-        this.initData();
-    }
-
-    initData() {
         if (this.props.user && this.props.user.artistIds) {
             this.setState({ selectedArtistId: Object.keys(this.props.user.artistIds)[0] })
         }
@@ -103,14 +99,15 @@ class AddArtModal extends Component {
         const selectArtistSectionStyle = { paddingTop: 20 };
         const artistSelectorStyle = { textAlign: 'center', display: 'inline-block' };
         const title = imgSaving ? 'Saving Artwork' : 'Add Artwork';
-        const artistLabelStyle = { display: 'inline-block',margin: 0};
+        const artistLabelStyle = { display: 'inline-block', margin: 0 };
 
         return (
             <Modal isOpen={this.props.isOpen} title={title} allowScrolling={true}>
 
                 <div style={modalContentStyle}>
 
-                    {imgSaving && this.props.imageUploadInfo && <h2 style={{ margin: '42 auto' }}>Saving: {this.props.imageUploadInfo.progress}%</h2>}
+                    {imgSaving && this.props.imageUploadInfo &&
+                    <h2 style={{ margin: '42 auto' }}>Saving: {this.props.imageUploadInfo.progress}%</h2>}
 
                     {imgLoading && <p>loading picture...</p>}
 
@@ -133,8 +130,8 @@ class AddArtModal extends Component {
                         </div>
 
                         <div style={selectArtistSectionStyle}>
-                            <p style={ artistLabelStyle }>Artist:</p>
-                            <ArtistSelector artists={this.props.artists}
+                            <p style={artistLabelStyle}>Artist:</p>
+                            <ArtistSelector artists={this.props.userArtists}
                                             labelText={''}
                                             style={artistSelectorStyle}
                                             selectedArtistId={this.state.selectedArtistId}
@@ -151,9 +148,19 @@ class AddArtModal extends Component {
 }
 
 const mapStateToProps = (state) => {
+    let userArtists = {};
+
+    if (state.user.artistIds) {
+        for (let id of Object.keys(state.user.artistIds)) {
+            if (state.artists && state.artists[id]) {
+                userArtists[id] = state.artists[id];
+            }
+        }
+    }
+
     return {
         user: state.user,
-        artists: state.artists,
+        userArtists: userArtists,
         imageUploadInfo: state.imageUploadInfo
     }
 };

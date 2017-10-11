@@ -1,16 +1,22 @@
+// externals
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+// actions
 import { addNewArtist } from '../../actions/UserActions';
-import { updateArtist, deleteArtist } from '../../actions/ArtistGalleryActions';
-
+import { fetchArtist, updateArtist, deleteArtist } from '../../actions/ArtistGalleryActions';
+// components
+import history from '../global/history';
 import ArtistEditor from './ArtistEditor';
 
 // Created an intermediate component so can trigger the data loading outside
 class ArtistEditorHolder extends Component {
 
+    componentWillMount(){
+        this.props.fetchArtist(this.props.artistId);
+    }
+
     onSubmit(values) {
-        const { userId, artistId, formType, history, addNewArtist, updateArtist } = this.props;
+        const { userId, artistId, formType, addNewArtist, updateArtist } = this.props;
 
         if (formType === "new") {
             addNewArtist(userId, values, () => {
@@ -28,7 +34,7 @@ class ArtistEditorHolder extends Component {
     }
 
     deleteArtist() {
-        const { userId, artistId, history } = this.props;
+        const { userId, artistId } = this.props;
         this.props.deleteArtist(artistId, userId, () => {
             history.push(`/settings/`);
         });
@@ -94,6 +100,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const ArtistEditorContainer = connect(
     mapStateToProps, {
+        fetchArtist,
         deleteArtist,
         addNewArtist,
         updateArtist
