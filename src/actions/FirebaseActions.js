@@ -76,7 +76,7 @@ export function fetchFirebaseArtist(artistGalleryId, onChangeCallback = null) {
 // FETCH ARTIST-ARTWORK-IDS
 export function fetchFirebaseArtistArtworkIds(artistGalleryId, onChangeCallback = null) {
     if (artistArtworkIdsListenersRef.indexOf(artistGalleryId) >= 0) {
-        return;
+        if (onChangeCallback) onChangeCallback(null, true);
     }
 
     // keep track of galleryIds that have had listeners attached

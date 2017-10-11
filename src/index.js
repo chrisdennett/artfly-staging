@@ -11,10 +11,11 @@ import AppRouting from "./components/AppRouting";
 
 // redux store using thunk for async actions e.g used with firebase calls
 const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)));
-// More redux stuff to link up the store
+
+// Provider allows any child component to connect to the redux store
 const provider = (<Provider store={store}><AppRouting/></Provider>);
 
-// Render the app to the index root element
+// Render the app to the element in public > index.html with the root id
 ReactDom.render(
     provider,
     document.getElementById('root')

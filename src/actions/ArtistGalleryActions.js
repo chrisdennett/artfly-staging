@@ -30,13 +30,20 @@ export function fetchArtist(artistGalleryId) {
     }
 }
 
-export function fetchArtistArtworkIds(artistGalleryId) {
-    return (dispatch) => {
-        fetchFirebaseArtistArtworkIds(artistGalleryId, (artistArtworkIdsData) => {
-            dispatch({
-                type: ARTIST_ARTWORK_IDS_CHANGE,
-                payload: { artistId: artistGalleryId, artworkIds: artistArtworkIdsData }
-            });
+export function fetchArtistArtworkIds(artistGalleryId, callback) {
+    return (dispatch, getState) => {
+        fetchFirebaseArtistArtworkIds(artistGalleryId, (artistArtworkIdsData, alreadyCached) => {
+            if (alreadyCached && callback) {
+                return getState().artistArtworkIds[artistGalleryId];
+            }
+            else {
+                dispatch({
+                    type: ARTIST_ARTWORK_IDS_CHANGE,
+                    payload: { [artistGalleryId]: artistArtworkIdsData }
+                });
+
+                if (callback) callback(artistArtworkIdsData);
+            }
         });
     }
 }

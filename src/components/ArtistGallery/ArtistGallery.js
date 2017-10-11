@@ -6,7 +6,7 @@ import SvgBackground from "./assets/SvgBackground";
 import SvgGallery from "./assets/SvgGallery";
 
 const ArtistGallery = function (props) {
-    const { artist, artworks, onThumbClick, pageWidth, pageHeight, galleryParams, galleryIsZoomedOut } = props;
+    const { artist, artistArtworkIds, artworks, onThumbClick, pageWidth, pageHeight, galleryParams, galleryIsZoomedOut } = props;
 
     const galleryHeight = galleryParams.galleryHeight;
     const maxGalleryWidth = galleryParams.galleryWidth;
@@ -28,7 +28,7 @@ const ArtistGallery = function (props) {
 
                 <SvgGallery artist={artist}
                             galleryParams={galleryParams}
-                            artworkIds={artist.artworkIds}
+                            artworkIds={artistArtworkIds}
                             artworks={artworks}
                             pageWidth={pageWidth}
                             onThumbClick={onThumbClick}/>
