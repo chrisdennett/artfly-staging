@@ -1,5 +1,6 @@
+// externals
 import React from "react";
-
+// components
 import SignOutButton from "./assets/SignOutButton";
 import SettingsButton from "./assets/SettingsButton";
 import EditButton from "../GalleryControls/assets/EditButton";
@@ -18,9 +19,6 @@ const UserControls = function (props) {
 
     if (!userStatus || userStatus === "pending") {
         return <LoadingOverlay/>
-    }
-    else if (userStatus === "new") {
-        // return <Redirect to={'/addOrEditUser/'}/>
     }
     else if (userStatus === "none") {
         renderContent = <SignInContainer/>

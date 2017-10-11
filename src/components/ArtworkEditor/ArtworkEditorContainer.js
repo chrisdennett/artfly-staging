@@ -1,13 +1,9 @@
+// externals
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { Redirect } from 'react-router-dom';
-
-import {
-    updateArtwork,
-    uploadImage,
-    deleteArtwork
-} from '../../actions/ArtistGalleryActions';
-
+// actions
+import { updateArtwork, uploadImage, deleteArtwork } from '../../actions/ArtistGalleryActions';
+// components
 import ArtworkEditor from './ArtworkEditor';
 
 // store the image data from the cropper, but only update if crop data has changed.
@@ -32,9 +28,9 @@ class ArtworkEditorHolder extends Component {
         return this.state.cropData !== this.state.savedCropData;
     }
 
-    hasArtistChanged(){
+    hasArtistChanged() {
         let selectedArtistChanged = false;
-        if(this.state.selectedArtistId && (this.state.selectedArtistId !== this.props.artwork.artistId)){
+        if (this.state.selectedArtistId && (this.state.selectedArtistId !== this.props.artwork.artistId)) {
             selectedArtistChanged = true;
         }
         return selectedArtistChanged;
@@ -43,7 +39,7 @@ class ArtworkEditorHolder extends Component {
     getReturnUrl() {
         const { artworkId } = this.props;
         let artistId = this.state.selectedArtistId;
-        if(!artistId) artistId = this.props.artwork.artistId;
+        if (!artistId) artistId = this.props.artwork.artistId;
         return `/gallery/${artistId}/artwork/${artworkId}`;
     }
 
@@ -53,7 +49,7 @@ class ArtworkEditorHolder extends Component {
     }
 
     onSaveChanges() {
-        this.setState({isSaving:true});
+        this.setState({ isSaving: true });
 
         const artistChanged = this.hasArtistChanged();
         const imageChanged = this.hasCropDataChanged();
@@ -65,14 +61,14 @@ class ArtworkEditorHolder extends Component {
         if (!imageChanged && !artistChanged) {
             //TODO should disable save button if nothing has changed.
             console.log("nothing has changed so don't save anything new");
-            this.setState({isSaving:false});
+            this.setState({ isSaving: false });
             return;
         }
 
         // if just the artist has changed
         if (artistChanged && imageChanged === false) {
             this.props.updateArtwork(artworkId, oldArtworkData, newArtworkData, () => {
-                this.setState({isSaving:false});
+                this.setState({ isSaving: false });
             });
         }
         // if just the image cropping has changed
@@ -90,8 +86,7 @@ class ArtworkEditorHolder extends Component {
     onConfirmDeleteArtwork() {
         const { artworkId } = this.props;
         const { artistId } = this.props.artwork;
-        const { uid } = this.props.user;
-        this.props.deleteArtwork(artworkId, artistId, uid, () => {
+        this.props.deleteArtwork(artworkId, artistId, this.props.userId, () => {
             this.props.history.push("/settings");
         });
     }
@@ -99,8 +94,8 @@ class ArtworkEditorHolder extends Component {
     uploadCurrentImage(artistId, artworkId) {
         const { width, height } = this.state.cropData;
 
-        this.props.uploadImage(this.state.cropImg, this.props.user.uid, artistId, width, height, artworkId, () => {
-            this.setState({isSaving:false, savedCropData:this.state.cropData});
+        this.props.uploadImage(this.state.cropImg, this.props.userId, artistId, width, height, artworkId, () => {
+            this.setState({ isSaving: false, savedCropData: this.state.cropData });
         })
     }
 
@@ -113,12 +108,7 @@ class ArtworkEditorHolder extends Component {
     }
 
     render() {
-        const { artwork, userStatus, artists, onArtistSelected } = this.props;
-
-        console.log("userStatus: ", userStatus);
-        /*if (userStatus === "none" || userStatus === "new") {
-            return (<Redirect to="/"/>)
-        }*/
+        const { artwork, artists, onArtistSelected } = this.props;
 
         if (!artwork) {
             return <div>Loading artwork...</div>
@@ -148,11 +138,10 @@ const mapStateToProps = (state, ownProps) => {
     const artwork = state.artworks[artworkId];
 
     return {
-        user: state.user,
+        userId: state.user.uid,
         artworkId: artworkId,
         artwork: artwork,
-        artists: state.artists,
-        userStatus: state.user.status
+        artists: state.artists
     }
 };
 

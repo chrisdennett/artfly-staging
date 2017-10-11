@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 import reducers from './reducers/';
 import { composeWithDevTools } from 'redux-devtools-extension'; // handy for debugging
 // homebrew routing
-import AppRouting from "./components/AppRouting";
+import AppRouting from "./AppRouting";
 
 // redux store using thunk for async actions e.g used with firebase calls
 const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)));

@@ -1,7 +1,6 @@
 // externals
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { Redirect } from 'react-router-dom';
 // actions
 import { updateSubscription, cancelSubscription } from '../../actions/PaddleActions';
 import { fetchArtist, fetchArtistArtworkIds } from "../../actions/ArtistGalleryActions";
@@ -44,10 +43,6 @@ class SettingsHolder extends Component {
     }
 
     render() {
-        /* if (this.props.userStatus === "none") {
-             return <Redirect to={'/'}/>
-         }*/
-
         const { totalArtworks, maxArtworks, maxArtworksReached, planName, userArtists, userId, subscription, localPrice, newSubscriptionStatus } = this.props;
         if (!userId) {
             return <div>Loading...</div>;

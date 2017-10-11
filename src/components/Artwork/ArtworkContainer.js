@@ -1,7 +1,6 @@
 // externals
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { Redirect } from 'react-router-dom';
 // actions
 import { fetchArtwork } from '../../actions/ArtistGalleryActions';
 // components
@@ -16,10 +15,7 @@ class ArtworkHolder extends Component {
     render() {
         const { artwork, windowSize } = this.props;
         if (!artwork || !windowSize) {
-            return <div>Artwork Loading screen goes here...</div>
-        }
-        else if (!artwork.url) {
-            // return <Redirect to="/settings/" />;
+            return <div>Artwork Loading...</div>
         }
 
         return <Artwork artwork={artwork} windowSize={windowSize}/>;
