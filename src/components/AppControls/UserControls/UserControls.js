@@ -11,11 +11,13 @@ import history from '../../global/history';
 
 const UserControls = function (props) {
 
-    const { userStatus } = props;
+    // status can be 'pending', 'complete', or 'none'
+    const { userStatus, allowEditing } = props;
     // TODO: page name can now be passed into this component
     const currentPath = history.location.pathname;
     const onArtworkEditorPage = currentPath.indexOf("artworkEditor") > -1;
     let renderContent;
+    const showEditArtworkButton = allowEditing && !onArtworkEditorPage && props.artworkId;
 
     if (userStatus === "none") {
         renderContent = <SignInContainer/>
@@ -23,9 +25,11 @@ const UserControls = function (props) {
     else {
         renderContent =
             <span>
-                {(!props.artworkId || onArtworkEditorPage) ? "" : <Link linkTo={`/artworkEditor/${props.artworkId}`}><EditButton/></Link> }
+                {showEditArtworkButton &&
+                <Link linkTo={`/artworkEditor/${props.artworkId}`}><EditButton/></Link>
+                }
 
-                <AddArtInputButton maxArtworksReached={props.maxArtworksReached} />
+                <AddArtInputButton maxArtworksReached={props.maxArtworksReached}/>
 
                 <Link linkTo="/settings"><SettingsButton/></Link>
 

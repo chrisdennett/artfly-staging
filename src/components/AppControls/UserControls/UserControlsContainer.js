@@ -8,18 +8,27 @@ import UserControls from './UserControls';
 
 class UserControlsHolder extends Component {
     render() {
-        // status can be undefined, pending, complete, none
-        return <UserControls userStatus={this.props.userStatus}
-                             maxArtworksReached={this.props.maxArtworksReached}
-                             logout={this.props.logoutUser}
-                             galleryId={this.props.galleryId}
-                             artworkId={this.props.artworkId}/>;
+        const { userStatus, allowEditing, maxArtworksReached, logoutUser, galleryId, artworkId} = this.props;
+
+        return <UserControls userStatus={userStatus}
+                             allowEditing={allowEditing}
+                             maxArtworksReached={maxArtworksReached}
+                             logout={logoutUser}
+                             galleryId={galleryId}
+                             artworkId={artworkId}/>;
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+    let allowEditing = false;
+    if(ownProps.galleryId && state.user.artistIds){
+        // if the galleryId is listed in the user.artistIds
+        allowEditing = state.user.artistIds.hasOwnProperty(ownProps.galleryId);
+    }
+
     return {
         userStatus: state.user.status,
+        allowEditing: allowEditing,
         maxArtworksReached: state.user.maxArtworksReached
     }
 };

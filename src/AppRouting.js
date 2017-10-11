@@ -123,7 +123,7 @@ class ArtflyRouting extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     return {
         user: state.user
     }
