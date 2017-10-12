@@ -35,7 +35,6 @@ class SvgGallery extends Component {
 
                 <g transform={`translate(0,${roofHeight + nameHeight + galleryPaddingTop})`}>
                     <WindowsSection galleryWidth={galleryWidth}
-                                    ref={'section'}
                                     artworkIds={artworkIds}
                                     windowsHeight={windowsHeight}
                                     artworks={artworks}

@@ -1,6 +1,7 @@
+// externals
 import React from 'react';
 import './artistGallery.css';
-
+// components
 import ScrollbarRemover from "../global/ScrollbarRemover";
 import SvgBackground from "./assets/SvgBackground";
 import SvgGallery from "./assets/SvgGallery";
