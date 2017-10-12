@@ -21,7 +21,12 @@ class ArtistGalleryHolder extends Component {
     }
 
     onThumbClick(artworkId) {
-        history.push(`/gallery/${this.props.galleryId}/artwork/${artworkId}`);
+        if (artworkId) {
+            history.push(`/gallery/${this.props.galleryId}/artwork/${artworkId}`);
+        }
+        else{
+            console.log("ArtistGalleryContainer > onThumbClick > artworkId: ", artworkId);
+        }
     }
 
     render() {
@@ -41,7 +46,7 @@ class ArtistGalleryHolder extends Component {
                            artist={artist}
                            artistArtworkIds={artistArtworkIds}
                            artworks={artworks}
-                           onThumbClick={this.onThumbClick.bind(this)}/>
+                           onThumbClick={(id) => {this.onThumbClick(id)}}/>
         )
     }
 }

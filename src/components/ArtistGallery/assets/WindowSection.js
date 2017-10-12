@@ -6,15 +6,16 @@ import BuildingWindow from "./BuildingWindow";
 import BuildingSection from "./BuildingSection";
 
 const WindowSection = (props) => {
-    const { galleryWidth, hue, saturation, lightness, windowsHeight } = props;
+    const { galleryWidth, hue, saturation, lightness, windowsHeight, onThumbClick, artworkIds, artworks, windowParams } = props;
 
     const wallColour = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
     const featureColour = `hsl(${hue}, ${saturation}%, ${lightness - 5}%)`;
     const highlight = `hsl(${hue}, ${saturation}%, ${lightness + 10}%)`;
     const lowlight = `hsl(${hue}, ${saturation}%, ${lightness - 10}%)`;
 
-    const { artworkIds, artworks, windowParams } = props;
-    const buildingWindows = createBuildingWindows(wallColour, highlight, lowlight, artworkIds, artworks, galleryWidth, windowParams, props.onThumbClick);
+    // TODO: currently this is called every time a new bit of artwork data is loaded in
+    // TODO: ...cont separate out the generation of the windows and adding the image (might not be worth it though)
+    const buildingWindows = createBuildingWindows(wallColour, highlight, lowlight, artworkIds, artworks, galleryWidth, windowParams, onThumbClick);
 
     const buildingSectionProps = {
         galleryWidth, wallColour, featureColour, highlight, lowlight
@@ -25,12 +26,7 @@ const WindowSection = (props) => {
                          content={buildingWindows}
                          height={windowsHeight}/>
     )
-
-    /*return (
-        <BuildingSection {...buildingSectionProps}
-                         height={windowsHeight}/>
-    )*/
-}
+};
 
 export default WindowSection;
 
@@ -55,21 +51,39 @@ const createBuildingWindows = (wallColour, highlight, lowlight, artworkIds, artw
     let yStart = windowsSectionPadding.top + windowPadding.top;
 
     return _.map(artworkIds, (date, id) => {
+
+        x = xStart + (colCount * windowWidthWithPadding);
+
+        if (x + windowWidthWithPadding > windowHorizontalSpace) {
+            colCount = 0;
+            rowCount++;
+        }
+
+        x = xStart + (colCount * windowWidthWithPadding);
+        y = yStart + (rowCount * windowHeightWithPadding);
+
+        windowCount++;
+        colCount++;
+
         if (artworks[id]) {
+            const artwork = artworks[id];
 
-            x = xStart + (colCount * windowWidthWithPadding);
-
-            if (x + windowWidthWithPadding > windowHorizontalSpace) {
-                colCount = 0;
-                rowCount++;
-            }
-
-            x = xStart + (colCount * windowWidthWithPadding);
-            y = yStart + (rowCount * windowHeightWithPadding);
-
-            windowCount++;
-            colCount++;
-
+            return (
+                <BuildingWindow key={date}
+                                artworkThumbUrl={artwork.url_thumb}
+                                artworkId={id}
+                                x={x}
+                                y={y}
+                                width={windowWidth}
+                                height={windowHeight}
+                                number={windowCount}
+                                onThumbClick={onThumbClick}
+                                wallColour={wallColour}
+                                highlight={highlight}
+                                lowlight={lowlight}/>
+            )
+        }
+        else {
             return (
                 <BuildingWindow key={date}
                                 x={x}
@@ -77,7 +91,6 @@ const createBuildingWindows = (wallColour, highlight, lowlight, artworkIds, artw
                                 width={windowWidth}
                                 height={windowHeight}
                                 number={windowCount}
-                                artwork={artworks[id]}
                                 onThumbClick={onThumbClick}
                                 wallColour={wallColour}
                                 highlight={highlight}
@@ -85,5 +98,4 @@ const createBuildingWindows = (wallColour, highlight, lowlight, artworkIds, artw
             )
         }
     })
-
-}
+};

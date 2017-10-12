@@ -42,7 +42,7 @@ class SvgGallery extends Component {
                                     hue={hue}
                                     saturation={saturation}
                                     lightness={lightness}
-                                    onThumbClick={onThumbClick.bind(this)}/>
+                                    onThumbClick={onThumbClick}/>
                 </g>
 
                 <g transform={`translate(0,${roofHeight + nameHeight + windowsHeight + galleryPaddingTop})`}>
