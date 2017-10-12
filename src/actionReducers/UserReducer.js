@@ -3,7 +3,8 @@ import {
     CREATE_USER,
     LOGIN_USER,
     LOGOUT_USER,
-    DELETE_USER
+    DELETE_USER,
+    LOGIN_USER_TRIGGERED
 } from '../actions/UserActions';
 import ArtflyAccountTypes from '../components/global/ArtflyAccountTypes';
 
@@ -11,17 +12,21 @@ export default function (state = {}, action) {
 
     switch (action.type) {
 
+        case LOGIN_USER_TRIGGERED:
+            return { ...state, loginStatus: 'pending' };
+
         case LOGIN_USER:
             return state;
 
         case LOGOUT_USER:
-            return { status: 'none' };
+            return action.payload;
 
         case DELETE_USER:
             return {};
 
         case FETCH_USER:
             const userData = { ...action.payload };
+
             const { artistIds, subscription } = userData;
             let totalArtworks = 0;
             let subscriptionId = 0;

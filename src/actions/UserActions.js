@@ -7,6 +7,7 @@ import { removeAllFirebaseListeners, fetchFirebaseUser, fetchFirebaseUserAuth } 
 export const CREATE_USER = 'create_user';
 export const FETCH_USER = "fetchUser";
 export const LOGIN_USER = "loginUser";
+export const LOGIN_USER_TRIGGERED = "loginUserTriggered";
 export const LOGOUT_USER = "logoutUser";
 export const DELETE_USER = "deleteUser";
 export const ADD_USER_ARTIST = 'addUserArtist';
@@ -30,7 +31,7 @@ export function fetchUserData() {
                     if (userData) {
                         dispatch({
                             type: FETCH_USER,
-                            payload: { ...userData, status: "complete" }
+                            payload: { ...userData, status: "complete", loginStatus: 'loggedIn' }
                         });
                     }
                 })
@@ -41,6 +42,75 @@ export function fetchUserData() {
                     payload: { status: "none" }
                 });
             }
+        });
+    }
+}
+
+export function loginWithGoogle() {
+    const provider = new fb.auth.GoogleAuthProvider();
+    fb.auth().signInWithPopup(provider);
+
+    return dispatch => {
+        dispatch({
+            type: LOGIN_USER_TRIGGERED,
+            payload: { loginStatus: 'pending' }
+        });
+
+        fb.auth()
+            .getRedirectResult()
+            .then(result => {
+                dispatch({
+                    type: LOGIN_USER,
+                    payload: result.user
+                });
+            })
+            .catch(error => {
+                console.log("log in error: ", error);
+            });
+    }
+}
+
+export function loginWithFacebook() {
+    const provider = new fb.auth.FacebookAuthProvider();
+    fb.auth().signInWithPopup(provider);
+
+    return dispatch => {
+        dispatch({
+            type: LOGIN_USER_TRIGGERED,
+            payload: { loginStatus: 'pending' }
+        });
+
+        fb.auth()
+            .getRedirectResult()
+            .then(result => {
+                dispatch({
+                    type: LOGIN_USER,
+                    payload: result.user
+                });
+            })
+            .catch(error => {
+                console.log("log in error: ", error);
+            });
+    }
+}
+
+export function logoutUser() {
+    return dispatch => {
+        firebase.auth().signOut().then(function () {
+
+            removeAllFirebaseListeners(() => {
+                dispatch({
+                    type: CLEAR_USER_DATA,
+                    payload: ""
+                })
+            });
+
+            dispatch({
+                type: LOGOUT_USER,
+                payload: {status:'none', loginStatus: 'loggedOut'}
+            })
+        }).catch((error) => {
+            console.log(error);
         });
     }
 }
@@ -110,65 +180,6 @@ export function createNewUser(authId, formValues, callback = null) {
                         console.log('Synchronization failed: ', error);
                     })
             );
-    }
-}
-
-export function loginWithGoogle() {
-    const provider = new fb.auth.GoogleAuthProvider();
-    fb.auth().signInWithPopup(provider);
-
-    return dispatch => {
-        fb.auth()
-            .getRedirectResult()
-            .then(result => {
-                dispatch({
-                    type: LOGIN_USER,
-                    payload: result.user
-                });
-            })
-            .catch(error => {
-                console.log("log in error: ", error);
-            });
-    }
-}
-
-export function loginWithFacebook() {
-    const provider = new fb.auth.FacebookAuthProvider();
-    fb.auth().signInWithPopup(provider);
-
-    return dispatch => {
-        fb.auth()
-            .getRedirectResult()
-            .then(result => {
-                dispatch({
-                    type: LOGIN_USER,
-                    payload: result.user
-                });
-            })
-            .catch(error => {
-                console.log("log in error: ", error);
-            });
-    }
-}
-
-export function logoutUser() {
-    return dispatch => {
-        firebase.auth().signOut().then(function () {
-
-            removeAllFirebaseListeners(() => {
-                dispatch({
-                    type: CLEAR_USER_DATA,
-                    payload: ""
-                })
-            });
-
-            dispatch({
-                type: LOGOUT_USER,
-                payload: "success"
-            })
-        }).catch((error) => {
-            console.log(error);
-        });
     }
 }
 

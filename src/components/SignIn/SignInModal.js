@@ -1,43 +1,33 @@
-import React, { Component } from "react";
-import { loginWithGoogle, loginWithFacebook } from '../../actions/UserActions';
-
+// externals
+import React from "react";
+// components
 import Butt from "../global/Butt";
 import FacebookSignInButton from "./assets/FacebookSignInButton";
 import GoogleSignInButton from "./assets/GoogleSignInButton";
 import Modal from "../global/Modal";
 
-class SignInModal extends Component {
+const SignInModal = ({isOpen, loginStatus, signInWithGoogleClick, signInWithFacebookClick, closeModal}) => {
+    return (
+        <Modal title={'Sign in to ArtFly'}
+               isOpen={isOpen}>
 
-    constructor(props) {
-        super(props);
+            {loginStatus === 'pending' &&
+            <div>Logging in...</div>
+            }
 
-        this.onGoogleSelect = this.onGoogleSelect.bind(this);
-        this.onFacebookSelect = this.onFacebookSelect.bind(this);
-    }
-
-    onGoogleSelect() {
-        loginWithGoogle();
-    }
-
-    onFacebookSelect() {
-        loginWithFacebook();
-    }
-
-    render() {
-        return (
-            <Modal title={'Sign in to ArtFly'}
-                   isOpen={this.props.isOpen}>
-
-                <GoogleSignInButton onClick={this.onGoogleSelect}/>
-                <FacebookSignInButton onClick={this.onFacebookSelect}/>
+            {loginStatus !== 'pending' &&
+            <div>
+                <GoogleSignInButton onClick={() => signInWithGoogleClick()}/>
+                <FacebookSignInButton onClick={() => signInWithFacebookClick()}/>
 
                 <Butt label={`Don't sign in`}
                       showAsLink={true}
-                      onClick={this.props.closeModal}/>
+                      onClick={closeModal}/>
+            </div>
+            }
 
-            </Modal>
-        )
-    }
-}
+        </Modal>
+    )
+};
 
 export default SignInModal;

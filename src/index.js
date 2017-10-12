@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import ReactDom from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import reducers from './reducers/';
+import reducers from './actionReducers/';
 import { composeWithDevTools } from 'redux-devtools-extension'; // handy for debugging
 // homebrew routing
 import AppRouting from "./AppRouting";

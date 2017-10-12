@@ -1,14 +1,20 @@
+// externals
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+// actions
+import { loginWithGoogle, loginWithFacebook } from '../../actions/UserActions';
+// components
 import SignInButton from "./SignInButton";
 import SignInModal from "./SignInModal";
 
 class SignInContainer extends Component {
-
     constructor(props) {
         super(props);
         this.state = { isModalOpen: false };
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.signInWithGoogleClick = this.signInWithGoogleClick.bind(this);
+        this.signInWithFacebookClick = this.signInWithFacebookClick.bind(this);
     }
 
     openModal() {
@@ -19,15 +25,37 @@ class SignInContainer extends Component {
         this.setState({ isModalOpen: false })
     }
 
-    render() {
+    signInWithGoogleClick() {
+        this.props.loginWithGoogle();
+    }
 
+    signInWithFacebookClick() {
+        this.props.loginWithFacebook();
+    }
+
+    render() {
         return (
             <div>
-                <SignInModal closeModal={this.closeModal} isOpen={this.state.isModalOpen}/>
+                <SignInModal closeModal={this.closeModal}
+                             signInWithGoogleClick={this.signInWithGoogleClick}
+                             signInWithFacebookClick={this.signInWithFacebookClick}
+                             loginStatus={this.props.loginStatus}
+                             isOpen={this.state.isModalOpen}/>
+
                 <SignInButton onClick={this.openModal}/>
             </div>
         )
     }
 };
 
-export default SignInContainer;
+// export default SignInContainer;
+
+const mapStateToProps = (state) => {
+    return {
+        loginStatus: state.user.loginStatus
+    }
+};
+
+export default connect(
+    mapStateToProps, { loginWithGoogle, loginWithFacebook }
+)(SignInContainer);
