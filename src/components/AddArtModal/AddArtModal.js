@@ -71,7 +71,6 @@ class AddArtModal extends Component {
     render() {
         const imgLoading = this.props.imgSrc === null;
         const imgSaving = this.state.saveTriggered || (this.props.imageUploadInfo && this.props.imageUploadInfo.progress);
-        const showMainContent = !imgSaving && !imgLoading;
 
         const contentStyle = {
             display: 'flex',
@@ -111,8 +110,7 @@ class AddArtModal extends Component {
 
                     {imgLoading && <p>loading picture...</p>}
 
-                    {showMainContent && <div style={contentStyle}>
-
+                    {!imgLoading && !imgSaving && <div style={contentStyle}>
                         <ImageCropAndRotate url={this.props.imgSrc}
                                             style={imgCropStyle}
                                             ref={instance => { this.cropper = instance; }}
@@ -121,25 +119,28 @@ class AddArtModal extends Component {
                                             onCropDataConfirm={this.onCropDataChange.bind(this)}
                                             onCropImageSave={this.onCropImageSave.bind(this)}/>
 
+                        {this.state.cropImg &&
+                        <div>
+                            <div style={imageSectionStyle}>
+                                <Butt label={'Trim / Rotate'}
+                                      style={{ flex: 'none' }}
+                                      onClick={() => { this.cropper.openEditScreen(); }}/>
 
-                        <div style={imageSectionStyle}>
-                            <Butt label={'Trim / Rotate'}
-                                  style={{ flex: 'none' }}
-                                  onClick={() => { this.cropper.openEditScreen(); }}/>
+                            </div>
 
+                            <div style={selectArtistSectionStyle}>
+                                <p style={artistLabelStyle}>Artist:</p>
+                                <ArtistSelector artists={this.props.userArtists}
+                                                labelText={''}
+                                                style={artistSelectorStyle}
+                                                selectedArtistId={this.state.selectedArtistId}
+                                                onArtistSelected={this.onArtistSelected}/>
+                            </div>
+
+                            <Butt label={'SAVE'} disabled={!this.state.cropImg} onClick={this.onSave.bind(this)}/>
+                            <Butt label={'CANCEL'} onClick={this.onCancel}/>
                         </div>
-
-                        <div style={selectArtistSectionStyle}>
-                            <p style={artistLabelStyle}>Artist:</p>
-                            <ArtistSelector artists={this.props.userArtists}
-                                            labelText={''}
-                                            style={artistSelectorStyle}
-                                            selectedArtistId={this.state.selectedArtistId}
-                                            onArtistSelected={this.onArtistSelected}/>
-                        </div>
-
-                        <Butt label={'SAVE'} disabled={!this.state.cropImg} onClick={this.onSave.bind(this)}/>
-                        <Butt label={'CANCEL'} onClick={this.onCancel}/>
+                        }
                     </div>}
                 </div>
             </Modal>
