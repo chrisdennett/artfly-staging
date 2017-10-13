@@ -1,5 +1,7 @@
 // externals
 import React from 'react';
+// components
+import LazyImage from '../../global/LazyImage';
 
 const BuildingWindow = function (props) {
     const svgStyle = {
@@ -7,7 +9,7 @@ const BuildingWindow = function (props) {
     };
 
     return (
-        <svg style={svgStyle} x={props.x} y={props.y} height={props.height} width={props.width}
+        <svg onClick={() => {props.onThumbClick(props.artworkId)}} style={svgStyle} x={props.x} y={props.y} height={props.height} width={props.width}
              viewBox="0 0 212.31675 231.00558">
             <rect id="surroundHightlight" ry="10.55" height="231" width="212.3" x="-.003" fill={props.highlight}/>
             <path id="surroundLowlight"
@@ -44,14 +46,7 @@ const BuildingWindow = function (props) {
                       d="M33.51-161.2h145.2v1.324H33.51zM33.51-133.6h145.2v1.324H33.51zM33.51-175.5h145.2v1.324H33.51zM33.51-147.4h145.2v1.324H33.51z"/>
             </g>
 
-            {props.artworkThumbUrl &&
-            <image onClick={() => {props.onThumbClick(props.artworkId)}}
-                   x={58}
-                   y={53}
-                   width={100}
-                   height={100}
-                   href={props.artworkThumbUrl}/>
-            }
+            <LazyImage url={props.artworkThumbUrl} imgDelay={props.imgDelay}/>
 
             <g id="frameGroup">
                 <g id="frameLowlights" fill="#444">

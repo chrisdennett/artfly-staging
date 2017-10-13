@@ -50,7 +50,13 @@ const createBuildingWindows = (wallColour, highlight, lowlight, artworkIds, artw
     let xStart = windowsSectionPadding.left + windowPadding.left;
     let yStart = windowsSectionPadding.top + windowPadding.top;
 
+    const delayOffset = 100;
+    let count = 0;
+    let imgLoadDelay;
+
     return _.map(artworkIds, (date, id) => {
+
+        imgLoadDelay = count * delayOffset;
 
         x = xStart + (colCount * windowWidthWithPadding);
 
@@ -65,13 +71,14 @@ const createBuildingWindows = (wallColour, highlight, lowlight, artworkIds, artw
         windowCount++;
         colCount++;
 
-        if (artworks[id]) {
+        if (artworks && artworks[id]) {
             const artwork = artworks[id];
 
             return (
                 <BuildingWindow key={date}
                                 artworkThumbUrl={artwork.url_thumb}
                                 artworkId={id}
+                                imgDelay={imgLoadDelay}
                                 x={x}
                                 y={y}
                                 width={windowWidth}

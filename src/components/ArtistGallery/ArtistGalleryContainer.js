@@ -13,6 +13,7 @@ class ArtistGalleryHolder extends Component {
         this.props.fetchArtist(this.props.galleryId);
         this.props.fetchArtistArtworkIds(this.props.galleryId, (artistArtworksData) => {
             if (artistArtworksData) {
+
                 for (let id in this.props.artistArtworkIds) {
                     this.props.fetchArtwork(id);
                 }
@@ -24,7 +25,7 @@ class ArtistGalleryHolder extends Component {
         if (artworkId) {
             history.push(`/gallery/${this.props.galleryId}/artwork/${artworkId}`);
         }
-        else{
+        else {
             console.log("ArtistGalleryContainer > onThumbClick > artworkId: ", artworkId);
         }
     }
@@ -32,7 +33,7 @@ class ArtistGalleryHolder extends Component {
     render() {
         const { artist, artistArtworkIds, artworks, galleryIsZoomedOut, windowSize } = this.props;
 
-        if (!artist || !artworks) {
+        if (!artist || !artistArtworkIds) {
             return <div>Artist Gallery Loading</div>;
         }
 
@@ -44,8 +45,8 @@ class ArtistGalleryHolder extends Component {
                            galleryIsZoomedOut={galleryIsZoomedOut}
                            galleryParams={galleryParams}
                            artist={artist}
-                           artistArtworkIds={artistArtworkIds}
                            artworks={artworks}
+                           artistArtworkIds={artistArtworkIds}
                            onThumbClick={(id) => {this.onThumbClick(id)}}/>
         )
     }
@@ -140,13 +141,13 @@ const getArtistArtworks = (artworks, artistArtworkIds) => {
 
 // Map state to props maps to the intermediary component which uses or passes them through
 const mapStateToProps = (state, ownProps) => {
-    const artworks = getArtistArtworks(state.artworks, state.artistArtworkIds[ownProps.galleryId]);
+    // const artworks = getArtistArtworks(state.artworks, state.artistArtworkIds[ownProps.galleryId]);
     const artistArtworkIds = state.artistArtworkIds[ownProps.galleryId];
 
     return {
         artist: state.artists[ownProps.galleryId],
         artistArtworkIds: artistArtworkIds,
-        artworks: artworks,
+        artworks: state.artworks,
         galleryParams: state.ui.galleryParams,
         windowSize: state.ui.windowSize,
         galleryIsZoomedOut: state.ui.galleryIsZoomedOut
