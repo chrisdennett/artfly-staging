@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
-import { logoutUser } from '../../../actions/UserActions';
+import { signOutUser } from '../../../actions/ArtistGalleryActions';
 // components
 import UserControls from './UserControls';
 
@@ -34,7 +34,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const UserControlsContainer = connect(
-    mapStateToProps, { logoutUser }
+    mapStateToProps, { logoutUser: signOutUser }
 )(UserControlsHolder);
 
 export default UserControlsContainer;

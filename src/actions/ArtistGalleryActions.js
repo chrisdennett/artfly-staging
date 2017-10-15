@@ -1,10 +1,24 @@
 import firebase from '../libs/firebaseConfig';
+import * as fb from 'firebase';
 //
 import {
+    removeAllFirebaseListeners,
+    fb_addUserListener,
+    fb_addUserAuthListener,
     addArtworkIdToFirebase,
     addArtworkToFirebase,
-    addArtworkToFirebaseStorage, fetchFirebaseArtist, fetchFirebaseArtistArtworkIds,
-    fetchFirebaseArtwork, getFirebaseArtworkRef
+    addArtworkToFirebaseStorage,
+    fb_addArtistListener,
+    fb_addArtistArtworkIdsListener,
+    fb_addArtworkListener,
+    getFirebaseArtworkRef,
+    fb_updateArtist,
+    fb_signInWithProvider,
+    fb_signOut,
+    fb_addNewArtist,
+    fb_addUserArtist,
+    fb_addNewUser,
+    fb_deleteUser
 } from "./FirebaseActions";
 
 export const ARTWORK_CHANGE = "artworkChange";
@@ -17,66 +31,229 @@ export const UPDATE_ARTWORK_COMPLETE = 'updateArtworkComplete';
 export const IMAGE_UPLOAD_PROGRESS = 'imageUploadProgress';
 export const ADD_ARTWORK_COMPLETE = 'artworkAdded';
 export const CLEAR_IMAGE_UPLOAD = 'clearImageUpload';
+export const CREATE_USER = 'create_user';
+export const FETCH_USER = "fetchUser";
+export const SIGN_IN_USER = "signInUser";
+export const SIGN_IN_USER_TRIGGERED = "signInUserTriggered";
+export const SIGN_OUT_USER = "signOutUser";
+export const DELETE_USER = "deleteUser";
+export const ADD_USER_ARTIST = 'addUserArtist';
+export const CLEAR_USER_DATA = 'clearUserData';
 
+/*
+*** AUTH ************************************************************
+*/
+// SIGN IN - with google
+export function signInWithGoogle() {
+    return dispatch => {
+        dispatch({
+            type: SIGN_IN_USER_TRIGGERED,
+            payload: { loginStatus: 'pending' }
+        });
 
-export function fetchArtist(artistGalleryId) {
-    return (dispatch) => {
-        fetchFirebaseArtist(artistGalleryId, (artistData) => {
+        fb_signInWithProvider('google', (user) => {
             dispatch({
-                type: ARTIST_CHANGE,
-                payload: { ...artistData, artistId: artistGalleryId }
+                type: SIGN_IN_USER,
+                payload: user
             });
         })
     }
 }
 
-export function fetchArtistArtworkIds(artistGalleryId, callback) {
-    return (dispatch, getState) => {
-        fetchFirebaseArtistArtworkIds(artistGalleryId, (artistArtworkIdsData, alreadyCached) => {
-            if (alreadyCached && callback) {
-                return getState().artistArtworkIds[artistGalleryId];
+// SIGN IN - with facebook
+export function signInWithFacebook() {
+    return dispatch => {
+        dispatch({
+            type: SIGN_IN_USER_TRIGGERED,
+            payload: { loginStatus: 'pending' }
+        });
+
+        fb_signInWithProvider('facebook', (user) => {
+            dispatch({
+                type: SIGN_IN_USER,
+                payload: user
+            });
+        })
+    }
+}
+
+// SIGN OUT
+export function signOutUser() {
+    return dispatch => {
+        fb_signOut(() => {
+            firebase.auth().signOut().then(function () {
+                removeAllFirebaseListeners(() => {
+                    dispatch({
+                        type: CLEAR_USER_DATA,
+                        payload: ""
+                    })
+                });
+
+                dispatch({
+                    type: SIGN_OUT_USER,
+                    payload: { status: 'none', loginStatus: 'loggedOut' }
+                })
+            })
+        })
+    }
+}
+
+/*
+*** USER ************************************************************
+*/
+// ADD NEW USER
+export function addNewUser(authId, formValues, callback = null) {
+    return dispatch => {
+        const newUserData = {
+            email: formValues.email,
+            artistIds: {}
+        };
+
+        fb_addNewUser(authId, newUserData, (userId) => {
+            int_addArtist(userId, formValues, () => {
+                dispatch({
+                    type: CREATE_USER,
+                    payload: newUserData
+                });
+
+                if (callback) callback();
+            })
+        });
+        /*const artistRef = firebase.database().ref('/user-data/artists').push();
+        const artistId = artistRef.key;
+        const userArtistsObj = {};
+        userArtistsObj[artistId] = 'true';
+
+        const newUserData = {
+            email: formValues.email,
+            artistIds: userArtistsObj
+        };
+
+        // set the user data first, then add the gallery, then add the artist
+        userRef
+            .set(newUserData)
+            .then(
+                artistRef
+                    .set({
+                        firstName: formValues.firstName,
+                        lastName: formValues.lastName,
+                        adminId: authId
+                    })
+                    .then(() => {
+                        dispatch({
+                            type: CREATE_USER,
+                            payload: newUserData
+                        });
+
+                        if (callback) callback();
+                    })
+                    .catch(function (error) {
+                        console.log('Synchronization failed: ', error);
+                    })
+            );*/
+    }
+}
+
+// LISTEN FOR USER DATA CHANGES
+export function listenForUserChanges() {
+    return (dispatch) => {
+        dispatch({
+            type: FETCH_USER,
+            payload: { status: "pending" }
+        });
+
+        fb_addUserAuthListener((authData) => {
+            if (authData) {
+                dispatch({
+                    type: FETCH_USER,
+                    payload: { ...authData, status: "auth" }
+                });
+
+                fb_addUserListener(authData.uid, (userData) => {
+                    if (userData) {
+                        dispatch({
+                            type: FETCH_USER,
+                            payload: { ...userData, status: "complete", loginStatus: 'loggedIn' }
+                        });
+                    }
+                })
             }
             else {
                 dispatch({
-                    type: ARTIST_ARTWORK_IDS_CHANGE,
-                    payload: {[artistGalleryId]:artistArtworkIdsData}
+                    type: FETCH_USER,
+                    payload: { status: "none" }
                 });
-
-                if (callback) callback(artistArtworkIdsData);
             }
         });
     }
 }
 
-export function fetchArtwork(artworkId) {
-    return (dispatch) => {
-        fetchFirebaseArtwork(artworkId, (artworkData) => {
+// DELETE USER
+// TODO: Currently this is just used to clear auth assuming the user has no other data
+// Rename this or update so it deletes all data
+export function deleteUser() {
+    return dispatch => {
+        fb_deleteUser(() => {
             dispatch({
-                type: ARTWORK_CHANGE,
-                payload: { [artworkId]: artworkData }
-            });
+                type: DELETE_USER,
+                payload: "success"
+            })
         })
     }
 }
 
-export function updateArtist(artistId, artistData, callback) {
+/*
+*** ARTIST ************************************************************
+*/
+// ADD NEW ARTIST
+export function addNewArtist(userId, formValues, callback = null) {
     return dispatch => {
-        const artistRef = firebase.database().ref(`user-data/artists/${artistId}`);
-        artistRef.update({ ...artistData })
-            .then(() => {
-                dispatch({
-                    type: ARTIST_UPDATED,
-                    payload: artistData
-                });
-
-                if (callback) callback();
-            })
-            .catch(function (error) {
-                console.log('updateArtist failed: ', error);
-            })
+        int_addArtist(userId, formValues, dispatch, () => {
+            if (callback) callback();
+        })
     }
 }
 
+// ADD NEW ARTIST - INTERNAL FUNCTION SO CAN BE CALLED BY ADD NEW USER AS WELL
+function int_addArtist(userId, formValues, dispatch, callback = null) {
+    const newArtistData = {
+        firstName: formValues.firstName,
+        lastName: formValues.lastName,
+        adminId: userId,
+        totalArtworks: 0
+    };
+
+    const newUserArtistData = {
+        totalArtworks: 0
+    };
+
+    fb_addNewArtist(newArtistData, (newArtistId) => {
+        fb_addUserArtist(userId, newArtistId, newUserArtistData, () => {
+            dispatch({
+                type: ADD_USER_ARTIST,
+                payload: { [newArtistId]: newUserArtistData }
+            });
+
+            if (callback) callback(newArtistId);
+        })
+    })
+}
+
+// UPDATE ARTIST
+export function updateArtist(artistId, artistData, callback) {
+    return dispatch => {
+        fb_updateArtist(artistId, artistData, () => {
+            dispatch({
+                type: ARTIST_UPDATED,
+                payload: artistData
+            });
+
+            if (callback) callback();
+        });
+    }
+}
+
+// DELETE ARTIST
 export function deleteArtist(galleryArtistId, userId, callback) {
     return dispatch => {
 
@@ -114,6 +291,53 @@ export function deleteArtist(galleryArtistId, userId, callback) {
 
                 if (callback) callback();
             })
+    }
+}
+
+
+// LISTEN FOR ARTIST DATA CHANGES
+export function listenForArtistChanges(artistGalleryId) {
+    return (dispatch) => {
+        fb_addArtistListener(artistGalleryId, (artistData) => {
+            dispatch({
+                type: ARTIST_CHANGE,
+                payload: { ...artistData, artistId: artistGalleryId }
+            });
+        })
+    }
+}
+
+// LISTEN FOR ARTIST ARTWORK IDS DATA CHANGES
+export function listenForArtistArtworkIdsChanges(artistGalleryId, callback) {
+    return (dispatch, getState) => {
+        fb_addArtistArtworkIdsListener(artistGalleryId, (artistArtworkIdsData, alreadyCached) => {
+            if (alreadyCached && callback) {
+                return getState().artistArtworkIds[artistGalleryId];
+            }
+            else {
+                dispatch({
+                    type: ARTIST_ARTWORK_IDS_CHANGE,
+                    payload: { [artistGalleryId]: artistArtworkIdsData }
+                });
+
+                if (callback) callback(artistArtworkIdsData);
+            }
+        });
+    }
+}
+
+/*
+*** ARTWORK ************************************************************
+*/
+// LISTEN FOR ARTWORK DATA CHANGES
+export function listenForArtworkChanges(artworkId) {
+    return (dispatch) => {
+        fb_addArtworkListener(artworkId, (artworkData) => {
+            dispatch({
+                type: ARTWORK_CHANGE,
+                payload: { [artworkId]: artworkData }
+            });
+        })
     }
 }
 

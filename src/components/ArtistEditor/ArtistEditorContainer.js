@@ -2,8 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
-import { addNewArtist } from '../../actions/UserActions';
-import { fetchArtist, updateArtist, deleteArtist } from '../../actions/ArtistGalleryActions';
+import { addNewArtist, listenForArtistChanges, updateArtist, deleteArtist } from '../../actions/ArtistGalleryActions';
 // components
 import history from '../global/history';
 import ArtistEditor from './ArtistEditor';
@@ -100,7 +99,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const ArtistEditorContainer = connect(
     mapStateToProps, {
-        fetchArtist,
+        fetchArtist: listenForArtistChanges,
         deleteArtist,
         addNewArtist,
         updateArtist

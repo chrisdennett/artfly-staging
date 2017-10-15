@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
-import { fetchArtwork, fetchArtistArtworkIds } from '../../actions/ArtistGalleryActions';
+import { listenForArtworkChanges, listenForArtistArtworkIdsChanges } from '../../actions/ArtistGalleryActions';
 // components
 import Artwork from './Artwork';
 
@@ -38,7 +38,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const ArtworkContainer = connect(
-    mapStateToProps, { fetchArtwork, fetchArtistArtworkIds }
+    mapStateToProps, { fetchArtwork: listenForArtworkChanges, fetchArtistArtworkIds: listenForArtistArtworkIdsChanges }
 )(ArtworkHolder);
 
 export default ArtworkContainer;

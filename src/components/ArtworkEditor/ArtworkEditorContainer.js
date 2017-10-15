@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
-import { fetchArtwork, fetchArtist, updateArtwork, uploadImage, deleteArtwork } from '../../actions/ArtistGalleryActions';
+import { listenForArtworkChanges, listenForArtistChanges, updateArtwork, uploadImage, deleteArtwork } from '../../actions/ArtistGalleryActions';
 // components
 import ArtworkEditor from './ArtworkEditor';
 import history from '../global/history';
@@ -156,8 +156,8 @@ const mapStateToProps = (state, ownProps) => {
 const ArtworkEditorContainer = connect(
     mapStateToProps,
     {
-        fetchArtwork,
-        fetchArtist,
+        fetchArtwork: listenForArtworkChanges,
+        fetchArtist: listenForArtistChanges,
         updateArtwork,
         uploadImage,
         deleteArtwork

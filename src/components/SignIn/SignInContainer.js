@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
-import { loginWithGoogle, loginWithFacebook } from '../../actions/UserActions';
+import { signInWithGoogle, signInWithFacebook } from '../../actions/ArtistGalleryActions';
 // components
 import SignInButton from "./SignInButton";
 import SignInModal from "./SignInModal";
@@ -57,5 +57,5 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(
-    mapStateToProps, { loginWithGoogle, loginWithFacebook }
+    mapStateToProps, { loginWithGoogle: signInWithGoogle, loginWithFacebook: signInWithFacebook }
 )(SignInContainer);

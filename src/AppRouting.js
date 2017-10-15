@@ -5,7 +5,7 @@ import ga from './libs/googleAnalyticsConfig';
 // global styles
 import './style.css';
 // Actions
-import { fetchUserData } from './actions/UserActions';
+import { listenForUserChanges } from './actions/ArtistGalleryActions';
 import { fetchLocalPrice } from './actions/PaddleActions';
 // Components
 import history from './components/global/history';
@@ -134,5 +134,5 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 export default connect(
-    mapStateToProps, { fetchUserData, fetchLocalPrice }
+    mapStateToProps, { fetchUserData: listenForUserChanges, fetchLocalPrice }
 )(ArtflyRouting);

@@ -1,24 +1,24 @@
 import {
     FETCH_USER,
     CREATE_USER,
-    LOGIN_USER,
-    LOGOUT_USER,
+    SIGN_IN_USER,
+    SIGN_OUT_USER,
     DELETE_USER,
-    LOGIN_USER_TRIGGERED
-} from '../actions/UserActions';
+    SIGN_IN_USER_TRIGGERED
+} from '../actions/ArtistGalleryActions';
 import ArtflyAccountTypes from '../components/global/ArtflyAccountTypes';
 
 export default function (state = {}, action) {
 
     switch (action.type) {
 
-        case LOGIN_USER_TRIGGERED:
+        case SIGN_IN_USER_TRIGGERED:
             return { ...state, loginStatus: 'pending' };
 
-        case LOGIN_USER:
+        case SIGN_IN_USER:
             return state;
 
-        case LOGOUT_USER:
+        case SIGN_OUT_USER:
             return action.payload;
 
         case DELETE_USER:

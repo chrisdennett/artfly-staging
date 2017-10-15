@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
 import { updateSubscription, cancelSubscription } from '../../actions/PaddleActions';
-import { fetchArtist, fetchArtistArtworkIds } from "../../actions/ArtistGalleryActions";
+import { listenForArtistChanges, listenForArtistArtworkIdsChanges } from "../../actions/ArtistGalleryActions";
 // components
 import Settings from './Settings';
 
@@ -78,7 +78,7 @@ const mapStateToProps = (state) => {
 };
 
 const SettingsContainer = connect(
-    mapStateToProps, { updateSubscription, cancelSubscription, fetchArtist, fetchArtistArtworkIds }
+    mapStateToProps, { updateSubscription, cancelSubscription, fetchArtist: listenForArtistChanges, fetchArtistArtworkIds: listenForArtistArtworkIdsChanges }
 )(SettingsHolder);
 
 export default SettingsContainer;

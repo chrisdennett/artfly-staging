@@ -8,11 +8,44 @@ let artistArtworkIdsListenersRef = [];
 let artworkListenersRef = [];
 
 /*
-*** USER ************************************************************
+*** AUTH ************************************************************
 */
+// SIGN IN
+export function fb_signInWithProvider(providerName, onChangeCallback = null) {
+    let provider;
+    if (providerName === 'google') {
+        provider = new fb.auth.GoogleAuthProvider();
+    }
+    else if (providerName === 'facebook') {
+        provider = new fb.auth.FacebookAuthProvider();
+    }
 
-// FETCH USER AUTH
-export function fetchFirebaseUserAuth(onChangeCallback = null) {
+    fb.auth()
+        .getRedirectResult()
+        .then(result => {
+            onChangeCallback(result.user);
+        })
+        .catch(error => {
+            console.log("log in error: ", error);
+        });
+
+    fb.auth().signInWithPopup(provider);
+}
+
+// SIGN OUT
+export function fb_signOut(onChangeCallback = null) {
+    firebase.auth()
+        .signOut()
+        .then(() => {
+            if (onChangeCallback) onChangeCallback();
+        })
+        .catch((error) => {
+            console.log("sign out error: ", error);
+        });
+}
+
+// ADD USER AUTH LISTENER
+export function fb_addUserAuthListener(onChangeCallback = null) {
     firebase.auth()
         .onAuthStateChanged((result) => {
             if (result) {
@@ -27,27 +60,62 @@ export function fetchFirebaseUserAuth(onChangeCallback = null) {
         })
 }
 
-// FETCH USER DATA
-export function fetchFirebaseUser(uid, onChangeCallback = null) {
-    userListenerRef = uid;
+// ADD NEW USER
+export function fb_addNewUser(authId, newUserData, onAddedCallback = null) {
+    const ref = firebase.database().ref(`/user-data/users/${authId}`);
+    ref.set(newUserData)
+        .then(() => {
+            if (onAddedCallback) onAddedCallback(ref.key);
+        })
+        .catch(function (error) {
+            console.log('Add New User failed: ', error);
+        })
+}
+
+/*
+*** USER ************************************************************
+*/
+// ADD USER LISTENER
+export function fb_addUserListener(userId, onChangeCallback = null) {
+    userListenerRef = userId;
 
     firebase.database()
-        .ref(`/user-data/users/${uid}`)
+        .ref(`/user-data/users/${userId}`)
         .on('value', (snapshot) => {
             if (onChangeCallback) onChangeCallback(snapshot.val());
         })
 }
 
-// ADD USER
-// UPDATE USER
+// ADD USER ARTIST
+export function fb_addUserArtist(userId, newArtistId, newUserArtistData, onChangeCallback = null) {
+    const ref = firebase.database().ref(`user-data/users/${userId}/artistIds/${newArtistId}`)
+
+    ref.set(newUserArtistData)
+        .then(() => {
+            if (onChangeCallback) onChangeCallback();
+        })
+        .catch(function (error) {
+            console.log('Add User Artist failed: ', error);
+        })
+}
+
 // DELETE USER
+export function fb_deleteUser(onDeletedCallback = null) {
+    fb.auth().currentUser
+        .delete()
+        .then(() => {
+            if (onDeletedCallback) onDeletedCallback();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
 
 /*
 *** ARTIST ***********************************************************
 */
-
 // FETCH ARTIST
-export function fetchFirebaseArtist(artistGalleryId, onChangeCallback = null) {
+export function fb_addArtistListener(artistGalleryId, onChangeCallback = null) {
     if (artistListenersRef.indexOf(artistGalleryId) >= 0) {
         return;
     }
@@ -66,15 +134,55 @@ export function fetchFirebaseArtist(artistGalleryId, onChangeCallback = null) {
 }
 
 // ADD ARTIST
+export function fb_addNewArtist(newArtistData, onChangeCallback = null) {
+    const ref = firebase.database().ref('/user-data/artists').push();
+    ref.set(newArtistData)
+        .then(() => {
+            if (onChangeCallback) onChangeCallback(ref.key);
+        })
+        .catch(function (error) {
+            console.log('Add New Artist failed: ', error);
+        })
+}
+
 // UPDATE ARTIST
+export function fb_updateArtist(artistId, artistData, onChangeCallback = null) {
+    const ref = firebase.database().ref(`user-data/artists/${artistId}`);
+
+    ref.update({ ...artistData })
+        .then(() => {
+            if (onChangeCallback) onChangeCallback();
+        })
+        .catch(function (error) {
+            console.log('updateArtist failed: ', error);
+        })
+}
+
 // DELETE ARTIST
+export function deleteFirebaseArtist(artistId, userId, onChangeCallback = null) {
+
+}
+
 
 /*
 *** ARTWORK IDS *******************************************************
 */
 
-// FETCH ARTIST-ARTWORK-IDS
-export function fetchFirebaseArtistArtworkIds(artistGalleryId, onChangeCallback = null) {
+// FETCH ARTIST-ARTWORK-IDS ONCE
+export function fetchFirebaseArtistArtworkIdsOnce(artistId, onChangeCallback = null) {
+    firebase.database()
+        .ref(`/user-data/artistArtworkIds/${artistId}`)
+        .once('value')
+        .then(snapshot => {
+            if (onChangeCallback) onChangeCallback(snapshot.val());
+        })
+        .catch(error => {
+            console.log("error: ", error);
+        })
+}
+
+// ADD ARTIST-ARTWORK-IDS LISTENER
+export function fb_addArtistArtworkIdsListener(artistGalleryId, onChangeCallback = null) {
     if (artistArtworkIdsListenersRef.indexOf(artistGalleryId) >= 0) {
         if (onChangeCallback) onChangeCallback(null, true);
     }
@@ -100,9 +208,8 @@ export function fetchFirebaseArtistArtworkIds(artistGalleryId, onChangeCallback 
 /*
 *** ARTWORK ***********************************************************
 */
-
-// FETCH ARTWORK
-export function fetchFirebaseArtwork(artworkId, onChangeCallback = null) {
+// ADD ARTWORK-ARTWORK-IDS LISTENER
+export function fb_addArtworkListener(artworkId, onChangeCallback = null) {
     if (artworkListenersRef.indexOf(artworkId) >= 0) {
         return;
     }
@@ -223,6 +330,15 @@ export function addArtworkToFirebase(artworkRef, newArtworkData, onCompleteCallb
 
 // UPDATE ARTWORK
 // DELETE ARTWORK
+export function deleteArtworkFromFirebase() {
+
+}
+
+// DELETE ARTWORK FROM STORAGE
+export function deleteArtworkFromFirebaseStorage() {
+
+}
+
 
 /*
 *** UTILITIES **********************************************************

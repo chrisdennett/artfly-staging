@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
-import { createNewUser, logoutUser } from '../../actions/UserActions';
+import { addNewUser, signOutUser } from '../../actions/ArtistGalleryActions';
 // components
 import UserEditor from './UserEditor';
 
@@ -31,7 +31,7 @@ const mapStateToProps = (state) => {
 };
 
 const UserEditorContainer = connect(
-    mapStateToProps, { createNewUser, logoutUser }
+    mapStateToProps, { createNewUser: addNewUser, logoutUser: signOutUser }
 )(UserEditorHolder);
 
 export default UserEditorContainer;
