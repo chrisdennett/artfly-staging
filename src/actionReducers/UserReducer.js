@@ -9,7 +9,6 @@ import {
 import ArtflyAccountTypes from '../components/global/ArtflyAccountTypes';
 
 export default function (state = {}, action) {
-
     switch (action.type) {
 
         case SIGN_IN_USER_TRIGGERED:

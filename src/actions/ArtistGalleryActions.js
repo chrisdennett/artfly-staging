@@ -1,5 +1,5 @@
 import firebase from '../libs/firebaseConfig';
-import * as fb from 'firebase';
+// import * as fb from 'firebase';
 //
 import {
     removeAllFirebaseListeners,
@@ -18,7 +18,8 @@ import {
     fb_addNewArtist,
     fb_addUserArtist,
     fb_addNewUser,
-    fb_deleteUser
+    fb_deleteUser, fb_deleteArtwork, fb_deleteAllArtistArtworkIds, fb_deleteArtistArtworkId, fbstore_deleteImage,
+    fb_deleteArtist, fb_fetchArtistArtworkIdsOnce, fb_deleteUserArtist
 } from "./FirebaseActions";
 
 export const ARTWORK_CHANGE = "artworkChange";
@@ -43,6 +44,7 @@ export const CLEAR_USER_DATA = 'clearUserData';
 /*
 *** AUTH ************************************************************
 */
+
 // SIGN IN - with google
 export function signInWithGoogle() {
     return dispatch => {
@@ -101,6 +103,7 @@ export function signOutUser() {
 /*
 *** USER ************************************************************
 */
+
 // ADD NEW USER
 export function addNewUser(authId, formValues, callback = null) {
     return dispatch => {
@@ -166,7 +169,7 @@ export function listenForUserChanges() {
             if (authData) {
                 dispatch({
                     type: FETCH_USER,
-                    payload: { ...authData, status: "auth" }
+                    payload: { ...authData, status: "pending" }
                 });
 
                 fb_addUserListener(authData.uid, (userData) => {
@@ -174,6 +177,12 @@ export function listenForUserChanges() {
                         dispatch({
                             type: FETCH_USER,
                             payload: { ...userData, status: "complete", loginStatus: 'loggedIn' }
+                        });
+                    }
+                    else{
+                        dispatch({
+                            type: FETCH_USER,
+                            payload: { status: "new", loginStatus: 'loggedIn' }
                         });
                     }
                 })
@@ -205,6 +214,7 @@ export function deleteUser() {
 /*
 *** ARTIST ************************************************************
 */
+
 // ADD NEW ARTIST
 export function addNewArtist(userId, formValues, callback = null) {
     return dispatch => {
@@ -254,10 +264,26 @@ export function updateArtist(artistId, artistData, callback) {
 }
 
 // DELETE ARTIST
-export function deleteArtist(galleryArtistId, userId, callback) {
+export function deleteArtist(artistId, userId, callback) {
     return dispatch => {
+        // delete the artist data
+        fb_deleteArtist(artistId, () => {
+            // delete the user-artist data
+            fb_deleteUserArtist(userId, artistId, () => {
+                // get references to all the artworks
+                fb_fetchArtistArtworkIdsOnce(artistId, (artworkIds) => {
+                    for (let id of Object.keys(artworkIds)) {
+                        // the false here stops the artwork trying to delete a value from data that will have already been removed
+                        deleteArtworkInternal(dispatch, id, artistId, userId);
+                    }
+                });
 
-        const db = firebase.database();
+                if(callback) callback();
+            })
+
+        })
+
+        /*const db = firebase.database();
         const artistRef = db.ref(`user-data/artists/${galleryArtistId}`);
         const artistArtworkIdsRef = db.ref(`user-data/artistArtworkIds/${galleryArtistId}`);
         const userArtistRef = db.ref(`user-data/users/${userId}/artistIds/${galleryArtistId}`);
@@ -290,10 +316,9 @@ export function deleteArtist(galleryArtistId, userId, callback) {
                 });
 
                 if (callback) callback();
-            })
+            })*/
     }
 }
-
 
 // LISTEN FOR ARTIST DATA CHANGES
 export function listenForArtistChanges(artistGalleryId) {
@@ -329,6 +354,7 @@ export function listenForArtistArtworkIdsChanges(artistGalleryId, callback) {
 /*
 *** ARTWORK ************************************************************
 */
+
 // LISTEN FOR ARTWORK DATA CHANGES
 export function listenForArtworkChanges(artworkId) {
     return (dispatch) => {
@@ -343,15 +369,24 @@ export function listenForArtworkChanges(artworkId) {
 
 export function deleteArtwork(artworkId, artistId, userId, callback = null) {
     return dispatch => {
-        return deleteArtworkInternal(dispatch, artworkId, artistId, userId, true, callback);
+        return deleteArtworkInternal(dispatch, artworkId, artistId, userId, callback);
     }
 }
 
-//FIREBASE WARNING: set at /user-data/artistArtworkIds/-Krkn6kFuQ5hAoHzqbVW/-KrknUmy5jSKrV24i1fN failed: permission_denied
-//Uncaught (in promise) Error: PERMISSION_DENIED: Permission denied
-function deleteArtworkInternal(dispatch, artworkId, artistId, userId, removeArtistArtworkId = true, callback = null) {
-    // delete image in storage
-    const imageStorageRef = firebase.storage().ref();
+function deleteArtworkInternal(dispatch, artworkId, artistId, userId, callback = null) {
+    fb_deleteArtwork(artworkId, () => {
+        fbstore_deleteImage(userId, artworkId, () => {
+            fb_deleteArtistArtworkId(artistId, artworkId, () => {
+                dispatch({
+                    type: ARTWORK_DELETED,
+                    payload: artworkId
+                });
+                if (callback) callback();
+            })
+        })
+    })
+
+    /*const imageStorageRef = firebase.storage().ref();
     const userPicturesRef = imageStorageRef.child(`userContent/${userId}/${artworkId}`);
     const artworkDataRef = firebase.database().ref(`user-data/artworks/${artworkId}`);
     const artistArtworkIdRef = firebase.database().ref(`user-data/artistArtworkIds/${artistId}/${artworkId}`);
@@ -388,7 +423,7 @@ function deleteArtworkInternal(dispatch, artworkId, artistId, userId, removeArti
         })
         .catch(function (error) {
             console.log("ControlPanelActions > deleteArtwork > error: ", error);
-        });
+        });*/
 }
 
 export function updateArtwork(artworkId, oldArtworkData, newArtworkData, callback) {

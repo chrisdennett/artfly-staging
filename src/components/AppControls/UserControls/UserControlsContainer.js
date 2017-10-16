@@ -10,6 +10,10 @@ class UserControlsHolder extends Component {
     render() {
         const { userStatus, allowEditing, maxArtworksReached, logoutUser, galleryId, artworkId} = this.props;
 
+        if(userStatus === 'new'){
+            return null;
+        }
+
         return <UserControls userStatus={userStatus}
                              allowEditing={allowEditing}
                              maxArtworksReached={maxArtworksReached}

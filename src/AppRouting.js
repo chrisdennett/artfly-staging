@@ -17,7 +17,7 @@ import Home from './components/Home/Home';
 import ArtistGalleryContainer from './components/ArtistGallery/ArtistGalleryContainer';
 import SettingsContainer from "./components/Settings/SettingsContainer";
 import ArtistEditorContainer from "./components/ArtistEditor/ArtistEditorContainer";
-import UserEditorContainer from "./components/UserEditor/UserEditorContainer";
+import NewUserFormContainer from "./components/NewUser/NewUserFormContainer";
 import ArtworkContainer from './components/Artwork/ArtworkContainer';
 import ArtworkEditorContainer from "./components/ArtworkEditor/ArtworkEditorContainer";
 import FourOhFour from "./components/FourOhFour/FourOhFour";
@@ -30,7 +30,7 @@ const routes = {
     settings: { component: SettingsContainer, adminOnly:true },
     artworkEditor: { component: ArtworkEditorContainer, adminOnly:true  },
     addOrEditArtist: { component: ArtistEditorContainer, adminOnly:true  },
-    addOrEditUser: { component: UserEditorContainer, adminOnly:true  }
+    newUser: { component: NewUserFormContainer, adminOnly:true  }
 };
 
 class ArtflyRouting extends Component {
@@ -80,7 +80,7 @@ class ArtflyRouting extends Component {
             else if (page === 'addOrEditArtist') {
                 params.artistId = sections[1];
             }
-            else if (page === 'addOrEditUser') {
+            else if (page === 'newUser') {
                 params.userId = sections[1];
             }
         }
@@ -102,18 +102,20 @@ class ArtflyRouting extends Component {
         const adminOnly = routes[page] && routes[page].adminOnly ? routes[page].adminOnly : false;
         const PageComponentWithProps = <PageComponent {...params} />;
 
+        if(!this.props.user.status || this.props.user.status === 'pending'){
+            return <LoadingOverlay/>
+        }
+
         if(adminOnly){
             if(this.props.user.status === 'none'){
                 return <Redirect to={'/'}/>;
             }
-
-            if(this.props.user.status !== 'complete'){
-                return <LoadingOverlay/>
-            }
         }
 
-        if(!this.props.user.status){
-            return <LoadingOverlay/>
+        // Send new users (signed in with google of facebook for the first time)
+        // ... to set up basic user data
+        if(this.props.user.status === 'new' && page !== 'newUser'){
+            return <Redirect to={'/newUser'}/>;
         }
 
         return (
