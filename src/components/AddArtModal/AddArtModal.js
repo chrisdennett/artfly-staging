@@ -1,10 +1,12 @@
+// externals
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+// styles
 import './addArtwork.css';
-
+// actions
+import { uploadImage, clearImageUpload, getUserArtistChanges } from '../../actions/UserDataActions';
+// components
 import ImageCropAndRotate from '../ImageCropAndRotate/ImageCropAndRotate';
-
-import { uploadImage, clearImageUpload } from '../../actions/UserDataActions';
 import ArtistSelector from "../ArtistSelector/ArtistSelector";
 import Butt from "../global/Butt";
 import Modal from "../global/Modal";
@@ -16,17 +18,16 @@ class AddArtModal extends Component {
         this.state = {
             cropImg: null,
             cropData: null,
-            saveTriggered: false,
-            selectedArtistId: null
+            saveTriggered: false
         };
         this.onArtistSelected = this.onArtistSelected.bind(this);
         this.onCancel = this.onCancel.bind(this);
     }
 
     componentWillMount() {
-        if (this.props.user && this.props.user.artistIds) {
-            this.setState({ selectedArtistId: Object.keys(this.props.user.artistIds)[0] })
-        }
+        // TODO: refactor artist data stuff into artist selector - the function below could store artistIds in user data store for ease of picking out the artists
+        // ensure all the artists are available for the artist selector
+        this.props.getUserArtistChanges(this.props.user.uid);
     }
 
     onCancel() {
@@ -57,7 +58,9 @@ class AddArtModal extends Component {
         //export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null)
         const { height, width } = this.state.cropData;
 
-        this.props.uploadImage(this.state.cropImg, this.props.user.uid, this.state.selectedArtistId, width, height, null, (newArtworkData) => {
+        const selectedArtistId = this.state.selectedArtistId || this.props.defaultArtistId;
+
+        this.props.uploadImage(this.state.cropImg, this.props.user.uid, selectedArtistId, width, height, null, (newArtworkData) => {
             this.setState({ saveTriggered: false });
             this.props.onSaveComplete(newArtworkData);
             this.props.clearImageUpload();
@@ -69,6 +72,7 @@ class AddArtModal extends Component {
     }
 
     render() {
+
         const imgLoading = this.props.imgSrc === null;
         const imgSaving = this.state.saveTriggered || (this.props.imageUploadInfo && this.props.imageUploadInfo.progress);
 
@@ -99,6 +103,8 @@ class AddArtModal extends Component {
         const artistSelectorStyle = { textAlign: 'center', display: 'inline-block' };
         const title = imgSaving ? 'Saving Artwork' : 'Add Artwork';
         const artistLabelStyle = { display: 'inline-block', margin: 0 };
+
+        const selectedArtistId = this.state.selectedArtistId || this.props.defaultArtistId;
 
         return (
             <Modal isOpen={this.props.isOpen} title={title} allowScrolling={true}>
@@ -133,7 +139,7 @@ class AddArtModal extends Component {
                                 <ArtistSelector artists={this.props.userArtists}
                                                 labelText={''}
                                                 style={artistSelectorStyle}
-                                                selectedArtistId={this.state.selectedArtistId}
+                                                selectedArtistId={selectedArtistId}
                                                 onArtistSelected={this.onArtistSelected}/>
                             </div>
 
@@ -150,11 +156,17 @@ class AddArtModal extends Component {
 
 const mapStateToProps = (state) => {
     let userArtists = {};
+    let defaultArtistId;
 
-    if (state.user.artistIds) {
-        for (let id of Object.keys(state.user.artistIds)) {
-            if (state.artists && state.artists[id]) {
-                userArtists[id] = state.artists[id];
+    // TODO: This is painful and seems highly inefficient.
+    if (state.artists) {
+        for (let artistId of Object.keys(state.artists)) {
+            if (state.artists[artistId].adminId === state.user.uid) {
+                userArtists[artistId] = state.artists[artistId];
+
+                if(!defaultArtistId){
+                    defaultArtistId = artistId;
+                }
             }
         }
     }
@@ -162,8 +174,9 @@ const mapStateToProps = (state) => {
     return {
         user: state.user,
         userArtists: userArtists,
+        defaultArtistId: defaultArtistId,
         imageUploadInfo: state.imageUploadInfo
     }
 };
 
-export default connect(mapStateToProps, { uploadImage, clearImageUpload })(AddArtModal);
+export default connect(mapStateToProps, { uploadImage, clearImageUpload, getUserArtistChanges })(AddArtModal);

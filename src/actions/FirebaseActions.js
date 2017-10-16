@@ -61,8 +61,12 @@ export function fb_addUserAuthListener(onChangeCallback = null) {
         })
 }
 
+/*
+*** USER ************************************************************
+*/
+
 // ADD NEW USER
-export function fb_addNewUser(authId, newUserData, onAddedCallback = null) {
+/*export function fb_addNewUser(authId, newUserData, onAddedCallback = null) {
     const ref = firebase.database().ref(`/user-data/users/${authId}`);
     ref.set(newUserData)
         .then(() => {
@@ -71,11 +75,7 @@ export function fb_addNewUser(authId, newUserData, onAddedCallback = null) {
         .catch(function (error) {
             console.log('Add New User failed: ', error);
         })
-}
-
-/*
-*** USER ************************************************************
-*/
+}*/
 
 // ADD USER LISTENER
 export function fb_addUserListener(userId, onChangeCallback = null) {
@@ -150,7 +150,7 @@ export function fb_addArtistListener(artistGalleryId, onChangeCallback = null) {
 }
 
 // ADD ARTIST
-export function fb_addNewArtist(newArtistData, onChangeCallback = null) {
+/*export function fb_addNewArtist(newArtistData, onChangeCallback = null) {
     const ref = firebase.database().ref('/user-data/artists').push();
     ref.set(newArtistData)
         .then(() => {
@@ -159,7 +159,7 @@ export function fb_addNewArtist(newArtistData, onChangeCallback = null) {
         .catch(function (error) {
             console.log('Add New Artist failed: ', error);
         })
-}
+}*/
 
 // UPDATE ARTIST
 export function fb_updateArtist(artistId, artistData, onChangeCallback = null) {

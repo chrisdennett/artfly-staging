@@ -6,10 +6,6 @@ import LinkButt from "../global/LinkButt";
 
 class Home extends Component {
 
-    componentDidMount() {
-        this.props.fetchCommunityData();
-    }
-
     render() {
         // TODO: Fill in the proper ids when the galleries are set up
         const hollyGalleryId = '#';

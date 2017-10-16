@@ -3,18 +3,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
 import { updateSubscription, cancelSubscription } from '../../actions/PaddleActions';
-import { listenForArtistChanges, listenForArtistArtworkIdsChanges } from "../../actions/UserDataActions";
+import { getUserArtistChanges } from "../../actions/UserDataActions";
 // components
 import Settings from './Settings';
 
 // helper function
-const getUserArtists = (artistIdsObject, artists) => {
-    const artistIds = Object.keys(artistIdsObject);
+// TODO: Is this needed? - could be better to simply pass through all artists and filter in render
+const getUserArtists = (userId, artists) => {
     const artistArray = [];
-
-    for (let id of artistIds) {
-        if (artists[id]) {
-            artistArray.push(artists[id]);
+    if (userId && artists) {
+        const artistIds = Object.keys(artists);
+        for (let id of artistIds) {
+            if (artists[id].adminId === userId) {
+                artistArray.push(artists[id]);
+            }
         }
     }
     return artistArray;
@@ -24,12 +26,14 @@ const getUserArtists = (artistIdsObject, artists) => {
 class SettingsHolder extends Component {
 
     componentDidMount() {
-        const userArtistIds = Object.keys(this.props.userArtistData);
+        this.props.getUserArtistChanges(this.props.userId);
+
+        /*const userArtistIds = Object.keys(this.props.userArtistData);
 
         for (let id of userArtistIds) {
-            this.props.fetchArtist(id);
-            this.props.fetchArtistArtworkIds(id);
-        }
+            this.props.listenForArtistChanges(id);
+            this.props.listenForArtistArtworkIdsChanges(id);
+        }*/
     }
 
     onCancelSubscription() {
@@ -71,14 +75,14 @@ const mapStateToProps = (state) => {
         newSubscriptionStatus: state.paddle.newSubscriptionStatus,
         userId: state.user.uid,
         userStatus: state.user.status,
-        userArtists: getUserArtists(state.user.artistIds, state.artists),
+        userArtists: getUserArtists(state.user.uid, state.artists),
         userArtistData: state.user.artistIds,
         subscription: state.user.subscription
     }
 };
 
 const SettingsContainer = connect(
-    mapStateToProps, { updateSubscription, cancelSubscription, fetchArtist: listenForArtistChanges, fetchArtistArtworkIds: listenForArtistArtworkIdsChanges }
+    mapStateToProps, { updateSubscription, cancelSubscription, getUserArtistChanges }
 )(SettingsHolder);
 
 export default SettingsContainer;

@@ -1,24 +1,26 @@
 import firebase from '../libs/firebaseConfig';
 // import * as fb from 'firebase';
-//
+
+// FB - Firestore actions
+import {
+    fs_addNewUser, fs_addNewArtist, fs_getUserChanges, fs_getUserArtistChanges,
+    fs_getArtistArtworkChanges, fs_getArtistChanges, fs_addArtwork
+} from './FirestoreActions';
+
+// FB - Realtime database actions
 import {
     removeAllFirebaseListeners,
-    fb_addUserListener,
     fb_addUserAuthListener,
     addArtworkIdToFirebase,
     addArtworkToFirebase,
     addArtworkToFirebaseStorage,
-    fb_addArtistListener,
     fb_addArtistArtworkIdsListener,
     fb_addArtworkListener,
     getFirebaseArtworkRef,
     fb_updateArtist,
     fb_signInWithProvider,
     fb_signOut,
-    fb_addNewArtist,
-    fb_addUserArtist,
-    fb_addNewUser,
-    fb_deleteUser, fb_deleteArtwork, fb_deleteAllArtistArtworkIds, fb_deleteArtistArtworkId, fbstore_deleteImage,
+    fb_deleteUser, fb_deleteArtwork, fb_deleteArtistArtworkId, fbstore_deleteImage,
     fb_deleteArtist, fb_fetchArtistArtworkIdsOnce, fb_deleteUserArtist
 } from "./FirebaseActions";
 
@@ -109,10 +111,10 @@ export function addNewUser(authId, formValues, callback = null) {
     return dispatch => {
         const newUserData = {
             email: formValues.email,
-            artistIds: {}
+            totalArtworks: 0
         };
 
-        fb_addNewUser(authId, newUserData, (userId) => {
+        fs_addNewUser(authId, newUserData, (userId) => {
             int_addArtist(userId, formValues, () => {
                 dispatch({
                     type: CREATE_USER,
@@ -122,38 +124,6 @@ export function addNewUser(authId, formValues, callback = null) {
                 if (callback) callback();
             })
         });
-        /*const artistRef = firebase.database().ref('/user-data/artists').push();
-        const artistId = artistRef.key;
-        const userArtistsObj = {};
-        userArtistsObj[artistId] = 'true';
-
-        const newUserData = {
-            email: formValues.email,
-            artistIds: userArtistsObj
-        };
-
-        // set the user data first, then add the gallery, then add the artist
-        userRef
-            .set(newUserData)
-            .then(
-                artistRef
-                    .set({
-                        firstName: formValues.firstName,
-                        lastName: formValues.lastName,
-                        adminId: authId
-                    })
-                    .then(() => {
-                        dispatch({
-                            type: CREATE_USER,
-                            payload: newUserData
-                        });
-
-                        if (callback) callback();
-                    })
-                    .catch(function (error) {
-                        console.log('Synchronization failed: ', error);
-                    })
-            );*/
     }
 }
 
@@ -172,7 +142,7 @@ export function listenForUserChanges() {
                     payload: { ...authData, status: "pending" }
                 });
 
-                fb_addUserListener(authData.uid, (userData) => {
+                fs_getUserChanges(authData.uid, (userData) => {
                     if (userData) {
                         dispatch({
                             type: FETCH_USER,
@@ -214,7 +184,6 @@ export function deleteUser() {
 /*
 *** ARTIST ************************************************************
 */
-
 // ADD NEW ARTIST
 export function addNewArtist(userId, formValues, callback = null) {
     return dispatch => {
@@ -233,19 +202,13 @@ function int_addArtist(userId, formValues, dispatch, callback = null) {
         totalArtworks: 0
     };
 
-    const newUserArtistData = {
-        totalArtworks: 0
-    };
+    fs_addNewArtist(newArtistData, (newArtistId) => {
+        dispatch({
+            type: ADD_USER_ARTIST,
+            payload: { [newArtistId]: newArtistData }
+        });
 
-    fb_addNewArtist(newArtistData, (newArtistId) => {
-        fb_addUserArtist(userId, newArtistId, newUserArtistData, () => {
-            dispatch({
-                type: ADD_USER_ARTIST,
-                payload: { [newArtistId]: newUserArtistData }
-            });
-
-            if (callback) callback(newArtistId);
-        })
+        if (callback) callback(newArtistId);
     })
 }
 
@@ -321,12 +284,23 @@ export function deleteArtist(artistId, userId, callback) {
 }
 
 // LISTEN FOR ARTIST DATA CHANGES
-export function listenForArtistChanges(artistGalleryId) {
+export function getUserArtistChanges(userId) {
     return (dispatch) => {
-        fb_addArtistListener(artistGalleryId, (artistData) => {
+        fs_getUserArtistChanges(userId, (artistData) => {
             dispatch({
                 type: ARTIST_CHANGE,
-                payload: { ...artistData, artistId: artistGalleryId }
+                payload: artistData
+            });
+        })
+    }
+}
+
+export function listenForArtistChanges(artistId) {
+    return (dispatch) => {
+        fs_getArtistChanges(artistId, (artistData) => {
+            dispatch({
+                type: ARTIST_CHANGE,
+                payload: artistData
             });
         })
     }
@@ -356,6 +330,20 @@ export function listenForArtistArtworkIdsChanges(artistGalleryId, callback) {
 */
 
 // LISTEN FOR ARTWORK DATA CHANGES
+export function listenForArtistArtworkChanges(artistId){
+    return (dispatch) => {
+        fs_getArtistArtworkChanges(artistId, (artworkData) => {
+
+            console.log("artworkData: ", artworkData);
+
+            dispatch({
+                type: ARTWORK_CHANGE,
+                payload: artworkData
+            });
+        })
+    }
+}
+
 export function listenForArtworkChanges(artworkId) {
     return (dispatch) => {
         fb_addArtworkListener(artworkId, (artworkData) => {
@@ -465,7 +453,21 @@ export function clearImageUpload(callback = null) {
     }
 }
 
+
+
 export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artworkId = null, callback = null) {
+    return dispatch => {
+        fs_addArtwork(artistId, imgFile, (uploadData) => {
+            console.log("uploadData: ", uploadData);
+        });
+    }
+}
+
+
+
+
+
+export function uploadImageOLD(imgFile, userId, artistId, imgWidth, imgHeight, artworkId = null, callback = null) {
     return dispatch => {
         // First get the database reference so the image can be named the same
         const artworkDatabaseRef = getFirebaseArtworkRef(artworkId);

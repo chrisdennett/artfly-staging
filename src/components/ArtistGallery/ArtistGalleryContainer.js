@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
-import { listenForArtistArtworkIdsChanges, listenForArtistChanges, listenForArtworkChanges } from '../../actions/UserDataActions';
+import { listenForArtistChanges, listenForArtistArtworkChanges } from '../../actions/UserDataActions';
 // components
 import ArtistGallery from './ArtistGallery';
 import history from '../global/history';
@@ -10,15 +10,8 @@ import history from '../global/history';
 class ArtistGalleryHolder extends Component {
 
     componentDidMount() {
-        this.props.fetchArtist(this.props.galleryId);
-        this.props.fetchArtistArtworkIds(this.props.galleryId, (artistArtworksData) => {
-            if (artistArtworksData) {
-
-                for (let id in this.props.artistArtworkIds) {
-                    this.props.fetchArtwork(id);
-                }
-            }
-        });
+        this.props.listenForArtistChanges(this.props.galleryId);
+        this.props.listenForArtistArtworkChanges(this.props.galleryId);
     }
 
     onThumbClick(artworkId) {
@@ -31,9 +24,9 @@ class ArtistGalleryHolder extends Component {
     }
 
     render() {
-        const { artist, artistArtworkIds, artworks, galleryIsZoomedOut, windowSize } = this.props;
+        const { artist, artworks, galleryIsZoomedOut, windowSize } = this.props;
 
-        if (!artist || !artistArtworkIds) {
+        if (!artist) {
             return <div>Artist Gallery Loading</div>;
         }
 
@@ -46,7 +39,6 @@ class ArtistGalleryHolder extends Component {
                            galleryParams={galleryParams}
                            artist={artist}
                            artworks={artworks}
-                           artistArtworkIds={artistArtworkIds}
                            onThumbClick={(id) => {this.onThumbClick(id)}}/>
         )
     }
@@ -125,28 +117,11 @@ const calculateGalleryParams = (totalArtworks = 0, inMobileMode = false) => {
 
     return prevParams;
 };
-const getArtistArtworks = (artworks, artistArtworkIds) => {
-    if (artworks && artistArtworkIds) {
-        const artworkIds = Object.keys(artistArtworkIds);
-        let artistArtworks = {};
-
-        for (let id of artworkIds) {
-            if (artworks[id]) {
-                artistArtworks[id] = artworks[id];
-            }
-        }
-        return artistArtworks;
-    }
-};
 
 // Map state to props maps to the intermediary component which uses or passes them through
 const mapStateToProps = (state, ownProps) => {
-    // const artworks = getArtistArtworks(state.artworks, state.artistArtworkIds[ownProps.galleryId]);
-    const artistArtworkIds = state.artistArtworkIds[ownProps.galleryId];
-
     return {
         artist: state.artists[ownProps.galleryId],
-        artistArtworkIds: artistArtworkIds,
         artworks: state.artworks,
         galleryParams: state.ui.galleryParams,
         windowSize: state.ui.windowSize,
@@ -155,7 +130,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const ArtistGalleryContainer = connect(
-    mapStateToProps, { fetchArtistArtworkIds: listenForArtistArtworkIdsChanges, fetchArtist: listenForArtistChanges, fetchArtwork: listenForArtworkChanges }
+    mapStateToProps, { listenForArtistChanges, listenForArtistArtworkChanges }
 )(ArtistGalleryHolder);
 
 export default ArtistGalleryContainer;
