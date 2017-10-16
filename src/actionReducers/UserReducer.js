@@ -25,28 +25,17 @@ export default function (state = {}, action) {
 
         case FETCH_USER:
             const userData = { ...action.payload };
-
-            const { artistIds, subscription } = userData;
-            let totalArtworks = 0;
+            const { subscription } = userData;
             let subscriptionId = 0;
-
-            if (artistIds) {
-                const artistIdKeys = Object.keys(artistIds);
-                let artistTotal;
-                for(let key of artistIdKeys){
-                    artistTotal = artistIds[key].totalArtworks ? artistIds[key].totalArtworks : 0;
-                    totalArtworks += artistTotal;
-                }
-            }
 
             if(subscription){
                 subscriptionId = subscription.subscriptionId;
             }
 
             const extraSubscriptionParams = ArtflyAccountTypes[subscriptionId];
-            const maxArtworksReached = totalArtworks >= extraSubscriptionParams.maxArtworks;
+            const maxArtworksReached = userData.totalArtworks >= extraSubscriptionParams.maxArtworks;
 
-            return { ...state, ...action.payload, totalArtworks, maxArtworksReached, subscription, ...extraSubscriptionParams };
+            return { ...state, ...action.payload, maxArtworksReached, subscription, ...extraSubscriptionParams };
 
         case CREATE_USER:
             // Doesn't need to return anything because there is a libs listener on the user

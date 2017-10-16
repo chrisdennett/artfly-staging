@@ -17,7 +17,7 @@ class ImageCropAndRotate extends Component {
 
     didInit(slimData) {
         // triggers the creation of an image file from default canvas size
-        if (this.props.callSaveOnImageLoad) {
+        if (this.props.callSaveOnImageLoad && this.cropRef) {
             const cropper = this.cropRef.instance;
             cropper.upload();
         }

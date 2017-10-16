@@ -8,7 +8,7 @@ import SvgGalleryBottom from './SvgGalleryBottom';
 class SvgGallery extends Component {
 
     render() {
-        const { artist, artworkIds, artworks, onThumbClick, galleryParams } = this.props;
+        const { artist, artworks, onThumbClick, galleryParams } = this.props;
 
         const {
                   hue, saturation, lightness, nameSectionHue, roofHeight,
@@ -35,7 +35,6 @@ class SvgGallery extends Component {
 
                 <g transform={`translate(0,${roofHeight + nameHeight + galleryPaddingTop})`}>
                     <WindowsSection galleryWidth={galleryWidth}
-                                    artworkIds={artworkIds}
                                     windowsHeight={windowsHeight}
                                     artworks={artworks}
                                     windowParams={windowParams}

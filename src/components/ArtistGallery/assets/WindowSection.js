@@ -6,7 +6,7 @@ import BuildingWindow from "./BuildingWindow";
 import BuildingSection from "./BuildingSection";
 
 const WindowSection = (props) => {
-    const { galleryWidth, hue, saturation, lightness, windowsHeight, onThumbClick, artworkIds, artworks, windowParams } = props;
+    const { galleryWidth, hue, saturation, lightness, windowsHeight, onThumbClick, artworks, windowParams } = props;
 
     const wallColour = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
     const featureColour = `hsl(${hue}, ${saturation}%, ${lightness - 5}%)`;
@@ -15,7 +15,7 @@ const WindowSection = (props) => {
 
     // TODO: currently this is called every time a new bit of artwork data is loaded in
     // TODO: ...cont separate out the generation of the windows and adding the image (might not be worth it though)
-    const buildingWindows = createBuildingWindows(wallColour, highlight, lowlight, artworkIds, artworks, galleryWidth, windowParams, onThumbClick);
+    const buildingWindows = createBuildingWindows(wallColour, highlight, lowlight, artworks, galleryWidth, windowParams, onThumbClick);
 
     const buildingSectionProps = {
         galleryWidth, wallColour, featureColour, highlight, lowlight
@@ -31,13 +31,10 @@ const WindowSection = (props) => {
 export default WindowSection;
 
 // HELP FUNCTIONS
-const createBuildingWindows = (wallColour, highlight, lowlight, artworkIds, artworks, galleryWidth, windowParams, onThumbClick) => {
-    //const {artworkIds, artworks, galleryWidth, windowParams} = props;
-    // () => {props.onThumbClick(id)}
-
+const createBuildingWindows = (wallColour, highlight, lowlight, artworks, galleryWidth, windowParams, onThumbClick) => {
     const {
               windowWidth, windowsSectionPadding, windowPadding, windowHeight,
-              windowWidthWithPadding, windowHeightWithPadding,
+              windowWidthWithPadding, windowHeightWithPadding
           } = windowParams;
 
     let windowCount = 0;
@@ -53,6 +50,7 @@ const createBuildingWindows = (wallColour, highlight, lowlight, artworkIds, artw
     const delayOffset = 100;
     let count = 0;
     let imgLoadDelay;
+    const artworkIds = Object.keys(artworks);
 
     return _.map(artworkIds, (date, id) => {
 

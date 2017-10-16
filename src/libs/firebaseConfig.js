@@ -17,7 +17,7 @@ if (1 === 2) console.log("firestore: ", firestore);
 firebase.firestore().enablePersistence()
     .then(function () {
         // Initialize Cloud Firestore through firebase
-        console.log("persistence granted");
+        // console.log("persistence granted");
     })
     .catch(function (err) {
         if (err.code === 'failed-precondition') {

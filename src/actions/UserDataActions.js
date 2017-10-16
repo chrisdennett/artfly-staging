@@ -11,12 +11,8 @@ import {
 import {
     removeAllFirebaseListeners,
     fb_addUserAuthListener,
-    addArtworkIdToFirebase,
-    addArtworkToFirebase,
-    addArtworkToFirebaseStorage,
     fb_addArtistArtworkIdsListener,
     fb_addArtworkListener,
-    getFirebaseArtworkRef,
     fb_updateArtist,
     fb_signInWithProvider,
     fb_signOut,
@@ -36,6 +32,7 @@ export const ADD_ARTWORK_COMPLETE = 'artworkAdded';
 export const CLEAR_IMAGE_UPLOAD = 'clearImageUpload';
 export const CREATE_USER = 'create_user';
 export const FETCH_USER = "fetchUser";
+export const USER_UPDATE = "userUpdate";
 export const SIGN_IN_USER = "signInUser";
 export const SIGN_IN_USER_TRIGGERED = "signInUserTriggered";
 export const SIGN_OUT_USER = "signOutUser";
@@ -149,13 +146,15 @@ export function listenForUserChanges() {
                             payload: { ...userData, status: "complete", loginStatus: 'loggedIn' }
                         });
                     }
-                    else{
+                    else {
                         dispatch({
                             type: FETCH_USER,
                             payload: { status: "new", loginStatus: 'loggedIn' }
                         });
                     }
-                })
+                });
+
+
             }
             else {
                 dispatch({
@@ -184,6 +183,7 @@ export function deleteUser() {
 /*
 *** ARTIST ************************************************************
 */
+
 // ADD NEW ARTIST
 export function addNewArtist(userId, formValues, callback = null) {
     return dispatch => {
@@ -241,7 +241,7 @@ export function deleteArtist(artistId, userId, callback) {
                     }
                 });
 
-                if(callback) callback();
+                if (callback) callback();
             })
 
         })
@@ -330,12 +330,9 @@ export function listenForArtistArtworkIdsChanges(artistGalleryId, callback) {
 */
 
 // LISTEN FOR ARTWORK DATA CHANGES
-export function listenForArtistArtworkChanges(artistId){
+export function listenForArtistArtworkChanges(artistId) {
     return (dispatch) => {
         fs_getArtistArtworkChanges(artistId, (artworkData) => {
-
-            console.log("artworkData: ", artworkData);
-
             dispatch({
                 type: ARTWORK_CHANGE,
                 payload: artworkData
@@ -444,7 +441,7 @@ export function updateArtwork(artworkId, oldArtworkData, newArtworkData, callbac
     }
 }
 
-export function clearImageUpload(callback = null) {
+export function clearImageUpload() {
     return dispatch => {
         dispatch({
             type: CLEAR_IMAGE_UPLOAD,
@@ -453,57 +450,24 @@ export function clearImageUpload(callback = null) {
     }
 }
 
-
-
-export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, artworkId = null, callback = null) {
+export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null) {
     return dispatch => {
-        fs_addArtwork(artistId, imgFile, (uploadData) => {
-            console.log("uploadData: ", uploadData);
-        });
-    }
-}
-
-
-
-
-
-export function uploadImageOLD(imgFile, userId, artistId, imgWidth, imgHeight, artworkId = null, callback = null) {
-    return dispatch => {
-        // First get the database reference so the image can be named the same
-        const artworkDatabaseRef = getFirebaseArtworkRef(artworkId);
-        const artworkDatabaseKey = artworkDatabaseRef.key;
-
-        // add the image to storage and dispatch progress events
-        addArtworkToFirebaseStorage(imgFile, userId, artworkDatabaseKey, (uploadData) => {
+        fs_addArtwork(userId, artistId, imgFile, imgWidth, imgHeight, (uploadData) => {
             if (uploadData.status === 'uploading') {
                 dispatch({
                     type: IMAGE_UPLOAD_PROGRESS,
-                    payload: { artistId: artistId, id: artworkDatabaseKey, progress: uploadData.progress }
+                    payload: uploadData
                 });
             }
             else if (uploadData.status === 'complete') {
-                const newArtworkData = {
-                    adminId: userId,
-                    artistId: artistId,
-                    url: uploadData.downloadURL,
-                    imgWidth: imgWidth,
-                    imgHeight: imgHeight,
-                    dateAdded: uploadData.dateStamp
-                };
-
-                // add artwork data to the database
-                addArtworkToFirebase(artworkDatabaseRef, newArtworkData, () => {
-                    // add artwork ID to the database
-                    addArtworkIdToFirebase(artistId, artworkDatabaseKey, uploadData.dateStamp, userId, () => {
-                        dispatch({
-                            type: ADD_ARTWORK_COMPLETE,
-                            payload: { progress: 100 }
-                        });
-
-                        if (callback) callback({ ...newArtworkData, artworkId: artworkDatabaseKey });
-                    })
+                dispatch({
+                    type: ADD_ARTWORK_COMPLETE,
+                    payload: { progress: 100 }
                 });
+
+                if (callback) callback(uploadData);
             }
+
         });
     }
 }

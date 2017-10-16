@@ -368,8 +368,8 @@ export function addArtworkIdToFirebase(artistId, artworkId, dateStamp, userId, o
 export function addArtworkToFirebase(artworkRef, newArtworkData, onCompleteCallback = null) {
     artworkRef
         .set(newArtworkData)
-        .then(() => {
-            if (onCompleteCallback) onCompleteCallback();
+        .then((savedData) => {
+            if (onCompleteCallback) onCompleteCallback(savedData);
         })
         .catch(function (error) {
             console.log('addArtworkToFirebase failed', error);

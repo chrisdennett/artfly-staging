@@ -1,13 +1,13 @@
-// Externals
+// externals
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import ga from './libs/googleAnalyticsConfig';
 // global styles
 import './style.css';
-// Actions
+// actions
 import { listenForUserChanges } from './actions/UserDataActions';
 import { fetchLocalPrice } from './actions/PaddleActions';
-// Components
+// components
 import history from './components/global/history';
 import Redirect from "./components/global/Redirect";
 import WindowController from "./components/global/WindowDimensionsTracker";
@@ -41,7 +41,7 @@ class ArtflyRouting extends Component {
 
     componentDidMount() {
         // fetch global data - determines routing
-        this.props.fetchUserData();
+        this.props.listenForUserChanges();
         this.props.fetchLocalPrice();
         // set up routing
         const location = history.location;
@@ -136,5 +136,5 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 export default connect(
-    mapStateToProps, { fetchUserData: listenForUserChanges, fetchLocalPrice }
+    mapStateToProps, { listenForUserChanges, fetchLocalPrice }
 )(ArtflyRouting);

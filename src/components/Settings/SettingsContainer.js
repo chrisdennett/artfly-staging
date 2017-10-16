@@ -27,13 +27,6 @@ class SettingsHolder extends Component {
 
     componentDidMount() {
         this.props.getUserArtistChanges(this.props.userId);
-
-        /*const userArtistIds = Object.keys(this.props.userArtistData);
-
-        for (let id of userArtistIds) {
-            this.props.listenForArtistChanges(id);
-            this.props.listenForArtistArtworkIdsChanges(id);
-        }*/
     }
 
     onCancelSubscription() {

@@ -1,5 +1,6 @@
 // externals
 import React from 'react';
+// styles
 import './artistGallery.css';
 // components
 import ScrollbarRemover from "../global/ScrollbarRemover";
@@ -7,7 +8,7 @@ import SvgBackground from "./assets/SvgBackground";
 import SvgGallery from "./assets/SvgGallery";
 
 const ArtistGallery = function (props) {
-    const { artist, artistArtworkIds, artworks, onThumbClick, pageWidth, pageHeight, galleryParams, galleryIsZoomedOut } = props;
+    const { artist, artworks, onThumbClick, pageWidth, pageHeight, galleryParams, galleryIsZoomedOut } = props;
 
     const galleryHeight = galleryParams.galleryHeight;
     const maxGalleryWidth = galleryParams.galleryWidth;
@@ -29,7 +30,6 @@ const ArtistGallery = function (props) {
 
                 <SvgGallery artist={artist}
                             galleryParams={galleryParams}
-                            artworkIds={artistArtworkIds}
                             artworks={artworks}
                             pageWidth={pageWidth}
                             onThumbClick={onThumbClick}/>
