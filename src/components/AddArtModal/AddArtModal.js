@@ -4,7 +4,7 @@ import './addArtwork.css';
 
 import ImageCropAndRotate from '../ImageCropAndRotate/ImageCropAndRotate';
 
-import { uploadImage, clearImageUpload } from '../../actions/ArtistGalleryActions';
+import { uploadImage, clearImageUpload } from '../../actions/UserDataActions';
 import ArtistSelector from "../ArtistSelector/ArtistSelector";
 import Butt from "../global/Butt";
 import Modal from "../global/Modal";

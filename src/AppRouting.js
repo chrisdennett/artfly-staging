@@ -5,7 +5,7 @@ import ga from './libs/googleAnalyticsConfig';
 // global styles
 import './style.css';
 // Actions
-import { listenForUserChanges } from './actions/ArtistGalleryActions';
+import { listenForUserChanges } from './actions/UserDataActions';
 import { fetchLocalPrice } from './actions/PaddleActions';
 // Components
 import history from './components/global/history';

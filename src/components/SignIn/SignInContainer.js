@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
-import { signInWithGoogle, signInWithFacebook } from '../../actions/ArtistGalleryActions';
+import { signInWithGoogle, signInWithFacebook } from '../../actions/UserDataActions';
 // components
 import SignInButton from "./SignInButton";
 import SignInModal from "./SignInModal";

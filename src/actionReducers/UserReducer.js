@@ -5,7 +5,7 @@ import {
     SIGN_OUT_USER,
     DELETE_USER,
     SIGN_IN_USER_TRIGGERED
-} from '../actions/ArtistGalleryActions';
+} from '../actions/UserDataActions';
 import ArtflyAccountTypes from '../components/global/ArtflyAccountTypes';
 
 export default function (state = {}, action) {

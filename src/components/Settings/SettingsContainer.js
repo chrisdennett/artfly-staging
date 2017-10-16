@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
 import { updateSubscription, cancelSubscription } from '../../actions/PaddleActions';
-import { listenForArtistChanges, listenForArtistArtworkIdsChanges } from "../../actions/ArtistGalleryActions";
+import { listenForArtistChanges, listenForArtistArtworkIdsChanges } from "../../actions/UserDataActions";
 // components
 import Settings from './Settings';
 

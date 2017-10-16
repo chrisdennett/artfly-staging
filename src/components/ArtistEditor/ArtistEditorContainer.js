@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
-import { addNewArtist, listenForArtistChanges, updateArtist, deleteArtist } from '../../actions/ArtistGalleryActions';
+import { addNewArtist, listenForArtistChanges, updateArtist, deleteArtist } from '../../actions/UserDataActions';
 // components
 import history from '../global/history';
 import ArtistEditor from './ArtistEditor';

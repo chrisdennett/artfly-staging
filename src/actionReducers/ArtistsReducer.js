@@ -1,4 +1,4 @@
-import { ARTIST_CHANGE, ARTIST_DELETED } from '../actions/ArtistGalleryActions';
+import { ARTIST_CHANGE, ARTIST_DELETED } from '../actions/UserDataActions';
 
 export default function (state = {}, action) {
 

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
-import { signOutUser } from '../../../actions/ArtistGalleryActions';
+import { signOutUser } from '../../../actions/UserDataActions';
 // components
 import UserControls from './UserControls';
 

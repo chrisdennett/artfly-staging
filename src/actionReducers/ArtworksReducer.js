@@ -1,4 +1,4 @@
-import { ARTWORK_CHANGE } from '../actions/ArtistGalleryActions';
+import { ARTWORK_CHANGE } from '../actions/UserDataActions';
 // import { CLEAR_USER_DATA} from "../actions/UserActions";
 
 export default function (state = {}, action) {

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import './home.css';
 import { connect } from 'react-redux';
-import { fetchCommunityData } from '../../actions/CommunityActions';
 import Title from "./assets/Title";
 import LinkButt from "../global/LinkButt";
 
@@ -12,7 +11,9 @@ class Home extends Component {
     }
 
     render() {
-        const { featuredGallery, featuredGallery2 } = this.props.communityData;
+        // TODO: Fill in the proper ids when the galleries are set up
+        const hollyGalleryId = '#';
+        const dotGalleryId = '#';
 
         return (
             <div className={'home'}>
@@ -32,14 +33,14 @@ class Home extends Component {
                         <p>I originally made this for my own children. If you want to check out their galleries you can
                             see them here:</p>
 
-                        <LinkButt linkTo={`/gallery/${featuredGallery}`}
+                        <LinkButt linkTo={`/gallery/${hollyGalleryId}`}
                                   label={'Holly\'s Gallery'}
                                   backgroundColour={'#4b962e'}
                                   shadowColour={'#2a5421'}
                                   style={{ display: 'inline-block' }}
                                   fullWidth={false}/>
 
-                        <LinkButt linkTo={`/gallery/${featuredGallery2}`}
+                        <LinkButt linkTo={`/gallery/${dotGalleryId}`}
                                   label={'Dot\'s Gallery'}
                                   backgroundColour={'#2f8194'}
                                   shadowColour={'#22485a'}
@@ -77,9 +78,8 @@ class Home extends Component {
 
 function mapStateToProps(state) {
     return {
-        communityData: state.communityData,
         localPrice: state.paddle.localPrice
     }
 }
 
-export default connect(mapStateToProps, { fetchCommunityData })(Home);
+export default connect(mapStateToProps, { })(Home);
