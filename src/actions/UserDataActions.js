@@ -1,10 +1,9 @@
 import firebase from '../libs/firebaseConfig';
-// import * as fb from 'firebase';
 
 // FB - Firestore actions
 import {
     fs_addNewUser, fs_addNewArtist, fs_getUserChanges, fs_getUserArtistChanges,
-    fs_getArtistArtworkChanges, fs_getArtistChanges, fs_addArtwork
+    fs_getArtistArtworkChanges, fs_getArtistChanges, fs_addArtwork, fs_updateArtist
 } from './FirestoreActions';
 
 // FB - Realtime database actions
@@ -13,7 +12,6 @@ import {
     fb_addUserAuthListener,
     fb_addArtistArtworkIdsListener,
     fb_addArtworkListener,
-    fb_updateArtist,
     fb_signInWithProvider,
     fb_signOut,
     fb_deleteUser, fb_deleteArtwork, fb_deleteArtistArtworkId, fbstore_deleteImage,
@@ -32,7 +30,6 @@ export const ADD_ARTWORK_COMPLETE = 'artworkAdded';
 export const CLEAR_IMAGE_UPLOAD = 'clearImageUpload';
 export const CREATE_USER = 'create_user';
 export const FETCH_USER = "fetchUser";
-export const USER_UPDATE = "userUpdate";
 export const SIGN_IN_USER = "signInUser";
 export const SIGN_IN_USER_TRIGGERED = "signInUserTriggered";
 export const SIGN_OUT_USER = "signOutUser";
@@ -215,14 +212,14 @@ function int_addArtist(userId, formValues, dispatch, callback = null) {
 // UPDATE ARTIST
 export function updateArtist(artistId, artistData, callback) {
     return dispatch => {
-        fb_updateArtist(artistId, artistData, () => {
+        fs_updateArtist(artistId, artistData, () => {
             dispatch({
                 type: ARTIST_UPDATED,
                 payload: artistData
             });
 
             if (callback) callback();
-        });
+        })
     }
 }
 

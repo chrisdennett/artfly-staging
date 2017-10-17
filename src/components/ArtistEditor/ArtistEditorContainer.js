@@ -10,8 +10,10 @@ import ArtistEditor from './ArtistEditor';
 // Created an intermediate component so can trigger the data loading outside
 class ArtistEditorHolder extends Component {
 
-    componentWillMount(){
-        this.props.fetchArtist(this.props.artistId);
+    componentWillMount() {
+        if (this.props.artistId) {
+            this.props.listenForArtistChanges(this.props.artistId);
+        }
     }
 
     onSubmit(values) {
@@ -40,18 +42,16 @@ class ArtistEditorHolder extends Component {
     }
 
     render() {
-        const { initialValues, formType, status, userArtistGalleryIds } = this.props;
+        const { initialValues, formType, status } = this.props;
 
         // Form doesn't update if you render it and then update the values
         // so need to wait until they are all present and correct
-        if (status === "waiting" || !userArtistGalleryIds) {
+        if (status === "waiting") {
             return <div>loading...</div>
         }
 
-        let allowDelete = true;
-        if (userArtistGalleryIds && Object.keys(userArtistGalleryIds).length < 2) {
-            allowDelete = false;
-        }
+        // don't allow the final artist to be deleted
+        let allowDelete = this.props.totalUserArtists && this.props.totalUserArtists > 1;
 
         return <ArtistEditor
             initialValues={initialValues}
@@ -93,13 +93,13 @@ const mapStateToProps = (state, ownProps) => {
         userId: state.user.uid,
         formType: formType,
         initialValues: initialFormValues,
-        userArtistGalleryIds: state.user.artistIds
+        totalUserArtists: state.user.totalArtists,
     }
 };
 
 const ArtistEditorContainer = connect(
     mapStateToProps, {
-        fetchArtist: listenForArtistChanges,
+        listenForArtistChanges,
         deleteArtist,
         addNewArtist,
         updateArtist

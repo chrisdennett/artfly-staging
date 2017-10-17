@@ -1,4 +1,8 @@
-import { firestoreDb as db, storageRef as store, storageEvents } from '../libs/firebaseConfig';
+import {
+    firestoreDb as db,
+    storageRef as store,
+    storageEvents
+} from '../libs/firebaseConfig';
 
 /*
 *** USER ************************************************************
@@ -53,10 +57,22 @@ export function fs_getUserArtistChanges(userId, onChangeCallback = null) {
         .where('adminId', '==', userId)
         .onSnapshot(querySnapshot => {
                 const changedDocsArr = querySnapshot.docChanges;
+                let docAddedOrDeleted = false;
                 for (let change of changedDocsArr) {
                     const artistId = change.doc.id;
                     // the function itself will prevent multiple listeners
                     fs_getArtistChanges(artistId, onChangeCallback);
+
+                    // find out if there'll be a new number of artists
+                    if (change.type === 'added' || change.type === 'removed') {
+                        docAddedOrDeleted = true;
+                    }
+                }
+
+                // if there's a different number of artists, update totalArtists
+                if (docAddedOrDeleted) {
+                    const totalArtists = querySnapshot.size;
+                    fs_updateUser(userId, { totalArtists });
                 }
             },
             error => {
@@ -81,6 +97,11 @@ export function fs_updateArtist(artistId, newData, onChangeCallback = null) {
 let artistListeners = {};
 
 export function fs_getArtistChanges(artistId, onChangeCallback = null) {
+    if(!artistId){
+        console.log("no artistId: ", artistId);
+        return;
+    }
+
     if (artistListeners[artistId]) {
         return "already_running";
     }
