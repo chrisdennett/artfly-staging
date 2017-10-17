@@ -93,19 +93,6 @@ export function fb_deleteUser(onDeletedCallback = null) {
 /*
 *** ARTIST ***********************************************************
 */
-// UPDATE ARTIST
-export function fb_updateArtist(artistId, artistData, onChangeCallback = null) {
-    firebase.database()
-        .ref(`user-data/artists/${artistId}`)
-        .update({ ...artistData })
-        .then(() => {
-            if (onChangeCallback) onChangeCallback();
-        })
-        .catch(function (error) {
-            console.log('updateArtist failed: ', error);
-        })
-}
-
 // DELETE ARTIST
 export function fb_deleteArtist(artistId, onChangeCallback = null) {
     firebase.database()

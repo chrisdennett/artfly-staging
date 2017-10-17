@@ -11,7 +11,6 @@ import {
     removeAllFirebaseListeners,
     fb_addUserAuthListener,
     fb_addArtistArtworkIdsListener,
-    fb_addArtworkListener,
     fb_signInWithProvider,
     fb_signOut,
     fb_deleteUser, fb_deleteArtwork, fb_deleteArtistArtworkId, fbstore_deleteImage,
