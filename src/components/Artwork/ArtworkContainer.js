@@ -2,20 +2,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
-import { listenForArtworkChanges, listenForArtistArtworkIdsChanges } from '../../actions/UserDataActions';
+import { listenForArtworkChanges } from '../../actions/UserDataActions';
 // components
 import Artwork from './Artwork';
 
 class ArtworkHolder extends Component {
 
     componentDidMount() {
-        this.props.fetchArtwork(this.props.artworkId);
-        this.props.fetchArtistArtworkIds(this.props.galleryId);
+        this.props.listenForArtworkChanges(this.props.artworkId);
     }
 
     componentWillUpdate(nextProps){
         if(this.props.artworkId !== nextProps.artworkId){
-            this.props.fetchArtwork(nextProps.artworkId);
+            this.props.listenForArtworkChanges(nextProps.artworkId);
         }
     }
 
@@ -38,7 +37,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const ArtworkContainer = connect(
-    mapStateToProps, { fetchArtwork: listenForArtworkChanges, fetchArtistArtworkIds: listenForArtistArtworkIdsChanges }
+    mapStateToProps, { listenForArtworkChanges}
 )(ArtworkHolder);
 
 export default ArtworkContainer;

@@ -3,7 +3,7 @@ import firebase from '../libs/firebaseConfig';
 // FB - Firestore actions
 import {
     fs_addNewUser, fs_addNewArtist, fs_getUserChanges, fs_getUserArtistChanges,
-    fs_getArtistArtworkChanges, fs_getArtistChanges, fs_addArtwork, fs_updateArtist
+    fs_getArtistArtworkChanges, fs_getArtistChanges, fs_addArtwork, fs_updateArtist, fs_getArtworkChanges
 } from './FirestoreActions';
 
 // FB - Realtime database actions
@@ -340,10 +340,10 @@ export function listenForArtistArtworkChanges(artistId) {
 
 export function listenForArtworkChanges(artworkId) {
     return (dispatch) => {
-        fb_addArtworkListener(artworkId, (artworkData) => {
+        fs_getArtworkChanges(artworkId, (artworkData) => {
             dispatch({
                 type: ARTWORK_CHANGE,
-                payload: { [artworkId]: artworkData }
+                payload: artworkData
             });
         })
     }

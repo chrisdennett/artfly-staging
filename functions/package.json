@@ -2,6 +2,7 @@
   "name": "functions",
   "description": "Cloud Functions for Firebase",
   "dependencies": {
+    "@google-cloud/firestore": "^0.8.2",
     "@google-cloud/storage": "^1.2.0",
     "child-process-promise": "^2.2.1",
     "firebase-admin": "~4.2.1",

@@ -1,10 +1,14 @@
 'use strict';
 const functions = require(`firebase-functions`);
+const Firestore = require('@google-cloud/firestore');
 const admin = require('firebase-admin');
-const gcs = require('@google-cloud/storage')({ keyFilename: 'art-blam-libs-adminsdk-zebo2-cc2250b8ef.json' });
+// const gcs = require('@google-cloud/storage')({ keyFilename: 'art-blam-libs-adminsdk-zebo2-cc2250b8ef.json' });
+const gcs = require('@google-cloud/storage')({ keyFilename: 'art-blam-firebase-adminsdk-zebo2-cc2250b8ef.json' });
 const spawn = require(`child-process-promise`).spawn;
 
 admin.initializeApp(functions.config().firebase);
+
+const firestore = new Firestore();
 
 exports.removeImagesOnDelete = functions.storage.object()
     .onChange(event => {
@@ -65,13 +69,34 @@ exports.removeImagesOnDelete = functions.storage.object()
 
 exports.generateDifferentImageSizes = functions.storage.object()
     .onChange(event => {
+
+        /*
         const object = event.data;
         const filePath = object.name;
+        const fileName = filePath.split(`/`).pop();
+
+        console.log("fileName: ", fileName);
+
+        const ref = firestore
+            .doc(`artworks/${fileName}`)
+            .set({ testUrl: 'something amazing' }, {merge:true})
+            .then(() => {
+                console.log("then test 2");
+            })
+            .catch(error => {
+                console.log("caught this error: ", error);
+            });
+            */
+
+        const object = event.data;
+        const filePath = object.name;
+        // the original image name has been set to match the artworkId
         const fileName = filePath.split(`/`).pop();
         const fileBucket = object.bucket;
         const bucket = gcs.bucket(fileBucket);
         const tempFilePath = `/tmp/${fileName}`;
-        const ref = admin.database().ref();
+        // const ref = admin.database().ref();
+        const ref = firestore.doc(`artworks/${fileName}`);
 
         const largeImageFilePath = filePath.replace(/(\/)?([^\/]*)$/, '$1large_$2');
         const mediumImageFilePath = filePath.replace(/(\/)?([^\/]*)$/, '$1medium_$2');
@@ -132,14 +157,20 @@ exports.generateDifferentImageSizes = functions.storage.object()
                                 return;
                             }
 
+                            console.log("thumbFile: ", thumbFile);
+
                             // get a signed url so it has public access
                             thumbFile.getSignedUrl(signedUrlConfig)
                                 .then((response) => {
                                     // write the signed url to the database
-                                    ref.child(`user-data/artworks/${fileName}/${databaseUrlPropertyPrefix}thumb`).set(response[0])
+                                    ref
+                                        .set({ [`${databaseUrlPropertyPrefix}thumb`]: response[0] }, { merge: true })
                                         .then(() => {
-                                            // console.log("Wow it worked TINY and stuff: ");
-                                        });
+                                            console.log("Wow it worked TINY and stuff: ");
+                                        })
+                                        .catch(function (error) {
+                                            console.log('Add New Artist failed: ', error);
+                                        })
                                 })
                         });
                     })
@@ -170,10 +201,14 @@ exports.generateDifferentImageSizes = functions.storage.object()
                             mediumFile.getSignedUrl(signedUrlConfig)
                                 .then((response) => {
                                     // write the signed url to the database
-                                    ref.child(`user-data/artworks/${fileName}/${databaseUrlPropertyPrefix}med`).set(response[0])
+                                    ref
+                                        .set({ [`${databaseUrlPropertyPrefix}med`]: response[0] }, { merge: true })
                                         .then(() => {
-                                            // console.log("Wow it worked TINY and stuff: ");
-                                        });
+                                            console.log("Wow it worked med and stuff: ");
+                                        })
+                                        .catch(function (error) {
+                                            console.log('updating artwork failed: ', error);
+                                        })
                                 })
                         });
                     })
@@ -206,21 +241,31 @@ exports.generateDifferentImageSizes = functions.storage.object()
                             largeFile.getSignedUrl(signedUrlConfig)
                                 .then((response) => {
                                     // write the signed url to the database
-                                    ref.child(`user-data/artworks/${fileName}/${databaseUrlPropertyPrefix}large`).set(response[0])
+                                    ref
+                                        .set({ [`${databaseUrlPropertyPrefix}large`]: response[0] }, { merge: true })
                                         .then(() => {
-                                            // console.log("Wow it worked TINY and stuff: ");
-                                        });
+                                            console.log("Wow it worked large and stuff: ");
+                                        })
+                                        .catch(function (error) {
+                                            console.log('Add large thumb failed: ', error);
+                                        })
                                 })
                         });
                     })
+            })
+            .catch(error => {
+                console.log("error catch: ", error);
             })
     });
 
 // listen for Paddle subsription events
 exports.subscriptionEvent = functions.https.onRequest((request, response) => {
-    const ref = admin.database().ref();
+    // const ref = admin.database().ref();
     const alertName = request.body.alert_name;
     const userId = request.body.passthrough;
+    // const ref = functions.firestore.collection('users').doc(userId);
+    const ref = firestore.doc(`users/${userId}`);
+
     const subscriptionObject = {};
     subscriptionObject.status = request.body.status; // status can be active, trailing, past_due, deleted
     subscriptionObject.subscriptionId = request.body.subscription_id;
@@ -248,7 +293,13 @@ exports.subscriptionEvent = functions.https.onRequest((request, response) => {
             break;
     }
 
-    ref.child(`user-data/users/${userId}/subscription`).update(subscriptionObject);
+    ref.set({ subscription: subscriptionObject }, { merge: true })
+        .then(() => {
+            console.log('Update subscription success');
+        })
+        .catch(function (error) {
+            console.log('Update subscription failed: ', error);
+        });
 
     response.send("update success");
 });

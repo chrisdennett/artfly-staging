@@ -155,8 +155,11 @@ export function fs_addArtwork(userId, artistId, imgFile, imgWidth, imgHeight, on
                     dateAdded: Date.now()
                 };
 
+                // the artwork data may already exist - created by the cloud function.
+                // if so use update
+
                 artworkDatabaseRef
-                    .set(newArtworkData)
+                    .set(newArtworkData, {merge:true})
                     .then(() => {
                         if (onChangeCallback) {
                             const callBackData = {
@@ -165,6 +168,8 @@ export function fs_addArtwork(userId, artistId, imgFile, imgWidth, imgHeight, on
                                 status: 'complete',
                                 artworkId
                             };
+
+                            console.log("artworkId: ", artworkId);
 
                             onChangeCallback(callBackData);
                         }
