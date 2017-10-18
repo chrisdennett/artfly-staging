@@ -30,12 +30,12 @@ class SettingsHolder extends Component {
     }
 
     onCancelSubscription() {
-        const cancelUrl = this.props.user.subscription.cancelUrl;
+        const cancelUrl = this.props.subscription.cancelUrl;
         this.props.cancelSubscription(cancelUrl);
     }
 
     onUpdateSubscription() {
-        const updateUrl = this.props.user.subscription.updateUrl;
+        const updateUrl = this.props.subscription.updateUrl;
         this.props.updateSubscription(updateUrl);
     }
 

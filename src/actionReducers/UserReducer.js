@@ -28,12 +28,16 @@ export default function (state = {}, action) {
             const { subscription } = userData;
             let subscriptionId = 0;
 
-            if(subscription){
+            if (subscription) {
                 subscriptionId = subscription.subscriptionId;
             }
 
             const extraSubscriptionParams = ArtflyAccountTypes[subscriptionId];
-            const maxArtworksReached = userData.totalArtworks >= extraSubscriptionParams.maxArtworks;
+            let maxArtworksReached = false;
+
+            if (userData.totalArtworks && extraSubscriptionParams) {
+                maxArtworksReached = userData.totalArtworks >= extraSubscriptionParams.maxArtworks;
+            }
 
             return { ...state, ...action.payload, maxArtworksReached, subscription, ...extraSubscriptionParams };
 

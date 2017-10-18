@@ -5,7 +5,7 @@ import Butt from "../../global/Butt";
 import SubscribeButton from '../../global/SubscribeButton';
 
 const AccountSettings = function (props) {
-    const {artflyAccountTypes, totalArtworks, accountType, maxArtworks, subscription, price, onCancelSubscription, onUpdateSubscription } = props;
+    const { artflyAccountTypes, totalArtworks, accountType, maxArtworks, subscription, price, onCancelSubscription, onUpdateSubscription } = props;
 
     let subscriptionButtons;
     const infoStyle = {
@@ -13,12 +13,25 @@ const AccountSettings = function (props) {
     };
     const familyPlanId = 253185;
 
-    if (accountType === 'free') {
+    if (!subscription || accountType === 'free') {
         subscriptionButtons = (
             <span>
-                <SubscribeButton />
+                <SubscribeButton/>
                 <p style={infoStyle}>
-                    (Subscribe for {price} a month to save up to {artflyAccountTypes[familyPlanId].maxArtworks} artworks)
+                    (Subscribe for {price} a month to save up to {artflyAccountTypes[familyPlanId].maxArtworks}
+                    artworks)
+                </p>
+            </span>
+        )
+    }
+    else if(subscription && subscription.status === 'deleted'){
+        subscriptionButtons = (
+            <span>
+                {/*<Butt inline={true} size={'small'} onClick={onUpdateSubscription} label={`Update subscription`}/>*/}
+                <SubscribeButton label={'Resubscribe'}/>
+                <p style={infoStyle}>
+                   You've cancelled your subscription, your account will be deleted unless you resubscribe.
+                    <br/>Delete date: <strong>{subscription.cancellationEffectiveDate}</strong>
                 </p>
             </span>
         )

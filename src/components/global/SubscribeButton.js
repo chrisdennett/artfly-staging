@@ -14,8 +14,10 @@ class SubscribeButton extends Component {
     };
 
     render() {
+        const buttonTxt = this.props.label || 'Subscribe';
+
         return (
-            <Butt inline={true} size={'small'} label={`Subscribe`} onClick={this.onSubscribe}/>
+            <Butt inline={true} size={'small'} label={buttonTxt} onClick={this.onSubscribe}/>
         );
     }
 }
@@ -23,6 +25,7 @@ class SubscribeButton extends Component {
 const mapStateToProps = (state) => {
     return {
         userEmail: state.user.email,
+        userId: state.user.uid
     }
 };
 
