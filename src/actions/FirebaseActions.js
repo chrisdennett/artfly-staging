@@ -7,59 +7,7 @@ let artistListenersRef = [];
 let artistArtworkIdsListenersRef = [];
 let artworkListenersRef = [];
 
-/*
-*** AUTH ************************************************************
-*/
 
-// SIGN IN
-export function fb_signInWithProvider(providerName, onChangeCallback = null) {
-    let provider;
-    if (providerName === 'google') {
-        provider = new fb.auth.GoogleAuthProvider();
-    }
-    else if (providerName === 'facebook') {
-        provider = new fb.auth.FacebookAuthProvider();
-    }
-
-    fb.auth()
-        .getRedirectResult()
-        .then(result => {
-            onChangeCallback(result.user);
-        })
-        .catch(error => {
-            console.log("log in error: ", error);
-        });
-
-    fb.auth().signInWithPopup(provider);
-}
-
-// SIGN OUT
-export function fb_signOut(onChangeCallback = null) {
-    firebase.auth()
-        .signOut()
-        .then(() => {
-            if (onChangeCallback) onChangeCallback();
-        })
-        .catch((error) => {
-            console.log("sign out error: ", error);
-        });
-}
-
-// ADD USER AUTH LISTENER
-export function fb_addUserAuthListener(onChangeCallback = null) {
-    firebase.auth()
-        .onAuthStateChanged((result) => {
-            if (result) {
-                const { photoURL, displayName, email, uid, providerData } = result;
-                const signedInWith = providerData[0].providerId || null;
-
-                if (onChangeCallback) onChangeCallback({ signedInWith, photoURL, displayName, email, uid });
-            }
-            else {
-                if (onChangeCallback) onChangeCallback(null);
-            }
-        })
-}
 
 /*
 *** USER ************************************************************

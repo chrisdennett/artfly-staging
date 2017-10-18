@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 // styles
 import './addArtwork.css';
 // actions
-import { uploadImage, clearImageUpload, getUserArtistChanges } from '../../actions/UserDataActions';
+import { addArtwork, clearImageUpload, getUserArtistChanges } from '../../actions/UserDataActions';
 // components
 import ImageCropAndRotate from '../ImageCropAndRotate/ImageCropAndRotate';
 import ArtistSelector from "../ArtistSelector/ArtistSelector";
@@ -55,12 +55,10 @@ class AddArtModal extends Component {
         this.setState({ saveTriggered: true })
         // set up the new artwork
         // use a call back to set up confirmation message
-        //export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null)
         const { height, width } = this.state.cropData;
-
         const selectedArtistId = this.state.selectedArtistId || this.props.defaultArtistId;
 
-        this.props.uploadImage(this.state.cropImg, this.props.user.uid, selectedArtistId, width, height, (newArtworkData) => {
+        this.props.addArtwork(this.state.cropImg, this.props.user.uid, selectedArtistId, width, height, (newArtworkData) => {
             this.setState({ saveTriggered: false });
             this.props.onSaveComplete(newArtworkData);
             this.props.clearImageUpload();
@@ -179,4 +177,4 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps, { uploadImage, clearImageUpload, getUserArtistChanges })(AddArtModal);
+export default connect(mapStateToProps, { addArtwork, clearImageUpload, getUserArtistChanges })(AddArtModal);

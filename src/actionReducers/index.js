@@ -7,14 +7,12 @@ import ArtworksReducer from './ArtworksReducer';
 import ArtistsReducer from './ArtistsReducer';
 import ImageUploadReducer from './ImageUploadReducer';
 import FormReducer from './FormReducer';
-import ArtistsArtworkIdsReducer from "./ArtistsArtworkIdsReducer";
 
 const rootReducer = combineReducers({
     ui: UiReducer,
     paddle: PaddleReducer,
     user: UserReducer,
     artists: ArtistsReducer,
-    artistArtworkIds: ArtistsArtworkIdsReducer,
     artworks: ArtworksReducer,
     imageUploadInfo: ImageUploadReducer,
     form: FormReducer

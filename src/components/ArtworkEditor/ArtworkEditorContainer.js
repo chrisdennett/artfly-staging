@@ -2,7 +2,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
-import { listenForArtworkChanges, listenForArtistChanges, updateArtwork, uploadImage, deleteArtwork } from '../../actions/UserDataActions';
+import {
+    listenForArtworkChanges,
+    listenForArtistChanges,
+    updateArtwork,
+    addArtwork,
+    deleteArtwork
+} from '../../actions/UserDataActions';
 // components
 import ArtworkEditor from './ArtworkEditor';
 import history from '../global/history';
@@ -21,11 +27,8 @@ class ArtworkEditorHolder extends Component {
         };
     }
 
-    componentWillMount(){
-        this.props.fetchArtwork(this.props.artworkId);
-        for(let artistId of this.props.userArtistIds){
-            this.props.fetchArtist(artistId);
-        }
+    componentWillMount() {
+        this.props.listenForArtworkChanges(this.props.artworkId);
     }
 
     onArtistSelected(artistId) {
@@ -57,11 +60,19 @@ class ArtworkEditorHolder extends Component {
     }
 
     onSaveChanges() {
-        this.setState({ isSaving: true });
+        /*this.setState({ isSaving: true });*/
 
+        this.saveArtworkChanges(() => {
+            // this.setState({ isSaving: false });
+
+            const returnUrl = this.getReturnUrl();
+            history.push(returnUrl);
+        })
+    }
+
+    saveArtworkChanges(callback) {
         const artistChanged = this.hasArtistChanged();
         const imageChanged = this.hasCropDataChanged();
-        const { artworkId } = this.props;
         const oldArtworkData = this.props.artwork;
         let newArtworkData = { ...oldArtworkData };
         newArtworkData.artistId = !this.state.selectedArtistId ? oldArtworkData.artistId : this.state.selectedArtistId;
@@ -69,13 +80,32 @@ class ArtworkEditorHolder extends Component {
         if (!imageChanged && !artistChanged) {
             //TODO should disable save button if nothing has changed.
             console.log("nothing has changed so don't save anything new");
-            this.setState({ isSaving: false });
+
+            callback();
             return;
         }
 
+
+        let newImageWidth = null, newImageHeight = null;
+        if (this.state.cropData) {
+            newImageWidth = this.state.cropData.width;
+            newImageHeight = this.state.cropData.height;
+        }
+
+
+        /* this.props.addArtwork(this.state.cropImg, this.props.userId, artistId, width, height, artworkId, () => {
+             this.setState({ isSaving: false, savedCropData: this.state.cropData });
+         });*/
+
+        const currentArtistId = this.props.artwork.artistId;
+
+        this.props.updateArtwork(this.props.artworkId, currentArtistId, this.state.selectedArtistId, this.state.cropImg, newImageWidth, newImageHeight, () => {
+            callback();
+        });
+
         // if just the artist has changed
-        if (artistChanged && imageChanged === false) {
-            this.props.updateArtwork(artworkId, oldArtworkData, newArtworkData, () => {
+        /*if (artistChanged && imageChanged === false) {
+            this.props.updateArtwork(artworkId, newArtworkData, () => {
                 this.setState({ isSaving: false });
             });
         }
@@ -88,7 +118,7 @@ class ArtworkEditorHolder extends Component {
             this.props.updateArtwork(artworkId, oldArtworkData, newArtworkData, () => {
                 this.uploadCurrentImage(newArtworkData.artistId, artworkId);
             });
-        }
+        }*/
     }
 
     onConfirmDeleteArtwork() {
@@ -99,13 +129,13 @@ class ArtworkEditorHolder extends Component {
         });
     }
 
-    uploadCurrentImage(artistId, artworkId) {
+    /*uploadCurrentImage(artistId, artworkId) {
         const { width, height } = this.state.cropData;
 
-        this.props.uploadImage(this.state.cropImg, this.props.userId, artistId, width, height, artworkId, () => {
+        this.props.addArtwork(this.state.cropImg, this.props.userId, artistId, width, height, artworkId, () => {
             this.setState({ isSaving: false, savedCropData: this.state.cropData });
         })
-    }
+    }*/
 
     onCropImageSave(cropImg) {
         this.setState({ cropImg: cropImg });
@@ -142,24 +172,21 @@ class ArtworkEditorHolder extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const userArtistIds = Object.keys(state.user.artistIds);
-
 
     return {
         userId: state.user.uid,
         artwork: state.artworks[ownProps.artworkId],
-        artists: state.artists,
-        userArtistIds: userArtistIds
+        artists: state.artists
     }
 };
 
 const ArtworkEditorContainer = connect(
     mapStateToProps,
     {
-        fetchArtwork: listenForArtworkChanges,
-        fetchArtist: listenForArtistChanges,
+        listenForArtworkChanges,
+        listenForArtistChanges,
         updateArtwork,
-        uploadImage,
+        addArtwork,
         deleteArtwork
     }
 )(ArtworkEditorHolder);

@@ -7,12 +7,12 @@ import { setGalleryZoom } from '../../../actions/UiActions';
 import GalleryControls from './GalleryControls';
 
 class GalleryControlsHolder extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.onZoomClick = this.onZoomClick.bind(this);
     }
 
-    onZoomClick(){
+    onZoomClick() {
         this.props.setGalleryZoom(!this.props.galleryIsZoomedOut);
     }
 
@@ -34,21 +34,19 @@ class GalleryControlsHolder extends Component {
             }
         }
 
-        return <GalleryControls
-            galleryIsZoomedOut={galleryIsZoomedOut}
-            onZoomClick={this.onZoomClick}
-            nextArtworkId={nextId}
-            prevArtworkId={prevId}
-            artworkIds={artworkIds}
-            galleryId={galleryId}
-            artworkId={artworkId}/>;
+        return <GalleryControls galleryIsZoomedOut={galleryIsZoomedOut}
+                                onZoomClick={this.onZoomClick}
+                                nextArtworkId={nextId}
+                                prevArtworkId={prevId}
+                                artworkIds={artworkIds}
+                                galleryId={galleryId}
+                                artworkId={artworkId}/>;
     }
 }
 
 // Map state to props maps to the intermediary component which uses or passes them through
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     return {
-        artworkIds: state.artistArtworkIds[ownProps.galleryId],
         galleryIsZoomedOut: state.ui.galleryIsZoomedOut
     }
 };

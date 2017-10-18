@@ -29,13 +29,10 @@ firebase.firestore().enablePersistence()
         console.log("firebase config err: ", err);
     });
 
-// const firestoreDb = firebase.firestore();
-
 export const storageEvents = firebase.storage.TaskEvent;
-
 export const storageRef = firebase.storage().ref();
-
 export const firestoreDb = firebase.firestore();
+export const auth = firebase.auth();
 
 export default firebase;
 

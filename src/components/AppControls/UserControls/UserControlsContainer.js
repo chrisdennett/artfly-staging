@@ -25,9 +25,9 @@ class UserControlsHolder extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     let allowEditing = false;
-    if(ownProps.galleryId && state.user.artistIds){
+    if(ownProps.galleryId && state.artists[ownProps.galleryId]){
         // if the galleryId is listed in the user.artistIds
-        allowEditing = state.user.artistIds.hasOwnProperty(ownProps.galleryId);
+        allowEditing = state.artists[ownProps.galleryId].adminId === state.user.uid;
     }
 
     return {

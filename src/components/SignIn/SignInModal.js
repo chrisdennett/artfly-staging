@@ -12,7 +12,7 @@ const SignInModal = ({isOpen, loginStatus, signInWithGoogleClick, signInWithFace
                isOpen={isOpen}>
 
             {loginStatus === 'pending' &&
-            <div>Logging in...</div>
+            <div>Signing in...</div>
             }
 
             {loginStatus !== 'pending' &&

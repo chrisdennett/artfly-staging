@@ -52,9 +52,12 @@ const createBuildingWindows = (wallColour, highlight, lowlight, artworks, galler
     let imgLoadDelay;
     const artworkIds = Object.keys(artworks);
 
-    return _.map(artworkIds, (date, id) => {
+    return _.map(artworkIds, (id) => {
 
         imgLoadDelay = count * delayOffset;
+
+        const artwork = artworks[id];
+        const date = artwork.dateAdded;
 
         x = xStart + (colCount * windowWidthWithPadding);
 
@@ -70,8 +73,6 @@ const createBuildingWindows = (wallColour, highlight, lowlight, artworks, galler
         colCount++;
 
         if (artworks && artworks[id]) {
-            const artwork = artworks[id];
-
             return (
                 <BuildingWindow key={date}
                                 artworkThumbUrl={artwork.url_thumb}

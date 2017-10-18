@@ -2,19 +2,24 @@ import firebase from '../libs/firebaseConfig';
 
 // FB - Firestore actions
 import {
+    fb_addAuthListener,
+    fb_signInWithProvider,
+    fb_signOut,
     fs_addNewUser, fs_addNewArtist, fs_getUserChanges, fs_getUserArtistChanges,
-    fs_getArtistArtworkChanges, fs_getArtistChanges, fs_addArtwork, fs_updateArtist, fs_getArtworkChanges
+    fs_getArtistArtworkChanges, fs_getArtistChanges, fs_addArtwork, fs_updateArtist, fs_getArtworkChanges,
+    fs_updateArtwork
 } from './FirestoreActions';
 
 // FB - Realtime database actions
 import {
     removeAllFirebaseListeners,
-    fb_addUserAuthListener,
-    fb_addArtistArtworkIdsListener,
-    fb_signInWithProvider,
-    fb_signOut,
-    fb_deleteUser, fb_deleteArtwork, fb_deleteArtistArtworkId, fbstore_deleteImage,
-    fb_deleteArtist, fb_fetchArtistArtworkIdsOnce, fb_deleteUserArtist
+    fb_deleteUser,
+    fb_deleteArtwork,
+    fb_deleteArtistArtworkId,
+    fbstore_deleteImage,
+    fb_deleteArtist,
+    fb_fetchArtistArtworkIdsOnce,
+    fb_deleteUserArtist
 } from "./FirebaseActions";
 
 export const ARTWORK_CHANGE = "artworkChange";
@@ -128,7 +133,7 @@ export function listenForUserChanges() {
             payload: { status: "pending" }
         });
 
-        fb_addUserAuthListener((authData) => {
+        fb_addAuthListener((authData) => {
             if (authData) {
                 dispatch({
                     type: FETCH_USER,
@@ -302,25 +307,6 @@ export function listenForArtistChanges(artistId) {
     }
 }
 
-// LISTEN FOR ARTIST ARTWORK IDS DATA CHANGES
-export function listenForArtistArtworkIdsChanges(artistGalleryId, callback) {
-    return (dispatch, getState) => {
-        fb_addArtistArtworkIdsListener(artistGalleryId, (artistArtworkIdsData, alreadyCached) => {
-            if (alreadyCached && callback) {
-                return getState().artistArtworkIds[artistGalleryId];
-            }
-            else {
-                dispatch({
-                    type: ARTIST_ARTWORK_IDS_CHANGE,
-                    payload: { [artistGalleryId]: artistArtworkIdsData }
-                });
-
-                if (callback) callback(artistArtworkIdsData);
-            }
-        });
-    }
-}
-
 /*
 *** ARTWORK ************************************************************
 */
@@ -407,36 +393,6 @@ function deleteArtworkInternal(dispatch, artworkId, artistId, userId, callback =
         });*/
 }
 
-export function updateArtwork(artworkId, oldArtworkData, newArtworkData, callback) {
-    return dispatch => {
-        // get the current artwork data
-        // get the artistId from the artwork data
-        // use the artistId to remove connection in artistArtworkIds
-        // set new artistId on artwork
-        // add artworkId to the artistArtworkIds list for the correct artist
-
-        const artworkRef = firebase.database().ref(`/user-data/artworks/${artworkId}`);
-        if (newArtworkData.artistId && oldArtworkData.artistId !== newArtworkData.artistId) {
-            const oldArtistArtworkIdsRef = firebase.database().ref(`/user-data/artistArtworkIds/${oldArtworkData.artistId}/${artworkId}`);
-            const newArtistArtworkIdsRef = firebase.database().ref(`/user-data/artistArtworkIds/${newArtworkData.artistId}/${artworkId}`);
-
-            newArtistArtworkIdsRef.set(oldArtworkData.dateAdded);
-            oldArtistArtworkIdsRef.remove();
-        }
-
-        artworkRef.update(newArtworkData)
-            .then(() => {
-                    dispatch({
-                        type: UPDATE_ARTWORK_COMPLETE,
-                        payload: newArtworkData
-                    });
-
-                    if (callback) callback();
-                }
-            )
-    }
-}
-
 export function clearImageUpload() {
     return dispatch => {
         dispatch({
@@ -446,7 +402,7 @@ export function clearImageUpload() {
     }
 }
 
-export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, callback = null) {
+export function addArtwork(imgFile, userId, artistId, imgWidth, imgHeight, callback = null) {
     return dispatch => {
         fs_addArtwork(userId, artistId, imgFile, imgWidth, imgHeight, (uploadData) => {
             if (uploadData.status === 'uploading') {
@@ -465,5 +421,18 @@ export function uploadImage(imgFile, userId, artistId, imgWidth, imgHeight, call
             }
 
         });
+    }
+}
+
+export function updateArtwork(artworkId, currentArtistId, newArtistId, newImg, newWidth, newHeight, callback) {
+    return dispatch => {
+        fs_updateArtwork(artworkId, currentArtistId, newArtistId, newImg, newWidth, newHeight, (updateCompleteData) => {
+            dispatch({
+                type: UPDATE_ARTWORK_COMPLETE,
+                payload: updateCompleteData
+            });
+
+            if (callback) callback();
+        })
     }
 }

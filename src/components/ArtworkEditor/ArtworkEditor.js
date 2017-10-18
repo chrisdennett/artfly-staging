@@ -1,14 +1,15 @@
+// externals
 import React, { Component } from "react";
-
+// style
 import './artworkEditor.css';
-import ImageCropAndRotate from '../ImageCropAndRotate/ImageCropAndRotate';
+// components
 import ArtistSelector from "../ArtistSelector/ArtistSelector";
 import Butt from "../global/Butt";
+import ImageCropAndRotate from '../ImageCropAndRotate/ImageCropAndRotate';
 import Modal from "../global/Modal";
 import Page from "../global/Page";
 
 class ArtworkEditor extends Component {
-
     constructor(props) {
         super(props);
         this.state = { deleteConfirmIsShowing: false, artworkDeleting: false };
@@ -27,12 +28,6 @@ class ArtworkEditor extends Component {
         this.props.onConfirmDeleteArtwork()
     }
 
-    /*showPictureInGallery() {
-        this.setState({ imgIsSelected: false });
-        history.push(`/gallery/${this.props.imageUploadInfo.artistId}/artwork/${this.props.imageUploadInfo.id}`);
-        this.props.clearImageUpload();
-    }*/
-
     render() {
         const { url, artistId, artists, onArtistSelected, onCropDataConfirm, onCropImageSave, onSaveChanges, onCancelChanges } = this.props;
 
@@ -47,14 +42,12 @@ class ArtworkEditor extends Component {
                 <Modal title={'Artwork deleting...'} isOpen={this.state.artworkDeleting}/>
 
                 <section className={'page-main-section'}>
-                    <h2>Artist</h2>
                     <ArtistSelector artists={artists}
                                     selectedArtistId={artistId}
                                     onArtistSelected={onArtistSelected}/>
                 </section>
 
                 <section className={'page-main-section'}>
-                    <h2>Image</h2>
                     <div style={{ border: '1px solid #fff', padding: 10 }}>
                         <ImageCropAndRotate url={url}
                                             ref={instance => { this.cropper = instance; }}
@@ -65,8 +58,9 @@ class ArtworkEditor extends Component {
                 </section>
 
                 <section className={'page-main-section'}>
-                    <Butt label={'Save'} onClick={onSaveChanges}/>
-                    <Butt label={'Done'} onClick={onCancelChanges}/>
+                    {/*<Butt label={'Save'} onClick={onSaveChanges}/>*/}
+                    <Butt label={'Save Changes'} onClick={onSaveChanges}/>
+                    <Butt label={'Cancel'} onClick={onCancelChanges}/>
                     <Butt label={'Delete Artwork'}
                           backgroundColour={'#920000'}
                           shadowColour={'#540000'}

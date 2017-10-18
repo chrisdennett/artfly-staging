@@ -1,8 +1,64 @@
+import * as fb from 'firebase';
 import {
+    auth,
     firestoreDb as db,
     storageRef as store,
     storageEvents
 } from '../libs/firebaseConfig';
+
+/*
+*** AUTH ************************************************************
+*/
+
+// SIGN IN
+export function fb_signInWithProvider(providerName, onChangeCallback = null) {
+    let provider;
+    if (providerName === 'google') {
+        provider = new fb.auth.GoogleAuthProvider();
+    }
+    else if (providerName === 'facebook') {
+        provider = new fb.auth.FacebookAuthProvider();
+    }
+
+    auth
+        .getRedirectResult()
+        .then(result => {
+            onChangeCallback(result.user);
+        })
+        .catch(error => {
+            console.log("log in error: ", error);
+        });
+
+    auth.signInWithPopup(provider);
+}
+
+// SIGN OUT
+export function fb_signOut(onChangeCallback = null) {
+    auth
+        .signOut()
+        .then(() => {
+            if (onChangeCallback) onChangeCallback();
+        })
+        .catch((error) => {
+            console.log("sign out error: ", error);
+        });
+}
+
+// ADD USER AUTH LISTENER
+export function fb_addAuthListener(onChangeCallback = null) {
+    auth
+        .onAuthStateChanged((result) => {
+            if (result) {
+                const { photoURL, displayName, email, uid, providerData } = result;
+                const signedInWith = providerData[0].providerId || null;
+
+                if (onChangeCallback) onChangeCallback({ signedInWith, photoURL, displayName, email, uid });
+            }
+            else {
+                if (onChangeCallback) onChangeCallback(null);
+            }
+        })
+}
 
 /*
 *** USER ************************************************************
@@ -17,7 +73,20 @@ export function fs_addNewUser(authId, newUserData, onAddedCallback = null) {
             if (onAddedCallback) onAddedCallback(authId);
         })
         .catch(function (error) {
-            console.log('Add New User failed: ', error);
+            console.log('Add new user failed: ', error);
+        })
+}
+
+// UPDATE USER
+export function fs_updateUser(userId, newData, onChangeCallback = null) {
+    db.collection('users')
+        .doc(userId)
+        .update(newData)
+        .then(() => {
+            if (onChangeCallback) onChangeCallback({ [userId]: newData });
+        })
+        .catch(function (error) {
+            console.log('Update user failed: ', error);
         })
 }
 
@@ -29,8 +98,8 @@ export function fs_getUserChanges(userId, onChangeCallback = null) {
                 if (onChangeCallback) onChangeCallback(doc.data());
             },
             error => {
-                console.log("user artist listener error: ", error);
-            })
+                console.log("user listener error: ", error);
+            });
 
     fs_getUserArtworkChanges(userId);
 }
@@ -97,7 +166,7 @@ export function fs_updateArtist(artistId, newData, onChangeCallback = null) {
 let artistListeners = {};
 
 export function fs_getArtistChanges(artistId, onChangeCallback = null) {
-    if(!artistId){
+    if (!artistId) {
         console.log("no artistId: ", artistId);
         return;
     }
@@ -129,7 +198,78 @@ export function fs_addArtwork(userId, artistId, imgFile, imgWidth, imgHeight, on
     // Get artwork database id first so can be used for the filename
     const artworkDatabaseRef = db.collection('artworks').doc();
     const artworkId = artworkDatabaseRef.id;
-    // store images in artist directories
+
+    int_saveImageChanges(artworkId, artistId, imgFile,
+        (onChangeData) => {
+            if (onChangeCallback) onChangeCallback(onChangeData);
+        },
+        (onCompleteData) => {
+            // Upload completed successfully - save artwork data
+            const newArtworkData = {
+                artistId,
+                imgWidth,
+                imgHeight,
+                adminId: userId,
+                url: onCompleteData.downloadURL,
+                dateAdded: Date.now()
+            };
+
+            int_saveArtworkChanges(artworkId, newArtworkData, () => {
+                onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
+            });
+        });
+}
+
+// UPDATE ARTWORK
+export function fs_updateArtwork(artworkId, currentArtistId, newArtistId, newImage, newWidth, newHeight, onChangeCallback = null) {
+
+    // only overwrite the image if it has changed
+    if (newImage) {
+        const artistId = newArtistId ? newArtistId : currentArtistId;
+
+        int_saveImageChanges(artworkId, artistId, newImage,
+            (onChangeData) => {
+                if (onChangeCallback) onChangeCallback(onChangeData);
+            },
+            (onCompleteData) => {
+                // Upload completed successfully - save artwork data
+                let newArtworkData = {
+                    imgWidth: newWidth,
+                    imgHeight: newHeight,
+                    url: onCompleteData.downloadURL,
+                };
+                if(newArtistId) newArtworkData.artistId = newArtistId;
+
+                int_saveArtworkChanges(artworkId, newArtworkData, null, () => {
+                    onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
+                });
+            });
+    }
+    // If the image hasn't changed, just update the artwork data
+    else if (newArtistId) {
+        const newArtworkData = { artistId: newArtistId };
+        int_saveArtworkChanges(artworkId, newArtworkData, () => {
+            onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
+        });
+    }
+
+}
+
+// INTERNAL SAVE ARTWORK CHANGES
+function int_saveArtworkChanges(artworkId, newData, onChangeCallback = null) {
+    db.collection('artworks')
+        .doc(artworkId)
+        .set(newData, { merge: true })
+        .then(() => {
+            if (onChangeCallback) onChangeCallback();
+        })
+        .catch(function (error) {
+            console.log('Update artwork failed: ', error);
+        })
+}
+
+// INTERNAL ARTWORK DATA
+function int_saveImageChanges(artworkId, artistId, imgFile, onChangeCallback, onCompleteCallback) {
     const userPicturesRef = store.child(`userContent/${artistId}/${artworkId}`);
     // start the upload
     const uploadTask = userPicturesRef.put(imgFile);
@@ -138,47 +278,17 @@ export function fs_addArtwork(userId, artistId, imgFile, imgWidth, imgHeight, on
         .on(storageEvents.STATE_CHANGED,
             (snapshot) => {
                 const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-                if (onChangeCallback) onChangeCallback({ progress, artistId, id: artworkId, status: 'uploading' })
+                onChangeCallback({ progress, artistId, id: artworkId, status: 'uploading' });
             },
             (error) => {
                 // A full list of error codes is available at https://firebase.google.com/docs/storage/web/handle-errors
                 console.log("uncaught error: ", error);
             },
             () => {
-                // Upload completed successfully - save artwork data
-                const newArtworkData = {
-                    adminId: userId,
-                    artistId: artistId,
-                    url: uploadTask.snapshot.downloadURL,
-                    imgWidth: imgWidth,
-                    imgHeight: imgHeight,
-                    dateAdded: Date.now()
-                };
-
-                // the artwork data may already exist - created by the cloud function.
-                // if so use update
-
-                artworkDatabaseRef
-                    .set(newArtworkData, {merge:true})
-                    .then(() => {
-                        if (onChangeCallback) {
-                            const callBackData = {
-                                ...newArtworkData,
-                                progress: 100,
-                                status: 'complete',
-                                artworkId
-                            };
-
-                            console.log("artworkId: ", artworkId);
-
-                            onChangeCallback(callBackData);
-                        }
-                    })
-                    .catch(function (error) {
-                        console.log('Add New Artwork failed: ', error);
-                    })
+                onCompleteCallback({ downloadURL: uploadTask.snapshot.downloadURL });
             })
 }
+
 
 // GET ARTIST ARTWORK CHANGES
 export function fs_getArtistArtworkChanges(artistId, onChangeCallback = null) {
@@ -258,17 +368,4 @@ export function fs_getUserArtworkChanges(userId) {
             error => {
                 console.log("user artworks listener error: ", error);
             })
-}
-
-// UPDATE USER
-export function fs_updateUser(userId, newData, onChangeCallback = null) {
-    db.collection('users')
-        .doc(userId)
-        .update(newData)
-        .then(() => {
-            if (onChangeCallback) onChangeCallback({ [userId]: newData });
-        })
-        .catch(function (error) {
-            console.log('Update user failed: ', error);
-        })
 }
