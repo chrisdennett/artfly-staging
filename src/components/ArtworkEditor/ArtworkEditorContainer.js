@@ -124,7 +124,7 @@ class ArtworkEditorHolder extends Component {
     onConfirmDeleteArtwork() {
         const { artworkId } = this.props;
         const { artistId } = this.props.artwork;
-        this.props.deleteArtwork(artworkId, artistId, this.props.userId, () => {
+        this.props.deleteArtwork(artworkId, artistId, () => {
             history.push("/settings");
         });
     }

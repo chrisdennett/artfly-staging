@@ -7,19 +7,13 @@ import {
     fb_signOut,
     fs_addNewUser, fs_addNewArtist, fs_getUserChanges, fs_getUserArtistChanges,
     fs_getArtistArtworkChanges, fs_getArtistChanges, fs_addArtwork, fs_updateArtist, fs_getArtworkChanges,
-    fs_updateArtwork
+    fs_updateArtwork, fs_deleteArtwork, fs_deleteArtistAndArtworks
 } from './FirestoreActions';
 
 // FB - Realtime database actions
 import {
     removeAllFirebaseListeners,
-    fb_deleteUser,
-    fb_deleteArtwork,
-    fb_deleteArtistArtworkId,
-    fbstore_deleteImage,
-    fb_deleteArtist,
-    fb_fetchArtistArtworkIdsOnce,
-    fb_deleteUserArtist
+    fb_deleteUser
 } from "./FirebaseActions";
 
 export const ARTWORK_CHANGE = "artworkChange";
@@ -228,59 +222,17 @@ export function updateArtist(artistId, artistData, callback) {
 }
 
 // DELETE ARTIST
-export function deleteArtist(artistId, userId, callback) {
+export function deleteArtist(artistId, callback) {
     return dispatch => {
-        // delete the artist data
-        fb_deleteArtist(artistId, () => {
-            // delete the user-artist data
-            fb_deleteUserArtist(userId, artistId, () => {
-                // get references to all the artworks
-                fb_fetchArtistArtworkIdsOnce(artistId, (artworkIds) => {
-                    for (let id of Object.keys(artworkIds)) {
-                        // the false here stops the artwork trying to delete a value from data that will have already been removed
-                        deleteArtworkInternal(dispatch, id, artistId, userId);
-                    }
-                });
 
-                if (callback) callback();
-            })
+        fs_deleteArtistAndArtworks(artistId, () => {
+            dispatch({
+                type: ARTIST_DELETED,
+                payload: artistId
+            });
 
+            if (callback) callback();
         })
-
-        /*const db = firebase.database();
-        const artistRef = db.ref(`user-data/artists/${galleryArtistId}`);
-        const artistArtworkIdsRef = db.ref(`user-data/artistArtworkIds/${galleryArtistId}`);
-        const userArtistRef = db.ref(`user-data/users/${userId}/artistIds/${galleryArtistId}`);
-
-        artistArtworkIdsRef
-            .once('value')
-            .then(snapshot => {
-                const artworkIdObj = snapshot.val();
-                if (artworkIdObj && snapshot.val()) {
-                    const artworkIds = Object.keys(snapshot.val());
-                    for (let id of artworkIds) {
-                        // the false here stops the artwork trying to delete a value from data that will have already been removed
-                        deleteArtworkInternal(dispatch, id, galleryArtistId, userId, false);
-                    }
-                }
-            })
-            .then(() => {
-                // delete the artists artwork Id list
-                artistArtworkIdsRef.remove();
-
-                // delete the artist data
-                artistRef.remove();
-
-                // delete the reference to the artist in the user data
-                userArtistRef.remove();
-
-                dispatch({
-                    type: ARTIST_DELETED,
-                    payload: galleryArtistId
-                });
-
-                if (callback) callback();
-            })*/
     }
 }
 
@@ -334,63 +286,16 @@ export function listenForArtworkChanges(artworkId) {
     }
 }
 
-export function deleteArtwork(artworkId, artistId, userId, callback = null) {
+export function deleteArtwork(artworkId, artistId, callback=null) {
     return dispatch => {
-        return deleteArtworkInternal(dispatch, artworkId, artistId, userId, callback);
+        fs_deleteArtwork(artworkId, artistId, () => {
+            dispatch({
+                type: ARTWORK_DELETED,
+                payload: artworkId
+            });
+            if (callback) callback();
+        })
     }
-}
-
-function deleteArtworkInternal(dispatch, artworkId, artistId, userId, callback = null) {
-    fb_deleteArtwork(artworkId, () => {
-        fbstore_deleteImage(userId, artworkId, () => {
-            fb_deleteArtistArtworkId(artistId, artworkId, () => {
-                dispatch({
-                    type: ARTWORK_DELETED,
-                    payload: artworkId
-                });
-                if (callback) callback();
-            })
-        })
-    })
-
-    /*const imageStorageRef = firebase.storage().ref();
-    const userPicturesRef = imageStorageRef.child(`userContent/${userId}/${artworkId}`);
-    const artworkDataRef = firebase.database().ref(`user-data/artworks/${artworkId}`);
-    const artistArtworkIdRef = firebase.database().ref(`user-data/artistArtworkIds/${artistId}/${artworkId}`);
-
-    userPicturesRef.delete()
-        .then(() => {
-            // delete artwork data
-            artworkDataRef.remove()
-                .then(() => {
-                    // delete the artistArtworkId
-                    if (removeArtistArtworkId) {
-                        artistArtworkIdRef.remove()
-                            .then(() => {
-                                dispatch({
-                                    type: ARTWORK_DELETED,
-                                    payload: artworkId
-                                });
-                                console.log("artwork deleted > artworkId: ", artworkId);
-
-                                if (callback) callback();
-                            })
-                    }
-                    else {
-                        dispatch({
-                            type: ARTWORK_DELETED,
-                            payload: artworkId
-                        });
-                        console.log("artwork deleted without IDS > artworkId: ", artworkId);
-
-                        if (callback) callback();
-                    }
-                })
-
-        })
-        .catch(function (error) {
-            console.log("ControlPanelActions > deleteArtwork > error: ", error);
-        });*/
 }
 
 export function clearImageUpload() {

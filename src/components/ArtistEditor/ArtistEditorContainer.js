@@ -35,8 +35,8 @@ class ArtistEditorHolder extends Component {
     }
 
     deleteArtist() {
-        const { userId, artistId } = this.props;
-        this.props.deleteArtist(artistId, userId, () => {
+        const { artistId } = this.props;
+        this.props.deleteArtist(artistId, () => {
             history.push(`/settings/`);
         });
     }

@@ -162,6 +162,31 @@ export function fs_updateArtist(artistId, newData, onChangeCallback = null) {
         })
 }
 
+// DELETE ARTIST
+export function fs_deleteArtistAndArtworks(artistId, onCompleteCallback) {
+    int_deleteArtistData(artistId, () => {
+        // called here in case there are no artworks or one fails.
+        onCompleteCallback();
+
+        int_deleteArtistArtworks(artistId, () => {
+            console.log("Artworks deleted for: ", artistId);
+        });
+    });
+
+}
+
+function int_deleteArtistData(artistId, onCompleteCallback) {
+    db.collection('artists')
+        .doc(artistId)
+        .delete()
+        .then(() => {
+            if (onCompleteCallback) onCompleteCallback();
+        })
+        .catch(function (error) {
+            console.log('delete artist data failed: ', error);
+        })
+}
+
 // GET ARTIST CHANGES
 let artistListeners = {};
 
@@ -171,13 +196,16 @@ export function fs_getArtistChanges(artistId, onChangeCallback = null) {
         return;
     }
 
-    if (artistListeners[artistId]) {
-        return "already_running";
-    }
+    if (artistListeners[artistId]) return "already_running";
 
     artistListeners[artistId] = db.collection('artists')
         .doc(artistId)
         .onSnapshot(doc => {
+                if (!doc.exists) {
+                    // TODO: should return something so ui can deal with this.
+                    return;
+                }
+
                 const artistId = doc.id;
                 const artistData = doc.data();
                 const artistDataWithId = { ...artistData, artistId };
@@ -222,7 +250,6 @@ export function fs_addArtwork(userId, artistId, imgFile, imgWidth, imgHeight, on
 
 // UPDATE ARTWORK
 export function fs_updateArtwork(artworkId, currentArtistId, newArtistId, newImage, newWidth, newHeight, onChangeCallback = null) {
-
     // only overwrite the image if it has changed
     if (newImage) {
         const artistId = newArtistId ? newArtistId : currentArtistId;
@@ -238,7 +265,7 @@ export function fs_updateArtwork(artworkId, currentArtistId, newArtistId, newIma
                     imgHeight: newHeight,
                     url: onCompleteData.downloadURL,
                 };
-                if(newArtistId) newArtworkData.artistId = newArtistId;
+                if (newArtistId) newArtworkData.artistId = newArtistId;
 
                 int_saveArtworkChanges(artworkId, newArtworkData, null, () => {
                     onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
@@ -289,7 +316,6 @@ function int_saveImageChanges(artworkId, artistId, imgFile, onChangeCallback, on
             })
 }
 
-
 // GET ARTIST ARTWORK CHANGES
 export function fs_getArtistArtworkChanges(artistId, onChangeCallback = null) {
     db.collection('artworks')
@@ -329,6 +355,11 @@ export function fs_getArtworkChanges(artworkId, onChangeCallback = null) {
     artworkListeners[artworkId] = db.collection('artworks')
         .doc(artworkId)
         .onSnapshot(doc => {
+                if (!doc.exists) {
+                    // TODO: should return something so ui can deal with this.
+                    return;
+                }
+
                 const artworkId = doc.id;
                 const artworkData = doc.data();
                 const artworkDataWithId = { [artworkId]: artworkData };
@@ -368,4 +399,50 @@ export function fs_getUserArtworkChanges(userId) {
             error => {
                 console.log("user artworks listener error: ", error);
             })
+}
+
+// DELETE ARTWORK
+export function fs_deleteArtwork(artworkId, artistId, onCompleteCallback = null) {
+    int_deleteArtworkData(artworkId, () => {
+        int_deleteImageFromStorage(artworkId, artistId, () => {
+            if (onCompleteCallback) onCompleteCallback();
+        })
+    })
+}
+
+function int_deleteImageFromStorage(artworkId, artistId, onCompleteCallback) {
+    const imageRef = store.child(`userContent/${artistId}/${artworkId}`);
+    imageRef.delete()
+        .then(() => {
+            onCompleteCallback();
+        })
+        .catch(function (error) {
+            console.log('Delete image failed: ', error);
+        })
+}
+
+function int_deleteArtworkData(artworkId, onCompleteCallback) {
+    db.collection('artworks')
+        .doc(artworkId)
+        .delete()
+        .then(() => {
+            if (onCompleteCallback) onCompleteCallback();
+        })
+        .catch(function (error) {
+            console.log('delete artwork failed: ', error);
+        })
+}
+
+// DELETE ARTIST'S ARTWORKS
+function int_deleteArtistArtworks(artistId, onCompleteCallback) {
+    // find all artworks with the matching artistId
+    db.collection('artworks')
+        .where('artistId', '==', artistId)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach(doc => {
+                fs_deleteArtwork(doc.id, artistId)
+            })
+
+        })
 }
