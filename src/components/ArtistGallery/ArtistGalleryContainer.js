@@ -1,6 +1,7 @@
 // externals
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import * as _ from 'lodash';
 // actions
 import { listenForArtistChanges, listenForArtistArtworkChanges } from '../../actions/UserDataActions';
 // components
@@ -120,9 +121,13 @@ const calculateGalleryParams = (totalArtworks = 0, inMobileMode = false) => {
 
 // Map state to props maps to the intermediary component which uses or passes them through
 const mapStateToProps = (state, ownProps) => {
+    const galleryArtworks = _.pickBy(state.artworks, (value) => {
+        return value.artistId === ownProps.galleryId;
+    });
+
     return {
         artist: state.artists[ownProps.galleryId],
-        artworks: state.artworks,
+        artworks: galleryArtworks,
         galleryParams: state.ui.galleryParams,
         windowSize: state.ui.windowSize,
         galleryIsZoomedOut: state.ui.galleryIsZoomedOut
