@@ -1,20 +1,12 @@
-import firebase from '../libs/firebaseConfig';
-
 // FB - Firestore actions
 import {
-    fb_addAuthListener,
-    fb_signInWithProvider,
-    fb_signOut,
+    fs_addAuthListener,
+    fs_signInWithProvider,
+    fs_signOut,
     fs_addNewUser, fs_addNewArtist, fs_getUserChanges, fs_getUserArtistChanges,
     fs_getArtistArtworkChanges, fs_getArtistChanges, fs_addArtwork, fs_updateArtist, fs_getArtworkChanges,
-    fs_updateArtwork, fs_deleteArtwork, fs_deleteArtistAndArtworks
+    fs_updateArtwork, fs_deleteArtwork, fs_deleteArtistAndArtworks, fs_deleteUser
 } from './FirestoreActions';
-
-// FB - Realtime database actions
-import {
-    removeAllFirebaseListeners,
-    fb_deleteUser
-} from "./FirebaseActions";
 
 export const ARTWORK_CHANGE = "artworkChange";
 export const ARTIST_CHANGE = "artistChange";
@@ -33,7 +25,6 @@ export const SIGN_IN_USER_TRIGGERED = "signInUserTriggered";
 export const SIGN_OUT_USER = "signOutUser";
 export const DELETE_USER = "deleteUser";
 export const ADD_USER_ARTIST = 'addUserArtist';
-export const CLEAR_USER_DATA = 'clearUserData';
 
 /*
 *** AUTH ************************************************************
@@ -47,7 +38,7 @@ export function signInWithGoogle() {
             payload: { loginStatus: 'pending' }
         });
 
-        fb_signInWithProvider('google', (user) => {
+        fs_signInWithProvider('google', (user) => {
             dispatch({
                 type: SIGN_IN_USER,
                 payload: user
@@ -64,7 +55,7 @@ export function signInWithFacebook() {
             payload: { loginStatus: 'pending' }
         });
 
-        fb_signInWithProvider('facebook', (user) => {
+        fs_signInWithProvider('facebook', (user) => {
             dispatch({
                 type: SIGN_IN_USER,
                 payload: user
@@ -76,19 +67,10 @@ export function signInWithFacebook() {
 // SIGN OUT
 export function signOutUser() {
     return dispatch => {
-        fb_signOut(() => {
-            firebase.auth().signOut().then(function () {
-                removeAllFirebaseListeners(() => {
-                    dispatch({
-                        type: CLEAR_USER_DATA,
-                        payload: ""
-                    })
-                });
-
-                dispatch({
-                    type: SIGN_OUT_USER,
-                    payload: { status: 'none', loginStatus: 'loggedOut' }
-                })
+        fs_signOut(() => {
+            dispatch({
+                type: SIGN_OUT_USER,
+                payload: { status: 'none', loginStatus: 'loggedOut' }
             })
         })
     }
@@ -127,7 +109,7 @@ export function listenForUserChanges() {
             payload: { status: "pending" }
         });
 
-        fb_addAuthListener((authData) => {
+        fs_addAuthListener((authData) => {
             if (authData) {
                 dispatch({
                     type: FETCH_USER,
@@ -166,7 +148,7 @@ export function listenForUserChanges() {
 // Rename this or update so it deletes all data
 export function deleteUser() {
     return dispatch => {
-        fb_deleteUser(() => {
+        fs_deleteUser(() => {
             dispatch({
                 type: DELETE_USER,
                 payload: "success"
@@ -286,7 +268,7 @@ export function listenForArtworkChanges(artworkId) {
     }
 }
 
-export function deleteArtwork(artworkId, artistId, callback=null) {
+export function deleteArtwork(artworkId, artistId, callback = null) {
     return dispatch => {
         fs_deleteArtwork(artworkId, artistId, () => {
             dispatch({

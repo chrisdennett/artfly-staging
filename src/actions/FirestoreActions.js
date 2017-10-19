@@ -6,12 +6,14 @@ import {
     storageEvents
 } from '../libs/firebaseConfig';
 
+// TODO: haven't got rid of listeners anywhere, they "could" build up the data massively
+// Could clear artist and artwork data when a new gallery is loaded in (clear the old data and listeners first)
 /*
 *** AUTH ************************************************************
 */
 
 // SIGN IN
-export function fb_signInWithProvider(providerName, onChangeCallback = null) {
+export function fs_signInWithProvider(providerName, onChangeCallback = null) {
     let provider;
     if (providerName === 'google') {
         provider = new fb.auth.GoogleAuthProvider();
@@ -33,7 +35,7 @@ export function fb_signInWithProvider(providerName, onChangeCallback = null) {
 }
 
 // SIGN OUT
-export function fb_signOut(onChangeCallback = null) {
+export function fs_signOut(onChangeCallback = null) {
     auth
         .signOut()
         .then(() => {
@@ -45,7 +47,7 @@ export function fb_signOut(onChangeCallback = null) {
 }
 
 // ADD USER AUTH LISTENER
-export function fb_addAuthListener(onChangeCallback = null) {
+export function fs_addAuthListener(onChangeCallback = null) {
     auth
         .onAuthStateChanged((result) => {
             if (result) {
@@ -88,6 +90,20 @@ export function fs_updateUser(userId, newData, onChangeCallback = null) {
         .catch(function (error) {
             console.log('Update user failed: ', error);
         })
+}
+
+// DELETE USER
+// TODO: Currently this is just used to clear auth assuming the user has no other data
+// Rename this or update so it deletes all data
+export function fs_deleteUser(onDeletedCallback = null) {
+    fb.auth().currentUser
+        .delete()
+        .then(() => {
+            if (onDeletedCallback) onDeletedCallback();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
 
 // GET USER LISTENER
