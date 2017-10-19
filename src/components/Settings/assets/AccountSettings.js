@@ -11,7 +11,7 @@ const AccountSettings = function (props) {
     const infoStyle = {
         fontSize: 16, margin: '0 0 10px 10px', opacity: 0.9
     };
-    const familyPlanId = 253185;
+    const familyPlanId = 516947;
 
     if (!subscription || accountType === 'free') {
         subscriptionButtons = (
