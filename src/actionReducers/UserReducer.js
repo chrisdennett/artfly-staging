@@ -29,10 +29,15 @@ export default function (state = {}, action) {
             let subscriptionId = 0;
 
             if (subscription) {
-                subscriptionId = subscription.subscriptionId;
+                subscriptionId = subscription.planId;
+                console.log("subscriptionId: ", subscriptionId);
             }
 
             const extraSubscriptionParams = ArtflyAccountTypes[subscriptionId];
+
+            console.log("ArtflyAccountTypes: ", ArtflyAccountTypes);
+
+            console.log("extraSubscriptionParams: ", extraSubscriptionParams);
             let maxArtworksReached = false;
 
             if (userData.totalArtworks && extraSubscriptionParams) {

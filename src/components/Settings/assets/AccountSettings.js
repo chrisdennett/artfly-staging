@@ -41,6 +41,10 @@ const AccountSettings = function (props) {
             <span>
                 <Butt inline={true} size={'small'} onClick={onCancelSubscription} label={`Cancel subscription`}/>
                 <Butt inline={true} size={'small'} onClick={onUpdateSubscription} label={`Update subscription`}/>
+                <p style={infoStyle}>
+                   You're currently signed up for a monthly {accountType} subscription.
+                    <br/>Next payment for {price} will be taken on <strong>{subscription.cancellationEffectiveDate}</strong>.
+                </p>
             </span>
         )
     }
@@ -49,7 +53,7 @@ const AccountSettings = function (props) {
         <div>
             <h2>Your account</h2>
             <ul>
-                <li>Account type: {!subscription ? 'free' : 'subscriber'} {subscriptionButtons}</li>
+                <li>Account type: {accountType} {subscriptionButtons}</li>
                 <li>Total artworks added: {totalArtworks}
                     <p style={infoStyle}>
                         (the limit is {maxArtworks})

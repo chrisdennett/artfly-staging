@@ -4,7 +4,7 @@ const ArtflyAccountTypes = {
         maxArtworks: 7,
         maxArtists: 2
     },
-    253185:{
+    516947:{
         planName:'Family',
         maxArtworks: 1000,
         maxArtists: 8
