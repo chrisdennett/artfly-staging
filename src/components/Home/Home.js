@@ -1,53 +1,107 @@
+// externals
 import React, { Component } from "react";
-import './home.css';
-import { connect } from 'react-redux';
+import styled from 'styled-components';
+// components
 import Title from "./assets/Title";
-import LinkButt from "../global/LinkButt";
+import SignInContainer from "../SignIn/SignInContainer";
+// import Link from "../global/Link";
+// import LinkButt from "../global/LinkButt";
+
+const PageWrapper = styled.div`
+    background-color: papayawhip;
+    height: 100vh;
+`;
+
+const Heading = styled.div`
+    padding: 5rem 10px 2rem 10px;
+`;
+
+const MaxWidthSection = styled.div`
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 1rem;
+`;
+
+const WarningBox = styled.div`
+    padding: 30px 0;
+    text-align: center;
+    color: white;
+    background-color: palevioletred;
+    border-top: 2px solid rgba(0,0,0,0.1);
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+    margin: 60px 0;
+`;
+
+const TagLine = styled.p`
+    text-align: center;
+    margin: 10px 0;
+    color: rgba(0,0,0,0.5);
+    font-size: 1.6rem;
+    
+    @media (max-width: 600px) {
+		font-size: 1.3rem;
+		}
+`;
+
+const WarningHeader = styled.h2`
+    margin-top: 20px;
+    padding: 30px 10px;
+`;
+
+const WarningSection = styled.p`
+    margin-top: 20px;
+    padding: 30px 10px 0 10px;
+    
+    border-top: dashed white 1px;
+`;
+
+const EmailLink = styled.a`
+    color: white;
+    padding: 3px 5px;
+    border-radius: 5px;
+    
+    &:hover {
+			background: rgba(0,0,0,0.2);
+		}
+`;
 
 class Home extends Component {
-
     render() {
-        // TODO: Fill in the proper ids when the galleries are set up
-        const hollyGalleryId = '#';
-        const dotGalleryId = '#';
-
         return (
-            <div className={'home'}>
-                <div className={'home-content'}>
-                    <Title/>
-                    <p className={'descriptions'}>Don't let artistic creations languish in a drawer. Let the Art Fly
-                        free!</p>
-                    <section>
-                        <h2>What?</h2>
-                        <p>A place for all your those awesome artworks your kids produce. You could just stick them in a
-                            draw or take a picture of it and save it somewhere. </p>
-                        <p>Ideally we'd frame them and stick them all on the wall, but...</p>
-                        <p>I tried sticking them all straight to the wall, but even this is too much for me it seems. I
-                            need it to be quick and easy.</p>
-                        <p>With Artfly you take a photo of it, but instead of forgetting about it you stick it in their
-                            own art gallery.</p>
-                        <p>I originally made this for my own children. If you want to check out their galleries you can
-                            see them here:</p>
+            <PageWrapper>
+                <MaxWidthSection>
+                    <Heading>
+                        <Title/>
 
-                        <LinkButt linkTo={`/gallery/${hollyGalleryId}`}
-                                  label={'Holly\'s Gallery'}
-                                  backgroundColour={'#4b962e'}
-                                  shadowColour={'#2a5421'}
-                                  style={{ display: 'inline-block' }}
-                                  fullWidth={false}/>
+                        <TagLine>Don't let artistic creations languish in a drawer. <br/>Let the
+                            Art Fly free!</TagLine>
+                    </Heading>
+                </MaxWidthSection>
 
-                        <LinkButt linkTo={`/gallery/${dotGalleryId}`}
-                                  label={'Dot\'s Gallery'}
-                                  backgroundColour={'#2f8194'}
-                                  shadowColour={'#22485a'}
-                                  style={{ display: 'inline-block' }}
-                                  fullWidth={false}/>
+                <WarningBox>
+                    <WarningHeader>Artfly's not quite ready for everyone yet.</WarningHeader>
+                    <WarningSection>If you're helping with testing — Thank you — sign in below:</WarningSection>
+                    <SignInContainer/>
+                    <WarningSection>If you'd like to help with testing or find out more: <EmailLink
+                        href={'mailto:chris@gmail.com'} target={'_blank'}>drop me an email</EmailLink>.</WarningSection>
+                </WarningBox>
 
-                        <p>Here are some screenshots and stuff:</p>
+                {/*<MaxWidthSection>
+                    <h2>What will it be for</h2>
+                    <p>When done it'll be a place for storing, sharing and encouraging your children's boundless
+                        creativity</p>
+                    <ul>
+                        <li>Somewhere I can quickly and easily</li>
+                    </ul>
+
+                </MaxWidthSection>*/}
+
+                {/* <MaxWidthSection>
+                        <h2>Some early screen shots:</h2>
 
                         <img style={{ maxWidth: '100%' }} src={'../gallery-example.png'} alt={`gallery`}/>
 
-                        <h2>How</h2>
+                        <h2>How it will work</h2>
                         <p></p>
                         <ul>
                             <li>Snap a photo of the artwork.</li>
@@ -55,27 +109,10 @@ class Home extends Component {
                             <li>Build your own gallery.</li>
                             <li>Share with the world.</li>
                         </ul>
-
-                        <h2>How much?</h2>
-                        <p>It's free for up to 7 pictures so you can try it out. Then if you want to subscribe
-                            it's {this.props.localPrice} a month.</p>
-
-                        <h2>What about the 'who, why', where & when'?</h2>
-                        <p>I think that's enough words for the home page so I've stuck all dvd extras on the
-                            <button>[Add link to About Us Page]</button>
-                        </p>
-                    </section>
-
-                </div>
-            </div>
+                    </MaxWidthSection>*/}
+            </PageWrapper>
         );
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        localPrice: state.paddle.localPrice
-    }
-}
-
-export default connect(mapStateToProps, { })(Home);
+export default Home;
