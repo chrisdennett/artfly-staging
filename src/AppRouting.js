@@ -22,8 +22,11 @@ import ArtworkContainer from './components/Artwork/ArtworkContainer';
 import ArtworkEditorContainer from "./components/ArtworkEditor/ArtworkEditorContainer";
 import FourOhFour from "./components/FourOhFour/FourOhFour";
 import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
+//
+import ImageCuttingBoard from './components/ImageCuttingBoard/ImageCuttingBoard';
 
 const routes = {
+    cut: { component: ImageCuttingBoard },
     home: { component: Home },
     gallery: { component: ArtistGalleryContainer },
     artwork: { component: ArtworkContainer },
