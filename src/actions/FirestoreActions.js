@@ -111,13 +111,19 @@ export function fs_getUserChanges(userId, onChangeCallback = null) {
     db.collection('users')
         .doc(userId)
         .onSnapshot(doc => {
+                if (!doc.exists) {
+                    if (onChangeCallback) onChangeCallback(null);
+                    return;
+                }
+
                 if (onChangeCallback) onChangeCallback(doc.data());
+
+                fs_getUserArtworkChanges(userId);
             },
             error => {
+                console.log("userId: ", userId);
                 console.log("user listener error: ", error);
             });
-
-    fs_getUserArtworkChanges(userId);
 }
 
 /*
@@ -450,7 +456,7 @@ function int_deleteArtworkData(artworkId, onCompleteCallback) {
 }
 
 // DELETE ARTIST'S ARTWORKS
-function int_deleteArtistArtworks(artistId, onCompleteCallback) {
+function int_deleteArtistArtworks(artistId) {
     // find all artworks with the matching artistId
     db.collection('artworks')
         .where('artistId', '==', artistId)
