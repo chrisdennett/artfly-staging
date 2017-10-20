@@ -218,7 +218,7 @@ exports.generateDifferentImageSizes = functions.storage.object()
                                     ref
                                         .set({ [`${databaseUrlPropertyPrefix}large`]: response[0] }, { merge: true })
                                         .then(() => {
-                                            // console.log("Wow it worked large and stuff: ");
+                                            console.log("Wow it worked large and stuff: ");
                                         })
                                         .catch(function (error) {
                                             console.log('Add large thumb failed: ', error);
@@ -238,7 +238,7 @@ exports.subscriptionEvent = functions.https.onRequest((request, response) => {
     const alertName = request.body.alert_name;
     const userId = request.body.passthrough;
     // const ref = functions.firestore.collection('users').doc(userId);
-    const ref = firestore.doc(`users/${userId}`);
+    // const ref = firestore.doc(`users/${userId}`);
 
     const subscriptionObject = {};
     subscriptionObject.status = request.body.status; // status can be active, trailing, past_due, deleted
@@ -267,7 +267,9 @@ exports.subscriptionEvent = functions.https.onRequest((request, response) => {
             break;
     }
 
-    ref.set({ subscription: subscriptionObject }, { merge: true })
+    firestore
+        .doc(`users/${userId}`)
+        .set({ subscription: subscriptionObject }, { merge: true })
         .then(() => {
             console.log('Update subscription success');
         })
