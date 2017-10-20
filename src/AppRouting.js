@@ -25,15 +25,17 @@ import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
 //
 import ImageCuttingBoard from './components/ImageCuttingBoard/ImageCuttingBoard';
 
+const IN_BETA_MODE = true;
+
 const routes = {
     cut: { component: ImageCuttingBoard },
     home: { component: Home },
     gallery: { component: ArtistGalleryContainer },
     artwork: { component: ArtworkContainer },
-    settings: { component: SettingsContainer, adminOnly:true },
-    artworkEditor: { component: ArtworkEditorContainer, adminOnly:true  },
-    addOrEditArtist: { component: ArtistEditorContainer, adminOnly:true  },
-    newUser: { component: NewUserFormContainer, adminOnly:true  }
+    settings: { component: SettingsContainer, adminOnly: true },
+    artworkEditor: { component: ArtworkEditorContainer, adminOnly: true },
+    addOrEditArtist: { component: ArtistEditorContainer, adminOnly: true },
+    newUser: { component: NewUserFormContainer, adminOnly: true }
 };
 
 class ArtflyRouting extends Component {
@@ -100,30 +102,34 @@ class ArtflyRouting extends Component {
     }
 
     render() {
-        const {page, params} = this.state;
+        const { page, params } = this.state;
         const PageComponent = routes[page] ? routes[page].component : FourOhFour;
         const adminOnly = routes[page] && routes[page].adminOnly ? routes[page].adminOnly : false;
         const PageComponentWithProps = <PageComponent {...params} />;
 
-        if(!this.props.user.status || this.props.user.status === 'pending'){
+        if (!this.props.user.status || this.props.user.status === 'pending') {
             return <LoadingOverlay/>
         }
 
-        if(adminOnly){
-            if(this.props.user.status === 'none'){
+        if (adminOnly) {
+            if (this.props.user.status === 'none') {
                 return <Redirect to={'/'}/>;
             }
         }
 
         // Send new users (signed in with google of facebook for the first time)
         // ... to set up basic user data
-        if(this.props.user.status === 'new' && page !== 'newUser'){
+        if (this.props.user.status === 'new' && page !== 'newUser') {
             return <Redirect to={'/newUser'}/>;
         }
 
+        const showTopControls = IN_BETA_MODE === false || this.props.user.status !== 'none';
+
         return (
             <div>
+                {showTopControls &&
                 <AppControls {...params} user={this.props.user}/>
+                }
                 <WindowController>
                     {PageComponentWithProps}
                 </WindowController>
