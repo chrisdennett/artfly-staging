@@ -7,6 +7,58 @@ import SignInContainer from "../SignIn/SignInContainer";
 // import Link from "../global/Link";
 // import LinkButt from "../global/LinkButt";
 
+class Home extends Component {
+    render() {
+        return (
+            <PageWrapper>
+                <MaxWidthSection>
+                    <Heading>
+                        <Title/>
+
+                        <TagLine>Don't let artistic creations languish in a drawer. <br/>Let the
+                            Art Fly free!</TagLine>
+                    </Heading>
+                </MaxWidthSection>
+
+                <WarningBox>
+                    <WarningHeader>Artfly's not quite ready for everyone yet.</WarningHeader>
+                    <WarningSection>If you're helping with testing — Thank you — sign in below:</WarningSection>
+                    <SignInContainer/>
+                    <WarningSection>If you'd like to help with testing or find out more: <EmailLink
+                        href={'mailto:chris@gmail.com'} target={'_blank'}>drop me an email</EmailLink>.</WarningSection>
+                </WarningBox>
+
+                {/*<MaxWidthSection>
+                    <h2>What will it be for</h2>
+                    <p>When done it'll be a place for storing, sharing and encouraging your children's boundless
+                        creativity</p>
+                    <ul>
+                        <li>Somewhere I can quickly and easily</li>
+                    </ul>
+
+                </MaxWidthSection>*/}
+
+                {/* <MaxWidthSection>
+                        <h2>Some early screen shots:</h2>
+
+                        <img style={{ maxWidth: '100%' }} src={'../gallery-example.png'} alt={`gallery`}/>
+
+                        <h2>How it will work</h2>
+                        <p></p>
+                        <ul>
+                            <li>Snap a photo of the artwork.</li>
+                            <li>Add a frame and a room.</li>
+                            <li>Build your own gallery.</li>
+                            <li>Share with the world.</li>
+                        </ul>
+                    </MaxWidthSection>*/}
+            </PageWrapper>
+        );
+    }
+}
+
+export default Home;
+
 const PageWrapper = styled.div`
     background-color: papayawhip;
     height: 100vh;
@@ -64,55 +116,3 @@ const EmailLink = styled.a`
 			background: rgba(0,0,0,0.2);
 		}
 `;
-
-class Home extends Component {
-    render() {
-        return (
-            <PageWrapper>
-                <MaxWidthSection>
-                    <Heading>
-                        <Title/>
-
-                        <TagLine>Don't let artistic creations languish in a drawer. <br/>Let the
-                            Art Fly free!</TagLine>
-                    </Heading>
-                </MaxWidthSection>
-
-                <WarningBox>
-                    <WarningHeader>Artfly's not quite ready for everyone yet.</WarningHeader>
-                    <WarningSection>If you're helping with testing — Thank you — sign in below:</WarningSection>
-                    <SignInContainer/>
-                    <WarningSection>If you'd like to help with testing or find out more: <EmailLink
-                        href={'mailto:chris@gmail.com'} target={'_blank'}>drop me an email</EmailLink>.</WarningSection>
-                </WarningBox>
-
-                {/*<MaxWidthSection>
-                    <h2>What will it be for</h2>
-                    <p>When done it'll be a place for storing, sharing and encouraging your children's boundless
-                        creativity</p>
-                    <ul>
-                        <li>Somewhere I can quickly and easily</li>
-                    </ul>
-
-                </MaxWidthSection>*/}
-
-                {/* <MaxWidthSection>
-                        <h2>Some early screen shots:</h2>
-
-                        <img style={{ maxWidth: '100%' }} src={'../gallery-example.png'} alt={`gallery`}/>
-
-                        <h2>How it will work</h2>
-                        <p></p>
-                        <ul>
-                            <li>Snap a photo of the artwork.</li>
-                            <li>Add a frame and a room.</li>
-                            <li>Build your own gallery.</li>
-                            <li>Share with the world.</li>
-                        </ul>
-                    </MaxWidthSection>*/}
-            </PageWrapper>
-        );
-    }
-}
-
-export default Home;
