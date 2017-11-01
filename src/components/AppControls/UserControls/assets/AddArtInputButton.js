@@ -1,4 +1,6 @@
+// externals
 import React, { Component } from 'react';
+// components
 import history from '../../../global/history';
 import AddArtModal from "../../../AddArtModal/AddArtModal";
 

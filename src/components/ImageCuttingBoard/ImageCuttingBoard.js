@@ -1,11 +1,23 @@
 // externals
 import React, { Component } from "react";
+import styled from 'styled-components';
 // components
 import DragHandle from "./assets/DragHandle";
+import SelectPhotoButton from "./assets/SelectPhotoButton";
 
 class ImageCuttingBoard extends Component {
+    constructor(props){
+        super(props)
+
+        this.onHandleUpdate = this.onHandleUpdate.bind(this);
+    }
+
     componentDidMount() {
         this.updateCanvas();
+    }
+
+    onHandleUpdate(handleName, x, y){
+        // console.log("handleName > x,y: ", handleName, x, y);
     }
 
     updateCanvas() {
@@ -26,22 +38,14 @@ class ImageCuttingBoard extends Component {
     }
 
     render() {
-        const containerStyle = {
-            backgroundColor: '#939393',
-            padding: '80px 20px 60px 20px',
-            textAlign: 'center'
-        };
-
-        const canvasStyle = {
-            border: '#fff 1px solid',
-            margin: '0 auto'
-        };
-
         return (
-            <div style={containerStyle}>
-                <DragHandle/>
-                <canvas style={canvasStyle} ref="canvas" width={800} height={600}/>
-            </div>
+            <CuttingBoardContainer>
+                <SelectPhotoButton/>
+                <CuttingBoard>
+                    <DragHandle onHandleUpdate={this.onHandleUpdate}/>
+                    <canvas ref="canvas" width={800} height={600}/>
+                </CuttingBoard>
+            </CuttingBoardContainer>
         );
     }
 }
@@ -56,3 +60,21 @@ function line({ ctx, startX, startY, endX, endY }) {
     ctx.strokeStyle = '#ee00ee';
     ctx.stroke();
 }
+
+
+const CuttingBoardContainer = styled.div`
+    background: rgba(0,0,0,0.2);
+    padding: 20px;
+`;
+
+const CuttingBoard = styled.div`
+    background-color: #931f84;
+    width: 800px;
+    height: 600px;
+    margin: 0 auto;
+    position: relative; 
+    
+    canvas{
+        outline: #fff 1px solid;
+    }
+`;

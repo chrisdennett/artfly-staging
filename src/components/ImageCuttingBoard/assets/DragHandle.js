@@ -12,7 +12,6 @@ class DragHandle extends Component {
         this.state = { isSelected: false }
     }
 
-
     select(e) {
         this.setState({ isSelected: true });
     }
@@ -21,16 +20,13 @@ class DragHandle extends Component {
         this.setState({ isSelected: false });
     }
 
-
-    onDrag(e) {
-        // console.log("e: ", e);
+    onDrag(e, data) {
+        this.props.onHandleUpdate('left', data.x, data.y);
     }
 
     render() {
-        const { x = 0, y = 0 } = this.props;
+        const bounds = {left:0, right:800};
         const { isSelected } = this.state;
-
-        console.log("isSelected: ", isSelected);
 
         const fill = isSelected ? '#ffff00' : '#ff00ff';
 
@@ -38,12 +34,12 @@ class DragHandle extends Component {
             <Draggable
                 axis={'x'}
                 handle=".handle"
-                defaultPosition={{ x, y }}
+                bounds={bounds}
                 onStart={this.select.bind(this)}
                 onDrag={this.onDrag.bind(this)}
                 onStop={this.deselect.bind(this)}>
-                <div className="handle">
-                    <SvgHandle fill={fill}/>
+                <div className="handle" style={{width:'50px', position:'absolute', top:275, left:-25}}>
+                    <SvgHandle className="handle" fill={fill}/>
                 </div>
             </Draggable>
 
