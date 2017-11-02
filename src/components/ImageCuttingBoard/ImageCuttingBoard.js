@@ -112,8 +112,8 @@ class ImageCuttingBoard extends Component {
             canvasW = maxH * hToWRatio;
         }
 
-        console.log("canvasW: ", canvasW);
-        console.log("canvasH: ", canvasH);
+        canvas.width = canvasW;
+        canvas.height = canvasH;
 
         // save the context so it can be reset after transform
         ctx.save();
@@ -136,6 +136,8 @@ class ImageCuttingBoard extends Component {
         ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, transformedCanvasW, transformedCanvasH);
         // restore ensures resets transform in case another image is added
         ctx.restore();
+
+
 
         this.setState({canvasW, canvasH });
     }
@@ -172,9 +174,9 @@ class ImageCuttingBoard extends Component {
                     onPhotoSelect={this.onPhotoSelected}
                     onClick={this.onSelectPhotoClick}/>
 
-                <CuttingBoard>
+                <CuttingBoard style={{width:this.state.canvasW}}>
                     <DragHandle onHandleUpdate={this.onHandleUpdate}/>
-                    <canvas ref="canvas" width={800} height={600}/>
+                    <canvas ref="canvas"/>
                 </CuttingBoard>
 
             </CuttingBoardContainer>
