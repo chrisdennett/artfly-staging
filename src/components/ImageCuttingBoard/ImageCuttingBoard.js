@@ -13,16 +13,29 @@ class ImageCuttingBoard extends Component {
         this.onImageLoad = this.onImageLoad.bind(this);
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.getOrientation = this.getOrientation.bind(this);
+        this.drawOutputImage = this.drawOutputImage.bind(this);
 
         this.state = { canvasW:800, canvasH:600 };
     }
 
-    componentDidMount() {
-        //this.updateCanvas();
+    __loadDevImageForTesting(){
+        const img = this.refs.sourceImg;
+        img.onload = (e) => {
+            this.onImageLoad(e.target, -1);
+            this.drawOutputImage();
+        }
     }
 
-    onHandleUpdate(handleName, x, y) {
-        // console.log("handleName > x,y: ", handleName, x, y);
+    componentDidMount() {
+        //this.updateCanvas();
+
+       this.__loadDevImageForTesting();
+    }
+
+    onHandleUpdate(handleName, x) {
+        // console.log("handleName > x: ", handleName, x);
+
+        this.drawOutputImage(x);
     }
 
     onSelectPhotoClick(e) {
@@ -83,13 +96,11 @@ class ImageCuttingBoard extends Component {
     }
 
     onImageLoad(img, srcOrientation) {
-        // const img = e.target;
-        console.log("orientation: ", srcOrientation);
         const isPortrait = srcOrientation > 4 && srcOrientation < 9;
 
-        const canvas = this.refs.canvas;
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const {sourceCanvas} = this.refs;
+        const ctx = sourceCanvas.getContext('2d');
+        ctx.clearRect(0, 0, sourceCanvas.width, sourceCanvas.height);
 
         const imgW = isPortrait ? img.height : img.width;
         const imgH = isPortrait ? img.width : img.height;
@@ -112,8 +123,8 @@ class ImageCuttingBoard extends Component {
             canvasW = maxH * hToWRatio;
         }
 
-        canvas.width = canvasW;
-        canvas.height = canvasH;
+        sourceCanvas.width = canvasW;
+        sourceCanvas.height = canvasH;
 
         // save the context so it can be reset after transform
         ctx.save();
@@ -137,15 +148,35 @@ class ImageCuttingBoard extends Component {
         // restore ensures resets transform in case another image is added
         ctx.restore();
 
-
-
         this.setState({canvasW, canvasH });
+    }
+
+    drawOutputImage(leftHandleX=0){
+        const {sourceCanvas, outputCanvas} = this.refs;
+        const outputContext = outputCanvas.getContext('2d');
+        const fullSourceWidth = sourceCanvas.width;
+        const fullSourceHeight = sourceCanvas.height;
+
+        const sourceX = leftHandleX;
+        const sourceY = 0;
+        const sourceWidth = fullSourceWidth - leftHandleX;
+        const sourceHeight = fullSourceHeight;
+
+        const outputX = 0;
+        const outputY = 0;
+        const outputWidth = sourceWidth/2;
+        const outputHeight = sourceHeight/2;
+
+        outputCanvas.width = outputWidth;
+        outputCanvas.height = outputHeight;
+
+        outputContext.drawImage(sourceCanvas, sourceX, sourceY, sourceWidth, sourceHeight, outputX, outputY, outputWidth, outputHeight);
     }
 
    /* updateCanvas() {
         const canvasHeight = 600;
         const canvasWidth = 800;
-        const ctx = this.refs.canvas.getContext('2d'); // should this be stored state
+        const ctx = this.refs.sourceCanvas.getContext('2d'); // should this be stored state
         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
         const verticalCropLine1 = 200;
@@ -159,14 +190,7 @@ class ImageCuttingBoard extends Component {
         line({ ctx, startX: 0, startY: horizontalCropLine2, endX: canvasWidth, endY: horizontalCropLine2 });
     }*/
 
-
-
     render() {
-        /*const canvas = this.refs.canvas;
-        if(!canvas) return null;*/
-
-        // const imgLoaded = this.state.canvasW && this.state.canvasH;
-
         return (
             <CuttingBoardContainer>
 
@@ -176,9 +200,19 @@ class ImageCuttingBoard extends Component {
 
                 <CuttingBoard style={{width:this.state.canvasW}}>
                     <DragHandle onHandleUpdate={this.onHandleUpdate}/>
-                    <canvas ref="canvas"/>
+                    <canvas ref="sourceCanvas"/>
                 </CuttingBoard>
 
+                <div>
+                    <h2>Dev stuff</h2>
+                    <button onClick={this.drawOutputImage}>draw output</button>
+                    <hr/>
+                    <h3>Image output</h3>
+                    <canvas ref={'outputCanvas'}/>
+                    <hr/>
+                    <h3>Source image</h3>
+                    <img ref={'sourceImg'} src={'gallery-example.PNG'} alt={'sample'}/>
+                </div>
             </CuttingBoardContainer>
         );
     }
