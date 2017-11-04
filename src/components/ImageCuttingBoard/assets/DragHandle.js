@@ -21,31 +21,33 @@ class DragHandle extends Component {
     }
 
     onDrag(e, data) {
-        this.props.onHandleUpdate('left', data.x, data.y);
+        this.props.onHandleUpdate(this.props.id, data.x, data.y);
     }
 
     render() {
-        const bounds = {left:0, right:800};
+        const bounds = {left:0, right:this.props.maxX, top:0, bottom:this.props.maxY};
         const { isSelected } = this.state;
 
-        const fill = isSelected ? '#ffff00' : '#ff00ff';
+        const fill = isSelected ? '#ffff00' : this.props.colour;
+
+        if(this.props.startX <= 0 || this.props.startY <= 0) return null;
 
         return (
             <Draggable
-                axis={'x'}
+                axis={this.props.axis}
                 handle=".handle"
                 bounds={bounds}
+                defaultPosition={{x: this.props.startX, y: this.props.startY}}
+                position={null}
                 onStart={this.select.bind(this)}
                 onDrag={this.onDrag.bind(this)}
                 onStop={this.deselect.bind(this)}>
-                <div className="handle" style={{width:'50px', position:'absolute', top:275, left:-25}}>
-                    <SvgHandle className="handle" fill={fill}/>
+                <div className="handle" style={{position:'absolute', left:-25, top:-25}}>
+                    <SvgHandle className="handle" fill={fill} />
                 </div>
             </Draggable>
 
         )
-
-
     }
 }
 
