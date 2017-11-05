@@ -7,7 +7,7 @@ import SelectPhotoButton from "./assets/SelectPhotoButton";
 
 class ImageCuttingBoard extends Component {
     constructor(props) {
-        super(props)
+        super(props);
 
         this.onHandleUpdate = this.onHandleUpdate.bind(this);
         this.onImageLoad = this.onImageLoad.bind(this);
@@ -18,23 +18,29 @@ class ImageCuttingBoard extends Component {
         this.state = { canvasW: 0, canvasH: 0, leftX: 0, rightX: 0, topY: 0, bottomY: 0 };
     }
 
+    // ************
+    // JUST HERE FOR TESTING - DELETE OR COMMENT OUT FOR PRODUCTION
     __loadDevImageForTesting() {
         const img = this.refs.sourceImg;
         img.onload = (e) => {
-            this.onImageLoad(e.target, -1, (canvasW, canvasH) => {
-                this.drawOutputImage(0, canvasW, 0, canvasH);
+            this.onImageLoad(e.target, -1, () => {
+                this.drawOutputImage();
             });
-
-
         }
     }
+
+    // ************
 
     componentDidMount() {
         //this.updateCanvas();
 
+        // ************
+        // JUST HERE FOR TESTING - DELETE OR COMMENT OUT FOR PRODUCTION
         this.__loadDevImageForTesting();
+        // ************
     }
 
+    // Update on Handle move
     onHandleUpdate(handleName, x, y) {
         let { leftX, rightX, topY, bottomY } = this.state;
 
@@ -51,16 +57,16 @@ class ImageCuttingBoard extends Component {
             case 'bottom':
                 bottomY = y;
                 break;
-            default: break;
+            default:
+                break;
         }
 
-        this.drawOutputImage(leftX, rightX, topY, bottomY);
+        this.setState({ leftX, rightX, topY, bottomY }, () => {
+            this.drawOutputImage();
+        });
     }
 
-    onSelectPhotoClick(e) {
-        // console.log("onSelectPhotoClick > e: ", e);
-    }
-
+    // Photo has been selected
     onPhotoSelected(e) {
         e.preventDefault();
 
@@ -74,15 +80,15 @@ class ImageCuttingBoard extends Component {
                     let img = new Image();
                     img.src = imgSrc;
 
-                    img.onload = (e) => this.onImageLoad(e.target, orientation);
+                    img.onload = (e) => this.onImageLoad(e.target, orientation, this.drawOutputImage);
                 };
 
                 reader.readAsDataURL(imgFile);
             });
-
         }
     }
 
+    // Reads file as Array buffer to get camera orientation
     getOrientation(file, callback) {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -114,82 +120,89 @@ class ImageCuttingBoard extends Component {
         reader.readAsArrayBuffer(file);
     }
 
+    // Image loaded into client
     onImageLoad(img, srcOrientation, callback = null) {
-        const isPortrait = srcOrientation > 4 && srcOrientation < 9;
+        this.setState({ canvasW: 0, canvasH: 0, leftX: 0, rightX: 0, topY: 0, bottomY: 0 }, () => {
 
-        const { sourceCanvas } = this.refs;
-        const ctx = sourceCanvas.getContext('2d');
-        ctx.clearRect(0, 0, sourceCanvas.width, sourceCanvas.height);
 
-        const imgW = isPortrait ? img.height : img.width;
-        const imgH = isPortrait ? img.width : img.height;
+            const isPortrait = srcOrientation > 4 && srcOrientation < 9;
 
-        let maxW = 800;
-        let maxH = 600;
+            const { sourceCanvas } = this.refs;
+            const ctx = sourceCanvas.getContext('2d');
+            ctx.clearRect(0, 0, sourceCanvas.width, sourceCanvas.height);
 
-        const wToHRatio = imgH / imgW;
-        const hToWRatio = imgW / imgH;
+            const imgW = isPortrait ? img.height : img.width;
+            const imgH = isPortrait ? img.width : img.height;
 
-        // don't expand images(?)
-        // let maxW = imgH > 800 ? 800 : imgH;
-        // let maxH = imgW > 600 ? 600 : imgW;
+            let maxW = 800;
+            let maxH = 600;
 
-        let canvasW = maxW;
-        let canvasH = maxW * wToHRatio;
+            const wToHRatio = imgH / imgW;
+            const hToWRatio = imgW / imgH;
 
-        if (canvasH > maxH) {
-            canvasH = maxH;
-            canvasW = maxH * hToWRatio;
-        }
+            // don't expand images(?)
+            // let maxW = imgH > 800 ? 800 : imgH;
+            // let maxH = imgW > 600 ? 600 : imgW;
 
-        sourceCanvas.width = canvasW;
-        sourceCanvas.height = canvasH;
+            let canvasW = maxW;
+            let canvasH = maxW * wToHRatio;
 
-        // save the context so it can be reset after transform
-        ctx.save();
-        // transform context before drawing image
-        switch (srcOrientation) {
-            case 2:
-                ctx.transform(-1, 0, 0, 1, canvasH, 0);
-                break;
-            case 3:
-                ctx.transform(-1, 0, 0, -1, canvasH, canvasW);
-                break;
-            case 4:
-                ctx.transform(1, 0, 0, -1, 0, canvasW);
-                break;
-            case 5:
-                ctx.transform(0, 1, 1, 0, 0, 0);
-                break;
-            case 6:
-                ctx.transform(0, 1, -1, 0, canvasW, 0);
-                break;
-            case 7:
-                ctx.transform(0, -1, -1, 0, canvasW, canvasH);
-                break;
-            case 8:
-                ctx.transform(0, -1, 1, 0, 0, canvasH);
-                break;
-            default:
-                break;
-        }
+            if (canvasH > maxH) {
+                canvasH = maxH;
+                canvasW = maxH * hToWRatio;
+            }
 
-        const transformedCanvasW = isPortrait ? canvasH : canvasW;
-        const transformedCanvasH = isPortrait ? canvasW : canvasH;
+            sourceCanvas.width = canvasW;
+            sourceCanvas.height = canvasH;
 
-        // draw image
-        ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, transformedCanvasW, transformedCanvasH);
-        // restore ensures resets transform in case another image is added
-        ctx.restore();
+            // save the context so it can be reset after transform
+            ctx.save();
+            // transform context before drawing image
+            switch (srcOrientation) {
+                case 2:
+                    ctx.transform(-1, 0, 0, 1, canvasH, 0);
+                    break;
+                case 3:
+                    ctx.transform(-1, 0, 0, -1, canvasH, canvasW);
+                    break;
+                case 4:
+                    ctx.transform(1, 0, 0, -1, 0, canvasW);
+                    break;
+                case 5:
+                    ctx.transform(0, 1, 1, 0, 0, 0);
+                    break;
+                case 6:
+                    ctx.transform(0, 1, -1, 0, canvasW, 0);
+                    break;
+                case 7:
+                    ctx.transform(0, -1, -1, 0, canvasW, canvasH);
+                    break;
+                case 8:
+                    ctx.transform(0, -1, 1, 0, 0, canvasH);
+                    break;
+                default:
+                    break;
+            }
 
-        if (callback) {
-            callback(canvasW, canvasH);
-        }
+            const transformedCanvasW = isPortrait ? canvasH : canvasW;
+            const transformedCanvasH = isPortrait ? canvasW : canvasH;
 
-        this.setState({canvasW, canvasH});
+            // draw image
+            ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, transformedCanvasW, transformedCanvasH);
+            // restore ensures resets transform in case another image is added
+            ctx.restore();
+
+            this.setState({ canvasW, canvasH, rightX: canvasW, bottomY: canvasH }, () => {
+                if (callback) {
+                    callback();
+                }
+            });
+        });
     }
 
-    drawOutputImage(leftX, rightX, topY, bottomY) {
+    // Draw cropped image to canvas
+    drawOutputImage() {
+        const { leftX, rightX, topY, bottomY } = this.state;
         const { sourceCanvas, outputCanvas } = this.refs;
         const outputContext = outputCanvas.getContext('2d');
 
@@ -201,12 +214,10 @@ class ImageCuttingBoard extends Component {
         const outputWidth = sourceWidth / 2;
         const outputHeight = sourceHeight / 2;
 
+        console.log("outputHeight: ", outputHeight);
+
         outputCanvas.width = outputWidth;
         outputCanvas.height = outputHeight;
-
-        this.setState(() => {
-            return { leftX, rightX, topY, bottomY }
-        });
 
         outputContext.drawImage(sourceCanvas, leftX, topY, sourceWidth, sourceHeight, outputX, outputY, outputWidth, outputHeight);
     }
@@ -237,10 +248,9 @@ class ImageCuttingBoard extends Component {
             <CuttingBoardContainer>
 
                 <SelectPhotoButton
-                    onPhotoSelect={this.onPhotoSelected}
-                    onClick={this.onSelectPhotoClick}/>
+                    onPhotoSelect={this.onPhotoSelected}/>
 
-                <CuttingBoard style={{width:this.state.canvasW, height: this.state.canvasH}}>
+                <CuttingBoard style={{ width: this.state.canvasW, height: this.state.canvasH }}>
 
                     <DragHandle id={'left'}
                                 axis={'x'}
@@ -279,7 +289,7 @@ class ImageCuttingBoard extends Component {
 
                 <div>
                     <h2>Dev stuff</h2>
-                    <button onClick={this.drawOutputImage}>draw output</button>
+                    {/*<button onClick={this.drawOutputImage}>draw output</button>*/}
                     <hr/>
                     <h3>Image output</h3>
                     <canvas ref={'outputCanvas'}/>
@@ -294,20 +304,10 @@ class ImageCuttingBoard extends Component {
 
 export default ImageCuttingBoard;
 
-// HELPER functions
-/*function line({ ctx, startX, startY, endX, endY }) {
-    ctx.moveTo(startX, startY);
-    ctx.lineTo(endX, endY);
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = '#ee00ee';
-    ctx.stroke();
-}*/
-
 const CuttingBoardContainer = styled.div`
     background: rgba(0,0,0,0.2);
     padding: 20px;
 `;
-
 
 const CuttingBoard = styled.div`
     background-color: #931f84;

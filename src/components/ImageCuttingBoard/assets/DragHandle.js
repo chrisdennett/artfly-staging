@@ -28,6 +28,10 @@ class DragHandle extends Component {
         const bounds = {left:0, right:this.props.maxX, top:0, bottom:this.props.maxY};
         const { isSelected } = this.state;
 
+        if(this.props.id === 'right'){
+            console.log("this.props.startX: ", this.props.startX);
+        }
+
         const fill = isSelected ? '#ffff00' : this.props.colour;
 
         if(this.props.startX <= 0 || this.props.startY <= 0) return null;
