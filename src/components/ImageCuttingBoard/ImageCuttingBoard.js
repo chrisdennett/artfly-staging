@@ -4,6 +4,7 @@ import styled from 'styled-components';
 // components
 import DragHandle from "./assets/DragHandle";
 import SelectPhotoButton from "./assets/SelectPhotoButton";
+import CuttingOverlay from "./assets/CuttingOverlay";
 
 class ImageCuttingBoard extends Component {
     constructor(props) {
@@ -117,9 +118,9 @@ class ImageCuttingBoard extends Component {
     }
 
     // Reset image
-    resetImageState(callback){
+    resetImageState(callback) {
         this.setState({ canvasW: 0, canvasH: 0, leftX: 0, rightX: 0, topY: 0, bottomY: 0 }, () => {
-           callback();
+            callback();
         });
     }
 
@@ -235,20 +236,28 @@ class ImageCuttingBoard extends Component {
 
                 <CuttingBoard style={{ width: this.state.canvasW, height: this.state.canvasH }}>
 
-                    <svg width={this.state.canvasW} height={this.state.canvasH} style={{position: 'absolute'}}>
+                    <CuttingOverlay height={this.state.canvasH}
+                                    width={this.state.canvasW}
+                                    cutoutX={this.state.leftX}
+                                    cutoutY={this.state.topY}
+                                    cutoutWidth={this.state.rightX - this.state.leftX}
+                                    cutoutHeight={this.state.bottomY - this.state.topY}/>
+
+                   {/* <svg width={this.state.canvasW} height={this.state.canvasH} style={{ position: 'absolute' }}>
                         <defs>
                             <mask id="hole">
-                                <rect width="100%" height="100%" fill="white"/>
+                                <rect width={this.state.canvasW} height={this.state.canvasH} fill="white"/>
                                 <rect x={this.state.leftX}
                                       y={this.state.topY}
-                                      width={this.state.rightX-this.state.leftX}
-                                      height={this.state.bottomY-this.state.topY}
+                                      width={this.state.rightX - this.state.leftX}
+                                      height={this.state.bottomY - this.state.topY}
                                       fill="black"/>
                             </mask>
                         </defs>
 
-                        <rect fill={'rgba(0,0,0,0.4)'} x="0" y="0" width={this.state.canvasW} height={this.state.canvasW} mask="url(#hole)" />
-                    </svg>
+                        <rect fill={'rgba(0,0,0,0.4)'} x="0" y="0" width={this.state.canvasW}
+                              height={this.state.canvasW} mask="url(#hole)"/>
+                    </svg>*/}
 
                     <DragHandle id={'left'}
                                 axis={'x'}
@@ -282,10 +291,6 @@ class ImageCuttingBoard extends Component {
                                 colour={'#00ff00'}
                                 onHandleUpdate={this.onHandleUpdate}/>
 
-
-
-
-
                     <canvas ref="sourceCanvas"/>
                 </CuttingBoard>
 
@@ -306,16 +311,10 @@ class ImageCuttingBoard extends Component {
 export default ImageCuttingBoard;
 
 const CuttingBoardContainer = styled.div`
-    background: rgba(0,0,0,0.2);
     padding: 20px;
 `;
 
 const CuttingBoard = styled.div`
-    background-color: #931f84;
     margin: 0 auto;
     position: relative; 
-    
-    canvas{
-        outline: #fff 1px solid;
-    }
 `;
