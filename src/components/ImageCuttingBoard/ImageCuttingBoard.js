@@ -29,11 +29,7 @@ class ImageCuttingBoard extends Component {
         }
     }
 
-    // ************
-
     componentDidMount() {
-        //this.updateCanvas();
-
         // ************
         // JUST HERE FOR TESTING - DELETE OR COMMENT OUT FOR PRODUCTION
         this.__loadDevImageForTesting();
@@ -120,11 +116,17 @@ class ImageCuttingBoard extends Component {
         reader.readAsArrayBuffer(file);
     }
 
+    // Reset image
+    resetImageState(callback){
+        this.setState({ canvasW: 0, canvasH: 0, leftX: 0, rightX: 0, topY: 0, bottomY: 0 }, () => {
+           callback();
+        });
+    }
+
     // Image loaded into client
     onImageLoad(img, srcOrientation, callback = null) {
-        this.setState({ canvasW: 0, canvasH: 0, leftX: 0, rightX: 0, topY: 0, bottomY: 0 }, () => {
-
-
+        // reset image before updating to ensure handles re-align properly
+        this.resetImageState(() => {
             const isPortrait = srcOrientation > 4 && srcOrientation < 9;
 
             const { sourceCanvas } = this.refs;
@@ -214,33 +216,14 @@ class ImageCuttingBoard extends Component {
         const outputWidth = sourceWidth / 2;
         const outputHeight = sourceHeight / 2;
 
-        console.log("outputHeight: ", outputHeight);
-
         outputCanvas.width = outputWidth;
         outputCanvas.height = outputHeight;
 
         outputContext.drawImage(sourceCanvas, leftX, topY, sourceWidth, sourceHeight, outputX, outputY, outputWidth, outputHeight);
     }
 
-    /* updateCanvas() {
-         const canvasHeight = 600;
-         const canvasWidth = 800;
-         const ctx = this.refs.sourceCanvas.getContext('2d'); // should this be stored state
-         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-         const verticalCropLine1 = 200;
-         const verticalCropLine2 = 600;
-         const horizontalCropLine1 = 100;
-         const horizontalCropLine2 = 500;
-
-         line({ ctx, startX: verticalCropLine1, startY: 0, endX: verticalCropLine1, endY: canvasHeight });
-         line({ ctx, startX: verticalCropLine2, startY: 0, endX: verticalCropLine2, endY: canvasHeight });
-         line({ ctx, startX: 0, startY: horizontalCropLine1, endX: canvasWidth, endY: horizontalCropLine1 });
-         line({ ctx, startX: 0, startY: horizontalCropLine2, endX: canvasWidth, endY: horizontalCropLine2 });
-     }*/
-
     render() {
-
+        // find the middle for placement of side handles
         const middleX = this.state.leftX + (this.state.rightX - this.state.leftX) / 2;
         const middleY = this.state.topY + (this.state.bottomY - this.state.topY) / 2;
 
@@ -251,6 +234,21 @@ class ImageCuttingBoard extends Component {
                     onPhotoSelect={this.onPhotoSelected}/>
 
                 <CuttingBoard style={{ width: this.state.canvasW, height: this.state.canvasH }}>
+
+                    <svg width={this.state.canvasW} height={this.state.canvasH} style={{position: 'absolute'}}>
+                        <defs>
+                            <mask id="hole">
+                                <rect width="100%" height="100%" fill="white"/>
+                                <rect x={this.state.leftX}
+                                      y={this.state.topY}
+                                      width={this.state.rightX-this.state.leftX}
+                                      height={this.state.bottomY-this.state.topY}
+                                      fill="black"/>
+                            </mask>
+                        </defs>
+
+                        <rect fill={'rgba(0,0,0,0.4)'} x="0" y="0" width={this.state.canvasW} height={this.state.canvasW} mask="url(#hole)" />
+                    </svg>
 
                     <DragHandle id={'left'}
                                 axis={'x'}
@@ -284,12 +282,15 @@ class ImageCuttingBoard extends Component {
                                 colour={'#00ff00'}
                                 onHandleUpdate={this.onHandleUpdate}/>
 
+
+
+
+
                     <canvas ref="sourceCanvas"/>
                 </CuttingBoard>
 
                 <div>
                     <h2>Dev stuff</h2>
-                    {/*<button onClick={this.drawOutputImage}>draw output</button>*/}
                     <hr/>
                     <h3>Image output</h3>
                     <canvas ref={'outputCanvas'}/>
