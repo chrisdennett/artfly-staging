@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "firebase": "^4.5.2",
+    "firebase": "^4.6.1",
     "gulp": "^3.9.1",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.6.1",
@@ -22,13 +22,13 @@
     "redux-devtools-extension": "^2.13.2",
     "redux-form": "^7.1.1",
     "redux-thunk": "^2.2.0",
-    "styled-components": "^2.2.1"
+    "styled-components": "^2.2.3"
   },
   "externals": {
     "Paddle": "Paddle"
   },
   "devDependencies": {
-    "react-scripts": "^1.0.14"
+    "react-scripts": "^1.0.17"
   },
   "scripts": {
     "start": "react-scripts start",
