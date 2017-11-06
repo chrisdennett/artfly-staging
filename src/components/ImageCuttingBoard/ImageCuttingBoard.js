@@ -6,6 +6,8 @@ import DragHandle from "./assets/DragHandle";
 import SelectPhotoButton from "./assets/SelectPhotoButton";
 import CuttingOverlay from "./assets/CuttingOverlay";
 import Butt from "../global/Butt";
+// helper functions
+import GetPhotoOrientation from './assets/GetPhotoOrientation';
 
 class ImageCuttingBoard extends Component {
     constructor(props) {
@@ -14,7 +16,6 @@ class ImageCuttingBoard extends Component {
         this.onHandleUpdate = this.onHandleUpdate.bind(this);
         this.drawImageToSourceCanvas = this.drawImageToSourceCanvas.bind(this);
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
-        this.getOrientation = this.getOrientation.bind(this);
         this.drawOutputImage = this.drawOutputImage.bind(this);
         this.rotateClockwise = this.rotateClockwise.bind(this);
 
@@ -72,7 +73,7 @@ class ImageCuttingBoard extends Component {
         if (e.target.files[0]) {
             const imgFile = e.target.files[0];
 
-            this.getOrientation(imgFile, (orientation) => {
+            GetPhotoOrientation(imgFile, (orientation) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const imgSrc = e.target.result;
@@ -85,38 +86,6 @@ class ImageCuttingBoard extends Component {
                 reader.readAsDataURL(imgFile);
             });
         }
-    }
-
-    // Reads file as Array buffer to get camera orientation from exif data
-    getOrientation(file, callback) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const view = new DataView(e.target.result);
-
-            if (view.getUint16(0, false) !== 0xFFD8) return callback(-2);
-            const length = view.byteLength;
-            let offset = 2;
-            while (offset < length) {
-                let marker = view.getUint16(offset, false);
-                offset += 2;
-                if (marker === 0xFFE1) {
-                    offset += 2;
-                    if (view.getUint32(offset, false) !== 0x45786966) return callback(-1);
-
-                    const little = view.getUint16(offset += 6, false) === 0x4949;
-                    offset += view.getUint32(offset + 4, little);
-                    const tags = view.getUint16(offset, little);
-                    offset += 2;
-                    for (let i = 0; i < tags; i++)
-                        if (view.getUint16(offset + (i * 12), little) === 0x0112)
-                            return callback(view.getUint16(offset + (i * 12) + 8, little));
-                }
-                else if ((marker & 0xFF00) !== 0xFF00) break;
-                else offset += view.getUint16(offset, false);
-            }
-            return callback(-1);
-        };
-        reader.readAsArrayBuffer(file);
     }
 
     // Reset image - clears state so handles re-align properly
@@ -326,7 +295,7 @@ export default ImageCuttingBoard;
 
 const CuttingBoardContainer = styled.div`
     background-color: black;
-    padding: 20px;
+    padding: 70px 20px 20px 20px;
 `;
 
 const CuttingBoard = styled.div`

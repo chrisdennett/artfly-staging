@@ -14,7 +14,7 @@ const CuttingOverlay = function ({width, height, cutoutX, cutoutY, cutoutWidth, 
                 </mask>
             </defs>
 
-            <rect fill={'rgba(0,0,0,0.4)'} width={width} height={height} mask="url(#hole)" />
+            <rect fill={'rgba(0,0,0,0.7)'} width={width} height={height} mask="url(#hole)" />
         </svg>
     )
 };
