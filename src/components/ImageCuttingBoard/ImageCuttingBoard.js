@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
 // components
-import DragHandle from "./assets/DragHandle";
 import SelectPhotoButton from "./assets/SelectPhotoButton";
 import CuttingOverlay from "./assets/CuttingOverlay";
 import Butt from "../global/Butt";
@@ -10,16 +9,16 @@ import Butt from "../global/Butt";
 import GetPhotoOrientation from './assets/GetPhotoOrientation';
 
 class ImageCuttingBoard extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
-        this.onHandleUpdate = this.onHandleUpdate.bind(this);
         this.drawImageToSourceCanvas = this.drawImageToSourceCanvas.bind(this);
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.drawOutputImage = this.drawOutputImage.bind(this);
         this.rotateClockwise = this.rotateClockwise.bind(this);
+        this.onCuttingOverlayChange = this.onCuttingOverlayChange.bind(this);
 
-        this.state = { img: null, rotation: 0, canvasW: 0, canvasH: 0, leftX: 0, rightX: 0, topY: 0, bottomY: 0 };
+        this.state = { img: null, rotation: 0, canvasW: 0, canvasH: 0 };
     }
 
     // ************
@@ -41,29 +40,8 @@ class ImageCuttingBoard extends Component {
     }
 
     // Update on Handle move to store values and ensure image can be
-    onHandleUpdate(handleName, x, y) {
-        let { leftX, rightX, topY, bottomY } = this.state;
-
-        switch (handleName) {
-            case 'left':
-                leftX = x;
-                break;
-            case 'right':
-                rightX = x;
-                break;
-            case 'top':
-                topY = y;
-                break;
-            case 'bottom':
-                bottomY = y;
-                break;
-            default:
-                break;
-        }
-
-        this.setState({ leftX, rightX, topY, bottomY }, () => {
-            this.drawOutputImage();
-        });
+    onCuttingOverlayChange(leftX, rightX, topY, bottomY) {
+        this.drawOutputImage(leftX, rightX, topY, bottomY);
     }
 
     // Photo has been selected
@@ -90,7 +68,7 @@ class ImageCuttingBoard extends Component {
 
     // Reset image - clears state so handles re-align properly
     resetImageState(callback) {
-        this.setState({ canvasW: 0, canvasH: 0, leftX: 0, rightX: 0, topY: 0, bottomY: 0 }, () => {
+        this.setState({ canvasW: 0, canvasH: 0}, () => {
             callback();
         });
     }
@@ -174,8 +152,7 @@ class ImageCuttingBoard extends Component {
     }
 
     // Draw cropped image to canvas
-    drawOutputImage() {
-        const { leftX, rightX, topY, bottomY } = this.state;
+    drawOutputImage(leftX, rightX, topY, bottomY) {
         const { sourceCanvas, outputCanvas } = this.refs;
         const outputContext = outputCanvas.getContext('2d');
 
@@ -221,10 +198,6 @@ class ImageCuttingBoard extends Component {
     }
 
     render() {
-        // find the middle for placement of side handles
-        const middleX = this.state.leftX + (this.state.rightX - this.state.leftX) / 2;
-        const middleY = this.state.topY + (this.state.bottomY - this.state.topY) / 2;
-
         return (
             <CuttingBoardContainer>
 
@@ -233,52 +206,18 @@ class ImageCuttingBoard extends Component {
 
                 <CuttingBoard style={{ width: this.state.canvasW, height: this.state.canvasH }}>
 
-                    <CuttingOverlay height={this.state.canvasH}
-                                    width={this.state.canvasW}
-                                    cutoutX={this.state.leftX}
-                                    cutoutY={this.state.topY}
-                                    cutoutWidth={this.state.rightX - this.state.leftX}
-                                    cutoutHeight={this.state.bottomY - this.state.topY}/>
-
-                    <DragHandle id={'left'}
-                                axis={'x'}
-                                maxX={this.state.canvasW}
-                                startX={1}
-                                startY={middleY}
-                                colour={'#ff00ff'}
-                                onHandleUpdate={this.onHandleUpdate}/>
-
-                    <DragHandle id={'right'}
-                                axis={'x'}
-                                maxX={this.state.canvasW}
-                                startX={this.state.canvasW}
-                                startY={middleY}
-                                colour={'#ff0000'}
-                                onHandleUpdate={this.onHandleUpdate}/>
-
-                    <DragHandle id={'top'}
-                                axis={'y'}
-                                maxY={this.state.canvasH}
-                                startX={middleX}
-                                startY={1}
-                                colour={'#0000ff'}
-                                onHandleUpdate={this.onHandleUpdate}/>
-
-                    <DragHandle id={'bottom'}
-                                axis={'y'}
-                                maxY={this.state.canvasH}
-                                startX={middleX}
-                                startY={this.state.canvasH}
-                                colour={'#00ff00'}
-                                onHandleUpdate={this.onHandleUpdate}/>
-
+                    {this.state.canvasW > 0 &&
+                    <CuttingOverlay onChange={this.onCuttingOverlayChange}
+                                    height={this.state.canvasH}
+                                    width={this.state.canvasW}/>
+                    }
                     <canvas ref="sourceCanvas"/>
 
                 </CuttingBoard>
 
                 <Butt onClick={this.rotateClockwise}>ROTATE</Butt>
 
-                <div style={{ marginTop: 100, display: 'none' }}>
+                <div style={{ marginTop: 100 }}>
                     <hr/>
                     <h2>Dev stuff</h2>
                     <h3>Image output</h3>
