@@ -1,5 +1,5 @@
 // Reads file as Array buffer to get camera orientation from exif data
-export default function GetPhotoOrientation(file, callback) {
+export default (file, callback) => {
     const reader = new FileReader();
     reader.onload = (e) => {
         const view = new DataView(e.target.result);

@@ -211,6 +211,7 @@ class ImageCuttingBoard extends Component {
                 newRotation = 0;
                 break;
             default:
+                newRotation = 6;
                 break;
         }
 
