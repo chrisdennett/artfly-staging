@@ -18,13 +18,13 @@ const AccountSettings = function (props) {
             <span>
                 <SubscribeButton/>
                 <p style={infoStyle}>
-                    (Subscribe for {price} a month to save up to {artflyAccountTypes[familyPlanId].maxArtworks}
-                    artworks)
+                    (Subscribe for {price} a month to save up
+                    to {artflyAccountTypes[familyPlanId].maxArtworks} artworks)
                 </p>
             </span>
         )
     }
-    else if(subscription && subscription.status === 'deleted'){
+    else if (subscription && subscription.status === 'deleted') {
         subscriptionButtons = (
             <span>
                 {/*<Butt inline={true} size={'small'} onClick={onUpdateSubscription} label={`Update subscription`}/>*/}
@@ -43,7 +43,8 @@ const AccountSettings = function (props) {
                 <Butt inline={true} size={'small'} onClick={onUpdateSubscription} label={`Update subscription`}/>
                 <p style={infoStyle}>
                    You're currently signed up for a monthly {accountType} subscription.
-                    <br/>Next payment for {price} will be taken on <strong>{subscription.cancellationEffectiveDate}</strong>.
+                    <br/>Next payment for {price}
+                    will be taken on <strong>{subscription.cancellationEffectiveDate}</strong>.
                 </p>
             </span>
         )
@@ -51,12 +52,12 @@ const AccountSettings = function (props) {
 
     return (
         <div>
-            <h2>Your account</h2>
+            <h2>Membership details</h2>
             <ul>
-                <li>Account type: {accountType} {subscriptionButtons}</li>
+                <li>Membership type: {accountType} {subscriptionButtons}</li>
                 <li>Total artworks added: {totalArtworks}
                     <p style={infoStyle}>
-                        (the limit is {maxArtworks})
+                        (Maximum for {accountType} membership is {maxArtworks})
                     </p>
                 </li>
                 <li>Remaining spaces available: {maxArtworks - totalArtworks}</li>

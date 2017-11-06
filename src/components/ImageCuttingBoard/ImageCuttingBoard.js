@@ -5,19 +5,20 @@ import styled from 'styled-components';
 import DragHandle from "./assets/DragHandle";
 import SelectPhotoButton from "./assets/SelectPhotoButton";
 import CuttingOverlay from "./assets/CuttingOverlay";
+import Butt from "../global/Butt";
 
 class ImageCuttingBoard extends Component {
     constructor(props) {
         super(props);
 
         this.onHandleUpdate = this.onHandleUpdate.bind(this);
-        this.onImageLoad = this.onImageLoad.bind(this);
+        this.drawImageToSourceCanvas = this.drawImageToSourceCanvas.bind(this);
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.getOrientation = this.getOrientation.bind(this);
         this.drawOutputImage = this.drawOutputImage.bind(this);
-        this.rotate = this.rotate.bind(this);
+        this.rotateClockwise = this.rotateClockwise.bind(this);
 
-        this.state = { img:null, canvasW: 0, canvasH: 0, leftX: 0, rightX: 0, topY: 0, bottomY: 0 };
+        this.state = { img: null, rotation: 0, canvasW: 0, canvasH: 0, leftX: 0, rightX: 0, topY: 0, bottomY: 0 };
     }
 
     // ************
@@ -25,7 +26,7 @@ class ImageCuttingBoard extends Component {
     __loadDevImageForTesting() {
         const img = this.refs.sourceImg;
         img.onload = (e) => {
-            this.onImageLoad(e.target, 0, () => {
+            this.drawImageToSourceCanvas(e.target, 0, () => {
                 this.drawOutputImage();
             });
         }
@@ -38,7 +39,7 @@ class ImageCuttingBoard extends Component {
         // ************
     }
 
-    // Update on Handle move
+    // Update on Handle move to store values and ensure image can be
     onHandleUpdate(handleName, x, y) {
         let { leftX, rightX, topY, bottomY } = this.state;
 
@@ -78,7 +79,7 @@ class ImageCuttingBoard extends Component {
                     let img = new Image();
                     img.src = imgSrc;
 
-                    img.onload = (e) => this.onImageLoad(e.target, orientation, this.drawOutputImage);
+                    img.onload = (e) => this.drawImageToSourceCanvas(e.target, orientation, this.drawOutputImage);
                 };
 
                 reader.readAsDataURL(imgFile);
@@ -86,7 +87,7 @@ class ImageCuttingBoard extends Component {
         }
     }
 
-    // Reads file as Array buffer to get camera orientation
+    // Reads file as Array buffer to get camera orientation from exif data
     getOrientation(file, callback) {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -118,15 +119,15 @@ class ImageCuttingBoard extends Component {
         reader.readAsArrayBuffer(file);
     }
 
-    // Reset image
+    // Reset image - clears state so handles re-align properly
     resetImageState(callback) {
         this.setState({ canvasW: 0, canvasH: 0, leftX: 0, rightX: 0, topY: 0, bottomY: 0 }, () => {
             callback();
         });
     }
 
-    // Image loaded into client
-    onImageLoad(img, srcOrientation, callback = null) {
+    // Draw the source image into the source canvas
+    drawImageToSourceCanvas(img, srcOrientation, callback = null) {
         // reset image before updating to ensure handles re-align properly
         this.resetImageState(() => {
             const isPortrait = srcOrientation > 4 && srcOrientation < 9;
@@ -195,7 +196,7 @@ class ImageCuttingBoard extends Component {
             // restore ensures resets transform in case another image is added
             ctx.restore();
 
-            this.setState({img, canvasW, canvasH, rightX: canvasW, bottomY: canvasH }, () => {
+            this.setState({ img, rotation: srcOrientation, canvasW, canvasH, rightX: canvasW, bottomY: canvasH }, () => {
                 if (callback) {
                     callback();
                 }
@@ -224,12 +225,27 @@ class ImageCuttingBoard extends Component {
     }
 
     // Rotate
-    rotate(rotation) {
-        // 6 = 90 degrees
-        // 3 = 180 degrees
-        // 8 = 270 degrees
+    rotateClockwise() {
+        let newRotation;
 
-        this.onImageLoad(this.state.img, rotation, () => {
+        switch (this.state.rotation) {
+            case 0:
+                newRotation = 6;
+                break;
+            case 6:
+                newRotation = 3;
+                break;
+            case 3:
+                newRotation = 8;
+                break;
+            case 8:
+                newRotation = 0;
+                break;
+            default:
+                break;
+        }
+
+        this.drawImageToSourceCanvas(this.state.img, newRotation, () => {
             this.drawOutputImage();
         });
     }
@@ -287,13 +303,12 @@ class ImageCuttingBoard extends Component {
                                 onHandleUpdate={this.onHandleUpdate}/>
 
                     <canvas ref="sourceCanvas"/>
-                    <button onClick={() => this.rotate(0)}>Rot 0</button>
-                    <button onClick={() => this.rotate(6)}>Rot 6</button>
-                    <button onClick={() => this.rotate(3)}>Rot 3</button>
-                    <button onClick={() => this.rotate(8)}>Rot 8</button>
+
                 </CuttingBoard>
 
-                <div style={{ marginTop: 100 }}>
+                <Butt onClick={this.rotateClockwise}>ROTATE</Butt>
+
+                <div style={{ marginTop: 100, display: 'none' }}>
                     <hr/>
                     <h2>Dev stuff</h2>
                     <h3>Image output</h3>
@@ -310,6 +325,7 @@ class ImageCuttingBoard extends Component {
 export default ImageCuttingBoard;
 
 const CuttingBoardContainer = styled.div`
+    background-color: black;
     padding: 20px;
 `;
 

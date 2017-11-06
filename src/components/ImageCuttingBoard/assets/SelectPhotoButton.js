@@ -7,7 +7,7 @@ const SelectPhotoButton = function ({onClick, onPhotoSelect, uid, disabled}) {
     const id = !uid ? "123" : uid;
 
     return (
-        <div>
+        <div style={{display: 'inline-block'}}>
             <DefaultInput className="inputfile"
                    onClick={onClick}
                    onChange={onPhotoSelect}

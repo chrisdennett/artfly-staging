@@ -85,30 +85,6 @@ input{
     border-radius: 0;
 }
 
-.inputfile {
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
-}
-
-.inputfile + label {
-    display: inline-block;
-    margin: 0;
-    cursor: pointer;
-    line-height: 0;
-}
-
-.inputfile + label * {
-    pointer-events: none;
-}
-
-.inputfile + label:hover {
-    /*background-color: red;*/
-}
-
 label.disabled{
     background-color: aliceblue;
     opacity: 0.8;

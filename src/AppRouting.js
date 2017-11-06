@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import ga from './libs/googleAnalyticsConfig';
 // global styles
-// import './style.css';
+import './style.css';
 import './globalStyles.css';
 // actions
 import { listenForUserChanges } from './actions/UserDataActions';
@@ -139,7 +139,7 @@ class ArtflyRouting extends Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     return {
         user: state.user
     }

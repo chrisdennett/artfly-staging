@@ -5,9 +5,10 @@ import SignOutButton from "./assets/SignOutButton";
 import SettingsButton from "./assets/SettingsButton";
 import EditButton from "../GalleryControls/assets/EditButton";
 import SignInContainer from "../../SignIn/SignInContainer";
-import AddArtInputButton from "./assets/AddArtInputButton";
+// import AddArtInputButton from "./assets/AddArtInputButton";
 import Link from "../../global/Link";
 import history from '../../global/history';
+// import SelectPhotoButton from "../../ImageCuttingBoard/assets/SelectPhotoButton";
 
 const UserControls = function (props) {
 
@@ -29,7 +30,8 @@ const UserControls = function (props) {
                 <Link linkTo={`/artworkEditor/${props.artworkId}`}><EditButton/></Link>
                 }
 
-                <AddArtInputButton maxArtworksReached={props.maxArtworksReached}/>
+                {/*<SelectPhotoButton onPhotoSelect={this.props.onPhotoSelected}/>*/}
+                {/*<AddArtInputButton maxArtworksReached={props.maxArtworksReached}/>*/}
 
                 <Link linkTo="/settings"><SettingsButton/></Link>
 
