@@ -15,8 +15,9 @@ class ImageCuttingBoard extends Component {
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.getOrientation = this.getOrientation.bind(this);
         this.drawOutputImage = this.drawOutputImage.bind(this);
+        this.rotate = this.rotate.bind(this);
 
-        this.state = { canvasW: 0, canvasH: 0, leftX: 0, rightX: 0, topY: 0, bottomY: 0 };
+        this.state = { img:null, canvasW: 0, canvasH: 0, leftX: 0, rightX: 0, topY: 0, bottomY: 0 };
     }
 
     // ************
@@ -24,7 +25,7 @@ class ImageCuttingBoard extends Component {
     __loadDevImageForTesting() {
         const img = this.refs.sourceImg;
         img.onload = (e) => {
-            this.onImageLoad(e.target, -1, () => {
+            this.onImageLoad(e.target, 0, () => {
                 this.drawOutputImage();
             });
         }
@@ -129,7 +130,6 @@ class ImageCuttingBoard extends Component {
         // reset image before updating to ensure handles re-align properly
         this.resetImageState(() => {
             const isPortrait = srcOrientation > 4 && srcOrientation < 9;
-
             const { sourceCanvas } = this.refs;
             const ctx = sourceCanvas.getContext('2d');
             ctx.clearRect(0, 0, sourceCanvas.width, sourceCanvas.height);
@@ -166,7 +166,7 @@ class ImageCuttingBoard extends Component {
                     ctx.transform(-1, 0, 0, 1, canvasH, 0);
                     break;
                 case 3:
-                    ctx.transform(-1, 0, 0, -1, canvasH, canvasW);
+                    ctx.transform(-1, 0, 0, -1, canvasW, canvasH);
                     break;
                 case 4:
                     ctx.transform(1, 0, 0, -1, 0, canvasW);
@@ -195,7 +195,7 @@ class ImageCuttingBoard extends Component {
             // restore ensures resets transform in case another image is added
             ctx.restore();
 
-            this.setState({ canvasW, canvasH, rightX: canvasW, bottomY: canvasH }, () => {
+            this.setState({img, canvasW, canvasH, rightX: canvasW, bottomY: canvasH }, () => {
                 if (callback) {
                     callback();
                 }
@@ -223,6 +223,17 @@ class ImageCuttingBoard extends Component {
         outputContext.drawImage(sourceCanvas, leftX, topY, sourceWidth, sourceHeight, outputX, outputY, outputWidth, outputHeight);
     }
 
+    // Rotate
+    rotate(rotation) {
+        // 6 = 90 degrees
+        // 3 = 180 degrees
+        // 8 = 270 degrees
+
+        this.onImageLoad(this.state.img, rotation, () => {
+            this.drawOutputImage();
+        });
+    }
+
     render() {
         // find the middle for placement of side handles
         const middleX = this.state.leftX + (this.state.rightX - this.state.leftX) / 2;
@@ -242,22 +253,6 @@ class ImageCuttingBoard extends Component {
                                     cutoutY={this.state.topY}
                                     cutoutWidth={this.state.rightX - this.state.leftX}
                                     cutoutHeight={this.state.bottomY - this.state.topY}/>
-
-                   {/* <svg width={this.state.canvasW} height={this.state.canvasH} style={{ position: 'absolute' }}>
-                        <defs>
-                            <mask id="hole">
-                                <rect width={this.state.canvasW} height={this.state.canvasH} fill="white"/>
-                                <rect x={this.state.leftX}
-                                      y={this.state.topY}
-                                      width={this.state.rightX - this.state.leftX}
-                                      height={this.state.bottomY - this.state.topY}
-                                      fill="black"/>
-                            </mask>
-                        </defs>
-
-                        <rect fill={'rgba(0,0,0,0.4)'} x="0" y="0" width={this.state.canvasW}
-                              height={this.state.canvasW} mask="url(#hole)"/>
-                    </svg>*/}
 
                     <DragHandle id={'left'}
                                 axis={'x'}
@@ -292,11 +287,15 @@ class ImageCuttingBoard extends Component {
                                 onHandleUpdate={this.onHandleUpdate}/>
 
                     <canvas ref="sourceCanvas"/>
+                    <button onClick={() => this.rotate(0)}>Rot 0</button>
+                    <button onClick={() => this.rotate(6)}>Rot 6</button>
+                    <button onClick={() => this.rotate(3)}>Rot 3</button>
+                    <button onClick={() => this.rotate(8)}>Rot 8</button>
                 </CuttingBoard>
 
-                <div>
-                    <h2>Dev stuff</h2>
+                <div style={{ marginTop: 100 }}>
                     <hr/>
+                    <h2>Dev stuff</h2>
                     <h3>Image output</h3>
                     <canvas ref={'outputCanvas'}/>
                     <hr/>
