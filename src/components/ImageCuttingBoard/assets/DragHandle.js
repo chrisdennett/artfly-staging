@@ -49,19 +49,3 @@ class DragHandle extends Component {
 }
 
 export default DragHandle;
-
-/*
- <Draggable
-                axis={this.props.axis}
-                handle=".handle"
-                bounds={bounds}
-                defaultPosition={{x: this.props.startX, y: this.props.startY}}
-                position={null}
-                onStart={this.select.bind(this)}
-                onDrag={this.onDrag.bind(this)}
-                onStop={this.deselect.bind(this)}>
-                <div className="handle" style={{position:'absolute', left:-25, top:-25}}>
-                    <SvgHandle className="handle" fill={fill} />
-                </div>
-            </Draggable>
-*/

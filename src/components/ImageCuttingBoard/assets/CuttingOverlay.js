@@ -2,13 +2,19 @@
 import React, { Component } from 'react';
 // components
 import DragHandle from "./DragHandle";
+import DragRectangle from "./DragRectangle";
 
 class CuttingOverlay extends Component {
 
     constructor() {
         super();
         this.onHandleUpdate = this.onHandleUpdate.bind(this);
+        this.onRectDrag = this.onRectDrag.bind(this);
         this.state = { leftX: 0, topY: 0, rightX: 0, bottomY: 0 };
+    }
+
+    onRectDrag(leftX, rightX, topY, bottomY){
+        this.setState({leftX, rightX, topY, bottomY})
     }
 
     onHandleUpdate(handleName, x, y) {
@@ -89,9 +95,10 @@ class CuttingOverlay extends Component {
                         </mask>
                     </defs>
 
-                    <rect
-                        onClick={this.clickTest}
-                        fill={'rgba(0,0,0,0.7)'} width={width} height={height} mask="url(#hole)"/>
+                    <rect fill={'rgba(0,0,0,0.7)'} width={width} height={height} mask="url(#hole)"/>
+
+                    <DragRectangle position={{x:leftX, y:topY}} width={cutoutWidth} height={cutoutHeight} onHandleUpdate={this.onRectDrag} bounds={{left:0, right:width-cutoutWidth, top:0, bottom:height-cutoutHeight}}/>
+
                 </svg>
 
                 <DragHandle id={'top-left'}
