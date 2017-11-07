@@ -30,15 +30,12 @@ class DragHandle extends Component {
 
         const fill = isSelected ? '#ffff00' : this.props.colour;
 
-        if(this.props.startX <= 0 || this.props.startY <= 0) return null;
-
         return (
             <Draggable
                 axis={this.props.axis}
                 handle=".handle"
                 bounds={bounds}
-                defaultPosition={{x: this.props.startX, y: this.props.startY}}
-                position={null}
+                position={this.props.position}
                 onStart={this.select.bind(this)}
                 onDrag={this.onDrag.bind(this)}
                 onStop={this.deselect.bind(this)}>
@@ -52,3 +49,19 @@ class DragHandle extends Component {
 }
 
 export default DragHandle;
+
+/*
+ <Draggable
+                axis={this.props.axis}
+                handle=".handle"
+                bounds={bounds}
+                defaultPosition={{x: this.props.startX, y: this.props.startY}}
+                position={null}
+                onStart={this.select.bind(this)}
+                onDrag={this.onDrag.bind(this)}
+                onStop={this.deselect.bind(this)}>
+                <div className="handle" style={{position:'absolute', left:-25, top:-25}}>
+                    <SvgHandle className="handle" fill={fill} />
+                </div>
+            </Draggable>
+*/

@@ -68,7 +68,7 @@ class ImageCuttingBoard extends Component {
 
     // Reset image - clears state so handles re-align properly
     resetImageState(callback) {
-        this.setState({ canvasW: 0, canvasH: 0}, () => {
+        this.setState({ canvasW: 0, canvasH: 0 }, () => {
             callback();
         });
     }
@@ -197,6 +197,7 @@ class ImageCuttingBoard extends Component {
         });
     }
 
+    // NB the conditional rendering is a bit of a hack to make sure the cutting overlay remounts after image load or rotation
     render() {
         return (
             <CuttingBoardContainer>
@@ -206,9 +207,11 @@ class ImageCuttingBoard extends Component {
 
                 <CuttingBoard style={{ width: this.state.canvasW, height: this.state.canvasH }}>
 
+                    {this.state.canvasW &&
                     <CuttingOverlay onChange={this.onCuttingOverlayChange}
                                     height={this.state.canvasH}
                                     width={this.state.canvasW}/>
+                    }
 
                     <canvas ref="sourceCanvas"/>
 
