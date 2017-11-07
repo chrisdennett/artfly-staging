@@ -25,7 +25,7 @@ class DragHandle extends Component {
     }
 
     render() {
-        const bounds = {left:0, right:this.props.maxX, top:0, bottom:this.props.maxY};
+        // const bounds = {left:0, right:this.props.maxX, top:0, bottom:this.props.maxY};
         const { isSelected } = this.state;
 
         const fill = isSelected ? '#ffff00' : this.props.colour;
@@ -34,7 +34,7 @@ class DragHandle extends Component {
             <Draggable
                 axis={this.props.axis}
                 handle=".handle"
-                bounds={bounds}
+                bounds={this.props.bounds}
                 position={this.props.position}
                 onStart={this.select.bind(this)}
                 onDrag={this.onDrag.bind(this)}

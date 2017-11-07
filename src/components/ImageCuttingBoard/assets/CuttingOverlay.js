@@ -95,57 +95,53 @@ class CuttingOverlay extends Component {
                 </svg>
 
                 <DragHandle id={'top-left'}
-                            maxX={width}
-                            maxY={height}
+                            bounds={{ left: 0, right: rightX, top: 0, bottom: bottomY }}
                             position={{ x: leftX, y: topY }}
                             colour={'#7dbaff'}
                             onHandleUpdate={this.onHandleUpdate}/>
 
                 <DragHandle id={'top-right'}
-                            maxX={width}
-                            maxY={height}
+                            bounds={{ left: leftX, right: width, top: 0, bottom: bottomY }}
                             position={{ x: rightX, y: topY }}
                             colour={'#7dbaff'}
                             onHandleUpdate={this.onHandleUpdate}/>
 
                 <DragHandle id={'bottom-left'}
-                            maxX={width}
-                            maxY={height}
+                            bounds={{ left: 0, right: rightX, top: topY, bottom: height }}
                             position={{ x: leftX, y: bottomY }}
                             colour={'#7dbaff'}
                             onHandleUpdate={this.onHandleUpdate}/>
 
                 <DragHandle id={'bottom-right'}
-                            maxX={width}
-                            maxY={height}
+                            bounds={{ left: leftX, right: width, top: topY, bottom: height }}
                             position={{ x: rightX, y: bottomY }}
                             colour={'#7dbaff'}
                             onHandleUpdate={this.onHandleUpdate}/>
 
                 <DragHandle id={'left'}
                             axis={'x'}
-                            maxX={width}
+                            bounds={{ left: 0, right: rightX, top: 0, bottom: height }}
                             position={{ x: leftX, y: middleY }}
                             colour={'#ff00ff'}
                             onHandleUpdate={this.onHandleUpdate}/>
 
                 <DragHandle id={'right'}
                             axis={'x'}
-                            maxX={width}
+                            bounds={{ left: leftX, right: width, top: 0, bottom: height }}
                             position={{ x: rightX, y: middleY }}
                             colour={'#ff0000'}
                             onHandleUpdate={this.onHandleUpdate}/>
 
                 <DragHandle id={'top'}
                             axis={'y'}
-                            maxY={height}
+                            bounds={{ left: 0, right: width, top: 0, bottom: bottomY }}
                             position={{ x: middleX, y: topY }}
                             colour={'#0000ff'}
                             onHandleUpdate={this.onHandleUpdate}/>
 
                 <DragHandle id={'bottom'}
                             axis={'y'}
-                            maxY={height}
+                            bounds={{ left: 0, right: width, top: topY, bottom: height }}
                             position={{ x: middleX, y: bottomY }}
                             colour={'#00ff00'}
                             onHandleUpdate={this.onHandleUpdate}/>
