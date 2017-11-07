@@ -206,11 +206,10 @@ class ImageCuttingBoard extends Component {
 
                 <CuttingBoard style={{ width: this.state.canvasW, height: this.state.canvasH }}>
 
-                    {this.state.canvasW > 0 &&
                     <CuttingOverlay onChange={this.onCuttingOverlayChange}
                                     height={this.state.canvasH}
                                     width={this.state.canvasW}/>
-                    }
+
                     <canvas ref="sourceCanvas"/>
 
                 </CuttingBoard>

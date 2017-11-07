@@ -7,15 +7,8 @@ class CuttingOverlay extends Component {
 
     constructor() {
         super();
-
         this.onHandleUpdate = this.onHandleUpdate.bind(this);
-
-        this.state = { width:0, height:0, leftX: 0, topY: 0, rightX:0, bottomY:0 };
-    }
-
-    componentDidMount(){
-        const {width, height} = this.props;
-        this.setState({width, height, rightX:width, bottomY:height});
+        this.state = { leftX: 0, topY: 0, rightX:0, bottomY:0 };
     }
 
     onHandleUpdate(handleName, x, y) {
@@ -44,7 +37,13 @@ class CuttingOverlay extends Component {
     }
 
     render() {
-        const { width, height, leftX, rightX, topY, bottomY } = this.state;
+        let { leftX, rightX, topY, bottomY } = this.state;
+        const { width, height } = this.props;
+
+        // setting the width and height
+        if(width <= 0 || height <=0) return null;
+        if(bottomY <=0 || bottomY > height) bottomY = height;
+        if(rightX <=0 || rightX > width) rightX = width;
 
         // find the middle for placement of side handles
         const cutoutWidth = rightX - leftX;
