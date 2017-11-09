@@ -121,40 +121,14 @@ class ImageCuttingBoard extends Component {
             newBottomY = canvasH;
         }
 
-        // what do you multiply the width by to get the height
-        //const widthToHeightScale = canvasH / canvasW;
-        // what do you multiply the height by to get the width
-        // const heightToWidthScale = canvasW / canvasH;
-
-        /*const scaledCanvasWidth = 800;
-        const scaledCanvasHeight = scaledCanvasWidth * widthToHeightScale;
-        const scaleDownFactor = scaledCanvasWidth / canvasW;
-        const scaleUpFactor = canvasW / scaledCanvasWidth;*/
-
         this.setState({ img, rotation: srcOrientation, canvasW, canvasH, leftX: newLeftX, rightX: newRightX, topY: newTopY, bottomY: newBottomY });
     }
 
     // Rotate
     rotateClockwise() {
-        let newRotation;
-
-        switch (this.state.rotation) {
-            case 0:
-                newRotation = 6;
-                break;
-            case 6:
-                newRotation = 3;
-                break;
-            case 3:
-                newRotation = 8;
-                break;
-            case 8:
-                newRotation = 0;
-                break;
-            default:
-                newRotation = 6;
-                break;
-        }
+        const currentRotation = this.state.rotation ? this.state.rotation : 1;
+        const nextRotations = { 1: 6, 6: 3, 3: 8, 8: 1 };
+        const newRotation = nextRotations[currentRotation] || 6;
 
         const { canvasW, canvasH, leftX, rightX, topY, bottomY } = this.state;
         const currL = leftX / canvasW;
