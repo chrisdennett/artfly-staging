@@ -6,15 +6,27 @@ import DragRectangle from "./DragRectangle";
 
 class CuttingOverlay extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
         this.onHandleUpdate = this.onHandleUpdate.bind(this);
         this.onRectDrag = this.onRectDrag.bind(this);
-        this.state = { leftX: 0, topY: 0, rightX: 0, bottomY: 0 };
+        let initialCropData;
+
+        if(props.initialCropData){
+            initialCropData = props.initialCropData
+        }
+        else{
+            initialCropData = { leftX: 0, topY: 0, rightX: props.width, bottomY: props.height }
+        }
+
+        this.state = { ...initialCropData };
     }
 
     onRectDrag(leftX, rightX, topY, bottomY){
-        this.setState({leftX, rightX, topY, bottomY})
+        this.setState({leftX, rightX, topY, bottomY}, () => {
+            this.props.onChange(leftX, rightX, topY, bottomY);
+        })
     }
 
     onHandleUpdate(handleName, x, y) {
@@ -69,11 +81,6 @@ class CuttingOverlay extends Component {
     render() {
         let { leftX, rightX, topY, bottomY } = this.state;
         const { width, height } = this.props;
-
-        // setting the width and height
-        if (width <= 0 || height <= 0) return null;
-        if (bottomY <= 0 || bottomY > height) bottomY = height;
-        if (rightX <= 0 || rightX > width) rightX = width;
 
         // find the middle for placement of side handles
         const cutoutWidth = rightX - leftX;

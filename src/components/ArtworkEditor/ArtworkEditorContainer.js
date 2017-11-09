@@ -92,33 +92,11 @@ class ArtworkEditorHolder extends Component {
             newImageHeight = this.state.cropData.height;
         }
 
-
-        /* this.props.addArtwork(this.state.cropImg, this.props.userId, artistId, width, height, artworkId, () => {
-             this.setState({ isSaving: false, savedCropData: this.state.cropData });
-         });*/
-
         const currentArtistId = this.props.artwork.artistId;
 
         this.props.updateArtwork(this.props.artworkId, currentArtistId, this.state.selectedArtistId, this.state.cropImg, newImageWidth, newImageHeight, () => {
             callback();
         });
-
-        // if just the artist has changed
-        /*if (artistChanged && imageChanged === false) {
-            this.props.updateArtwork(artworkId, newArtworkData, () => {
-                this.setState({ isSaving: false });
-            });
-        }
-        // if just the image cropping has changed
-        else if (imageChanged && artistChanged === false) {
-            this.uploadCurrentImage(newArtworkData.artistId, artworkId);
-        }
-        // if both the artist and the image has changed
-        else {
-            this.props.updateArtwork(artworkId, oldArtworkData, newArtworkData, () => {
-                this.uploadCurrentImage(newArtworkData.artistId, artworkId);
-            });
-        }*/
     }
 
     onConfirmDeleteArtwork() {
@@ -128,14 +106,6 @@ class ArtworkEditorHolder extends Component {
             history.push("/settings");
         });
     }
-
-    /*uploadCurrentImage(artistId, artworkId) {
-        const { width, height } = this.state.cropData;
-
-        this.props.addArtwork(this.state.cropImg, this.props.userId, artistId, width, height, artworkId, () => {
-            this.setState({ isSaving: false, savedCropData: this.state.cropData });
-        })
-    }*/
 
     onCropImageSave(cropImg) {
         this.setState({ cropImg: cropImg });

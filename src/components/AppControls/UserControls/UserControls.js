@@ -5,10 +5,9 @@ import SignOutButton from "./assets/SignOutButton";
 import SettingsButton from "./assets/SettingsButton";
 import EditButton from "../GalleryControls/assets/EditButton";
 import SignInContainer from "../../SignIn/SignInContainer";
-// import AddArtInputButton from "./assets/AddArtInputButton";
+import AddArtButton from "./assets/AddArtButton";
 import Link from "../../global/Link";
 import history from '../../global/history';
-// import SelectPhotoButton from "../../ImageCuttingBoard/assets/SelectPhotoButton";
 
 const UserControls = function (props) {
 
@@ -27,11 +26,10 @@ const UserControls = function (props) {
         renderContent =
             <span>
                 {showEditArtworkButton &&
-                <Link linkTo={`/artworkEditor/${props.artworkId}`}><EditButton/></Link>
+                <Link linkTo={`/artStudio/${props.artworkId}`}><EditButton/></Link>
                 }
 
-                {/*<SelectPhotoButton onPhotoSelect={this.props.onPhotoSelected}/>*/}
-                {/*<AddArtInputButton maxArtworksReached={props.maxArtworksReached}/>*/}
+                <Link linkTo={`/artStudio/`}><AddArtButton maxArtworksReached={props.maxArtworksReached}/></Link>
 
                 <Link linkTo="/settings"><SettingsButton/></Link>
 

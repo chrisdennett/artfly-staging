@@ -8,13 +8,14 @@ import UserControls from './UserControls';
 
 class UserControlsHolder extends Component {
     render() {
-        const { userStatus, allowEditing, maxArtworksReached, logoutUser, galleryId, artworkId} = this.props;
+        const { userStatus, allowEditing, maxArtworksReached, logoutUser, galleryId, artworkId, onPhotoSelected} = this.props;
 
         if(userStatus === 'new'){
             return null;
         }
 
         return <UserControls userStatus={userStatus}
+                             onPhotoSelected={onPhotoSelected}
                              allowEditing={allowEditing}
                              maxArtworksReached={maxArtworksReached}
                              logout={logoutUser}

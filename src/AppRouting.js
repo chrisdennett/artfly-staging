@@ -20,11 +20,12 @@ import SettingsContainer from "./components/Settings/SettingsContainer";
 import ArtistEditorContainer from "./components/ArtistEditor/ArtistEditorContainer";
 import NewUserFormContainer from "./components/NewUser/NewUserFormContainer";
 import ArtworkContainer from './components/Artwork/ArtworkContainer';
+import ArtStudio from "./components/ArtStudio/ArtStudio";
 import ArtworkEditorContainer from "./components/ArtworkEditor/ArtworkEditorContainer";
 import FourOhFour from "./components/FourOhFour/FourOhFour";
 import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
 //
-import ImageCuttingBoard from './components/ImageCuttingBoard/ImageCuttingBoard';
+import ImageCuttingBoard from './components/PhotoUploader/ImageCuttingBoard';
 
 const IN_BETA_MODE = true;
 
@@ -34,6 +35,7 @@ const routes = {
     gallery: { component: ArtistGalleryContainer },
     artwork: { component: ArtworkContainer },
     settings: { component: SettingsContainer, adminOnly: true },
+    artStudio: { component: ArtStudio, adminOnly: true },
     artworkEditor: { component: ArtworkEditorContainer, adminOnly: true },
     addOrEditArtist: { component: ArtistEditorContainer, adminOnly: true },
     newUser: { component: NewUserFormContainer, adminOnly: true }
@@ -42,6 +44,9 @@ const routes = {
 class ArtflyRouting extends Component {
     constructor(props) {
         super(props);
+        this.onAppControlsPhotoSelected = this.onAppControlsPhotoSelected.bind(this);
+        this.onCancelAddPhoto = this.onCancelAddPhoto.bind(this);
+
         this.state = { unlisten: null, params: null };
     }
 
@@ -83,11 +88,19 @@ class ArtflyRouting extends Component {
             else if (page === 'artworkEditor') {
                 params.artworkId = sections[1];
             }
+            else if (page === 'artStudio') {
+                // if there's no artworkId
+                params.artworkId = sections[1] ? sections[1] : 'new';
+            }
             else if (page === 'addOrEditArtist') {
                 params.artistId = sections[1];
             }
             else if (page === 'newUser') {
                 params.userId = sections[1];
+            }
+            else if (page === 'cut') {
+                params.onCancelAddPhoto=this.onCancelAddPhoto;
+                // params.imgFile = this.state.imgFile;
             }
         }
 
@@ -102,11 +115,24 @@ class ArtflyRouting extends Component {
         ga.pageview(fullPath);
     }
 
+    onAppControlsPhotoSelected(e) {
+        e.preventDefault();
+
+        if (e.target.files[0]) {
+            const imgFile = e.target.files[0];
+            this.setState({imgFile})
+        }
+    }
+
+    onCancelAddPhoto(){
+        this.setState({imgFile:null})
+    }
+
     render() {
         const { page, params } = this.state;
         const PageComponent = routes[page] ? routes[page].component : FourOhFour;
         const adminOnly = routes[page] && routes[page].adminOnly ? routes[page].adminOnly : false;
-        const PageComponentWithProps = <PageComponent {...params} />;
+        const PageComponentWithProps = <PageComponent {...params} imgFile={this.state.imgFile} />;
 
         if (!this.props.user.status || this.props.user.status === 'pending') {
             return <LoadingOverlay/>
@@ -124,12 +150,17 @@ class ArtflyRouting extends Component {
             return <Redirect to={'/newUser'}/>;
         }
 
+        // If an image has been selected redirect to cut page
+        if(this.state.imgFile && page !== 'cut'){
+            return <Redirect to={'/cut'}/>
+        }
+
         const showTopControls = IN_BETA_MODE === false || this.props.user.status !== 'none';
 
         return (
             <div>
                 {showTopControls &&
-                <AppControls {...params} user={this.props.user}/>
+                <AppControls {...params} user={this.props.user} onPhotoSelected={this.onAppControlsPhotoSelected}/>
                 }
                 <WindowController>
                     {PageComponentWithProps}

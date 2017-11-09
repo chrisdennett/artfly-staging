@@ -1,6 +1,6 @@
 // externals
 import React, { Component } from "react";
-import Draggable from 'react-draggable';
+import Draggable from 'react-draggable'; // https://github.com/mzabriskie/react-draggable
 // components
 import SvgHandle from "./SvgHandle";
 

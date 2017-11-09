@@ -31,6 +31,7 @@ const Page = function ({icon, title, children, hue, saturation, brightness}) {
     };
 
     const contentStyle = {
+        width: '100%',
         maxWidth: 960,
         margin: '6vh auto'
     };

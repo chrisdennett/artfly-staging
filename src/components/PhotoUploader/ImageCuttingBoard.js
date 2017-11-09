@@ -2,68 +2,39 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
 // components
-import SelectPhotoButton from "./assets/SelectPhotoButton";
 import CuttingOverlay from "./assets/CuttingOverlay";
 import Butt from "../global/Butt";
-// helper functions
-import GetPhotoOrientation from './assets/GetPhotoOrientation';
 
 class ImageCuttingBoard extends Component {
     constructor() {
         super();
 
         this.drawImageToSourceCanvas = this.drawImageToSourceCanvas.bind(this);
-        this.onPhotoSelected = this.onPhotoSelected.bind(this);
-        this.drawOutputImage = this.drawOutputImage.bind(this);
         this.rotateClockwise = this.rotateClockwise.bind(this);
         this.onCuttingOverlayChange = this.onCuttingOverlayChange.bind(this);
+        this.onCancelClick = this.onCancelClick.bind(this);
+        this.onDoneClick = this.onDoneClick.bind(this);
 
-        this.state = { img: null, rotation: 0, canvasW: 0, canvasH: 0 };
-    }
-
-    // ************
-    // JUST HERE FOR TESTING - DELETE OR COMMENT OUT FOR PRODUCTION
-    __loadDevImageForTesting() {
-        const img = this.refs.sourceImg;
-        img.onload = (e) => {
-            this.drawImageToSourceCanvas(e.target, 0, () => {
-                this.drawOutputImage();
-            });
-        }
+        this.state = { rotation: 0, canvasW: 0, canvasH: 0, leftX: 0, rightX: 0, topY: 0, bottomY: 0 };
     }
 
     componentDidMount() {
-        // ************
-        // JUST HERE FOR TESTING - DELETE OR COMMENT OUT FOR PRODUCTION
-        this.__loadDevImageForTesting();
-        // ************
+        if (this.props.img) {
+
+            if (this.props.initialCropData) {
+                const { leftPercent, rightPercent, topPercent, bottomPercent } = this.props.initialCropData;
+                this.drawImageToSourceCanvas(this.props.img, this.props.defaultOrientation, { leftPercent, rightPercent, topPercent, bottomPercent });
+            }
+            else {
+                this.drawImageToSourceCanvas(this.props.img, this.props.defaultOrientation);
+            }
+
+        }
     }
 
     // Update on Handle move to store values and ensure image can be
     onCuttingOverlayChange(leftX, rightX, topY, bottomY) {
-        this.drawOutputImage(leftX, rightX, topY, bottomY);
-    }
-
-    // Photo has been selected
-    onPhotoSelected(e) {
-        e.preventDefault();
-
-        if (e.target.files[0]) {
-            const imgFile = e.target.files[0];
-
-            GetPhotoOrientation(imgFile, (orientation) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const imgSrc = e.target.result;
-                    let img = new Image();
-                    img.src = imgSrc;
-
-                    img.onload = (e) => this.drawImageToSourceCanvas(e.target, orientation, this.drawOutputImage);
-                };
-
-                reader.readAsDataURL(imgFile);
-            });
-        }
+        this.setState({ leftX, rightX, topY, bottomY });
     }
 
     // Reset image - clears state so handles re-align properly
@@ -74,13 +45,12 @@ class ImageCuttingBoard extends Component {
     }
 
     // Draw the source image into the source canvas
-    drawImageToSourceCanvas(img, srcOrientation, callback = null) {
+    drawImageToSourceCanvas(img, srcOrientation, cropPercentageData) {
         // reset image before updating to ensure handles re-align properly
         this.resetImageState(() => {
             const isPortrait = srcOrientation > 4 && srcOrientation < 9;
-            const { sourceCanvas } = this.refs;
-            const ctx = sourceCanvas.getContext('2d');
-            ctx.clearRect(0, 0, sourceCanvas.width, sourceCanvas.height);
+            const ctx = this.sourceCanvas.getContext('2d');
+            ctx.clearRect(0, 0, this.sourceCanvas.width, this.sourceCanvas.height);
 
             const imgW = isPortrait ? img.height : img.width;
             const imgH = isPortrait ? img.width : img.height;
@@ -103,8 +73,8 @@ class ImageCuttingBoard extends Component {
                 canvasW = maxH * hToWRatio;
             }
 
-            sourceCanvas.width = canvasW;
-            sourceCanvas.height = canvasH;
+            this.sourceCanvas.width = canvasW;
+            this.sourceCanvas.height = canvasH;
 
             // save the context so it can be reset after transform
             ctx.save();
@@ -143,31 +113,23 @@ class ImageCuttingBoard extends Component {
             // restore ensures resets transform in case another image is added
             ctx.restore();
 
-            this.setState({ img, rotation: srcOrientation, canvasW, canvasH, rightX: canvasW, bottomY: canvasH }, () => {
-                if (callback) {
-                    callback();
-                }
-            });
+            let newLeftX, newRightX, newTopY, newBottomY;
+
+            if (cropPercentageData) {
+                newLeftX = canvasW * cropPercentageData.leftPercent;
+                newRightX = canvasW * cropPercentageData.rightPercent;
+                newTopY = canvasH * cropPercentageData.topPercent;
+                newBottomY = canvasH * cropPercentageData.bottomPercent;
+            }
+            else {
+                newLeftX = 0;
+                newRightX = canvasW;
+                newTopY = 0;
+                newBottomY = canvasH;
+            }
+
+            this.setState({ img, rotation: srcOrientation, canvasW, canvasH, leftX: newLeftX, rightX: newRightX, topY: newTopY, bottomY: newBottomY });
         });
-    }
-
-    // Draw cropped image to canvas
-    drawOutputImage(leftX, rightX, topY, bottomY) {
-        const { sourceCanvas, outputCanvas } = this.refs;
-        const outputContext = outputCanvas.getContext('2d');
-
-        const sourceWidth = rightX - leftX;
-        const sourceHeight = bottomY - topY;
-
-        const outputX = 0;
-        const outputY = 0;
-        const outputWidth = sourceWidth / 2;
-        const outputHeight = sourceHeight / 2;
-
-        outputCanvas.width = outputWidth;
-        outputCanvas.height = outputHeight;
-
-        outputContext.drawImage(sourceCanvas, leftX, topY, sourceWidth, sourceHeight, outputX, outputY, outputWidth, outputHeight);
     }
 
     // Rotate
@@ -192,42 +154,53 @@ class ImageCuttingBoard extends Component {
                 break;
         }
 
-        this.drawImageToSourceCanvas(this.state.img, newRotation, () => {
-            this.drawOutputImage();
-        });
+        const { canvasW, canvasH, leftX, rightX, topY, bottomY } = this.state;
+        const currL = leftX / canvasW;
+        const currR = rightX / canvasW;
+        const currT = topY / canvasH;
+        const currB = bottomY / canvasH;
+
+        this.drawImageToSourceCanvas(this.props.img, newRotation, { leftPercent: 1 - currB, rightPercent: 1 - currT, topPercent: currL, bottomPercent: currR });
+    }
+
+    onCancelClick() {
+        this.props.onCancel();
+    }
+
+    onDoneClick() {
+        const { rotation, leftX, rightX, topY, bottomY } = this.state;
+
+        const leftPercent = leftX / this.state.canvasW;
+        const rightPercent = rightX / this.state.canvasW;
+        const topPercent = topY / this.state.canvasH;
+        const bottomPercent = bottomY / this.state.canvasH;
+
+        this.props.onDone({ canvas: this.sourceCanvas, rotation, leftX, rightX, topY, bottomY, leftPercent, rightPercent, topPercent, bottomPercent });
     }
 
     // NB the conditional rendering is a bit of a hack to make sure the cutting overlay remounts after image load or rotation
     render() {
+        const { leftX, rightX, topY, bottomY } = this.state;
+
         return (
             <CuttingBoardContainer>
-
-                <SelectPhotoButton
-                    onPhotoSelect={this.onPhotoSelected}/>
 
                 <CuttingBoard style={{ width: this.state.canvasW, height: this.state.canvasH }}>
 
                     {this.state.canvasW &&
                     <CuttingOverlay onChange={this.onCuttingOverlayChange}
+                                    initialCropData={{ leftX, rightX, topY, bottomY }}
                                     height={this.state.canvasH}
                                     width={this.state.canvasW}/>
                     }
 
-                    <canvas ref="sourceCanvas"/>
+                    <canvas ref={(canvas) => this.sourceCanvas = canvas}/>
 
                 </CuttingBoard>
 
                 <Butt onClick={this.rotateClockwise}>ROTATE</Butt>
-
-                <div style={{ marginTop: 100 }}>
-                    <hr/>
-                    <h2>Dev stuff</h2>
-                    <h3>Image output</h3>
-                    <canvas ref={'outputCanvas'}/>
-                    <hr/>
-                    <h3>Source image</h3>
-                    <img ref={'sourceImg'} src={'gallery-example.PNG'} alt={'sample'}/>
-                </div>
+                <Butt onClick={this.onCancelClick}>CANCEL</Butt>
+                <Butt onClick={this.onDoneClick}>DONE</Butt>
             </CuttingBoardContainer>
         );
     }
@@ -238,6 +211,12 @@ export default ImageCuttingBoard;
 const CuttingBoardContainer = styled.div`
     background-color: black;
     padding: 70px 20px 20px 20px;
+    position: absolute;
+    top:0;
+    left:0;
+    right: 0;
+    z-index: 2000;
+    height: 100vw;
 `;
 
 const CuttingBoard = styled.div`
