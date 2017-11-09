@@ -5,6 +5,9 @@ import styled from 'styled-components';
 import CuttingOverlay from "./assets/CuttingOverlay";
 import Butt from "../global/Butt";
 
+const maxImageWidth = 800;
+const maxImageHeight = 600;
+
 class ImageCuttingBoard extends Component {
     constructor() {
         super();
@@ -55,15 +58,15 @@ class ImageCuttingBoard extends Component {
             const imgW = isPortrait ? img.height : img.width;
             const imgH = isPortrait ? img.width : img.height;
 
-            let maxW = 800;
-            let maxH = 600;
+            // This is the maximum image size allowed
+            const maxW = maxImageWidth;
+            const maxH = maxImageHeight;
+            // Alternative > don't expand images(?)
+            // const maxW = imgW >= maxImageWidth ? maxImageWidth : imgW;
+            // const maxH = imgH >= maxImageHeight ? maxImageHeight : imgH;
 
             const wToHRatio = imgH / imgW;
             const hToWRatio = imgW / imgH;
-
-            // don't expand images(?)
-            // let maxW = imgH > 800 ? 800 : imgH;
-            // let maxH = imgW > 600 ? 600 : imgW;
 
             let canvasW = maxW;
             let canvasH = maxW * wToHRatio;
@@ -127,6 +130,16 @@ class ImageCuttingBoard extends Component {
                 newTopY = 0;
                 newBottomY = canvasH;
             }
+
+            // what do you multiply the width by to get the height
+            //const widthToHeightScale = canvasH / canvasW;
+            // what do you multiply the height by to get the width
+            // const heightToWidthScale = canvasW / canvasH;
+
+            /*const scaledCanvasWidth = 800;
+            const scaledCanvasHeight = scaledCanvasWidth * widthToHeightScale;
+            const scaleDownFactor = scaledCanvasWidth / canvasW;
+            const scaleUpFactor = canvasW / scaledCanvasWidth;*/
 
             this.setState({ img, rotation: srcOrientation, canvasW, canvasH, leftX: newLeftX, rightX: newRightX, topY: newTopY, bottomY: newBottomY });
         });
