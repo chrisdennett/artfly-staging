@@ -4,7 +4,7 @@ import styled from 'styled-components';
 // components
 import CuttingOverlay from "./assets/CuttingOverlay";
 import Butt from "../global/Butt";
-
+// helper values
 const maxImageWidth = 800;
 const maxImageHeight = 600;
 
@@ -31,7 +31,6 @@ class ImageCuttingBoard extends Component {
             else {
                 this.drawImageToSourceCanvas(this.props.img, this.props.defaultOrientation);
             }
-
         }
     }
 
@@ -40,111 +39,99 @@ class ImageCuttingBoard extends Component {
         this.setState({ leftX, rightX, topY, bottomY });
     }
 
-    // Reset image - clears state so handles re-align properly
-    resetImageState(callback) {
-        this.setState({ canvasW: 0, canvasH: 0 }, () => {
-            callback();
-        });
-    }
-
     // Draw the source image into the source canvas
     drawImageToSourceCanvas(img, srcOrientation, cropPercentageData) {
+        const isPortrait = srcOrientation > 4 && srcOrientation < 9;
+        const ctx = this.sourceCanvas.getContext('2d');
+        ctx.clearRect(0, 0, this.sourceCanvas.width, this.sourceCanvas.height);
 
+        const imgW = isPortrait ? img.height : img.width;
+        const imgH = isPortrait ? img.width : img.height;
 
-        // reset image before updating to ensure handles re-align properly
-        // this.resetImageState(() => {
-            const isPortrait = srcOrientation > 4 && srcOrientation < 9;
-            const ctx = this.sourceCanvas.getContext('2d');
-            ctx.clearRect(0, 0, this.sourceCanvas.width, this.sourceCanvas.height);
+        // This is the maximum image size allowed
+        const maxW = maxImageWidth;
+        const maxH = maxImageHeight;
+        // Alternative > don't expand images(?)
+        // const maxW = imgW >= maxImageWidth ? maxImageWidth : imgW;
+        // const maxH = imgH >= maxImageHeight ? maxImageHeight : imgH;
 
-            const imgW = isPortrait ? img.height : img.width;
-            const imgH = isPortrait ? img.width : img.height;
+        const wToHRatio = imgH / imgW;
+        const hToWRatio = imgW / imgH;
 
-            // This is the maximum image size allowed
-            const maxW = maxImageWidth;
-            const maxH = maxImageHeight;
-            // Alternative > don't expand images(?)
-            // const maxW = imgW >= maxImageWidth ? maxImageWidth : imgW;
-            // const maxH = imgH >= maxImageHeight ? maxImageHeight : imgH;
+        let canvasW = maxW;
+        let canvasH = maxW * wToHRatio;
 
-            const wToHRatio = imgH / imgW;
-            const hToWRatio = imgW / imgH;
+        if (canvasH > maxH) {
+            canvasH = maxH;
+            canvasW = maxH * hToWRatio;
+        }
 
-            let canvasW = maxW;
-            let canvasH = maxW * wToHRatio;
+        this.sourceCanvas.width = canvasW;
+        this.sourceCanvas.height = canvasH;
 
-            if (canvasH > maxH) {
-                canvasH = maxH;
-                canvasW = maxH * hToWRatio;
-            }
+        // save the context so it can be reset after transform
+        ctx.save();
+        // transform context before drawing image
+        switch (srcOrientation) {
+            case 2:
+                ctx.transform(-1, 0, 0, 1, canvasH, 0);
+                break;
+            case 3:
+                ctx.transform(-1, 0, 0, -1, canvasW, canvasH);
+                break;
+            case 4:
+                ctx.transform(1, 0, 0, -1, 0, canvasW);
+                break;
+            case 5:
+                ctx.transform(0, 1, 1, 0, 0, 0);
+                break;
+            case 6:
+                ctx.transform(0, 1, -1, 0, canvasW, 0);
+                break;
+            case 7:
+                ctx.transform(0, -1, -1, 0, canvasW, canvasH);
+                break;
+            case 8:
+                ctx.transform(0, -1, 1, 0, 0, canvasH);
+                break;
+            default:
+                break;
+        }
 
-            this.sourceCanvas.width = canvasW;
-            this.sourceCanvas.height = canvasH;
+        const transformedCanvasW = isPortrait ? canvasH : canvasW;
+        const transformedCanvasH = isPortrait ? canvasW : canvasH;
 
-            // save the context so it can be reset after transform
-            ctx.save();
-            // transform context before drawing image
-            switch (srcOrientation) {
-                case 2:
-                    ctx.transform(-1, 0, 0, 1, canvasH, 0);
-                    break;
-                case 3:
-                    ctx.transform(-1, 0, 0, -1, canvasW, canvasH);
-                    break;
-                case 4:
-                    ctx.transform(1, 0, 0, -1, 0, canvasW);
-                    break;
-                case 5:
-                    ctx.transform(0, 1, 1, 0, 0, 0);
-                    break;
-                case 6:
-                    ctx.transform(0, 1, -1, 0, canvasW, 0);
-                    break;
-                case 7:
-                    ctx.transform(0, -1, -1, 0, canvasW, canvasH);
-                    break;
-                case 8:
-                    ctx.transform(0, -1, 1, 0, 0, canvasH);
-                    break;
-                default:
-                    break;
-            }
+        // draw image
+        ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, transformedCanvasW, transformedCanvasH);
+        // restore ensures resets transform in case another image is added
+        ctx.restore();
 
-            const transformedCanvasW = isPortrait ? canvasH : canvasW;
-            const transformedCanvasH = isPortrait ? canvasW : canvasH;
+        let newLeftX, newRightX, newTopY, newBottomY;
 
-            // draw image
-            ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, transformedCanvasW, transformedCanvasH);
-            // restore ensures resets transform in case another image is added
-            ctx.restore();
+        if (cropPercentageData) {
+            newLeftX = canvasW * cropPercentageData.leftPercent;
+            newRightX = canvasW * cropPercentageData.rightPercent;
+            newTopY = canvasH * cropPercentageData.topPercent;
+            newBottomY = canvasH * cropPercentageData.bottomPercent;
+        }
+        else {
+            newLeftX = 0;
+            newRightX = canvasW;
+            newTopY = 0;
+            newBottomY = canvasH;
+        }
 
-            let newLeftX, newRightX, newTopY, newBottomY;
+        // what do you multiply the width by to get the height
+        //const widthToHeightScale = canvasH / canvasW;
+        // what do you multiply the height by to get the width
+        // const heightToWidthScale = canvasW / canvasH;
 
-            if (cropPercentageData) {
-                newLeftX = canvasW * cropPercentageData.leftPercent;
-                newRightX = canvasW * cropPercentageData.rightPercent;
-                newTopY = canvasH * cropPercentageData.topPercent;
-                newBottomY = canvasH * cropPercentageData.bottomPercent;
-            }
-            else {
-                newLeftX = 0;
-                newRightX = canvasW;
-                newTopY = 0;
-                newBottomY = canvasH;
-            }
+        /*const scaledCanvasWidth = 800;
+        const scaledCanvasHeight = scaledCanvasWidth * widthToHeightScale;
+        const scaleDownFactor = scaledCanvasWidth / canvasW;
+        const scaleUpFactor = canvasW / scaledCanvasWidth;*/
 
-            // what do you multiply the width by to get the height
-            //const widthToHeightScale = canvasH / canvasW;
-            // what do you multiply the height by to get the width
-            // const heightToWidthScale = canvasW / canvasH;
-
-            /*const scaledCanvasWidth = 800;
-            const scaledCanvasHeight = scaledCanvasWidth * widthToHeightScale;
-            const scaleDownFactor = scaledCanvasWidth / canvasW;
-            const scaleUpFactor = canvasW / scaledCanvasWidth;*/
-
-            this.setState({ img, rotation: srcOrientation, canvasW, canvasH, leftX: newLeftX, rightX: newRightX, topY: newTopY, bottomY: newBottomY });
-        // });
+        this.setState({ img, rotation: srcOrientation, canvasW, canvasH, leftX: newLeftX, rightX: newRightX, topY: newTopY, bottomY: newBottomY });
     }
 
     // Rotate
@@ -194,7 +181,7 @@ class ImageCuttingBoard extends Component {
     }
 
     render() {
-        const { leftX, rightX, topY, bottomY, canvasW:width, canvasH:height } = this.state;
+        const { leftX, rightX, topY, bottomY, canvasW: width, canvasH: height } = this.state;
         const cuttingData = { leftX, rightX, topY, bottomY, width, height };
 
         return (
