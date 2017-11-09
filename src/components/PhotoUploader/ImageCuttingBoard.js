@@ -22,15 +22,15 @@ class ImageCuttingBoard extends Component {
     }
 
     componentDidMount() {
-        if (this.props.img) {
+        let cropData = null;
 
+        if (this.props.img) {
             if (this.props.initialCropData) {
                 const { leftPercent, rightPercent, topPercent, bottomPercent } = this.props.initialCropData;
-                this.drawImageToSourceCanvas(this.props.img, this.props.defaultOrientation, { leftPercent, rightPercent, topPercent, bottomPercent });
+                cropData = { leftPercent, rightPercent, topPercent, bottomPercent };
             }
-            else {
-                this.drawImageToSourceCanvas(this.props.img, this.props.defaultOrientation);
-            }
+
+            this.drawImageToSourceCanvas(this.props.img, this.props.defaultOrientation, cropData);
         }
     }
 
@@ -39,32 +39,9 @@ class ImageCuttingBoard extends Component {
         this.setState({ leftX, rightX, topY, bottomY });
     }
 
-    // Draw the source image into the source canvas
-    drawImageToSourceCanvas(img, srcOrientation, cropPercentageData) {
-        const isPortrait = srcOrientation > 4 && srcOrientation < 9;
+    updateCanvas(img, canvasW, canvasH, orientation, isPortrait){
         const ctx = this.sourceCanvas.getContext('2d');
         ctx.clearRect(0, 0, this.sourceCanvas.width, this.sourceCanvas.height);
-
-        const imgW = isPortrait ? img.height : img.width;
-        const imgH = isPortrait ? img.width : img.height;
-
-        // This is the maximum image size allowed
-        const maxW = maxImageWidth;
-        const maxH = maxImageHeight;
-        // Alternative > don't expand images(?)
-        // const maxW = imgW >= maxImageWidth ? maxImageWidth : imgW;
-        // const maxH = imgH >= maxImageHeight ? maxImageHeight : imgH;
-
-        const wToHRatio = imgH / imgW;
-        const hToWRatio = imgW / imgH;
-
-        let canvasW = maxW;
-        let canvasH = maxW * wToHRatio;
-
-        if (canvasH > maxH) {
-            canvasH = maxH;
-            canvasW = maxH * hToWRatio;
-        }
 
         this.sourceCanvas.width = canvasW;
         this.sourceCanvas.height = canvasH;
@@ -72,7 +49,7 @@ class ImageCuttingBoard extends Component {
         // save the context so it can be reset after transform
         ctx.save();
         // transform context before drawing image
-        switch (srcOrientation) {
+        switch (orientation) {
             case 2:
                 ctx.transform(-1, 0, 0, 1, canvasH, 0);
                 break;
@@ -105,7 +82,9 @@ class ImageCuttingBoard extends Component {
         ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, transformedCanvasW, transformedCanvasH);
         // restore ensures resets transform in case another image is added
         ctx.restore();
+    }
 
+    getCropData(cropPercentageData, canvasW, canvasH){
         let newLeftX, newRightX, newTopY, newBottomY;
 
         if (cropPercentageData) {
@@ -121,10 +100,40 @@ class ImageCuttingBoard extends Component {
             newBottomY = canvasH;
         }
 
-        this.setState({ img, rotation: srcOrientation, canvasW, canvasH, leftX: newLeftX, rightX: newRightX, topY: newTopY, bottomY: newBottomY });
+        return {leftX: newLeftX, rightX: newRightX, topY: newTopY, bottomY: newBottomY}
     }
 
-    // Rotate
+    // Draw the source image into the source canvas
+    // gets called by parent when mounted and then by rotation function
+    drawImageToSourceCanvas(img, srcOrientation, cropPercentageData) {
+        const isPortrait = srcOrientation > 4 && srcOrientation < 9;
+
+        const imgW = isPortrait ? img.height : img.width;
+        const imgH = isPortrait ? img.width : img.height;
+
+        // Restrict to maximum image size allowed or img size, whichever is smaller
+        const maxW = imgW >= maxImageWidth ? maxImageWidth : imgW;
+        const maxH = imgH >= maxImageHeight ? maxImageHeight : imgH;
+
+        const wToHRatio = imgH / imgW;
+        const hToWRatio = imgW / imgH;
+
+        let canvasW = maxW;
+        let canvasH = maxW * wToHRatio;
+
+        if (canvasH > maxH) {
+            canvasH = maxH;
+            canvasW = maxH * hToWRatio;
+        }
+
+        const cropData = this.getCropData(cropPercentageData, canvasW, canvasH);
+        this.updateCanvas(img, canvasW, canvasH, srcOrientation, isPortrait);
+
+        this.setState({ img, rotation: srcOrientation, canvasW, canvasH, ...cropData });
+    }
+
+    // Rotate:
+    // https://stackoverflow.com/questions/7584794/accessing-jpeg-exif-rotation-data-in-javascript-on-the-client-side/32490603#32490603
     rotateClockwise() {
         const currentRotation = this.state.rotation ? this.state.rotation : 1;
         const nextRotations = { 1: 6, 6: 3, 3: 8, 8: 1 };
@@ -139,10 +148,12 @@ class ImageCuttingBoard extends Component {
         this.drawImageToSourceCanvas(this.props.img, newRotation, { leftPercent: 1 - currB, rightPercent: 1 - currT, topPercent: currL, bottomPercent: currR });
     }
 
+    // Cancel current changes
     onCancelClick() {
         this.props.onCancel();
     }
 
+    // On done - set up
     onDoneClick() {
         const { rotation, leftX, rightX, topY, bottomY } = this.state;
 

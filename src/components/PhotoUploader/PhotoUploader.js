@@ -67,9 +67,15 @@ class PhotoUploader extends Component {
 
         const outputX = 0;
         const outputY = 0;
-        const outputWidth = 200;
+        let outputWidth = 200;
         const widthToHeightRatio = sourceHeight / sourceWidth;
-        const outputHeight = outputWidth*widthToHeightRatio;
+        let outputHeight = outputWidth * widthToHeightRatio;
+
+        if (outputHeight > 200) {
+            outputHeight = 200;
+            const heightToWidthRatio = sourceWidth / sourceHeight;
+            outputWidth = outputHeight * heightToWidthRatio;
+        }
 
         this.currentImgCanvas.width = outputWidth;
         this.currentImgCanvas.height = outputHeight;
@@ -95,14 +101,14 @@ class PhotoUploader extends Component {
     }
 
     // DELETE FOR PRODUCTION
-    /* __DEV_ONLY__setupImg = (img) => {
-         if (img) {
-             img.onload = (e) => {
-                 console.log("e.target: ", e.target);
-                 this.setState({ loadedImg: e.target, cuttingBoardOpen: true });
-             }
-         }
-     };*/
+    /*__DEV_ONLY__setupImg = (img) => {
+        if (img) {
+            img.onload = (e) => {
+                console.log("e.target: ", e.target);
+                this.setState({ loadedImg: e.target, cuttingBoardOpen: true });
+            }
+        }
+    };*/
 
     render() {
         const showCuttingBoard = this.state.cuttingBoardOpen;
