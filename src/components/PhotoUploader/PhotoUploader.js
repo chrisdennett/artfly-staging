@@ -67,14 +67,23 @@ class PhotoUploader extends Component {
 
         const outputX = 0;
         const outputY = 0;
-        const outputWidth = sourceWidth / 2;
-        const outputHeight = sourceHeight / 2;
+        const outputWidth = 200;
+        const widthToHeightRatio = sourceHeight / sourceWidth;
+        const outputHeight = outputWidth*widthToHeightRatio;
 
         this.currentImgCanvas.width = outputWidth;
         this.currentImgCanvas.height = outputHeight;
 
         context.drawImage(canvas, leftX, topY, sourceWidth, sourceHeight, outputX, outputY, outputWidth, outputHeight);
 
+        if (this.props.onUpdate) {
+            canvas.toBlob((canvasBlobData) => {
+                const data = {
+                    sourceBlob: canvasBlobData
+                };
+                this.props.onUpdate(data);
+            }, 'image/png');
+        }
     }
 
     onCurrentImgDelete() {
@@ -82,18 +91,18 @@ class PhotoUploader extends Component {
     }
 
     onCurrentImgEdit() {
-        this.setState({ cuttingBoardOpen:true });
+        this.setState({ cuttingBoardOpen: true });
     }
 
     // DELETE FOR PRODUCTION
-   /* __DEV_ONLY__setupImg = (img) => {
-        if (img) {
-            img.onload = (e) => {
-                console.log("e.target: ", e.target);
-                this.setState({ loadedImg: e.target, cuttingBoardOpen: true });
-            }
-        }
-    };*/
+    /* __DEV_ONLY__setupImg = (img) => {
+         if (img) {
+             img.onload = (e) => {
+                 console.log("e.target: ", e.target);
+                 this.setState({ loadedImg: e.target, cuttingBoardOpen: true });
+             }
+         }
+     };*/
 
     render() {
         const showCuttingBoard = this.state.cuttingBoardOpen;
@@ -102,8 +111,8 @@ class PhotoUploader extends Component {
 
         const editPhotoStyle = showEditPhotoButton ? { display: 'inherit' } : { display: 'none' };
         let initialCropData, initialRotation;
-        if(this.state.cuttingBoardData){
-            let {canvas, rotation, ...rest} = this.state.cuttingBoardData;
+        if (this.state.cuttingBoardData) {
+            let { canvas, rotation, ...rest } = this.state.cuttingBoardData;
             initialCropData = rest;
             initialRotation = rotation;
         }
