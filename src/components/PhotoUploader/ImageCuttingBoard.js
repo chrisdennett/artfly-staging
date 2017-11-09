@@ -49,8 +49,10 @@ class ImageCuttingBoard extends Component {
 
     // Draw the source image into the source canvas
     drawImageToSourceCanvas(img, srcOrientation, cropPercentageData) {
+
+
         // reset image before updating to ensure handles re-align properly
-        this.resetImageState(() => {
+        // this.resetImageState(() => {
             const isPortrait = srcOrientation > 4 && srcOrientation < 9;
             const ctx = this.sourceCanvas.getContext('2d');
             ctx.clearRect(0, 0, this.sourceCanvas.width, this.sourceCanvas.height);
@@ -142,7 +144,7 @@ class ImageCuttingBoard extends Component {
             const scaleUpFactor = canvasW / scaledCanvasWidth;*/
 
             this.setState({ img, rotation: srcOrientation, canvasW, canvasH, leftX: newLeftX, rightX: newRightX, topY: newTopY, bottomY: newBottomY });
-        });
+        // });
     }
 
     // Rotate
@@ -191,22 +193,16 @@ class ImageCuttingBoard extends Component {
         this.props.onDone({ canvas: this.sourceCanvas, rotation, leftX, rightX, topY, bottomY, leftPercent, rightPercent, topPercent, bottomPercent });
     }
 
-    // NB the conditional rendering is a bit of a hack to make sure the cutting overlay remounts after image load or rotation
     render() {
-        const { leftX, rightX, topY, bottomY } = this.state;
+        const { leftX, rightX, topY, bottomY, canvasW:width, canvasH:height } = this.state;
+        const cuttingData = { leftX, rightX, topY, bottomY, width, height };
 
         return (
             <CuttingBoardContainer>
 
                 <CuttingBoard style={{ width: this.state.canvasW, height: this.state.canvasH }}>
 
-                    {this.state.canvasW &&
-                    <CuttingOverlay onChange={this.onCuttingOverlayChange}
-                                    initialCropData={{ leftX, rightX, topY, bottomY }}
-                                    height={this.state.canvasH}
-                                    width={this.state.canvasW}/>
-                    }
-
+                    <CuttingOverlay onChange={this.onCuttingOverlayChange} {...cuttingData}/>
                     <canvas ref={(canvas) => this.sourceCanvas = canvas}/>
 
                 </CuttingBoard>
