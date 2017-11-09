@@ -13,18 +13,18 @@ class CuttingOverlay extends Component {
         this.onRectDrag = this.onRectDrag.bind(this);
         let initialCropData;
 
-        if(props.initialCropData){
+        if (props.initialCropData) {
             initialCropData = props.initialCropData
         }
-        else{
+        else {
             initialCropData = { leftX: 0, topY: 0, rightX: props.width, bottomY: props.height }
         }
 
         this.state = { ...initialCropData };
     }
 
-    onRectDrag(leftX, rightX, topY, bottomY){
-        this.setState({leftX, rightX, topY, bottomY}, () => {
+    onRectDrag(leftX, rightX, topY, bottomY) {
+        this.setState({ leftX, rightX, topY, bottomY }, () => {
             this.props.onChange(leftX, rightX, topY, bottomY);
         })
     }
@@ -79,7 +79,7 @@ class CuttingOverlay extends Component {
     }
 
     render() {
-        let { leftX, rightX, topY, bottomY } = this.state;
+        const { leftX, rightX, topY, bottomY } = this.state;
         const { width, height } = this.props;
 
         // find the middle for placement of side handles
@@ -104,58 +104,60 @@ class CuttingOverlay extends Component {
 
                     <rect fill={'rgba(0,0,0,0.7)'} width={width} height={height} mask="url(#hole)"/>
 
-                    <DragRectangle position={{x:leftX, y:topY}} width={cutoutWidth} height={cutoutHeight} onHandleUpdate={this.onRectDrag} bounds={{left:0, right:width-cutoutWidth, top:0, bottom:height-cutoutHeight}}/>
+                    <DragRectangle position={{ x: leftX, y: topY }} width={cutoutWidth} height={cutoutHeight}
+                                   onHandleUpdate={this.onRectDrag}
+                                   bounds={{ left: 0, right: width - cutoutWidth, top: 0, bottom: height - cutoutHeight }}/>
 
                 </svg>
 
                 <DragHandle id={'top-left'}
-                            bounds={{ left: 0, right: rightX-50, top: 0, bottom: bottomY-50 }}
+                            bounds={{ left: 0, right: rightX - 50, top: 0, bottom: bottomY - 50 }}
                             position={{ x: leftX, y: topY }}
                             colour={'#7dbaff'}
                             onHandleUpdate={this.onHandleUpdate}/>
 
                 <DragHandle id={'top-right'}
-                            bounds={{ left: leftX+50, right: width, top: 0, bottom: bottomY-50 }}
+                            bounds={{ left: leftX + 50, right: width, top: 0, bottom: bottomY - 50 }}
                             position={{ x: rightX, y: topY }}
                             colour={'#7dbaff'}
                             onHandleUpdate={this.onHandleUpdate}/>
 
                 <DragHandle id={'bottom-left'}
-                            bounds={{ left: 0, right: rightX-50, top: topY+50, bottom: height }}
+                            bounds={{ left: 0, right: rightX - 50, top: topY + 50, bottom: height }}
                             position={{ x: leftX, y: bottomY }}
                             colour={'#7dbaff'}
                             onHandleUpdate={this.onHandleUpdate}/>
 
                 <DragHandle id={'bottom-right'}
-                            bounds={{ left: leftX+50, right: width, top: topY+50, bottom: height }}
+                            bounds={{ left: leftX + 50, right: width, top: topY + 50, bottom: height }}
                             position={{ x: rightX, y: bottomY }}
                             colour={'#7dbaff'}
                             onHandleUpdate={this.onHandleUpdate}/>
 
                 <DragHandle id={'left'}
                             axis={'x'}
-                            bounds={{ left: 0, right: rightX-50, top: 0, bottom: height }}
+                            bounds={{ left: 0, right: rightX - 50, top: 0, bottom: height }}
                             position={{ x: leftX, y: middleY }}
                             colour={'#ff00ff'}
                             onHandleUpdate={this.onHandleUpdate}/>
 
                 <DragHandle id={'right'}
                             axis={'x'}
-                            bounds={{ left: leftX+50, right: width, top: 0, bottom: height }}
+                            bounds={{ left: leftX + 50, right: width, top: 0, bottom: height }}
                             position={{ x: rightX, y: middleY }}
                             colour={'#ff0000'}
                             onHandleUpdate={this.onHandleUpdate}/>
 
                 <DragHandle id={'top'}
                             axis={'y'}
-                            bounds={{ left: 0, right: width, top: 0, bottom: bottomY-50 }}
+                            bounds={{ left: 0, right: width, top: 0, bottom: bottomY - 50 }}
                             position={{ x: middleX, y: topY }}
                             colour={'#0000ff'}
                             onHandleUpdate={this.onHandleUpdate}/>
 
                 <DragHandle id={'bottom'}
                             axis={'y'}
-                            bounds={{ left: 0, right: width, top: topY+50, bottom: height }}
+                            bounds={{ left: 0, right: width, top: topY + 50, bottom: height }}
                             position={{ x: middleX, y: bottomY }}
                             colour={'#00ff00'}
                             onHandleUpdate={this.onHandleUpdate}/>
