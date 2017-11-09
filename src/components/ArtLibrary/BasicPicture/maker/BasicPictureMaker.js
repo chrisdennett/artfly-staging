@@ -30,10 +30,6 @@ class BasicPictureMaker extends Component {
     }
 
     onSave() {
-        console.log("userId: ", this.props.userId);
-        console.log("sourceBlob: ", this.state.sourceBlob);
-        console.log("selectedArtistId: ", this.state.selectedArtistId);
-
         this.props.addArtwork(this.state.sourceBlob, this.props.userId, this.state.selectedArtistId, 800, 600,
             (newArtworkData) => {
                 console.log("newArtworkData: ", newArtworkData);
