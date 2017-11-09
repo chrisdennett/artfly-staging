@@ -318,10 +318,10 @@ function int_saveArtworkChanges(artworkId, newData, onChangeCallback = null) {
 }
 
 // INTERNAL ARTWORK DATA
-function int_saveImageChanges(artworkId, artistId, imgFile, onChangeCallback, onCompleteCallback) {
+function int_saveImageChanges(artworkId, artistId, blob, onChangeCallback, onCompleteCallback) {
     const userPicturesRef = store.child(`userContent/${artistId}/${artworkId}`);
     // start the upload
-    const uploadTask = userPicturesRef.put(imgFile);
+    const uploadTask = userPicturesRef.put(blob);
     // listen for upload events
     uploadTask
         .on(storageEvents.STATE_CHANGED,
