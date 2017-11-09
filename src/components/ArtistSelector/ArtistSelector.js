@@ -6,25 +6,31 @@ import _ from 'lodash';
 import { getUserArtistChanges } from '../../actions/UserDataActions'
 
 class ArtistSelector extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = { selectedArtistId: '' };
     }
 
     componentWillMount() {
+        // Load in the users artists
         this.props.getUserArtistChanges(this.props.userId);
+        this.setDefaultArtist(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
+        this.setDefaultArtist(nextProps);
+    }
+
+    setDefaultArtist(props){
         // Set default artist Id - just use the first artist
-        if (this.state.selectedArtistId === '' && Object.keys(nextProps.artists).length > 0) {
-            const defaultArtistId = Object.keys(nextProps.artists)[0];
+        if (this.state.selectedArtistId === '' && Object.keys(props.artists).length > 0) {
+            const defaultArtistId = Object.keys(props.artists)[0];
             this.onArtistSelected(defaultArtistId);
         }
     }
 
     onArtistSelected(artistId) {
-        // save state and update parent - NB: could just keep state in parent
+        // save state and update parent - NB: could just keep state in parent and make this stateless
         this.setState({ selectedArtistId: artistId }, () => {
             this.props.onArtistSelected(artistId);
         });
