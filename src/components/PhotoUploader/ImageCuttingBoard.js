@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import CuttingOverlay from "./assets/CuttingOverlay";
 import Butt from "../global/Butt";
 // helper values
-const maxImageWidth = 800;
-const maxImageHeight = 600;
+const maxImageWidth = 3000;
+const maxImageHeight = 3000;
 
 class ImageCuttingBoard extends Component {
     constructor() {
@@ -126,10 +126,14 @@ class ImageCuttingBoard extends Component {
             canvasW = maxH * hToWRatio;
         }
 
-        const cropData = this.getCropData(cropPercentageData, canvasW, canvasH);
+        // TODO: this needs to make the canvas fit
+        const displayWidth = canvasW / 4;
+        const displayHeight = canvasH / 4;
+
+        const cropData = this.getCropData(cropPercentageData, displayWidth, displayHeight);
         this.updateCanvas(img, canvasW, canvasH, srcOrientation, isPortrait);
 
-        this.setState({ img, rotation: srcOrientation, canvasW, canvasH, ...cropData });
+        this.setState({ img, rotation: srcOrientation, displayWidth, displayHeight, canvasW, canvasH, ...cropData });
     }
 
     // Rotate:
@@ -139,11 +143,12 @@ class ImageCuttingBoard extends Component {
         const nextRotations = { 1: 6, 6: 3, 3: 8, 8: 1 };
         const newRotation = nextRotations[currentRotation] || 6;
 
-        const { canvasW, canvasH, leftX, rightX, topY, bottomY } = this.state;
-        const currL = leftX / canvasW;
-        const currR = rightX / canvasW;
-        const currT = topY / canvasH;
-        const currB = bottomY / canvasH;
+        let { displayWidth, displayHeight, leftX, rightX, topY, bottomY } = this.state;
+
+        const currL = leftX / displayWidth;
+        const currR = rightX / displayWidth;
+        const currT = topY / displayHeight;
+        const currB = bottomY / displayHeight;
 
         this.drawImageToSourceCanvas(this.props.img, newRotation, { leftPercent: 1 - currB, rightPercent: 1 - currT, topPercent: currL, bottomPercent: currR });
     }
@@ -155,27 +160,33 @@ class ImageCuttingBoard extends Component {
 
     // On done - set up
     onDoneClick() {
-        const { rotation, leftX, rightX, topY, bottomY } = this.state;
+        const { rotation, leftX, rightX, topY, bottomY, canvasW, canvasH, displayWidth, displayHeight } = this.state;
 
-        const leftPercent = leftX / this.state.canvasW;
-        const rightPercent = rightX / this.state.canvasW;
-        const topPercent = topY / this.state.canvasH;
-        const bottomPercent = bottomY / this.state.canvasH;
+        const leftPercent = leftX / displayWidth;
+        const rightPercent = rightX / displayWidth;
+        const topPercent = topY / displayHeight;
+        const bottomPercent = bottomY / displayHeight;
 
-        this.props.onDone({ canvas: this.sourceCanvas, rotation, leftX, rightX, topY, bottomY, leftPercent, rightPercent, topPercent, bottomPercent });
+        this.props.onDone(
+            {
+                canvas: this.sourceCanvas,
+                rotation,
+                leftX:canvasW*leftPercent, rightX:canvasW*rightPercent, topY:canvasH*topPercent, bottomY:canvasH*bottomPercent,
+                leftPercent, rightPercent, topPercent, bottomPercent
+            });
     }
 
     render() {
-        const { leftX, rightX, topY, bottomY, canvasW: width, canvasH: height } = this.state;
-        const cuttingData = { leftX, rightX, topY, bottomY, width, height };
+        const { leftX, rightX, topY, bottomY, displayWidth, displayHeight } = this.state;
+        const cuttingData = { leftX, rightX, topY, bottomY, width:displayWidth, height:displayHeight };
 
         return (
             <CuttingBoardContainer>
 
-                <CuttingBoard style={{ width: this.state.canvasW, height: this.state.canvasH }}>
+                <CuttingBoard style={{ width: displayWidth, height: displayHeight }}>
 
                     <CuttingOverlay onChange={this.onCuttingOverlayChange} {...cuttingData}/>
-                    <canvas ref={(canvas) => this.sourceCanvas = canvas}/>
+                    <canvas ref={(canvas) => this.sourceCanvas = canvas} style={{width:displayWidth, height:displayHeight}}/>
 
                 </CuttingBoard>
 
