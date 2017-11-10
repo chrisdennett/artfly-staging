@@ -39,17 +39,13 @@ class Artwork extends Component {
         const combinedFrameWidth = ((frameThickness + mountThickness) * 2);
         const maxImgWidth = w - (combinedFrameWidth + horizontalPadding);
         const maxImgHeight = h - (combinedFrameWidth + verticalPadding);
-        const origImgWidth = artwork.imgWidth;
-        const origImgHeight = artwork.imgHeight;
-        const heightToWidthMultiplier = origImgWidth / origImgHeight;
-        const widthToHeightMultiplier = origImgHeight / origImgWidth;
 
         let imgWidth = maxImgWidth;
-        let imgHeight = imgWidth * widthToHeightMultiplier;
+        let imgHeight = imgWidth * artwork.widthToHeightRatio;
 
         if (imgHeight > maxImgHeight) {
             imgHeight = maxImgHeight;
-            imgWidth = imgHeight * heightToWidthMultiplier;
+            imgWidth = imgHeight * artwork.heightToWidthRatio;
         }
 
         // if there is extra space around the frame, center the image
