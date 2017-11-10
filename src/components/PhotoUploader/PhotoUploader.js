@@ -3,9 +3,9 @@ import React, { Component } from "react";
 // components
 import ImageCuttingBoard from "./ImageCuttingBoard";
 import SelectPhotoButton from "./assets/SelectPhotoButton";
-// helper functions
-import GetPhotoOrientation from "./assets/GetPhotoOrientation";
 import Butt from "../global/Butt";
+// helper functions
+import * as PhotoHelper from "./assets/PhotoHelper";
 
 class PhotoUploader extends Component {
 
@@ -17,10 +17,11 @@ class PhotoUploader extends Component {
 
         // bind functions
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
-        this.onImageCuttingBoardCancel = this.onImageCuttingBoardCancel.bind(this);
+        this.closeCuttingBoardCancel = this.closeCuttingBoardCancel.bind(this);
         this.onImageCuttingBoardDone = this.onImageCuttingBoardDone.bind(this);
         this.onCurrentImgDelete = this.onCurrentImgDelete.bind(this);
         this.onCurrentImgEdit = this.onCurrentImgEdit.bind(this);
+        this.openCuttingBoard = this.openCuttingBoard.bind(this);
     }
 
     // User has selected a photo
@@ -29,29 +30,15 @@ class PhotoUploader extends Component {
 
         if (e.target.files[0]) {
             const imgFile = e.target.files[0];
-            this.setupPhoto(imgFile);
+            PhotoHelper.GetImage(imgFile, this.openCuttingBoard);
         }
     }
 
-    setupPhoto(imgFile) {
-        GetPhotoOrientation(imgFile, (orientation) => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const imgSrc = e.target.result;
-                let img = new Image();
-                img.src = imgSrc;
-
-                // img.onload = (e) => this.drawImageToSourceCanvas(e.target, orientation, (canvasW, canvasH) => this.drawOutputImage(0, canvasW, 0, canvasH));
-                img.onload = (e) => {
-                    this.setState({ cuttingBoardOpen: true, loadedImg: e.target, loadedImgOrientation: orientation });
-                }
-            };
-
-            reader.readAsDataURL(imgFile);
-        });
+    openCuttingBoard(img, imgOrientation) {
+        this.setState({ cuttingBoardOpen: true, loadedImg: img, loadedImgOrientation: imgOrientation });
     }
 
-    onImageCuttingBoardCancel() {
+    closeCuttingBoardCancel() {
         this.setState({ cuttingBoardOpen: false });
     }
 
@@ -144,7 +131,7 @@ class PhotoUploader extends Component {
                     img={this.state.loadedImg}
                     defaultOrientation={orientation}
                     initialCropData={initialCropData}
-                    onCancel={this.onImageCuttingBoardCancel}
+                    onCancel={this.closeCuttingBoardCancel}
                     onDone={this.onImageCuttingBoardDone}/>
                 }
 

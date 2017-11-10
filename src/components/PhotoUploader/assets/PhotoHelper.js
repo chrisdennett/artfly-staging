@@ -1,5 +1,23 @@
+// Returns an image element given a file
+export function GetImage(imgFile, callback) {
+    GetPhotoOrientation(imgFile, (orientation) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const imgSrc = e.target.result;
+            // Create a new image element
+            let img = new Image();
+            img.src = imgSrc;
+            // wait for it to be loaded and then return
+            img.onload = (e) => {
+                callback(e.target, orientation);
+            }
+        };
+        reader.readAsDataURL(imgFile);
+    })
+}
+
 // Reads file as Array buffer to get camera orientation from exif data
-export default (file, callback) => {
+function GetPhotoOrientation(file, callback) {
     const reader = new FileReader();
     reader.onload = (e) => {
         const view = new DataView(e.target.result);
@@ -28,4 +46,4 @@ export default (file, callback) => {
         return callback(-1);
     };
     reader.readAsArrayBuffer(file);
-};
+}
