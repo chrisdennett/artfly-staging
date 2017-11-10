@@ -45,30 +45,15 @@ class PhotoUploader extends Component {
     onImageCuttingBoardDone(data) {
         const { canvas, leftX, topY, rightX, bottomY } = data;
 
+        // create the large canvas
+        PhotoHelper.drawToCanvas(this.maxCanvas, 3000, 3000, canvas, leftX, topY, rightX, bottomY);
+        PhotoHelper.drawToCanvas(this.largeCanvas, 960, 960, canvas, leftX, topY, rightX, bottomY);
+        PhotoHelper.drawToCanvas(this.mediumCanvas, 480, 480, canvas, leftX, topY, rightX, bottomY);
+        PhotoHelper.drawToCanvas(this.thumbCanvas, 150, 150, canvas, leftX, topY, rightX, bottomY);
+
         this.setState({ cuttingBoardData: data, cuttingBoardOpen: false });
 
-        const context = this.currentImgCanvas.getContext('2d');
-
-        const sourceWidth = rightX - leftX;
-        const sourceHeight = bottomY - topY;
-
-        const outputX = 0;
-        const outputY = 0;
-        let outputWidth = 200;
-        const widthToHeightRatio = sourceHeight / sourceWidth;
-        let outputHeight = outputWidth * widthToHeightRatio;
-
-        if (outputHeight > 200) {
-            outputHeight = 200;
-            const heightToWidthRatio = sourceWidth / sourceHeight;
-            outputWidth = outputHeight * heightToWidthRatio;
-        }
-
-        this.currentImgCanvas.width = outputWidth;
-        this.currentImgCanvas.height = outputHeight;
-
-        context.drawImage(canvas, leftX, topY, sourceWidth, sourceHeight, outputX, outputY, outputWidth, outputHeight);
-
+        // Update parent with blob file
         if (this.props.onUpdate) {
             canvas.toBlob((canvasBlobData) => {
                 const data = {
@@ -112,6 +97,8 @@ class PhotoUploader extends Component {
 
         const orientation = initialRotation ? initialRotation : this.state.loadedImgOrientation;
 
+        const hiddenCanvasStyle = {display:'none'};
+
         return (
             <div>
                 {showSelectPhotoButton &&
@@ -121,7 +108,12 @@ class PhotoUploader extends Component {
                 }
 
                 <div style={editPhotoStyle}>
-                    <canvas ref={(canvas) => this.currentImgCanvas = canvas}/>
+                    <canvas ref={(canvas) => this.mediumCanvas = canvas}/>
+
+                    <canvas style={hiddenCanvasStyle} ref={(canvas) => this.maxCanvas = canvas}/>
+                    <canvas style={hiddenCanvasStyle} ref={(canvas) => this.largeCanvas = canvas}/>
+                    <canvas style={hiddenCanvasStyle} ref={(canvas) => this.thumbCanvas = canvas}/>
+
                     <Butt style={{ display: 'inline-block' }} onClick={this.onCurrentImgEdit}>Edit</Butt>
                     <Butt style={{ display: 'inline-block' }} onClick={this.onCurrentImgDelete}>Delete</Butt>
                 </div>

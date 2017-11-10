@@ -47,3 +47,29 @@ function GetPhotoOrientation(file, callback) {
     };
     reader.readAsArrayBuffer(file);
 }
+
+// Draws one canvas to another restricting to a specific size
+export function drawToCanvas(outputCanvas, maxOutputWidth, maxOutputHeight, sourceCanvas, leftX, topY, rightX, bottomY){
+    const sourceWidth = rightX - leftX;
+    const sourceHeight = bottomY - topY;
+
+    const outputX = 0;
+    const outputY = 0;
+    let outputWidth = maxOutputWidth;
+    const widthToHeightRatio = sourceHeight / sourceWidth;
+    let outputHeight = outputWidth * widthToHeightRatio;
+
+    if (outputHeight > maxOutputHeight) {
+        outputHeight = maxOutputHeight;
+        const heightToWidthRatio = sourceWidth / sourceHeight;
+        outputWidth = outputHeight * heightToWidthRatio;
+    }
+
+    outputCanvas.width = outputWidth;
+    outputCanvas.height = outputHeight;
+
+    outputCanvas
+        .getContext('2d')
+        .drawImage(sourceCanvas, leftX, topY, sourceWidth, sourceHeight,
+            outputX, outputY, outputWidth, outputHeight);
+}
