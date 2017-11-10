@@ -25,12 +25,10 @@ import ArtworkEditorContainer from "./components/ArtworkEditor/ArtworkEditorCont
 import FourOhFour from "./components/FourOhFour/FourOhFour";
 import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
 //
-import ImageCuttingBoard from './components/PhotoUploader/ImageCuttingBoard';
 
 const IN_BETA_MODE = true;
 
 const routes = {
-    cut: { component: ImageCuttingBoard },
     home: { component: Home },
     gallery: { component: ArtistGalleryContainer },
     artwork: { component: ArtworkContainer },
@@ -98,10 +96,6 @@ class ArtflyRouting extends Component {
             else if (page === 'newUser') {
                 params.userId = sections[1];
             }
-            else if (page === 'cut') {
-                params.onCancelAddPhoto=this.onCancelAddPhoto;
-                // params.imgFile = this.state.imgFile;
-            }
         }
 
         this.setState(() => {
@@ -148,11 +142,6 @@ class ArtflyRouting extends Component {
         // ... to set up basic user data
         if (this.props.user.status === 'new' && page !== 'newUser') {
             return <Redirect to={'/newUser'}/>;
-        }
-
-        // If an image has been selected redirect to cut page
-        if(this.state.imgFile && page !== 'cut'){
-            return <Redirect to={'/cut'}/>
         }
 
         const showTopControls = IN_BETA_MODE === false || this.props.user.status !== 'none';
