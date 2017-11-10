@@ -66,15 +66,15 @@ class Artwork extends Component {
             left: imgX
         };
 
-        //source:   3500x3500 (max)
+        //source:   3000x3000 (max)
         //large:    960x960
         //medium:   640x640
-        //thumb:    100x100
-        const { url, url_large, url_med, url_thumb } = artwork;
+        //thumb:    150x150
+        const { url, url_large, url_med, thumb_url } = artwork;
         let artworkUrl;
         const largestImgEdge = imgWidth > imgHeight ? imgWidth : imgHeight;
-        if (largestImgEdge <= 100 && url_thumb) {
-            artworkUrl = url_thumb;
+        if (largestImgEdge <= 150 && thumb_url) {
+            artworkUrl = thumb_url;
         }
         else if (largestImgEdge <= 640 && url_med) {
             artworkUrl = url_med;
