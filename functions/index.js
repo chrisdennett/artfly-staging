@@ -30,18 +30,16 @@ exports.removeImagesOnDelete = functions.storage.object()
         }
 
         // Exit if the image is already a thumbnail.
-        if (fileName.startsWith("large_") || fileName.startsWith("medium_") || fileName.startsWith("thumb_")) {
+        if (fileName.startsWith("large_") || fileName.startsWith("medium_") || fileName.startsWith("thumbnail_")) {
             console.log(`A thumbnail is being deleted - take no action.`);
             return;
         }
 
         const largeImageFilePath = filePath.replace(fileName, "large_" + fileName);
         const mediumImageFilePath = filePath.replace(fileName, "medium_" + fileName);
-        const thumbImageFilePath = filePath.replace(fileName, "thumb_" + fileName);
 
         const largeFile = bucket.file(largeImageFilePath);
         const mediumFile = bucket.file(mediumImageFilePath);
-        const thumbFile = bucket.file(thumbImageFilePath);
 
         largeFile.exists().then((data) => {
             let exists = data[0];
@@ -56,14 +54,6 @@ exports.removeImagesOnDelete = functions.storage.object()
                 mediumFile.delete();
             }
         });
-
-        thumbFile.exists().then((data) => {
-            let exists = data[0];
-            if (exists) {
-                thumbFile.delete();
-            }
-        });
-
     });
 
 exports.generateDifferentImageSizes = functions.storage.object()
@@ -103,7 +93,7 @@ exports.generateDifferentImageSizes = functions.storage.object()
         }
 
         // Exit if the image is already a thumbnail.
-        if (fileName.startsWith("large_") || fileName.startsWith("medium_") || fileName.startsWith("thumb_")) {
+        if (fileName.startsWith("large_") || fileName.startsWith("medium_") || fileName.startsWith("thumbnail_")) {
             return;
         }
 
