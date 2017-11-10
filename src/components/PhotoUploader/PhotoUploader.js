@@ -22,6 +22,8 @@ class PhotoUploader extends Component {
         this.onCurrentImgDelete = this.onCurrentImgDelete.bind(this);
         this.onCurrentImgEdit = this.onCurrentImgEdit.bind(this);
         this.openCuttingBoard = this.openCuttingBoard.bind(this);
+        this.getCanvasBlobData = this.getCanvasBlobData.bind(this);
+        this.sendImageData = this.sendImageData.bind(this);
     }
 
     // User has selected a photo
@@ -43,25 +45,40 @@ class PhotoUploader extends Component {
     }
 
     onImageCuttingBoardDone(data) {
+        this.setState({ cuttingBoardData: data, cuttingBoardOpen: false }, () => {
+            this.sendImageData(data)
+        });
+    }
+
+    sendImageData(data){
         const { canvas, leftX, topY, rightX, bottomY } = data;
 
+        const croppedWidth = Math.round(rightX - leftX);
+        const croppedHeight = Math.round(bottomY - topY);
+
+        const widthToHeightRatio = Math.round(1000 * (croppedHeight / croppedWidth)) / 1000;
+        const heightToWidthRatio = Math.round(1000 * (croppedWidth / croppedHeight)) / 1000;
+
         // create the large canvas
-        PhotoHelper.drawToCanvas(this.maxCanvas, 3000, 3000, canvas, leftX, topY, rightX, bottomY);
-        PhotoHelper.drawToCanvas(this.largeCanvas, 960, 960, canvas, leftX, topY, rightX, bottomY);
-        PhotoHelper.drawToCanvas(this.mediumCanvas, 480, 480, canvas, leftX, topY, rightX, bottomY);
+        PhotoHelper.drawToCanvas(this.maxCanvas, croppedWidth, croppedHeight, canvas, leftX, topY, rightX, bottomY);
         PhotoHelper.drawToCanvas(this.thumbCanvas, 150, 150, canvas, leftX, topY, rightX, bottomY);
 
-        this.setState({ cuttingBoardData: data, cuttingBoardOpen: false });
+        const imageData = {widthToHeightRatio, heightToWidthRatio};
+        this.getCanvasBlobData(this.maxCanvas, (maxCanvasData) => {
+            imageData.sourceBlob = maxCanvasData;
 
-        // Update parent with blob file
-        if (this.props.onUpdate) {
-            canvas.toBlob((canvasBlobData) => {
-                const data = {
-                    sourceBlob: canvasBlobData
-                };
-                this.props.onUpdate(data);
-            }, 'image/png');
-        }
+            this.getCanvasBlobData(this.thumbCanvas, (thumbCanvasData) => {
+                imageData.thumbBlob = thumbCanvasData;
+
+                this.props.onUpdate(imageData);
+            })
+        });
+    }
+
+    getCanvasBlobData(canvas, callback){
+        canvas.toBlob((canvasBlobData) => {
+            callback(canvasBlobData);
+        }, 'image/jpeg', 0.95)
     }
 
     onCurrentImgDelete() {
@@ -97,10 +114,14 @@ class PhotoUploader extends Component {
 
         const orientation = initialRotation ? initialRotation : this.state.loadedImgOrientation;
 
-        const hiddenCanvasStyle = {display:'none'};
+        const responsiveCanvasStyle = { maxWidth: '100%' };
+        const hiddenCanvasStyle = { display: 'none' };
 
         return (
             <div>
+                <hr/>
+                <h3>Photo Uploader</h3>
+
                 {showSelectPhotoButton &&
                 <SelectPhotoButton
                     uid={'cutting-board-selector'}
@@ -108,10 +129,7 @@ class PhotoUploader extends Component {
                 }
 
                 <div style={editPhotoStyle}>
-                    <canvas ref={(canvas) => this.mediumCanvas = canvas}/>
-
-                    <canvas style={hiddenCanvasStyle} ref={(canvas) => this.maxCanvas = canvas}/>
-                    <canvas style={hiddenCanvasStyle} ref={(canvas) => this.largeCanvas = canvas}/>
+                    <canvas style={responsiveCanvasStyle} ref={(canvas) => this.maxCanvas = canvas}/>
                     <canvas style={hiddenCanvasStyle} ref={(canvas) => this.thumbCanvas = canvas}/>
 
                     <Butt style={{ display: 'inline-block' }} onClick={this.onCurrentImgEdit}>Edit</Butt>

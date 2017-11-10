@@ -2,11 +2,13 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 // actions
-import { addArtwork } from '../../../../actions/UserDataActions';
+import { addArtwork, addThumbnail } from '../../../../actions/UserDataActions';
 // components
 import ArtistSelector from "../../../ArtistSelector/ArtistSelector";
 import PhotoUploader from "../../../PhotoUploader/PhotoUploader";
 import Butt from "../../../global/Butt";
+
+// import history from '../../../global/history';
 
 class BasicPictureMaker extends Component {
 
@@ -18,7 +20,7 @@ class BasicPictureMaker extends Component {
         this.onArtistSelected = this.onArtistSelected.bind(this);
         this.onPhotoUploaderUpdate = this.onPhotoUploaderUpdate.bind(this);
         // state
-        this.state = { selectedArtistId: '' };
+        this.state = { selectedArtistId: '', sourceBlob: null, thumbBlob: null, widthToHeightRatio: null, heightToWidthRatio: null };
     }
 
     onArtistSelected(artistId) {
@@ -26,14 +28,25 @@ class BasicPictureMaker extends Component {
     }
 
     onPhotoUploaderUpdate(data) {
-        this.setState({ sourceBlob: data.sourceBlob });
+        this.setState({ ...data });
     }
 
     onSave() {
-        this.props.addArtwork(this.state.sourceBlob, this.props.userId, this.state.selectedArtistId, 800, 600,
-            (newArtworkData) => {
-                console.log("newArtworkData: ", newArtworkData);
+        const { userId } = this.props;
+        const { selectedArtistId, sourceBlob, thumbBlob, widthToHeightRatio, heightToWidthRatio } = this.state;
+
+        //history.push(/artStudio/);
+
+        this.props.addArtwork(userId, selectedArtistId, sourceBlob, widthToHeightRatio, heightToWidthRatio, (newArtworkData) => {
+            console.log("newArtworkData: ", newArtworkData);
+
+            const { artworkId, artistId } = newArtworkData;
+            this.props.addThumbnail(artworkId, artistId, thumbBlob, (newThumbData) => {
+                console.log("newThumbData: ", newThumbData);
             })
+        })
+
+        //"url_thumb"
 
         /*
         this.state.cropImg,
@@ -70,6 +83,6 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapActionsToProps = { addArtwork };
+const mapActionsToProps = { addArtwork, addThumbnail };
 
 export default connect(mapStateToProps, mapActionsToProps)(BasicPictureMaker);

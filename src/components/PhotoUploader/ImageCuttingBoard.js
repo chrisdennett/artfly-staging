@@ -158,7 +158,7 @@ class ImageCuttingBoard extends Component {
         this.props.onCancel();
     }
 
-    // On done - set up
+    // On done - return the data needed
     onDoneClick() {
         const { rotation, leftX, rightX, topY, bottomY, canvasW, canvasH, displayWidth, displayHeight } = this.state;
 
@@ -182,6 +182,8 @@ class ImageCuttingBoard extends Component {
 
         return (
             <CuttingBoardContainer>
+                <h3>Image Cutting Board</h3>
+
 
                 <CuttingBoard style={{ width: displayWidth, height: displayHeight }}>
 

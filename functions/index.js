@@ -79,11 +79,9 @@ exports.generateDifferentImageSizes = functions.storage.object()
 
         const largeImageFilePath = filePath.replace(/(\/)?([^\/]*)$/, '$1large_$2');
         const mediumImageFilePath = filePath.replace(/(\/)?([^\/]*)$/, '$1medium_$2');
-        const thumbImageFilePath = filePath.replace(/(\/)?([^\/]*)$/, '$1thumb_$2');
 
         const tempLocalLargeFile = `/tmp/large.jpg`;    //960x960  //max source size 3500x3500
         const tempLocalMediumFile = `/tmp/medium.jpg`;  //640x640
-        const tempLocalThumbFile = `/tmp/tiny.jpg`;     //100x100
 
         const databaseUrlPropertyPrefix = 'url_';
 
@@ -106,53 +104,14 @@ exports.generateDifferentImageSizes = functions.storage.object()
 
         // Exit if the image is already a thumbnail.
         if (fileName.startsWith("large_") || fileName.startsWith("medium_") || fileName.startsWith("thumb_")) {
-            console.log(`Already a Thumbnail.`);
             return;
         }
 
         // download a copy of the original image
-        return bucket.file(filePath).download({ destination: tempFilePath })
-        // use imageMagick to create a thumbnail version
-            .then(() => {
-                return spawn(`convert`, [tempFilePath, `-thumbnail`, `100x100`, tempLocalThumbFile])
-            })
-            // upload the thumbnail version to storage
-            .then(() => {
-                return bucket.upload(tempLocalThumbFile, { destination: thumbImageFilePath })
-                // then get the signed url and write it to the database
-                    .then(() => {
-                        // reference the thumb file path in storage
-                        const thumbFile = bucket.file(thumbImageFilePath);
+        return bucket.file(filePath)
+            .download({ destination: tempFilePath })
 
-                        // while this image was being created the source image may have been deleted
-                        // if so we should delete it and stop the database reference from happening.
-                        const sourceFile = bucket.file(filePath);
-                        sourceFile.exists().then(data => {
-                            let exists = data[0];
-
-                            if (exists === false) {
-                                thumbFile.delete();
-                                return;
-                            }
-
-                            // get a signed url so it has public access
-                            thumbFile.getSignedUrl(signedUrlConfig)
-                                .then((response) => {
-                                    // write the signed url to the database
-                                    ref
-                                        .set({ [`${databaseUrlPropertyPrefix}thumb`]: response[0] }, { merge: true })
-                                        .then(() => {
-                                            // console.log("Wow it worked TINY and stuff: ");
-                                        })
-                                        .catch(function (error) {
-                                            console.log('Add small thumb failed: ', error);
-                                        })
-                                })
-                        });
-                    })
-            })
-
-            // do the same for the medium version of the file
+            // use imageMagick to create a medium version
             .then(() => {
                 return spawn(`convert`, [tempFilePath, `-thumbnail`, `640x640>`, tempLocalMediumFile])
             })

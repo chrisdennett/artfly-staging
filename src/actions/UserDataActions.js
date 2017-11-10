@@ -5,7 +5,7 @@ import {
     fs_signOut,
     fs_addNewUser, fs_addNewArtist, fs_getUserChanges, fs_getUserArtistChanges,
     fs_getArtistArtworkChanges, fs_getArtistChanges, fs_addArtwork, fs_updateArtist, fs_getArtworkChanges,
-    fs_updateArtwork, fs_deleteArtwork, fs_deleteArtistAndArtworks, fs_deleteUser
+    fs_updateArtwork, fs_deleteArtwork, fs_deleteArtistAndArtworks, fs_deleteUser, fs_addThumbnail
 } from './FirestoreActions';
 
 export const ARTWORK_CHANGE = "artworkChange";
@@ -16,7 +16,9 @@ export const ARTIST_DELETED = 'artistDeleted';
 export const ARTWORK_DELETED = 'artworkDeleted';
 export const UPDATE_ARTWORK_COMPLETE = 'updateArtworkComplete';
 export const IMAGE_UPLOAD_PROGRESS = 'imageUploadProgress';
-export const ADD_ARTWORK_COMPLETE = 'artworkAdded';
+export const ADD_ARTWORK_COMPLETE = 'addArtworkComplete';
+export const THUMBNAIL_UPLOAD_PROGRESS = 'thumbnailUploadProgress';
+export const ADD_THUMBNAIL_COMPLETE = 'addThumbnailComplete';
 export const CLEAR_IMAGE_UPLOAD = 'clearImageUpload';
 export const CREATE_USER = 'create_user';
 export const FETCH_USER = "fetchUser";
@@ -301,6 +303,28 @@ export function addArtwork(userId, artistId, imgFile, widthToHeightRatio, height
             else if (uploadData.status === 'complete') {
                 dispatch({
                     type: ADD_ARTWORK_COMPLETE,
+                    payload: { progress: 100 }
+                });
+
+                if (callback) callback(uploadData);
+            }
+
+        });
+    }
+}
+
+export function addThumbnail(artworkId, artistId, thumbFile, callback = null) {
+    return dispatch => {
+        fs_addThumbnail(artworkId, artistId, thumbFile, (uploadData) => {
+            if (uploadData.status === 'uploading') {
+                dispatch({
+                    type: THUMBNAIL_UPLOAD_PROGRESS,
+                    payload: uploadData
+                });
+            }
+            else if (uploadData.status === 'complete') {
+                dispatch({
+                    type: ADD_THUMBNAIL_COMPLETE,
                     payload: { progress: 100 }
                 });
 

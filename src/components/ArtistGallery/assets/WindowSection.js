@@ -75,7 +75,7 @@ const createBuildingWindows = (wallColour, highlight, lowlight, artworks, galler
         if (artworks && artworks[id]) {
             return (
                 <BuildingWindow key={date}
-                                artworkThumbUrl={artwork.url_thumb}
+                                artworkThumbUrl={artwork.thumb_url}
                                 artworkId={id}
                                 imgDelay={imgLoadDelay}
                                 x={x}

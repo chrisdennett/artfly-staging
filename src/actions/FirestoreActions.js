@@ -250,7 +250,7 @@ export function fs_addArtwork(userId, artistId, imgFile, widthToHeightRatio, hei
     const artworkDatabaseRef = db.collection('artworks').doc();
     const artworkId = artworkDatabaseRef.id;
 
-    int_saveImageChanges(artworkId, artistId, imgFile,
+    int_saveImage(artworkId, artistId, imgFile, '',
         (onChangeData) => {
             if (onChangeCallback) onChangeCallback(onChangeData);
         },
@@ -271,13 +271,28 @@ export function fs_addArtwork(userId, artistId, imgFile, widthToHeightRatio, hei
         });
 }
 
+export function fs_addThumbnail(artworkId, artistId, thumbFile, onChangeCallback = null) {
+    int_saveImage(artworkId, artistId, thumbFile, 'thumbnail_',
+        (onChangeData) => {
+            if (onChangeCallback) onChangeCallback(onChangeData);
+        },
+        (onCompleteData) => {
+            // Upload completed successfully - save artwork data
+            const newArtworkData = { thumb_url: onCompleteData.downloadURL };
+
+            int_saveArtworkChanges(artworkId, newArtworkData, () => {
+                onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
+            });
+        });
+}
+
 // UPDATE ARTWORK
 export function fs_updateArtwork(artworkId, currentArtistId, newArtistId, newImage, newWidth, newHeight, onChangeCallback = null) {
     // only overwrite the image if it has changed
     if (newImage) {
         const artistId = newArtistId ? newArtistId : currentArtistId;
 
-        int_saveImageChanges(artworkId, artistId, newImage,
+        int_saveImage(artworkId, artistId, newImage, '',
             (onChangeData) => {
                 if (onChangeCallback) onChangeCallback(onChangeData);
             },
@@ -286,7 +301,7 @@ export function fs_updateArtwork(artworkId, currentArtistId, newArtistId, newIma
                 let newArtworkData = {
                     imgWidth: newWidth,
                     imgHeight: newHeight,
-                    url: onCompleteData.downloadURL,
+                    url: onCompleteData.downloadURL
                 };
                 if (newArtistId) newArtworkData.artistId = newArtistId;
 
@@ -319,8 +334,9 @@ function int_saveArtworkChanges(artworkId, newData, onChangeCallback = null) {
 }
 
 // INTERNAL ARTWORK DATA
-function int_saveImageChanges(artworkId, artistId, blob, onChangeCallback, onCompleteCallback) {
-    const userPicturesRef = store.child(`userContent/${artistId}/${artworkId}`);
+function int_saveImage(artworkId, artistId, blob, prefix, onChangeCallback, onCompleteCallback) {
+    const fileName = prefix + artworkId;
+    const userPicturesRef = store.child(`userContent/${artistId}/${fileName}`);
     // start the upload
     const uploadTask = userPicturesRef.put(blob);
     // listen for upload events
