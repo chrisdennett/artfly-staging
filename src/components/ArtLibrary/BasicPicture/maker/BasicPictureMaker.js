@@ -81,7 +81,7 @@ const mapStateToProps = (state) => {
     return {
         userId: state.user.uid
     }
-}
+};
 
 const mapActionsToProps = { addArtwork, addThumbnail };
 

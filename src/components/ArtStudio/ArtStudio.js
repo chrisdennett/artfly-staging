@@ -19,7 +19,7 @@ class ArtStudio extends Component {
             content = <BasicPictureMaker/>
         }
         else{
-            content = <BasicPictureEditor/>
+            content = <BasicPictureEditor artworkId={artworkId}/>
         }
 
         return (
