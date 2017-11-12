@@ -14,25 +14,39 @@ class ArtistSelector extends Component {
     componentWillMount() {
         // Load in the users artists
         this.props.getUserArtistChanges(this.props.userId);
-        this.setDefaultArtist(this.props);
+
+        this.setInitialArtist(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setDefaultArtist(nextProps);
+        this.setInitialArtist(nextProps);
     }
 
-    setDefaultArtist(props){
+    setInitialArtist(props) {
         // Set default artist Id - just use the first artist
-        if (this.state.selectedArtistId === '' && Object.keys(props.artists).length > 0) {
-            const defaultArtistId = Object.keys(props.artists)[0];
-            this.onArtistSelected(defaultArtistId);
+        if (this.state.selectedArtistId === '') {
+
+            if (props.initialArtistId) {
+                console.log("props.initialArtistId: ", props.initialArtistId);
+                this.onArtistSelected(props.initialArtistId, true);
+            }
+            else if (Object.keys(props.artists).length > 0) {
+                const defaultArtistId = Object.keys(props.artists)[0];
+                this.onArtistSelected(defaultArtistId, true);
+            }
         }
     }
 
-    onArtistSelected(artistId) {
+    onArtistSelected(artistId, isInitialSelection = false) {
         // save state and update parent - NB: could just keep state in parent and make this stateless
         this.setState({ selectedArtistId: artistId }, () => {
-            this.props.onArtistSelected(artistId);
+            if (isInitialSelection) {
+                if(this.props.onInitialArtistSelected) this.props.onInitialArtistSelected(artistId);
+            }
+            else{
+                this.props.onArtistSelected(artistId);
+            }
+
         });
     }
 
@@ -61,12 +75,14 @@ class ArtistSelector extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        userId: state.user.uid,
-        artists: state.artists
-    }
-};
-const mapActionsToProps = { getUserArtistChanges };
+const
+    mapStateToProps = (state) => {
+        return {
+            userId: state.user.uid,
+            artists: state.artists
+        }
+    };
+const
+    mapActionsToProps = { getUserArtistChanges };
 
 export default connect(mapStateToProps, mapActionsToProps)(ArtistSelector);

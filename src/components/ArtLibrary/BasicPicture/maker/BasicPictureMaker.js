@@ -66,7 +66,7 @@ class BasicPictureMaker extends Component {
         return (
             <div>
                 <h2>Basic Picture Maker</h2>
-                <ArtistSelector onArtistSelected={this.onArtistSelected}/>
+                <ArtistSelector onArtistSelected={this.onArtistSelected} onInitialArtistSelected={this.onArtistSelected}/>
                 <PhotoUploader onUpdate={this.onPhotoUploaderUpdate}/>
 
                 <hr/>
