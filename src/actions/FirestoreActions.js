@@ -287,7 +287,7 @@ export function fs_addThumbnail(artworkId, artistId, thumbFile, onChangeCallback
 }
 
 // UPDATE ARTWORK
-export function fs_updateArtwork(artworkId, currentArtistId, newArtistId, newImage, newWidth, newHeight, onChangeCallback = null) {
+/*export function fs_updateArtwork(artworkId, currentArtistId, newArtistId, newImage, newWidth, newHeight, onChangeCallback = null) {
     // only overwrite the image if it has changed
     if (newImage) {
         const artistId = newArtistId ? newArtistId : currentArtistId;
@@ -318,6 +318,32 @@ export function fs_updateArtwork(artworkId, currentArtistId, newArtistId, newIma
         });
     }
 
+}*/
+
+export function fs_updateArtworkArtist(artworkId, newArtistId, onChangeCallback = null) {
+    const newArtworkData = { artistId: newArtistId };
+    int_saveArtworkChanges(artworkId, newArtworkData, () => {
+        onChangeCallback({ ...newArtworkData, status: 'complete', artworkId })
+    });
+}
+
+export function fs_updateArtworkImage(artworkId, artistId, newImage, widthToHeightRatio, heightToWidthRatio, onChangeCallback = null) {
+    int_saveImage(artworkId, artistId, newImage, '',
+        (onChangeData) => {
+            if (onChangeCallback) onChangeCallback(onChangeData);
+        },
+        (onCompleteData) => {
+            // Upload completed successfully - save artwork data
+            let newArtworkData = {
+                widthToHeightRatio,
+                heightToWidthRatio,
+                url: onCompleteData.downloadURL
+            };
+
+            int_saveArtworkChanges(artworkId, newArtworkData, null, () => {
+                onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
+            });
+        });
 }
 
 // INTERNAL SAVE ARTWORK CHANGES

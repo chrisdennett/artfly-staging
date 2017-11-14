@@ -1,5 +1,8 @@
 // externals
 import React, { Component } from "react";
+import { connect } from 'react-redux';
+// actions
+import { updateArtworkArtist } from '../../actions/UserDataActions';
 // components
 import ArtistSelector from "../ArtistSelector/ArtistSelector";
 import Butt from "../global/Butt";
@@ -23,21 +26,20 @@ class InlineArtistUpdater extends Component {
         this.state = { inEditMode: false }
     }
 
-
     onEditArtist() {
         this.setState({ inEditMode: true });
     }
 
-    onArtistSelected(artistSelected){
-        // show saving message first, then show the updated artist
-        console.log("artistSelected: ", artistSelected);
-        this.setState({ inEditMode: false });
+    onArtistSelected(artistSelected) {
+        this.props.updateArtworkArtist(this.props.artworkId, artistSelected, () => {
+            this.setState({ inEditMode: false });
+        });
     }
 
     render() {
         const { artist } = this.props;
 
-        if(this.state.inEditMode){
+        if (this.state.inEditMode) {
             return (
                 <div>
                     <h5>Inline Artist Updater</h5>
@@ -57,4 +59,7 @@ class InlineArtistUpdater extends Component {
     }
 }
 
-export default InlineArtistUpdater;
+
+const mapActionsToProps = { updateArtworkArtist };
+
+export default connect(null, mapActionsToProps)(InlineArtistUpdater);

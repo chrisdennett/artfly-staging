@@ -21,7 +21,6 @@ import ArtistEditorContainer from "./components/ArtistEditor/ArtistEditorContain
 import NewUserFormContainer from "./components/NewUser/NewUserFormContainer";
 import ArtworkContainer from './components/Artwork/ArtworkContainer';
 import ArtStudio from "./components/ArtStudio/ArtStudio";
-import ArtworkEditorContainer from "./components/ArtworkEditor/ArtworkEditorContainer";
 import FourOhFour from "./components/FourOhFour/FourOhFour";
 import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
 //
@@ -34,7 +33,6 @@ const routes = {
     artwork: { component: ArtworkContainer },
     settings: { component: SettingsContainer, adminOnly: true },
     artStudio: { component: ArtStudio, adminOnly: true },
-    artworkEditor: { component: ArtworkEditorContainer, adminOnly: true },
     addOrEditArtist: { component: ArtistEditorContainer, adminOnly: true },
     newUser: { component: NewUserFormContainer, adminOnly: true }
 };

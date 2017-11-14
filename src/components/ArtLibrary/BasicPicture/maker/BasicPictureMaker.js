@@ -38,8 +38,6 @@ class BasicPictureMaker extends Component {
         //history.push(/artStudio/);
 
         this.props.addArtwork(userId, selectedArtistId, sourceBlob, widthToHeightRatio, heightToWidthRatio, (newArtworkData) => {
-            console.log("newArtworkData: ", newArtworkData);
-
             const { artworkId, artistId } = newArtworkData;
             this.props.addThumbnail(artworkId, artistId, thumbBlob, (newThumbData) => {
                 console.log("newThumbData: ", newThumbData);

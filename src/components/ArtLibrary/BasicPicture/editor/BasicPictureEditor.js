@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { listenForArtworkChanges, listenForArtistChanges } from '../../../../actions/UserDataActions';
 import Butt from "../../../global/Butt";
 import InlineArtistUpdater from "../../../InlineArtistUpdater/InlineArtistUpdater";
+import InlinePhotoUpdater from "../../../InlinePhotoUpdater/InlinePhotoUpdater";
 
 class BasicPictureEditor extends Component {
 
@@ -25,7 +26,6 @@ class BasicPictureEditor extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        console.log("nextProps: ", nextProps);
         if(!this.props.artist && nextProps.artwork){
             this.props.listenForArtistChanges(nextProps.artwork.artistId);
         }
@@ -55,16 +55,14 @@ class BasicPictureEditor extends Component {
     render() {
         if(!this.props.artwork || !this.props.artist) return null;
 
-        const {thumb_url} = this.props.artwork;
-        const {artist} = this.props;
+        const {artist, artworkId, artwork} = this.props;
 
         return (
             <div>
                 <h3>Basic Picture Editor</h3>
-                <InlineArtistUpdater artist={artist}/>
+                <InlineArtistUpdater artist={artist} artworkId={artworkId}/>
+                <InlinePhotoUpdater artistId={artist.artistId} artwork={artwork}/>
 
-                <img src={thumb_url} alt={'Current artwork thumb'} />
-                <Butt label={'Edit Photo'} onClick={this.onEditPhoto}/>
 
                 <hr/>
                 <Butt label={'Done'} onClick={this.onDone}/>
