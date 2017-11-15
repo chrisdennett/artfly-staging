@@ -35,9 +35,6 @@ const mapStateToProps = (state, ownProps) => {
         windowSize: state.ui.windowSize
     }
 };
+const mapActionsToProps = { listenForArtworkChanges};
 
-const ArtworkContainer = connect(
-    mapStateToProps, { listenForArtworkChanges}
-)(ArtworkHolder);
-
-export default ArtworkContainer;
+export default connect( mapStateToProps, mapActionsToProps)(ArtworkHolder);

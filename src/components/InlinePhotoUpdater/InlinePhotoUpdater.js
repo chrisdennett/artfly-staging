@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 // actions
 import { updateArtworkImage, updateArtworkThumbnail } from '../../actions/UserDataActions';
 // components
-import PhotoUploader from "../PhotoEditor/PhotoEditor";
+import PhotoEditor from "../PhotoEditor/PhotoEditor";
 
 class InlinePhotoUpdater extends Component {
 
@@ -32,7 +32,7 @@ class InlinePhotoUpdater extends Component {
 
         return (
             <div>
-                <PhotoUploader
+                <PhotoEditor
                     onSave={this.onSave}
                     url={url}
                     thumb_url={thumb_url}/>

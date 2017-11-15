@@ -1,23 +1,23 @@
 // externals
 import React, { Component } from "react";
 // components
-import ImageCuttingBoard from "./ImageCuttingBoard";
 import SelectPhotoButton from "./assets/SelectPhotoButton";
 import Butt from "../global/Butt";
 // helper functions
 import * as PhotoHelper from "./assets/PhotoHelper";
+import CuttingBoardModal from "./CuttingBoardModal";
 
 class PhotoUploader extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         // initialise state
         this.state = { loadedImg: null, loadedImgOrientation: 1, cuttingBoardData: null };
 
         // bind functions
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
-        this.closeCuttingBoardCancel = this.closeCuttingBoardCancel.bind(this);
+        this.onCuttingBoardCancel = this.onCuttingBoardCancel.bind(this);
         this.onImageCuttingBoardDone = this.onImageCuttingBoardDone.bind(this);
         this.onCurrentImgDelete = this.onCurrentImgDelete.bind(this);
         this.onCurrentImgEdit = this.onCurrentImgEdit.bind(this);
@@ -25,6 +25,11 @@ class PhotoUploader extends Component {
         this.getCanvasBlobData = this.getCanvasBlobData.bind(this);
         this.onEditPhoto = this.onEditPhoto.bind(this);
         this.onSave = this.onSave.bind(this);
+
+        // DEV HACK TO LOAD IMAGE STRAIGHT AWAY
+        if (props.url) {
+            this.onEditPhoto();
+        }
     }
 
     // User has selected a photo
@@ -41,7 +46,7 @@ class PhotoUploader extends Component {
         this.setState({ cuttingBoardOpen: true, loadedImg: img, loadedImgOrientation: imgOrientation });
     }
 
-    closeCuttingBoardCancel() {
+    onCuttingBoardCancel() {
         this.setState({ cuttingBoardOpen: false });
     }
 
@@ -137,12 +142,11 @@ class PhotoUploader extends Component {
                 </div>
 
                 {showCuttingBoard &&
-                <ImageCuttingBoard
-                    img={this.state.loadedImg}
-                    defaultOrientation={orientation}
-                    initialCropData={initialCropData}
-                    onCancel={this.closeCuttingBoardCancel}
-                    onDone={this.onImageCuttingBoardDone}/>
+                <CuttingBoardModal loadedImg={this.state.loadedImg}
+                                   orientation={orientation}
+                                   initialCropData={initialCropData}
+                                   onCancel={this.onCuttingBoardCancel}
+                                   onDone={this.onImageCuttingBoardDone}/>
                 }
 
             </div>
