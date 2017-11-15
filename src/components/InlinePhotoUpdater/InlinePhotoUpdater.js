@@ -8,14 +8,6 @@ import PhotoUploader from "../PhotoEditor/PhotoEditor";
 
 class InlinePhotoUpdater extends Component {
 
-    /*
-    * Display the current thumb image
-    * - have a button to edit
-    * - save edit on change
-    * - display a saving message
-    * - display the updated thumb
-    * */
-
     constructor() {
         super();
 
@@ -26,12 +18,11 @@ class InlinePhotoUpdater extends Component {
         const { widthToHeightRatio, heightToWidthRatio, sourceBlob, thumbBlob} = newImgData;
         const {artworkId, artistId} = this.props;
         this.props.updateArtworkImage(artworkId, artistId, sourceBlob, widthToHeightRatio, heightToWidthRatio, (returnStuff) => {
-            console.log("Artwork update complete: ", returnStuff);
+            console.log("Artwork update saving: ", returnStuff);
+        });
 
-            this.props.updateArtworkThumbnail(artworkId, artistId, thumbBlob, () => {
-                console.log("Thumbnail update complete");
-            })
-
+        this.props.updateArtworkThumbnail(artworkId, artistId, thumbBlob, () => {
+            console.log("Thumbnail update saving");
         })
     }
 

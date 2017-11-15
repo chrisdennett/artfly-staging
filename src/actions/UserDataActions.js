@@ -5,7 +5,7 @@ import {
     fs_signOut,
     fs_addNewUser, fs_addNewArtist, fs_getUserChanges, fs_getUserArtistChanges,
     fs_getArtistArtworkChanges, fs_getArtistChanges, fs_addArtwork, fs_updateArtist, fs_getArtworkChanges,
-    fs_updateArtwork, fs_updateArtworkArtist, fs_deleteArtwork, fs_deleteArtistAndArtworks, fs_deleteUser,
+    fs_updateArtworkArtist, fs_deleteArtwork, fs_deleteArtistAndArtworks, fs_deleteUser,
     fs_addThumbnail, fs_updateArtworkImage, fs_updateThumbnail
 } from './FirestoreActions';
 
@@ -350,7 +350,6 @@ export function updateArtworkImage(artworkId, artistId, newImg, widthToHeightRat
     }
 }
 
-// export function fs_updateThumbnail(artworkId, artistId, thumbFile, onChangeCallback = null)
 export function updateArtworkThumbnail(artworkId, artistId, newThumbImg, callback = null){
     return dispatch => {
         fs_updateThumbnail(artworkId, artistId, newThumbImg, (updateCompleteData) => {

@@ -287,39 +287,6 @@ export function fs_addThumbnail(artworkId, artistId, thumbFile, onChangeCallback
 }
 
 // UPDATE ARTWORK
-/*export function fs_updateArtwork(artworkId, currentArtistId, newArtistId, newImage, newWidth, newHeight, onChangeCallback = null) {
-    // only overwrite the image if it has changed
-    if (newImage) {
-        const artistId = newArtistId ? newArtistId : currentArtistId;
-
-        int_saveImage(artworkId, artistId, newImage, '',
-            (onChangeData) => {
-                if (onChangeCallback) onChangeCallback(onChangeData);
-            },
-            (onCompleteData) => {
-                // Upload completed successfully - save artwork data
-                let newArtworkData = {
-                    imgWidth: newWidth,
-                    imgHeight: newHeight,
-                    url: onCompleteData.downloadURL
-                };
-                if (newArtistId) newArtworkData.artistId = newArtistId;
-
-                int_saveArtworkChanges(artworkId, newArtworkData, null, () => {
-                    onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
-                });
-            });
-    }
-    // If the image hasn't changed, just update the artwork data
-    else if (newArtistId) {
-        const newArtworkData = { artistId: newArtistId };
-        int_saveArtworkChanges(artworkId, newArtworkData, () => {
-            onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
-        });
-    }
-
-}*/
-
 export function fs_updateArtworkArtist(artworkId, newArtistId, onChangeCallback = null) {
     const newArtworkData = { artistId: newArtistId };
     int_saveArtworkChanges(artworkId, newArtworkData, () => {
@@ -328,7 +295,6 @@ export function fs_updateArtworkArtist(artworkId, newArtistId, onChangeCallback 
 }
 
 export function fs_updateArtworkImage(artworkId, artistId, newImage, widthToHeightRatio, heightToWidthRatio, onChangeCallback = null) {
-
     // delete the server generated image urls
     db.collection('artworks')
         .doc(artworkId)
@@ -336,6 +302,7 @@ export function fs_updateArtworkImage(artworkId, artistId, newImage, widthToHeig
             url_large: fb.firestore.FieldValue.delete(),
             url_med: fb.firestore.FieldValue.delete()
         })
+        // delete the source image
         .then(() => {
             int_saveImage(artworkId, artistId, newImage, '',
                 (onChangeData) => {
@@ -357,8 +324,6 @@ export function fs_updateArtworkImage(artworkId, artistId, newImage, widthToHeig
         .catch(function (error) {
             console.log('Update artwork failed: ', error);
         })
-
-
 }
 
 export function fs_updateThumbnail(artworkId, artistId, thumbFile, onChangeCallback = null) {
@@ -499,14 +464,19 @@ export function fs_getUserArtworkChanges(userId) {
 // DELETE ARTWORK
 export function fs_deleteArtwork(artworkId, artistId, onCompleteCallback = null) {
     int_deleteArtworkData(artworkId, () => {
-        int_deleteImageFromStorage(artworkId, artistId, () => {
+        int_deleteImageFromStorage(artworkId, artistId, '', () => {
             if (onCompleteCallback) onCompleteCallback();
+        });
+
+        int_deleteImageFromStorage(artworkId, artistId, 'thumbnail_', () => {
+            console.log("thumbnail image deleted ta");
         })
     })
 }
 
-function int_deleteImageFromStorage(artworkId, artistId, onCompleteCallback) {
-    const imageRef = store.child(`userContent/${artistId}/${artworkId}`);
+function int_deleteImageFromStorage(artworkId, artistId, prefix, onCompleteCallback) {
+    const fileName = prefix + artworkId;
+    const imageRef = store.child(`userContent/${artistId}/${fileName}`);
     imageRef.delete()
         .then(() => {
             onCompleteCallback();

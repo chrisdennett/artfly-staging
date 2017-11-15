@@ -10,14 +10,11 @@ import history from '../../../global/history';
 
 class BasicPictureMaker extends Component {
 
-    // Saving the artwork will create all the images and save the crop data.
     constructor() {
         super();
         // bindings
         this.onSave = this.onSave.bind(this);
         this.onArtistSelected = this.onArtistSelected.bind(this);
-        // this.onPhotoUploaderUpdate = this.onPhotoUploaderUpdate.bind(this);
-        // state
         this.state = { selectedArtistId: '', sourceBlob: null, thumbBlob: null, widthToHeightRatio: null, heightToWidthRatio: null };
     }
 
@@ -25,16 +22,10 @@ class BasicPictureMaker extends Component {
         this.setState({ selectedArtistId: artistId })
     }
 
-    /*onPhotoUploaderUpdate(data) {
-        this.setState({ ...data });
-    }*/
-
     onSave(data) {
         const { userId } = this.props;
         const { selectedArtistId } = this.state;
         const { sourceBlob, thumbBlob, widthToHeightRatio, heightToWidthRatio } = data;
-
-        console.log("Saving artwork for userId: ", userId);
 
         this.props.addArtwork(userId, selectedArtistId, sourceBlob, widthToHeightRatio, heightToWidthRatio, (newArtworkData) => {
             const { artworkId, artistId } = newArtworkData;
@@ -42,21 +33,6 @@ class BasicPictureMaker extends Component {
                 history.push(`/artStudio/${artworkId}`);
             })
         })
-
-        //"url_thumb"
-
-        /*
-        this.state.cropImg,
-        width,
-        height
-
-        this.props.addArtwork(this.state.cropImg, this.props.user.uid, selectedArtistId, width, height, (newArtworkData) => {
-             this.setState({ saveTriggered: false });
-             this.props.onSaveComplete(newArtworkData);
-             this.props.clearImageUpload();
-         });
-
-         */
     }
 
     render() {

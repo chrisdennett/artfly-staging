@@ -73,16 +73,6 @@ class PhotoUploader extends Component {
         this.setState({ cuttingBoardOpen: true });
     }
 
-    // DELETE FOR PRODUCTION
-    /*__DEV_ONLY__setupImg = (img) => {
-        if (img) {
-            img.onload = (e) => {
-                console.log("e.target: ", e.target);
-                this.setState({ loadedImg: e.target, cuttingBoardOpen: true });
-            }
-        }
-    };*/
-
     onEditPhoto() {
         PhotoHelper.LoadImage(this.props.url, (img) => {
             this.setState({ loadedImg: img, cuttingBoardOpen: true });
@@ -157,10 +147,6 @@ class PhotoUploader extends Component {
                     onCancel={this.closeCuttingBoardCancel}
                     onDone={this.onImageCuttingBoardDone}/>
                 }
-
-                {/*<div style={{ display: 'none' }}>
-                    <img ref={(img) => this.__DEV_ONLY__setupImg(img)} src='../../gallery-example.PNG' alt={'sample'}/>
-                </div>*/}
 
             </div>
         );

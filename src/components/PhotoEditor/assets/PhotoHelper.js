@@ -6,6 +6,7 @@ export function GetImage(imgFile, callback) {
             const imgSrc = e.target.result;
             // Create a new image element
             let img = new Image();
+            img.setAttribute('crossOrigin', 'anonymous'); //
             img.src = imgSrc;
             // wait for it to be loaded and then return
             img.onload = (e) => {
@@ -18,10 +19,10 @@ export function GetImage(imgFile, callback) {
 
 export function LoadImage(imgSrc, callback){
     let img = new Image();
-    img.src = imgSrc;
     // the lack of this crossOrigin line caused me a world of pain!!!
     // https://stackoverflow.com/questions/20424279/canvas-todataurl-securityerror/27260385#27260385
     img.setAttribute('crossOrigin', 'anonymous'); //
+    img.src = imgSrc;
     // wait for it to be loaded and then return
     img.onload = (e) => {
         callback(e.target);
