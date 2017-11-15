@@ -113,9 +113,6 @@ class PhotoUploader extends Component {
 
         return (
             <div>
-                <hr/>
-                <h3>Photo Uploader</h3>
-
                 {!hasEditingData && !editingExistingImage &&
                 <SelectPhotoButton
                     uid={'cutting-board-selector'}

@@ -8,7 +8,7 @@ const SvgRightWall = function (props) {
                 <defs>
                     <pattern id="bricksRight" x="0" y="0" width="36.137" height="74.899" patternUnits="userSpaceOnUse">
 
-                        <img src="/src/components/ArtistGallery/assets/source_files/svg_optimised/rightWall.svg"/>
+                        <img src="/src/components/Gallery/assets/source_files/svg_optimised/rightWall.svg"/>
 
                     </pattern>
                 </defs>

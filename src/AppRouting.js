@@ -15,7 +15,7 @@ import WindowController from "./components/global/WindowDimensionsTracker";
 import AppControls from "./components/AppControls/AppControls";
 // route components
 import Home from './components/Home/Home';
-import ArtistGalleryContainer from './components/ArtistGallery/ArtistGalleryContainer';
+import GalleryContainer from './components/Gallery/GalleryContainer';
 import SettingsContainer from "./components/Settings/SettingsContainer";
 import ArtistEditorContainer from "./components/ArtistEditor/ArtistEditorContainer";
 import NewUserFormContainer from "./components/NewUser/NewUserFormContainer";
@@ -29,7 +29,7 @@ const IN_BETA_MODE = true;
 
 const routes = {
     home: { component: Home },
-    gallery: { component: ArtistGalleryContainer },
+    gallery: { component: GalleryContainer },
     artwork: { component: ArtworkContainer },
     settings: { component: SettingsContainer, adminOnly: true },
     artStudio: { component: ArtStudio, adminOnly: true },
@@ -162,7 +162,6 @@ const mapStateToProps = (state) => {
         user: state.user
     }
 };
+const mapActionsToProps = { listenForUserChanges, fetchLocalPrice };
 
-export default connect(
-    mapStateToProps, { listenForUserChanges, fetchLocalPrice }
-)(ArtflyRouting);
+export default connect(mapStateToProps, mapActionsToProps)(ArtflyRouting);

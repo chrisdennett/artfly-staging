@@ -1,13 +1,13 @@
 // externals
 import React from 'react';
 // styles
-import './artistGallery.css';
+import './gallery.css';
 // components
 import ScrollbarRemover from "../global/ScrollbarRemover";
 import SvgBackground from "./assets/SvgBackground";
 import SvgGallery from "./assets/SvgGallery";
 
-const ArtistGallery = function (props) {
+const Gallery = function (props) {
     const { artist, artworks, onThumbClick, pageWidth, pageHeight, galleryParams, galleryIsZoomedOut } = props;
 
     const galleryHeight = galleryParams.galleryHeight;
@@ -38,4 +38,4 @@ const ArtistGallery = function (props) {
     )
 };
 
-export default ArtistGallery;
+export default Gallery;

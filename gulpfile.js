@@ -16,9 +16,9 @@ gulp.task('watch', function () {
     gulp.watch('src/svg__source/!*Wall.svg', ['inject-svg-walls-into-components']);*/
 });
 
-// ArtistGallery assets - generate optimised svgs
+// Gallery assets - generate optimised svgs
 gulp.task('optimise-svgs', function () {
-    gulp.src('src/components/ArtistGallery/assets/source_files/svg_exports/*.svg')
+    gulp.src('src/components/Gallery/assets/source_files/svg_exports/*.svg')
         .pipe(replace('xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"', ''))
         .pipe(replace(" xmlns=\"http://www.w3.org/2000/svg\"", ''))
         .pipe(replace(/mix-blend-mode:normal;isolation:auto/g, ''))
@@ -36,11 +36,11 @@ gulp.task('optimise-svgs', function () {
             }]
         }))
 
-        .pipe(gulp.dest('src/components/ArtistGallery/assets/source_files/svg_optimised/'));
+        .pipe(gulp.dest('src/components/Gallery/assets/source_files/svg_optimised/'));
 });
 
 gulp.task('make-svgs-react-ready', function () {
-   gulp.src('src/components/ArtistGallery/assets/source_files/svg_optimised/*svg')
+   gulp.src('src/components/Gallery/assets/source_files/svg_optimised/*svg')
        .pipe(replace("style=\"text-align:center\"", 'style={{textAlign:"center"}}'))
        .pipe(replace("font-size", 'fontSize'))
        .pipe(replace("font-family", 'fontFamily'))
@@ -55,13 +55,13 @@ gulp.task('make-svgs-react-ready', function () {
        .pipe(replace("stroke-linejoin", 'strokeLinejoin'))
        .pipe(replace("viewbox", 'viewBox'))
 
-       .pipe(gulp.dest('src/components/ArtistGallery/assets/source_files/svg_reactReady/'));
+       .pipe(gulp.dest('src/components/Gallery/assets/source_files/svg_reactReady/'));
 });
 
 
 
 gulp.task('inject-svg-title-into-component', function () {
-    gulp.src('src/components/ArtistGallery/assets/source_files/component_templates/SvgGalleryTitle__source.js')
+    gulp.src('src/components/Gallery/assets/source_files/component_templates/SvgGalleryTitle__source.js')
         .pipe(svgInject())
         .pipe(rename(function (path) {
             path.basename = path.basename.replace("__source", "");
@@ -82,11 +82,11 @@ gulp.task('inject-svg-title-into-component', function () {
         .pipe(replace("Christopher", '{props.firstName}'))
         .pipe(replace("John Dennett", '{props.lastName}'))
 
-        .pipe(gulp.dest('src/components/ArtistGallery/assets/'));
+        .pipe(gulp.dest('src/components/Gallery/assets/'));
 });
 
 gulp.task('inject-svg-bottom-into-components', function () {
-    gulp.src('src/components/ArtistGallery/assets/source_files/component_templates/SvgGalleryBottom__source.js')
+    gulp.src('src/components/Gallery/assets/source_files/component_templates/SvgGalleryBottom__source.js')
         .pipe(svgInject())
         .pipe(rename(function (path) {
             path.basename = path.basename.replace("__source", "");
@@ -106,11 +106,11 @@ gulp.task('inject-svg-bottom-into-components', function () {
         .pipe(replace("fill-rule", 'fillRule'))
         .pipe(replace("viewbox", 'viewBox'))
 
-        .pipe(gulp.dest('src/components/ArtistGallery/assets/'));
+        .pipe(gulp.dest('src/components/Gallery/assets/'));
 });
 
 gulp.task('inject-svg-window-into-component', function () {
-    gulp.src('src/components/ArtistGallery/assets/source_files/component_templates/svg__source/SvgWindow__source.js')
+    gulp.src('src/components/Gallery/assets/source_files/component_templates/svg__source/SvgWindow__source.js')
         .pipe(svgInject())
         .pipe(rename(function (path) {
             path.basename = path.basename.replace("__source", "");
@@ -130,7 +130,7 @@ gulp.task('inject-svg-window-into-component', function () {
         // .pipe(replace(/ width="[0-9.]*" viewBox="[[0-9. ]*"/, ''))
         .pipe(replace("<svg ", '<svg {...props} '))
 
-        .pipe(gulp.dest('src/components/ArtistGallery/assets/'));
+        .pipe(gulp.dest('src/components/Gallery/assets/'));
 });
 
 /*gulp.task('inject-svg-title-into-component', function () {
@@ -203,7 +203,7 @@ gulp.task('inject-svg-bottom-into-component', function () {
 });*/
 
 gulp.task('inject-svg-walls-into-components', function () {
-    gulp.src('src/components/ArtistGallery/assets/source_files/component_templates/*Wall__source.js')
+    gulp.src('src/components/Gallery/assets/source_files/component_templates/*Wall__source.js')
 
         .pipe(svgInject())
         .pipe(rename(function (path) {
@@ -227,5 +227,5 @@ gulp.task('inject-svg-walls-into-components', function () {
         .pipe(replace("changeme", 'svg'))
 
 
-        .pipe(gulp.dest('src/components/ArtistGallery/assets/'));
+        .pipe(gulp.dest('src/components/Gallery/assets/'));
 });

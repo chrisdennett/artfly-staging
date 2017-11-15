@@ -50,7 +50,6 @@ class InlineArtistUpdater extends Component {
 
         return (
             <div>
-                <h5>Inline Artist Updater</h5>
                 <p>artist: {`${artist.firstName} ${artist.lastName}`}</p>
 
                 <Butt label={'Edit Artist'} onClick={this.onEditArtist}/>

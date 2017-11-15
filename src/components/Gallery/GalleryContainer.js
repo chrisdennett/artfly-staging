@@ -5,10 +5,10 @@ import * as _ from 'lodash';
 // actions
 import { listenForArtistChanges, listenForArtistArtworkChanges } from '../../actions/UserDataActions';
 // components
-import ArtistGallery from './ArtistGallery';
+import Gallery from './Gallery';
 import history from '../global/history';
 
-class ArtistGalleryHolder extends Component {
+class GalleryHolder extends Component {
 
     componentDidMount() {
         this.props.listenForArtistChanges(this.props.galleryId);
@@ -20,7 +20,7 @@ class ArtistGalleryHolder extends Component {
             history.push(`/gallery/${this.props.galleryId}/artwork/${artworkId}`);
         }
         else {
-            console.log("ArtistGalleryContainer > onThumbClick > artworkId: ", artworkId);
+            console.log("GalleryContainer > onThumbClick > artworkId: ", artworkId);
         }
     }
 
@@ -34,13 +34,13 @@ class ArtistGalleryHolder extends Component {
         const galleryParams = calculateGalleryParams(artist.totalArtworks, windowSize.inMobileMode);
 
         return (
-            <ArtistGallery pageWidth={windowSize.windowWidth}
-                           pageHeight={windowSize.windowHeight}
-                           galleryIsZoomedOut={galleryIsZoomedOut}
-                           galleryParams={galleryParams}
-                           artist={artist}
-                           artworks={artworks}
-                           onThumbClick={(id) => {this.onThumbClick(id)}}/>
+            <Gallery pageWidth={windowSize.windowWidth}
+                     pageHeight={windowSize.windowHeight}
+                     galleryIsZoomedOut={galleryIsZoomedOut}
+                     galleryParams={galleryParams}
+                     artist={artist}
+                     artworks={artworks}
+                     onThumbClick={(id) => {this.onThumbClick(id)}}/>
         )
     }
 }
@@ -134,9 +134,9 @@ const mapStateToProps = (state, ownProps) => {
     }
 };
 
-const ArtistGalleryContainer = connect(
+const GalleryContainer = connect(
     mapStateToProps, { listenForArtistChanges, listenForArtistArtworkChanges }
-)(ArtistGalleryHolder);
+)(GalleryHolder);
 
-export default ArtistGalleryContainer;
+export default GalleryContainer;
 
