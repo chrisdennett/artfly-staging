@@ -69,7 +69,7 @@ class CuttingBoardModal extends Component {
         });
     }
 
-    // Rotate:
+    // Rotate using info from:
     // https://stackoverflow.com/questions/7584794/accessing-jpeg-exif-rotation-data-in-javascript-on-the-client-side/32490603#32490603
     onRotateClockwiseClick() {
         const currentRotation = this.state.rotation ? this.state.rotation : 1;
@@ -89,6 +89,10 @@ class CuttingBoardModal extends Component {
     render() {
         const { loadedImg } = this.props;
         const { rotation, cropData } = this.state;
+        const cuttingBoardPadding = 25;
+        const buttonHeight = 60;
+        const maxCuttingBoardWidth = this.props.screenWidth - (cuttingBoardPadding * 2);
+        const maxCuttingBoardHeight = this.props.screenHeight - (cuttingBoardPadding + buttonHeight);
 
         return (
             <StyledContainer>
@@ -97,8 +101,8 @@ class CuttingBoardModal extends Component {
                         img={loadedImg}
                         onCropUpdate={this.onCropUpdate}
                         onCanvasSetup={this.onCanvasSetup}
-                        maxWidth={800}
-                        maxHeight={800}
+                        maxWidth={maxCuttingBoardWidth}
+                        maxHeight={maxCuttingBoardHeight}
                         rotation={rotation}
                         cropData={cropData}/>
                 </StyledContents>
@@ -124,9 +128,10 @@ export default connect(mapStateToProps)(CuttingBoardModal);
 
 const StyledContainer = styled.div`
     background-color: black;
-    padding: 20px;
+    padding: 25px;
     position: fixed;
     overflow-x: hidden; /* Disable horizontal scroll */
+    overflow-y: hidden; /* Disable horizontal scroll */
     top:0;
     left:0;
     right: 0;

@@ -20,7 +20,7 @@ class CuttingBoard extends Component {
 
     componentDidMount() {
         if (this.props.img && this.sourceCanvas) {
-            this.drawImageToSourceCanvas(this.props.img, this.props.rotation, this.props.cropData);
+            this.drawImageToSourceCanvas(this.props.img, this.props.rotation);
         }
     }
 
@@ -31,16 +31,12 @@ class CuttingBoard extends Component {
     }
 
     // Update on Handle move to store values and ensure image can be
-    onCuttingOverlayChange(leftX, rightX, topY, bottomY) {
-        //this.setState({ leftX, rightX, topY, bottomY });
-
+    onCuttingOverlayChange(leftX, rightX, topY, bottomY, width, height) {
         if (this.props.onCropUpdate) {
-            const { displayWidth, displayHeight } = this.state;
-
-            const leftPercent = leftX / displayWidth;
-            const rightPercent = rightX / displayWidth;
-            const topPercent = topY / displayHeight;
-            const bottomPercent = bottomY / displayHeight;
+            const leftPercent = leftX / width;
+            const rightPercent = rightX / width;
+            const topPercent = topY / height;
+            const bottomPercent = bottomY / height;
 
             this.props.onCropUpdate({ leftPercent, rightPercent, topPercent, bottomPercent });
         }
@@ -48,7 +44,7 @@ class CuttingBoard extends Component {
 
     // Draw the source image into the source canvas
     // gets called by parent when mounted and then by rotation function
-    drawImageToSourceCanvas(img, srcOrientation, cropPercentageData) {
+    drawImageToSourceCanvas(img, srcOrientation) {
         const isPortrait = srcOrientation > 4 && srcOrientation < 9;
 
         const imgW = isPortrait ? img.height : img.width;
@@ -58,28 +54,18 @@ class CuttingBoard extends Component {
         const maxW = imgW >= maxImageWidth ? maxImageWidth : imgW;
         const maxH = imgH >= maxImageHeight ? maxImageHeight : imgH;
 
-        const wToHRatio = imgH / imgW;
-        const hToWRatio = imgW / imgH;
+        const widthToHeightRatio = imgH / imgW;
+        const heightToWidthRatio = imgW / imgH;
 
         let canvasW = maxW;
-        let canvasH = maxW * wToHRatio;
+        let canvasH = maxW * widthToHeightRatio;
 
         if (canvasH > maxH) {
             canvasH = maxH;
-            canvasW = maxH * hToWRatio;
+            canvasW = maxH * heightToWidthRatio;
         }
 
-        // TODO: this needs to make the canvas fit
-        const { maxWidth, maxHeight } = this.props;
-        let displayWidth = maxWidth;
-        let displayHeight = displayWidth * wToHRatio;
-
-        if (displayHeight > maxHeight) {
-            displayHeight = maxHeight;
-            displayWidth = displayHeight * hToWRatio;
-        }
-
-        this.setState({ displayWidth, displayHeight }, () => {
+        this.setState({ widthToHeightRatio, heightToWidthRatio }, () => {
             this.updateCanvas(img, canvasW, canvasH, srcOrientation, isPortrait);
         });
     }
@@ -151,7 +137,16 @@ class CuttingBoard extends Component {
     }
 
     render() {
-        const { displayWidth, displayHeight } = this.state;
+        const {widthToHeightRatio=1, heightToWidthRatio=1} = this.state;
+        const { maxWidth, maxHeight } = this.props;
+        let displayWidth = maxWidth;
+        let displayHeight = displayWidth * widthToHeightRatio;
+
+        if (displayHeight > maxHeight) {
+            displayHeight = maxHeight;
+            displayWidth = displayHeight * heightToWidthRatio;
+        }
+
         const cropData = this.getCropData(displayWidth, displayHeight);
 
         return (

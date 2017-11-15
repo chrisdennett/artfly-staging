@@ -14,11 +14,12 @@ class CuttingOverlay extends Component {
     }
 
     onRectDrag(leftX, rightX, topY, bottomY) {
-        this.props.onChange(leftX, rightX, topY, bottomY);
+        const { width, height } = this.props;
+        this.props.onChange(leftX, rightX, topY, bottomY, width, height);
     }
 
     onHandleUpdate(handleName, x, y) {
-        let { leftX, rightX, topY, bottomY } = this.props;
+        let { width, height, leftX, rightX, topY, bottomY } = this.props;
 
         switch (handleName) {
             case 'left':
@@ -61,7 +62,7 @@ class CuttingOverlay extends Component {
                 break;
         }
 
-        this.props.onChange(leftX, rightX, topY, bottomY);
+        this.props.onChange(leftX, rightX, topY, bottomY, width, height);
     }
 
     render() {
