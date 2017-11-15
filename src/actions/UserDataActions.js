@@ -6,7 +6,7 @@ import {
     fs_addNewUser, fs_addNewArtist, fs_getUserChanges, fs_getUserArtistChanges,
     fs_getArtistArtworkChanges, fs_getArtistChanges, fs_addArtwork, fs_updateArtist, fs_getArtworkChanges,
     fs_updateArtwork, fs_updateArtworkArtist, fs_deleteArtwork, fs_deleteArtistAndArtworks, fs_deleteUser,
-    fs_addThumbnail, fs_updateArtworkImage
+    fs_addThumbnail, fs_updateArtworkImage, fs_updateThumbnail
 } from './FirestoreActions';
 
 export const ARTWORK_CHANGE = "artworkChange";
@@ -16,6 +16,7 @@ export const ARTIST_UPDATED = 'artistUpdated';
 export const ARTIST_DELETED = 'artistDeleted';
 export const ARTWORK_DELETED = 'artworkDeleted';
 export const UPDATE_ARTWORK_COMPLETE = 'updateArtworkComplete';
+export const UPDATE_THUMBNAIL_COMPLETE = 'updateThumbnailComplete';
 export const IMAGE_UPLOAD_PROGRESS = 'imageUploadProgress';
 export const ADD_ARTWORK_COMPLETE = 'addArtworkComplete';
 export const THUMBNAIL_UPLOAD_PROGRESS = 'thumbnailUploadProgress';
@@ -336,9 +337,9 @@ export function addThumbnail(artworkId, artistId, thumbFile, callback = null) {
     }
 }
 
-/*export function updateArtwork(artworkId, currentArtistId, newArtistId, newImg, newWidth, newHeight, callback) {
+export function updateArtworkImage(artworkId, artistId, newImg, widthToHeightRatio, heightToWidthRatio, callback = null){
     return dispatch => {
-        fs_updateArtwork(artworkId, currentArtistId, newArtistId, newImg, newWidth, newHeight, (updateCompleteData) => {
+        fs_updateArtworkImage(artworkId, artistId, newImg, widthToHeightRatio, heightToWidthRatio, (updateCompleteData) => {
             dispatch({
                 type: UPDATE_ARTWORK_COMPLETE,
                 payload: updateCompleteData
@@ -347,13 +348,14 @@ export function addThumbnail(artworkId, artistId, thumbFile, callback = null) {
             if (callback) callback();
         })
     }
-}*/
+}
 
-export function updateArtworkImage(artworkId, artistId, newImg, widthToHeightRatio, heightToWidthRatio, callback = null){
+// export function fs_updateThumbnail(artworkId, artistId, thumbFile, onChangeCallback = null)
+export function updateArtworkThumbnail(artworkId, artistId, newThumbImg, callback = null){
     return dispatch => {
-        fs_updateArtworkImage(newImg, widthToHeightRatio, heightToWidthRatio, (updateCompleteData) => {
+        fs_updateThumbnail(artworkId, artistId, newThumbImg, (updateCompleteData) => {
             dispatch({
-                type: UPDATE_ARTWORK_COMPLETE,
+                type: UPDATE_THUMBNAIL_COMPLETE,
                 payload: updateCompleteData
             });
 

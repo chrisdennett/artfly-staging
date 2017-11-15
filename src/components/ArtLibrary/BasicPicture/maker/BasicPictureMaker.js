@@ -5,10 +5,8 @@ import { connect } from 'react-redux';
 import { addArtwork, addThumbnail } from '../../../../actions/UserDataActions';
 // components
 import ArtistSelector from "../../../ArtistSelector/ArtistSelector";
-import PhotoUploader from "../../../PhotoUploader/PhotoUploader";
-import Butt from "../../../global/Butt";
-
-// import history from '../../../global/history';
+import PhotoUploader from "../../../PhotoEditor/PhotoEditor";
+import history from '../../../global/history';
 
 class BasicPictureMaker extends Component {
 
@@ -18,7 +16,7 @@ class BasicPictureMaker extends Component {
         // bindings
         this.onSave = this.onSave.bind(this);
         this.onArtistSelected = this.onArtistSelected.bind(this);
-        this.onPhotoUploaderUpdate = this.onPhotoUploaderUpdate.bind(this);
+        // this.onPhotoUploaderUpdate = this.onPhotoUploaderUpdate.bind(this);
         // state
         this.state = { selectedArtistId: '', sourceBlob: null, thumbBlob: null, widthToHeightRatio: null, heightToWidthRatio: null };
     }
@@ -27,20 +25,21 @@ class BasicPictureMaker extends Component {
         this.setState({ selectedArtistId: artistId })
     }
 
-    onPhotoUploaderUpdate(data) {
+    /*onPhotoUploaderUpdate(data) {
         this.setState({ ...data });
-    }
+    }*/
 
-    onSave() {
+    onSave(data) {
         const { userId } = this.props;
-        const { selectedArtistId, sourceBlob, thumbBlob, widthToHeightRatio, heightToWidthRatio } = this.state;
+        const { selectedArtistId } = this.state;
+        const { sourceBlob, thumbBlob, widthToHeightRatio, heightToWidthRatio } = data;
 
-        //history.push(/artStudio/);
+        console.log("Saving artwork for userId: ", userId);
 
         this.props.addArtwork(userId, selectedArtistId, sourceBlob, widthToHeightRatio, heightToWidthRatio, (newArtworkData) => {
             const { artworkId, artistId } = newArtworkData;
             this.props.addThumbnail(artworkId, artistId, thumbBlob, (newThumbData) => {
-                console.log("newThumbData: ", newThumbData);
+                history.push(`/artStudio/${artworkId}`);
             })
         })
 
@@ -65,11 +64,7 @@ class BasicPictureMaker extends Component {
             <div>
                 <h2>Basic Picture Maker</h2>
                 <ArtistSelector onArtistSelected={this.onArtistSelected} onInitialArtistSelected={this.onArtistSelected}/>
-                <PhotoUploader onUpdate={this.onPhotoUploaderUpdate}/>
-
-                <hr/>
-
-                <Butt onClick={this.onSave}>SAVE Artwork</Butt>
+                <PhotoUploader onSave={this.onSave}/>
             </div>
         );
     }

@@ -328,19 +328,49 @@ export function fs_updateArtworkArtist(artworkId, newArtistId, onChangeCallback 
 }
 
 export function fs_updateArtworkImage(artworkId, artistId, newImage, widthToHeightRatio, heightToWidthRatio, onChangeCallback = null) {
-    int_saveImage(artworkId, artistId, newImage, '',
+
+    // delete the server generated image urls
+    db.collection('artworks')
+        .doc(artworkId)
+        .update({
+            url_large: fb.firestore.FieldValue.delete(),
+            url_med: fb.firestore.FieldValue.delete()
+        })
+        .then(() => {
+            int_saveImage(artworkId, artistId, newImage, '',
+                (onChangeData) => {
+                    if (onChangeCallback) onChangeCallback(onChangeData);
+                },
+                (onCompleteData) => {
+                    // Upload completed successfully - save artwork data
+                    let newArtworkData = {
+                        widthToHeightRatio,
+                        heightToWidthRatio,
+                        url: onCompleteData.downloadURL
+                    };
+
+                    int_saveArtworkChanges(artworkId, newArtworkData, null, () => {
+                        onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
+                    });
+                });
+        })
+        .catch(function (error) {
+            console.log('Update artwork failed: ', error);
+        })
+
+
+}
+
+export function fs_updateThumbnail(artworkId, artistId, thumbFile, onChangeCallback = null) {
+    int_saveImage(artworkId, artistId, thumbFile, 'thumbnail_',
         (onChangeData) => {
             if (onChangeCallback) onChangeCallback(onChangeData);
         },
         (onCompleteData) => {
             // Upload completed successfully - save artwork data
-            let newArtworkData = {
-                widthToHeightRatio,
-                heightToWidthRatio,
-                url: onCompleteData.downloadURL
-            };
+            const newArtworkData = { thumb_url: onCompleteData.downloadURL };
 
-            int_saveArtworkChanges(artworkId, newArtworkData, null, () => {
+            int_saveArtworkChanges(artworkId, newArtworkData, () => {
                 onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
             });
         });

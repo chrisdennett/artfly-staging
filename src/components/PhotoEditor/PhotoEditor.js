@@ -23,7 +23,8 @@ class PhotoUploader extends Component {
         this.onCurrentImgEdit = this.onCurrentImgEdit.bind(this);
         this.openCuttingBoard = this.openCuttingBoard.bind(this);
         this.getCanvasBlobData = this.getCanvasBlobData.bind(this);
-        this.sendImageData = this.sendImageData.bind(this);
+        this.onEditPhoto = this.onEditPhoto.bind(this);
+        this.onSave = this.onSave.bind(this);
     }
 
     // User has selected a photo
@@ -45,37 +46,20 @@ class PhotoUploader extends Component {
     }
 
     onImageCuttingBoardDone(data) {
-        this.setState({ cuttingBoardData: data, cuttingBoardOpen: false }, () => {
-            this.sendImageData(data)
-        });
-    }
-
-    sendImageData(data){
         const { canvas, leftX, topY, rightX, bottomY } = data;
-
         const croppedWidth = Math.round(rightX - leftX);
         const croppedHeight = Math.round(bottomY - topY);
-
         const widthToHeightRatio = Math.round(1000 * (croppedHeight / croppedWidth)) / 1000;
         const heightToWidthRatio = Math.round(1000 * (croppedWidth / croppedHeight)) / 1000;
+        const imageData = { widthToHeightRatio, heightToWidthRatio };
 
-        // create the large canvas
-        PhotoHelper.drawToCanvas(this.maxCanvas, croppedWidth, croppedHeight, canvas, leftX, topY, rightX, bottomY);
-        PhotoHelper.drawToCanvas(this.thumbCanvas, 150, 150, canvas, leftX, topY, rightX, bottomY);
-
-        const imageData = {widthToHeightRatio, heightToWidthRatio};
-        this.getCanvasBlobData(this.maxCanvas, (maxCanvasData) => {
-            imageData.sourceBlob = maxCanvasData;
-
-            this.getCanvasBlobData(this.thumbCanvas, (thumbCanvasData) => {
-                imageData.thumbBlob = thumbCanvasData;
-
-                this.props.onUpdate(imageData);
-            })
+        this.setState({ cuttingBoardData: data, cuttingBoardOpen: false, imageData }, () => {
+            PhotoHelper.drawCanvasToCanvas(this.maxCanvas, croppedWidth, croppedHeight, canvas, leftX, topY, rightX, bottomY);
+            PhotoHelper.drawCanvasToCanvas(this.thumbCanvas, 150, 150, canvas, leftX, topY, rightX, bottomY);
         });
     }
 
-    getCanvasBlobData(canvas, callback){
+    getCanvasBlobData(canvas, callback) {
         canvas.toBlob((canvasBlobData) => {
             callback(canvasBlobData);
         }, 'image/jpeg', 0.95)
@@ -99,9 +83,29 @@ class PhotoUploader extends Component {
         }
     };*/
 
+    onEditPhoto() {
+        PhotoHelper.LoadImage(this.props.url, (img) => {
+            this.setState({ loadedImg: img, cuttingBoardOpen: true });
+        })
+    }
+
+    onSave() {
+        let { imageData } = this.state;
+        this.getCanvasBlobData(this.maxCanvas, (maxCanvasData) => {
+            imageData.sourceBlob = maxCanvasData;
+
+            this.getCanvasBlobData(this.thumbCanvas, (thumbCanvasData) => {
+                imageData.thumbBlob = thumbCanvasData;
+
+                if (this.props.onSave) this.props.onSave(imageData);
+            })
+        });
+    }
+
     render() {
         const showCuttingBoard = this.state.cuttingBoardOpen;
-        const showSelectPhotoButton = !this.state.cuttingBoardData;
+        const editingExistingImage = this.props.url;
+        const hasEditingData = this.state.cuttingBoardData;
         const showEditPhotoButton = this.state.cuttingBoardData;
 
         const editPhotoStyle = showEditPhotoButton ? { display: 'inherit' } : { display: 'none' };
@@ -122,10 +126,17 @@ class PhotoUploader extends Component {
                 <hr/>
                 <h3>Photo Uploader</h3>
 
-                {showSelectPhotoButton &&
+                {!hasEditingData && !editingExistingImage &&
                 <SelectPhotoButton
                     uid={'cutting-board-selector'}
                     onPhotoSelect={this.onPhotoSelected}/>
+                }
+
+                {!hasEditingData && editingExistingImage &&
+                <div>
+                    <img src={this.props.thumb_url} alt={'Current artwork thumb'}/>
+                    <Butt label={'Edit Photo'} onClick={this.onEditPhoto}/>
+                </div>
                 }
 
                 <div style={editPhotoStyle}>
@@ -133,7 +144,9 @@ class PhotoUploader extends Component {
                     <canvas style={hiddenCanvasStyle} ref={(canvas) => this.thumbCanvas = canvas}/>
 
                     <Butt style={{ display: 'inline-block' }} onClick={this.onCurrentImgEdit}>Edit</Butt>
-                    <Butt style={{ display: 'inline-block' }} onClick={this.onCurrentImgDelete}>Delete</Butt>
+                    <Butt style={{ display: 'inline-block' }} onClick={this.onCurrentImgDelete}>Cancel</Butt>
+                    <Butt style={{ display: 'inline-block' }} onClick={this.onSave}>Save</Butt>
+
                 </div>
 
                 {showCuttingBoard &&

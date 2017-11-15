@@ -16,6 +16,18 @@ export function GetImage(imgFile, callback) {
     })
 }
 
+export function LoadImage(imgSrc, callback){
+    let img = new Image();
+    img.src = imgSrc;
+    // the lack of this crossOrigin line caused me a world of pain!!!
+    // https://stackoverflow.com/questions/20424279/canvas-todataurl-securityerror/27260385#27260385
+    img.setAttribute('crossOrigin', 'anonymous'); //
+    // wait for it to be loaded and then return
+    img.onload = (e) => {
+        callback(e.target);
+    }
+}
+
 // Reads file as Array buffer to get camera orientation from exif data
 function GetPhotoOrientation(file, callback) {
     const reader = new FileReader();
@@ -49,7 +61,7 @@ function GetPhotoOrientation(file, callback) {
 }
 
 // Draws one canvas to another restricting to a specific size
-export function drawToCanvas(outputCanvas, maxOutputWidth, maxOutputHeight, sourceCanvas, leftX, topY, rightX, bottomY){
+export function drawCanvasToCanvas(outputCanvas, maxOutputWidth, maxOutputHeight, sourceCanvas, leftX, topY, rightX, bottomY){
     const sourceWidth = rightX - leftX;
     const sourceHeight = bottomY - topY;
 
