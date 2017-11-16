@@ -88,7 +88,7 @@ class CuttingOverlay extends Component {
                         </mask>
                     </defs>
 
-                    <rect fill={'rgba(0,0,0,0.7)'} width={width} height={height} mask="url(#hole)"/>
+                    <rect fill={'rgba(255,255,255,0.8)'} width={width} height={height} mask="url(#hole)"/>
 
                     <DragRectangle position={{ x: leftX, y: topY }} width={cutoutWidth} height={cutoutHeight}
                                    onHandleUpdate={this.onRectDrag}

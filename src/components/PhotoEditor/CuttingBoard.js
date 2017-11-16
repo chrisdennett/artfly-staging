@@ -156,7 +156,7 @@ class CuttingBoard extends Component {
                     {...cropData}/>
 
                 <canvas ref={this.canvasInit}
-                        style={{ width: displayWidth, height: displayHeight }}/>
+                        style={{ width: displayWidth, height: displayHeight, boxShadow: '3px 3px 3px 0px rgba(0,0,0,0.4)' }}/>
             </div>
         );
     }
