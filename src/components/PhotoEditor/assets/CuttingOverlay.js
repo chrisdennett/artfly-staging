@@ -75,7 +75,7 @@ class CuttingOverlay extends Component {
         const middleY = topY + (cutoutHeight / 2);
 
         return (
-            <div>
+            <div style={{ position: 'relative' }}>
                 <svg width={width} height={height} style={{ position: 'absolute' }}>
                     <defs>
                         <mask id="hole">

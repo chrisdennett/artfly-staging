@@ -92,26 +92,33 @@ class CuttingBoardModal extends Component {
         const cuttingBoardPadding = 25;
         const buttonHeight = 60;
         const maxCuttingBoardWidth = this.props.screenWidth - (cuttingBoardPadding * 2);
-        const maxCuttingBoardHeight = this.props.screenHeight - (cuttingBoardPadding + buttonHeight);
+        const maxCuttingBoardHeight = this.props.screenHeight - (buttonHeight + (cuttingBoardPadding * 2));
 
         return (
             <StyledContainer>
+
                 <StyledContents>
-                    <CuttingBoard
-                        img={loadedImg}
-                        onCropUpdate={this.onCropUpdate}
-                        onCanvasSetup={this.onCanvasSetup}
-                        maxWidth={maxCuttingBoardWidth}
-                        maxHeight={maxCuttingBoardHeight}
-                        rotation={rotation}
-                        cropData={cropData}/>
+
+                    <div style={{ margin: '0 auto' }}>
+
+                        <CuttingBoard
+                            img={loadedImg}
+                            onCropUpdate={this.onCropUpdate}
+                            onCanvasSetup={this.onCanvasSetup}
+                            maxWidth={maxCuttingBoardWidth}
+                            maxHeight={maxCuttingBoardHeight}
+                            rotation={rotation}
+                            cropData={cropData}/>
+                    </div>
+
+
                 </StyledContents>
 
-                <div>
-                    <Butt onClick={this.onRotateClockwiseClick}>ROTATE</Butt>
-                    <Butt onClick={this.onCancelClick}>CANCEL</Butt>
-                    <Butt onClick={this.onDoneClick}>DONE</Butt>
-                </div>
+                <StyledControls>
+                    <Butt inline onClick={this.onRotateClockwiseClick}>ROTATE</Butt>
+                    <Butt inline onClick={this.onDoneClick}>DONE</Butt>
+                    <Butt inline onClick={this.onCancelClick}>CANCEL</Butt>
+                </StyledControls>
             </StyledContainer>
         );
     }
@@ -127,19 +134,29 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(CuttingBoardModal);
 
 const StyledContainer = styled.div`
-    background-color: black;
-    padding: 25px;
+    background-color: red;
     position: fixed;
-    overflow-x: hidden; /* Disable horizontal scroll */
-    overflow-y: hidden; /* Disable horizontal scroll */
+    overflow-x: hidden;
     top:0;
     left:0;
     right: 0;
     bottom: 0;
     z-index: 2000;
+    display: flex;
+    flex-direction: column;
 `;
 
 const StyledContents = styled.div`
-    margin: 0 auto;
     position: relative;
+    background-color: green;
+    padding: 25px;
+    display: flex;
+    flex: 1;
+    align-items: center;
+`;
+
+const StyledControls = styled.div`
+    background-color: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
 `;

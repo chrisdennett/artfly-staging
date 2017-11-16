@@ -150,7 +150,7 @@ class CuttingBoard extends Component {
         const cropData = this.getCropData(displayWidth, displayHeight);
 
         return (
-            <div>
+            <div style={{width:displayWidth, height:displayHeight}}>
                 <CuttingOverlay
                     onChange={this.onCuttingOverlayChange}
                     {...cropData}/>
