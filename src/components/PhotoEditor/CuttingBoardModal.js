@@ -131,6 +131,14 @@ class CuttingBoardModal extends Component {
                 <svg style={{position:'absolute', left:0, top:0, zIndex: -1}} width={'100%'} height={'100%'}>
 
                     <defs>
+                        <pattern id="minorGrid" width="10" height="10" patternUnits="userSpaceOnUse">
+                            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#a2c656" strokeWidth="1"/>
+                        </pattern>
+                        <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
+                            <rect width="100" height="100" fill="url(#minorGrid)"/>
+                            <path d="M 100 0 L 0 0 0 100" fill="none" stroke="#a2c656" strokeWidth="2"/>
+                        </pattern>
+
                         <pattern id="floorPattern"
                                  width={180} height={20}
                                  patternUnits="userSpaceOnUse">
@@ -161,6 +169,8 @@ class CuttingBoardModal extends Component {
 
                     <rect fill={'#044c33'} x={cuttingMatX} y={cuttingMatY + 2} width={cuttingMatWidth} height={cuttingMatHeight} rx={15} ry={15} />
                     <rect fill={'#04906a'} x={cuttingMatX} y={cuttingMatY} width={cuttingMatWidth} height={cuttingMatHeight} rx={15} ry={15} />
+
+                    <rect fill="url(#grid)" x={cuttingMatX+10} y={cuttingMatY+10} height={cuttingMatHeight-20} width={cuttingMatWidth-20} />
 
                 </svg>
 
