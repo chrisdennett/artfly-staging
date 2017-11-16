@@ -87,12 +87,21 @@ class CuttingBoardModal extends Component {
     }
 
     render() {
-        const { loadedImg } = this.props;
+        const { loadedImg, screenWidth, screenHeight } = this.props;
         const { rotation, cropData } = this.state;
-        const cuttingBoardPadding = 25;
-        const buttonHeight = 60;
-        const maxCuttingBoardWidth = this.props.screenWidth - (cuttingBoardPadding * 2);
-        const maxCuttingBoardHeight = this.props.screenHeight - (buttonHeight + (cuttingBoardPadding * 2));
+        const cuttingBoardPadding = 40;
+        const buttonHeight = 70;
+        const maxCuttingBoardWidth = screenWidth - (cuttingBoardPadding * 2);
+        const maxCuttingBoardHeight = screenHeight - (buttonHeight + (cuttingBoardPadding * 2));
+        const cuttingMatPadding = 10;
+        const cuttingMatWidth = screenWidth - (cuttingMatPadding*2);
+        const cuttingMatX = cuttingMatPadding;
+        const cuttingMatHeight = screenHeight - ((cuttingMatPadding*2) + buttonHeight);
+        const cuttingMatY = cuttingMatPadding;
+
+        const table = {fill: "url(#floorPattern)"};
+        const tableColour = {fill: "#c49e71"};
+        const tablePatternStyle = {fill: "#ad8b65"};
 
         return (
             <StyledContainer>
@@ -111,7 +120,6 @@ class CuttingBoardModal extends Component {
                             cropData={cropData}/>
                     </div>
 
-
                 </StyledContents>
 
                 <StyledControls>
@@ -119,6 +127,44 @@ class CuttingBoardModal extends Component {
                     <Butt inline onClick={this.onDoneClick}>DONE</Butt>
                     <Butt inline onClick={this.onCancelClick}>CANCEL</Butt>
                 </StyledControls>
+
+                <svg style={{position:'absolute', left:0, top:0, zIndex: -1}} width={'100%'} height={'100%'}>
+
+                    <defs>
+                        <pattern id="floorPattern"
+                                 width={180} height={20}
+                                 patternUnits="userSpaceOnUse">
+                            <rect style={tableColour} width="180" height="20"/>
+                            <path style={tablePatternStyle}
+                                  d="M504,154h78a30,30,0,0,0,13-1h26c7,2,16,1,24,1h53c-5,1-11,2-16,1H595c-4,1-10,2-14,1H504Z"
+                                  transform="translate(-501 -135)"/>
+                            <path style={tablePatternStyle} d="M509,152H645c6,0,12-1,18,0h0c-6-1-13,0-19,0H509Z"
+                                  transform="translate(-501 -135)"/>
+                            <path style={tablePatternStyle} d="M504,148h81c-6-1-13-1-19,1H504Z"
+                                  transform="translate(-501 -135)"/>
+                            <path style={tablePatternStyle} d="M527,146h35a9,9,0,0,0,6-1H681c-5-2-12-1-18,0H527Z"
+                                  transform="translate(-501 -135)"/>
+                            <path style={tablePatternStyle} d="M532,142H645c-10,0-20-2-29-1H532Z"
+                                  transform="translate(-501 -135)"/>
+                            <path style={tablePatternStyle}
+                                  d="M513,141h27c5,1,10,0,15-1h16c6,0,12,1,18,0h28c9-2,20-1,28,1h1a75,75,0,0,0-25-1H560c-4-2-8,0-12,1H513Z"
+                                  transform="translate(-501 -135)"/>
+                            <path style={tablePatternStyle}
+                                  d="M511,138H673a134,134,0,0,0,29,0h-2a108,108,0,0,1-26,0H511Z"
+                                  transform="translate(-501 -135)"/>
+                            <path style={tablePatternStyle} d="M525,137H704c-11-1-22-1-33,0H597c-9-1-18-1-27,0H525Z"
+                                  transform="translate(-501 -135)"/>
+                        </pattern>
+                    </defs>
+
+                    <rect style={table} width={'100%'} height={'100%'}/>
+
+                    <rect fill={'#044c33'} x={cuttingMatX} y={cuttingMatY + 2} width={cuttingMatWidth} height={cuttingMatHeight} rx={15} ry={15} />
+                    <rect fill={'#04906a'} x={cuttingMatX} y={cuttingMatY} width={cuttingMatWidth} height={cuttingMatHeight} rx={15} ry={15} />
+
+                </svg>
+
+
             </StyledContainer>
         );
     }
@@ -134,7 +180,6 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(CuttingBoardModal);
 
 const StyledContainer = styled.div`
-    background-color: red;
     position: fixed;
     overflow-x: hidden;
     top:0;
@@ -148,15 +193,13 @@ const StyledContainer = styled.div`
 
 const StyledContents = styled.div`
     position: relative;
-    background-color: green;
-    padding: 25px;
+    padding: 40px;
     display: flex;
     flex: 1;
     align-items: center;
 `;
 
 const StyledControls = styled.div`
-    background-color: rgba(0,0,0,0.4);
     display: flex;
     justify-content: center;
 `;
