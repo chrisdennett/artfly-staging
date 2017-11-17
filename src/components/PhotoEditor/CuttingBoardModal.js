@@ -167,10 +167,10 @@ class CuttingBoardModal extends Component {
 
                     <rect style={table} width={'100%'} height={'100%'}/>
 
-                    <rect fill={'#044c33'} x={cuttingMatX} y={cuttingMatY + 2} width={cuttingMatWidth} height={cuttingMatHeight} rx={15} ry={15} />
+                    <rect fill={'#044c33'} x={cuttingMatX+1} y={cuttingMatY + 2} width={cuttingMatWidth} height={cuttingMatHeight} rx={15} ry={15} />
                     <rect fill={'#04906a'} x={cuttingMatX} y={cuttingMatY} width={cuttingMatWidth} height={cuttingMatHeight} rx={15} ry={15} />
 
-                    <rect fill="url(#grid)" x={cuttingMatX+10} y={cuttingMatY+10} height={cuttingMatHeight-20} width={cuttingMatWidth-20} />
+                    <rect fill="url(#grid)" x={cuttingMatX+15} y={cuttingMatY+15} height={cuttingMatHeight-30} width={cuttingMatWidth-30} />
 
                 </svg>
 

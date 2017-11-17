@@ -28,8 +28,6 @@ class DragHandle extends Component {
         // const bounds = {left:0, right:this.props.maxX, top:0, bottom:this.props.maxY};
         const { isSelected } = this.state;
 
-        const fill = isSelected ? '#ffff00' : this.props.colour;
-
         return (
             <Draggable
                 axis={this.props.axis}
@@ -39,9 +37,11 @@ class DragHandle extends Component {
                 onStart={this.select.bind(this)}
                 onDrag={this.onDrag.bind(this)}
                 onStop={this.deselect.bind(this)}>
+
                 <div className="handle" style={{position:'absolute', left:-25, top:-25}}>
-                    <SvgHandle className="handle" fill={fill} />
+                    <SvgHandle type={this.props.id} isSelected={isSelected} />
                 </div>
+
             </Draggable>
 
         )
