@@ -5,7 +5,7 @@ import styled from 'styled-components';
 // components
 import CropAndRotate from "./CropAndRotate";
 
-class CuttingBoardModal extends Component {
+class ArtStudioModal extends Component {
     constructor(props) {
         super(props);
     }
@@ -37,11 +37,12 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps)(CuttingBoardModal);
+export default connect(mapStateToProps)(ArtStudioModal);
 
 const StyledContainer = styled.div`
     position: fixed;
     overflow-x: hidden;
+    overflow-y: hidden;
     top:0;
     left:0;
     right: 0;

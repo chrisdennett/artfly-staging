@@ -5,7 +5,7 @@ import SelectPhotoButton from "./assets/SelectPhotoButton";
 import Butt from "../global/Butt";
 // helper functions
 import * as PhotoHelper from "./assets/PhotoHelper";
-import CuttingBoardModal from "./CuttingBoardModal";
+import ArtStudioModal from "./ArtStudioModal";
 
 class PhotoUploader extends Component {
 
@@ -142,11 +142,11 @@ class PhotoUploader extends Component {
                 </div>
 
                 {showCuttingBoard &&
-                <CuttingBoardModal loadedImg={this.state.loadedImg}
-                                   orientation={orientation}
-                                   initialCropData={initialCropData}
-                                   onCancel={this.onCuttingBoardCancel}
-                                   onDone={this.onImageCuttingBoardDone}/>
+                <ArtStudioModal loadedImg={this.state.loadedImg}
+                                orientation={orientation}
+                                initialCropData={initialCropData}
+                                onCancel={this.onCuttingBoardCancel}
+                                onDone={this.onImageCuttingBoardDone}/>
                 }
 
             </div>
