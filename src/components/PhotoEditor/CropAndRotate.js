@@ -89,12 +89,12 @@ class CropAndRotate extends Component {
         const { loadedImg, width, height } = this.props;
         const { rotation, cropData } = this.state;
         const cuttingBoardPadding = 40;
-        const buttonHeight = 70;
+        const buttonHeight = 100;
         const maxCuttingBoardWidth = width - (cuttingBoardPadding * 2);
         const maxCuttingBoardHeight = height - (buttonHeight + (cuttingBoardPadding * 2));
 
         return (
-            <div>
+            <StyledContainer>
                 <StyledContents>
                     <div style={{ margin: '0 auto' }}>
                         <CuttingBoard
@@ -114,18 +114,32 @@ class CropAndRotate extends Component {
                     <Butt inline onClick={this.onCancelClick}>CANCEL</Butt>
                 </StyledControls>
 
-                <CuttingMat width={width} height={height-buttonHeight}/>
+                <CuttingMat width={width} height={height}/>
 
-            </div>
+            </StyledContainer>
         );
     }
 }
 
 export default CropAndRotate;
 
+
+const StyledContainer = styled.div`
+    position: fixed;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    top:0;
+    left:0;
+    right: 0;
+    bottom: 0;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+`;
+
 const StyledContents = styled.div`
     position: relative;
-    padding: 40px;
+    padding: 40px 40px 30px 40px;
     display: flex;
     flex: 1;
     align-items: center;
@@ -134,4 +148,5 @@ const StyledContents = styled.div`
 const StyledControls = styled.div`
     display: flex;
     justify-content: center;
+    margin-bottom: 20px;
 `;
