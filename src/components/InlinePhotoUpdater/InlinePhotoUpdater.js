@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 // actions
 import { updateArtworkImage, updateArtworkThumbnail } from '../../actions/UserDataActions';
 // components
-import PhotoEditor from "../PhotoEditor/PhotoEditor";
+import PhotoEditor from "../PhotoUploader/PhotoUploader";
 
 class InlinePhotoUpdater extends Component {
 

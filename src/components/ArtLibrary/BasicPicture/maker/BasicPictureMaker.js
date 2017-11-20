@@ -5,11 +5,10 @@ import { connect } from 'react-redux';
 import { addArtwork, addThumbnail } from '../../../../actions/UserDataActions';
 // components
 import ArtistSelector from "../../../ArtistSelector/ArtistSelector";
-import PhotoUploader from "../../../PhotoEditor/PhotoEditor";
+import PhotoUploader from "../../../PhotoUploader/PhotoUploader";
 import history from '../../../global/history';
 
 class BasicPictureMaker extends Component {
-
     constructor() {
         super();
         // bindings

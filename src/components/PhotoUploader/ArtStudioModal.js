@@ -6,10 +6,6 @@ import styled from 'styled-components';
 import CropAndRotate from "./CropAndRotate";
 
 class ArtStudioModal extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const {screenWidth, screenHeight, ...rest} = this.props;
         const { initialCropData, loadedImg, onCancel, onDone, orientation} = rest;

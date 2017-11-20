@@ -6,7 +6,7 @@ import GalleryControlsContainer from './GalleryControls/GalleryControlsContainer
 import HomeButton from "./Logo";
 import Link from "../global/Link";
 
-const AppControls = function ({ galleryId, artworkId, onPhotoSelected }) {
+const AppControls = function ({ galleryId, artworkId }) {
 
     return (
         <div>
@@ -15,7 +15,7 @@ const AppControls = function ({ galleryId, artworkId, onPhotoSelected }) {
             </div>
 
             <div style={{ position: 'fixed', top: 0, right: 0, zIndex: 1002 }}>
-                <UserControlsContainer galleryId={galleryId} artworkId={artworkId} onPhotoSelected={onPhotoSelected}/>
+                <UserControlsContainer galleryId={galleryId} artworkId={artworkId}/>
             </div>
 
             {galleryId &&

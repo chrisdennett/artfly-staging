@@ -1,5 +1,8 @@
 // externals
 import React, { Component } from "react";
+import { connect } from 'react-redux';
+// actions
+import { addArtwork, addThumbnail } from '../../actions/UserDataActions';
 // components
 import SelectPhotoButton from "./assets/SelectPhotoButton";
 import Butt from "../global/Butt";
@@ -13,7 +16,7 @@ class PhotoUploader extends Component {
         super(props);
 
         // initialise state
-        this.state = { loadedImg: null, loadedImgOrientation: 1, cuttingBoardData: null };
+        this.state = { isSaving:false, loadedImg: null, loadedImgOrientation: 1, cuttingBoardData: null };
 
         // bind functions
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
@@ -85,14 +88,29 @@ class PhotoUploader extends Component {
     }
 
     onSave() {
-        let { imageData } = this.state;
+        let sourceBlob, thumbBlob;
+
         this.getCanvasBlobData(this.maxCanvas, (maxCanvasData) => {
-            imageData.sourceBlob = maxCanvasData;
+            sourceBlob = maxCanvasData;
 
             this.getCanvasBlobData(this.thumbCanvas, (thumbCanvasData) => {
-                imageData.thumbBlob = thumbCanvasData;
+                thumbBlob = thumbCanvasData;
 
-                if (this.props.onSave) this.props.onSave(imageData);
+                this.setState({ isSaving: true }, () => {
+                    const { userId, artistId } = this.props;
+                    const { widthToHeightRatio, heightToWidthRatio } = this.state.imageData;
+
+                   this.props.addArtwork(userId, artistId, sourceBlob, widthToHeightRatio, heightToWidthRatio, (newArtworkData) => {
+
+                        const { artworkId, artistId } = newArtworkData;
+                        this.props.addThumbnail(artworkId, artistId, thumbBlob, (newThumbData) => {
+
+                            this.setState({ isSaving: false }, () => {
+                                this.props.onUploadComplete(artworkId);
+                            })
+                        })
+                    });
+                })
             })
         });
     }
@@ -113,8 +131,10 @@ class PhotoUploader extends Component {
 
         const orientation = initialRotation ? initialRotation : this.state.loadedImgOrientation;
 
-        const responsiveCanvasStyle = { maxWidth: '100%' };
+        const responsiveCanvasStyle = { maxWidth: 600 };
         const hiddenCanvasStyle = { display: 'none' };
+
+        if(this.state.isSaving) return <div>Is saving...</div>;
 
         return (
             <div>
@@ -154,4 +174,5 @@ class PhotoUploader extends Component {
     }
 }
 
-export default PhotoUploader;
+const mapActionsToProps = { addArtwork, addThumbnail };
+export default connect(null, mapActionsToProps)(PhotoUploader);
