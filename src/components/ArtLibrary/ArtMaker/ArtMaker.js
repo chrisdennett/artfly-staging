@@ -123,17 +123,21 @@ class ArtMaker extends Component {
                         in gallery
                     </button>
                     <img src={artwork.thumb_url} alt={'user artwork thumb'}/>
-                    <button>Edit artwork</button>
-                    {artist &&
+                    <button onClick={() => history.push(`/artStudio/${artworkId}/editPhoto`)}>Edit Photo</button>
+
                     <div>
                         <p>Artwork by {artist.firstName} {artist.lastName}</p>
-                        <button onClick={() => history.push(`./${artworkId}/editArtist`)}>edit artist</button>
+                        <button onClick={() => history.push(`/artStudio/${artworkId}/editArtist`)}>edit artist</button>
                     </div>
-                    }
+
+                    <div>Delete Artwork</div>
                 </div>;
             }
             else if(currentEditScreen === 'editArtist'){
                 view = <ArtistUpdaterView artworkId={artworkId} initialArtistId={artwork.artistId} manageUpload={true} onDone={this.onSelectedArtistDone}/>;
+            }
+            else if(currentEditScreen === 'editPhoto'){
+                view = <PhotoUploader isUpdate={true} artworkId={artworkId} userId={userId} artistId={artwork.artistId} url={artwork.url} onUploadComplete={this.onImageUploadComplete}/>;
             }
         }
 

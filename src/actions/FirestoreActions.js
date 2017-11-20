@@ -316,7 +316,7 @@ export function fs_updateArtworkImage(artworkId, artistId, newImage, widthToHeig
                         url: onCompleteData.downloadURL
                     };
 
-                    int_saveArtworkChanges(artworkId, newArtworkData, null, () => {
+                    int_saveArtworkChanges(artworkId, newArtworkData, () => {
                         onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
                     });
                 });

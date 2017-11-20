@@ -339,23 +339,23 @@ export function addThumbnail(artworkId, artistId, thumbFile, callback = null) {
 
 export function updateArtworkImage(artworkId, artistId, newImg, widthToHeightRatio, heightToWidthRatio, callback = null){
     return dispatch => {
-        fs_updateArtworkImage(artworkId, artistId, newImg, widthToHeightRatio, heightToWidthRatio, (updateCompleteData) => {
+        fs_updateArtworkImage(artworkId, artistId, newImg, widthToHeightRatio, heightToWidthRatio, (updateProgressData) => {
             dispatch({
                 type: UPDATE_ARTWORK_COMPLETE,
-                payload: updateCompleteData
+                payload: updateProgressData
             });
 
-            if (callback) callback();
+            if (callback) callback(updateProgressData);
         })
     }
 }
 
 export function updateArtworkThumbnail(artworkId, artistId, newThumbImg, callback = null){
     return dispatch => {
-        fs_updateThumbnail(artworkId, artistId, newThumbImg, (updateCompleteData) => {
+        fs_updateThumbnail(artworkId, artistId, newThumbImg, (updateProgressData) => {
             dispatch({
                 type: UPDATE_THUMBNAIL_COMPLETE,
-                payload: updateCompleteData
+                payload: updateProgressData
             });
 
             if (callback) callback();
