@@ -5,16 +5,10 @@ import styled from 'styled-components';
 // actions
 import { addArtwork, addThumbnail } from '../../../actions/UserDataActions';
 // components
-// import ArtistSelector from '../../ArtistSelector/ArtistSelector';
 import ArtistUpdaterView from '../ArtistUpdaterView';
 import PhotoUploader from "../../PhotoUploader/PhotoUploader";
 import history from '../../global/history';
-
-/*
-For current state (e.g. addPhoto)
-- show the currentState.screen.
-- when action happens, set props to currentState.props and currentState to currentState.nextState
- */
+import ArtMakerOverview from "./ArtMakerOverview";
 
 /*const states = {
     addPhoto: {
@@ -51,8 +45,6 @@ For current state (e.g. addPhoto)
     }
 };*/
 
-// pressing next when adding a new artwork will save it and move on.
-
 class ArtMaker extends Component {
 
     constructor() {
@@ -62,6 +54,7 @@ class ArtMaker extends Component {
         this.onArtistSelected = this.onArtistSelected.bind(this);
         this.onSelectedArtistDone = this.onSelectedArtistDone.bind(this);
         this.onImageUploadComplete = this.onImageUploadComplete.bind(this);
+        this.onArtistUpdated = this.onArtistUpdated.bind(this);
 
         this.state = { isSaving:false, isLoading: false};
     }
@@ -72,6 +65,10 @@ class ArtMaker extends Component {
 
     onSelectedArtistDone(artistId) {
         history.push(`./new/${artistId}`);
+    }
+
+    onArtistUpdated(artworkId){
+        history.push(`/artStudio/${artworkId}`);
     }
 
     onImageUploadComplete(artworkId) {
@@ -113,40 +110,25 @@ class ArtMaker extends Component {
                 view = <div>loading init...</div>
             }
             else if (currentEditScreen === 'justAdded' || !currentEditScreen) {
-                view = <div>
-                    <h5>Artwork summary screen</h5>
-                    {currentEditScreen === 'justAdded' &&
-                    <p>Artwork saved.</p>
-                    }
-                    <button onClick={() => {history.push(`/gallery/${artist.artistId}/artwork/${artworkId}`)}}>Open
-                        artwork
-                        in gallery
-                    </button>
-                    <img src={artwork.thumb_url} alt={'user artwork thumb'}/>
-                    <button onClick={() => history.push(`/artStudio/${artworkId}/editPhoto`)}>Edit Photo</button>
-
-                    <div>
-                        <p>Artwork by {artist.firstName} {artist.lastName}</p>
-                        <button onClick={() => history.push(`/artStudio/${artworkId}/editArtist`)}>edit artist</button>
-                    </div>
-
-                    <div>Delete Artwork</div>
-                </div>;
+                view = <ArtMakerOverview isJustAdded={currentEditScreen === 'justAdded'}
+                                         artist={artist}
+                                         artworkId={artworkId}
+                                         artwork={artwork}/>
             }
             else if(currentEditScreen === 'editArtist'){
-                view = <ArtistUpdaterView artworkId={artworkId} initialArtistId={artwork.artistId} manageUpload={true} onDone={this.onSelectedArtistDone}/>;
+                view = <ArtistUpdaterView artworkId={artworkId}
+                                          initialArtistId={artwork.artistId}
+                                          manageUpload={true}
+                                          onUpdateComplete={this.onArtistUpdated}/>;
             }
             else if(currentEditScreen === 'editPhoto'){
                 view = <PhotoUploader isUpdate={true} artworkId={artworkId} userId={userId} artistId={artwork.artistId} url={artwork.url} onUploadComplete={this.onImageUploadComplete}/>;
             }
         }
-
         return view;
     }
 
-
     render() {
-        // if the artwork is new start at screen 1
         const view = this.getCurrentView();
 
         return (
@@ -156,6 +138,7 @@ class ArtMaker extends Component {
                 <section style={{ marginTop: 42 }}>
                     {view}
                 </section>
+
             </StyledContainer>
         );
     }

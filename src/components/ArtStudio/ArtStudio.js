@@ -52,10 +52,7 @@ class ArtStudio extends Component {
 
         if (isLoadingMakerData) return <p>Lovely loading animation here...</p>;
 
-
         const { artworkId, artwork, artist, userId, currentEditScreen, selectedArtistId } = this.props;
-
-        console.log("selectedArtistId: ", selectedArtistId);
 
         return (
             <ArtMaker userId={userId}

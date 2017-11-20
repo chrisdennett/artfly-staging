@@ -24,7 +24,7 @@ class ArtistUpdaterView extends Component {
 
     uploadChanges(){
         this.props.updateArtworkArtist(this.props.artworkId, this.state.selectedArtistId, () => {
-            console.log("update complete");
+            this.props.onUpdateComplete(this.props.artworkId);
         });
     }
 
@@ -38,7 +38,6 @@ class ArtistUpdaterView extends Component {
             <button onClick={this.onDone}>Next</button>;
 
             const {initialArtistId} = this.props;
-            console.log("initialArtistId: ", initialArtistId);
 
         return (
             <div>

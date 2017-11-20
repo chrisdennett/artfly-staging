@@ -358,7 +358,7 @@ export function updateArtworkThumbnail(artworkId, artistId, newThumbImg, callbac
                 payload: updateProgressData
             });
 
-            if (callback) callback();
+            if (callback) callback(updateProgressData);
         })
     }
 }

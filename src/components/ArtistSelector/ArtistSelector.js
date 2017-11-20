@@ -27,7 +27,6 @@ class ArtistSelector extends Component {
         if (this.state.selectedArtistId === '') {
 
             if (props.initialArtistId) {
-                console.log("props.initialArtistId: ", props.initialArtistId);
                 this.onArtistSelected(props.initialArtistId, true);
             }
             else if (Object.keys(props.artists).length > 0) {

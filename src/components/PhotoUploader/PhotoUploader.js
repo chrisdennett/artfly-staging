@@ -8,7 +8,7 @@ import SelectPhotoButton from "./assets/SelectPhotoButton";
 import Butt from "../global/Butt";
 // helper functions
 import * as PhotoHelper from "./assets/PhotoHelper";
-import ArtStudioModal from "./ArtStudioModal";
+import ArtStudioModal from "./CropAndRotateModal";
 
 class PhotoUploader extends Component {
 
@@ -22,7 +22,7 @@ class PhotoUploader extends Component {
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.onCuttingBoardCancel = this.onCuttingBoardCancel.bind(this);
         this.onImageCuttingBoardDone = this.onImageCuttingBoardDone.bind(this);
-        this.onCurrentImgDelete = this.onCurrentImgDelete.bind(this);
+        this.onCancel = this.onCancel.bind(this);
         this.onCurrentImgEdit = this.onCurrentImgEdit.bind(this);
         this.openCuttingBoard = this.openCuttingBoard.bind(this);
         this.getCanvasBlobData = this.getCanvasBlobData.bind(this);
@@ -73,8 +73,8 @@ class PhotoUploader extends Component {
         }, 'image/jpeg', 0.95)
     }
 
-    onCurrentImgDelete() {
-        this.setState({ loadedImg: null, loadedImgOrientation: 1, cuttingBoardData: null });
+    onCancel() {
+        // this.setState({ loadedImg: null, loadedImgOrientation: 1, cuttingBoardData: null });
     }
 
     onCurrentImgEdit() {
@@ -105,9 +105,10 @@ class PhotoUploader extends Component {
                         // const {artworkId, artistId} = this.props;
                         this.props.updateArtworkImage(artworkId, artistId, sourceBlob, widthToHeightRatio, heightToWidthRatio, (saveProgressData) => {
                             if (saveProgressData.status === 'complete') {
-                                this.props.updateArtworkThumbnail(artworkId, artistId, thumbBlob, () => {
-                                    this.props.onUploadComplete(artworkId);
-                                    console.log("Thumbnail update saving");
+                                this.props.updateArtworkThumbnail(artworkId, artistId, thumbBlob, (thumbSaveProgress) => {
+                                    if (thumbSaveProgress.status === 'complete') {
+                                        this.props.onUploadComplete(artworkId);
+                                    }
                                 })
                             }
                         });
@@ -125,8 +126,6 @@ class PhotoUploader extends Component {
                             })
                         });
                     }
-
-
                 })
             })
         });
@@ -134,7 +133,6 @@ class PhotoUploader extends Component {
 
     render() {
         const showCuttingBoard = this.state.cuttingBoardOpen;
-        const editingExistingImage = this.props.url;
         const hasEditingData = this.state.cuttingBoardData;
         const showEditPhotoButton = this.state.cuttingBoardData;
 
@@ -166,7 +164,7 @@ class PhotoUploader extends Component {
                     <canvas style={hiddenCanvasStyle} ref={(canvas) => this.thumbCanvas = canvas}/>
 
                     <Butt style={{ display: 'inline-block' }} onClick={this.onCurrentImgEdit}>Edit</Butt>
-                    <Butt style={{ display: 'inline-block' }} onClick={this.onCurrentImgDelete}>Cancel</Butt>
+                    <Butt style={{ display: 'inline-block' }} onClick={this.onCancel}>Cancel</Butt>
                     <Butt style={{ display: 'inline-block' }} onClick={this.onSave}>Save</Butt>
 
                 </div>
