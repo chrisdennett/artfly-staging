@@ -2,10 +2,10 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 // actions
-import { addArtwork, addThumbnail, updateArtworkImage, updateArtworkThumbnail } from '../../actions/UserDataActions';
+import { addArtwork, addThumbnail, updateArtworkImage, updateArtworkThumbnail } from '../../../actions/UserDataActions';
 // components
 import SelectPhotoButton from "./assets/SelectPhotoButton";
-import Butt from "../global/Butt";
+import Butt from "../../global/Butt";
 // helper functions
 import * as PhotoHelper from "./assets/PhotoHelper";
 import ArtStudioModal from "./CropAndRotateModal";

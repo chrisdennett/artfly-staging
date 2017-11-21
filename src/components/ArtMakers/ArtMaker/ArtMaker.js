@@ -1,12 +1,11 @@
 // externals
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import styled from 'styled-components';
 // actions
 import { addArtwork, addThumbnail } from '../../../actions/UserDataActions';
 // components
 import ArtistUpdaterView from '../ArtistUpdaterView';
-import PhotoUploader from "../../PhotoUploader/PhotoUploader";
+import PhotoUploader from "../PhotoUploader/PhotoUploader";
 import history from '../../global/history';
 import ArtMakerOverview from "./ArtMakerOverview";
 
@@ -21,7 +20,7 @@ class ArtMaker extends Component {
         this.onImageUploadComplete = this.onImageUploadComplete.bind(this);
         this.onArtistUpdated = this.onArtistUpdated.bind(this);
 
-        this.state = { isSaving:false, isLoading: false};
+        this.state = { isSaving: false, isLoading: false };
     }
 
     onArtistSelected(artistId) {
@@ -32,7 +31,7 @@ class ArtMaker extends Component {
         history.push(`./new/${artistId}`);
     }
 
-    onArtistUpdated(artworkId){
+    onArtistUpdated(artworkId) {
         history.push(`/artStudio/${artworkId}`);
     }
 
@@ -40,7 +39,7 @@ class ArtMaker extends Component {
         history.push(`/artStudio/${artworkId}/justAdded`);
     }
 
-    onPhotoUpdateCancel(artworkId){
+    onPhotoUpdateCancel(artworkId) {
         history.push(`/artStudio/${artworkId}`);
     }
 
@@ -70,7 +69,8 @@ class ArtMaker extends Component {
                 view = (
                     <div>
                         Add a photo of the artwork by {selectedArtistId}
-                        <PhotoUploader userId={userId} artistId={selectedArtistId} onUploadComplete={this.onImageUploadComplete}/>
+                        <PhotoUploader userId={userId} artistId={selectedArtistId}
+                                       onUploadComplete={this.onImageUploadComplete}/>
                     </div>)
             }
         }
@@ -81,13 +81,13 @@ class ArtMaker extends Component {
                                          artworkId={artworkId}
                                          artwork={artwork}/>
             }
-            else if(currentEditScreen === 'editArtist'){
+            else if (currentEditScreen === 'editArtist') {
                 view = <ArtistUpdaterView artworkId={artworkId}
                                           initialArtistId={artwork.artistId}
                                           manageUpload={true}
                                           onUpdateComplete={this.onArtistUpdated}/>;
             }
-            else if(currentEditScreen === 'editPhoto'){
+            else if (currentEditScreen === 'editPhoto') {
                 view = <PhotoUploader isUpdate={true}
                                       artworkId={artworkId}
                                       userId={userId}
@@ -101,62 +101,10 @@ class ArtMaker extends Component {
     }
 
     render() {
-        const view = this.getCurrentView();
-
-        return (
-            <StyledContainer>
-                <h1>ArtMaker</h1>
-
-                <section style={{ marginTop: 42 }}>
-                    {view}
-                </section>
-
-            </StyledContainer>
-        );
+        return this.getCurrentView();
     }
 }
 
 const mapActionsToProps = { addArtwork, addThumbnail };
 
 export default connect(null, mapActionsToProps)(ArtMaker);
-
-const StyledContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    background: #ff00ff;
-`;
-
-/*const states = {
-    addPhoto: {
-        screen: "Add a photo",
-        PHOTO_SELECTED: {nextState:"editPhoto", localProps:"unsaved"}
-    },
-    editPhoto: {
-        screen: "Crop and Rotate photo",
-        SAVE_PHOTO: {nextState:"selectArtist", localProps:"unsaved"}
-    },
-    selectArtist: {
-        screen: "Select an artist",
-        props: "unsaved",
-        save: "saving",
-        cancel: "new"
-    },
-    saving: {
-        screen: "saving artwork",
-        success: "artworkLoading",
-        failure: "error"
-    },
-    artworkLoading: {
-        screen: "loading artwork",
-        success: "artworkLoaded",
-        failure: "error"
-    },
-    artworkLoaded: {
-        screen: "Artwork Summary",
-        editPhoto: "editingPhoto",
-        editArtist: "editingArtist"
-    },
-    error: {
-        screen: "error"
-    }
-};*/

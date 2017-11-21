@@ -23,7 +23,8 @@ class Artwork extends Component {
     }
 
     render() {
-        const { artwork, windowSize } = this.props;
+        const { artwork, windowSize, allowScrollbars=false } = this.props;
+
 
         // work out max picture width
         const w = windowSize.windowWidth;
@@ -91,7 +92,7 @@ class Artwork extends Component {
         }
 
         return (
-            <ScrollbarRemover showScrollbars={false}>
+            <ScrollbarRemover showScrollbars={allowScrollbars}>
                 {this.state.imageLoading
                     ? <div style={{
                         position: 'absolute',

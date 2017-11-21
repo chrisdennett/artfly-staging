@@ -4,12 +4,11 @@ import { connect } from 'react-redux';
 // actions
 import { listenForArtworkChanges, listenForArtistChanges } from '../../actions/UserDataActions';
 // components
-// import Page from "../global/Page";
-// import BasicPictureMaker from "../ArtLibrary/BasicPicture/maker/BasicPictureMaker";
-// import BasicPictureEditor from "../ArtLibrary/BasicPicture/editor/BasicPictureEditor";
-import ArtMaker from "../ArtLibrary/ArtMaker/ArtMaker";
+import ArtMaker from "../ArtMakers/ArtMaker/ArtMaker";
 
-// displays the correct Maker and loads artwork and artist.
+// In the future this screen will have options for the types of artwork
+// to make. Buttons would determine the maker to load
+// as far as editing goes a property in the artwork would decide the editor to load
 class ArtStudio extends Component {
 
     constructor() {
@@ -42,13 +41,7 @@ class ArtStudio extends Component {
         if (this.props.artworkId && this.props.artworkId !== 'new' && !this.props.artwork) isLoadingMakerData = true;
         if (this.props.artwork && !this.props.artist) isLoadingMakerData = true;
 
-        // In the future this screen will have options for the types of artwork
-        // to make. Buttons would determine the maker to load
-        // as far as editing goes a property in the artwork would decide the editor to load
-
         // If there's an artworkId, load the artwork, find out what type it is and set up the relevant Maker.
-
-        // const {artworkId, artwork} = this.props;
 
         if (isLoadingMakerData) return <p>Lovely loading animation here...</p>;
 
