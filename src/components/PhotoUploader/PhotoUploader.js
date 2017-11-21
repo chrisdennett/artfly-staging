@@ -50,7 +50,7 @@ class PhotoUploader extends Component {
     }
 
     onCuttingBoardCancel() {
-        this.setState({ cuttingBoardOpen: false });
+        this.props.onCancel(this.props.artworkId);
     }
 
     onImageCuttingBoardDone(data) {
@@ -101,8 +101,6 @@ class PhotoUploader extends Component {
                     const { widthToHeightRatio, heightToWidthRatio } = this.state.imageData;
 
                     if (this.props.isUpdate) {
-                        // const { widthToHeightRatio, heightToWidthRatio, sourceBlob, thumbBlob} = newImgData;
-                        // const {artworkId, artistId} = this.props;
                         this.props.updateArtworkImage(artworkId, artistId, sourceBlob, widthToHeightRatio, heightToWidthRatio, (saveProgressData) => {
                             if (saveProgressData.status === 'complete') {
                                 this.props.updateArtworkThumbnail(artworkId, artistId, thumbBlob, (thumbSaveProgress) => {
