@@ -50,7 +50,9 @@ class PhotoUploader extends Component {
     }
 
     onCuttingBoardCancel() {
-        this.props.onCancel(this.props.artworkId);
+        this.setState({ cuttingBoardOpen: false }, () => {
+            this.props.onCancel(this.props.artworkId);
+        })
     }
 
     onImageCuttingBoardDone(data) {

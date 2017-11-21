@@ -5,8 +5,9 @@ import { connect } from 'react-redux';
 import { updateArtworkArtist } from '../../actions/UserDataActions';
 // components
 import ArtistSelector from '../ArtistSelector/ArtistSelector';
+import Butt from "../global/Butt";
 
-class ArtistUpdaterView extends Component {
+class ArtistUpdater extends Component {
 
     constructor() {
         super();
@@ -34,8 +35,8 @@ class ArtistUpdaterView extends Component {
 
     render() {
         const onCompleteButt = this.props.manageUpload ?
-            <button onClick={this.uploadChanges}>save changes</button> :
-            <button onClick={this.onDone}>Next</button>;
+            <Butt onClick={this.uploadChanges}>save changes</Butt> :
+            <Butt onClick={this.onDone}>Next</Butt>;
 
             const {initialArtistId} = this.props;
 
@@ -43,6 +44,7 @@ class ArtistUpdaterView extends Component {
             <div>
                 Who is the artist for this piece?
                 <ArtistSelector initialArtistId={initialArtistId}
+                                labelText={''}
                                 onArtistSelected={this.onArtistSelected}
                                 onInitialArtistSelected={this.onArtistSelected}/>
                 {onCompleteButt}
@@ -52,4 +54,4 @@ class ArtistUpdaterView extends Component {
 }
 
 const mapActionsToProps = { updateArtworkArtist };
-export default connect(null, mapActionsToProps)(ArtistUpdaterView);
+export default connect(null, mapActionsToProps)(ArtistUpdater);

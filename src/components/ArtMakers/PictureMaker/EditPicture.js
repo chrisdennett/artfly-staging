@@ -8,7 +8,7 @@ import Page from "../../global/Page";
 import Modal from "../../global/Modal";
 import Artwork from "../../Artwork/Artwork";
 
-class PictureMakerEditor extends Component {
+class EditPicture extends Component {
 
     constructor() {
         super();
@@ -40,8 +40,6 @@ class PictureMakerEditor extends Component {
     render() {
         const { isJustAdded, artist, artwork, artworkId } = this.props;
 
-        console.log("isJustAdded: ", isJustAdded);
-
         return (
 
             <Page title={'Edit Artwork'}>
@@ -50,6 +48,10 @@ class PictureMakerEditor extends Component {
                     <Butt label={'Yes, delete it'} onClick={this.onDeleteConfirm.bind(this)}/>
                     <Butt label={'No, do not delete'} onClick={this.onDeleteCancel.bind(this)}/>
                 </Modal>
+
+                {isJustAdded &&
+                    <div>Artwork Saved!</div>
+                }
 
                 <Butt onClick={() => {history.push(`/gallery/${artist.artistId}/artwork/${artworkId}`)}}>Open
                     artwork
@@ -79,4 +81,4 @@ class PictureMakerEditor extends Component {
     }
 }
 
-export default PictureMakerEditor;
+export default EditPicture;

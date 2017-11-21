@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 // components
 import history from '../../global/history';
-import ArtistUpdaterView from '../ArtistUpdaterView';
+import ArtistUpdaterView from '../ArtistUpdater';
 import PhotoUploader from "../PhotoUploader/PhotoUploader";
 import Page from "../../global/Page";
 
-class PictureMakerNew extends Component {
+class AddPicture extends Component {
 
     constructor() {
         super();
@@ -26,7 +26,7 @@ class PictureMakerNew extends Component {
     }
 
     onCancel(){
-        history.push(`/artStudio/new/${this.state.artistId}`);
+        history.push(`/artStudio/new/`);
     }
 
     render() {
@@ -58,4 +58,4 @@ class PictureMakerNew extends Component {
     }
 }
 
-export default PictureMakerNew;
+export default AddPicture;

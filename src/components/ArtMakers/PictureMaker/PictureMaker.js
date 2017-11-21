@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 // actions
 import { addArtwork, addThumbnail } from '../../../actions/UserDataActions';
 // components
-import ArtistUpdaterView from '../ArtistUpdaterView';
+import ArtistUpdaterView from '../ArtistUpdater';
 import PhotoUploader from "../PhotoUploader/PhotoUploader";
 import history from '../../global/history';
-import PictureMakerEditor from "./PictureMakerEditor";
-import PictureMakerNew from "./PictureMakerNew";
+import PictureMakerEditor from "./EditPicture";
+import PictureMakerNew from "./AddPicture";
 
 class ArtMaker extends Component {
 
@@ -17,7 +17,7 @@ class ArtMaker extends Component {
 
         this.getCurrentView = this.getCurrentView.bind(this);
 
-        this.onImageUploadComplete = this.onImageUploadComplete.bind(this);
+        this.onImageUpdateComplete = this.onImageUpdateComplete.bind(this);
         this.onArtistUpdated = this.onArtistUpdated.bind(this);
         this.onNewPictureComplete = this.onNewPictureComplete.bind(this);
         this.onNewPictureCancel = this.onNewPictureCancel.bind(this);
@@ -26,7 +26,7 @@ class ArtMaker extends Component {
     }
 
     onNewPictureComplete(artworkId){
-        history.push(`/artStudio/${artworkId}`);
+        history.push(`/artStudio/${artworkId}/justAdded`);
     }
 
     onNewPictureCancel(){
@@ -37,8 +37,8 @@ class ArtMaker extends Component {
         history.push(`/artStudio/${artworkId}`);
     }
 
-    onImageUploadComplete(artworkId) {
-        history.push(`/artStudio/${artworkId}/justAdded`);
+    onImageUpdateComplete(artworkId) {
+        history.push(`/artStudio/${artworkId}`);
     }
 
     onPhotoUpdateCancel(artworkId) {
@@ -87,7 +87,7 @@ class ArtMaker extends Component {
                                       artistId={artwork.artistId}
                                       url={artwork.url}
                                       onCancel={this.onPhotoUpdateCancel}
-                                      onUploadComplete={this.onImageUploadComplete}/>;
+                                      onUploadComplete={this.onImageUpdateComplete}/>;
             }
         }
         return view;
