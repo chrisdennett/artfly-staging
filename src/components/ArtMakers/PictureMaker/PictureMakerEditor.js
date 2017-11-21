@@ -8,7 +8,7 @@ import Page from "../../global/Page";
 import Modal from "../../global/Modal";
 import Artwork from "../../Artwork/Artwork";
 
-class ArtMakerOverview extends Component {
+class PictureMakerEditor extends Component {
 
     constructor() {
         super();
@@ -67,7 +67,7 @@ class ArtMakerOverview extends Component {
 
                 <div>
                     <p>Artwork by {artist.firstName} {artist.lastName}</p>
-                    <Butt onClick={() => history.push(`/artStudio/${artworkId}/editArtist`)}>edit artist</Butt>
+                    <Butt onClick={() => history.push(`/artStudio/${artworkId}/editArtist`)}>Edit artist</Butt>
                 </div>
 
                 <Butt label={'Delete Artwork'}
@@ -79,4 +79,4 @@ class ArtMakerOverview extends Component {
     }
 }
 
-export default ArtMakerOverview;
+export default PictureMakerEditor;

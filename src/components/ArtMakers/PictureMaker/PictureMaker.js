@@ -7,7 +7,8 @@ import { addArtwork, addThumbnail } from '../../../actions/UserDataActions';
 import ArtistUpdaterView from '../ArtistUpdaterView';
 import PhotoUploader from "../PhotoUploader/PhotoUploader";
 import history from '../../global/history';
-import ArtMakerOverview from "./ArtMakerOverview";
+import PictureMakerEditor from "./PictureMakerEditor";
+import PictureMakerNew from "./PictureMakerNew";
 
 class ArtMaker extends Component {
 
@@ -15,20 +16,21 @@ class ArtMaker extends Component {
         super();
 
         this.getCurrentView = this.getCurrentView.bind(this);
-        this.onArtistSelected = this.onArtistSelected.bind(this);
-        this.onSelectedArtistDone = this.onSelectedArtistDone.bind(this);
+
         this.onImageUploadComplete = this.onImageUploadComplete.bind(this);
         this.onArtistUpdated = this.onArtistUpdated.bind(this);
+        this.onNewPictureComplete = this.onNewPictureComplete.bind(this);
+        this.onNewPictureCancel = this.onNewPictureCancel.bind(this);
 
         this.state = { isSaving: false, isLoading: false };
     }
 
-    onArtistSelected(artistId) {
-        this.setState({ artistId: artistId })
+    onNewPictureComplete(artworkId){
+        history.push(`/artStudio/${artworkId}`);
     }
 
-    onSelectedArtistDone(artistId) {
-        history.push(`./new/${artistId}`);
+    onNewPictureCancel(){
+        history.push(`/artStudio/new`);
     }
 
     onArtistUpdated(artworkId) {
@@ -60,26 +62,17 @@ class ArtMaker extends Component {
             view = <div>Sorry, there's been an error: [put error message here...]</div>
         }
         else if (artworkId === 'new') {
-            // select an artist if one hasn't been already
-            if (!selectedArtistId) {
-                view = <ArtistUpdaterView onDone={this.onSelectedArtistDone}/>
-            }
-            // Otherwise upload a photo.
-            else {
-                view = (
-                    <div>
-                        Add a photo of the artwork by {selectedArtistId}
-                        <PhotoUploader userId={userId} artistId={selectedArtistId}
-                                       onUploadComplete={this.onImageUploadComplete}/>
-                    </div>)
-            }
+            view = <PictureMakerNew userId={userId}
+                                    selectedArtistId={selectedArtistId}
+                                    onCancel={this.onNewPictureCancel}
+                                    onComplete={this.onNewPictureComplete}/>
         }
         else if (artwork) {
             if (currentEditScreen === 'justAdded' || !currentEditScreen) {
-                view = <ArtMakerOverview isJustAdded={currentEditScreen === 'justAdded'}
-                                         artist={artist}
-                                         artworkId={artworkId}
-                                         artwork={artwork}/>
+                view = <PictureMakerEditor isJustAdded={currentEditScreen === 'justAdded'}
+                                           artist={artist}
+                                           artworkId={artworkId}
+                                           artwork={artwork}/>
             }
             else if (currentEditScreen === 'editArtist') {
                 view = <ArtistUpdaterView artworkId={artworkId}

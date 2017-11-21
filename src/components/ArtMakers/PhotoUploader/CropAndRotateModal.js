@@ -5,7 +5,7 @@ import styled from 'styled-components';
 // components
 import CropAndRotate from "./CropAndRotate";
 
-class ArtStudioModal extends Component {
+class CropAndRotateModal extends Component {
     render() {
         const {screenWidth, screenHeight, ...rest} = this.props;
         const { initialCropData, loadedImg, onCancel, onDone, orientation} = rest;
@@ -33,7 +33,7 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps)(ArtStudioModal);
+export default connect(mapStateToProps)(CropAndRotateModal);
 
 const StyledContainer = styled.div`
     position: fixed;
