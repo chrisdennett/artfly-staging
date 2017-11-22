@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // components
 import history from '../../global/history';
-import ArtistUpdaterView from '../ArtistUpdater';
+import ArtistSelector from '../../ArtistSelector/ArtistSelector';
 import PhotoUploader from "../PhotoUploader/PhotoUploader";
 import Page from "../../global/Page";
 
@@ -11,7 +11,6 @@ class AddPicture extends Component {
         super();
 
         this.onArtistSelected = this.onArtistSelected.bind(this);
-        this.onSelectedArtistDone = this.onSelectedArtistDone.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.onComplete = this.onComplete.bind(this);
 
@@ -19,10 +18,6 @@ class AddPicture extends Component {
     }
 
     onArtistSelected(artistId) {
-        this.setState({ artistId: artistId })
-    }
-
-    onSelectedArtistDone(artistId) {
         history.push(`/artStudio/new/${artistId}`);
     }
 
@@ -37,27 +32,18 @@ class AddPicture extends Component {
     render() {
         const { selectedArtistId, userId } = this.props;
 
-        let view = null;
-
-        // select an artist if one hasn't been already
-        if (!selectedArtistId) {
-            view = <ArtistUpdaterView onDone={this.onSelectedArtistDone}/>
-        }
-        // Otherwise upload a photo.
-        else {
-            view = (
-                <div>
-                    Add a photo of the artwork by {selectedArtistId}
-                    <PhotoUploader userId={userId}
-                                   artistId={selectedArtistId}
-                                   onCancel={this.onCancel}
-                                   onUploadComplete={this.onComplete}/>
-                </div>)
-        }
-
         return (
             <Page title={'Add New Picture'}>
-                {view}
+                Who is the artist for this piece?
+                <ArtistSelector initialArtistId={selectedArtistId}
+                                labelText={''}
+                                onArtistSelected={this.onArtistSelected}
+                                onInitialArtistSelected={this.onArtistSelected}/>
+
+                <PhotoUploader userId={userId}
+                               artistId={selectedArtistId}
+                               onCancel={this.onCancel}
+                               onUploadComplete={this.onComplete}/>
             </Page>
         )
     }

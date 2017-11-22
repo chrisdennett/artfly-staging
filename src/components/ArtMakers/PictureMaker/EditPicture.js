@@ -19,6 +19,7 @@ class EditPicture extends Component {
         // edit artist
         this.onEditArtist = this.onEditArtist.bind(this);
         this.onArtistUpdateComplete = this.onArtistUpdateComplete.bind(this);
+        this.onArtistUpdateCancel = this.onArtistUpdateCancel.bind(this);
         // edit photo
         this.onEditPhoto = this.onEditPhoto.bind(this);
         this.onPhotoUpdateComplete = this.onPhotoUpdateComplete.bind(this);
@@ -40,6 +41,10 @@ class EditPicture extends Component {
     }
 
     onArtistUpdateComplete() {
+        history.push(`/artStudio/${this.props.artworkId}`);
+    }
+
+    onArtistUpdateCancel() {
         history.push(`/artStudio/${this.props.artworkId}`);
     }
 
@@ -72,6 +77,9 @@ class EditPicture extends Component {
     render() {
         const { currentEditScreen, userId, artist, artworkId, artwork } = this.props;
 
+        const artworkJustAdded = currentEditScreen === 'justAdded';
+        const showControls = artworkJustAdded || !currentEditScreen;
+
         return (
 
             <Page title={'Edit Artwork'}>
@@ -87,6 +95,7 @@ class EditPicture extends Component {
                 <ArtistUpdater artworkId={artworkId}
                                initialArtistId={artwork.artistId}
                                manageUpload={true}
+                               onCancel={this.onArtistUpdateCancel}
                                onUpdateComplete={this.onArtistUpdateComplete}/>
                 }
 
@@ -100,12 +109,9 @@ class EditPicture extends Component {
                                onUploadComplete={this.onPhotoUpdateComplete}/>
                 }
 
-                {/*{isJustAdded &&
-                    <div>Artwork Saved!</div>
-                }*/}
-
-                {!currentEditScreen &&
+                {showControls &&
                 <EditPictureControls artist={artist}
+                                     artworkJustAdded={artworkJustAdded}
                                      artwork={artwork}
                                      onDeleteArtwork={this.onDeleteArtwork}
                                      onOpenInGallery={this.onOpenInGallery}

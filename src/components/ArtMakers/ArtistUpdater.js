@@ -15,15 +15,18 @@ class ArtistUpdater extends Component {
         this.onArtistSelected = this.onArtistSelected.bind(this);
         this.uploadChanges = this.uploadChanges.bind(this);
         this.onDone = this.onDone.bind(this);
+        this.onCancel = this.onCancel.bind(this);
 
         this.state = { selectedArtistId: null }
     }
 
     onArtistSelected(selectedArtistId) {
-        this.setState({ selectedArtistId });
+        this.setState({ selectedArtistId }, () => {
+            if(this.props.onUpdate) this.props.onUpdate(selectedArtistId);
+        });
     }
 
-    uploadChanges(){
+    uploadChanges() {
         this.props.updateArtworkArtist(this.props.artworkId, this.state.selectedArtistId, () => {
             this.props.onUpdateComplete(this.props.artworkId);
         });
@@ -33,12 +36,12 @@ class ArtistUpdater extends Component {
         this.props.onDone(this.state.selectedArtistId);
     }
 
-    render() {
-        const onCompleteButt = this.props.manageUpload ?
-            <Butt onClick={this.uploadChanges}>save changes</Butt> :
-            <Butt onClick={this.onDone}>Next</Butt>;
+    onCancel() {
+        this.props.onCancel();
+    }
 
-            const {initialArtistId} = this.props;
+    render() {
+        const { initialArtistId } = this.props;
 
         return (
             <div>
@@ -47,7 +50,11 @@ class ArtistUpdater extends Component {
                                 labelText={''}
                                 onArtistSelected={this.onArtistSelected}
                                 onInitialArtistSelected={this.onArtistSelected}/>
-                {onCompleteButt}
+
+                <div>
+                    <Butt onClick={this.uploadChanges}>Save changes</Butt>
+                    <Butt onClick={this.onCancel}>Cancel</Butt>
+                </div>
             </div>
         );
     }
