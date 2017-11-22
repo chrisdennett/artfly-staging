@@ -62,7 +62,7 @@ class EditPicture extends Component {
     }
 
     onDeleteArtworkComplete() {
-        history.push(`/artStudio/new`);
+        history.push(`/gallery/${this.props.artist.artistId}`);
     }
 
     onDeleteArtworkCancel() {
