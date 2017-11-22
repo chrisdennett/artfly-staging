@@ -13,6 +13,7 @@ class AddPicture extends Component {
         this.onArtistSelected = this.onArtistSelected.bind(this);
         this.onSelectedArtistDone = this.onSelectedArtistDone.bind(this);
         this.onCancel = this.onCancel.bind(this);
+        this.onComplete = this.onComplete.bind(this);
 
         this.state = { isSaving: false, isLoading: false };
     }
@@ -29,8 +30,12 @@ class AddPicture extends Component {
         history.push(`/artStudio/new/`);
     }
 
+    onComplete(artworkId){
+        history.push(`/artStudio/${artworkId}/justAdded`);
+    }
+
     render() {
-        const { selectedArtistId, userId, onComplete } = this.props;
+        const { selectedArtistId, userId } = this.props;
 
         let view = null;
 
@@ -46,7 +51,7 @@ class AddPicture extends Component {
                     <PhotoUploader userId={userId}
                                    artistId={selectedArtistId}
                                    onCancel={this.onCancel}
-                                   onUploadComplete={onComplete}/>
+                                   onUploadComplete={this.onComplete}/>
                 </div>)
         }
 

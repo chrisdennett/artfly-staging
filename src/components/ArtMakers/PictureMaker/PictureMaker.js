@@ -1,14 +1,8 @@
 // externals
 import React, { Component } from "react";
-import { connect } from 'react-redux';
-// actions
-import { addArtwork, addThumbnail } from '../../../actions/UserDataActions';
 // components
-import ArtistUpdaterView from '../ArtistUpdater';
-import PhotoUploader from "../PhotoUploader/PhotoUploader";
-import history from '../../global/history';
-import PictureMakerEditor from "./EditPicture";
-import PictureMakerNew from "./AddPicture";
+import EditPicture from "./EditPicture";
+import AddPicture from "./AddPicture";
 
 class ArtMaker extends Component {
 
@@ -17,32 +11,7 @@ class ArtMaker extends Component {
 
         this.getCurrentView = this.getCurrentView.bind(this);
 
-        this.onImageUpdateComplete = this.onImageUpdateComplete.bind(this);
-        this.onArtistUpdated = this.onArtistUpdated.bind(this);
-        this.onNewPictureComplete = this.onNewPictureComplete.bind(this);
-        this.onNewPictureCancel = this.onNewPictureCancel.bind(this);
-
         this.state = { isSaving: false, isLoading: false };
-    }
-
-    onNewPictureComplete(artworkId){
-        history.push(`/artStudio/${artworkId}/justAdded`);
-    }
-
-    onNewPictureCancel(){
-        history.push(`/artStudio/new`);
-    }
-
-    onArtistUpdated(artworkId) {
-        history.push(`/artStudio/${artworkId}`);
-    }
-
-    onImageUpdateComplete(artworkId) {
-        history.push(`/artStudio/${artworkId}`);
-    }
-
-    onPhotoUpdateCancel(artworkId) {
-        history.push(`/artStudio/${artworkId}`);
     }
 
     getCurrentView() {
@@ -62,33 +31,15 @@ class ArtMaker extends Component {
             view = <div>Sorry, there's been an error: [put error message here...]</div>
         }
         else if (artworkId === 'new') {
-            view = <PictureMakerNew userId={userId}
-                                    selectedArtistId={selectedArtistId}
-                                    onCancel={this.onNewPictureCancel}
-                                    onComplete={this.onNewPictureComplete}/>
+            view = <AddPicture userId={userId}
+                               selectedArtistId={selectedArtistId}/>
         }
         else if (artwork) {
-            if (currentEditScreen === 'justAdded' || !currentEditScreen) {
-                view = <PictureMakerEditor isJustAdded={currentEditScreen === 'justAdded'}
-                                           artist={artist}
-                                           artworkId={artworkId}
-                                           artwork={artwork}/>
-            }
-            else if (currentEditScreen === 'editArtist') {
-                view = <ArtistUpdaterView artworkId={artworkId}
-                                          initialArtistId={artwork.artistId}
-                                          manageUpload={true}
-                                          onUpdateComplete={this.onArtistUpdated}/>;
-            }
-            else if (currentEditScreen === 'editPhoto') {
-                view = <PhotoUploader isUpdate={true}
-                                      artworkId={artworkId}
-                                      userId={userId}
-                                      artistId={artwork.artistId}
-                                      url={artwork.url}
-                                      onCancel={this.onPhotoUpdateCancel}
-                                      onUploadComplete={this.onImageUpdateComplete}/>;
-            }
+            view = <EditPicture currentEditScreen={currentEditScreen}
+                                userId={userId}
+                                artist={artist}
+                                artworkId={artworkId}
+                                artwork={artwork}/>;
         }
         return view;
     }
@@ -98,6 +49,5 @@ class ArtMaker extends Component {
     }
 }
 
-const mapActionsToProps = { addArtwork, addThumbnail };
 
-export default connect(null, mapActionsToProps)(ArtMaker);
+export default ArtMaker;

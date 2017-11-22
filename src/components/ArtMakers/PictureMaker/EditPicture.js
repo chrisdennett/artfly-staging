@@ -3,79 +3,116 @@ import React, { Component } from "react";
 import '../MakerStyles.css';
 // components
 import history from '../../global/history';
-import Butt from "../../global/Butt";
 import Page from "../../global/Page";
-import Modal from "../../global/Modal";
-import Artwork from "../../Artwork/Artwork";
+import EditPictureControls from "./EditPictureControls";
+import ArtistUpdater from '../ArtistUpdater';
+import PhotoUploader from "../PhotoUploader/PhotoUploader";
+import ArtworkDeleter from "./ArtworkDeleter";
 
 class EditPicture extends Component {
 
     constructor() {
         super();
 
+        // open in gallery
+        this.onOpenInGallery = this.onOpenInGallery.bind(this);
+        // edit artist
+        this.onEditArtist = this.onEditArtist.bind(this);
+        this.onArtistUpdateComplete = this.onArtistUpdateComplete.bind(this);
+        // edit photo
+        this.onEditPhoto = this.onEditPhoto.bind(this);
+        this.onPhotoUpdateComplete = this.onPhotoUpdateComplete.bind(this);
+        this.onPhotoUpdateCancel = this.onPhotoUpdateCancel.bind(this);
+        // delete artwork
         this.onDeleteArtwork = this.onDeleteArtwork.bind(this);
-
-        this.state = { deleteConfirmIsShowing: false, artworkDeleting: false }
+        this.onDeleteArtworkComplete = this.onDeleteArtworkComplete.bind(this);
+        this.onDeleteArtworkCancel = this.onDeleteArtworkCancel.bind(this);
     }
 
+    // open in gallery
+    onOpenInGallery() {
+        history.push(`/gallery/${this.props.artist.artistId}/artwork/${this.props.artworkId}`)
+    }
+
+    // edit artist
+    onEditArtist() {
+        history.push(`/artStudio/${this.props.artworkId}/editArtist`);
+    }
+
+    onArtistUpdateComplete() {
+        history.push(`/artStudio/${this.props.artworkId}`);
+    }
+
+    // edit photo
+    onEditPhoto() {
+        history.push(`/artStudio/${this.props.artworkId}/editPhoto`);
+    }
+
+    onPhotoUpdateComplete() {
+        history.push(`/artStudio/${this.props.artworkId}`);
+    }
+
+    onPhotoUpdateCancel() {
+        history.push(`/artStudio/${this.props.artworkId}`);
+    }
+
+    // delete artwork
     onDeleteArtwork() {
-        this.setState({ deleteConfirmIsShowing: true });
+        history.push(`/artStudio/${this.props.artworkId}/deleteArtwork`);
     }
 
-    onDeleteCancel() {
-        this.setState({ deleteConfirmIsShowing: false });
+    onDeleteArtworkComplete() {
+        history.push(`/artStudio/new`);
     }
 
-    onDeleteConfirm() {
-        this.setState({ deleteConfirmIsShowing: false, artworkDeleting: true });
-
-        /* const { artist, artworkId } = this.props;
-         const { artistId } = artist;*/
-
-        /* this.props.deleteArtwork(artworkId, artistId, () => {
-             history.push(`/gallery/${artistId}`);
-         });*/
+    onDeleteArtworkCancel() {
+        history.push(`/artStudio/${this.props.artworkId}`);
     }
 
     render() {
-        const { isJustAdded, artist, artwork, artworkId } = this.props;
+        const { currentEditScreen, userId, artist, artworkId, artwork } = this.props;
 
         return (
 
             <Page title={'Edit Artwork'}>
-                <Modal title={'Delete Artwork?'} isOpen={this.state.deleteConfirmIsShowing}>
-                    <p>Are you sure you want to delete the artwork?</p>
-                    <Butt label={'Yes, delete it'} onClick={this.onDeleteConfirm.bind(this)}/>
-                    <Butt label={'No, do not delete'} onClick={this.onDeleteCancel.bind(this)}/>
-                </Modal>
 
-                {isJustAdded &&
-                    <div>Artwork Saved!</div>
+                {currentEditScreen === 'deleteArtwork' &&
+                <ArtworkDeleter artworkId={artworkId}
+                                artist={artist}
+                                onDeleteArtworkComplete={this.onDeleteArtworkComplete}
+                                onDeleteArtworkCancel={this.onDeleteArtworkCancel}/>
                 }
 
-                <Butt onClick={() => {history.push(`/gallery/${artist.artistId}/artwork/${artworkId}`)}}>Open
-                    artwork
-                    in gallery
-                </Butt>
+                {currentEditScreen === 'editArtist' &&
+                <ArtistUpdater artworkId={artworkId}
+                               initialArtistId={artwork.artistId}
+                               manageUpload={true}
+                               onUpdateComplete={this.onArtistUpdateComplete}/>
+                }
 
-                <div style={{ position: 'relative', width: 800, height: 600 }}>
-                    <Artwork artwork={artwork}
-                             windowSize={{ windowWidth: 800, windowHeight: 600 }}
-                             allowScrollbars={true}/>
-                </div>
+                {currentEditScreen === 'editPhoto' &&
+                <PhotoUploader isUpdate={true}
+                               artworkId={artworkId}
+                               userId={userId}
+                               artistId={artwork.artistId}
+                               url={artwork.url}
+                               onCancel={this.onPhotoUpdateCancel}
+                               onUploadComplete={this.onPhotoUpdateComplete}/>
+                }
 
-                <img src={artwork.thumb_url} alt={'user artwork thumb'}/>
-                <Butt onClick={() => history.push(`/artStudio/${artworkId}/editPhoto`)}>Edit Photo</Butt>
+                {/*{isJustAdded &&
+                    <div>Artwork Saved!</div>
+                }*/}
 
-                <div>
-                    <p>Artwork by {artist.firstName} {artist.lastName}</p>
-                    <Butt onClick={() => history.push(`/artStudio/${artworkId}/editArtist`)}>Edit artist</Butt>
-                </div>
+                {!currentEditScreen &&
+                <EditPictureControls artist={artist}
+                                     artwork={artwork}
+                                     onDeleteArtwork={this.onDeleteArtwork}
+                                     onOpenInGallery={this.onOpenInGallery}
+                                     onEditPhoto={this.onEditPhoto}
+                                     onEditArtist={this.onEditArtist}/>
+                }
 
-                <Butt label={'Delete Artwork'}
-                      backgroundColour={'#920000'}
-                      shadowColour={'#540000'}
-                      onClick={this.onDeleteArtwork}/>
             </Page>
         );
     }
