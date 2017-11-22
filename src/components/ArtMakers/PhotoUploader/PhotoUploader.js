@@ -76,7 +76,7 @@ class PhotoUploader extends Component {
     }
 
     onCancel() {
-        // this.setState({ loadedImg: null, loadedImgOrientation: 1, cuttingBoardData: null });
+        this.props.onCancel();
     }
 
     onCurrentImgEdit() {
