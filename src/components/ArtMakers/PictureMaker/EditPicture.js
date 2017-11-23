@@ -6,7 +6,7 @@ import history from '../../global/history';
 import Page from "../../global/Page";
 import EditPictureControls from "./EditPictureControls";
 import ArtistUpdater from '../ArtistUpdater';
-import PhotoUploader from "../PhotoUploader/PhotoUploader";
+import PhotoEditor from "../PhotoEditor/PhotoEditor";
 import ArtworkDeleter from "./ArtworkDeleter";
 
 class EditPicture extends Component {
@@ -100,13 +100,13 @@ class EditPicture extends Component {
                 }
 
                 {currentEditScreen === 'editPhoto' &&
-                <PhotoUploader isUpdate={true}
-                               artworkId={artworkId}
-                               userId={userId}
-                               artistId={artwork.artistId}
-                               url={artwork.url}
-                               onCancel={this.onPhotoUpdateCancel}
-                               onUploadComplete={this.onPhotoUpdateComplete}/>
+                <PhotoEditor isUpdate={true}
+                             artworkId={artworkId}
+                             userId={userId}
+                             artistId={artwork.artistId}
+                             url={artwork.url}
+                             onCancel={this.onPhotoUpdateCancel}
+                             onUploadComplete={this.onPhotoUpdateComplete}/>
                 }
 
                 {showControls &&

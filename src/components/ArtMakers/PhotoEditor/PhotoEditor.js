@@ -7,13 +7,13 @@ import * as PhotoHelper from "./assets/PhotoHelper";
 import ArtStudioModal from "./CropAndRotateModal";
 import EditedPhotoPreview from "./EditedPhotoPreview";
 
-class PhotoUploader extends Component {
+class PhotoEditor extends Component {
 
     constructor(props) {
         super(props);
 
         // initialise state
-        this.state = { isSaving: false, loadedImg: null, loadedImgOrientation: 1, cuttingBoardData: null };
+        this.state = { loadedImg: null, loadedImgOrientation: 1, cuttingBoardData: null, previewData:null };
 
         // bind functions
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
@@ -84,7 +84,6 @@ class PhotoUploader extends Component {
         const hasEditingData = this.state.cuttingBoardData;
         const showEditedPhotoPreview = this.state.cuttingBoardData;
 
-        // const editPhotoStyle = showEditedPhotoPreview ? { display: 'inherit' } : { display: 'none' };
         let initialCropData, initialRotation;
         if (this.state.cuttingBoardData) {
             let { canvas, rotation, ...rest } = this.state.cuttingBoardData;
@@ -93,8 +92,6 @@ class PhotoUploader extends Component {
         }
 
         const orientation = initialRotation ? initialRotation : this.state.loadedImgOrientation;
-
-        if (this.state.isSaving) return <div>Is saving...</div>;
 
         return (
             <div>
@@ -124,4 +121,4 @@ class PhotoUploader extends Component {
     }
 }
 
-export default PhotoUploader;
+export default PhotoEditor;

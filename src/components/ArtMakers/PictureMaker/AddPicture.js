@@ -2,7 +2,7 @@ import React, { Component } from "react";
 // components
 import history from '../../global/history';
 import ArtistSelector from '../../ArtistSelector/ArtistSelector';
-import PhotoUploader from "../PhotoUploader/PhotoUploader";
+import PhotoEditor from "../PhotoEditor/PhotoEditor";
 import Page from "../../global/Page";
 
 class AddPicture extends Component {
@@ -40,10 +40,10 @@ class AddPicture extends Component {
                                 onArtistSelected={this.onArtistSelected}
                                 onInitialArtistSelected={this.onArtistSelected}/>
 
-                <PhotoUploader userId={userId}
-                               artistId={selectedArtistId}
-                               onCancel={this.onCancel}
-                               onUploadComplete={this.onComplete}/>
+                <PhotoEditor userId={userId}
+                             artistId={selectedArtistId}
+                             onCancel={this.onCancel}
+                             onUploadComplete={this.onComplete}/>
             </Page>
         )
     }
