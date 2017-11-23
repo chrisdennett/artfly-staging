@@ -13,12 +13,13 @@ class EditedPhotoPreview extends Component {
         super(props);
 
         this.onSave = this.onSave.bind(this);
+        this.drawToCanvases = this.drawToCanvases.bind(this);
 
         // initialise state
         this.state = { isSaving: false }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.drawToCanvases();
     }
 
@@ -30,6 +31,10 @@ class EditedPhotoPreview extends Component {
 
     onSave() {
         let sourceBlob, thumbBlob;
+        if (this.props.onUploadStart) this.props.onUploadStart();
+
+        const { widthToHeightRatio, heightToWidthRatio } = this.props.previewData;
+        const { isNewImage, userId, artistId, artworkId } = this.props.artworkData;
 
         this.getCanvasBlobData(this.maxCanvas, (maxCanvasData) => {
             sourceBlob = maxCanvasData;
@@ -38,9 +43,17 @@ class EditedPhotoPreview extends Component {
                 thumbBlob = thumbCanvasData;
 
                 this.setState({ isSaving: true }, () => {
-                    const { isUpdate, userId, artistId, artworkId, widthToHeightRatio, heightToWidthRatio } = this.props.previewData;
+                    if (isNewImage) {
+                        this.props.addArtwork(userId, artistId, sourceBlob, widthToHeightRatio, heightToWidthRatio, (newArtworkData) => {
+                            this.props.addThumbnail(newArtworkData.artworkId, artistId, thumbBlob, (newThumbData) => {
 
-                    if (isUpdate) {
+                                this.setState({ isSaving: false }, () => {
+                                    this.props.onUploadComplete(newArtworkData.artworkId);
+                                })
+                            })
+                        });
+                    }
+                    else {
                         this.props.updateArtworkImage(artworkId, artistId, sourceBlob, widthToHeightRatio, heightToWidthRatio, (saveProgressData) => {
                             if (saveProgressData.status === 'complete') {
                                 this.props.updateArtworkThumbnail(artworkId, artistId, thumbBlob, (thumbSaveProgress) => {
@@ -51,24 +64,14 @@ class EditedPhotoPreview extends Component {
                             }
                         });
                     }
-                    else {
-                        this.props.addArtwork(userId, artistId, sourceBlob, widthToHeightRatio, heightToWidthRatio, (newArtworkData) => {
-
-                            const { artworkId, artistId } = newArtworkData;
-                            this.props.addThumbnail(artworkId, artistId, thumbBlob, (newThumbData) => {
-
-                                this.setState({ isSaving: false }, () => {
-                                    this.props.onUploadComplete(artworkId);
-                                })
-                            })
-                        });
-                    }
                 })
             })
         });
     }
 
-    drawToCanvases(){
+    drawToCanvases() {
+        if(!this.props.previewData) return;
+
         const { croppedWidth, croppedHeight, canvas, leftX, topY, rightX, bottomY } = this.props.previewData;
 
         PhotoHelper.drawCanvasToCanvas(this.maxCanvas, croppedWidth, croppedHeight, canvas, leftX, topY, rightX, bottomY);

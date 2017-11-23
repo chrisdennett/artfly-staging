@@ -3,6 +3,7 @@ import React, { Component } from "react";
 // import styled from 'styled-components';
 // components
 import CuttingOverlay from "./assets/CuttingOverlay";
+import * as PhotoHelper from "../PhotoEditor/assets/PhotoHelper";
 // helper values
 const maxImageWidth = 3000;
 const maxImageHeight = 3000;
@@ -12,6 +13,7 @@ class CuttingBoard extends Component {
         super();
 
         this.canvasInit = this.canvasInit.bind(this);
+        this.getImage = this.getImage.bind(this);
         this.drawImageToSourceCanvas = this.drawImageToSourceCanvas.bind(this);
         this.onCuttingOverlayChange = this.onCuttingOverlayChange.bind(this);
 
@@ -19,14 +21,31 @@ class CuttingBoard extends Component {
     }
 
     componentDidMount() {
-        if (this.props.img && this.sourceCanvas) {
-            this.drawImageToSourceCanvas(this.props.img, this.props.rotation);
+        if (this.sourceCanvas) {
+            this.getImage(this.props, (img) => {
+                this.drawImageToSourceCanvas(img, this.props.rotation);
+            });
         }
     }
 
     componentWillUpdate(nextProps) {
         if (this.props.rotation !== nextProps.rotation) {
-            this.drawImageToSourceCanvas(nextProps.img, nextProps.rotation, nextProps.cropData);
+            this.getImage(nextProps, (img) => {
+                this.drawImageToSourceCanvas(img, nextProps.rotation, nextProps.cropData);
+            });
+        }
+    }
+
+    getImage(props, callback) {
+        console.log("props.imgUrl: ", props.imgUrl);
+
+        if (props.img) {
+            callback(props.img);
+        }
+        else if (props.imgUrl) {
+            PhotoHelper.LoadImage(props.imgUrl, (img) => {
+                callback(img);
+            })
         }
     }
 
@@ -137,7 +156,7 @@ class CuttingBoard extends Component {
     }
 
     render() {
-        const {widthToHeightRatio=1, heightToWidthRatio=1} = this.state;
+        const { widthToHeightRatio = 1, heightToWidthRatio = 1 } = this.state;
         const { maxWidth, maxHeight } = this.props;
         let displayWidth = maxWidth;
         let displayHeight = displayWidth * widthToHeightRatio;
@@ -150,7 +169,7 @@ class CuttingBoard extends Component {
         const cropData = this.getCropData(displayWidth, displayHeight);
 
         return (
-            <div style={{width:displayWidth, height:displayHeight}}>
+            <div style={{ width: displayWidth, height: displayHeight }}>
                 <CuttingOverlay
                     onChange={this.onCuttingOverlayChange}
                     {...cropData}/>

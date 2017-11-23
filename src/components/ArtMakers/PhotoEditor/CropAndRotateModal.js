@@ -8,7 +8,7 @@ import CropAndRotate from "./CropAndRotate";
 class CropAndRotateModal extends Component {
     render() {
         const {screenWidth, screenHeight, ...rest} = this.props;
-        const { initialCropData, loadedImg, onCancel, onDone, orientation} = rest;
+        const { initialCropData, loadedImg, onCancel, onDone, orientation, imgUrl} = rest;
 
         return (
             <StyledContainer>
@@ -16,6 +16,7 @@ class CropAndRotateModal extends Component {
                 <CropAndRotate width={screenWidth}
                                height={screenHeight}
                                initialCropData={initialCropData}
+                               imgUrl={imgUrl}
                                loadedImg={loadedImg}
                                onCancel={onCancel}
                                onDone={onDone}

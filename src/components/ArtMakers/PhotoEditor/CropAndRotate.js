@@ -86,7 +86,7 @@ class CropAndRotate extends Component {
     }
 
     render() {
-        const { loadedImg, width, height } = this.props;
+        const { loadedImg, width, height, imgUrl } = this.props;
         const { rotation, cropData } = this.state;
         const cuttingBoardPadding = 40;
         const buttonHeight = 100;
@@ -99,6 +99,7 @@ class CropAndRotate extends Component {
                     <div style={{ margin: '0 auto' }}>
                         <CuttingBoard
                             img={loadedImg}
+                            imgUrl={imgUrl}
                             onCropUpdate={this.onCropUpdate}
                             onCanvasSetup={this.onCanvasSetup}
                             maxWidth={maxCuttingBoardWidth}

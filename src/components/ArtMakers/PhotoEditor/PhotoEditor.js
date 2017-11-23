@@ -1,10 +1,7 @@
 // externals
 import React, { Component } from "react";
 // components
-import SelectPhotoButton from "./assets/SelectPhotoButton";
-// helper functions
-import * as PhotoHelper from "./assets/PhotoHelper";
-import ArtStudioModal from "./CropAndRotateModal";
+import CropAndRotateModal from "./CropAndRotateModal";
 import EditedPhotoPreview from "./EditedPhotoPreview";
 
 class PhotoEditor extends Component {
@@ -12,41 +9,17 @@ class PhotoEditor extends Component {
     constructor(props) {
         super(props);
 
-        // initialise state
-        this.state = { loadedImg: null, loadedImgOrientation: 1, cuttingBoardData: null, previewData:null };
+        this.state = { showCuttingBoard: true, cuttingBoardData: null, previewData: null };
 
-        // bind functions
-        this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.onCuttingBoardCancel = this.onCuttingBoardCancel.bind(this);
         this.onImageCuttingBoardDone = this.onImageCuttingBoardDone.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.onCurrentImgEdit = this.onCurrentImgEdit.bind(this);
-        this.openCuttingBoard = this.openCuttingBoard.bind(this);
-        this.onEditPhoto = this.onEditPhoto.bind(this);
-
-        // DEV HACK TO LOAD IMAGE STRAIGHT AWAY
-        if (props.url) {
-            this.onEditPhoto();
-        }
-    }
-
-    // User has selected a photo
-    onPhotoSelected(e) {
-        e.preventDefault();
-
-        if (e.target.files[0]) {
-            const imgFile = e.target.files[0];
-            PhotoHelper.GetImage(imgFile, this.openCuttingBoard);
-        }
-    }
-
-    openCuttingBoard(img, imgOrientation) {
-        this.setState({ cuttingBoardOpen: true, loadedImg: img, loadedImgOrientation: imgOrientation });
     }
 
     onCuttingBoardCancel() {
-        this.setState({ cuttingBoardOpen: false }, () => {
-            this.props.onCancel(this.props.artworkId);
+        this.setState({ showCuttingBoard: false }, () => {
+            this.props.onCancel();
         })
     }
 
@@ -58,11 +31,9 @@ class PhotoEditor extends Component {
         const heightToWidthRatio = Math.round(1000 * (croppedWidth / croppedHeight)) / 1000;
         const imageData = { widthToHeightRatio, heightToWidthRatio };
 
-        const {userId, artistId, artworkId, isUpdate} = this.props;
+        const previewData = { croppedWidth, croppedHeight, canvas, leftX, topY, rightX, bottomY, widthToHeightRatio, heightToWidthRatio };
 
-        const previewData = { isUpdate, userId, artistId, artworkId, croppedWidth, croppedHeight, canvas, leftX, topY, rightX, bottomY, widthToHeightRatio, heightToWidthRatio };
-
-        this.setState({ cuttingBoardData: data, cuttingBoardOpen: false, imageData, previewData });
+        this.setState({ cuttingBoardData: data, showCuttingBoard: false, imageData, previewData });
     }
 
     onCancel() {
@@ -70,19 +41,11 @@ class PhotoEditor extends Component {
     }
 
     onCurrentImgEdit() {
-        this.setState({ cuttingBoardOpen: true });
-    }
-
-    onEditPhoto() {
-        PhotoHelper.LoadImage(this.props.url, (img) => {
-            this.setState({ loadedImg: img, cuttingBoardOpen: true });
-        })
+        this.setState({ showCuttingBoard: true });
     }
 
     render() {
-        const showCuttingBoard = this.state.cuttingBoardOpen;
-        const hasEditingData = this.state.cuttingBoardData;
-        const showEditedPhotoPreview = this.state.cuttingBoardData;
+        const { showCuttingBoard } = this.state;
 
         let initialCropData, initialRotation;
         if (this.state.cuttingBoardData) {
@@ -91,29 +54,28 @@ class PhotoEditor extends Component {
             initialRotation = rotation;
         }
 
-        const orientation = initialRotation ? initialRotation : this.state.loadedImgOrientation;
+        const { isNewImage, userId, artistId, artworkId } = this.props;
+        const artworkData = { isNewImage, userId, artistId, artworkId };
+        const orientation = initialRotation ? initialRotation : this.props.initialOrientation;
 
         return (
             <div>
-                {!hasEditingData && !this.props.url &&
-                <SelectPhotoButton
-                    uid={'cutting-board-selector'}
-                    onPhotoSelect={this.onPhotoSelected}/>
-                }
-
-                {showEditedPhotoPreview &&
+                {!showCuttingBoard &&
                 <EditedPhotoPreview previewData={this.state.previewData}
+                                    artworkData={artworkData}
                                     onCurrentImgEdit={this.onCurrentImgEdit}
+                                    onUploadStart={this.props.onUploadStart}
                                     onUploadComplete={this.props.onUploadComplete}
                                     onCancel={this.onCancel}/>
                 }
 
                 {showCuttingBoard &&
-                <ArtStudioModal loadedImg={this.state.loadedImg}
-                                orientation={orientation}
-                                initialCropData={initialCropData}
-                                onCancel={this.onCuttingBoardCancel}
-                                onDone={this.onImageCuttingBoardDone}/>
+                <CropAndRotateModal loadedImg={this.props.img}
+                                    imgUrl={this.props.url}
+                                    orientation={orientation}
+                                    initialCropData={initialCropData}
+                                    onCancel={this.onCuttingBoardCancel}
+                                    onDone={this.onImageCuttingBoardDone}/>
                 }
 
             </div>

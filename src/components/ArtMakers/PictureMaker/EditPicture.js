@@ -100,7 +100,7 @@ class EditPicture extends Component {
                 }
 
                 {currentEditScreen === 'editPhoto' &&
-                <PhotoEditor isUpdate={true}
+                <PhotoEditor isNewImage={false}
                              artworkId={artworkId}
                              userId={userId}
                              artistId={artwork.artistId}
