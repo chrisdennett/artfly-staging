@@ -25,7 +25,7 @@ class GalleryHolder extends Component {
     }
 
     render() {
-        const { artist, artworks, galleryIsZoomedOut, windowSize } = this.props;
+        const { artist, galleryArtworks, galleryIsZoomedOut, windowSize } = this.props;
 
         if (!artist) {
             return <div>Artist Gallery Loading</div>;
@@ -39,7 +39,7 @@ class GalleryHolder extends Component {
                      galleryIsZoomedOut={galleryIsZoomedOut}
                      galleryParams={galleryParams}
                      artist={artist}
-                     artworks={artworks}
+                     artworks={galleryArtworks}
                      onThumbClick={(id) => {this.onThumbClick(id)}}/>
         )
     }
@@ -127,7 +127,7 @@ const mapStateToProps = (state, ownProps) => {
 
     return {
         artist: state.artists[ownProps.galleryId],
-        artworks: galleryArtworks,
+        galleryArtworks: galleryArtworks,
         galleryParams: state.ui.galleryParams,
         windowSize: state.ui.windowSize,
         galleryIsZoomedOut: state.ui.galleryIsZoomedOut

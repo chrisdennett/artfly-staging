@@ -1,8 +1,10 @@
 // Externals
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import * as _ from 'lodash';
 // Actions
 import { setGalleryZoom } from '../../../actions/UiActions';
+import { listenForArtistArtworkChanges } from '../../../actions/UserDataActions';
 // Components
 import GalleryControls from './GalleryControls';
 
@@ -10,6 +12,13 @@ class GalleryControlsHolder extends Component {
     constructor(props) {
         super(props);
         this.onZoomClick = this.onZoomClick.bind(this);
+
+        props.listenForArtistArtworkChanges(props.galleryId);
+    }
+
+    componentDidMount() {
+        // this.props.listenForArtistChanges(this.props.galleryId);
+        // this.props.listenForArtistArtworkChanges(this.props.galleryId);
     }
 
     onZoomClick() {
@@ -17,20 +26,19 @@ class GalleryControlsHolder extends Component {
     }
 
     render() {
-        const { artworkId, galleryId, artworkIds, galleryIsZoomedOut } = this.props;
+        const { artworkId, galleryId, galleryArtworkIds: galleryArtworkIds, galleryIsZoomedOut } = this.props;
         let prevId = null;
         let nextId = null;
 
-        if (artworkIds && Object.keys(artworkIds).length > 0) {
-            const allIds = Object.keys(artworkIds);
-            const currIdIndex = allIds.indexOf(artworkId);
+        if (galleryArtworkIds && galleryArtworkIds.length > 0) {
+            const currIdIndex = galleryArtworkIds.indexOf(artworkId);
 
             if (currIdIndex > 0) {
-                prevId = allIds[currIdIndex - 1];
+                prevId = galleryArtworkIds[currIdIndex - 1];
             }
 
-            if (allIds.length - 1 > currIdIndex) {
-                nextId = allIds[currIdIndex + 1];
+            if (galleryArtworkIds.length - 1 > currIdIndex) {
+                nextId = galleryArtworkIds[currIdIndex + 1];
             }
         }
 
@@ -38,21 +46,28 @@ class GalleryControlsHolder extends Component {
                                 onZoomClick={this.onZoomClick}
                                 nextArtworkId={nextId}
                                 prevArtworkId={prevId}
-                                artworkIds={artworkIds}
+                                artworkIds={galleryArtworkIds}
                                 galleryId={galleryId}
                                 artworkId={artworkId}/>;
     }
 }
 
 // Map state to props maps to the intermediary component which uses or passes them through
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+    const galleryArtworks = _.pickBy(state.artworks, (value) => {
+        return value.artistId === ownProps.galleryId;
+    });
+    const galleryArtworkIds = Object.keys(galleryArtworks);
+    
     return {
-        galleryIsZoomedOut: state.ui.galleryIsZoomedOut
+        galleryIsZoomedOut: state.ui.galleryIsZoomedOut,
+        galleryArtworks: galleryArtworks,
+        galleryArtworkIds: galleryArtworkIds
     }
 };
 
 const GalleryControlsContainer = connect(
-    mapStateToProps, { setGalleryZoom }
+    mapStateToProps, { setGalleryZoom, listenForArtistArtworkChanges }
 )(GalleryControlsHolder);
 
 export default GalleryControlsContainer;
