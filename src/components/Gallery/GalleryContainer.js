@@ -124,10 +124,11 @@ const mapStateToProps = (state, ownProps) => {
     const galleryArtworks = _.pickBy(state.artworks, (value) => {
         return value.artistId === ownProps.galleryId;
     });
+    const galleryArtworksInDateOrder = _.orderBy(galleryArtworks, ['dateAdded'], ['desc']);
 
     return {
         artist: state.artists[ownProps.galleryId],
-        galleryArtworks: galleryArtworks,
+        galleryArtworks: galleryArtworksInDateOrder,
         galleryParams: state.ui.galleryParams,
         windowSize: state.ui.windowSize,
         galleryIsZoomedOut: state.ui.galleryIsZoomedOut

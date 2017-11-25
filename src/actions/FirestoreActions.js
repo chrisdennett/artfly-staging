@@ -8,10 +8,9 @@ import {
 
 // TODO: haven't got rid of listeners anywhere, they "could" build up the data massively
 // Could clear artist and artwork data when a new gallery is loaded in (clear the old data and listeners first)
-//
-//*** AUTH ************************************************************
-//
 
+
+//*** AUTH ************************************************************
 // SIGN IN
 export function fs_signInWithProvider(providerName, onChangeCallback = null) {
     let provider;
@@ -62,10 +61,8 @@ export function fs_addAuthListener(onChangeCallback = null) {
         })
 }
 
-//
-//*** USER ************************************************************
-//
 
+//*** USER ************************************************************
 // ADD NEW USER
 export function fs_addNewUser(authId, newUserData, onAddedCallback = null) {
     db.collection('users')
@@ -126,10 +123,8 @@ export function fs_getUserChanges(userId, onChangeCallback = null) {
             });
 }
 
-//
-// ARTIST ***********************************************************
-//
 
+//*** ARTIST ***********************************************************
 // ADD ARTIST
 export function fs_addNewArtist(newArtistData, onChangeCallback = null) {
     db.collection('artists')
@@ -239,10 +234,8 @@ export function fs_getArtistChanges(artistId, onChangeCallback = null) {
             });
 }
 
-//
-//*** ARTWORK ***********************************************************
-//
 
+//*** ARTWORK ***********************************************************
 // ADD ARTWORK
 // userId, artistId, thumbFile, imgFile, widthToHeightRatio, heightToWidthRatio
 export function fs_addArtwork(userId, artistId, imgFile, widthToHeightRatio, heightToWidthRatio, onChangeCallback = null) {
@@ -421,7 +414,8 @@ export function fs_getArtworkChanges(artworkId, onChangeCallback = null) {
                 }
 
                 const artworkId = doc.id;
-                const artworkData = doc.data();
+                let artworkData = doc.data();
+                artworkData.artworkId = artworkId; // add id to data for ease of use
                 const artworkDataWithId = { [artworkId]: artworkData };
 
                 if (onChangeCallback) onChangeCallback(artworkDataWithId);

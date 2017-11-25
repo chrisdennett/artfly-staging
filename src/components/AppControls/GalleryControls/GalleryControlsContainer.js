@@ -57,8 +57,12 @@ const mapStateToProps = (state, ownProps) => {
     const galleryArtworks = _.pickBy(state.artworks, (value) => {
         return value.artistId === ownProps.galleryId;
     });
-    const galleryArtworkIds = Object.keys(galleryArtworks);
-    
+    const galleryArtworksInDateOrder = _.orderBy(galleryArtworks, ['dateAdded'], ['desc']);
+    let galleryArtworkIds = [];
+    for(let artwork of galleryArtworksInDateOrder){
+        galleryArtworkIds.push(artwork.artworkId);
+    }
+
     return {
         galleryIsZoomedOut: state.ui.galleryIsZoomedOut,
         galleryArtworks: galleryArtworks,

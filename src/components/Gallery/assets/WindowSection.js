@@ -1,6 +1,5 @@
 // externals
 import React from 'react';
-import _ from 'lodash';
 // components
 import BuildingWindow from "./BuildingWindow";
 import BuildingSection from "./BuildingSection";
@@ -50,14 +49,10 @@ const createBuildingWindows = (wallColour, highlight, lowlight, artworks, galler
     const delayOffset = 100;
     let count = 0;
     let imgLoadDelay;
-    const artworkIds = Object.keys(artworks);
 
-    return _.map(artworkIds, (id) => {
+    return artworks.map((artwork) => {
 
         imgLoadDelay = count * delayOffset;
-
-        const artwork = artworks[id];
-        const date = artwork.dateAdded;
 
         x = xStart + (colCount * windowWidthWithPadding);
 
@@ -72,11 +67,10 @@ const createBuildingWindows = (wallColour, highlight, lowlight, artworks, galler
         windowCount++;
         colCount++;
 
-        if (artworks && artworks[id]) {
             return (
-                <BuildingWindow key={date}
+                <BuildingWindow key={artwork.dateAdded}
                                 artworkThumbUrl={artwork.thumb_url}
-                                artworkId={id}
+                                artworkId={artwork.artworkId}
                                 imgDelay={imgLoadDelay}
                                 x={x}
                                 y={y}
@@ -88,20 +82,6 @@ const createBuildingWindows = (wallColour, highlight, lowlight, artworks, galler
                                 highlight={highlight}
                                 lowlight={lowlight}/>
             )
-        }
-        else {
-            return (
-                <BuildingWindow key={date}
-                                x={x}
-                                y={y}
-                                width={windowWidth}
-                                height={windowHeight}
-                                number={windowCount}
-                                onThumbClick={onThumbClick}
-                                wallColour={wallColour}
-                                highlight={highlight}
-                                lowlight={lowlight}/>
-            )
-        }
+
     })
 };
