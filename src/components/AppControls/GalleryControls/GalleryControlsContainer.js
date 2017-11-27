@@ -8,7 +8,7 @@ import { listenForArtistArtworkChanges } from '../../../actions/UserDataActions'
 // Components
 import GalleryControls from './GalleryControls';
 
-class GalleryControlsHolder extends Component {
+class GalleryControlsContainer extends Component {
     constructor(props) {
         super(props);
         this.onZoomClick = this.onZoomClick.bind(this);
@@ -16,17 +16,12 @@ class GalleryControlsHolder extends Component {
         props.listenForArtistArtworkChanges(props.galleryId);
     }
 
-    componentDidMount() {
-        // this.props.listenForArtistChanges(this.props.galleryId);
-        // this.props.listenForArtistArtworkChanges(this.props.galleryId);
-    }
-
     onZoomClick() {
         this.props.setGalleryZoom(!this.props.galleryIsZoomedOut);
     }
 
     render() {
-        const { artworkId, galleryId, galleryArtworkIds: galleryArtworkIds, galleryIsZoomedOut } = this.props;
+        const { artworkId, galleryId, galleryArtworkIds, galleryIsZoomedOut } = this.props;
         let prevId = null;
         let nextId = null;
 
@@ -70,8 +65,6 @@ const mapStateToProps = (state, ownProps) => {
     }
 };
 
-const GalleryControlsContainer = connect(
+export default connect(
     mapStateToProps, { setGalleryZoom, listenForArtistArtworkChanges }
-)(GalleryControlsHolder);
-
-export default GalleryControlsContainer;
+)(GalleryControlsContainer);
