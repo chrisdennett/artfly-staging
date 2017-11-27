@@ -23,48 +23,50 @@ class Artwork extends Component {
     }
 
     render() {
-        const { artwork, windowSize, allowScrollbars=false } = this.props;
+        const { artwork, width, height, allowScrollbars=false } = this.props;
 
+        console.log("artwork: ", artwork);
+        const {widthToHeightRatio, heightToWidthRatio} = artwork;
+        const frameThicknessPercent = 0.03;
+        const mountThicknessPercent = 0.06;
+        let minPaddingLeft = 10;
+        const minPaddingRight = 10;
+        let minPaddingTop = 60;
+        const minPaddingBottom = 110;
+        const maxWidth = width - (minPaddingLeft+minPaddingRight);
+        const maxHeight = height - (minPaddingTop+minPaddingBottom);
 
-        // work out max picture width
-        const w = windowSize.windowWidth;
-        const h = windowSize.windowHeight;
-        const mountThickness = 40;
-        const frameThickness = 20;
-        let paddingLeft = 30;
-        const paddingRight = 30;
-        let paddingTop = 60;
-        const paddingBottom = 120;
-        const verticalPadding = paddingTop + paddingBottom;
-        const horizontalPadding = paddingLeft + paddingRight;
-        const combinedFrameWidth = ((frameThickness + mountThickness) * 2);
-        const maxImgWidth = w - (combinedFrameWidth + horizontalPadding);
-        const maxImgHeight = h - (combinedFrameWidth + verticalPadding);
+        // calculate to maximise width
+        let frameThickness = maxWidth * frameThicknessPercent;
+        let mountThickness = maxWidth * mountThicknessPercent;
+        let totalFrameAndMountThickness = (frameThickness*2)+(mountThickness*2);
+        let imgWidth = maxWidth - totalFrameAndMountThickness;
+        let imgHeight = imgWidth * widthToHeightRatio;
+        let frameHeight = imgHeight + totalFrameAndMountThickness;
 
-        let imgWidth = maxImgWidth;
-        let imgHeight = imgWidth * artwork.widthToHeightRatio;
-
-        if (imgHeight > maxImgHeight) {
-            imgHeight = maxImgHeight;
-            imgWidth = imgHeight * artwork.heightToWidthRatio;
+        // if it doesn't fit the height, calculate to maximise height
+        if(frameHeight > maxHeight){
+            frameThickness = maxHeight * frameThicknessPercent;
+            mountThickness = maxHeight * mountThicknessPercent;
+            totalFrameAndMountThickness = (frameThickness*2)+(mountThickness*2);
+            imgHeight = maxHeight - totalFrameAndMountThickness;
+            imgWidth = imgHeight * heightToWidthRatio;
         }
 
-        // if there is extra space around the frame, center the image
-        const extraHorizontalSpace = w - (imgWidth + combinedFrameWidth + paddingLeft + paddingRight);
-        paddingLeft += extraHorizontalSpace / 2;
+        // work out the padding around the picture
+        const totalFramedPictureWidth = imgWidth + totalFrameAndMountThickness;
+        const extraHorizontalSpace = width - (totalFramedPictureWidth + minPaddingLeft + minPaddingRight);
+        const paddingLeft = minPaddingLeft + (extraHorizontalSpace / 2);
 
-        const extraVerticalSpace = h - (imgHeight + combinedFrameWidth + paddingTop + paddingBottom);
-        paddingTop += extraVerticalSpace / 2;
-
-        const imgX = frameThickness + mountThickness + paddingLeft;
-        const imgY = frameThickness + mountThickness + paddingTop;
+        const extraVerticalSpace = height - (imgHeight + totalFrameAndMountThickness + minPaddingTop + minPaddingBottom);
+        const paddingTop = minPaddingTop + (extraVerticalSpace / 2);
 
         let imgStyle = {
             position: 'absolute',
             width: imgWidth,
             height: imgHeight,
-            top: imgY,
-            left: imgX
+            top: paddingTop + frameThickness + mountThickness,
+            left: paddingLeft + frameThickness + mountThickness
         };
 
         //source:   3000x3000 (max)
@@ -105,7 +107,7 @@ class Artwork extends Component {
                 }
 
                 <div style={{ position: 'absolute' }}>
-                    <Room width={w} height={h}/>
+                    <Room width={width} height={height}/>
                 </div>
 
                 <div style={{ position: 'absolute', top: paddingTop, left: paddingLeft }}>

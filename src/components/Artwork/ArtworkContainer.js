@@ -24,7 +24,9 @@ class ArtworkHolder extends Component {
             return <div>Artwork Loading...</div>
         }
 
-        return <Artwork artwork={artwork} windowSize={windowSize}/>;
+        const {windowWidth, windowHeight} = windowSize;
+
+        return <Artwork artwork={artwork} width={windowWidth} height={windowHeight}/>;
     }
 }
 
