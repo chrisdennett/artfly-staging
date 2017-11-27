@@ -25,7 +25,6 @@ class Artwork extends Component {
     render() {
         const { artwork, width, height, allowScrollbars=false } = this.props;
 
-        console.log("artwork: ", artwork);
         const {widthToHeightRatio, heightToWidthRatio} = artwork;
         const frameThicknessPercent = 0.03;
         const mountThicknessPercent = 0.06;

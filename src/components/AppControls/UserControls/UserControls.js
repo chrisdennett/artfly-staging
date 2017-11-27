@@ -3,7 +3,7 @@ import React from "react";
 // components
 import SignOutButton from "./assets/SignOutButton";
 import SettingsButton from "./assets/SettingsButton";
-import EditButton from "../GalleryControls/assets/EditButton";
+import EditButton from "./assets/EditButton";
 import SignInContainer from "../../SignIn/SignInContainer";
 import AddArtButton from "./assets/AddArtButton";
 import Link from "../../global/Link";
@@ -26,10 +26,14 @@ const UserControls = function (props) {
         renderContent =
             <span>
                 {showEditArtworkButton &&
-                <Link linkTo={`/artStudio/${props.artworkId}`}><EditButton/></Link>
+                <Link linkTo={`/artStudio/${props.artworkId}`}>
+                    <EditButton/>
+                </Link>
                 }
 
-                <Link linkTo={`/artStudio/`}><AddArtButton maxArtworksReached={props.maxArtworksReached}/></Link>
+                <Link linkTo={`/artStudio/`}>
+                    <AddArtButton maxArtworksReached={props.maxArtworksReached}/>
+                </Link>
 
                 <Link linkTo="/settings"><SettingsButton/></Link>
 
