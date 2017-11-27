@@ -20,7 +20,8 @@ class EditPictureControls extends Component {
                 <p>Artwork by {artist.firstName} {artist.lastName}</p>
                 <div style={{ position: 'relative', width: 800, height: 600 }}>
                     <Artwork artwork={artwork}
-                             windowSize={{ windowWidth: 800, windowHeight: 600 }}
+                             width={800}
+                             height={600}
                              allowScrollbars={true}/>
                 </div>
 
