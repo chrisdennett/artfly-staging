@@ -3,7 +3,7 @@ import React from 'react';
 const Logo = function (props) {
     return (
         <div className={'sketch-butt'}>
-            <svg width={'100%'} height={'100%'} viewBox="0 0 67.489159 65.000001">
+            <svg width={67} height={65} viewBox="0 0 67.489159 65.000001">
                 <rect ry="0" height="65" width="67.49" fill="#fff" color="#000"/>
                 <path
                     d="M49.72 33.62c1.192-1.344.962-4.335-1.861-5.162-2.737-.802-5.698-.836-5.698-.836-.759 4.298 5.713 8.199 7.56 5.999z"

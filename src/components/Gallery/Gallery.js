@@ -24,7 +24,7 @@ const Gallery = function (props) {
 
     return (
         <ScrollbarRemover showScrollbars={!galleryIsZoomedOut}>
-            <svg viewBox={`0 0 ${viewBoxWidth} ${currentHeight}`}>
+            <svg width={viewBoxWidth} height={currentHeight} viewBox={`0 0 ${viewBoxWidth} ${currentHeight}`}>
 
                 <SvgBackground height={currentHeight} width={viewBoxWidth} galleryScale={currentGalleryScale}/>
 
