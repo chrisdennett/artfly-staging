@@ -20,13 +20,13 @@ class Butt extends Component {
     }
 
     render() {
-        const { label, inline, size, svgIcon, backgroundColour, shadowColour, labelColour, showAsLink, fullWidth, ...rest } = this.props;
+        const { label, inline, alignLeft, size, svgIcon, backgroundColour, shadowColour, labelColour, showAsLink, fullWidth, ...rest } = this.props;
 
         const labelPadding = svgIcon ? 20 : 0;
         const labelStyle = { paddingLeft: labelPadding };
         let buttonStyle = {
             textDecoration: 'none',
-            padding: '15px 25px',
+            padding: '15px 25px ',
             margin: 10,
             fontSize: 24,
             alignItems: 'center',
@@ -39,6 +39,10 @@ class Butt extends Component {
             borderRadius: 5,
             boxShadow: '0 5px rgba(0, 0, 0, 0.5)'
         };
+
+        if(alignLeft){
+            buttonStyle.justifyContent = 'left';
+        }
 
         if(!inline){
             buttonStyle.display = 'flex';

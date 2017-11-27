@@ -4,7 +4,7 @@ import Butt from "../../global/Butt";
 const FacebookSignInButton = function (props) {
 
     const facebookIcon = (
-        <svg width={25} viewBox="0 0 120 120">
+        <svg width={25} height={25} viewBox="0 0 120 120">
             <g stroke="none" fill="none">
                 <path d="M0,0 L120,0 L120,120 L0,120 L0,0 Z"/>
                 <path
@@ -16,6 +16,7 @@ const FacebookSignInButton = function (props) {
 
     return (
         <Butt svgIcon={facebookIcon}
+              alignLeft={true}
               onClick={props.onClick}
               label={'Sign in with Facebook'}/>
     )

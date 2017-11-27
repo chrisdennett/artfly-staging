@@ -4,7 +4,7 @@ import Butt from "../../global/Butt";
 const GoogleSignInButton = function (props) {
 
     const googleIcon = (
-        <svg width={25} viewBox="0 0 118 120">
+        <svg width={25} height={25} viewBox="0 0 118 120">
             <g stroke="none" fill="none">
                 <path
                     d="M117.6,61.3636364 C117.6,57.1090909 117.218182,53.0181818 116.509091,49.0909091 L60,49.0909091 L60,72.3 L92.2909091,72.3 C90.9,79.8 86.6727273,86.1545455 80.3181818,90.4090909 L80.3181818,105.463636 L99.7090909,105.463636 C111.054545,95.0181818 117.6,79.6363636 117.6,61.3636364 L117.6,61.3636364 Z"
@@ -25,6 +25,7 @@ const GoogleSignInButton = function (props) {
     return (
         <Butt svgIcon={googleIcon}
               onClick={props.onClick}
+              alignLeft={true}
               label={'Sign in with Google'}
               backgroundColour={'#fff'}
               shadowColour={'#aaa'}

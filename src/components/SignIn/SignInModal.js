@@ -8,15 +8,15 @@ import Modal from "../global/Modal";
 
 const SignInModal = ({isOpen, loginStatus, signInWithGoogleClick, signInWithFacebookClick, closeModal}) => {
     return (
-        <Modal title={'Sign in to ArtFly'}
-               isOpen={isOpen}>
+        <Modal isOpen={isOpen}>
 
             {loginStatus === 'pending' &&
             <div>Signing in...</div>
             }
 
             {loginStatus !== 'pending' &&
-            <div>
+            <div style={{display: 'flex', flexDirection:'column'}}>
+                <h2>Sign in to ArtFly</h2>
                 <GoogleSignInButton onClick={() => signInWithGoogleClick()}/>
                 <FacebookSignInButton onClick={() => signInWithFacebookClick()}/>
 
