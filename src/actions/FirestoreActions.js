@@ -169,7 +169,7 @@ export function fs_deleteUser(onDeletedCallback = null) {
 
 // GET USER LISTENER
 export function fs_getUserChanges(userId, onChangeCallback = null) {
-    if (unsubscribers.userListeners[userId]) {
+    if (!userId) {
         return;
     }
 
