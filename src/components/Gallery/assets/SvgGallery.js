@@ -1,5 +1,6 @@
+// externals
 import React, { Component } from "react";
-
+// components
 import Roof from "./Roof";
 import WindowsSection from "./WindowSection";
 import NameSection from "./NameSection";

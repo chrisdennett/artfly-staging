@@ -11,7 +11,6 @@ import history from '../global/history';
 class GalleryHolder extends Component {
 
     componentDidMount() {
-
         this.props.listenForArtistChanges(this.props.galleryId);
         this.props.listenForArtistArtworkChanges(this.props.galleryId, this.props.userId);
     }
@@ -29,7 +28,7 @@ class GalleryHolder extends Component {
         const { artist, galleryArtworks, galleryIsZoomedOut, windowSize } = this.props;
 
         if (!artist) {
-            return <div>Artist Gallery Loading</div>;
+            return <div>Gallery Loading</div>;
         }
 
         const galleryParams = calculateGalleryParams(artist.totalArtworks, windowSize.inMobileMode);

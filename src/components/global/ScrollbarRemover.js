@@ -34,7 +34,7 @@ class ScrollbarRemover extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{overflowX:'hidden'}}>
                 {this.props.children}
             </div>
         );
