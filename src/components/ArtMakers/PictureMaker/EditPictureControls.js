@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Butt from "../../global/Butt";
-import Artwork from "../../Artwork/Artwork";
+// import Artwork from "../../Artwork/Artwork";
+import ArtworkContainer from "../../Artwork/ArtworkContainer";
 
 class EditPictureControls extends Component {
 
@@ -19,10 +20,17 @@ class EditPictureControls extends Component {
 
                 <p>Artwork by {artist.firstName} {artist.lastName}</p>
                 <div style={{ position: 'relative', width: 800, height: 600 }}>
-                    <Artwork artwork={artwork}
+
+                    <ArtworkContainer artworkId={artwork.artworkId}
+                                      width={800}
+                                      height={600}
+                                      allowScrollbars={true}/>
+
+
+                    {/*<Artwork artwork={artwork}
                              width={800}
                              height={600}
-                             allowScrollbars={true}/>
+                             allowScrollbars={true}/>*/}
                 </div>
 
                 <img src={artwork.thumb_url} alt={'user artwork thumb'}/>
