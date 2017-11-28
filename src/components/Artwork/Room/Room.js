@@ -1,24 +1,35 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
+import SkirtingBoard from "./SkirtingBoard";
 
 class Room extends Component {
 
     render() {
-        const wall = {fill: "#e0ded1"};
-        const wallPattern = {fill: "url(#WallPattern)"};
-        const floor = {fill: "url(#floorPattern)"};
-        const floorColour = {fill: "#c49e71"};
-        const floorPatternStyle = {fill: "#ad8b65"};
+        const { width, height, spaceBelowPicture } = this.props;
 
-        let viewBoxParams = "0 0 " + String(this.props.width) + " " + String(this.props.height);
+        const wall = { fill: "#e0ded1" };
+        const wallPattern = { fill: "url(#WallPattern)" };
+        const floor = { fill: "url(#floorPattern)" };
+        const floorColour = { fill: "#c49e71" };
+        const floorPatternStyle = { fill: "#ad8b65" };
 
-        let floorHeight = 42;
-        let floorY = this.props.height - floorHeight;
+        const viewBoxParams = "0 0 " + String(width) + " " + String(height);
 
-        let skirtingHeight = 34.3;
-        let skirtingTop = floorY - skirtingHeight;
+        const maxPercentageTakenUpBySkirting = 0.4;
+        const maxSkirtingHeight = 34;
+        const minGapPercent = 0.3;
+
+        let skirtingHeight = spaceBelowPicture * maxPercentageTakenUpBySkirting;
+        if(skirtingHeight > maxSkirtingHeight) skirtingHeight = maxSkirtingHeight;
+
+        const gapBetweenPictureAndSkirting = spaceBelowPicture * minGapPercent;
+
+        const skirtingTop = height - (spaceBelowPicture - gapBetweenPictureAndSkirting);
+        const floorY = skirtingTop + skirtingHeight;
+        const floorHeight = height - floorY;
 
         return (
-            <svg className="svgBg" width={this.props.width} height={this.props.height} ref="svgRef" key="1" xmlns="http://www.w3.org/2000/svg" viewBox={viewBoxParams}>
+            <svg className="svgBg" width={width} height={height} ref="svgRef" key="1" xmlns="http://www.w3.org/2000/svg"
+                 viewBox={viewBoxParams}>
 
                 <defs>
                     <pattern id="WallPattern"
@@ -58,18 +69,14 @@ class Room extends Component {
 
                 </defs>
 
-                <rect style={wall} x="0" y="0" width={this.props.width} height={this.props.height}/>
+                <rect style={wall} x="0" y="0" width={width} height={height}/>
 
                 <rect style={wallPattern} x="0" y="0" width="100%" height="100%"/>
 
                 <rect style={floor} x="0" y={floorY} width="100%" height={floorHeight}/>
 
-                <g>
-                    <rect fill="#ffffff" y={skirtingTop} width="100%" height="6"/>
-                    <rect fill="#f7f7f7" y={skirtingTop + 7} width="100%" height="27"/>
-                    <rect fill="#d3d3d3" y={skirtingTop + 6} width="100%" height="1"/>
-                    <rect fill="#515151" y={skirtingTop + 34} width="100%" height="0.3"/>
-                </g>
+                <SkirtingBoard top={skirtingTop} height={skirtingHeight}/>
+
 
             </svg>
         );

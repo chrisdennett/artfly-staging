@@ -7,8 +7,8 @@ import ScrollbarRemover from "../global/ScrollbarRemover";
 
 class Artwork extends Component {
 
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = { imageLoading: true };
     }
 
@@ -28,10 +28,14 @@ class Artwork extends Component {
         const {widthToHeightRatio, heightToWidthRatio} = artwork;
         const frameThicknessPercent = 0.03;
         const mountThicknessPercent = 0.06;
+        const spaceBelowPicturePercent = 0.1;
+        const spaceBelowPicture = spaceBelowPicturePercent * height;
+
         let minPaddingLeft = 10;
         const minPaddingRight = 10;
         let minPaddingTop = 60;
-        const minPaddingBottom = 110;
+        const minPaddingBottom = spaceBelowPicture;
+
         const maxWidth = width - (minPaddingLeft+minPaddingRight);
         const maxHeight = height - (minPaddingTop+minPaddingBottom);
 
@@ -106,7 +110,7 @@ class Artwork extends Component {
                 }
 
                 <div style={{ position: 'absolute' }}>
-                    <Room width={width} height={height}/>
+                    <Room width={width} height={height} spaceBelowPicture={spaceBelowPicture}/>
                 </div>
 
                 <div style={{ position: 'absolute', top: paddingTop, left: paddingLeft }}>
