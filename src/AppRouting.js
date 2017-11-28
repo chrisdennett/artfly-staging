@@ -25,8 +25,6 @@ import FourOhFour from "./components/FourOhFour/FourOhFour";
 import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
 //
 
-const IN_BETA_MODE = true;
-
 const routes = {
     home: { component: Home },
     gallery: { component: GalleryContainer },
@@ -146,13 +144,10 @@ class ArtflyRouting extends Component {
             return <Redirect to={'/newUser'}/>;
         }
 
-        const showTopControls = IN_BETA_MODE === false || this.props.user.status !== 'none';
-
         return (
             <div>
-                {showTopControls &&
                 <AppControls {...params} user={this.props.user}/>
-                }
+
                 <WindowController>
                     {PageComponentWithProps}
                 </WindowController>

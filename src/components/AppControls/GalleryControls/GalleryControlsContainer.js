@@ -54,7 +54,7 @@ const mapStateToProps = (state, ownProps) => {
     });
     const galleryArtworksInDateOrder = _.orderBy(galleryArtworks, ['dateAdded'], ['desc']);
     let galleryArtworkIds = [];
-    for(let artwork of galleryArtworksInDateOrder){
+    for (let artwork of galleryArtworksInDateOrder) {
         galleryArtworkIds.push(artwork.artworkId);
     }
 

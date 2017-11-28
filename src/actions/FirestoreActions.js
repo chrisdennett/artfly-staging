@@ -9,8 +9,69 @@ import {
 // TODO: haven't got rid of listeners anywhere, they "could" build up the data massively
 // Could clear artist and artwork data when a new gallery is loaded in (clear the old data and listeners first)
 
+// listener object - each listener is stored on it with a name matching the Action function
+const unsubscribers = {};
+unsubscribers.userListeners = {};
+unsubscribers.userArtistListeners = {};
+unsubscribers.userArtworkListeners = {};
+unsubscribers.artistListeners = {};
+unsubscribers.artistArtworkListeners = {};
+unsubscribers.artworkListeners = {};
+
+// UNSUBSCRIBE LISTENERS
+function unsubscribAllListeners(){
+    unsubscribeUserListeners();
+    unsubscribeUserArtistListeners();
+    unsubscribeUserArtworkListeners();
+    unsubscribeArtistListeners();
+    unsubscribeArtistArtworkListeners();
+    unsubscribeArtworkListeners();
+}
+
+function unsubscribeUserListeners(){
+    const userIds = Object.keys(unsubscribers.userListeners);
+    for(let id of userIds){
+        unsubscribers.userListeners[id]();
+    }
+}
+
+function unsubscribeUserArtistListeners(){
+    const userIds = Object.keys(unsubscribers.userArtistListeners);
+    for(let id of userIds){
+        unsubscribers.userArtistListeners[id]();
+    }
+}
+
+function unsubscribeUserArtworkListeners(){
+    const userIds = Object.keys(unsubscribers.userArtworkListeners);
+    for(let id of userIds){
+        unsubscribers.userArtworkListeners[id]();
+    }
+}
+
+function unsubscribeArtistListeners(){
+    const artistIds = Object.keys(unsubscribers.artistListeners);
+    for(let id of artistIds){
+        unsubscribers.artistListeners[id]();
+    }
+}
+
+function unsubscribeArtistArtworkListeners(){
+    const artistIds = Object.keys(unsubscribers.artistArtworkListeners);
+    for(let id of artistIds){
+        unsubscribers.artistArtworkListeners[id]();
+    }
+}
+
+function unsubscribeArtworkListeners(){
+    const artworkIds = Object.keys(unsubscribers.artworkListeners);
+    for(let id of artworkIds){
+        unsubscribers.artworkListeners[id]();
+    }
+}
 
 //*** AUTH ************************************************************
+
 // SIGN IN
 export function fs_signInWithProvider(providerName, onChangeCallback = null) {
     let provider;
@@ -35,6 +96,8 @@ export function fs_signInWithProvider(providerName, onChangeCallback = null) {
 
 // SIGN OUT
 export function fs_signOut(onChangeCallback = null) {
+    unsubscribAllListeners();
+
     auth
         .signOut()
         .then(() => {
@@ -63,6 +126,7 @@ export function fs_addAuthListener(onChangeCallback = null) {
 
 
 //*** USER ************************************************************
+
 // ADD NEW USER
 export function fs_addNewUser(authId, newUserData, onAddedCallback = null) {
     db.collection('users')
@@ -105,7 +169,11 @@ export function fs_deleteUser(onDeletedCallback = null) {
 
 // GET USER LISTENER
 export function fs_getUserChanges(userId, onChangeCallback = null) {
-    db.collection('users')
+    if(unsubscribers.userListeners[userId]){
+        return;
+    }
+
+    unsubscribers.userListeners[userId] = db.collection('users')
         .doc(userId)
         .onSnapshot(doc => {
                 if (!doc.exists) {
@@ -125,6 +193,7 @@ export function fs_getUserChanges(userId, onChangeCallback = null) {
 
 
 //*** ARTIST ***********************************************************
+
 // ADD ARTIST
 export function fs_addNewArtist(newArtistData, onChangeCallback = null) {
     db.collection('artists')
@@ -139,7 +208,11 @@ export function fs_addNewArtist(newArtistData, onChangeCallback = null) {
 
 // GET USER ARTIST CHANGES
 export function fs_getUserArtistChanges(userId, onChangeCallback = null) {
-    db.collection('artists')
+    if(unsubscribers.userArtistListeners[userId]){
+        return;
+    }
+
+    unsubscribers.userArtistListeners[userId] = db.collection('artists')
         .where('adminId', '==', userId)
         .onSnapshot(querySnapshot => {
                 const changedDocsArr = querySnapshot.docChanges;
@@ -205,17 +278,15 @@ function int_deleteArtistData(artistId, onCompleteCallback) {
 }
 
 // GET ARTIST CHANGES
-let artistListeners = {};
-
 export function fs_getArtistChanges(artistId, onChangeCallback = null) {
     if (!artistId) {
         console.log("no artistId: ", artistId);
         return;
     }
 
-    if (artistListeners[artistId]) return "already_running";
+    if (unsubscribers.artistListeners[artistId]) return "already_running";
 
-    artistListeners[artistId] = db.collection('artists')
+    unsubscribers.artistListeners[artistId] = db.collection('artists')
         .doc(artistId)
         .onSnapshot(doc => {
                 if (!doc.exists) {
@@ -236,8 +307,8 @@ export function fs_getArtistChanges(artistId, onChangeCallback = null) {
 
 
 //*** ARTWORK ***********************************************************
+
 // ADD ARTWORK
-// userId, artistId, thumbFile, imgFile, widthToHeightRatio, heightToWidthRatio
 export function fs_addArtwork(userId, artistId, imgFile, widthToHeightRatio, heightToWidthRatio, onChangeCallback = null) {
     // Get artwork database id first so can be used for the filename
     const artworkDatabaseRef = db.collection('artworks').doc();
@@ -371,7 +442,11 @@ function int_saveImage(artworkId, artistId, blob, prefix, onChangeCallback, onCo
 
 // GET ARTIST ARTWORK CHANGES
 export function fs_getArtistArtworkChanges(artistId, onChangeCallback = null) {
-    db.collection('artworks')
+    if(unsubscribers.artistArtworkListeners[artistId]){
+        return;
+    }
+
+    unsubscribers.artistArtworkListeners[artistId] = db.collection('artworks')
         .where('artistId', '==', artistId)
         .onSnapshot(querySnapshot => {
                 const changedDocsArr = querySnapshot.docChanges;
@@ -387,6 +462,7 @@ export function fs_getArtistArtworkChanges(artistId, onChangeCallback = null) {
                 }
 
                 // if an artwork has been added or removed save the new total
+                // TODO: This will cause an error if they user isn't logged in
                 if (docAddedOrDeleted) {
                     const totalArtworks = querySnapshot.size;
                     fs_updateArtist(artistId, { totalArtworks });
@@ -398,14 +474,12 @@ export function fs_getArtistArtworkChanges(artistId, onChangeCallback = null) {
 }
 
 // GET ARTWORK CHANGES
-let artworkListeners = {};
-
 export function fs_getArtworkChanges(artworkId, onChangeCallback = null) {
-    if (artworkListeners[artworkId]) {
+    if (unsubscribers.artworkListeners[artworkId]) {
         return "already_running";
     }
 
-    artworkListeners[artworkId] = db.collection('artworks')
+    unsubscribers.artworkListeners[artworkId] = db.collection('artworks')
         .doc(artworkId)
         .onSnapshot(doc => {
                 if (!doc.exists) {
@@ -426,14 +500,12 @@ export function fs_getArtworkChanges(artworkId, onChangeCallback = null) {
 }
 
 // GET USER ARTWORK CHANGES
-let userArtworkListeners = {};
-
 export function fs_getUserArtworkChanges(userId) {
-    if (userArtworkListeners[userId]) {
+    if (unsubscribers.userArtworkListeners[userId]) {
         return "already_running";
     }
 
-    userArtworkListeners[userId] = db.collection('artworks')
+    unsubscribers.userArtworkListeners[userId] = db.collection('artworks')
         .where('adminId', '==', userId)
         .onSnapshot(querySnapshot => {
                 const changedDocsArr = querySnapshot.docChanges;
