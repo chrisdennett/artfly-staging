@@ -19,7 +19,7 @@ unsubscribers.artistArtworkListeners = {};
 unsubscribers.artworkListeners = {};
 
 // UNSUBSCRIBE LISTENERS
-function unsubscribAllListeners(){
+function unsubscribAllListeners() {
     unsubscribeUserListeners();
     unsubscribeUserArtistListeners();
     unsubscribeUserArtworkListeners();
@@ -28,44 +28,44 @@ function unsubscribAllListeners(){
     unsubscribeArtworkListeners();
 }
 
-function unsubscribeUserListeners(){
+function unsubscribeUserListeners() {
     const userIds = Object.keys(unsubscribers.userListeners);
-    for(let id of userIds){
+    for (let id of userIds) {
         unsubscribers.userListeners[id]();
     }
 }
 
-function unsubscribeUserArtistListeners(){
+function unsubscribeUserArtistListeners() {
     const userIds = Object.keys(unsubscribers.userArtistListeners);
-    for(let id of userIds){
+    for (let id of userIds) {
         unsubscribers.userArtistListeners[id]();
     }
 }
 
-function unsubscribeUserArtworkListeners(){
+function unsubscribeUserArtworkListeners() {
     const userIds = Object.keys(unsubscribers.userArtworkListeners);
-    for(let id of userIds){
+    for (let id of userIds) {
         unsubscribers.userArtworkListeners[id]();
     }
 }
 
-function unsubscribeArtistListeners(){
+function unsubscribeArtistListeners() {
     const artistIds = Object.keys(unsubscribers.artistListeners);
-    for(let id of artistIds){
+    for (let id of artistIds) {
         unsubscribers.artistListeners[id]();
     }
 }
 
-function unsubscribeArtistArtworkListeners(){
+function unsubscribeArtistArtworkListeners() {
     const artistIds = Object.keys(unsubscribers.artistArtworkListeners);
-    for(let id of artistIds){
+    for (let id of artistIds) {
         unsubscribers.artistArtworkListeners[id]();
     }
 }
 
-function unsubscribeArtworkListeners(){
+function unsubscribeArtworkListeners() {
     const artworkIds = Object.keys(unsubscribers.artworkListeners);
-    for(let id of artworkIds){
+    for (let id of artworkIds) {
         unsubscribers.artworkListeners[id]();
     }
 }
@@ -169,7 +169,7 @@ export function fs_deleteUser(onDeletedCallback = null) {
 
 // GET USER LISTENER
 export function fs_getUserChanges(userId, onChangeCallback = null) {
-    if(unsubscribers.userListeners[userId]){
+    if (unsubscribers.userListeners[userId]) {
         return;
     }
 
@@ -208,7 +208,7 @@ export function fs_addNewArtist(newArtistData, onChangeCallback = null) {
 
 // GET USER ARTIST CHANGES
 export function fs_getUserArtistChanges(userId, onChangeCallback = null) {
-    if(unsubscribers.userArtistListeners[userId]){
+    if (unsubscribers.userArtistListeners[userId]) {
         return;
     }
 
@@ -441,8 +441,8 @@ function int_saveImage(artworkId, artistId, blob, prefix, onChangeCallback, onCo
 }
 
 // GET ARTIST ARTWORK CHANGES
-export function fs_getArtistArtworkChanges(artistId, onChangeCallback = null) {
-    if(unsubscribers.artistArtworkListeners[artistId]){
+export function fs_getArtistArtworkChanges(artistId, userId, onChangeCallback = null) {
+    if (unsubscribers.artistArtworkListeners[artistId]) {
         return;
     }
 
@@ -461,11 +461,13 @@ export function fs_getArtistArtworkChanges(artistId, onChangeCallback = null) {
                     }
                 }
 
-                // if an artwork has been added or removed save the new total
-                // TODO: This will cause an error if they user isn't logged in
-                if (docAddedOrDeleted) {
-                    const totalArtworks = querySnapshot.size;
-                    fs_updateArtist(artistId, { totalArtworks });
+                // only attempts to update artist totals if there is a userId
+                // however if userId doesn't match the artist adminId it'll fail
+                if (userId) {
+                    if (docAddedOrDeleted) {
+                        const totalArtworks = querySnapshot.size;
+                        fs_updateArtist(artistId, { totalArtworks });
+                    }
                 }
             },
             error => {

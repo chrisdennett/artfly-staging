@@ -13,7 +13,7 @@ class GalleryControlsContainer extends Component {
         super(props);
         this.onZoomClick = this.onZoomClick.bind(this);
 
-        props.listenForArtistArtworkChanges(props.galleryId);
+        props.listenForArtistArtworkChanges(props.galleryId, props.userId);
     }
 
     onZoomClick() {

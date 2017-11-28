@@ -6,7 +6,9 @@ import GalleryControlsContainer from './GalleryControls/GalleryControlsContainer
 import HomeButton from "./Logo";
 import Link from "../global/Link";
 
-const AppControls = function ({ galleryId, artworkId }) {
+const AppControls = function ({ galleryId, artworkId, user }) {
+
+    const userId = user.uid;
 
     return (
         <div>
@@ -19,7 +21,7 @@ const AppControls = function ({ galleryId, artworkId }) {
             </div>
 
             {galleryId &&
-            <GalleryControlsContainer galleryId={galleryId} artworkId={artworkId}/>
+            <GalleryControlsContainer galleryId={galleryId} artworkId={artworkId} userId={userId}/>
             }
         </div>
     )

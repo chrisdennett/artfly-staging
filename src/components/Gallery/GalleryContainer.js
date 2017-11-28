@@ -11,8 +11,9 @@ import history from '../global/history';
 class GalleryHolder extends Component {
 
     componentDidMount() {
+
         this.props.listenForArtistChanges(this.props.galleryId);
-        this.props.listenForArtistArtworkChanges(this.props.galleryId);
+        this.props.listenForArtistArtworkChanges(this.props.galleryId, this.props.userId);
     }
 
     onThumbClick(artworkId) {
@@ -131,7 +132,8 @@ const mapStateToProps = (state, ownProps) => {
         galleryArtworks: galleryArtworksInDateOrder,
         galleryParams: state.ui.galleryParams,
         windowSize: state.ui.windowSize,
-        galleryIsZoomedOut: state.ui.galleryIsZoomedOut
+        galleryIsZoomedOut: state.ui.galleryIsZoomedOut,
+        userId: state.user.uid
     }
 };
 

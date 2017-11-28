@@ -250,9 +250,9 @@ export function listenForArtistChanges(artistId) {
 */
 
 // LISTEN FOR ARTWORK DATA CHANGES
-export function listenForArtistArtworkChanges(artistId) {
+export function listenForArtistArtworkChanges(artistId, userId) {
     return (dispatch) => {
-        fs_getArtistArtworkChanges(artistId, (artworkData) => {
+        fs_getArtistArtworkChanges(artistId, userId, (artworkData) => {
             dispatch({
                 type: ARTWORK_CHANGE,
                 payload: artworkData
