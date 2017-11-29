@@ -1,18 +1,53 @@
 import React from 'react';
+import styled from 'styled-components';
 
-const Title = function (props) {
+const Title = function () {
     return (
-        <svg viewBox="0 0 733 160">
-            <g color="#000">
-                <text fontSize="156.7" stroke="#000" strokeWidth="4" style={{ textAlign: "center" }}
-                      fontWeight="900" fontFamily="'Source Code Pro'" y="128.661" x="452.368" textAnchor="middle">
-                    <tspan y="128.661" x="452.368">
-                        <tspan>ArtFly</tspan>
-                    </tspan>
+        <StyledTitle>
+            <StyledSvgLogo viewBox="0 0 149 149">
+                <g transform="rotate(45.001 79.249 66.397)" color="#000">
+                    <path
+                        d="M148 111.7c4.976-5.58 4.014-18-7.768-21.43-11.43-3.331-23.78-3.472-23.78-3.472-3.168 17.84 23.85 34.04 31.55 24.9z"
+                        stroke="#000" strokeWidth="3" fill="#fff"/>
+                    <path
+                        d="M159.2 52.05c5.223 12.99-.272 31.26-15.38 34.46-14.65 3.104-29.52.619-29.52.619 1.245-30.82 32.35-60.06 44.9-35.08zM14.62 111.7c-4.976-5.6-4.01-18.03 7.77-21.46 11.42-3.33 23.78-3.47 23.78-3.47 3.17 17.83-23.84 34.03-31.55 24.93z"
+                        stroke="#000" strokeWidth="3" fill="#fff"/>
+                    <path
+                        d="M3.442 52.05c-5.223 12.99.272 31.26 15.38 34.46 14.65 3.104 29.52.619 29.52.619-1.24-30.81-32.35-60.06-44.9-35.08z"
+                        stroke="#000" strokeWidth="3" fill="#fff"/>
+                    <path d="M148.7 437.5H91.06l14.41-24.96 14.41-24.96 14.41 24.96z"
+                          transform="matrix(1.165 0 0 .7797 -57.96 -300.7)" stroke="#000" strokeWidth="3.148"
+                          fill="#e9ddaf"/>
+                    <path d="M68.17 17.26c8.326-2.324 17.25-2.784 27.21 0L81.78 1.49z" stroke="#000" strokeWidth="3"
+                          fill="red"/>
+                    <path d="M67.06 41.94c10.95-8.918 20.5-6.5 29.54 0v87.38H67.06z" stroke="#000" strokeWidth="3"
+                          fill="#fc0"/>
+                    <path
+                        d="M47.02 41.94c7.498-8.918 14.03-6.5 20.22 0v87.38H47.02zM96.42 41.94c7.498-8.918 14.03-6.5 20.22 0v87.38H96.42z"
+                        stroke="#000" strokeWidth="3" fill="#f60"/>
+                    <ellipse rx="20.44" ry="20.7" stroke="#000" cy="71.01" cx="60.8" strokeWidth="3" fill="#fff"/>
+                    <ellipse rx="9.527" ry="9.646" cy="71.01" cx="60.8"/>
+                    <ellipse rx="20.44" ry="20.7" stroke="#000" cy="71.01" cx="101.4" strokeWidth="3" fill="#fff"/>
+                    <ellipse rx="9.527" ry="9.646" cy="71.01" cx="101.4"/>
+                    <path d="M64.32 144.4l-17.37-13 19.81-12.5 29.75-1 19.89 13.4L99.06 144z" stroke="#000"
+                          strokeWidth="3" fill="#e9ddaf"/>
+                    <ellipse rx="10.24" ry="2.497" stroke="#000" cy="131.5" cx="81.86" strokeWidth="3" fill="red"/>
+                    <ellipse rx="6.116" ry="6.192" transform="matrix(.999 .04553 .04553 .999 0 0)" cy="63.72" cx="62.5"
+                             fill="#fff"/>
+                    <ellipse rx="6.116" ry="6.192" transform="matrix(.999 .04553 .04553 .999 0 0)" cy="61.81" cx="103.6"
+                             fill="#fff"/>
+                </g>
+            </StyledSvgLogo>
+
+            <svg height="103.4" width="398.8" viewBox="0 0 398.81329 103.39782">
+                <text style={{ textAlign: "center" }} strokeWidth="0" fontFamily="'Source Code Pro'" fontSize="109.7"
+                      y="82.714" x="203.309" fontWeight="900" color="#000" textAnchor="middle">
+                    <tspan fontSize="110" y="82.714" x="203.309">ArtFly</tspan>
                 </text>
-                <text fontSize="156.7" stroke="#000" strokeWidth="4" fill="none" style={{ textAlign: "center" }}
-                      fontWeight="900" fontFamily="'Source Code Pro'" y="122.822" x="448.203" textAnchor="middle">
-                    <tspan fontWeight="bold" y="122.822" x="448.203">
+                <text style={{ textAlign: "center" }} strokeWidth="3.001" fontFamily="'Source Code Pro'"
+                      fontSize="109.7" stroke="#000" y="78.624" x="198.392" fontWeight="900" fill="none" color="#000"
+                      textAnchor="middle">
+                    <tspan fontSize="110" y="78.624" x="198.392" fontWeight="bold">
                         <tspan fill="red">A</tspan>
                         <tspan fill="#f60">r</tspan>
                         <tspan fill="#fc0">t</tspan>
@@ -21,39 +56,24 @@ const Title = function (props) {
                         <tspan fill="#aa00d4">y</tspan>
                     </tspan>
                 </text>
-                <g>
-                    <path
-                        d="M148 111.7c4.976-5.58 4.014-18-7.768-21.43-11.43-3.331-23.78-3.472-23.78-3.472-3.168 17.84 23.85 34.04 31.55 24.9z"
-                        stroke="#000" strokeWidth="3" fill="#fff"/>
-                    <path
-                        d="M159.2 52.04c5.223 12.99-.272 31.26-15.38 34.46-14.65 3.104-29.52.619-29.52.619 1.245-30.82 32.35-60.06 44.9-35.08zM14.61 111.7c-4.976-5.58-4.014-18 7.768-21.43 11.43-3.331 23.78-3.472 23.78-3.472 3.168 17.84-23.85 34.04-31.55 24.9z"
-                        stroke="#000" strokeWidth="3" fill="#fff"/>
-                    <path
-                        d="M3.433 52.04c-5.223 12.99.272 31.26 15.38 34.46 14.65 3.104 29.52.619 29.52.619-1.245-30.82-32.35-60.06-44.9-35.08z"
-                        stroke="#000" strokeWidth="3" fill="#fff"/>
-                    <path stroke="#000" strokeWidth="3.148" fill="#e9ddaf"
-                          transform="matrix(1.165 0 0 .7797 -57.97 -300.7)"
-                          d="M148.7 437.5H91.06l14.41-24.96 14.41-24.96 14.41 24.96z"/>
-                    <path d="M68.16 17.25c8.326-2.324 17.25-2.784 27.21 0L81.77 1.48z" stroke="#000" strokeWidth="3"
-                          fill="red"/>
-                    <path d="M67.05 41.93c10.95-8.918 20.5-6.5 29.54 0v87.38H67.05z" stroke="#000" strokeWidth="3"
-                          fill="#fc0"/>
-                    <path
-                        d="M47.01 41.93c7.498-8.918 14.03-6.5 20.22 0v87.38H47.01zM96.41 41.93c7.498-8.918 14.03-6.5 20.22 0v87.38H96.41z"
-                        stroke="#000" strokeWidth="3" fill="#f60"/>
-                    <ellipse rx="20.44" ry="20.7" stroke="#000" cy="71" cx="60.79" strokeWidth="3" fill="#fff"/>
-                    <ellipse rx="9.527" ry="9.646" cy="71" cx="60.79"/>
-                    <ellipse rx="20.44" ry="20.7" stroke="#000" cy="71" cx="101.3" strokeWidth="3" fill="#fff"/>
-                    <ellipse rx="9.527" ry="9.646" cy="71" cx="101.3"/>
-                    <ellipse rx="5.347" ry="5.414" cy="66.8" cx="67.13" fill="#fff"/>
-                    <ellipse rx="5.347" ry="5.414" cy="66.8" cx="107.1" fill="#fff"/>
-                    <path d="M64.31 144.4l-17.37-12.97 19.37-12.73 30.82-.08 19.21 12.65L99.05 144z" stroke="#000"
-                          strokeWidth="3" fill="#e9ddaf"/>
-                    <ellipse rx="10.24" ry="2.497" stroke="#000" cy="131.5" cx="81.85" strokeWidth="3" fill="red"/>
-                </g>
-            </g>
-        </svg>
+            </svg>
+        </StyledTitle>
     )
 };
 
 export default Title;
+
+const StyledTitle = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 600px;
+`;
+
+const StyledSvgLogo = styled.svg`
+    height:120px;
+    width:120px; 
+    margin-right:20px;
+    margin-bottom: 20px;
+`;
