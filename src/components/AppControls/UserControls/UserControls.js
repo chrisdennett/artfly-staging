@@ -1,13 +1,10 @@
 // externals
 import React from "react";
 // components
-import SignOutButton from "./assets/SignOutButton";
-import SettingsButton from "./assets/SettingsButton";
-import EditButton from "./assets/EditButton";
 import SignInContainer from "../../SignIn/SignInContainer";
-import AddArtButton from "./assets/AddArtButton";
 import Link from "../../global/Link";
 import history from '../../global/history';
+import IconButt from "../../global/IconButt";
 
 const UserControls = function (props) {
 
@@ -27,17 +24,19 @@ const UserControls = function (props) {
             <span>
                 {showEditArtworkButton &&
                 <Link linkTo={`/artStudio/${props.artworkId}`}>
-                    <EditButton/>
+                    <IconButt icon={'editArt'} label={'edit art'}/>
                 </Link>
                 }
 
                 <Link linkTo={`/artStudio/`}>
-                    <AddArtButton maxArtworksReached={props.maxArtworksReached}/>
+                    <IconButt icon={'addArt'} label={'add art'}/>
                 </Link>
 
-                <Link linkTo="/settings"><SettingsButton/></Link>
+                <Link linkTo="/settings">
+                    <IconButt icon={'settings'} label={'settings'}/>
+                </Link>
 
-                <SignOutButton onClick={props.logout}/>
+                <IconButt icon={'signOut'} label={'sign out'} onClick={props.logout}/>
             </span>
     }
 

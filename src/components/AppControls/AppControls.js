@@ -3,8 +3,8 @@ import React from 'react';
 // components
 import UserControlsContainer from './UserControls/UserControlsContainer';
 import GalleryControlsContainer from './GalleryControls/GalleryControlsContainer';
-import HomeButton from "./Logo";
 import Link from "../global/Link";
+import IconButt from "../global/IconButt";
 
 const AppControls = function ({ galleryId, artworkId, user }) {
 
@@ -13,7 +13,7 @@ const AppControls = function ({ galleryId, artworkId, user }) {
     return (
         <div>
             <div style={{ position: 'fixed', top: 0, zIndex: 1001 }}>
-                <Link linkTo={'/'}><HomeButton/></Link>
+                <Link linkTo={'/'}><IconButt icon={'home'} label={'home'} /></Link>
             </div>
 
             <div style={{ position: 'fixed', top: 0, right: 0, zIndex: 1002 }}>

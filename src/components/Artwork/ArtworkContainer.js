@@ -117,7 +117,7 @@ class ArtworkHolder extends Component {
     }
 
     render() {
-        const { artwork, width, height, allowScrollbars}  = this.props;
+        const { artwork, width, height, allowScrollbars } = this.props;
         if (!artwork || !width || !height) {
             return <div>Artwork Loading...</div>
         }
@@ -135,8 +135,11 @@ class ArtworkHolder extends Component {
 
 // Map state to props maps to the intermediary component which uses or passes them through
 const mapStateToProps = (state, ownProps) => {
-    const width = ownProps.width ? ownProps.width : state.ui.windowSize.windowWidth;
-    const height = ownProps.height ? ownProps.height : state.ui.windowSize.windowHeight;
+    let width, height;
+    if (state.ui.windowSize) {
+        width = ownProps.width ? ownProps.width : state.ui.windowSize.windowWidth;
+        height = ownProps.height ? ownProps.height : state.ui.windowSize.windowHeight;
+    }
 
     return {
         artwork: state.artworks[ownProps.artworkId],

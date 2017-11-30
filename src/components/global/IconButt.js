@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon from "./Icon";
 
-const IconButt = function ({ icon, label, isSelected }) {
+const IconButt = function ({ icon, label, isSelected, ...rest }) {
 
     let buttonStyle = {
         cursor: 'pointer',
@@ -29,7 +29,7 @@ const IconButt = function ({ icon, label, isSelected }) {
     };
 
     return (
-        <div style={buttonStyle}>
+        <div style={buttonStyle} {...rest}>
             <div style={iconStyle}>
                 <Icon type={icon}/>
             </div>
