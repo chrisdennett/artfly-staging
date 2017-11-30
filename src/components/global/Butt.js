@@ -26,7 +26,7 @@ class Butt extends Component {
         const labelStyle = { paddingLeft: labelPadding };
         let buttonStyle = {
             textDecoration: 'none',
-            padding: '15px 25px ',
+            padding: '15px 25px',
             margin: 10,
             fontSize: 24,
             alignItems: 'center',

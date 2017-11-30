@@ -1,4 +1,5 @@
 import React from 'react';
+import IconButt from "../global/IconButt";
 
 const ColourBlock = (hue, decrement, isSelected=false) => {
     const saturation = 98;
@@ -60,6 +61,13 @@ const StyleGuide = () => {
 
     return (
         <div style={{ paddingTop: 100 }}>
+            <h2>Buttons</h2>
+            <IconButt icon={'home'} label={'home'}/>
+            <IconButt icon={'editArt'} label={'edit art'}/>
+            <IconButt icon={'addArt'} label={'add art'}/>
+            <IconButt icon={'settings'} label={'selected'} isSelected={true}/>
+            <IconButt icon={'signOut'} label={'sign out'} />
+
             <h2>Blocks I like</h2>
             {blocksILike}
             <hr/>
