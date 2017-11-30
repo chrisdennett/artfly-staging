@@ -67,13 +67,10 @@ const StyledTitle = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    max-width: 600px;
 `;
 
 const StyledSvgLogo = styled.svg`
     height:120px;
     width:120px; 
-    margin-right:20px;
-    margin-bottom: 20px;
+    margin-right: 20px;
 `;

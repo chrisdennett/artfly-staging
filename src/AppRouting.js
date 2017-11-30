@@ -23,9 +23,11 @@ import ArtworkContainer from './components/Artwork/ArtworkContainer';
 import ArtStudio from "./components/ArtStudio/ArtStudio";
 import FourOhFour from "./components/FourOhFour/FourOhFour";
 import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
+import StyleGuide from "./components/StyleGuide/StyleGuide";
 //
 
 const routes = {
+    styleGuide: { component: StyleGuide },
     home: { component: Home },
     gallery: { component: GalleryContainer },
     artwork: { component: ArtworkContainer },
