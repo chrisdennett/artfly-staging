@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 // components
-import * as PhotoHelper from "../PhotoEditor/assets/PhotoHelper";
+import * as PhotoHelper from "../../PhotoEditor/assets/PhotoHelper";
 import history from '../../global/history';
 import ArtistSelector from '../../ArtistSelector/ArtistSelector';
-import PhotoEditor from "../PhotoEditor/PhotoEditor";
+import PhotoEditor from "../../PhotoEditor/PhotoEditor";
 import Page from "../../global/Page";
-import SelectPhotoButton from "../PhotoEditor/assets/SelectPhotoButton";
+import SelectPhotoButton from "../../PhotoEditor/assets/SelectPhotoButton";
+import { P, SECTION } from '../../global/Themes';
 
 class AddPicture extends Component {
 
@@ -54,8 +55,10 @@ class AddPicture extends Component {
         const { selectedImg, selectedImgOrientation, photoEditorOpen, uploadInProgress } = this.state;
         const contentStyle = uploadInProgress ? { display: 'none' } : { display: 'inherit' };
 
+        const selectorStyle = { marginLeft: 42 };
+
         return (
-            <Page title={'Add New Picture'}>
+            <Page title={'Add Art'}>
 
                 {uploadInProgress &&
                 <div>
@@ -64,16 +67,25 @@ class AddPicture extends Component {
                 }
 
                 <div style={contentStyle}>
-                    Who is the artist for this piece?
-                    <ArtistSelector initialArtistId={selectedArtistId}
-                                    labelText={''}
-                                    onArtistSelected={this.onArtistSelected}
-                                    onInitialArtistSelected={this.onArtistSelected}/>
+                    <SECTION>
+                        <P>1. Select the artist?</P>
+
+                        <ArtistSelector initialArtistId={selectedArtistId}
+                                        style={selectorStyle}
+                                        labelText={''}
+                                        onArtistSelected={this.onArtistSelected}
+                                        onInitialArtistSelected={this.onArtistSelected}/>
+
+                    </SECTION>
 
                     {!photoEditorOpen &&
-                    <SelectPhotoButton
-                        uid={'cutting-board-selector'}
-                        onPhotoSelect={this.onPhotoSelected}/>
+                    <SECTION>
+                        <P>2. Add a photo of the artwork:</P>
+                        <SelectPhotoButton
+                            style={selectorStyle}
+                            uid={'cutting-board-selector'}
+                            onPhotoSelect={this.onPhotoSelected}/>
+                    </SECTION>
                     }
 
                     {photoEditorOpen &&

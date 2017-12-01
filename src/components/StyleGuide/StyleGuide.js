@@ -7,21 +7,22 @@ const ColourBlock = (hue, decrement, isSelected=false) => {
 
     const light = `hsl(${hue},${saturation}%,${lightness}%)`;
     const medium = `hsl(${hue},${saturation-(decrement*2)}%,${lightness-decrement}%)`;
-    const dark = `hsl(${hue},${saturation-(decrement*4)}%,${lightness-(decrement*4)}%)`;
+    // const dark = `hsl(${hue},${saturation-(decrement*4)}%,${lightness-(decrement*4)}%)`;
+    const dark = `hsl(${hue},${saturation-(decrement*7)}%,${lightness-(decrement*5)}%)`;
 
     const blockStyle = {height: 50, width: 160 };
     const b1 = {...blockStyle, backgroundColor:light};
     const b2 = {...blockStyle, backgroundColor:medium};
-    const b3 = {...blockStyle, backgroundColor:dark};
+    const b3 = {...blockStyle, backgroundColor:dark, color:light};
 
     const label = isSelected ? `**${hue}**` : hue;
 
     return (
         <div key={hue} style={{display: 'inline-block', marginBottom: 20}}>
             <p style={{textAlign: 'center'}}>{label}</p>
-            <div style={b1} />
-            <div style={b2} />
-            <div style={b3} />
+            <div style={b1}>{light}</div>
+            <div style={b2}>{medium}</div>
+            <div style={b3}>{dark}</div>
         </div>
     )
 };

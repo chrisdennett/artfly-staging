@@ -24,8 +24,9 @@ const IconButt = function ({ icon, label, isSelected, ...rest }) {
 
     const labelStyle = {
         marginLeft: 10,
-        fontSize: 20,
-        display: 'inline-block'
+        fontSize: 14,
+        display: 'inline-block',
+        fontWeight: 700
     };
 
     return (

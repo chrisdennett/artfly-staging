@@ -12,11 +12,11 @@ const AppControls = function ({ galleryId, artworkId, user }) {
 
     return (
         <div>
-            <div style={{ position: 'fixed', top: 0, zIndex: 1001 }}>
+            <div style={{ position: 'fixed', top: 5, left:10, zIndex: 1001 }}>
                 <Link linkTo={'/'}><IconButt icon={'home'} label={'home'} /></Link>
             </div>
 
-            <div style={{ position: 'fixed', top: 0, right: 0, zIndex: 1002 }}>
+            <div style={{ position: 'fixed', top: 5, right: 10, zIndex: 1002 }}>
                 <UserControlsContainer galleryId={galleryId} artworkId={artworkId}/>
             </div>
 

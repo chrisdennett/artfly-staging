@@ -6,7 +6,7 @@ import history from '../../global/history';
 import Page from "../../global/Page";
 import EditPictureControls from "./EditPictureControls";
 import ArtistUpdater from '../ArtistUpdater';
-import PhotoEditor from "../PhotoEditor/PhotoEditor";
+import PhotoEditor from "../../PhotoEditor/PhotoEditor";
 import ArtworkDeleter from "./ArtworkDeleter";
 
 class EditPicture extends Component {

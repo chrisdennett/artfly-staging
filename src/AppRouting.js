@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import ga from './libs/googleAnalyticsConfig';
 // global styles
-import './style.css';
+// import '../_archive_/style.css';
 import './globalStyles.css';
 // actions
 import { listenForUserChanges } from './actions/UserDataActions';

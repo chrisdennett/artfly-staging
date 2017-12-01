@@ -1,14 +1,17 @@
 // externals
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 // actions
 import { getUserArtistChanges } from '../../actions/UserDataActions'
+import ArtistSelectorView from "./ArtistSelectorView";
 
 class ArtistSelector extends Component {
     constructor() {
         super();
+
         this.state = { selectedArtistId: '' };
+
+        this.onArtistSelected = this.onArtistSelected.bind(this);
     }
 
     componentWillMount() {
@@ -40,9 +43,9 @@ class ArtistSelector extends Component {
         // save state and update parent - NB: could just keep state in parent and make this stateless
         this.setState({ selectedArtistId: artistId }, () => {
             if (isInitialSelection) {
-                if(this.props.onInitialArtistSelected) this.props.onInitialArtistSelected(artistId);
+                if (this.props.onInitialArtistSelected) this.props.onInitialArtistSelected(artistId);
             }
-            else{
+            else {
                 this.props.onArtistSelected(artistId);
             }
 
@@ -50,26 +53,18 @@ class ArtistSelector extends Component {
     }
 
     render() {
-        const props = this.props;
+        const {labelText, artists, ...rest} = this.props;
         const { selectedArtistId } = this.state;
-        const labelText = props.labelText !== undefined ? props.labelText : 'Select Artist: ';
+        const label = labelText !== undefined ? labelText : 'Select Artist: ';
 
         if (selectedArtistId === '') return null;
 
         return (
-            <div style={props.style}>
-                <label className={'form-field'} htmlFor="artistSelector">{labelText} </label>
-                <select value={selectedArtistId}
-                        onChange={(e) => {this.onArtistSelected(e.target.value)}}>
-                    {
-                        _.map(props.artists, (artistData, artistId) => {
-
-                            return <option key={artistId}
-                                           value={artistId}>{artistData.firstName} {artistData.lastName}</option>;
-                        })
-                    }
-                </select>
-            </div>
+            <ArtistSelectorView label={label}
+                                artists={artists}
+                                {...rest}
+                                selectedArtistId={selectedArtistId}
+                                onArtistSelected={this.onArtistSelected}/>
         )
     }
 }
@@ -85,3 +80,19 @@ const
     mapActionsToProps = { getUserArtistChanges };
 
 export default connect(mapStateToProps, mapActionsToProps)(ArtistSelector);
+
+/*
+<div style={props.style}>
+    <label className={'form-field'} htmlFor="artistSelector">{labelText} </label>
+    <select value={selectedArtistId}
+            onChange={(e) => {this.onArtistSelected(e.target.value)}}>
+        {
+            _.map(props.artists, (artistData, artistId) => {
+
+                return <option key={artistId}
+                               value={artistId}>{artistData.firstName} {artistData.lastName}</option>;
+            })
+        }
+    </select>
+</div>
+*/
