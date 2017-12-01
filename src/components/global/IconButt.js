@@ -1,14 +1,14 @@
 import React from 'react';
 import Icon from "./Icon";
 
-const IconButt = function ({ icon, label, isSelected, ...rest }) {
+const IconButt = function ({ icon, label, isSelected, bgColour, fill, stroke, ...rest }) {
 
     let buttonStyle = {
         cursor: 'pointer',
         outline: 'none',
         border: 'none',
-        display: 'inline-block',
-        margin: '5px 15px',
+        width: 95,
+        textAlign: 'center',
         padding: '15px 0 10px 0'
     };
 
@@ -17,22 +17,23 @@ const IconButt = function ({ icon, label, isSelected, ...rest }) {
     }
 
     const iconStyle = {
-        paddingTop: 5,
         verticalAlign: 'middle',
-        display: 'inline-block'
     };
 
     const labelStyle = {
-        marginLeft: 10,
         fontSize: 14,
         display: 'inline-block',
         fontWeight: 700
     };
 
+    if(bgColour){
+        buttonStyle.backgroundColor = bgColour;
+    }
+
     return (
         <div style={buttonStyle} {...rest}>
             <div style={iconStyle}>
-                <Icon type={icon}/>
+                <Icon type={icon} fill={fill} stroke={stroke}/>
             </div>
             <div style={labelStyle}>
                 {label}

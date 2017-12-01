@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import ga from './libs/googleAnalyticsConfig';
+import styled from 'styled-components';
 // global styles
 // import '../_archive_/style.css';
 import './globalStyles.css';
@@ -147,13 +148,19 @@ class ArtflyRouting extends Component {
         }
 
         return (
-            <div>
-                <AppControls {...params} user={this.props.user}/>
+            <App>
 
-                <WindowController>
-                    {PageComponentWithProps}
-                </WindowController>
-            </div>
+                <Sidebar>
+                    <AppControls {...params} user={this.props.user}/>
+                </Sidebar>
+
+
+                <MainPanel>
+                    <WindowController>
+                        {PageComponentWithProps}
+                    </WindowController>
+                </MainPanel>
+            </App>
         );
     }
 }
@@ -166,3 +173,18 @@ const mapStateToProps = (state) => {
 const mapActionsToProps = { listenForUserChanges, fetchLocalPrice };
 
 export default connect(mapStateToProps, mapActionsToProps)(ArtflyRouting);
+
+const App = styled.div`
+    display: flex;
+`;
+
+const Sidebar = styled.div`
+    display: flex;
+    flex: 0 0 100px;
+    order: -1;
+    height: 100vh; 
+`;
+
+const MainPanel = styled.div`
+    flex: 1;
+`;

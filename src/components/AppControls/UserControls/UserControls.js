@@ -21,30 +21,27 @@ const UserControls = function (props) {
     }
     else {
         renderContent =
-            <span>
+            <div className="controls-block controls-block-user">
+
                 {showEditArtworkButton &&
                 <Link linkTo={`/artStudio/${props.artworkId}`}>
-                    <IconButt icon={'editArt'} label={'edit art'}/>
+                    <IconButt icon={'editArt'} fill={'hsl(250,98%,80%)'} label={'edit art'}/>
                 </Link>
                 }
 
                 <Link linkTo={`/artStudio/`}>
-                    <IconButt icon={'addArt'} label={'add art'}/>
+                    <IconButt icon={'addArt'} fill={'hsl(250,98%,80%)'} label={'add art'}/>
                 </Link>
 
                 <Link linkTo="/settings">
-                    <IconButt icon={'settings'} label={'settings'}/>
+                    <IconButt icon={'settings'} fill={'hsl(250,98%,80%)'} label={'settings'}/>
                 </Link>
 
-                <IconButt icon={'signOut'} label={'sign out'} onClick={props.logout}/>
-            </span>
+                <IconButt icon={'signOut'} fill={'hsl(250,98%,80%)'} label={'sign out'} onClick={props.logout}/>
+            </div>
     }
 
-    return (
-        <div className="controls-block controls-block-user">
-            {renderContent}
-        </div>
-    )
+    return renderContent
 };
 
 export default UserControls;

@@ -1,5 +1,6 @@
 import React from 'react';
 import PageTitle from "./PageTitle";
+import GridLines from "./GridLines";
 
 const Page = function ({ icon, title, children, hue, saturation, brightness }) {
 
@@ -16,31 +17,35 @@ const Page = function ({ icon, title, children, hue, saturation, brightness }) {
         backgroundColor: bgCol,
         display: 'flex',
         flexDirection: 'column',
-        minHeight: '100vh'
+        minHeight: '100vh',
+        color: 'hsl(250,28%,30%)'
     };
 
     const titleStyle = {
-        margin: '0 0 4rem 0',
         backgroundColor: bgCol,
-        borderBottom: '5px solid rgba(0,0,0,0.5)'
+        borderBottom: '5px solid hsl(250,28%,30%)',
+        position: 'relative',
     };
 
     const contentStyle = {
-        width: '100%',
         maxWidth: 960,
-        margin: '6vh auto'
+        margin: '50px auto',
+        padding: '0 40px'
     };
 
     const InnerBoxStyle = {
-        border: '5px solid rgba(0,0,0,0.5)',
+        border: '5px solid hsl(250,28%,30%)',
         minHeight: '100vh'
     };
+
+    const gridStroke = 'hsla(250,28%,30%, 0.1)';
 
     return (
         <div style={pageStyle}>
             <div style={InnerBoxStyle}>
                 <div style={titleStyle}>
-                    {/*<h1 style={headingStyle}>{icon} {title}</h1>*/}
+                    <GridLines stroke={gridStroke}/>
+
                     <PageTitle title={title}/>
                 </div>
                 <div style={contentStyle}>
