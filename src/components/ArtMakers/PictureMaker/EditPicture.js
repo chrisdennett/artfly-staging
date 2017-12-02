@@ -101,6 +101,7 @@ class EditPicture extends Component {
 
                 {currentEditScreen === 'editPhoto' &&
                 <PhotoEditor isNewImage={false}
+                             openCuttingBoard={true}
                              artworkId={artworkId}
                              userId={userId}
                              artistId={artwork.artistId}

@@ -10,7 +10,9 @@ class PhotoEditor extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { showCuttingBoard: false, cuttingBoardData: null, previewData: null, showPhotoPreview:false };
+        const showCuttingBoard = props.openCuttingBoard || false;
+
+        this.state = { showCuttingBoard, cuttingBoardData: null, previewData: null, showPhotoPreview:false };
 
         this.onCuttingBoardCancel = this.onCuttingBoardCancel.bind(this);
         this.onImageCuttingBoardDone = this.onImageCuttingBoardDone.bind(this);
