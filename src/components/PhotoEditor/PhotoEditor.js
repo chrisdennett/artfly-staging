@@ -3,18 +3,25 @@ import React, { Component } from "react";
 // components
 import CropAndRotateModal from "./CropAndRotateModal";
 import EditedPhotoPreview from "./EditedPhotoPreview";
+import PhotoUploadCanvas from "./PhotoUploadCanvas";
 
 class PhotoEditor extends Component {
 
     constructor(props) {
         super(props);
 
-        this.state = { showCuttingBoard: true, cuttingBoardData: null, previewData: null };
+        this.state = { showCuttingBoard: false, cuttingBoardData: null, previewData: null, showPhotoPreview:false };
 
         this.onCuttingBoardCancel = this.onCuttingBoardCancel.bind(this);
         this.onImageCuttingBoardDone = this.onImageCuttingBoardDone.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.onCurrentImgEdit = this.onCurrentImgEdit.bind(this);
+        this.onPhotoUploadCanvasInit = this.onPhotoUploadCanvasInit.bind(this);
+    }
+
+    onPhotoUploadCanvasInit(photoUploadCanvas){
+        const previewData = {canvas:photoUploadCanvas};
+        this.setState({previewData, showPhotoPreview:true});
     }
 
     onCuttingBoardCancel() {
@@ -33,7 +40,7 @@ class PhotoEditor extends Component {
 
         const previewData = { croppedWidth, croppedHeight, canvas, leftX, topY, rightX, bottomY, widthToHeightRatio, heightToWidthRatio };
 
-        this.setState({ cuttingBoardData: data, showCuttingBoard: false, imageData, previewData });
+        this.setState({ cuttingBoardData: data, showCuttingBoard: false, showPhotoPreview: true, imageData, previewData });
     }
 
     onCancel() {
@@ -41,11 +48,11 @@ class PhotoEditor extends Component {
     }
 
     onCurrentImgEdit() {
-        this.setState({ showCuttingBoard: true });
+        this.setState({ showCuttingBoard: true, showPhotoPreview: false });
     }
 
     render() {
-        const { showCuttingBoard } = this.state;
+        const { showCuttingBoard, showPhotoPreview } = this.state;
 
         let initialCropData, initialRotation;
         if (this.state.cuttingBoardData) {
@@ -60,7 +67,11 @@ class PhotoEditor extends Component {
 
         return (
             <div>
-                {!showCuttingBoard &&
+                <PhotoUploadCanvas img={this.props.img}
+                                   orientation={this.props.initialOrientation}
+                                   onCanvasInit={this.onPhotoUploadCanvasInit}/>
+
+                {showPhotoPreview &&
                 <EditedPhotoPreview previewData={this.state.previewData}
                                     artworkData={artworkData}
                                     onCurrentImgEdit={this.onCurrentImgEdit}

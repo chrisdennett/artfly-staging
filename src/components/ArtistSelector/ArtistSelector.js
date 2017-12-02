@@ -53,7 +53,7 @@ class ArtistSelector extends Component {
     }
 
     render() {
-        const {labelText, artists, ...rest} = this.props;
+        const {labelText, artists} = this.props;
         const { selectedArtistId } = this.state;
         const label = labelText !== undefined ? labelText : 'Select Artist: ';
 

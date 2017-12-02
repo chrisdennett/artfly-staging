@@ -37,8 +37,6 @@ class CuttingBoard extends Component {
     }
 
     getImage(props, callback) {
-        console.log("props.imgUrl: ", props.imgUrl);
-
         if (props.img) {
             callback(props.img);
         }

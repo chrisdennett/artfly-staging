@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import styled from 'styled-components';
 // components
 import Title from "./assets/Title";
-import SignInContainer from "../SignIn/SignInContainer";
+// import SignInContainer from "../SignIn/SignInContainer";
 // import Link from "../global/Link";
 // import LinkButt from "../global/LinkButt";
 

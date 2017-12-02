@@ -71,9 +71,23 @@ class EditedPhotoPreview extends Component {
 
     drawToCanvases() {
         if(!this.props.previewData) return;
+        let { canvas, croppedWidth, croppedHeight, leftX, topY, rightX, bottomY } = this.props.previewData;
 
-        const { croppedWidth, croppedHeight, canvas, leftX, topY, rightX, bottomY } = this.props.previewData;
+        // set defaults if there's no cropping info
+        if(!croppedWidth) croppedWidth = canvas.width;
+        if(!croppedHeight) croppedHeight = canvas.height;
+        if(!leftX) leftX = 0;
+        if(!topY) topY = 0;
+        if(!rightX) rightX = canvas.width;
+        if(!bottomY) {
+            bottomY = canvas.height;
+            console.log("bottomY same as canvas: ", bottomY);
+        }
+            console.log("bottomY NOT THE same as canvas: ", bottomY);
 
+
+
+        // Create canvas' matching the dimensions of the image size I want to save
         PhotoHelper.drawCanvasToCanvas(this.maxCanvas, croppedWidth, croppedHeight, canvas, leftX, topY, rightX, bottomY);
         PhotoHelper.drawCanvasToCanvas(this.thumbCanvas, 150, 150, canvas, leftX, topY, rightX, bottomY);
     }

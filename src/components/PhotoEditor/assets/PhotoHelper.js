@@ -61,6 +61,74 @@ function GetPhotoOrientation(file, callback) {
     reader.readAsArrayBuffer(file);
 }
 
+// Draws an image to a canvas
+export function drawImageToCanvas(img, canvas, orientation, maxCanvasWidth, maxCanvasHeight, callback) {
+    const isPortrait = orientation > 4 && orientation < 9;
+
+    const imgW = isPortrait ? img.height : img.width;
+    const imgH = isPortrait ? img.width : img.height;
+
+    // Restrict to maximum image size allowed or img size, whichever is smaller
+    const maxW = imgW >= maxCanvasWidth ? maxCanvasWidth : imgW;
+    const maxH = imgH >= maxCanvasHeight ? maxCanvasHeight : imgH;
+
+    const widthToHeightRatio = imgH / imgW;
+    const heightToWidthRatio = imgW / imgH;
+
+    let canvasW = maxW;
+    let canvasH = maxW * widthToHeightRatio;
+
+    if (canvasH > maxH) {
+        canvasH = maxH;
+        canvasW = maxH * heightToWidthRatio;
+    }
+
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    canvas.width = canvasW;
+    canvas.height = canvasH;
+
+    // save the context so it can be reset after transform
+    ctx.save();
+    // transform context before drawing image
+    switch (orientation) {
+        case 2:
+            ctx.transform(-1, 0, 0, 1, canvasH, 0);
+            break;
+        case 3:
+            ctx.transform(-1, 0, 0, -1, canvasW, canvasH);
+            break;
+        case 4:
+            ctx.transform(1, 0, 0, -1, 0, canvasW);
+            break;
+        case 5:
+            ctx.transform(0, 1, 1, 0, 0, 0);
+            break;
+        case 6:
+            ctx.transform(0, 1, -1, 0, canvasW, 0);
+            break;
+        case 7:
+            ctx.transform(0, -1, -1, 0, canvasW, canvasH);
+            break;
+        case 8:
+            ctx.transform(0, -1, 1, 0, 0, canvasH);
+            break;
+        default:
+            break;
+    }
+
+    const transformedCanvasW = isPortrait ? canvasH : canvasW;
+    const transformedCanvasH = isPortrait ? canvasW : canvasH;
+
+    // draw image
+    ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, transformedCanvasW, transformedCanvasH);
+    // restore ensures resets transform in case another image is added
+    ctx.restore();
+
+    callback();
+}
+
 // Draws one canvas to another restricting to a specific size
 export function drawCanvasToCanvas(outputCanvas, maxOutputWidth, maxOutputHeight, sourceCanvas, leftX, topY, rightX, bottomY){
     const sourceWidth = rightX - leftX;
