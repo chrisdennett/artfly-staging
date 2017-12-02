@@ -79,13 +79,7 @@ class EditedPhotoPreview extends Component {
         if(!leftX) leftX = 0;
         if(!topY) topY = 0;
         if(!rightX) rightX = canvas.width;
-        if(!bottomY) {
-            bottomY = canvas.height;
-            console.log("bottomY same as canvas: ", bottomY);
-        }
-            console.log("bottomY NOT THE same as canvas: ", bottomY);
-
-
+        if(!bottomY) bottomY = canvas.height;
 
         // Create canvas' matching the dimensions of the image size I want to save
         PhotoHelper.drawCanvasToCanvas(this.maxCanvas, croppedWidth, croppedHeight, canvas, leftX, topY, rightX, bottomY);
