@@ -78,26 +78,27 @@ class AddPicture extends Component {
 
                     </SECTION>
 
-                    {!photoEditorOpen &&
                     <SECTION>
                         <P>2. Add a photo of the artwork:</P>
+                        {!photoEditorOpen &&
                         <SelectPhotoButton
                             style={selectorStyle}
                             uid={'cutting-board-selector'}
                             onPhotoSelect={this.onPhotoSelected}/>
-                    </SECTION>
-                    }
+                        }
 
-                    {photoEditorOpen &&
-                    <PhotoEditor img={selectedImg}
-                                 isNewImage={true}
-                                 initialOrientation={selectedImgOrientation}
-                                 userId={userId}
-                                 artistId={selectedArtistId}
-                                 onCancel={this.onPhotoEditorCancel}
-                                 onUploadStart={this.onUploadStart}
-                                 onUploadComplete={this.onUploadComplete}/>
-                    }
+                        {photoEditorOpen &&
+                        <PhotoEditor img={selectedImg}
+                                     isNewImage={true}
+                                     initialOrientation={selectedImgOrientation}
+                                     userId={userId}
+                                     artistId={selectedArtistId}
+                                     onCancel={this.onPhotoEditorCancel}
+                                     onUploadStart={this.onUploadStart}
+                                     onUploadComplete={this.onUploadComplete}/>
+                        }
+                    </SECTION>
+
                 </div>
             </Page>
         )

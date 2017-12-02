@@ -25,9 +25,7 @@ class PhotoEditor extends Component {
     }
 
     onCuttingBoardCancel() {
-        this.setState({ showCuttingBoard: false }, () => {
-            this.props.onCancel();
-        })
+        this.setState({ showCuttingBoard: false, showPhotoPreview: true });
     }
 
     onImageCuttingBoardDone(data) {
