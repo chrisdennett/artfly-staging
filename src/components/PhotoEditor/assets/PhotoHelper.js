@@ -126,7 +126,7 @@ export function drawImageToCanvas(img, canvas, orientation, maxCanvasWidth, maxC
     // restore ensures resets transform in case another image is added
     ctx.restore();
 
-    callback();
+    callback(widthToHeightRatio, heightToWidthRatio);
 }
 
 // Draws one canvas to another restricting to a specific size

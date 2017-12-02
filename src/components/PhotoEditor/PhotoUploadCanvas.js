@@ -9,8 +9,6 @@ class PhotoUploadCanvas extends Component {
     componentDidMount() {
         const { img, orientation, onCanvasInit } = this.props;
 
-        console.log("orientation: ", orientation);
-
         if (img && this.canvas) {
             PhotoHelper.drawImageToCanvas(img, this.canvas, orientation, maxImageWidth, maxImageHeight, () => {
                 onCanvasInit(this.canvas);
