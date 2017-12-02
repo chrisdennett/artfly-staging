@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 
-const ArtistSelectorView = function ({ label, artists, selectedArtistId, onArtistSelected, ...rest }) {
+const ArtistSelectorView = function ({ label, artists, selectedArtistId, onArtistSelected }) {
 
     const bgCol = `hsl(250,78%,70%)`;
 
@@ -17,7 +17,7 @@ const ArtistSelectorView = function ({ label, artists, selectedArtistId, onArtis
     };
 
     return (
-        <section {...rest}>
+        <section>
             <label className={'form-field'} htmlFor="artistSelector">{label} </label>
             <select style={selectStyle} value={selectedArtistId}
                     onChange={(e) => {onArtistSelected(e.target.value)}}>

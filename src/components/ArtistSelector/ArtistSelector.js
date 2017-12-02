@@ -62,7 +62,6 @@ class ArtistSelector extends Component {
         return (
             <ArtistSelectorView label={label}
                                 artists={artists}
-                                {...rest}
                                 selectedArtistId={selectedArtistId}
                                 onArtistSelected={this.onArtistSelected}/>
         )
