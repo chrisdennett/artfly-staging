@@ -4,6 +4,10 @@
     min-height: 100vh;
 }
 
+.page--title{
+
+}
+
 .page--content{
     margin: 50px auto;
     padding: 0 40px 0 140px;
@@ -12,5 +16,9 @@
 @media screen and (max-width: 800px) {
     .page--content{
         padding: 0 20px;
+    }
+
+    .page--title{
+        margin-top: 80px;
     }
 }

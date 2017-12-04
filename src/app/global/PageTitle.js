@@ -12,7 +12,7 @@ const PageTitle = function ({title}) {
     const stroke = 'hsl(250,28%,30%)';
 
     return (
-        <div style={headingStyle}>
+        <div className='page--title' style={headingStyle}>
 
             <svg width="300" height="64" viewBox="0 0 300 64">
 

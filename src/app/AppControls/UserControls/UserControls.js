@@ -23,19 +23,20 @@ const UserControls = function (props) {
         renderContent =
             <div className='appControls--userControls'>
 
-                {showEditArtworkButton &&
-                <Link linkTo={`/artStudio/${props.artworkId}`}>
-                    <IconButt icon={'editArt'} fill={'hsl(250,98%,80%)'} label={'edit art'}/>
+                <Link linkTo="/settings">
+                    <IconButt icon={'settings'} fill={'hsl(250,98%,80%)'} label={'settings'}/>
                 </Link>
-                }
+
 
                 <Link linkTo={`/artStudio/`}>
                     <IconButt icon={'addArt'} fill={'hsl(250,98%,80%)'} label={'add art'}/>
                 </Link>
 
-                <Link linkTo="/settings">
-                    <IconButt icon={'settings'} fill={'hsl(250,98%,80%)'} label={'settings'}/>
+                {showEditArtworkButton &&
+                <Link linkTo={`/artStudio/${props.artworkId}`}>
+                    <IconButt icon={'editArt'} fill={'hsl(250,98%,80%)'} label={'edit art'}/>
                 </Link>
+                }
 
                 <IconButt icon={'signOut'} fill={'hsl(250,98%,80%)'} label={'sign out'} onClick={props.logout}/>
             </div>

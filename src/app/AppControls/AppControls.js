@@ -1,5 +1,7 @@
 // externals
 import React from 'react';
+// styles
+import './appControls.css';
 // components
 import UserControlsContainer from './UserControls/UserControlsContainer';
 import GalleryControlsContainer from './GalleryControls/GalleryControlsContainer';
@@ -10,7 +12,7 @@ const AppControls = function ({ galleryId, artworkId }) {
 
     return (
         <div className='appControls'>
-            <Link linkTo={'/'}>
+            <Link className='appControls--home' linkTo={'/'}>
                 <IconButt icon={'home'}
                           stroke={'hsl(250,28%,30%)'}
                           fill={'hsl(250,98%,80%)'}
