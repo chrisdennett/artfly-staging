@@ -20,7 +20,7 @@ class Butt extends Component {
     }
 
     render() {
-        const { label, inline, alignLeft, size, svgIcon, backgroundColour, shadowColour, labelColour, showAsLink, fullWidth, ...rest } = this.props;
+        const { label, positiveActionButton, negativeActionButton, inline, alignLeft, size, svgIcon, backgroundColour, shadowColour, labelColour, showAsLink, fullWidth, ...rest } = this.props;
 
         const labelPadding = svgIcon ? 20 : 0;
         const labelStyle = { paddingLeft: labelPadding };
@@ -80,6 +80,16 @@ class Butt extends Component {
 
         if(rest.style){
             buttonStyle = {...buttonStyle, ...rest.style}
+        }
+
+        if(positiveActionButton){
+            buttonStyle.backgroundColor = '#42a251';
+            buttonStyle.boxShadow = `0 5px #214925`;
+        }
+
+        if(negativeActionButton){
+            buttonStyle.backgroundColor = '#ab0e00';
+            buttonStyle.boxShadow = `0 5px #580C00`;
         }
 
         return (

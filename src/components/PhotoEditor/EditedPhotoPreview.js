@@ -94,14 +94,17 @@ class EditedPhotoPreview extends Component {
             <div className='edited-photo-preview'>
                 <div className='edited-photo-preview--wrapper'>
                     <div className='edited-photo-preview--controls'>
+
+                        <Butt className='edited-photo-preview--butt'
+                              positiveActionButton
+                              onClick={this.onSave}>Save</Butt>
+
                         <Butt className='edited-photo-preview--butt'
                               onClick={this.props.onCurrentImgEdit}>Edit</Butt>
 
                         <Butt className='edited-photo-preview--butt'
+                              negativeActionButton
                               onClick={this.props.onCancel}>Cancel</Butt>
-
-                        <Butt className='edited-photo-preview--butt'
-                              onClick={this.onSave}>Save</Butt>
                     </div>
                     <div className='edited-photo-preview--canvas-holder'>
                         <canvas className='edited-photo-preview--canvas'
