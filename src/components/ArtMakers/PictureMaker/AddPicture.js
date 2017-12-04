@@ -55,8 +55,6 @@ class AddPicture extends Component {
         const { selectedImg, selectedImgOrientation, photoEditorOpen, uploadInProgress } = this.state;
         const contentStyle = uploadInProgress ? { display: 'none' } : { display: 'inherit' };
 
-        const selectorStyle = { marginLeft: 42 };
-
         return (
             <Page title={'Add Art'}>
 
@@ -71,7 +69,6 @@ class AddPicture extends Component {
                         <P>1. Select the artist?</P>
 
                         <ArtistSelector initialArtistId={selectedArtistId}
-                                        style={selectorStyle}
                                         labelText={''}
                                         onArtistSelected={this.onArtistSelected}
                                         onInitialArtistSelected={this.onArtistSelected}/>
@@ -82,7 +79,6 @@ class AddPicture extends Component {
                         <P>2. Add a photo of the artwork:</P>
                         {!photoEditorOpen &&
                         <SelectPhotoButton
-                            style={selectorStyle}
                             uid={'cutting-board-selector'}
                             onPhotoSelect={this.onPhotoSelected}/>
                         }

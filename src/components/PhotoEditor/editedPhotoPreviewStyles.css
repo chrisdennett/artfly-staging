@@ -32,6 +32,17 @@
     flex-direction: column;
 }
 
-.edited-photo-preview--butt {
+@media screen and (max-width: 750px) {
+    .edited-photo-preview--wrapper {
+        flex-direction: column;
+    }
 
+    .edited-photo-preview--canvas-holder{
+        order: -1;
+    }
+
+    .edited-photo-preview--controls {
+        width: 100%;
+    }
 }
+
