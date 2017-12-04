@@ -1,4 +1,8 @@
+// externals
 import React from 'react';
+// styles
+import './page.css';
+// components
 import PageTitle from "./PageTitle";
 import GridLines from "./GridLines";
 
@@ -11,44 +15,35 @@ const Page = function ({ icon, title, children, hue, saturation, brightness }) {
 
     // Set colour values
     const bgCol = `hsl(${h},${s}%,${l}%)`;
-    // const lighterBg = `hsl(${h},${s}%,${l-2}%)`;
+    const borderCol = `hsl(250,28%,30%)`;
+    const textCol = borderCol;
+    const gridLinesCol = `hsla(250,28%,30%, 0.1)`;
 
     const pageStyle = {
         backgroundColor: bgCol,
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-        color: 'hsl(250,28%,30%)'
+        color: textCol
     };
 
     const titleStyle = {
         backgroundColor: bgCol,
-        borderBottom: '5px solid hsl(250,28%,30%)',
+        borderBottom: `5px solid ${borderCol}`,
         position: 'relative',
     };
 
-    const contentStyle = {
-        maxWidth: 960,
-        margin: '50px auto',
-        padding: '0 40px'
-    };
-
     const InnerBoxStyle = {
-        border: '5px solid hsl(250,28%,30%)',
+        border: `5px solid ${gridLinesCol}`,
         minHeight: '100vh'
     };
 
-    const gridStroke = 'hsla(250,28%,30%, 0.1)';
-
     return (
-        <div style={pageStyle}>
+        <div className='page' style={pageStyle}>
             <div style={InnerBoxStyle}>
                 <div style={titleStyle}>
-                    <GridLines stroke={gridStroke}/>
+                    <GridLines stroke={gridLinesCol}/>
 
                     <PageTitle title={title}/>
                 </div>
-                <div style={contentStyle}>
+                <div className='page--content'>
                     {children}
                 </div>
             </div>

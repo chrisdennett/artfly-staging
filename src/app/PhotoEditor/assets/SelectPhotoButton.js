@@ -44,7 +44,6 @@ export default SelectPhotoButton;
 const CustomInputButton = styled.div`
     background: hsl(250,28%,30%);
     cursor: pointer;
-    width: 100%;
     max-width: 600px;
     border-radius: 10px;
     padding: 20px;

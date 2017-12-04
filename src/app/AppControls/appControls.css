@@ -1,0 +1,15 @@
+.appControls{
+
+}
+
+.appControls--userControls{
+
+}
+
+.appControls--galleryControls{
+    position: fixed;
+    bottom: 0;
+    width:200px;
+    left: 50%;
+    z-index: 1004;
+}

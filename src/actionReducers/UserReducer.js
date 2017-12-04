@@ -6,7 +6,7 @@ import {
     DELETE_USER,
     SIGN_IN_USER_TRIGGERED
 } from '../actions/UserDataActions';
-import ArtflyAccountTypes from '../components/global/ArtflyAccountTypes';
+import ArtflyAccountTypes from '../app/global/ArtflyAccountTypes';
 
 export default function (state = {}, action) {
     switch (action.type) {

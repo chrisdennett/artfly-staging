@@ -17,13 +17,6 @@ const GalleryControls = function (props) {
     let prevButtonLabel = 'prev';
     let controls = [];
 
-    const controlBlockStyle = {
-        width: onGalleryPage ? 200 : 250,
-        background: 'rgba(0,0,0,0.4)',
-        borderRadius: '10px 10px 0 0',
-        display: 'flex'
-    };
-
     if (onGalleryPage) {
         controls.push([
             <ZoomButton key={1} onClick={props.onZoomClick} isZoomedOut={galleryIsZoomedOut}/>,
@@ -48,10 +41,8 @@ const GalleryControls = function (props) {
     }
 
     return (
-        <div style={{ position: 'fixed', bottom: 0,  width:200 ,margin: '0 0 0 -100px', left:'50%', zIndex: 1004 }}>
-            <div style={controlBlockStyle}>
-                {controls}
-            </div>
+        <div className='appControls--galleryControls'>
+            {controls}
         </div>
     )
 };

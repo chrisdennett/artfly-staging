@@ -4,25 +4,25 @@ import { connect } from 'react-redux';
 import ga from './libs/googleAnalyticsConfig';
 // styles
 import './globalStyles.css';
-import './appStyles.css';
+import './app/appStyles.css';
 // actions
 import { listenForUserChanges } from './actions/UserDataActions';
 import { fetchLocalPrice } from './actions/PaddleActions';
 // components
-import history from './components/global/history';
-import Redirect from "./components/global/Redirect";
+import history from './app/global/history';
+import Redirect from "./app/global/Redirect";
 // route components
-import Home from './components/Home/Home';
-import GalleryContainer from './components/Gallery/GalleryContainer';
-import SettingsContainer from "./components/Settings/SettingsContainer";
-import ArtistEditorContainer from "./components/ArtistEditor/ArtistEditorContainer";
-import NewUserFormContainer from "./components/NewUser/NewUserFormContainer";
-import ArtworkContainer from './components/Artwork/ArtworkContainer';
-import ArtStudio from "./components/ArtStudio/ArtStudio";
-import FourOhFour from "./components/FourOhFour/FourOhFour";
-import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
-import StyleGuide from "./components/StyleGuide/StyleGuide";
-import App from "./components/App";
+import Home from './app/Home/Home';
+import GalleryContainer from './app/Gallery/GalleryContainer';
+import SettingsContainer from "./app/Settings/SettingsContainer";
+import ArtistEditorContainer from "./app/ArtistEditor/ArtistEditorContainer";
+import NewUserFormContainer from "./app/NewUser/NewUserFormContainer";
+import ArtworkContainer from './app/Artwork/ArtworkContainer';
+import ArtStudio from "./app/ArtStudio/ArtStudio";
+import FourOhFour from "./app/FourOhFour/FourOhFour";
+import LoadingOverlay from "./app/LoadingOverlay/LoadingOverlay";
+import StyleGuide from "./app/StyleGuide/StyleGuide";
+import App from "./app/App";
 //
 
 const routes = {
@@ -146,9 +146,9 @@ class ArtflyRouting extends Component {
         }
 
         return (
-            <App PageComponentWithProps={PageComponentWithProps}
-                 params={params}
-                 user={this.props.user}/>
+            <App params={params}>
+                {PageComponentWithProps}
+            </App>
         );
     }
 }

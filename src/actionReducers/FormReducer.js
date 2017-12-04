@@ -1,6 +1,6 @@
 import { reducer as formReducer } from 'redux-form';
 
-// import { ADD_NEW_ARTIST, CANCEL_ADD_ARTIST } from '../components/User/UserActions';
+// import { ADD_NEW_ARTIST, CANCEL_ADD_ARTIST } from '../app/User/UserActions';
 
 // formReducer has to be applied to the form property so that all forms to use it.
 // each form is a named property in the form data

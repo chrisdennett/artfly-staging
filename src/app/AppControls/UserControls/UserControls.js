@@ -21,7 +21,7 @@ const UserControls = function (props) {
     }
     else {
         renderContent =
-            <div className="controls-block controls-block-user">
+            <div className='appControls--userControls'>
 
                 {showEditArtworkButton &&
                 <Link linkTo={`/artStudio/${props.artworkId}`}>

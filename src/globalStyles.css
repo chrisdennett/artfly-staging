@@ -16,4 +16,8 @@ p{
     margin: 0.3rem 0;
 }
 
+.no-scroll-bars{
+    overflow: hidden;
+}
+
 

@@ -6,13 +6,10 @@ import GalleryControlsContainer from './GalleryControls/GalleryControlsContainer
 import Link from "../global/Link";
 import IconButt from "../global/IconButt";
 
-const AppControls = function ({ galleryId, artworkId, user }) {
-
-    const userId = user.uid;
+const AppControls = function ({ galleryId, artworkId }) {
 
     return (
-        <div>
-
+        <div className='appControls'>
             <Link linkTo={'/'}>
                 <IconButt icon={'home'}
                           stroke={'hsl(250,28%,30%)'}
@@ -25,8 +22,7 @@ const AppControls = function ({ galleryId, artworkId, user }) {
 
             {galleryId &&
             <GalleryControlsContainer galleryId={galleryId}
-                                      artworkId={artworkId}
-                                      userId={userId}/>
+                                      artworkId={artworkId}/>
             }
 
         </div>

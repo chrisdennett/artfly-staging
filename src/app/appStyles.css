@@ -14,7 +14,7 @@
 }
 
 .app--main{
-    padding-left: 100px;
+    /*padding-left: 100px;*/
 }
 
 @media screen and (max-width: 800px) {
@@ -30,6 +30,5 @@
 
     .app--main{
         padding-left: 0;
-        padding-top: 100px;
     }
 }
