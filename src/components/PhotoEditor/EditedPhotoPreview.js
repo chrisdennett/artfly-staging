@@ -1,6 +1,8 @@
 // externals
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+// styles
+import './editedPhotoPreviewStyles.css';
 // actions
 import { addArtwork, addThumbnail, updateArtworkImage, updateArtworkThumbnail } from '../../actions/UserDataActions';
 // components
@@ -70,34 +72,46 @@ class EditedPhotoPreview extends Component {
     }
 
     drawToCanvases() {
-        if(!this.props.previewData) return;
+        if (!this.props.previewData) return;
         let { canvas, croppedWidth, croppedHeight, leftX, topY, rightX, bottomY } = this.props.previewData;
 
         // set defaults if there's no cropping info
-        if(!croppedWidth) croppedWidth = canvas.width;
-        if(!croppedHeight) croppedHeight = canvas.height;
-        if(!leftX) leftX = 0;
-        if(!topY) topY = 0;
-        if(!rightX) rightX = canvas.width;
-        if(!bottomY) bottomY = canvas.height;
+        if (!croppedWidth) croppedWidth = canvas.width;
+        if (!croppedHeight) croppedHeight = canvas.height;
+        if (!leftX) leftX = 0;
+        if (!topY) topY = 0;
+        if (!rightX) rightX = canvas.width;
+        if (!bottomY) bottomY = canvas.height;
 
         // Create canvas' matching the dimensions of the image size I want to save
         PhotoHelper.drawCanvasToCanvas(this.maxCanvas, croppedWidth, croppedHeight, canvas, leftX, topY, rightX, bottomY);
         PhotoHelper.drawCanvasToCanvas(this.thumbCanvas, 150, 150, canvas, leftX, topY, rightX, bottomY);
+        PhotoHelper.drawCanvasToCanvas(this.previewCanvas, 350, 350, canvas, leftX, topY, rightX, bottomY);
     }
 
     render() {
-        const responsiveCanvasStyle = { maxWidth: 600 };
-        const hiddenCanvasStyle = { display: 'none' };
-
         return (
-            <div>
-                <canvas style={responsiveCanvasStyle} ref={(canvas) => this.maxCanvas = canvas}/>
-                <canvas style={hiddenCanvasStyle} ref={(canvas) => this.thumbCanvas = canvas}/>
+            <div className='edited-photo-preview'>
+                <div className='edited-photo-preview--wrapper'>
+                    <div className='edited-photo-preview--controls'>
+                        <Butt className='edited-photo-preview--butt'
+                              onClick={this.props.onCurrentImgEdit}>Edit</Butt>
 
-                <Butt style={{ display: 'inline-block' }} onClick={this.props.onCurrentImgEdit}>Edit</Butt>
-                <Butt style={{ display: 'inline-block' }} onClick={this.props.onCancel}>Cancel</Butt>
-                <Butt style={{ display: 'inline-block' }} onClick={this.onSave}>Save</Butt>
+                        <Butt className='edited-photo-preview--butt'
+                              onClick={this.props.onCancel}>Cancel</Butt>
+
+                        <Butt className='edited-photo-preview--butt'
+                              onClick={this.onSave}>Save</Butt>
+                    </div>
+                    <div className='edited-photo-preview--canvas-holder'>
+                        <canvas className='edited-photo-preview--canvas'
+                                ref={(canvas) => this.previewCanvas = canvas}/>
+                    </div>
+                    <canvas className='edited-photo-preview--hidden-canvas'
+                            ref={(canvas) => this.maxCanvas = canvas}/>
+                    <canvas className='edited-photo-preview--hidden-canvas'
+                            ref={(canvas) => this.thumbCanvas = canvas}/>
+                </div>
             </div>
         );
     }
