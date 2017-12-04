@@ -1,0 +1,35 @@
+.app{
+
+}
+
+.app--sidebar{
+    position: fixed;
+    width: 100px;
+    background-color: hsl(250,28%,30%);
+    border-right: none;
+    top: 0;
+    color: hsl(250,98%,80%);
+    bottom: 0;
+    z-index: 1999;
+}
+
+.app--main{
+    padding-left: 100px;
+}
+
+@media screen and (max-width: 800px) {
+    .app--sidebar{
+        width: 100%;
+        position: fixed;
+        border: none;
+        top: 0;;
+        left: 0;
+        right: 0;
+        bottom: auto;
+    }
+
+    .app--main{
+        padding-left: 0;
+        padding-top: 100px;
+    }
+}

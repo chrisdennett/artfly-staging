@@ -2,18 +2,15 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import ga from './libs/googleAnalyticsConfig';
-import styled from 'styled-components';
-// global styles
-// import '../_archive_/style.css';
+// styles
 import './globalStyles.css';
+import './appStyles.css';
 // actions
 import { listenForUserChanges } from './actions/UserDataActions';
 import { fetchLocalPrice } from './actions/PaddleActions';
 // components
 import history from './components/global/history';
 import Redirect from "./components/global/Redirect";
-import WindowController from "./components/global/WindowDimensionsTracker";
-import AppControls from "./components/AppControls/AppControls";
 // route components
 import Home from './components/Home/Home';
 import GalleryContainer from './components/Gallery/GalleryContainer';
@@ -25,6 +22,7 @@ import ArtStudio from "./components/ArtStudio/ArtStudio";
 import FourOhFour from "./components/FourOhFour/FourOhFour";
 import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
 import StyleGuide from "./components/StyleGuide/StyleGuide";
+import App from "./components/App";
 //
 
 const routes = {
@@ -148,19 +146,9 @@ class ArtflyRouting extends Component {
         }
 
         return (
-            <App>
-
-                <Sidebar>
-                    <AppControls {...params} user={this.props.user}/>
-                </Sidebar>
-
-
-                <MainPanel>
-                    <WindowController>
-                        {PageComponentWithProps}
-                    </WindowController>
-                </MainPanel>
-            </App>
+            <App PageComponentWithProps={PageComponentWithProps}
+                 params={params}
+                 user={this.props.user}/>
         );
     }
 }
@@ -173,18 +161,3 @@ const mapStateToProps = (state) => {
 const mapActionsToProps = { listenForUserChanges, fetchLocalPrice };
 
 export default connect(mapStateToProps, mapActionsToProps)(ArtflyRouting);
-
-const App = styled.div`
-    display: flex;
-`;
-
-const Sidebar = styled.div`
-    display: flex;
-    flex: 0 0 100px;
-    order: -1;
-    height: 100vh; 
-`;
-
-const MainPanel = styled.div`
-    flex: 1;
-`;
