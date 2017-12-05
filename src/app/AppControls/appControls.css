@@ -1,23 +1,22 @@
 .appControls {
     display: flex;
     flex-direction: column;
-    border: red 1px solid;
-    /*justify-content: space-between;*/
+    /*border: red 1px solid;*/
     height: 100%;
 }
 
 .appControls--home {
-    border: yellow 1px solid;
+    /*border: yellow 1px solid;*/
 }
 
 .appControls--userControls {
     display: flex;
     flex-direction: column;
-    border: blue 1px solid;
+    /*border: blue 1px solid;*/
 }
 
 .appControls--galleryControls {
-    border: green 1px solid;
+    /*border: green 1px solid;*/
     position: fixed;
     bottom: 0;
     left: 50%;

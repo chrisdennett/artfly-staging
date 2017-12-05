@@ -2,8 +2,8 @@ import React, { Component } from "react";
 // styles
 import '../MakerStyles.css';
 // components
-import history from '../../global/history';
-import Page from "../../global/Page";
+import history from '../../../global/history';
+import Page from "../../../global/Page";
 import EditPictureControls from "./EditPictureControls";
 import ArtistUpdater from '../ArtistUpdater';
 import PhotoEditor from "../../PhotoEditor/PhotoEditor";

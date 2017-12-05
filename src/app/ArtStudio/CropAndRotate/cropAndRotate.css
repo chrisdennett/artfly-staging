@@ -1,0 +1,37 @@
+.cropAndRotate--holder {
+    position: fixed;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    top: 0;
+    left: 100px;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.cropAndRotate--content {
+    position: relative;
+    padding: 40px 40px 30px 40px;
+    display: flex;
+    flex: 1;
+    align-items: center;
+}
+
+.cropAndRotate--cuttingBoardHolder {
+    margin: 0 auto;
+}
+
+.cropAndRotate--controls {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+@media screen and (max-width: 800px) {
+    .cropAndRotate--holder {
+        left: 0;
+        top: 91px;
+    }
+}

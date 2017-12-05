@@ -1,7 +1,7 @@
 // externals
 import React, { Component } from "react";
 // components
-import CropAndRotateModal from "./CropAndRotateModal";
+import CropAndRotateModal from "../CropAndRotate/CropAndRotateModal";
 import EditedPhotoPreview from "./EditedPhotoPreview";
 import PhotoUploadCanvas from "./PhotoUploadCanvas";
 

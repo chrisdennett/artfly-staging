@@ -1,10 +1,11 @@
 // externals
 import React, { Component } from "react";
-import styled from 'styled-components';
+// styles
+import './cropAndRotate.css';
 // components
 import CuttingBoard from "./CuttingBoard";
 import Butt from "../../global/Butt";
-import CuttingMat from "./CuttingMat";
+import CuttingMat from "./assets/CuttingMat";
 
 class CropAndRotate extends Component {
     constructor(props) {
@@ -94,9 +95,9 @@ class CropAndRotate extends Component {
         const maxCuttingBoardHeight = height - (buttonHeight + (cuttingBoardPadding * 2));
 
         return (
-            <StyledContainer>
-                <StyledContents>
-                    <div style={{ margin: '0 auto' }}>
+            <div className='cropAndRotate--holder'>
+                <div className='cropAndRotate--content'>
+                    <div className='cropAndRotate--cuttingBoardHolder'>
                         <CuttingBoard
                             img={loadedImg}
                             imgUrl={imgUrl}
@@ -107,47 +108,19 @@ class CropAndRotate extends Component {
                             rotation={rotation}
                             cropData={cropData}/>
                     </div>
-                </StyledContents>
+                </div>
 
-                <StyledControls>
+                <div className='cropAndRotate--controls'>
                     <Butt inline onClick={this.onRotateClockwiseClick}>ROTATE</Butt>
                     <Butt inline onClick={this.onDoneClick}>DONE</Butt>
                     <Butt inline onClick={this.onCancelClick}>CANCEL</Butt>
-                </StyledControls>
+                </div>
 
                 <CuttingMat width={width} height={height}/>
 
-            </StyledContainer>
+            </div>
         );
     }
 }
 
 export default CropAndRotate;
-
-
-const StyledContainer = styled.div`
-    position: fixed;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    top:0;
-    left:0;
-    right: 0;
-    bottom: 0;
-    z-index: 2000;
-    display: flex;
-    flex-direction: column;
-`;
-
-const StyledContents = styled.div`
-    position: relative;
-    padding: 40px 40px 30px 40px;
-    display: flex;
-    flex: 1;
-    align-items: center;
-`;
-
-const StyledControls = styled.div`
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-`;

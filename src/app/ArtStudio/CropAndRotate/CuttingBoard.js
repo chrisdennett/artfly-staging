@@ -3,7 +3,7 @@ import React, { Component } from "react";
 // import styled from 'styled-components';
 // components
 import CuttingOverlay from "./assets/CuttingOverlay";
-import * as PhotoHelper from "./assets/PhotoHelper";
+import * as PhotoHelper from "../PhotoEditor/assets/PhotoHelper";
 // helper values
 const maxImageWidth = 3000;
 const maxImageHeight = 3000;

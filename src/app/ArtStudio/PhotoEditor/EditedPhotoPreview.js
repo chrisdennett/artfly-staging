@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 // styles
 import './editedPhotoPreviewStyles.css';
 // actions
-import { addArtwork, addThumbnail, updateArtworkImage, updateArtworkThumbnail } from '../../actions/UserDataActions';
+import { addArtwork, addThumbnail, updateArtworkImage, updateArtworkThumbnail } from '../../../actions/UserDataActions';
 // components
-import Butt from "../global/Butt";
+import Butt from "../../global/Butt";
 import * as PhotoHelper from "./assets/PhotoHelper";
 
 class EditedPhotoPreview extends Component {
