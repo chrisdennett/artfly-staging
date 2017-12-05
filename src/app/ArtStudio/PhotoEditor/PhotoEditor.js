@@ -21,8 +21,8 @@ class PhotoEditor extends Component {
         this.onPhotoUploadCanvasInit = this.onPhotoUploadCanvasInit.bind(this);
     }
 
-    onPhotoUploadCanvasInit(photoUploadCanvas){
-        const previewData = {canvas:photoUploadCanvas};
+    onPhotoUploadCanvasInit(photoUploadCanvas, widthToHeightRatio, heightToWidthRatio){
+        const previewData = {canvas:photoUploadCanvas, widthToHeightRatio, heightToWidthRatio};
         this.setState({previewData, showPhotoPreview:true});
     }
 
