@@ -38,7 +38,6 @@ const UserControls = function (props) {
                 </Link>
                 }
 
-                <IconButt icon={'signOut'} fill={'hsl(250,98%,80%)'} label={'sign out'} onClick={props.logout}/>
             </div>
     }
 

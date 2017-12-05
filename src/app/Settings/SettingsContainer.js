@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
 import { updateSubscription, cancelSubscription } from '../../actions/PaddleActions';
-import { getUserArtistChanges } from "../../actions/UserDataActions";
+import { getUserArtistChanges, signOutUser } from "../../actions/UserDataActions";
 // components
 import Settings from './Settings';
 
@@ -47,6 +47,7 @@ class SettingsHolder extends Component {
 
         return <Settings onCancelSubscription={this.onCancelSubscription.bind(this)}
                          onUpdateSubscription={this.onUpdateSubscription.bind(this)}
+                         signOutUser={this.props.signOutUser}
                          maxArtworksReached={maxArtworksReached}
                          maxArtworks={maxArtworks}
                          planName={planName}
@@ -75,7 +76,7 @@ const mapStateToProps = (state) => {
 };
 
 const SettingsContainer = connect(
-    mapStateToProps, { updateSubscription, cancelSubscription, getUserArtistChanges }
+    mapStateToProps, { updateSubscription, cancelSubscription, getUserArtistChanges, signOutUser }
 )(SettingsHolder);
 
 export default SettingsContainer;

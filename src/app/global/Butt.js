@@ -22,7 +22,7 @@ class Butt extends Component {
     render() {
         const { label, positiveActionButton, negativeActionButton, inline, alignLeft, size, svgIcon, backgroundColour, shadowColour, labelColour, showAsLink, fullWidth, ...rest } = this.props;
 
-        const labelPadding = svgIcon ? 20 : 0;
+        const labelPadding = svgIcon ? 10 : 0;
         const labelStyle = { paddingLeft: labelPadding };
         let buttonStyle = {
             textDecoration: 'none',
@@ -97,7 +97,7 @@ class Butt extends Component {
                     style={buttonStyle}
                     onMouseEnter={this.onMouseEnter}
                     onMouseLeave={this.onMouseLeave}>
-                <span>{svgIcon}</span>
+                <span style={{paddingTop: 5}}>{svgIcon}</span>
                 <span style={labelStyle}>{label}</span>
                 {this.props.children}
             </button>

@@ -5,6 +5,7 @@ import IconAddArt from "./icons/IconAddArt";
 import IconSignOut from "./icons/IconSignOut";
 import IconEditArt from "./icons/IconEditArt";
 import IconHome from "./icons/IconHome";
+import IconSignIn from "./icons/IconSignIn";
 
 const Icon = function ({type, fill, stroke}) {
 
@@ -15,6 +16,7 @@ const Icon = function ({type, fill, stroke}) {
         case 'editArt': ReturnIcon = <IconEditArt fill={fill} stroke={stroke}/>; break;
         case 'addArt': ReturnIcon = <IconAddArt fill={fill} stroke={stroke}/>; break;
         case 'settings': ReturnIcon = <IconSettings fill={fill} stroke={stroke}/>; break;
+        case 'signIn': ReturnIcon = <IconSignIn fill={fill} stroke={stroke}/>; break;
         case 'signOut': ReturnIcon = <IconSignOut fill={fill} stroke={stroke}/>; break;
 
         default: ReturnIcon = <IconSettings />; break;

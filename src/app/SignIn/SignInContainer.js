@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 // actions
 import { signInWithGoogle, signInWithFacebook } from '../../actions/UserDataActions';
 // components
-import SignInButton from "./SignInButton";
 import SignInModal from "./SignInModal";
+import IconButt from "../global/IconButt";
 
 class SignInContainer extends Component {
     constructor(props) {
@@ -42,7 +42,9 @@ class SignInContainer extends Component {
                              loginStatus={this.props.loginStatus}
                              isOpen={this.state.isModalOpen}/>
 
-                <SignInButton onClick={this.openModal}/>
+                {/*<SignInButton onClick={this.openModal}/>*/}
+
+                <IconButt icon={'signIn'} label={'sign in'} fill={'hsl(250,98%,80%)'} onClick={this.openModal}/>
             </div>
         )
     }

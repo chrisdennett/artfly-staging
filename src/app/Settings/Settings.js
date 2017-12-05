@@ -9,13 +9,17 @@ import ArtflyAccountTypes from "../global/ArtflyAccountTypes";
 import ArtistsSettings from "./assets/ArtistsSettings";
 import AccountSettings from "./assets/AccountSettings";
 import AccountLimitWarningMessage from "./assets/AccountLimitWarningMessage";
+import LoginSettings from "./assets/LoginSettings";
 
-const Settings = function ({ planName, maxArtworks, maxArtworksReached, totalArtworks, userArtists, newSubscriptionStatus, subscription, ...rest }) {
+const Settings = function ({ planName, maxArtworks, maxArtworksReached, totalArtworks,
+                               userArtists, newSubscriptionStatus, subscription, signOutUser, ...rest }) {
 
     if(newSubscriptionStatus) console.log("newSubscriptionStatus: ", newSubscriptionStatus);
 
     return (
         <Page title={'Settings'} icon={<SettingsIcon height={50}/>}>
+
+            <LoginSettings signOutUser={signOutUser} />
 
             <AccountLimitWarningMessage maxArtworksReached={maxArtworksReached}/>
 
