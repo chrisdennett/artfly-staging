@@ -27,6 +27,10 @@
     justify-content: space-evenly;
 }
 
+.appControls--butt--text{
+
+}
+
 @media screen and (max-width: 800px) {
     .appControls {
         flex-direction: row;
