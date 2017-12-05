@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import styled from 'styled-components';
 // components
 import Title from "./assets/Title";
+import Page from "../global/Page";
 // import SignInContainer from "../SignIn/SignInContainer";
 // import Link from "../global/Link";
 // import LinkButt from "../global/LinkButt";
@@ -10,8 +11,7 @@ import Title from "./assets/Title";
 class Home extends Component {
     render() {
         return (
-            <PageWrapper>
-
+            <Page title={'Home'}>
 
                 <Heading>
                     <div>
@@ -75,9 +75,6 @@ class Home extends Component {
                     <PersonTile>
                         Dot
                     </PersonTile>
-
-
-                    <FooterParagraph style={{textAlign: 'center'}}>**I think I might have overdone it with the gradient colours**</FooterParagraph>
                 </FooterSection>
 
                 {/*<div style={{ backgroundColor: '#fff7d7' }}>
@@ -108,22 +105,14 @@ class Home extends Component {
                             <li>Share with the world.</li>
                         </ul>
                     </MaxWidthSection>*/}
-            </PageWrapper>
+            </Page>
         );
     }
 }
 
 export default Home;
 
-const PageWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-`;
-
 const Heading = styled.div` 
-    background: rgba(255,247,215,1);
-    background: linear-gradient(to bottom, rgba(227,250,247,1) 0%, rgba(255,247,215,1) 100%);
     padding: 5rem 10px 4rem 10px;
 `;
 
@@ -133,14 +122,12 @@ const SmallTextParagraph = styled.p`
 
 const BetaSection = styled.div`
     text-align: center;
-    background-color: #ffe;
     color: rgba(0,0,0,0.7);
     padding: 4rem 0;
     border-top: 2px solid rgba(0,0,0,0.1);
 `;
 
 const FeaturesSection = styled.div`
-    background-color: white;
     color: rgba(0,0,0,0.7);
     padding: 4rem 2rem;
     border-top: 2px solid rgba(0,0,0,0.1);
@@ -169,9 +156,7 @@ const PersonTile = styled.div`
 
 const FooterSection = styled.div`
     border-top: 2px solid rgba(0,0,0,0.1);
-    color: #fff;
     padding: 4rem;
-    background: linear-gradient(to bottom, rgba(216,149,222,1) 0%, rgba(73,165,191,1) 100%);
 `;
 
 const FooterParagraph = styled.p`

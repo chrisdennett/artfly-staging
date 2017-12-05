@@ -15,7 +15,7 @@ const Settings = function ({ planName, maxArtworks, maxArtworksReached, totalArt
     if(newSubscriptionStatus) console.log("newSubscriptionStatus: ", newSubscriptionStatus);
 
     return (
-        <Page title={'Settings'} icon={<SettingsIcon height={50}/>} hue={168}>
+        <Page title={'Settings'} icon={<SettingsIcon height={50}/>}>
 
             <AccountLimitWarningMessage maxArtworksReached={maxArtworksReached}/>
 

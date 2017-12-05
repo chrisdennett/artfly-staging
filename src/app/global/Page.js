@@ -31,7 +31,7 @@ const Page = function ({ icon, title, children, hue, saturation, brightness }) {
     };
 
     const InnerBoxStyle = {
-        border: `5px solid ${gridLinesCol}`,
+        // border: `5px solid ${gridLinesCol}`,
         minHeight: '100vh'
     };
 

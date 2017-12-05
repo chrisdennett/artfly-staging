@@ -59,7 +59,7 @@ class ArtistEditor extends Component {
         }
 
         return (
-            <Page hue={210} title={formTitle}>
+            <Page title={formTitle}>
 
                 {modal}
 
