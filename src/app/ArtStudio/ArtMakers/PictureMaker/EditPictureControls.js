@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import Butt from "../../global/Butt";
+import Butt from "../../../global/Butt";
 // import Artwork from "../../Artwork/Artwork";
-import ArtworkContainer from "../../Artwork/ArtworkContainer";
+import ArtworkContainer from "../../../Artwork/ArtworkContainer";
 
 class EditPictureControls extends Component {
 

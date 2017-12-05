@@ -20,7 +20,7 @@ import NewUserFormContainer from "./app/NewUser/NewUserFormContainer";
 import ArtworkContainer from './app/Artwork/ArtworkContainer';
 import ArtStudio from "./app/ArtStudio/ArtStudio";
 import FourOhFour from "./app/FourOhFour/FourOhFour";
-import LoadingOverlay from "./app/LoadingOverlay/LoadingOverlay";
+import LoadingOverlay from "./app/global/LoadingOverlay";
 import StyleGuide from "./app/StyleGuide/StyleGuide";
 import App from "./app/App";
 //

@@ -2,10 +2,10 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 // actions
-import { updateArtworkArtist } from '../../actions/UserDataActions';
+import { updateArtworkArtist } from '../../../actions/UserDataActions';
 // components
-import ArtistSelector from '../ArtistSelector/ArtistSelector';
-import Butt from "../global/Butt";
+import ArtistSelector from '../../ArtistSelector/ArtistSelector';
+import Butt from "../../global/Butt";
 
 class ArtistUpdater extends Component {
 

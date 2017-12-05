@@ -1,7 +1,7 @@
 // externals
 import React from 'react';
 import styled from 'styled-components';
-import { P } from "../../global/Themes";
+import { P } from "../../../global/Themes";
 
 const SelectPhotoButton = function ({ onClick, onPhotoSelect, uid, disabled, ...rest }) {
 

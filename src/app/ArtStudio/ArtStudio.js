@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 // actions
 import { listenForArtworkChanges, listenForArtistChanges } from '../../actions/UserDataActions';
 // components
-import ArtMaker from "../ArtMakers/PictureMaker/PictureMaker";
+import ArtMaker from "./ArtMakers/PictureMaker/PictureMaker";
 
 // In the future this screen will have options for the types of artwork
 // to make. Buttons would determine the maker to load

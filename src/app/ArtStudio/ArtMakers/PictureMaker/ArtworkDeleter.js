@@ -2,9 +2,9 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 // actions
-import { deleteArtwork } from '../../../actions/UserDataActions';
+import { deleteArtwork } from '../../../../actions/UserDataActions';
 // components
-import Butt from "../../global/Butt";
+import Butt from "../../../global/Butt";
 
 class ArtworkDeleter extends Component {
 

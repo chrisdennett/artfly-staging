@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import styled from 'styled-components';
 // components
 import CuttingBoard from "./CuttingBoard";
-import Butt from "../global/Butt";
+import Butt from "../../global/Butt";
 import CuttingMat from "./CuttingMat";
 
 class CropAndRotate extends Component {

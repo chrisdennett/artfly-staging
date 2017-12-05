@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 // components
 import * as PhotoHelper from "../../PhotoEditor/assets/PhotoHelper";
-import history from '../../global/history';
-import ArtistSelector from '../../ArtistSelector/ArtistSelector';
+import history from '../../../global/history';
+import ArtistSelector from '../../../ArtistSelector/ArtistSelector';
 import PhotoEditor from "../../PhotoEditor/PhotoEditor";
-import Page from "../../global/Page";
+import Page from "../../../global/Page";
 import SelectPhotoButton from "../../PhotoEditor/assets/SelectPhotoButton";
-import { P, SECTION } from '../../global/Themes';
+import { P, SECTION } from '../../../global/Themes';
 
 class AddPicture extends Component {
 
