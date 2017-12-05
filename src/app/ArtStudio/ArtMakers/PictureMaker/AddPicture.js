@@ -7,6 +7,7 @@ import PhotoEditor from "../../PhotoEditor/PhotoEditor";
 import Page from "../../../global/Page";
 import SelectPhotoButton from "../../PhotoEditor/assets/SelectPhotoButton";
 import { P, SECTION } from '../../../global/Themes';
+import LoadingAnimation from "../../../global/LoadingAnimation";
 
 class AddPicture extends Component {
 
@@ -59,9 +60,7 @@ class AddPicture extends Component {
             <Page title={'Add Art'}>
 
                 {uploadInProgress &&
-                <div>
-                    Uploading photo...
-                </div>
+                <LoadingAnimation text={'Uploading photo...'}/>
                 }
 
                 <div style={contentStyle}>
