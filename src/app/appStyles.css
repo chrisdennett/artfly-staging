@@ -1,14 +1,17 @@
 .app{
-
+    background: #fff url("/tiny_grid_@2X.png");
 }
 
 .app--sidebar{
     position: fixed;
     width: 100px;
-    background-color: hsl(250,28%,30%);
-    border-right: none;
+    box-shadow: inset -2px -2px 26px -5px rgba(0,0,0,0.3);
+    /*border-right: 5px solid rgba(0,0,0,0.1);*/
+    /*background-color: hsl(250,28%,30%);*/
+    /*border-right: none;*/
     top: 0;
-    color: hsl(250,98%,80%);
+    /*color: hsl(250,98%,80%);*/
+    background-color: #ffffff;
     bottom: 0;
     z-index: 1999;
 }

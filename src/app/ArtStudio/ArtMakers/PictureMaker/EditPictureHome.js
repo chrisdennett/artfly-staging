@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+// styles
+import './editPictureHomeStyles.css';
 import Butt from "../../../global/Butt";
 // import Artwork from "../../Artwork/Artwork";
 import ArtworkContainer from "../../../Artwork/ArtworkContainer";
 
-class EditPictureControls extends Component {
+class EditPictureHome extends Component {
 
     render() {
         const { artist, artwork, onEditArtist, onEditPhoto, onOpenInGallery, onDeleteArtwork, artworkJustAdded } = this.props;
@@ -19,26 +21,21 @@ class EditPictureControls extends Component {
                 <Butt onClick={onOpenInGallery}>Open artwork in gallery</Butt>
 
                 <p>Artwork by {artist.firstName} {artist.lastName}</p>
-                <div style={{ position: 'relative', width: 800, height: 600 }}>
-
+                <div className='editPictureHome--artworkHolder'>
                     <ArtworkContainer artworkId={artwork.artworkId}
-                                      width={800}
-                                      height={600}
+                                      width={680}
+                                      height={480}
                                       allowScrollbars={true}/>
-
-
-                    {/*<Artwork artwork={artwork}
-                             width={800}
-                             height={600}
-                             allowScrollbars={true}/>*/}
                 </div>
 
-                <img src={artwork.thumb_url} alt={'user artwork thumb'}/>
+                {/*<img src={artwork.thumb_url} alt={'user artwork thumb'}/>*/}
                 <Butt onClick={onEditPhoto}>Edit Photo</Butt>
 
-                <div>
-                    <Butt onClick={onEditArtist}>Edit artist</Butt>
-                </div>
+
+                <Butt onClick={onEditArtist}>Edit artist</Butt>
+                <Butt>Edit Frame</Butt>
+                <Butt>Edit Room</Butt>
+
 
                 <Butt label={'Delete Artwork'}
                       backgroundColour={'#920000'}
@@ -49,4 +46,4 @@ class EditPictureControls extends Component {
     }
 }
 
-export default EditPictureControls;
+export default EditPictureHome;

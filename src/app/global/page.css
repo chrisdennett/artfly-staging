@@ -9,7 +9,8 @@
 }
 
 .page--content{
-    margin: 50px auto;
+    margin: 10px auto;
+    max-width: 960px;
     padding: 0 40px 0 140px;
 }
 

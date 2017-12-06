@@ -4,30 +4,30 @@ import React from 'react';
 import './page.css';
 // components
 import PageTitle from "./PageTitle";
-import GridLines from "./GridLines";
+// import GridLines from "./GridLines";
 
 const Page = function ({ icon, title, children, hue, saturation, brightness }) {
 
     // Set defaults if no values provided
-    const h = hue ? hue : 250;
+    /*const h = hue ? hue : 250;
     const s = saturation ? saturation : 98;
-    const l = brightness ? brightness : 80;
+    const l = brightness ? brightness : 80;*/
 
     // Set colour values
-    const bgCol = `hsl(${h},${s}%,${l}%)`;
-    const borderCol = `hsl(250,28%,30%)`;
-    const textCol = borderCol;
-    const gridLinesCol = `hsla(250,28%,30%, 0.1)`;
+    // const bgCol = `hsl(${h},${s}%,${l}%)`;
+    // const borderCol = `hsl(250,28%,30%)`;
+    // const textCol = borderCol;
+    // const gridLinesCol = `hsla(250,28%,30%, 0.1)`;
 
-    const pageStyle = {
-        backgroundColor: bgCol,
+    /*const pageStyle = {
+        // backgroundColor: bgCol,
         color: textCol
-    };
+    };*/
 
     const titleStyle = {
-        backgroundColor: bgCol,
-        borderBottom: `5px solid ${borderCol}`,
-        position: 'relative',
+        // backgroundColor: bgCol,
+        // borderBottom: `5px solid ${borderCol}`,
+        // position: 'relative',
     };
 
     const InnerBoxStyle = {
@@ -36,14 +36,12 @@ const Page = function ({ icon, title, children, hue, saturation, brightness }) {
     };
 
     return (
-        <div className='page' style={pageStyle}>
+        <div className='page'>
             <div style={InnerBoxStyle}>
-                <div style={titleStyle}>
-                    <GridLines stroke={gridLinesCol}/>
-
-                    <PageTitle title={title}/>
-                </div>
                 <div className='page--content'>
+                    {title &&
+                    <PageTitle title={title}/>
+                    }
                     {children}
                 </div>
             </div>

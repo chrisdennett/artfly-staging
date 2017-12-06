@@ -4,7 +4,7 @@ import '../MakerStyles.css';
 // components
 import history from '../../../global/history';
 import Page from "../../../global/Page";
-import EditPictureControls from "./EditPictureControls";
+import EditPictureHome from "./EditPictureHome";
 import ArtistUpdater from '../ArtistUpdater';
 import PhotoEditor from "../../PhotoEditor/PhotoEditor";
 import ArtworkDeleter from "./ArtworkDeleter";
@@ -111,13 +111,13 @@ class EditPicture extends Component {
                 }
 
                 {showControls &&
-                <EditPictureControls artist={artist}
-                                     artworkJustAdded={artworkJustAdded}
-                                     artwork={artwork}
-                                     onDeleteArtwork={this.onDeleteArtwork}
-                                     onOpenInGallery={this.onOpenInGallery}
-                                     onEditPhoto={this.onEditPhoto}
-                                     onEditArtist={this.onEditArtist}/>
+                <EditPictureHome artist={artist}
+                                 artworkJustAdded={artworkJustAdded}
+                                 artwork={artwork}
+                                 onDeleteArtwork={this.onDeleteArtwork}
+                                 onOpenInGallery={this.onOpenInGallery}
+                                 onEditPhoto={this.onEditPhoto}
+                                 onEditArtist={this.onEditArtist}/>
                 }
 
             </Page>

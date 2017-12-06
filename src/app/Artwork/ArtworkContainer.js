@@ -50,7 +50,7 @@ class ArtworkHolder extends Component {
         const { widthToHeightRatio, heightToWidthRatio } = artwork;
         const frameThicknessPercent = 0.03;
         const mountThicknessPercent = 0.06;
-        const spaceBelowPicturePercent = 0.1;
+        const spaceBelowPicturePercent = 0.15;
         const spaceBelowPicture = spaceBelowPicturePercent * height;
 
         let minPaddingLeft = 10;

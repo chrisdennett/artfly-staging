@@ -4,8 +4,8 @@ const PageTitle = function ({title}) {
 
     const headingStyle = {
         padding: '4rem 1rem',
-        textAlign: 'center',
-        background: 'radial-gradient(ellipse at center, hsl(250,98%,84%) 0%, hsl(250,98%,80%) 100%)'
+        // textAlign: 'center',
+        // background: 'radial-gradient(ellipse at center, hsl(250,98%,84%) 0%, hsl(250,98%,80%) 100%)'
     };
 
     const fill = 'hsl(250,78%,70%)';
@@ -14,7 +14,7 @@ const PageTitle = function ({title}) {
     return (
         <div className='page--title' style={headingStyle}>
 
-            <svg width="300" height="64" viewBox="0 0 300 64">
+            <svg width="470" height="64" viewBox="0 0 300 64">
 
                 <text opacity="0.8" fill={stroke} transform="skewX(59.585) scale(1 -.9786)" fontSize="7.71" y="-34.121" x="20.134"
                       fontFamily="sans-serif" wordSpacing="0" letterSpacing="0">

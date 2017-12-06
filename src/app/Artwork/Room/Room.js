@@ -14,7 +14,7 @@ class Room extends Component {
 
         const viewBoxParams = "0 0 " + String(width) + " " + String(height);
 
-        const maxPercentageTakenUpBySkirting = 0.4;
+        const maxPercentageTakenUpBySkirting = 0.3;
         const maxSkirtingHeight = 34;
         const minGapPercent = 0.3;
 

@@ -1,25 +1,40 @@
 // externals
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import styled from 'styled-components';
 // components
 import Title from "./assets/Title";
 import Page from "../global/Page";
+import { cancelSubscription, updateSubscription } from "../../actions/PaddleActions";
+import { getUserArtistChanges, signOutUser } from "../../actions/UserDataActions";
+import HomeGalleryLinks from "./assets/HomeGalleryLinks";
 // import SignInContainer from "../SignIn/SignInContainer";
 // import Link from "../global/Link";
 // import LinkButt from "../global/LinkButt";
 
 class Home extends Component {
-    render() {
-        return (
-            <Page title={'Home'}>
 
+    componentDidMount() {
+        if (this.props.userId) {
+            this.props.getUserArtistChanges(this.props.userId);
+        }
+    }
+
+    render() {
+
+        return (
+            <Page>
                 <Heading>
                     <div>
                         <Title/>
                     </div>
-                    <TagLine>Artworks don't belong in a drawer, bin or hard drive. <br/>There's a better place...</TagLine>
+                    <TagLine>Artworks don't belong in a drawer, bin or hard drive. <br/>There's a better
+                        place...</TagLine>
                 </Heading>
 
+                {this.props.userArtists &&
+                <HomeGalleryLinks userArtists={this.props.userArtists}/>
+                }
 
                 <BetaSection>
                     <svg height="40" width="40" viewBox="0 0 100 94">
@@ -61,7 +76,8 @@ class Home extends Component {
                 <FooterSection>
                     <h3>About us</h3>
                     <FooterParagraph>
-                        ArtFly is a massive global corporate monster run by the high-powered business types below from the sprawling metroplis of Ulverson, Cumbria, UK.
+                        ArtFly is a massive global corporate monster run by the high-powered business types below from
+                        the sprawling metroplis of Ulverson, Cumbria, UK.
                     </FooterParagraph>
                     <PersonTile>
                         Chris
@@ -110,7 +126,34 @@ class Home extends Component {
     }
 }
 
-export default Home;
+const mapStateToProps = (state) => {
+    return {
+        maxArtworksReached: state.user.maxArtworksReached,
+        maxArtworks: state.user.maxArtworks,
+        planName: state.user.planName,
+        totalArtworks: state.user.totalArtworks,
+        userId: state.user.uid,
+        userStatus: state.user.status,
+        userArtists: getUserArtists(state.user.uid, state.artists)
+    }
+};
+
+export default connect(
+    mapStateToProps, { updateSubscription, cancelSubscription, getUserArtistChanges, signOutUser }
+)(Home);
+
+const getUserArtists = (userId, artists) => {
+    const artistArray = [];
+    if (userId && artists) {
+        const artistIds = Object.keys(artists);
+        for (let id of artistIds) {
+            if (artists[id].adminId === userId) {
+                artistArray.push(artists[id]);
+            }
+        }
+    }
+    return artistArray;
+};
 
 const Heading = styled.div` 
     padding: 5rem 10px 4rem 10px;

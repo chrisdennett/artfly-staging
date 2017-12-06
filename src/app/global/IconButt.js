@@ -9,7 +9,8 @@ const IconButt = function ({ icon, label, isSelected, bgColour, fill, stroke, ..
         border: 'none',
         width: 95,
         textAlign: 'center',
-        padding: '15px 0 10px 0'
+        padding: '15px 0 10px 0',
+        display: 'inline-block'
     };
 
     if (isSelected) {

@@ -1,5 +1,6 @@
 import React from 'react';
 import IconButt from "../global/IconButt";
+import Page from "../global/Page";
 
 const ColourBlock = (hue, decrement, isSelected=false) => {
     const saturation = 98;
@@ -61,12 +62,13 @@ const StyleGuide = () => {
     }
 
     return (
-        <div style={{ paddingTop: 100 }}>
+        <Page title={'Style Guide'} style={{ paddingTop: 100 }}>
             <h2>Buttons</h2>
-            <IconButt icon={'home'} label={'home'}/>
+            <IconButt icon={'home'} stroke={'#000'} label={'home'}/>
             <IconButt icon={'editArt'} label={'edit art'}/>
             <IconButt icon={'addArt'} label={'add art'}/>
             <IconButt icon={'settings'} label={'selected'} isSelected={true}/>
+            <IconButt icon={'signIn'} label={'sign in'} />
             <IconButt icon={'signOut'} label={'sign out'} />
 
             <h2>Blocks I like</h2>
@@ -74,7 +76,7 @@ const StyleGuide = () => {
             <hr/>
             <h2>All blocks</h2>
             {allBlocks}
-        </div>
+        </Page>
     )
 };
 
