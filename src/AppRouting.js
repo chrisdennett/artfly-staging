@@ -127,7 +127,7 @@ class ArtflyRouting extends Component {
 
         const PageComponent = routes[page] ? routes[page].component : FourOhFour;
         const adminOnly = routes[page] && routes[page].adminOnly ? routes[page].adminOnly : false;
-        const PageComponentWithProps = <PageComponent {...params}/>;
+        const PageComponentWithProps = <PageComponent {...params} user={this.props.user}/>;
 
         if (!this.props.user.status || this.props.user.status === 'pending') {
             return <LoadingOverlay/>

@@ -1,0 +1,29 @@
+.home--heading {
+    padding: 5rem 10px 4rem 10px;
+}
+
+.home--tagLine {
+    text-align: center;
+    padding-top: 10px;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+}
+
+.home--footer{
+    border-top: 2px solid rgba(0,0,0,0.1);
+    padding: 4rem;
+}
+
+.home--footer--p{
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+    .home--tagLine {
+        font-size: 1.3rem;
+    }
+}
+
+
