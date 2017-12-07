@@ -1,7 +1,6 @@
 // externals
 import React from "react";
 // components
-import SignInContainer from "../../SignIn/SignInContainer";
 import Link from "../../global/Link";
 import history from '../../global/history';
 import IconButt from "../../global/IconButt";
@@ -13,35 +12,25 @@ const UserControls = function (props) {
     // TODO: page name can now be passed into this component
     const currentPath = history.location.pathname;
     const onArtworkEditorPage = currentPath.indexOf("artworkEditor") > -1;
-    let renderContent;
     const showEditArtworkButton = allowEditing && !onArtworkEditorPage && props.artworkId;
 
-    if (userStatus === "none") {
-        renderContent = <SignInContainer/>
-    }
-    else {
-        renderContent =
-            <div className='appControls--userControls'>
+    if (userStatus === "none") return null;
 
-                <Link linkTo="/settings">
-                    <IconButt icon={'settings'} fill={'hsl(250,98%,80%)'} label={'settings'}/>
-                </Link>
+    return (
+        <div className='appControls--userControls'>
 
+            <Link linkTo={`/artStudio/`}>
+                <IconButt icon={'addArt'} fill={'hsl(250,98%,80%)'} label={'add art'}/>
+            </Link>
 
-                <Link linkTo={`/artStudio/`}>
-                    <IconButt icon={'addArt'} fill={'hsl(250,98%,80%)'} label={'add art'}/>
-                </Link>
+            {showEditArtworkButton &&
+            <Link linkTo={`/artStudio/${props.artworkId}`}>
+                <IconButt icon={'editArt'} fill={'hsl(250,98%,80%)'} label={'edit art'}/>
+            </Link>
+            }
 
-                {showEditArtworkButton &&
-                <Link linkTo={`/artStudio/${props.artworkId}`}>
-                    <IconButt icon={'editArt'} fill={'hsl(250,98%,80%)'} label={'edit art'}/>
-                </Link>
-                }
-
-            </div>
-    }
-
-    return renderContent
+        </div>
+    )
 };
 
 export default UserControls;

@@ -21,7 +21,7 @@ class ArtistEditorHolder extends Component {
 
         if (formType === "new") {
             addNewArtist(userId, values, () => {
-                history.push("/settings/");
+                history.push("/");
             });
         }
         else {
@@ -29,7 +29,7 @@ class ArtistEditorHolder extends Component {
             const newArtistData = { firstName: firstName, lastName: lastName };
             // update artist
             updateArtist(artistId, newArtistData, () => {
-                history.push("/settings/");
+                history.push("/");
             });
         }
     }
@@ -37,7 +37,7 @@ class ArtistEditorHolder extends Component {
     deleteArtist() {
         const { artistId } = this.props;
         this.props.deleteArtist(artistId, () => {
-            history.push(`/settings/`);
+            history.push(`/`);
         });
     }
 

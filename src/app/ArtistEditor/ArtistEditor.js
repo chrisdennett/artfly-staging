@@ -78,7 +78,7 @@ class ArtistEditor extends Component {
 
                         <Butt type="submit" label={'Done'}/>
 
-                        <LinkButt fullWidth={true} label={`Cancel`} linkTo={`/settings/`}/>
+                        <LinkButt fullWidth={true} label={`Cancel`} linkTo={`/`}/>
 
                         {
                             this.props.formType === 'edit' &&

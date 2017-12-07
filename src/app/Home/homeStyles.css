@@ -11,8 +11,15 @@
 }
 
 .home--footer{
-    border-top: 2px solid rgba(0,0,0,0.1);
-    padding: 4rem;
+    margin-top: 4rem;
+    background-color: rgba(0, 0, 0, 0.68);
+    padding: 1.5rem;
+    border-radius: 5px;
+    color: white;
+}
+
+.home--footer h3{
+    margin-top: 0;
 }
 
 .home--footer--p{

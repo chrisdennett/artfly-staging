@@ -7,7 +7,7 @@ import LinkButt from "../../global/LinkButt";
 const HomeGalleryLinks = function ({ userArtists }) {
     return (
         <div>
-            <h2>Your Artists</h2>
+            <h2>Your Galleries</h2>
             <section className={'settings-artists-section'}>
                 {
                     _.map(userArtists, (artist) => {

@@ -14,7 +14,6 @@ import Redirect from "./app/global/Redirect";
 // route components
 import Home from './app/Home/Home';
 import GalleryContainer from './app/Gallery/GalleryContainer';
-import SettingsContainer from "./app/Settings/SettingsContainer";
 import ArtistEditorContainer from "./app/ArtistEditor/ArtistEditorContainer";
 import NewUserFormContainer from "./app/NewUser/NewUserFormContainer";
 import ArtworkContainer from './app/Artwork/ArtworkContainer';
@@ -23,14 +22,12 @@ import FourOhFour from "./app/FourOhFour/FourOhFour";
 import LoadingOverlay from "./app/global/LoadingOverlay";
 import StyleGuide from "./app/StyleGuide/StyleGuide";
 import App from "./app/App";
-//
 
 const routes = {
     styleGuide: { component: StyleGuide },
     home: { component: Home },
     gallery: { component: GalleryContainer },
     artwork: { component: ArtworkContainer },
-    settings: { component: SettingsContainer, adminOnly: true },
     artStudio: { component: ArtStudio, adminOnly: true },
     addOrEditArtist: { component: ArtistEditorContainer, adminOnly: true },
     newUser: { component: NewUserFormContainer, adminOnly: true }

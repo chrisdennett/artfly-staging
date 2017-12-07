@@ -2,6 +2,7 @@ import React from 'react';
 // styles
 import './publicHome.css';
 // components
+import SignInContainer from "../SignIn/SignInContainer";
 // import SignInContainer from "../SignIn/SignInContainer";
 // import Link from "../global/Link";
 // import LinkButt from "../global/LinkButt";
@@ -9,6 +10,8 @@ import './publicHome.css';
 const PublicHome = function () {
     return (
         <div>
+            <SignInContainer/>
+
             <div className='pubicHome--betaSection'>
                 <svg height="40" width="40" viewBox="0 0 100 94">
                     <path
