@@ -1,5 +1,5 @@
 import React from 'react';
-import OverlayLinkButton from "../../../global/OverlayLinkButton";
+import OverlayLinkButton from "../../global/OverlayLinkButton";
 
 const EnterGalleryButton = function ({ linkTo }) {
 

@@ -5,10 +5,11 @@ import PrevButton from "./assets/PrevButton";
 import NextButton from "./assets/NextButton";
 import ZoomButton from "./assets/ZoomButton";
 import EnterGalleryButton from "./assets/EnterGalleryButton";
-import Link from "../../global/Link";
+import Link from "../global/Link";
+import IconButt from "../global/IconButt";
 
 const GalleryControls = function (props) {
-    const { artworkId, galleryId, nextArtworkId, prevArtworkId, galleryIsZoomedOut } = props;
+    const { artworkId, galleryId, nextArtworkId, prevArtworkId, galleryIsZoomedOut, ...rest } = props;
 
     const onGalleryPage = !artworkId;
     let prevPath = `/gallery/${galleryId}/artwork/${prevArtworkId}`;
@@ -40,9 +41,24 @@ const GalleryControls = function (props) {
         );
     }
 
+    // TODO: currently it'll show the edit button even if it's not your artwork.
+    /*
+    let allowEditing = false;
+    if(ownProps.galleryId && state.artworks[ownProps.artworkId]){
+        allowEditing = state.artworks[ownProps.artworkId].adminId === state.user.uid;
+    }
+    */
+    const showEditArtworkButton = !onGalleryPage;
+
     return (
-        <div className='appControls--galleryControls'>
+        <div {...rest}>
             {controls}
+
+            {showEditArtworkButton &&
+            <Link linkTo={`/artStudio/${artworkId}`}>
+                <IconButt icon={'editArt'} fill={'hsl(250,98%,80%)'} label={'edit art'}/>
+            </Link>
+            }
         </div>
     )
 };

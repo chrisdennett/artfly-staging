@@ -11,15 +11,15 @@
 .page--content{
     margin: 10px auto;
     max-width: 960px;
-    padding: 0 40px 0 140px;
+    padding: 0 40px 0 40px;
 }
 
 @media screen and (max-width: 800px) {
     .page--content{
-        padding: 0 20px;
+        /*padding: 0 20px;*/
     }
 
     .page--title{
-        margin-top: 80px;
+        /*margin-top: 80px;*/
     }
 }

@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as _ from 'lodash';
 // Actions
-import { setGalleryZoom } from '../../../actions/UiActions';
-import { listenForArtistArtworkChanges } from '../../../actions/UserDataActions';
+import { setGalleryZoom } from '../../actions/UiActions';
+import { listenForArtistArtworkChanges } from '../../actions/UserDataActions';
 // Components
 import GalleryControls from './GalleryControls';
 
@@ -21,7 +21,7 @@ class GalleryControlsContainer extends Component {
     }
 
     render() {
-        const { artworkId, galleryId, galleryArtworkIds, galleryIsZoomedOut } = this.props;
+        const { artworkId, galleryId, galleryArtworkIds, galleryIsZoomedOut, ...rest } = this.props;
         let prevId = null;
         let nextId = null;
 
@@ -43,7 +43,8 @@ class GalleryControlsContainer extends Component {
                                 prevArtworkId={prevId}
                                 artworkIds={galleryArtworkIds}
                                 galleryId={galleryId}
-                                artworkId={artworkId}/>;
+                                artworkId={artworkId}
+                                {...rest}/>;
     }
 }
 
