@@ -1,5 +1,5 @@
 import React from 'react';
-import IconButt from "../global/IconButt";
+import IconButt from "../global/IconButt/IconButt";
 import Page from "../global/Page";
 
 const ColourBlock = (hue, decrement, isSelected=false) => {
@@ -42,10 +42,8 @@ const StyleGuide = () => {
     const huesILike = [0,12,24,50,84,105,144,162,185,200,212,225,250,275,300];
 
     // inkscape values
-    const yellow = InkscapeConverter(41,250,203);
-    const purple = InkscapeConverter(181,250,186);
-    console.log("yellow: ", yellow);
-    console.log("purple: ", purple);
+    // const yellow = InkscapeConverter(41,250,203);
+    // const purple = InkscapeConverter(181,250,186);
 
     const decrement = 10;
 
@@ -64,6 +62,7 @@ const StyleGuide = () => {
     return (
         <Page title={'Style Guide'} style={{ paddingTop: 100 }}>
             <h2>Buttons</h2>
+            <IconButt icon={'logo'} stroke={'#000'} label={'logo'}/>
             <IconButt icon={'home'} stroke={'#000'} label={'home'}/>
             <IconButt icon={'editArt'} label={'edit art'}/>
             <IconButt icon={'addArt'} label={'add art'}/>

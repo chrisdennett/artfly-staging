@@ -1,19 +1,21 @@
 // externals
 import React from 'react';
 import _ from 'lodash';
+// styles
+import './yourGalleriesStyles.css';
 // components
-import LinkButt from "../../global/LinkButt";
+import LinkButt from "../../../global/LinkButt";
 
-const HomeGalleryLinks = function ({ userArtists }) {
+const YourGalleries = function ({ userArtists, className }) {
     return (
-        <div>
+        <div className={className}>
             <h2>Your Galleries</h2>
-            <section className={'settings-artists-section'}>
+            <div className='yourGalleries--cards'>
                 {
                     _.map(userArtists, (artist) => {
 
                         return (
-                            <div key={artist.artistId} style={{ display:'inline-block' }}>
+                            <div className='yourGalleries--galleryCard' key={artist.artistId} style={{ display:'inline-block' }}>
                                 <p>{artist.firstName} {artist.lastName}</p>
                                 <p>Total artworks: {artist.totalArtworks}</p>
 
@@ -22,9 +24,9 @@ const HomeGalleryLinks = function ({ userArtists }) {
                             </div>)
                     })
                 }
-            </section>
+            </div>
         </div>
     )
 };
 
-export default HomeGalleryLinks;
+export default YourGalleries;

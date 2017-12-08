@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 // actions
 import { subscribeUser } from '../../actions/PaddleActions';
 // components
-import Butt from "./Butt";
+import Butt from "./Butt/Butt";
 
 class SubscribeButton extends Component {
 
@@ -17,7 +17,7 @@ class SubscribeButton extends Component {
         const buttonTxt = this.props.label || 'Subscribe';
 
         return (
-            <Butt inline={true} size={'small'} label={buttonTxt} onClick={this.onSubscribe}/>
+            <Butt green inline size={'small'} label={buttonTxt} onClick={this.onSubscribe}/>
         );
     }
 }

@@ -3,10 +3,11 @@ import React from "react";
 // styles
 import './homeStyles.css';
 // components
-import Title from "./assets/Title";
+import Title from "./UserHome/assets/Title";
 import Page from "../global/Page";
-import PublicHome from "./PublicHome";
-import UserHome from "./UserHome";
+import SignInOut from '../SignInOut/SignInOut';
+import PublicHome from "./PublicHome/PublicHome";
+import UserHome from "./UserHome/UserHome";
 
 const Home = ({ user }) => {
     const userLoggedIn = user && user.loginStatus === 'loggedIn';
@@ -21,6 +22,11 @@ const Home = ({ user }) => {
                     better
                     place...
                 </div>
+
+                <div className='home--signInOut'>
+                    <SignInOut/>
+                </div>
+
             </div>
 
             {userLoggedIn &&

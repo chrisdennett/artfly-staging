@@ -1,0 +1,71 @@
+.butt {
+    display: inline-flex;
+    text-decoration: none;
+    flex-grow: 1;
+    padding: 10px;
+    margin: 10px;
+    font-size: 16px;
+    align-items: center;
+    cursor: pointer;
+    outline: none;
+    background: rgba(255, 255, 255, 0.51);
+    color: rgba(0, 0, 0, 0.8);
+    border: 3px solid rgba(0, 0, 0, 0.8);
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    font-weight: 700;
+}
+
+.butt--small {
+    font-size: 14px;
+    margin: 5px;
+    box-shadow: 2px 2px black;
+}
+
+.butt--hover {
+    text-decoration: underline;
+}
+
+.butt--white {
+    background-color: #fff;
+}
+
+.butt--red {
+    background-color: red;
+}
+
+.butt--orange {
+    background-color: #ff6600;
+}
+
+.butt--yellow {
+    background-color: #FFCC00;
+}
+
+.butt--green {
+    background-color: #abc837;
+}
+
+.butt--blue {
+    background-color: #37abc8;
+}
+
+.butt--purple {
+    background-color: #aa00d4;
+}
+
+.butt--facebook {
+    background-color: #01579b;
+    color: #fff;
+}
+
+.butt--google {
+    color: #666;
+    background-color: #fff;
+}
+
+.butt--link {
+    border: none;
+    background: none;
+    box-shadow: none;
+}

@@ -6,7 +6,7 @@ import NextButton from "./assets/NextButton";
 import ZoomButton from "./assets/ZoomButton";
 import EnterGalleryButton from "./assets/EnterGalleryButton";
 import Link from "../global/Link";
-import IconButt from "../global/IconButt";
+import IconButt from "../global/IconButt/IconButt";
 
 const GalleryControls = function (props) {
     const { artworkId, galleryId, nextArtworkId, prevArtworkId, galleryIsZoomedOut, ...rest } = props;

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // styles
 import './editPictureHomeStyles.css';
-import Butt from "../../../global/Butt";
+import Butt from "../../../global/Butt/Butt";
 // import Artwork from "../../Artwork/Artwork";
 import ArtworkContainer from "../../../Artwork/ArtworkContainer";
 

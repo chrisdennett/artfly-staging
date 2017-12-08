@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 // import md5 from 'md5';
 // components
 import FormRenderField from '../global/FormRenderField'
-import Butt from "../global/Butt";
+import Butt from "../global/Butt/Butt";
 import Page from '../global/Page';
 
 class NewUserForm extends Component {

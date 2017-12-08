@@ -1,6 +1,6 @@
 import React from 'react';
-import Butt from "../../global/Butt";
-import IconSignOut from "../../global/icons/IconSignOut";
+import Butt from "../../../global/Butt/Butt";
+import IconSignOut from "../../../global/icon/icons/IconSignOut";
 
 const LoginSettings = function ({signOutUser}) {
     return (

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { updateArtworkArtist } from '../../../actions/UserDataActions';
 // components
 import ArtistSelector from '../../ArtistSelector/ArtistSelector';
-import Butt from "../../global/Butt";
+import Butt from "../../global/Butt/Butt";
 
 class ArtistUpdater extends Component {
 

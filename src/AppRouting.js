@@ -2,8 +2,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import ga from './libs/googleAnalyticsConfig';
-// styles
-import './globalStyles.css';
 // actions
 import { listenForUserChanges } from './actions/UserDataActions';
 import { fetchLocalPrice } from './actions/PaddleActions';

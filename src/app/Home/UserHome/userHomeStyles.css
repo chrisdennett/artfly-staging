@@ -1,0 +1,17 @@
+.userHome--accountWarning{
+    background: rgba(255, 114, 1, 0.1);
+    padding: 0.5rem 1.5rem;
+    border: 3px solid rgba(255, 114, 1, 0.45);
+    border-radius: 5px;
+    max-width: 750px;
+    margin: 0 auto;
+    /*text-align: center;*/
+}
+
+.userHome--accountWarning p{
+    margin: 0.5rem 0;
+}
+
+.userHome--section{
+    margin: 5rem 0;
+}

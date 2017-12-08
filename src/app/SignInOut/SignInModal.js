@@ -1,32 +1,37 @@
 // externals
 import React from "react";
+// styles
+import './signInModalStyles.css';
 // components
-import Butt from "../global/Butt";
+import Butt from "../global/Butt/Butt";
 import FacebookSignInButton from "./assets/FacebookSignInButton";
 import GoogleSignInButton from "./assets/GoogleSignInButton";
-import Modal from "../global/Modal";
 
 const SignInModal = ({isOpen, loginStatus, signInWithGoogleClick, signInWithFacebookClick, closeModal}) => {
+
+    if (isOpen === false) {
+        return null;
+    }
+
     return (
-        <Modal isOpen={isOpen}>
+        <div className='signInModal'>
 
             {loginStatus === 'pending' &&
-            <div>Signing in...</div>
+            <div><h3>Signing in...</h3></div>
             }
 
             {loginStatus !== 'pending' &&
             <div style={{display: 'flex', flexDirection:'column'}}>
-                <h2>Sign in to ArtFly</h2>
                 <GoogleSignInButton onClick={() => signInWithGoogleClick()}/>
                 <FacebookSignInButton onClick={() => signInWithFacebookClick()}/>
 
                 <Butt label={`Don't sign in`}
-                      showAsLink={true}
+                      link
                       onClick={closeModal}/>
             </div>
             }
 
-        </Modal>
+        </div>
     )
 };
 

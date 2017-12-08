@@ -1,5 +1,5 @@
 import React from 'react';
-import Butt from "../../global/Butt";
+import Butt from "../../global/Butt/Butt";
 
 const GoogleSignInButton = function (props) {
 
@@ -25,11 +25,9 @@ const GoogleSignInButton = function (props) {
     return (
         <Butt svgIcon={googleIcon}
               onClick={props.onClick}
+              google
               alignLeft={true}
-              label={'Sign in with Google'}
-              backgroundColour={'#fff'}
-              shadowColour={'#aaa'}
-              labelColour={'#666'}/>
+              label={'Sign in with Google'}/>
     )
 };
 

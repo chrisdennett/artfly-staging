@@ -4,7 +4,7 @@ import './appStyles.css';
 // components
 import WindowController from "./global/WindowDimensionsTracker";
 import Link from "./global/Link";
-import IconButt from "./global/IconButt";
+import IconButt from "./global/IconButt/IconButt";
 import GalleryControlsContainer from "./GalleryControls/GalleryControlsContainer";
 
 class App extends Component {
@@ -15,17 +15,22 @@ class App extends Component {
 
         return (
             <div className='app'>
-
                 <Link className='app--homeButt' linkTo={'/'}>
-                    <IconButt icon={'home'}
-                              stroke={'hsl(250,28%,30%)'}
-                              fill={'hsl(250,98%,80%)'}
+
+                    <IconButt icon={'logo'}
+                              leftCorner={true}
+                              stroke={'#000'}
+                              fill={'#fff'}
                               label={'home'}/>
                 </Link>
 
 
                 <Link className='app--addArtButt' linkTo={`/artStudio/`}>
-                    <IconButt icon={'addArt'} fill={'hsl(250,98%,80%)'} label={'add art'}/>
+                    <IconButt icon={'addArt'}
+                              rightCorner={true}
+                              stroke={'#000'}
+                              fill={'#fff'}
+                              label={'+new'}/>
                 </Link>
 
                 {galleryId &&

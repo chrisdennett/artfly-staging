@@ -1,5 +1,5 @@
 import React from 'react';
-import Butt from "../../global/Butt";
+import Butt from "../../global/Butt/Butt";
 
 const FacebookSignInButton = function (props) {
 
@@ -16,7 +16,8 @@ const FacebookSignInButton = function (props) {
 
     return (
         <Butt svgIcon={facebookIcon}
-              alignLeft={true}
+              facebook
+              alignLeft
               onClick={props.onClick}
               label={'Sign in with Facebook'}/>
     )

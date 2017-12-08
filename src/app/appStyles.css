@@ -1,27 +1,53 @@
-.app{
-    background: #fff url("./images/tiny_grid_@2X.png");
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:500,600,700,900');
+/*@import url('https://fonts.googleapis.com/css?family=Bungee+Inline|Cabin+Sketch|Codystar|Fredericka+the+Great|Jacques+Francois+Shadow|Kranky|Life+Savers:700|Londrina+Shadow|Love+Ya+Like+A+Sister');*/
+/*@import url('https://fonts.googleapis.com/css?family=Comfortaa:300,400,700');*/
+/*@import url('https://fonts.googleapis.com/css?family=Averia+Sans+Libre:300,400,700');*/
+
+/*GLOBAL STYLES*/
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Source Code Pro', monospace;
+    color: rgba(0, 0, 0, 0.8);
+    line-height: 1.6rem;
+}
+
+.no-scroll-bars {
+    overflow: hidden;
+}
+
+/*APP STYLES*/
+.app {
+    /*background: #fff url("./images/tiny_grid_@2X.png");*/
+    background: #fbf9dd url("./images/grid_42.png");
     min-height: 100vh;
     min-width: 100%;
     margin: 0;
     padding: 0;
 }
 
-.app--homeButt{
+.app--homeButt {
     position: fixed;
     z-index: 2000;
 }
 
-.app--addArtButt{
+.app--addArtButt {
     position: fixed;
     right: 0px;
     z-index: 2001;
 }
 
-.app--galleryControls{
+.app--galleryControls {
     position: fixed;
     bottom: 0;
-    left:0;
-    right:0;
+    left: 0;
+    right: 0;
     width: 100%;
     z-index: 2002;
     display: flex;

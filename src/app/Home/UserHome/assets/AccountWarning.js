@@ -1,30 +1,16 @@
 // externals
 import React from 'react';
 // components
-import SubscribeButton from '../../global/SubscribeButton';
+import SubscribeButton from '../../../global/SubscribeButton';
 
-const AccountLimitWarningMessage = function ({maxArtworksReached}) {
-
-    const warningStyle = {
-        background: '#8f2727',
-        padding: '20px 20px',
-        margin: 10,
-        borderRadius: 10
-        // border: '1px white solid'
-    };
-
-    const paragraphStyle = {
-        fontSize: 16,
-        padding: 0,
-        margin: 0
-    };
+const AccountWarning = function ({maxArtworksReached, className}) {
 
     let warning = null;
     if(maxArtworksReached){
         warning =(
-            <div style={warningStyle}>
-                <p style={paragraphStyle}>Warning: It looks like you've reached the maximum number of artworks for your account.</p>
-                <p style={paragraphStyle}><SubscribeButton/> to add more.</p>
+            <div className={className}>
+                <p><strong>Warning:</strong> You've reached the maximum artworks for the free membership.</p>
+                <p><SubscribeButton/> to add more. </p>
             </div>
         )
     }
@@ -53,4 +39,4 @@ else if (subscription.status === 'deleted') {
     return warning
 };
 
-export default AccountLimitWarningMessage;
+export default AccountWarning;

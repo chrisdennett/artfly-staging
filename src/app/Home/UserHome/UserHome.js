@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+// styles
+import './userHomeStyles.css';
 // actions
-import { cancelSubscription, updateSubscription } from "../../actions/PaddleActions";
-import { getUserArtistChanges, signOutUser } from "../../actions/UserDataActions";
+import { cancelSubscription, updateSubscription } from "../../../actions/PaddleActions";
+import { getUserArtistChanges } from "../../../actions/UserDataActions";
 // components
-import HomeGalleryLinks from "./assets/HomeGalleryLinks";
+import YourGalleries from "./assets/YourGalleries";
 import AccountSettings from "./assets/AccountSettings";
-import LoginSettings from "./assets/LoginSettings";
-import AccountLimitWarningMessage from "./assets/AccountLimitWarningMessage";
+import AccountWarning from "./assets/AccountWarning";
 import ArtistsSettings from "./assets/ArtistsSettings";
 
 class UserHome extends Component {
@@ -19,15 +20,17 @@ class UserHome extends Component {
     }
 
     render() {
-        const {signOutUser} = this.props;
-
         return (
             <div>
-                <LoginSettings signOutUser={signOutUser} />
-                <AccountLimitWarningMessage maxArtworksReached={true}/>
-                <HomeGalleryLinks userArtists={this.props.userArtists}/>
+                <AccountWarning className='userHome--accountWarning'
+                                maxArtworksReached={true}/>
+
+                <YourGalleries className='userHome--section'
+                               userArtists={this.props.userArtists}/>
+
                 <ArtistsSettings userArtists={this.props.userArtists}/>
-                <AccountSettings />
+
+                <AccountSettings/>
             </div>
         );
     }
@@ -44,9 +47,7 @@ const mapStateToProps = (state) => {
         userArtists: getUserArtists(state.user.uid, state.artists)
     }
 };
-const mapActionsToProps = {
-    updateSubscription, cancelSubscription, getUserArtistChanges, signOutUser
-};
+const mapActionsToProps = { updateSubscription, cancelSubscription, getUserArtistChanges };
 
 export default connect(mapStateToProps, mapActionsToProps)(UserHome);
 

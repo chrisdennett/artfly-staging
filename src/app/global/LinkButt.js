@@ -2,7 +2,7 @@ import React from 'react';
 // import { Link } from 'react-router-dom'
 import history from './history';
 
-import Butt from "./Butt";
+import Butt from "./Butt/Butt";
 
 const LinkButt = function ({ children, linkTo, fullWidth, ...rest }) {
     return (

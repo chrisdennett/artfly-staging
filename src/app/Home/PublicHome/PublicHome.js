@@ -1,17 +1,13 @@
+// externals
 import React from 'react';
 // styles
-import './publicHome.css';
+import './publicHomeStyles.css';
 // components
-import SignInContainer from "../SignIn/SignInContainer";
-// import SignInContainer from "../SignIn/SignInContainer";
-// import Link from "../global/Link";
-// import LinkButt from "../global/LinkButt";
+// import SignInOut from "../../SignInOut/SignInOut";
 
 const PublicHome = function () {
     return (
         <div>
-            <SignInContainer/>
-
             <div className='pubicHome--betaSection'>
                 <svg height="40" width="40" viewBox="0 0 100 94">
                     <path

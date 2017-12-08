@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import './artistEditor.css';
 
 import FormRenderField from '../global/FormRenderField';
-import Butt from "../global/Butt";
+import Butt from "../global/Butt/Butt";
 import LinkButt from "../global/LinkButt";
 import Modal from "../global/Modal";
 import Page from "../global/Page";

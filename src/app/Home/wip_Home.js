@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import './home.css';
 import { connect } from 'react-redux';
-import Title from "./assets/Title";
+import Title from "./UserHome/assets/Title";
 import LinkButt from "../global/LinkButt";
 
 class Home extends Component {

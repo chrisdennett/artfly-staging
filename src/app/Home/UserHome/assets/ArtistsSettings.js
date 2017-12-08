@@ -2,7 +2,7 @@
 import React from 'react';
 import _ from 'lodash';
 // components
-import LinkButt from "../../global/LinkButt";
+import LinkButt from "../../../global/LinkButt";
 
 const ArtistsSettings = function ({userArtists}) {
     return (

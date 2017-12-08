@@ -1,0 +1,14 @@
+.yourGalleries--cards{
+    display: flex;
+    /*background-color: rgba(254, 0, 255, 0.36);*/
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.yourGalleries--galleryCard{
+    padding: 3rem;
+    border: 1px solid black;
+    flex: 1;
+    margin: 0 2rem;
+    text-align: center;
+}

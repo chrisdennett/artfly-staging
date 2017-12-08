@@ -2,11 +2,11 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 // actions
-import { updateSubscription, cancelSubscription } from '../../../actions/PaddleActions';
+import { updateSubscription, cancelSubscription } from '../../../../actions/PaddleActions';
 // components
-import Butt from "../../global/Butt";
-import SubscribeButton from '../../global/SubscribeButton';
-import ArtflyAccountTypes from "../../global/ArtflyAccountTypes";
+import Butt from "../../../global/Butt/Butt";
+import SubscribeButton from '../../../global/SubscribeButton';
+import ArtflyAccountTypes from "../../../global/ArtflyAccountTypes";
 
 class AccountSettings extends Component {
 
