@@ -28,13 +28,13 @@ const ColourBlock = (hue, decrement, isSelected=false) => {
     )
 };
 
-const InkscapeConverter = (inkH, inkS, inkB) => {
+/*const InkscapeConverter = (inkH, inkS, inkB) => {
     const h = Math.round((inkH / 255) * 300);
     const s = Math.round((inkH / 255) * 100);
     const l = Math.round((inkB / 255) * 100);
 
     return `h:${h}, s:${s}, l:${l}`;
-};
+};*/
 
 const StyleGuide = () => {
 

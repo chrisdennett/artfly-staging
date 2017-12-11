@@ -66,8 +66,8 @@ class AccountSettings extends Component {
         }
 
         return (
-            <div>
-                <h2>Membership details</h2>
+            <div className='userHome--section'>
+                <h2 className='home--subHeading'>Membership details</h2>
                 <ul>
                     <li>Membership type: {accountType} {subscriptionButtons}</li>
                     <li>Total artworks added: {totalArtworks}

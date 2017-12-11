@@ -6,10 +6,9 @@ import './userHomeStyles.css';
 import { cancelSubscription, updateSubscription } from "../../../actions/PaddleActions";
 import { getUserArtistChanges } from "../../../actions/UserDataActions";
 // components
-import YourGalleries from "./assets/YourGalleries";
+import YourArtists from "./assets/YourArtists";
 import AccountSettings from "./assets/AccountSettings";
 import AccountWarning from "./assets/AccountWarning";
-import ArtistsSettings from "./assets/ArtistsSettings";
 
 class UserHome extends Component {
 
@@ -25,10 +24,7 @@ class UserHome extends Component {
                 <AccountWarning className='userHome--accountWarning'
                                 maxArtworksReached={true}/>
 
-                <YourGalleries className='userHome--section'
-                               userArtists={this.props.userArtists}/>
-
-                <ArtistsSettings userArtists={this.props.userArtists}/>
+                <YourArtists userArtists={this.props.userArtists}/>
 
                 <AccountSettings/>
             </div>

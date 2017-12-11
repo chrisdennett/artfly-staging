@@ -62,7 +62,7 @@ class Butt extends Component {
         else if(white) classes += ' butt--white';
         else if(yellow) classes += ' butt--yellow';
         else if(green) classes += ' butt--green';
-        else if(blue) classes += ' butt--green';
+        else if(blue) classes += ' butt--blue';
         else if(purple) classes += ' butt--purple';
 
         return (

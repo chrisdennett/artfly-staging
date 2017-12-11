@@ -40,10 +40,25 @@
 
 .butt--yellow {
     background-color: #FFCC00;
+
+    /*background: repeating-linear-gradient(
+            45deg,
+            #FFCC00,
+            #FFCC00 5px,
+            #e6b800 5px,
+            #e6b800 10px
+    );*/
 }
 
 .butt--green {
     background-color: #abc837;
+    /*background: repeating-linear-gradient(
+            45deg,
+            #abc837,
+            #abc837 5px,
+            #95b132 5px,
+            #95b132 10px
+    );*/
 }
 
 .butt--blue {

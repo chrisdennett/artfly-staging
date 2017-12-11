@@ -1,5 +1,5 @@
 import React from 'react';
-import { BLUE, GREEN, PURPLE, RED, YELLOW } from "../../Themes";
+import { BLUE, GREEN, YELLOW } from "../../Themes";
 
 const IconAddArt = ({ width = 38, height = 38, fill, stroke = 'none' }) => {
 
