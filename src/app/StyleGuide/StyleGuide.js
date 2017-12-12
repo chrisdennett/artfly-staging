@@ -1,5 +1,5 @@
 import React from 'react';
-import IconButt from "../global/IconButt/IconButt";
+import IconButt from "../global/Butt/IconButt";
 import Page from "../global/Page";
 
 const ColourBlock = (hue, decrement, isSelected=false) => {

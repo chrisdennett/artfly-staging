@@ -5,7 +5,7 @@ import Room from './Room/Room';
 import PictureFrame from './PictureFrame/PictureFrame';
 import ScrollbarRemover from "../global/ScrollbarRemover";
 
-const Artwork = function(props) {
+const Artwork = function (props) {
 
     const { artworkData, width, height, imageLoading, allowScrollbars = false } = props;
 
@@ -27,32 +27,34 @@ const Artwork = function(props) {
 
     return (
         <ScrollbarRemover showScrollbars={allowScrollbars}>
-            {imageLoading
-                ? <div style={{
-                    position: 'absolute',
-                    zIndex: 2000,
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translateX(-50%)'
-                }}>Loading artwork...</div>
-                : ""
-            }
+            <div style={{ position: 'relative' }}>
+                {imageLoading
+                    ? <div style={{
+                        position: 'absolute',
+                        zIndex: 2000,
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translateX(-50%)'
+                    }}>Loading artwork...</div>
+                    : ""
+                }
 
-            <div style={{ position: 'absolute' }}>
-                <Room width={width} height={height} spaceBelowPicture={spaceBelowPicture}/>
+                <div>
+                    <Room width={width} height={height} spaceBelowPicture={spaceBelowPicture}/>
+                </div>
+
+                <div style={{ position: 'absolute', top: paddingTop, left: paddingLeft }}>
+                    <PictureFrame
+                        frameThickness={frameThickness}
+                        mountThickness={mountThickness}
+                        imgWidth={imgWidth}
+                        imgHeight={imgHeight}/>
+                </div>
+
+                <img alt="user artwork"
+                     style={imgStyle}
+                     src={imgSrc}/>
             </div>
-
-            <div style={{ position: 'absolute', top: paddingTop, left: paddingLeft }}>
-                <PictureFrame
-                    frameThickness={frameThickness}
-                    mountThickness={mountThickness}
-                    imgWidth={imgWidth}
-                    imgHeight={imgHeight}/>
-            </div>
-
-            <img alt="user artwork"
-                 style={imgStyle}
-                 src={imgSrc}/>
 
         </ScrollbarRemover>
     )

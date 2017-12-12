@@ -1,8 +1,8 @@
 import React from 'react';
 // import { Link } from 'react-router-dom'
-import history from './history';
+import history from '../history';
 
-import Butt from "./Butt/Butt";
+import Butt from "./Butt";
 
 const LinkButt = function ({ children, linkTo, fullWidth, ...rest }) {
     return (

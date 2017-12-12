@@ -5,7 +5,7 @@ import _ from 'lodash';
 import './yourGalleriesStyles.css';
 // components
 import IconGallery from "../../../global/icon/icons/IconGallery";
-import Link from "../../../global/Link";
+import Link from "../../../global/Butt/Link";
 import Butt from "../../../global/Butt/Butt";
 
 const YourArtists = function ({ userArtists }) {

@@ -1,46 +1,34 @@
 import React, { Component } from "react";
-// styles
-import './editPictureHomeStyles.css';
-import Butt from "../../../global/Butt/Butt";
-// import Artwork from "../../Artwork/Artwork";
+// components
 import ArtworkContainer from "../../../Artwork/ArtworkContainer";
 
 class EditPictureHome extends Component {
 
     render() {
-        const { artist, artwork, onEditArtist, onEditPhoto, onOpenInGallery, onDeleteArtwork, artworkJustAdded } = this.props;
+        const { width, artist, artwork, artworkJustAdded } = this.props;
+
+        const artworkWidth = width * 0.9;
+        const artworkHeight = width / 2;
 
         return (
             <div>
-                {artworkJustAdded &&
-                <div>
-                    Your artwork has been saved to the gallery.
-                </div>
-                }
+                <div className='editPicture-main'>
+                    {artworkJustAdded &&
+                    <div>
+                        Your artwork has been saved to the gallery.
+                    </div>
+                    }
 
-                <Butt onClick={onOpenInGallery}>Open artwork in gallery</Butt>
-
-                <p>Artwork by {artist.firstName} {artist.lastName}</p>
-                <div className='editPictureHome--artworkHolder'>
-                    <ArtworkContainer artworkId={artwork.artworkId}
-                                      width={680}
-                                      height={480}
-                                      allowScrollbars={true}/>
+                    <p>Artwork by {artist.firstName} {artist.lastName}</p>
+                    <div className='editPictureHome--artworkHolder'>
+                        <ArtworkContainer artworkId={artwork.artworkId}
+                                          width={artworkWidth}
+                                          height={artworkHeight}
+                                          allowScrollbars={true}/>
+                    </div>
                 </div>
 
                 {/*<img src={artwork.thumb_url} alt={'user artwork thumb'}/>*/}
-                <Butt onClick={onEditPhoto}>Edit Photo</Butt>
-
-
-                <Butt onClick={onEditArtist}>Edit artist</Butt>
-                <Butt>Edit Frame</Butt>
-                <Butt>Edit Room</Butt>
-
-
-                <Butt label={'Delete Artwork'}
-                      backgroundColour={'#920000'}
-                      shadowColour={'#540000'}
-                      onClick={onDeleteArtwork}/>
             </div>
         );
     }

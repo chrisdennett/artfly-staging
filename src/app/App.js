@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import './appStyles.css';
 // components
 import WindowController from "./global/WindowDimensionsTracker";
-import Link from "./global/Link";
-import IconButt from "./global/IconButt/IconButt";
+import Link from "./global/Butt/Link";
+import IconButt from "./global/Butt/IconButt";
 import GalleryControlsContainer from "./GalleryControls/GalleryControlsContainer";
 
 class App extends Component {
@@ -12,19 +12,22 @@ class App extends Component {
     render() {
         const { params, children } = this.props;
         const { artworkId, galleryId } = params;
+        const { inArtStudio } = params;
 
         return (
             <div className='app'>
-                <Link className='app--homeButt' linkTo={'/'}>
 
+                {!inArtStudio &&
+                <Link className='app--homeButt' linkTo={'/'}>
                     <IconButt icon={'logo'}
                               leftCorner={true}
                               stroke={'#000'}
                               fill={'#fff'}
                               label={'home'}/>
                 </Link>
+                }
 
-
+                {!inArtStudio &&
                 <Link className='app--addArtButt' linkTo={`/artStudio/`}>
                     <IconButt icon={'addArt'}
                               rightCorner={true}
@@ -32,6 +35,7 @@ class App extends Component {
                               fill={'#fff'}
                               label={'+new'}/>
                 </Link>
+                }
 
                 {galleryId &&
                 <GalleryControlsContainer className='app--galleryControls'

@@ -78,6 +78,8 @@ class ArtflyRouting extends Component {
                     break;
 
                 case 'artStudio':
+                    params.inArtStudio = true;
+
                     if (!sections[1] || sections[1] === 'new') {
                         params.artworkId = 'new';
                         if (sections[2]) {

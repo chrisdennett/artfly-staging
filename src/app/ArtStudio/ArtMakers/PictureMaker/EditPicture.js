@@ -1,43 +1,28 @@
 import React, { Component } from "react";
 // styles
-import '../MakerStyles.css';
+import './editPictureStyles.css';
 // components
 import history from '../../../global/history';
-import Page from "../../../global/Page";
 import EditPictureHome from "./EditPictureHome";
 import ArtistUpdater from '../ArtistUpdater';
 import PhotoEditor from "../../PhotoEditor/PhotoEditor";
 import ArtworkDeleter from "./ArtworkDeleter";
+import PictureMakerControls from "./PictureMakerControls";
 
 class EditPicture extends Component {
 
     constructor() {
         super();
 
-        // open in gallery
-        this.onOpenInGallery = this.onOpenInGallery.bind(this);
-        // edit artist
-        this.onEditArtist = this.onEditArtist.bind(this);
+
         this.onArtistUpdateComplete = this.onArtistUpdateComplete.bind(this);
         this.onArtistUpdateCancel = this.onArtistUpdateCancel.bind(this);
         // edit photo
-        this.onEditPhoto = this.onEditPhoto.bind(this);
         this.onPhotoUpdateComplete = this.onPhotoUpdateComplete.bind(this);
         this.onPhotoUpdateCancel = this.onPhotoUpdateCancel.bind(this);
         // delete artwork
-        this.onDeleteArtwork = this.onDeleteArtwork.bind(this);
         this.onDeleteArtworkComplete = this.onDeleteArtworkComplete.bind(this);
         this.onDeleteArtworkCancel = this.onDeleteArtworkCancel.bind(this);
-    }
-
-    // open in gallery
-    onOpenInGallery() {
-        history.push(`/gallery/${this.props.artist.artistId}/artwork/${this.props.artworkId}`)
-    }
-
-    // edit artist
-    onEditArtist() {
-        history.push(`/artStudio/${this.props.artworkId}/editArtist`);
     }
 
     onArtistUpdateComplete() {
@@ -48,22 +33,12 @@ class EditPicture extends Component {
         history.push(`/artStudio/${this.props.artworkId}`);
     }
 
-    // edit photo
-    onEditPhoto() {
-        history.push(`/artStudio/${this.props.artworkId}/editPhoto`);
-    }
-
     onPhotoUpdateComplete() {
         history.push(`/artStudio/${this.props.artworkId}`);
     }
 
     onPhotoUpdateCancel() {
         history.push(`/artStudio/${this.props.artworkId}`);
-    }
-
-    // delete artwork
-    onDeleteArtwork() {
-        history.push(`/artStudio/${this.props.artworkId}/deleteArtwork`);
     }
 
     onDeleteArtworkComplete() {
@@ -75,52 +50,65 @@ class EditPicture extends Component {
     }
 
     render() {
-        const { currentEditScreen, userId, artist, artworkId, artwork } = this.props;
+        const { currentEditScreen, windowSize, userId, artist, artworkId, artwork } = this.props;
 
         const artworkJustAdded = currentEditScreen === 'justAdded';
         const showControls = artworkJustAdded || !currentEditScreen;
 
+        const sidebarWidth = 150;
+        const mainWidth = windowSize.windowWidth - sidebarWidth || 100;
+        const mainHeight = windowSize.windowHeight || 100;
+
         return (
 
-            <Page title={'Edit Artwork'}>
+            <div className='editPicture'>
 
-                {currentEditScreen === 'deleteArtwork' &&
-                <ArtworkDeleter artworkId={artworkId}
-                                artist={artist}
-                                onDeleteArtworkComplete={this.onDeleteArtworkComplete}
-                                onDeleteArtworkCancel={this.onDeleteArtworkCancel}/>
-                }
+                <div className='editPicture-sidebar' width={sidebarWidth}>
+                    <PictureMakerControls artistId={artist.artistId} artworkId={artworkId}/>
+                </div>
 
-                {currentEditScreen === 'editArtist' &&
-                <ArtistUpdater artworkId={artworkId}
-                               initialArtistId={artwork.artistId}
-                               manageUpload={true}
-                               onCancel={this.onArtistUpdateCancel}
-                               onUpdateComplete={this.onArtistUpdateComplete}/>
-                }
+                <div className='editPicture-main'>
+                    {currentEditScreen === 'deleteArtwork' &&
+                    <ArtworkDeleter artworkId={artworkId}
+                                    artist={artist}
+                                    onDeleteArtworkComplete={this.onDeleteArtworkComplete}
+                                    onDeleteArtworkCancel={this.onDeleteArtworkCancel}/>
+                    }
 
-                {currentEditScreen === 'editPhoto' &&
-                <PhotoEditor isNewImage={false}
-                             openCuttingBoard={true}
-                             artworkId={artworkId}
-                             userId={userId}
-                             artistId={artwork.artistId}
-                             url={artwork.url}
-                             onCancel={this.onPhotoUpdateCancel}
-                             onUploadComplete={this.onPhotoUpdateComplete}/>
-                }
+                    {currentEditScreen === 'editArtist' &&
+                    <ArtistUpdater artworkId={artworkId}
+                                   initialArtistId={artwork.artistId}
+                                   manageUpload={true}
+                                   onCancel={this.onArtistUpdateCancel}
+                                   onUpdateComplete={this.onArtistUpdateComplete}/>
+                    }
 
-                {showControls &&
-                <EditPictureHome artist={artist}
-                                 artworkJustAdded={artworkJustAdded}
-                                 artwork={artwork}
-                                 onDeleteArtwork={this.onDeleteArtwork}
-                                 onOpenInGallery={this.onOpenInGallery}
-                                 onEditPhoto={this.onEditPhoto}
-                                 onEditArtist={this.onEditArtist}/>
-                }
+                    {currentEditScreen === 'editPhoto' &&
+                    <PhotoEditor isNewImage={false}
+                                 height={mainHeight}
+                                 width={mainWidth}
+                                 openCuttingBoard={true}
+                                 artworkId={artworkId}
+                                 userId={userId}
+                                 artistId={artwork.artistId}
+                                 url={artwork.url}
+                                 onCancel={this.onPhotoUpdateCancel}
+                                 onUploadComplete={this.onPhotoUpdateComplete}/>
+                    }
 
-            </Page>
+                    {showControls &&
+                    <EditPictureHome artist={artist}
+                                     artworkJustAdded={artworkJustAdded}
+                                     artwork={artwork}
+                                     width={mainWidth}
+                                     onDeleteArtwork={this.onDeleteArtwork}
+                                     onOpenInGallery={this.onOpenInGallery}
+                                     onEditPhoto={this.onEditPhoto}
+                                     onEditArtist={this.onEditArtist}/>
+                    }
+                </div>
+
+            </div>
         );
     }
 }

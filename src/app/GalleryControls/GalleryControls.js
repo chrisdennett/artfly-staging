@@ -5,11 +5,11 @@ import PrevButton from "./assets/PrevButton";
 import NextButton from "./assets/NextButton";
 import ZoomButton from "./assets/ZoomButton";
 import EnterGalleryButton from "./assets/EnterGalleryButton";
-import Link from "../global/Link";
-import IconButt from "../global/IconButt/IconButt";
+import Link from "../global/Butt/Link";
+import IconButt from "../global/Butt/IconButt";
 
 const GalleryControls = function (props) {
-    const { artworkId, galleryId, nextArtworkId, prevArtworkId, galleryIsZoomedOut, ...rest } = props;
+    const { artworkId, galleryId, nextArtworkId, prevArtworkId, galleryIsZoomedOut, className } = props;
 
     const onGalleryPage = !artworkId;
     let prevPath = `/gallery/${galleryId}/artwork/${prevArtworkId}`;
@@ -51,7 +51,7 @@ const GalleryControls = function (props) {
     const showEditArtworkButton = !onGalleryPage;
 
     return (
-        <div {...rest}>
+        <div className={className}>
             {controls}
 
             {showEditArtworkButton &&

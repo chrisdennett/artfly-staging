@@ -61,12 +61,12 @@ class PhotoEditor extends Component {
             initialRotation = rotation;
         }
 
-        const { isNewImage, userId, artistId, artworkId } = this.props;
+        const { isNewImage, userId, artistId, artworkId, width, height } = this.props;
         const artworkData = { isNewImage, userId, artistId, artworkId };
         const orientation = initialRotation ? initialRotation : this.props.initialOrientation;
 
         return (
-            <div>
+            <div style={{height:'100%'}}>
                 <PhotoUploadCanvas img={this.props.img}
                                    orientation={this.props.initialOrientation}
                                    onCanvasInit={this.onPhotoUploadCanvasInit}/>
@@ -82,6 +82,8 @@ class PhotoEditor extends Component {
 
                 {showCuttingBoard &&
                 <CropAndRotateModal loadedImg={this.props.img}
+                                    width={width}
+                                    height={height}
                                     imgUrl={this.props.url}
                                     orientation={orientation}
                                     initialCropData={initialCropData}

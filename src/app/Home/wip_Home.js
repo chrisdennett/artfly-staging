@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import './home.css';
 import { connect } from 'react-redux';
 import Title from "./UserHome/assets/Title";
-import LinkButt from "../global/LinkButt";
+import LinkButt from "../global/Butt/LinkButt";
 
 class Home extends Component {
 

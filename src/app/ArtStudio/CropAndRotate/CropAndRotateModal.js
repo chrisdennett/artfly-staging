@@ -6,14 +6,11 @@ import CropAndRotate from "./CropAndRotate";
 
 class CropAndRotateModal extends Component {
     render() {
-        const { screenWidth, screenHeight, ...rest } = this.props;
+        const { screenWidth, screenHeight, width, height, ...rest } = this.props;
         const { initialCropData, loadedImg, onCancel, onDone, orientation, imgUrl } = rest;
 
-        // on screens wider than 800 there's a nav bar at the side - 100px
-        // for screens less than 800 the bar is at the top - 91px
-        const navBarOnTheSide = screenWidth > 800;
-        const w = navBarOnTheSide ? screenWidth - 100 : screenWidth;
-        const h = navBarOnTheSide ? screenHeight : screenHeight - 91;
+        const w = width ? width : screenWidth;
+        const h = height ? height : screenHeight;
 
         return (
             <CropAndRotate width={w}

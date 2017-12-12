@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 // actions
 import { listenForArtworkChanges, listenForArtistChanges } from '../../actions/UserDataActions';
 // components
-import ArtMaker from "./ArtMakers/PictureMaker/PictureMaker";
+import PictureMaker from "./ArtMakers/PictureMaker/PictureMaker";
 
 // In the future this screen will have options for the types of artwork
 // to make. Buttons would determine the maker to load
@@ -45,15 +45,16 @@ class ArtStudio extends Component {
 
         if (isLoadingMakerData) return <p>Lovely loading animation here...</p>;
 
-        const { artworkId, artwork, artist, userId, currentEditScreen, selectedArtistId } = this.props;
+        const { windowSize, artworkId, artwork, artist, userId, currentEditScreen, selectedArtistId } = this.props;
 
         return (
-            <ArtMaker userId={userId}
-                      artworkId={artworkId}
-                      selectedArtistId={selectedArtistId}
-                      artwork={artwork}
-                      artist={artist}
-                      currentEditScreen={currentEditScreen}/>
+            <PictureMaker userId={userId}
+                          windowSize={windowSize}
+                          artworkId={artworkId}
+                          selectedArtistId={selectedArtistId}
+                          artwork={artwork}
+                          artist={artist}
+                          currentEditScreen={currentEditScreen}/>
         );
     }
 }
@@ -61,11 +62,13 @@ class ArtStudio extends Component {
 const mapStateToProps = (state, ownProps) => {
     const currentArtwork = state.artworks[ownProps.artworkId];
     const currentArtist = currentArtwork ? state.artists[currentArtwork.artistId] : null;
+    const windowSize = state.ui.windowSize ? state.ui.windowSize : null;
 
     return {
         artwork: currentArtwork,
         artist: currentArtist,
-        userId: state.user.uid
+        userId: state.user.uid,
+        windowSize: windowSize
     }
 };
 

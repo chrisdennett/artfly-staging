@@ -7,7 +7,7 @@ import AddPicture from "./AddPicture";
 class ArtMaker extends Component {
 
     render() {
-        const { userId, artwork, artworkId, selectedArtistId, currentEditScreen, artist } = this.props;
+        const { userId, windowSize, artwork, artworkId, selectedArtistId, currentEditScreen, artist } = this.props;
 
         return (
             <div>
@@ -19,6 +19,7 @@ class ArtMaker extends Component {
 
                 {artworkId !== 'new' && artwork &&
                 <EditPicture currentEditScreen={currentEditScreen}
+                             windowSize={windowSize}
                              userId={userId}
                              artist={artist}
                              artworkId={artworkId}

@@ -1,5 +1,5 @@
 // externals
-import React, { Component } from "react";
+import { Component } from "react";
 import { connect } from 'react-redux';
 // actions
 import { setWindowSize } from "../../actions/UiActions";
@@ -19,11 +19,7 @@ class WindowDimensionsTracker extends Component {
     };
 
     render() {
-        return (
-            <div>
-                {this.props.children}
-            </div>
-        );
+        return this.props.children;
     }
 }
 
