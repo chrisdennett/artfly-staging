@@ -1,7 +1,9 @@
 // externals
 import React from "react";
 // components
-import Room from './Room/Room';
+import Wall from "./assets/Wall";
+import Floor from "./assets/Floor";
+import SkirtingBoard from "./assets/SkirtingBoard";
 import PictureFrame from './PictureFrame/PictureFrame';
 import ScrollbarRemover from "../global/ScrollbarRemover";
 
@@ -11,7 +13,9 @@ const Artwork = function (props) {
 
     if (!artworkData) return null;
 
-    const { imgSrc, imgWidth, imgHeight, paddingTop, paddingLeft, frameThickness, mountThickness, spaceBelowPicture } = artworkData;
+    const { imgSrc, imgWidth, imgHeight, skirtingY, skirtingHeight, floorY, floorHeight,  paddingTop, paddingLeft, frameThickness, mountThickness } = artworkData;
+
+    // const { imgSrc, imgWidth, imgHeight, paddingTop, paddingLeft, frameThickness, mountThickness, spaceBelowPicture } = artworkData;
 
     let imgStyle = {
         position: 'absolute',
@@ -27,7 +31,7 @@ const Artwork = function (props) {
 
     return (
         <ScrollbarRemover showScrollbars={allowScrollbars}>
-            <div style={{ position: 'relative' }}>
+            <div style={{ position: 'relative', height:height }}>
                 {imageLoading
                     ? <div style={{
                         position: 'absolute',
@@ -39,17 +43,23 @@ const Artwork = function (props) {
                     : ""
                 }
 
-                <div>
-                    <Room width={width} height={height} spaceBelowPicture={spaceBelowPicture}/>
-                </div>
+                <svg width={'100%'} height={'100%'}>
 
-                <div style={{ position: 'absolute', top: paddingTop, left: paddingLeft }}>
+                    <Wall />
+
+                    <Floor floorY={floorY} floorHeight={floorHeight} />
+
+                    <SkirtingBoard top={skirtingY} height={skirtingHeight}/>
+
                     <PictureFrame
+                        top={paddingTop}
+                        left={paddingLeft}
                         frameThickness={frameThickness}
                         mountThickness={mountThickness}
                         imgWidth={imgWidth}
                         imgHeight={imgHeight}/>
-                </div>
+
+                </svg>
 
                 <img alt="user artwork"
                      style={imgStyle}

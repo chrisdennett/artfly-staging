@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
 import { listenForArtworkChanges } from '../../actions/UserDataActions';
+// helpers
+import { calculateArtworkSizes } from './assets/ArtworkCalculations';
 // components
 import Artwork from './Artwork';
 
@@ -45,46 +47,10 @@ class ArtworkHolder extends Component {
     }
 
     calculateArtworkData(artwork) {
-        let { width, height } = this.props;
-
+        const { width, height } = this.props;
         const { widthToHeightRatio, heightToWidthRatio } = artwork;
-        const frameThicknessPercent = 0.03;
-        const mountThicknessPercent = 0.06;
-        const spaceBelowPicturePercent = 0.15;
-        const spaceBelowPicture = spaceBelowPicturePercent * height;
 
-        let minPaddingLeft = 10;
-        const minPaddingRight = 10;
-        let minPaddingTop = 60;
-        const minPaddingBottom = spaceBelowPicture;
-
-        const maxWidth = width - (minPaddingLeft + minPaddingRight);
-        const maxHeight = height - (minPaddingTop + minPaddingBottom);
-
-        // calculate to maximise width
-        let frameThickness = maxWidth * frameThicknessPercent;
-        let mountThickness = maxWidth * mountThicknessPercent;
-        let totalFrameAndMountThickness = (frameThickness * 2) + (mountThickness * 2);
-        let imgWidth = maxWidth - totalFrameAndMountThickness;
-        let imgHeight = imgWidth * widthToHeightRatio;
-        let frameHeight = imgHeight + totalFrameAndMountThickness;
-
-        // if it doesn't fit the height, calculate to maximise height
-        if (frameHeight > maxHeight) {
-            frameThickness = maxHeight * frameThicknessPercent;
-            mountThickness = maxHeight * mountThicknessPercent;
-            totalFrameAndMountThickness = (frameThickness * 2) + (mountThickness * 2);
-            imgHeight = maxHeight - totalFrameAndMountThickness;
-            imgWidth = imgHeight * heightToWidthRatio;
-        }
-
-        // work out the padding around the picture
-        const totalFramedPictureWidth = imgWidth + totalFrameAndMountThickness;
-        const extraHorizontalSpace = width - (totalFramedPictureWidth + minPaddingLeft + minPaddingRight);
-        const paddingLeft = minPaddingLeft + (extraHorizontalSpace / 2);
-
-        const extraVerticalSpace = height - (imgHeight + totalFrameAndMountThickness + minPaddingTop + minPaddingBottom);
-        const paddingTop = minPaddingTop + (extraVerticalSpace / 2);
+        let artworkData = calculateArtworkSizes(width, height, widthToHeightRatio, heightToWidthRatio)
 
         //source:   3000x3000 (max)
         //large:    960x960
@@ -92,7 +58,7 @@ class ArtworkHolder extends Component {
         //thumb:    150x150
         const { url, url_large, url_med, thumb_url } = artwork;
         let artworkUrl;
-        const largestImgEdge = imgWidth > imgHeight ? imgWidth : imgHeight;
+        const largestImgEdge = artworkData.imgWidth > artworkData.imgHeight ? artworkData.imgWidth : artworkData.imgHeight;
         if (largestImgEdge <= 150 && thumb_url) {
             artworkUrl = thumb_url;
         }
@@ -105,9 +71,6 @@ class ArtworkHolder extends Component {
         else {
             artworkUrl = url;
         }
-
-        let artworkData = { imgWidth, imgHeight, paddingTop, paddingLeft, frameThickness, mountThickness, spaceBelowPicture };
-
         let img = new Image();
         img.src = artworkUrl;
         img.onload = (e) => {
