@@ -5,7 +5,7 @@ class PictureFrame extends Component {
 
     // set up picture with imageWidth, imageHeight, frameThickness, mountThickness
     render() {
-        const { frameThickness, mountThickness, imgWidth, imgHeight } = this.props;
+        const { top, left, frameThickness, mountThickness, imgWidth, imgHeight } = this.props;
 
         let mountEdgeThickness = 3;
         let frameX = 0;
@@ -24,10 +24,7 @@ class PictureFrame extends Component {
         let viewBoxParams = String(frameX) + " " + String(frameY) + " " + String(frameWidth) + " " + String(frameHeight);
 
         return (
-            <svg width={frameWidth} height={frameHeight}
-                 ref="svgRef" key="1" xmlns="http://www.w3.org/2000/svg"
-                 viewBox={viewBoxParams}>
-
+            <svg x={left} y={top} width={frameWidth} height={frameHeight} viewBox={viewBoxParams}>
                 <g>
                     <FrameSection className="frame"
                                   fillColour={"#555555"}

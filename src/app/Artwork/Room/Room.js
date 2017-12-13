@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import SkirtingBoard from "./SkirtingBoard";
+import SkirtingBoard from "../assets/SkirtingBoard";
 
 class Room extends Component {
 
@@ -28,15 +28,15 @@ class Room extends Component {
         const floorHeight = height - floorY;
 
         return (
-            <svg className="svgBg" width={width} height={height} ref="svgRef" key="1" xmlns="http://www.w3.org/2000/svg"
+            <svg className="svgBg" width={'100%'} height={'100%'} key="1" xmlns="http://www.w3.org/2000/svg"
                  viewBox={viewBoxParams}>
 
                 <defs>
                     <pattern id="WallPattern"
-                             width="60" height="29"
+                             width="60" height="27"
                              patternUnits="userSpaceOnUse">
 
-                        <path fill="rgba(0,0,0,0.05)"
+                        <path fill="rgba(0,0,0,0.07)"
                               d="M336,687c-1,0-1-1-1-2V675h15V659H290v15h14v10l-2,2h34Zm11-14H322a2,2,0,0,1-2-2v-9a2,2,0,0,1,2-2h25a2,2,0,0,1,2,2v9A2,2,0,0,1,347,673Zm-30,0H292a2,2,0,0,1-2-2v-9a2,2,0,0,1,2-2h25a2,2,0,0,1,2,2v9A2,2,0,0,1,317,673Zm15,14H307a2,2,0,0,1-2-2v-9a2,2,0,0,1,2-2h25a2,2,0,0,1,2,2v9A2,2,0,0,1,332,687Z"
                               transform="translate(-290 -659)"/>
                     </pattern>
@@ -76,7 +76,6 @@ class Room extends Component {
                 <rect style={floor} x="0" y={floorY} width="100%" height={floorHeight}/>
 
                 <SkirtingBoard top={skirtingTop} height={skirtingHeight}/>
-
 
             </svg>
         );

@@ -45,11 +45,9 @@ class ArtStudio extends Component {
 
         if (isLoadingMakerData) return <p>Lovely loading animation here...</p>;
 
-        const { windowSize, artworkId, artwork, artist, userId, currentEditScreen, selectedArtistId } = this.props;
+        let { windowSize, artworkId, artwork, artist, userId, currentEditScreen, selectedArtistId } = this.props;
 
-        console.log("artwork: ", artwork);
-        console.log("artist: ", artist);
-        console.log("artwork.artistId: ", artwork.artistId);
+        if(this.props.artworkId === 'new') currentEditScreen = 'new';
 
         return (
             <PictureMaker userId={userId}
@@ -57,7 +55,7 @@ class ArtStudio extends Component {
                           artworkId={artworkId}
                           selectedArtistId={selectedArtistId}
                           artwork={artwork}
-                          artistId={artwork.artistId}
+                          artist={artist}
                           currentEditScreen={currentEditScreen}/>
         );
     }

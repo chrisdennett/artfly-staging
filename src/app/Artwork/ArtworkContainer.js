@@ -45,7 +45,7 @@ class ArtworkHolder extends Component {
     }
 
     calculateArtworkData(artwork) {
-        const { width, height } = this.props;
+        let { width, height } = this.props;
 
         const { widthToHeightRatio, heightToWidthRatio } = artwork;
         const frameThicknessPercent = 0.03;

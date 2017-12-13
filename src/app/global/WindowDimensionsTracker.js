@@ -14,22 +14,24 @@ class WindowDimensionsTracker extends Component {
 
     componentDidMount() {
         this.updateDimensions();
-        window.onresize = this.updateDimensions;
-    }
-
-    componentWillUpdate(nextProps) {
-        if (nextProps.inEditMode !== this.props.inEditMode) {
-            this.updateDimensions(nextProps.inEditMode);
+        window.onresize = () => {
+            this.updateDimensions();
         }
     }
 
-    updateDimensions(inEditMode=this.props.inEditMode) {
+    componentWillUpdate(nextProps) {
+        if (nextProps.leftMargin !== this.props.leftMargin) {
+            this.updateDimensions(nextProps.leftMargin);
+        }
+    }
+
+    // updateDimensions(inEditMode=this.props.inEditMode) {
+    updateDimensions(leftMargin=this.props.leftMargin) {
 
         const pageWidth = window.innerWidth;
         const pageHeight = window.innerHeight;
-        const editControlsWidth = 150;
 
-        const contentWidth = inEditMode ? pageWidth - editControlsWidth : pageWidth;
+        const contentWidth = leftMargin ? pageWidth - leftMargin : pageWidth;
 
         this.props.setWindowSize(contentWidth, pageHeight);
     };

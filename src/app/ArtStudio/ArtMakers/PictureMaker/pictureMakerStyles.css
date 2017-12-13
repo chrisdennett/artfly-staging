@@ -1,0 +1,20 @@
+.pictureMaker {
+    display: flex;
+    min-height: 100vh;
+}
+
+.pictureMaker--sidebar {
+    min-width: 150px;
+    min-height: 100%;
+    background-color: gray;
+}
+
+.editPicture{
+    display: flex;
+    flex: 1;
+}
+
+.editPicture-main {
+    flex: 1;
+}
+

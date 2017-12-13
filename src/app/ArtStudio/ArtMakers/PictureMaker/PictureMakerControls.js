@@ -23,6 +23,13 @@ class PictureMakerControls extends Component {
                 <h4>ArtFly Studio</h4>
 
                 <ControlPanelButt
+                    linkTo={`/artStudio/${this.props.artworkId}`}>Artwork</ControlPanelButt>
+
+
+                <ControlPanelButt
+                    linkTo={`/artStudio/${this.props.artworkId}/instructions`}>Instructions</ControlPanelButt>
+
+                <ControlPanelButt
                     linkTo={`/artStudio/`}>Add Photo</ControlPanelButt>
 
                 <ControlPanelButt
@@ -40,9 +47,15 @@ class PictureMakerControls extends Component {
                     Edit artist
                 </ControlPanelButt>
 
-                <ControlPanelButt>Edit Frame</ControlPanelButt>
+                <ControlPanelButt
+                    linkTo={`/artStudio/${this.props.artworkId}/editFrame`}>
+                    Edit Frame
+                </ControlPanelButt>
 
-                <ControlPanelButt>Edit Room</ControlPanelButt>
+                <ControlPanelButt
+                    linkTo={`/artStudio/${this.props.artworkId}/editRoom`}>
+                    Edit Room
+                </ControlPanelButt>
 
                 <ControlPanelButt
                     linkTo={`/artStudio/${this.props.artworkId}/deleteArtwork`}>

@@ -1,47 +1,88 @@
 // externals
 import React, { Component } from "react";
+// styles
+import './pictureMakerStyles.css';
 // components
-// import EditPicture from "./EditPicture";
-// import AddPicture from "./AddPicture";
-import ControlPanelButt from "../../../global/Butt/ControlPanelButt";
+import PictureMakerControls from "./PictureMakerControls";
+import ArtworkContainer from "../../../Artwork/ArtworkContainer";
+import ArtistUpdater from '../ArtistUpdater';
+import PhotoEditor from "../../PhotoEditor/PhotoEditor";
+import ArtworkDeleter from "./ArtworkDeleter";
+import history from "../../../global/history";
+import NewArtwork from "./NewArtwork";
 
 class ArtMaker extends Component {
 
+    constructor() {
+        super();
+
+        this.showArtworkInEditing = this.showArtworkInEditing.bind(this);
+        this.showArtworkInGallery = this.showArtworkInGallery.bind(this);
+    }
+
+    showArtworkInEditing() {
+        history.push(`/artStudio/${this.props.artworkId}`);
+    }
+
+    showArtworkInGallery() {
+        history.push(`/gallery/${this.props.artist.artistId}`);
+    }
+
     render() {
-        // const { userId, windowSize, artwork, artworkId, selectedArtistId, currentEditScreen, artist } = this.props;
-        const { artworkId, artistId } = this.props;
+        const { userId, artwork, artworkId, selectedArtistId, currentEditScreen, artist } = this.props;
+        const artworkJustAdded = (currentEditScreen === 'justAdded');
+        const showArtwork = artworkJustAdded || !currentEditScreen;
+
 
         return (
-            <div>
+            <div className='pictureMaker'>
 
-                <h4>ArtFly Studio</h4>
+                <div className='pictureMaker--sidebar'>
+                    <PictureMakerControls artistId={selectedArtistId}
+                                          artworkId={artworkId}/>
+                </div>
 
-                <ControlPanelButt
-                    linkTo={`/artStudio/`}>Add Photo</ControlPanelButt>
+                <div className='editPicture'>
+                    <div className='editPicture-main'>
 
-                <ControlPanelButt
-                    linkTo={`/gallery/${artistId}/artwork/${artworkId}`}>
-                    DONE
-                </ControlPanelButt>
+                        {currentEditScreen === 'new' &&
+                        <NewArtwork />
+                        }
 
-                <ControlPanelButt
-                    linkTo={`/artStudio/${artworkId}/editPhoto`}>
-                    Edit Photo
-                </ControlPanelButt>
+                        {currentEditScreen === 'deleteArtwork' &&
+                        <ArtworkDeleter artworkId={artworkId}
+                                        artist={artist}
+                                        onDeleteArtworkComplete={this.showArtworkInGallery}
+                                        onDeleteArtworkCancel={this.showArtworkInEditing}/>
+                        }
 
-                <ControlPanelButt
-                    linkTo={`/artStudio/${artworkId}/editArtist`}>
-                    Edit artist
-                </ControlPanelButt>
+                        {currentEditScreen === 'editArtist' &&
+                        <ArtistUpdater artworkId={artworkId}
+                                       initialArtistId={artwork.artistId}
+                                       manageUpload={true}
+                                       onCancel={this.showArtworkInEditing}
+                                       onUpdateComplete={this.showArtworkInEditing}/>
+                        }
 
-                <ControlPanelButt>Edit Frame</ControlPanelButt>
+                        {currentEditScreen === 'editPhoto' &&
+                        <PhotoEditor isNewImage={false}
+                                     openCuttingBoard={true}
+                                     artworkId={artworkId}
+                                     userId={userId}
+                                     artistId={artwork.artistId}
+                                     url={artwork.url}
+                                     onCancel={this.showArtworkInEditing}
+                                     onUploadComplete={this.showArtworkInEditing}/>
+                        }
 
-                <ControlPanelButt>Edit Room</ControlPanelButt>
+                        {showArtwork &&
+                        <ArtworkContainer artworkId={artwork.artworkId}
+                                          leftMargin={150}
+                                          allowScrollbars={false}/>
+                        }
+                    </div>
 
-                <ControlPanelButt
-                    linkTo={`/artStudio/${artworkId}/deleteArtwork`}>
-                    Delete Artwork
-                </ControlPanelButt>
+                </div>
 
             </div>
         )
