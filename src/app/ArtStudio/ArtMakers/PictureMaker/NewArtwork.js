@@ -4,8 +4,12 @@ import EmptyArtwork from "../../../Artwork/EmptyArtwork";
 class NewArtwork extends Component {
 
     render() {
+
+
+        const {width, height} = this.props;
+
         return (
-            <EmptyArtwork />
+            <EmptyArtwork width={width} height={height} />
         );
     }
 }

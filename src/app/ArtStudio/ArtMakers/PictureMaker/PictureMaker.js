@@ -29,10 +29,12 @@ class ArtMaker extends Component {
     }
 
     render() {
-        const { userId, artwork, artworkId, selectedArtistId, currentEditScreen, artist } = this.props;
+        const { userId, windowSize, artwork, artworkId, selectedArtistId, currentEditScreen, artist } = this.props;
         const artworkJustAdded = (currentEditScreen === 'justAdded');
         const showArtwork = artworkJustAdded || !currentEditScreen;
 
+        const maxWidth = windowSize ? windowSize.windowWidth : 0;
+        const maxHeight = windowSize ? windowSize.windowHeight : 0;
 
         return (
             <div className='pictureMaker'>
@@ -46,7 +48,7 @@ class ArtMaker extends Component {
                     <div className='editPicture-main'>
 
                         {currentEditScreen === 'new' &&
-                        <NewArtwork />
+                        <NewArtwork width={maxWidth} height={maxHeight}/>
                         }
 
                         {currentEditScreen === 'deleteArtwork' &&
