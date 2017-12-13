@@ -42,9 +42,10 @@ class ArtflyRouting extends Component {
         this.props.fetchLocalPrice();
         // set up routing
         const location = history.location;
-        this.setPageData(location.pathname);
+
+        this.setPageData(location.pathname, location.search);
         const unlisten = history.listen((location) => {
-            this.setPageData(location.pathname);
+            this.setPageData(location.pathname, location.search);
         });
         this.setState({ unlisten: unlisten });
     }
@@ -53,8 +54,24 @@ class ArtflyRouting extends Component {
         this.state.unlisten();
     }
 
-    setPageData(fullPath) {
-        let page, params = {};
+    setPageData(fullPath, search) {
+        let page, params = { inEditMode: false};
+
+        if(search.indexOf('edit=true') > -1){
+            // pop() explanation: first param just "edit=true"
+            let editParams = {};
+            let paramStrings = search.split('&');
+            paramStrings.shift();
+            for(const paramPair of paramStrings){
+                const arr = paramPair.split('=');
+                const property = arr[0];
+                const value = arr[1];
+                editParams[property] = value;
+            }
+
+            params.inEditMode = true;
+            params.editParams = editParams;
+        }
 
         if (fullPath === '/') {
             page = 'home';
@@ -75,23 +92,6 @@ class ArtflyRouting extends Component {
 
                 case 'artworkEditor':
                     params.artworkId = sections[1];
-                    break;
-
-                case 'artStudio':
-                    params.inArtStudio = true;
-
-                    if (!sections[1] || sections[1] === 'new') {
-                        params.artworkId = 'new';
-                        if (sections[2]) {
-                            params.selectedArtistId = sections[2];
-                        }
-                    }
-                    else {
-                        params.artworkId = sections[1];
-                        if (sections[2]) {
-                            params.currentEditScreen = sections[2];
-                        }
-                    }
                     break;
 
                 case 'addOrEditArtist':

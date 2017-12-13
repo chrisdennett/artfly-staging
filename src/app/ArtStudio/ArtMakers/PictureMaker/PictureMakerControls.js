@@ -3,7 +3,6 @@ import React, { Component } from "react";
 // styles
 import './pictureMakerControlsStyles.css';
 // components
-import IconLogo from "../../../global/icon/icons/IconLogo";
 import ControlPanelButt from "../../../global/Butt/ControlPanelButt";
 
 /*const controls = {
@@ -21,7 +20,7 @@ class PictureMakerControls extends Component {
         return (
             <div className='pictureMakerControls'>
 
-                <IconLogo/>
+                <h4>ArtFly Studio</h4>
 
                 <ControlPanelButt
                     linkTo={`/artStudio/`}>Add Photo</ControlPanelButt>

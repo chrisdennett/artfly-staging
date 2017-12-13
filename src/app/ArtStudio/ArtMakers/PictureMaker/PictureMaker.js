@@ -1,30 +1,47 @@
 // externals
 import React, { Component } from "react";
 // components
-import EditPicture from "./EditPicture";
-import AddPicture from "./AddPicture";
+// import EditPicture from "./EditPicture";
+// import AddPicture from "./AddPicture";
+import ControlPanelButt from "../../../global/Butt/ControlPanelButt";
 
 class ArtMaker extends Component {
 
     render() {
-        const { userId, windowSize, artwork, artworkId, selectedArtistId, currentEditScreen, artist } = this.props;
+        // const { userId, windowSize, artwork, artworkId, selectedArtistId, currentEditScreen, artist } = this.props;
+        const { artworkId, artistId } = this.props;
 
         return (
             <div>
 
-                {artworkId === 'new' &&
-                <AddPicture userId={userId}
-                            selectedArtistId={selectedArtistId}/>
-                }
+                <h4>ArtFly Studio</h4>
 
-                {artworkId !== 'new' && artwork &&
-                <EditPicture currentEditScreen={currentEditScreen}
-                             windowSize={windowSize}
-                             userId={userId}
-                             artist={artist}
-                             artworkId={artworkId}
-                             artwork={artwork}/>
-                }
+                <ControlPanelButt
+                    linkTo={`/artStudio/`}>Add Photo</ControlPanelButt>
+
+                <ControlPanelButt
+                    linkTo={`/gallery/${artistId}/artwork/${artworkId}`}>
+                    DONE
+                </ControlPanelButt>
+
+                <ControlPanelButt
+                    linkTo={`/artStudio/${artworkId}/editPhoto`}>
+                    Edit Photo
+                </ControlPanelButt>
+
+                <ControlPanelButt
+                    linkTo={`/artStudio/${artworkId}/editArtist`}>
+                    Edit artist
+                </ControlPanelButt>
+
+                <ControlPanelButt>Edit Frame</ControlPanelButt>
+
+                <ControlPanelButt>Edit Room</ControlPanelButt>
+
+                <ControlPanelButt
+                    linkTo={`/artStudio/${artworkId}/deleteArtwork`}>
+                    Delete Artwork
+                </ControlPanelButt>
 
             </div>
         )
@@ -32,3 +49,25 @@ class ArtMaker extends Component {
 }
 
 export default ArtMaker;
+
+/*
+return (
+    <div>
+
+        {artworkId === 'new' &&
+        <AddPicture userId={userId}
+                    selectedArtistId={selectedArtistId}/>
+        }
+
+        {artworkId !== 'new' && artwork &&
+        <EditPicture currentEditScreen={currentEditScreen}
+                     windowSize={windowSize}
+                     userId={userId}
+                     artist={artist}
+                     artworkId={artworkId}
+                     artwork={artwork}/>
+        }
+
+    </div>
+)
+ */

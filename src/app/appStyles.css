@@ -32,6 +32,19 @@ html, body {
     padding: 0;
 }
 
+.app--sidebar{
+    width: 150px;
+    position: fixed;
+}
+
+.app--main{
+
+}
+
+.app--mainWithSideBar{
+    margin-left: 150px;
+}
+
 .app--homeButt {
     position: fixed;
     z-index: 2000;
@@ -39,8 +52,12 @@ html, body {
 
 .app--addArtButt {
     position: fixed;
-    right: 0px;
+    right: 0;
     z-index: 2001;
+}
+
+.app--galleryControlsHolder{
+    position: relative;
 }
 
 .app--galleryControls {

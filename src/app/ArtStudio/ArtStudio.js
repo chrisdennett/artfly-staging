@@ -47,13 +47,17 @@ class ArtStudio extends Component {
 
         const { windowSize, artworkId, artwork, artist, userId, currentEditScreen, selectedArtistId } = this.props;
 
+        console.log("artwork: ", artwork);
+        console.log("artist: ", artist);
+        console.log("artwork.artistId: ", artwork.artistId);
+
         return (
             <PictureMaker userId={userId}
                           windowSize={windowSize}
                           artworkId={artworkId}
                           selectedArtistId={selectedArtistId}
                           artwork={artwork}
-                          artist={artist}
+                          artistId={artwork.artistId}
                           currentEditScreen={currentEditScreen}/>
         );
     }

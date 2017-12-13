@@ -21,7 +21,7 @@ class GalleryControlsContainer extends Component {
     }
 
     render() {
-        const { artworkId, galleryId, galleryArtworkIds, galleryIsZoomedOut, ...rest } = this.props;
+        const { artworkId, galleryId, galleryArtworkIds, galleryIsZoomedOut} = this.props;
         let prevId = null;
         let nextId = null;
 
@@ -43,8 +43,7 @@ class GalleryControlsContainer extends Component {
                                 prevArtworkId={prevId}
                                 artworkIds={galleryArtworkIds}
                                 galleryId={galleryId}
-                                artworkId={artworkId}
-                                {...rest}/>;
+                                artworkId={artworkId}/>;
     }
 }
 

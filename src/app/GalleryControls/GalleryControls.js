@@ -9,7 +9,7 @@ import Link from "../global/Butt/Link";
 import IconButt from "../global/Butt/IconButt";
 
 const GalleryControls = function (props) {
-    const { artworkId, galleryId, nextArtworkId, prevArtworkId, galleryIsZoomedOut, className } = props;
+    const { artworkId, galleryId, nextArtworkId, prevArtworkId, galleryIsZoomedOut } = props;
 
     const onGalleryPage = !artworkId;
     let prevPath = `/gallery/${galleryId}/artwork/${prevArtworkId}`;
@@ -51,7 +51,7 @@ const GalleryControls = function (props) {
     const showEditArtworkButton = !onGalleryPage;
 
     return (
-        <div className={className}>
+        <div>
             {controls}
 
             {showEditArtworkButton &&
