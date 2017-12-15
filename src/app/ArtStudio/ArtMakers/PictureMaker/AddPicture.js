@@ -4,8 +4,7 @@ import * as PhotoHelper from "../../PhotoEditor/assets/PhotoHelper";
 import history from '../../../global/history';
 import ArtistSelector from '../../../ArtistSelector/ArtistSelector';
 import PhotoEditor from "../../PhotoEditor/PhotoEditor";
-import Page from "../../../global/Page";
-import SelectPhotoButton from "../../PhotoEditor/assets/SelectPhotoButton";
+import SelectPhotoButton from "../../PhotoSelector/PhotoSelector";
 import { P, SECTION } from '../../../global/Themes';
 import LoadingAnimation from "../../../global/LoadingAnimation";
 
@@ -57,8 +56,7 @@ class AddPicture extends Component {
         const contentStyle = uploadInProgress ? { display: 'none' } : { display: 'inherit' };
 
         return (
-            <Page title={'Add Art'}>
-
+            <div>
                 {uploadInProgress &&
                 <LoadingAnimation text={'Uploading photo...'}/>
                 }
@@ -95,7 +93,7 @@ class AddPicture extends Component {
                     </SECTION>
 
                 </div>
-            </Page>
+            </div>
         )
     }
 }

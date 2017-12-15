@@ -15,7 +15,6 @@ class ArtworkHolder extends Component {
 
         this.state = { imageLoading: true };
 
-        // this.loadImage = this.loadImage.bind(this);
         this.setupArtwork = this.setupArtwork.bind(this);
         this.calculateArtworkData = this.calculateArtworkData.bind(this);
     }

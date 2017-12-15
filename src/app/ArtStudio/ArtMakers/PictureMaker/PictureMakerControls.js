@@ -20,17 +20,27 @@ class PictureMakerControls extends Component {
         return (
             <div className='pictureMakerControls'>
 
-                <h4>ArtFly Studio</h4>
+                <h4>ArtFly Studio: Picture Maker</h4>
 
                 <ControlPanelButt
-                    linkTo={`/artStudio/${this.props.artworkId}`}>Artwork</ControlPanelButt>
-
-
-                <ControlPanelButt
-                    linkTo={`/artStudio/${this.props.artworkId}/instructions`}>Instructions</ControlPanelButt>
+                    linkTo={`/gallery/ZaKLqidQ1eejJZxgBqYw/artwork/y4LO3S2bYQ2p80co96vF`}>
+                    test pic
+                </ControlPanelButt>
 
                 <ControlPanelButt
-                    linkTo={`/artStudio/`}>Add Photo</ControlPanelButt>
+                    linkTo={`/artStudio/${this.props.artworkId}/uploadPhoto`}>
+                    Add new photo
+                </ControlPanelButt>
+
+                <ControlPanelButt
+                    linkTo={`/artStudio/${this.props.artworkId}/artworkPreview`}>
+                    Artwork Preview
+                </ControlPanelButt>
+
+                {/*<ControlPanelButt
+                    linkTo={`/artStudio/${this.props.artworkId}/instructions`}>
+                    Instructions
+                </ControlPanelButt>*/}
 
                 <ControlPanelButt
                     linkTo={`/gallery/${this.props.artistId}/artwork/${this.props.artworkId}`}>

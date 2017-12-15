@@ -1,5 +1,5 @@
 // externals
-import React, { Component } from "react";
+import { Component } from "react";
 
 class ScrollbarRemover extends Component {
 

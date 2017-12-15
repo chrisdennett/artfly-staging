@@ -1,10 +1,10 @@
 // externals
 import React, { Component } from "react";
-// import styled from 'styled-components';
+// helpers
+import * as PhotoHelper from "../PhotoEditor/assets/PhotoHelper";
 // components
 import CuttingOverlay from "./assets/CuttingOverlay";
-import * as PhotoHelper from "../PhotoEditor/assets/PhotoHelper";
-// helper values
+// static values
 const maxImageWidth = 3000;
 const maxImageHeight = 3000;
 

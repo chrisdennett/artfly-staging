@@ -31,7 +31,7 @@ const Artwork = function (props) {
 
     return (
         <ScrollbarRemover showScrollbars={allowScrollbars}>
-            <div style={{ position: 'relative', height:height }}>
+            <div style={{ position: 'relative', height:height, flex:1 }}>
                 {imageLoading
                     ? <div style={{
                         position: 'absolute',

@@ -2,32 +2,23 @@
 import React, { Component } from "react";
 // components
 import CropAndRotateModal from "../CropAndRotate/CropAndRotateModal";
-import EditedPhotoPreview from "./EditedPhotoPreview";
-import PhotoUploadCanvas from "./PhotoUploadCanvas";
+// import EditedPhotoPreview from "./EditedPhotoPreview";
+// import PhotoUploadCanvas from "./PhotoUploadCanvas";
 
 class PhotoEditor extends Component {
 
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
-        const showCuttingBoard = props.openCuttingBoard || false;
-
-        this.state = { showCuttingBoard, cuttingBoardData: null, previewData: null, showPhotoPreview:false };
+        this.state = { cuttingBoardData: null, previewData: null };
 
         this.onCuttingBoardCancel = this.onCuttingBoardCancel.bind(this);
         this.onImageCuttingBoardDone = this.onImageCuttingBoardDone.bind(this);
         this.onCancel = this.onCancel.bind(this);
-        this.onCurrentImgEdit = this.onCurrentImgEdit.bind(this);
-        this.onPhotoUploadCanvasInit = this.onPhotoUploadCanvasInit.bind(this);
-    }
-
-    onPhotoUploadCanvasInit(photoUploadCanvas, widthToHeightRatio, heightToWidthRatio){
-        const previewData = {canvas:photoUploadCanvas, widthToHeightRatio, heightToWidthRatio};
-        this.setState({previewData, showPhotoPreview:true});
     }
 
     onCuttingBoardCancel() {
-        this.setState({ showCuttingBoard: false, showPhotoPreview: true });
+        this.props.onCancel();
     }
 
     onImageCuttingBoardDone(data) {
@@ -40,19 +31,17 @@ class PhotoEditor extends Component {
 
         const previewData = { croppedWidth, croppedHeight, canvas, leftX, topY, rightX, bottomY, widthToHeightRatio, heightToWidthRatio };
 
-        this.setState({ cuttingBoardData: data, showCuttingBoard: false, showPhotoPreview: true, imageData, previewData });
+        this.props.onDone(previewData);
+
+        this.setState({ cuttingBoardData: data, imageData, previewData });
     }
 
     onCancel() {
         this.props.onCancel();
     }
 
-    onCurrentImgEdit() {
-        this.setState({ showCuttingBoard: true, showPhotoPreview: false });
-    }
-
     render() {
-        const { showCuttingBoard, showPhotoPreview } = this.state;
+        const { img, url } = this.props;
 
         let initialCropData, initialRotation;
         if (this.state.cuttingBoardData) {
@@ -61,35 +50,15 @@ class PhotoEditor extends Component {
             initialRotation = rotation;
         }
 
-        const { isNewImage, userId, artistId, artworkId}  = this.props;
-        const artworkData = { isNewImage, userId, artistId, artworkId };
         const orientation = initialRotation ? initialRotation : this.props.initialOrientation;
 
         return (
-            <div style={{height:'100%'}}>
-                <PhotoUploadCanvas img={this.props.img}
-                                   orientation={this.props.initialOrientation}
-                                   onCanvasInit={this.onPhotoUploadCanvasInit}/>
-
-                {showPhotoPreview &&
-                <EditedPhotoPreview previewData={this.state.previewData}
-                                    artworkData={artworkData}
-                                    onCurrentImgEdit={this.onCurrentImgEdit}
-                                    onUploadStart={this.props.onUploadStart}
-                                    onUploadComplete={this.props.onUploadComplete}
-                                    onCancel={this.onCancel}/>
-                }
-
-                {showCuttingBoard &&
-                <CropAndRotateModal loadedImg={this.props.img}
-                                    imgUrl={this.props.url}
-                                    orientation={orientation}
-                                    initialCropData={initialCropData}
-                                    onCancel={this.onCuttingBoardCancel}
-                                    onDone={this.onImageCuttingBoardDone}/>
-                }
-
-            </div>
+            <CropAndRotateModal loadedImg={img}
+                                imgUrl={url}
+                                orientation={orientation}
+                                initialCropData={initialCropData}
+                                onCancel={this.onCuttingBoardCancel}
+                                onDone={this.onImageCuttingBoardDone}/>
         );
     }
 }

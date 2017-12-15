@@ -8,8 +8,8 @@ import Butt from "../../global/Butt/Butt";
 import CuttingMat from "./assets/CuttingMat";
 
 class CropAndRotate extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
         this.onCropUpdate = this.onCropUpdate.bind(this);
         this.onCanvasSetup = this.onCanvasSetup.bind(this);

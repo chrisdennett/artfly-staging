@@ -9,7 +9,10 @@ import ArtistUpdater from '../ArtistUpdater';
 import PhotoEditor from "../../PhotoEditor/PhotoEditor";
 import ArtworkDeleter from "./ArtworkDeleter";
 import history from "../../../global/history";
-import NewArtwork from "./NewArtwork";
+import UploadPhoto from "./UploadPhoto";
+import ArtworkPreview from "../../ArtworkPreview/ArtworkPreview";
+import PhotoSelector from "../../PhotoSelector/PhotoSelector";
+import * as PhotoHelper from "../../PhotoEditor/assets/PhotoHelper";
 
 class ArtMaker extends Component {
 
@@ -18,6 +21,28 @@ class ArtMaker extends Component {
 
         this.showArtworkInEditing = this.showArtworkInEditing.bind(this);
         this.showArtworkInGallery = this.showArtworkInGallery.bind(this);
+        this.onPhotoEditorDone = this.onPhotoEditorDone.bind(this);
+        this.onPhotoUploaderEdit = this.onPhotoUploaderEdit.bind(this);
+        this.onMasterCanvasInit = this.onMasterCanvasInit.bind(this);
+        this.onPhotoSelected = this.onPhotoSelected.bind(this);
+
+        this.state = { cuttingBoardData: null, masterCanvas: null };
+    }
+
+    componentWillMount(){
+        if(this.props.isNewArtwork === false){
+            // set up for existing artwork
+        }
+    }
+
+    onPhotoSelected(imgFile) {
+        PhotoHelper.GetImage(imgFile, (img, imgOrientation) => {
+            this.setState({ selectedImg: img, selectedImgOrientation: imgOrientation });
+        });
+    }
+
+    onMasterCanvasInit(masterCanvas) {
+        this.setState({ masterCanvas: masterCanvas });
     }
 
     showArtworkInEditing() {
@@ -28,27 +53,83 @@ class ArtMaker extends Component {
         history.push(`/gallery/${this.props.artist.artistId}`);
     }
 
+    onPhotoUploaderEdit(img, artistId) {
+        this.setState({ photoUploaderImg: img }, () => {
+            history.push(`/artStudio/${this.props.artworkId}/${artistId}/editPhoto`);
+        });
+    }
+
+    onPhotoEditorDone(newData) {
+        if (this.props.artworkId === 'new') {
+            // send to photo uploader with new flag
+            this.setState({ cuttingBoardData: newData }, () => {
+                history.push(`/artStudio/${this.props.artworkId}/uploadPhoto`);
+            });
+        }
+        else {
+            this.setState({ cuttingBoardData: newData }, () => {
+                history.push(`/artStudio/${this.props.artworkId}/uploadPhoto`);
+            });
+        }
+    }
+
     render() {
-        const { userId, windowSize, artwork, artworkId, selectedArtistId, currentEditScreen, artist } = this.props;
-        const artworkJustAdded = (currentEditScreen === 'justAdded');
-        const showArtwork = artworkJustAdded || !currentEditScreen;
+        let { userId, isNewArtwork, windowSize, artwork, artworkId, selectedArtistId, currentEditScreen, artist } = this.props;
+        const { cuttingBoardData, photoUploaderImg, selectedImg, selectedImgOrientation } = this.state;
 
         const maxWidth = windowSize ? windowSize.windowWidth : 0;
         const maxHeight = windowSize ? windowSize.windowHeight : 0;
 
+        const artworkUrl = artwork ? artwork.url : null;
+
         return (
             <div className='pictureMaker'>
 
+
+                <ArtworkPreview onMasterCanvasInit={this.onMasterCanvasInit}
+                                artwork={artwork}
+                                selectedImgOrientation={selectedImgOrientation}
+                                selectedImg={selectedImg}/>
+
+
                 <div className='pictureMaker--sidebar'>
                     <PictureMakerControls artistId={selectedArtistId}
+                                          isNewArtwork={isNewArtwork}
                                           artworkId={artworkId}/>
                 </div>
 
                 <div className='editPicture'>
                     <div className='editPicture-main'>
 
-                        {currentEditScreen === 'new' &&
-                        <NewArtwork width={maxWidth} height={maxHeight}/>
+                        {currentEditScreen === 'uploadPhoto' &&
+                        <PhotoSelector
+                            uid={'new-artwork-selector'}
+                            onPhotoSelect={this.onPhotoSelected}/>
+                        }
+
+                        {/*{currentEditScreen === 'uploadPhoto' &&
+                        <UploadPhoto width={maxWidth}
+                                     height={maxHeight}
+                                     userId={userId}
+                                     onEdit={this.onPhotoUploaderEdit}
+                                     cuttingBoardData={cuttingBoardData}
+                                     selectedArtistId={selectedArtistId}
+                                     onUploadComplete={this.showArtworkInEditing}/>
+                        }*/}
+
+                        {currentEditScreen === 'artworkPreview' &&
+                        <ArtworkContainer artworkId={artwork.artworkId}
+                                          allowScrollbars={false}/>
+                        }
+
+                        {currentEditScreen === 'editPhoto' &&
+                        <PhotoEditor isNewImage={isNewArtwork}
+                                     artworkId={artworkId}
+                                     userId={userId}
+                                     url={artworkUrl}
+                                     img={photoUploaderImg}
+                                     onDone={this.onPhotoEditorDone}
+                                     onCancel={this.showArtworkInEditing}/>
                         }
 
                         {currentEditScreen === 'deleteArtwork' &&
@@ -64,23 +145,6 @@ class ArtMaker extends Component {
                                        manageUpload={true}
                                        onCancel={this.showArtworkInEditing}
                                        onUpdateComplete={this.showArtworkInEditing}/>
-                        }
-
-                        {currentEditScreen === 'editPhoto' &&
-                        <PhotoEditor isNewImage={false}
-                                     openCuttingBoard={true}
-                                     artworkId={artworkId}
-                                     userId={userId}
-                                     artistId={artwork.artistId}
-                                     url={artwork.url}
-                                     onCancel={this.showArtworkInEditing}
-                                     onUploadComplete={this.showArtworkInEditing}/>
-                        }
-
-                        {showArtwork &&
-                        <ArtworkContainer artworkId={artwork.artworkId}
-                                          leftMargin={150}
-                                          allowScrollbars={false}/>
                         }
                     </div>
 

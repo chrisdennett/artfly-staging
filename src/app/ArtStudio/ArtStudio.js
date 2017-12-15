@@ -45,15 +45,16 @@ class ArtStudio extends Component {
 
         if (isLoadingMakerData) return <p>Lovely loading animation here...</p>;
 
-        let { windowSize, artworkId, artwork, artist, userId, currentEditScreen, selectedArtistId } = this.props;
+        let { windowSize, artworkId, artwork, artist, userId, currentEditScreen } = this.props;
 
-        if(this.props.artworkId === 'new') currentEditScreen = 'new';
+        const isNewArtwork = this.props.artworkId === 'new';
+        if(!currentEditScreen) currentEditScreen = 'artworkPreview';
 
         return (
             <PictureMaker userId={userId}
+                          isNewArtwork={isNewArtwork}
                           windowSize={windowSize}
                           artworkId={artworkId}
-                          selectedArtistId={selectedArtistId}
                           artwork={artwork}
                           artist={artist}
                           currentEditScreen={currentEditScreen}/>

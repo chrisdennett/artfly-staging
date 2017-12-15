@@ -30,7 +30,7 @@ class App extends Component {
                 }
 
                 {!inArtStudio &&
-                <Link className='app--addArtButt' linkTo={`/artStudio/new`}>
+                <Link className='app--addArtButt' linkTo={`/artStudio/new/uploadPhoto`}>
                     <IconButt icon={'addArt'}
                               rightCorner={true}
                               stroke={'#000'}

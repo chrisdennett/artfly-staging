@@ -80,18 +80,17 @@ class ArtflyRouting extends Component {
                 case 'artStudio':
                     params.inArtStudio = true;
 
-                    if (!sections[1] || sections[1] === 'new') {
+                    if (!sections[1]) {
                         params.artworkId = 'new';
-                        if (sections[2]) {
-                            params.selectedArtistId = sections[2];
-                        }
                     }
                     else {
                         params.artworkId = sections[1];
-                        if (sections[2]) {
-                            params.currentEditScreen = sections[2];
-                        }
                     }
+
+                    if (sections[2]) {
+                        params.currentEditScreen = sections[2];
+                    }
+
                     break;
 
                 case 'addOrEditArtist':
