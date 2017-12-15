@@ -13,6 +13,7 @@ import UploadPhoto from "./UploadPhoto";
 import ArtworkPreview from "../../ArtworkPreview/ArtworkPreview";
 import PhotoSelector from "../../PhotoSelector/PhotoSelector";
 import * as PhotoHelper from "../../PhotoEditor/assets/PhotoHelper";
+import CropAndRotate from "../../CropAndRotate/CropAndRotate";
 
 class ArtMaker extends Component {
 
@@ -29,8 +30,8 @@ class ArtMaker extends Component {
         this.state = { cuttingBoardData: null, masterCanvas: null };
     }
 
-    componentWillMount(){
-        if(this.props.isNewArtwork === false){
+    componentWillMount() {
+        if (this.props.isNewArtwork === false) {
             // set up for existing artwork
         }
     }
@@ -122,7 +123,7 @@ class ArtMaker extends Component {
                                           allowScrollbars={false}/>
                         }
 
-                        {currentEditScreen === 'editPhoto' &&
+                        {/*{currentEditScreen === 'editPhoto' &&
                         <PhotoEditor isNewImage={isNewArtwork}
                                      artworkId={artworkId}
                                      userId={userId}
@@ -130,6 +131,13 @@ class ArtMaker extends Component {
                                      img={photoUploaderImg}
                                      onDone={this.onPhotoEditorDone}
                                      onCancel={this.showArtworkInEditing}/>
+                        }*/}
+
+                        {currentEditScreen === 'editPhoto' &&
+                        <CropAndRotate loadedImg={this.state.selectedImg}
+                                       onCancel={this.showArtworkInEditing}
+                                       width={maxWidth}
+                                       height={maxHeight}/>
                         }
 
                         {currentEditScreen === 'deleteArtwork' &&

@@ -25,9 +25,12 @@ class ArtworkPreview extends Component {
     }
 
     componentWillReceiveProps(nextProps){
+
+        // new image upload
         if(nextProps.selectedImg){
             this.updateCanvas(nextProps.selectedImg, nextProps.selectedImgOrientation);
         }
+        // current artwork
         else if(nextProps.artwork){
             const {widthToHeightRatio, heightToWidthRatio} = this.props.artwork;
 
@@ -36,12 +39,19 @@ class ArtworkPreview extends Component {
             img.src = nextProps.artwork.url_large;
             img.onload = (e) => {
                 artworkData.imgSrc = e.target.src;
-                this.setState({ artworkData })
+                this.setState({ artworkData }, () => {
+                    this.updateCanvas(img)
+                });
+
+                console.log("nextProps.artwork.rotation: ", nextProps.artwork);
             }
         }
     }
 
     updateCanvas(img, orientation){
+
+        console.log("orientation: ", orientation);
+
         PhotoHelper.drawImageToCanvas(img, this.masterCanvas, orientation, maxImageWidth, maxImageHeight, (widthToHeightRatio, heightToWidthRatio) => {
             // onCanvasInit(this.canvas, widthToHeightRatio, heightToWidthRatio);
 

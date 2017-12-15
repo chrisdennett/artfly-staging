@@ -41,7 +41,7 @@ class PhotoEditor extends Component {
     }
 
     render() {
-        const { img, url } = this.props;
+        const { img, url, initialOrientation } = this.props;
 
         let initialCropData, initialRotation;
         if (this.state.cuttingBoardData) {
@@ -50,7 +50,7 @@ class PhotoEditor extends Component {
             initialRotation = rotation;
         }
 
-        const orientation = initialRotation ? initialRotation : this.props.initialOrientation;
+        const orientation = initialRotation ? initialRotation : initialOrientation;
 
         return (
             <CropAndRotateModal loadedImg={img}
