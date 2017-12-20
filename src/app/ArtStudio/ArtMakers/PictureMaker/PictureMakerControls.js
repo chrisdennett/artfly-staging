@@ -32,10 +32,10 @@ class PictureMakerControls extends Component {
                     TEST new artwork
                 </ControlPanelButt>
 
-                <ControlPanelButt
+                {/*<ControlPanelButt
                     linkTo={`/artStudio/${this.props.artworkId}/uploadPhoto`}>
                     Add new photo
-                </ControlPanelButt>
+                </ControlPanelButt>*/}
 
                 <ControlPanelButt
                     linkTo={`/artStudio/${this.props.artworkId}/artworkPreview`}>

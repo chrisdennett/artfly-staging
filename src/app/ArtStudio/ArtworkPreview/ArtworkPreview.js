@@ -30,6 +30,8 @@ class ArtworkPreview extends Component {
     redrawCanvas(props) {
         const { selectedImg, selectedImgOrientation, artwork } = props;
 
+        console.log("redrawCanvas > artwork: ", artwork);
+
         // new image upload
         if (selectedImg) {
             this.updateCanvas(selectedImg, selectedImgOrientation);
@@ -51,7 +53,6 @@ class ArtworkPreview extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-console.log("nextProps.artwork: ", nextProps.artwork);
         if (nextProps.artwork !== this.props.artwork) {
             this.redrawCanvas(nextProps);
         }

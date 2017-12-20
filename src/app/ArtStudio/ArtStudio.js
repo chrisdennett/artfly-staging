@@ -37,7 +37,6 @@ class ArtStudio extends Component {
     }
 
     render() {
-
         const {artworkId, artwork, artist, userId, currentEditScreen, windowSize} = this.props;
         const isNewArtwork = artworkId === 'new';
         let isLoadingMakerData = false;

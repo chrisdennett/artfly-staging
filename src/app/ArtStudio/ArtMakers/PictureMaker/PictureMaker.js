@@ -27,16 +27,32 @@ class ArtMaker extends Component {
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.onArtworkDataChange = this.onArtworkDataChange.bind(this);
         this.onDrawnToCanvas = this.onDrawnToCanvas.bind(this);
+        this.updateArtwork = this.updateArtwork.bind(this);
 
         this.state = { cuttingBoardData: null, masterCanvas: null, artworkData:{}, artwork:null };
     }
 
     componentWillMount() {
-        const {artwork, isNewArtwork} = this.props;
+        this.updateArtwork(this.props)
+    }
+
+    componentWillReceiveProps(nextProps){
+        const {artwork} = this.props;
+        console.log("uuuuuuuuuuuuuuuuuu snextProps: ", nextProps);
+
+        if(artwork !== nextProps.artwork){
+            this.updateArtwork(nextProps)
+        }
+    }
+
+    updateArtwork(props){
+        const {artwork, isNewArtwork} = props;
+
+        console.log("isNewArtwork: ", isNewArtwork);
 
         if (artwork) {
             // set up for existing artwork
-            this.setState({artwork});
+            this.setState({artwork, selectedImg:null});
         }
         else if(isNewArtwork){
             const newArtwork = {};
