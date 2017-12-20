@@ -37,18 +37,19 @@ class ArtStudio extends Component {
     }
 
     render() {
+
+        const {artworkId, artwork, artist, userId, currentEditScreen, windowSize} = this.props;
+        const isNewArtwork = artworkId === 'new';
         let isLoadingMakerData = false;
-        if (this.props.artworkId && this.props.artworkId !== 'new' && !this.props.artwork) isLoadingMakerData = true;
-        if (this.props.artwork && !this.props.artist) isLoadingMakerData = true;
 
-        // If there's an artworkId, load the artwork, find out what type it is and set up the relevant Maker.
+        // if loading a current artwork
+        if (artworkId && !isNewArtwork && !artwork) isLoadingMakerData = true;
+        // or still loading the artist
+        if (artwork && !artist) isLoadingMakerData = true;
 
+        // don't mount the component until data is ready for it
         if (isLoadingMakerData) return <p>Lovely loading animation here...</p>;
 
-        let { windowSize, artworkId, artwork, artist, userId, currentEditScreen } = this.props;
-
-        const isNewArtwork = this.props.artworkId === 'new';
-        if(!currentEditScreen) currentEditScreen = 'artworkPreview';
 
         return (
             <PictureMaker userId={userId}

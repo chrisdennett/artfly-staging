@@ -6,6 +6,7 @@ import './cropAndRotate.css';
 import CuttingBoard from "./CuttingBoard";
 import Butt from "../../global/Butt/Butt";
 import CuttingMat from "./assets/CuttingMat";
+import * as PhotoHelper from "../PhotoEditor/assets/PhotoHelper";
 
 class CropAndRotate extends Component {
     constructor() {
@@ -31,7 +32,9 @@ class CropAndRotate extends Component {
 
     componentWillMount() {
         let { orientation, initialCropData } = this.props;
+        // default orientation
         if (!orientation) orientation = 1;
+        // default crop data
         if (!initialCropData) initialCropData = {
             leftPercent: 0,
             rightPercent: 1,
@@ -87,24 +90,31 @@ class CropAndRotate extends Component {
     }
 
     render() {
-        const { loadedImg, width, height, imgUrl } = this.props;
+        const { width, height, masterCanvas, masterCanvasReady, heightToWidthRatio, widthToHeightRatio } = this.props;
+
         const { rotation, cropData } = this.state;
         const cuttingBoardPadding = 40;
         const buttonHeight = 100;
         const maxCuttingBoardWidth = width - (cuttingBoardPadding * 2);
         const maxCuttingBoardHeight = height - (buttonHeight + (cuttingBoardPadding * 2));
 
+        if(!masterCanvasReady){
+            return <div>LOading CanVaS</div>
+        }
+
         return (
             <div className='cropAndRotate--holder'>
+
                 <div className='cropAndRotate--content'>
                     <div className='cropAndRotate--cuttingBoardHolder'>
                         <CuttingBoard
-                            img={loadedImg}
-                            imgUrl={imgUrl}
+                            masterCanvas={masterCanvas}
                             onCropUpdate={this.onCropUpdate}
                             onCanvasSetup={this.onCanvasSetup}
                             maxWidth={maxCuttingBoardWidth}
                             maxHeight={maxCuttingBoardHeight}
+                            widthToHeightRatio={widthToHeightRatio}
+                            heightToWidthRatio={heightToWidthRatio}
                             rotation={rotation}
                             cropData={cropData}/>
                     </div>

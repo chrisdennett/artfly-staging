@@ -8,9 +8,16 @@ export function GetImage(imgFile, callback) {
             let img = new Image();
             img.setAttribute('crossOrigin', 'anonymous'); //
             img.src = imgSrc;
+
             // wait for it to be loaded and then return
             img.onload = (e) => {
-                callback(e.target, orientation);
+                const w = img.width;
+                const h = img.height;
+
+                const widthToHeightRatio = h / w;
+                const heightToWidthRatio = w / h;
+
+                callback(img, orientation, widthToHeightRatio, heightToWidthRatio);
             }
         };
         reader.readAsDataURL(imgFile);

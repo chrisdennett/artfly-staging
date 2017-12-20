@@ -4,12 +4,12 @@ import React, { Component } from "react";
 import './pictureMakerStyles.css';
 // components
 import PictureMakerControls from "./PictureMakerControls";
-import ArtworkContainer from "../../../Artwork/ArtworkContainer";
+// import ArtworkContainer from "../../../Artwork/ArtworkContainer";
 import ArtistUpdater from '../ArtistUpdater';
-import PhotoEditor from "../../PhotoEditor/PhotoEditor";
+// import PhotoEditor from "../../PhotoEditor/PhotoEditor";
 import ArtworkDeleter from "./ArtworkDeleter";
 import history from "../../../global/history";
-import UploadPhoto from "./UploadPhoto";
+// import UploadPhoto from "./UploadPhoto";
 import ArtworkPreview from "../../ArtworkPreview/ArtworkPreview";
 import PhotoSelector from "../../PhotoSelector/PhotoSelector";
 import * as PhotoHelper from "../../PhotoEditor/assets/PhotoHelper";
@@ -23,22 +23,33 @@ class ArtMaker extends Component {
         this.showArtworkInEditing = this.showArtworkInEditing.bind(this);
         this.showArtworkInGallery = this.showArtworkInGallery.bind(this);
         this.onPhotoEditorDone = this.onPhotoEditorDone.bind(this);
-        this.onPhotoUploaderEdit = this.onPhotoUploaderEdit.bind(this);
         this.onMasterCanvasInit = this.onMasterCanvasInit.bind(this);
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
+        this.onArtworkDataChange = this.onArtworkDataChange.bind(this);
+        this.onDrawnToCanvas = this.onDrawnToCanvas.bind(this);
 
-        this.state = { cuttingBoardData: null, masterCanvas: null };
+        this.state = { cuttingBoardData: null, masterCanvas: null, artworkData:{}, artwork:null };
     }
 
     componentWillMount() {
-        if (this.props.isNewArtwork === false) {
+        const {artwork, isNewArtwork} = this.props;
+
+        if (artwork) {
             // set up for existing artwork
+            this.setState({artwork});
+        }
+        else if(isNewArtwork){
+            const newArtwork = {};
+            this.setState({artwork:newArtwork});
         }
     }
 
     onPhotoSelected(imgFile) {
-        PhotoHelper.GetImage(imgFile, (img, imgOrientation) => {
-            this.setState({ selectedImg: img, selectedImgOrientation: imgOrientation });
+        PhotoHelper.GetImage(imgFile, (img, imgOrientation, widthToHeightRatio, heightToWidthRation) => {
+
+            const artwork = {widthToHeightRatio, heightToWidthRation};
+
+            this.setState({ selectedImg: img, selectedImgOrientation: imgOrientation, artwork });
         });
     }
 
@@ -52,12 +63,6 @@ class ArtMaker extends Component {
 
     showArtworkInGallery() {
         history.push(`/gallery/${this.props.artist.artistId}`);
-    }
-
-    onPhotoUploaderEdit(img, artistId) {
-        this.setState({ photoUploaderImg: img }, () => {
-            history.push(`/artStudio/${this.props.artworkId}/${artistId}/editPhoto`);
-        });
     }
 
     onPhotoEditorDone(newData) {
@@ -74,24 +79,39 @@ class ArtMaker extends Component {
         }
     }
 
-    render() {
-        let { userId, isNewArtwork, windowSize, artwork, artworkId, selectedArtistId, currentEditScreen, artist } = this.props;
-        const { cuttingBoardData, photoUploaderImg, selectedImg, selectedImgOrientation } = this.state;
+    onArtworkDataChange(artworkData){
 
-        const maxWidth = windowSize ? windowSize.windowWidth : 0;
+        // this.setState({artworkData});
+    }
+
+    onDrawnToCanvas(){
+        this.setState({ masterCanvasReady: true });
+    }
+
+    render() {
+        let { userId, isNewArtwork, windowSize, artworkId, selectedArtistId, currentEditScreen, artist } = this.props;
+        const { cuttingBoardData, artwork, masterCanvasReady, artworkData, selectedImg, selectedImgOrientation } = this.state;
+
+
+        const {widthToHeightRatio, heightToWidthRatio} = artwork;
+        console.log("widthToHeightRatio, heightToWidthRatio: ", widthToHeightRatio, heightToWidthRatio);
+
+        const maxWidth = windowSize ? windowSize.windowWidth - 300 : 0;
         const maxHeight = windowSize ? windowSize.windowHeight : 0;
 
-        const artworkUrl = artwork ? artwork.url : null;
+        if (!currentEditScreen) currentEditScreen = 'artworkPreview';
+
+        if(!artworkData) currentEditScreen = 'uploadPhoto';
 
         return (
             <div className='pictureMaker'>
 
-
                 <ArtworkPreview onMasterCanvasInit={this.onMasterCanvasInit}
+                                onDrawnToCanvas={this.onDrawnToCanvas}
+                                onArtworkDataChange={this.onArtworkDataChange}
                                 artwork={artwork}
                                 selectedImgOrientation={selectedImgOrientation}
                                 selectedImg={selectedImg}/>
-
 
                 <div className='pictureMaker--sidebar'>
                     <PictureMakerControls artistId={selectedArtistId}
@@ -119,8 +139,7 @@ class ArtMaker extends Component {
                         }*/}
 
                         {currentEditScreen === 'artworkPreview' &&
-                        <ArtworkContainer artworkId={artwork.artworkId}
-                                          allowScrollbars={false}/>
+                        <div>ArtworkPreview goes here</div>
                         }
 
                         {/*{currentEditScreen === 'editPhoto' &&
@@ -135,6 +154,10 @@ class ArtMaker extends Component {
 
                         {currentEditScreen === 'editPhoto' &&
                         <CropAndRotate loadedImg={this.state.selectedImg}
+                                       masterCanvas={this.state.masterCanvas}
+                                       masterCanvasReady={masterCanvasReady}
+                                       widthToHeightRatio={widthToHeightRatio}
+                                       heightToWidthRatio={heightToWidthRatio}
                                        onCancel={this.showArtworkInEditing}
                                        width={maxWidth}
                                        height={maxHeight}/>
