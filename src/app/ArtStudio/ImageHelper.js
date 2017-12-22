@@ -161,3 +161,71 @@ export function drawCanvasToCanvas(outputCanvas, maxOutputWidth, maxOutputHeight
         .drawImage(sourceCanvas, leftX, topY, sourceWidth, sourceHeight,
             outputX, outputY, outputWidth, outputHeight);
 }
+
+// Draws one canvas to another restricting to a specific size
+export function drawCanvasToCanvasWithRotation(sourceCanvas, outputCanvas, orientation, maxCanvasWidth, maxCanvasHeight, callback){
+    const isPortrait = orientation > 4 && orientation < 9;
+
+    const imgW = isPortrait ? sourceCanvas.height : sourceCanvas.width;
+    const imgH = isPortrait ? sourceCanvas.width : sourceCanvas.height;
+
+    // Restrict to maximum image size allowed or sourceCanvas size, whichever is smaller
+    const maxW = imgW >= maxCanvasWidth ? maxCanvasWidth : imgW;
+    const maxH = imgH >= maxCanvasHeight ? maxCanvasHeight : imgH;
+
+    const widthToHeightRatio = imgH / imgW;
+    const heightToWidthRatio = imgW / imgH;
+
+    let canvasW = maxW;
+    let canvasH = maxW * widthToHeightRatio;
+
+    if (canvasH > maxH) {
+        canvasH = maxH;
+        canvasW = maxH * heightToWidthRatio;
+    }
+
+    const ctx = outputCanvas.getContext('2d');
+    ctx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
+
+    outputCanvas.width = canvasW;
+    outputCanvas.height = canvasH;
+
+    // save the context so it can be reset after transform
+    ctx.save();
+    // transform context before drawing image
+    switch (orientation) {
+        case 2:
+            ctx.transform(-1, 0, 0, 1, canvasH, 0);
+            break;
+        case 3:
+            ctx.transform(-1, 0, 0, -1, canvasW, canvasH);
+            break;
+        case 4:
+            ctx.transform(1, 0, 0, -1, 0, canvasW);
+            break;
+        case 5:
+            ctx.transform(0, 1, 1, 0, 0, 0);
+            break;
+        case 6:
+            ctx.transform(0, 1, -1, 0, canvasW, 0);
+            break;
+        case 7:
+            ctx.transform(0, -1, -1, 0, canvasW, canvasH);
+            break;
+        case 8:
+            ctx.transform(0, -1, 1, 0, 0, canvasH);
+            break;
+        default:
+            break;
+    }
+
+    const transformedCanvasW = isPortrait ? canvasH : canvasW;
+    const transformedCanvasH = isPortrait ? canvasW : canvasH;
+
+    // draw image
+    ctx.drawImage(sourceCanvas, 0, 0, sourceCanvas.width, sourceCanvas.height, 0, 0, transformedCanvasW, transformedCanvasH);
+    // restore ensures resets transform in case another image is added
+    ctx.restore();
+
+    if(callback) callback(widthToHeightRatio, heightToWidthRatio)
+}

@@ -21,20 +21,19 @@ class CuttingBoard extends Component {
     }
 
     drawToCanvas(props) {
-        const { masterCanvas, maxWidth, maxHeight, cropData, rotation, widthToHeightRatio = 1, heightToWidthRatio = 1 } = props;
+        const { masterCanvas, maxWidth, maxHeight, rotation, widthToHeightRatio = 1, heightToWidthRatio = 1 } = props;
 
-        let displayWidth = maxWidth;
-        let displayHeight = displayWidth * widthToHeightRatio;
-
-        if (displayHeight > maxHeight) {
-            displayHeight = maxHeight;
-            displayWidth = displayHeight * heightToWidthRatio;
-        }
-
-        if (masterCanvas && this.sourceCanvas) {
-            this.setState({ displayWidth, displayHeight }, () => {
-                PhotoHelper.drawCanvasToCanvas(this.sourceCanvas, displayWidth, displayHeight, masterCanvas, 0, 0, masterCanvas.width, masterCanvas.height);
-            });
+        if (masterCanvas && this.cuttingBoardCanvas) {
+            // PhotoHelper.drawCanvasToCanvas(this.cuttingBoardCanvas, displayWidth, displayHeight, masterCanvas, 0, 0, masterCanvas.width, masterCanvas.height);
+            PhotoHelper.drawCanvasToCanvasWithRotation(
+                masterCanvas,
+                this.cuttingBoardCanvas,
+                rotation,
+                maxWidth,
+                maxHeight,
+                () => {
+                    this.setState({ displayWidth:this.cuttingBoardCanvas.width, displayHeight:this.cuttingBoardCanvas.height });
+                });
         }
     }
 
@@ -72,7 +71,7 @@ class CuttingBoard extends Component {
     // Draw the source image into the source canvas
     // gets called by parent when mounted and then by rotation function
     /*drawImageToSourceCanvas(img, srcOrientation) {
-        PhotoHelper.drawImageToCanvas(img, this.sourceCanvas, srcOrientation, maxImageWidth, maxImageHeight, (widthToHeightRatio, heightToWidthRatio) => {
+        PhotoHelper.drawImageToCanvas(img, this.cuttingBoardCanvas, srcOrientation, maxImageWidth, maxImageHeight, (widthToHeightRatio, heightToWidthRatio) => {
             this.setState({ widthToHeightRatio, heightToWidthRatio });
         })
     }*/
@@ -91,15 +90,16 @@ class CuttingBoard extends Component {
     }
 
     canvasInit(canvas) {
-        this.sourceCanvas = canvas;
+        this.cuttingBoardCanvas = canvas;
 
         if (this.props.onCanvasSetup) {
-            this.props.onCanvasSetup(this.sourceCanvas);
+            this.props.onCanvasSetup(this.cuttingBoardCanvas);
         }
     }
 
     render() {
         const { displayWidth, displayHeight } = this.state;
+
         const cropData = this.getCropData(displayWidth, displayHeight);
 
         return (
