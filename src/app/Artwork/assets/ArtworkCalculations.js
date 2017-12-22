@@ -1,5 +1,5 @@
 
-export const calculateArtworkSizes = function(width, height, widthToHeightRatio, heightToWidthRatio) {
+export const calculateArtworkSizes = function(width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop=60) {
     const frameThicknessPercent = 0.03;
     const mountThicknessPercent = 0.06;
     const spaceBelowPicturePercent = 0.15;
@@ -11,7 +11,6 @@ export const calculateArtworkSizes = function(width, height, widthToHeightRatio,
 
     let minPaddingLeft = 10;
     const minPaddingRight = 10;
-    let minPaddingTop = 60;
     const minPaddingBottom = spaceBelowPicture;
 
     const maxWidth = width - (minPaddingLeft + minPaddingRight);

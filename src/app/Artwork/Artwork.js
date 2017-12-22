@@ -1,5 +1,7 @@
 // externals
 import React from "react";
+// styles
+import './artworkStyles.css';
 // components
 import Wall from "./assets/Wall";
 import Floor from "./assets/Floor";
@@ -31,7 +33,7 @@ const Artwork = function (props) {
 
     return (
         <ScrollbarRemover showScrollbars={allowScrollbars}>
-            <div style={{ position: 'relative', height:height, flex:1 }}>
+            <div className='artwork'>
                 {imageLoading
                     ? <div style={{
                         position: 'absolute',

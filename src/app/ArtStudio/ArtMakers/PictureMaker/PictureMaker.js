@@ -29,41 +29,38 @@ class ArtMaker extends Component {
         this.onDrawnToCanvas = this.onDrawnToCanvas.bind(this);
         this.updateArtwork = this.updateArtwork.bind(this);
 
-        this.state = { cuttingBoardData: null, masterCanvas: null, artworkData:{}, artwork:null };
+        this.state = { cuttingBoardData: null, masterCanvas: null, artworkData: {}, artwork: null };
     }
 
     componentWillMount() {
         this.updateArtwork(this.props)
     }
 
-    componentWillReceiveProps(nextProps){
-        const {artwork} = this.props;
-        console.log("uuuuuuuuuuuuuuuuuu snextProps: ", nextProps);
+    componentWillReceiveProps(nextProps) {
+        const { artwork } = this.props;
 
-        if(artwork !== nextProps.artwork){
+        if (artwork !== nextProps.artwork) {
             this.updateArtwork(nextProps)
         }
     }
 
-    updateArtwork(props){
-        const {artwork, isNewArtwork} = props;
-
-        console.log("isNewArtwork: ", isNewArtwork);
+    updateArtwork(props) {
+        const { artwork, isNewArtwork } = props;
 
         if (artwork) {
             // set up for existing artwork
-            this.setState({artwork, selectedImg:null});
+            this.setState({ artwork, selectedImg: null });
         }
-        else if(isNewArtwork){
+        else if (isNewArtwork) {
             const newArtwork = {};
-            this.setState({artwork:newArtwork});
+            this.setState({ artwork: newArtwork });
         }
     }
 
     onPhotoSelected(imgFile) {
-        PhotoHelper.GetImage(imgFile, (img, imgOrientation, widthToHeightRatio, heightToWidthRation) => {
+        PhotoHelper.GetImage(imgFile, (img, imgOrientation, widthToHeightRatio, heightToWidthRatio) => {
 
-            const artwork = {widthToHeightRatio, heightToWidthRation};
+            const artwork = { widthToHeightRatio, heightToWidthRatio };
 
             this.setState({ selectedImg: img, selectedImgOrientation: imgOrientation, artwork });
         });
@@ -95,12 +92,12 @@ class ArtMaker extends Component {
         }
     }
 
-    onArtworkDataChange(artworkData){
+    onArtworkDataChange(artworkData) {
 
         // this.setState({artworkData});
     }
 
-    onDrawnToCanvas(){
+    onDrawnToCanvas() {
         this.setState({ masterCanvasReady: true });
     }
 
@@ -109,15 +106,15 @@ class ArtMaker extends Component {
         const { cuttingBoardData, artwork, masterCanvasReady, artworkData, selectedImg, selectedImgOrientation } = this.state;
 
 
-        const {widthToHeightRatio, heightToWidthRatio} = artwork;
+        const { widthToHeightRatio, heightToWidthRatio } = artwork;
         console.log("widthToHeightRatio, heightToWidthRatio: ", widthToHeightRatio, heightToWidthRatio);
 
-        const maxWidth = windowSize ? windowSize.windowWidth - 300 : 0;
+        const maxWidth = windowSize ? windowSize.windowWidth : 0;
         const maxHeight = windowSize ? windowSize.windowHeight : 0;
 
         if (!currentEditScreen) currentEditScreen = 'artworkPreview';
 
-        if(!artworkData) currentEditScreen = 'uploadPhoto';
+        if (!artworkData) currentEditScreen = 'uploadPhoto';
 
         return (
             <div className='pictureMaker'>
@@ -135,16 +132,16 @@ class ArtMaker extends Component {
                                           artworkId={artworkId}/>
                 </div>
 
-                <div className='editPicture'>
-                    <div className='editPicture-main'>
 
-                        {currentEditScreen === 'uploadPhoto' &&
-                        <PhotoSelector
-                            uid={'new-artwork-selector'}
-                            onPhotoSelect={this.onPhotoSelected}/>
-                        }
+                <div className='pictureMaker--main'>
 
-                        {/*{currentEditScreen === 'uploadPhoto' &&
+                    {currentEditScreen === 'uploadPhoto' &&
+                    <PhotoSelector
+                        uid={'new-artwork-selector'}
+                        onPhotoSelect={this.onPhotoSelected}/>
+                    }
+
+                    {/*{currentEditScreen === 'uploadPhoto' &&
                         <UploadPhoto width={maxWidth}
                                      height={maxHeight}
                                      userId={userId}
@@ -154,11 +151,11 @@ class ArtMaker extends Component {
                                      onUploadComplete={this.showArtworkInEditing}/>
                         }*/}
 
-                        {currentEditScreen === 'artworkPreview' &&
-                        <div>ArtworkPreview goes here</div>
-                        }
+                    {currentEditScreen === 'artworkPreview' &&
+                    <div>ArtworkPreview goes here</div>
+                    }
 
-                        {/*{currentEditScreen === 'editPhoto' &&
+                    {/*{currentEditScreen === 'editPhoto' &&
                         <PhotoEditor isNewImage={isNewArtwork}
                                      artworkId={artworkId}
                                      userId={userId}
@@ -168,36 +165,35 @@ class ArtMaker extends Component {
                                      onCancel={this.showArtworkInEditing}/>
                         }*/}
 
-                        {currentEditScreen === 'editPhoto' &&
-                        <CropAndRotate loadedImg={this.state.selectedImg}
-                                       masterCanvas={this.state.masterCanvas}
-                                       masterCanvasReady={masterCanvasReady}
-                                       widthToHeightRatio={widthToHeightRatio}
-                                       heightToWidthRatio={heightToWidthRatio}
-                                       onCancel={this.showArtworkInEditing}
-                                       width={maxWidth}
-                                       height={maxHeight}/>
-                        }
+                    {currentEditScreen === 'editPhoto' &&
+                    <CropAndRotate loadedImg={this.state.selectedImg}
+                                   masterCanvas={this.state.masterCanvas}
+                                   masterCanvasReady={masterCanvasReady}
+                                   widthToHeightRatio={widthToHeightRatio}
+                                   heightToWidthRatio={heightToWidthRatio}
+                                   onCancel={this.showArtworkInEditing}
+                                   width={maxWidth}
+                                   height={maxHeight}/>
+                    }
 
-                        {currentEditScreen === 'deleteArtwork' &&
-                        <ArtworkDeleter artworkId={artworkId}
-                                        artist={artist}
-                                        onDeleteArtworkComplete={this.showArtworkInGallery}
-                                        onDeleteArtworkCancel={this.showArtworkInEditing}/>
-                        }
+                    {currentEditScreen === 'deleteArtwork' &&
+                    <ArtworkDeleter artworkId={artworkId}
+                                    artist={artist}
+                                    onDeleteArtworkComplete={this.showArtworkInGallery}
+                                    onDeleteArtworkCancel={this.showArtworkInEditing}/>
+                    }
 
-                        {currentEditScreen === 'editArtist' &&
-                        <ArtistUpdater artworkId={artworkId}
-                                       initialArtistId={artwork.artistId}
-                                       manageUpload={true}
-                                       onCancel={this.showArtworkInEditing}
-                                       onUpdateComplete={this.showArtworkInEditing}/>
-                        }
-                    </div>
-
+                    {currentEditScreen === 'editArtist' &&
+                    <ArtistUpdater artworkId={artworkId}
+                                   initialArtistId={artwork.artistId}
+                                   manageUpload={true}
+                                   onCancel={this.showArtworkInEditing}
+                                   onUpdateComplete={this.showArtworkInEditing}/>
+                    }
                 </div>
 
             </div>
+
         )
     }
 }

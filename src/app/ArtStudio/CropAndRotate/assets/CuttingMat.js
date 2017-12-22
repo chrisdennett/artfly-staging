@@ -13,7 +13,7 @@ const CuttingMat = function ({width, height}) {
     const tablePatternStyle = {fill: "#ad8b65"};
 
     return (
-        <svg style={{position:'absolute', left:0, top:0, zIndex: -1}} width={'100%'} height={'100%'}>
+        <svg className='cropAndRotate--cuttingMat'>
             <defs>
                 <pattern id="minorGrid" width="10" height="10" patternUnits="userSpaceOnUse">
                     <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#a2c656" strokeWidth="1"/>

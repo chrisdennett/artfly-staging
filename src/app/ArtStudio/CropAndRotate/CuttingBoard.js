@@ -102,10 +102,8 @@ class CuttingBoard extends Component {
         const { displayWidth, displayHeight } = this.state;
         const cropData = this.getCropData(displayWidth, displayHeight);
 
-        console.log("cropData: ", cropData);
-
         return (
-            <div style={{ width: displayWidth, height: displayHeight }}>
+            <div className='cropAndRotate--cuttingBoard'>
                 <CuttingOverlay
                     onChange={this.onCuttingOverlayChange}
                     {...cropData}/>

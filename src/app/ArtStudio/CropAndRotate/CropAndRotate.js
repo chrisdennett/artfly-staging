@@ -98,7 +98,7 @@ class CropAndRotate extends Component {
         const maxCuttingBoardWidth = width - (cuttingBoardPadding * 2);
         const maxCuttingBoardHeight = height - (buttonHeight + (cuttingBoardPadding * 2));
 
-        if(!masterCanvasReady){
+        if (!masterCanvasReady) {
             return <div>LOading CanVaS</div>
         }
 
@@ -126,7 +126,9 @@ class CropAndRotate extends Component {
                     <Butt inline onClick={this.onCancelClick}>CANCEL</Butt>
                 </div>
 
-                <CuttingMat width={width} height={height}/>
+                <div className='cropAndRotate--cuttingMattHolder'>
+                    <CuttingMat width={width} height={height}/>
+                </div>
 
             </div>
         );

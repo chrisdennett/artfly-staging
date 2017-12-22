@@ -30,8 +30,6 @@ class ArtworkPreview extends Component {
     redrawCanvas(props) {
         const { selectedImg, selectedImgOrientation, artwork } = props;
 
-        console.log("redrawCanvas > artwork: ", artwork);
-
         // new image upload
         if (selectedImg) {
             this.updateCanvas(selectedImg, selectedImgOrientation);
@@ -77,7 +75,7 @@ class ArtworkPreview extends Component {
     }
 
     updateArtworkData(imgSrc, widthToHeightRatio, heightToWidthRatio) {
-        let artworkData = calculateArtworkSizes(200, 200, widthToHeightRatio, heightToWidthRatio);
+        let artworkData = calculateArtworkSizes(150, 150, widthToHeightRatio, heightToWidthRatio, 5);
         artworkData.imgSrc = imgSrc;
 
         this.setState({ artworkData }, () => {
@@ -91,8 +89,11 @@ class ArtworkPreview extends Component {
 
         return (
             <div className={'artworkPreview'}>
-                <h1>ArtworkPreview</h1>
-                <h2>master canvas</h2>
+
+                <Artwork width={100}
+                         height={100}
+                         artworkData={artworkData}/>
+
                 <div className={'artworkPreview--canvasHolder'}>
                     <canvas className={'artworkPreview--canvas artworkPreview--hiddenCanvas'}
                             ref={this.onMasterCanvasInit}/>
@@ -104,9 +105,7 @@ class ArtworkPreview extends Component {
                             ref={(canvas) => this.thumbCanvas = canvas}/>
                 </div>
 
-                <Artwork width={200}
-                         height={200}
-                         artworkData={artworkData}/>
+
 
             </div>
         );

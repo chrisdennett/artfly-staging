@@ -1,25 +1,48 @@
 .cropAndRotate--holder {
-    position: relative;
-    z-index: 1000;
-    height: 100%;
-    display: flex;
     flex-direction: column;
     flex: 1;
+    display: flex;
 }
 
 .cropAndRotate--content {
+    z-index: 1;
     padding: 40px 40px 30px 40px;
     display: flex;
     flex: 1;
     align-items: center;
+    position: relative;
 }
 
 .cropAndRotate--cuttingBoardHolder {
     margin: 0 auto;
 }
 
+.cropAndRotate--cuttingBoard{
+    position: relative;
+}
+
+.cropAndRotate--cuttingMattHolder{
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    left: 150px;
+    right: 0;
+    bottom: 0;
+}
+
 .cropAndRotate--controls {
+    min-height: 60px;
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+    z-index: 2;
+}
+
+.cropAndRotate--cuttingMat{
+    width: 100%;
+    height: 100%
+}
+
+.cropAndRotate--cuttingOverlay{
+
 }
