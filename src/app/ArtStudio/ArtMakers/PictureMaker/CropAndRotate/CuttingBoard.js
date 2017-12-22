@@ -1,7 +1,7 @@
 // externals
 import React, { Component } from "react";
 // helpers
-import * as PhotoHelper from "../PhotoEditor/assets/PhotoHelper";
+import * as PhotoHelper from "../../../ImageHelper";
 // components
 import CuttingOverlay from "./assets/CuttingOverlay";
 // static values

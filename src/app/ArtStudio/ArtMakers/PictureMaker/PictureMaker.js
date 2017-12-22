@@ -4,16 +4,13 @@ import React, { Component } from "react";
 import './pictureMakerStyles.css';
 // components
 import PictureMakerControls from "./PictureMakerControls";
-// import ArtworkContainer from "../../../Artwork/ArtworkContainer";
 import ArtistUpdater from '../ArtistUpdater';
-// import PhotoEditor from "../../PhotoEditor/PhotoEditor";
 import ArtworkDeleter from "./ArtworkDeleter";
 import history from "../../../global/history";
-// import UploadPhoto from "./UploadPhoto";
-import ArtworkPreview from "../../ArtworkPreview/ArtworkPreview";
-import PhotoSelector from "../../PhotoSelector/PhotoSelector";
-import * as PhotoHelper from "../../PhotoEditor/assets/PhotoHelper";
-import CropAndRotate from "../../CropAndRotate/CropAndRotate";
+import ArtworkPreview from "./ArtworkPreview/ArtworkPreview";
+import PhotoSelector from "./PhotoSelector/PhotoSelector";
+import * as PhotoHelper from "../../ImageHelper";
+import CropAndRotate from "./CropAndRotate/CropAndRotate";
 
 class ArtMaker extends Component {
 
@@ -105,9 +102,7 @@ class ArtMaker extends Component {
         let { userId, isNewArtwork, windowSize, artworkId, selectedArtistId, currentEditScreen, artist } = this.props;
         const { cuttingBoardData, artwork, masterCanvasReady, artworkData, selectedImg, selectedImgOrientation } = this.state;
 
-
         const { widthToHeightRatio, heightToWidthRatio } = artwork;
-        console.log("widthToHeightRatio, heightToWidthRatio: ", widthToHeightRatio, heightToWidthRatio);
 
         const maxWidth = windowSize ? windowSize.windowWidth : 0;
         const maxHeight = windowSize ? windowSize.windowHeight : 0;

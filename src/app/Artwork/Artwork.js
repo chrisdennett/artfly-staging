@@ -11,7 +11,7 @@ import ScrollbarRemover from "../global/ScrollbarRemover";
 
 const Artwork = function (props) {
 
-    const { artworkData, width, height, imageLoading, allowScrollbars = false } = props;
+    const { artworkData, imageLoading, allowScrollbars = false } = props;
 
     if (!artworkData) return null;
 

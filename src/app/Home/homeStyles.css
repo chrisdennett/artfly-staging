@@ -1,5 +1,6 @@
 .home--heading {
     padding: 5rem 10px 1rem 10px;
+    flex: 1;
 }
 
 .home--tagLine {

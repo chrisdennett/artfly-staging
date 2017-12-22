@@ -4,9 +4,8 @@ import React, { Component } from "react";
 import './cropAndRotate.css';
 // components
 import CuttingBoard from "./CuttingBoard";
-import Butt from "../../global/Butt/Butt";
+import Butt from "../../../../global/Butt/Butt";
 import CuttingMat from "./assets/CuttingMat";
-import * as PhotoHelper from "../PhotoEditor/assets/PhotoHelper";
 
 class CropAndRotate extends Component {
     constructor() {

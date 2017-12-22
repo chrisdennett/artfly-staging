@@ -2,9 +2,9 @@ import React, { Component } from "react";
 // styles
 import './artworkPreviewStyles.css';
 // helpers
-import * as PhotoHelper from "../PhotoEditor/assets/PhotoHelper";
-import Artwork from "../../Artwork/Artwork";
-import { calculateArtworkSizes } from "../../Artwork/assets/ArtworkCalculations";
+import * as PhotoHelper from "../../../ImageHelper";
+import Artwork from "../../../../Artwork/Artwork";
+import { calculateArtworkSizes } from "../../../../Artwork/assets/ArtworkCalculations";
 
 const maxImageWidth = 3000;
 const maxImageHeight = 3000;
