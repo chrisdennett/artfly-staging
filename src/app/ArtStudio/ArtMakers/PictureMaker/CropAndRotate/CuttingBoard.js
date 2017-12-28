@@ -4,9 +4,6 @@ import React, { Component } from "react";
 import * as PhotoHelper from "../../../ImageHelper";
 // components
 import CuttingOverlay from "./assets/CuttingOverlay";
-// static values
-// const maxImageWidth = 3000;
-// const maxImageHeight = 3000;
 
 class CuttingBoard extends Component {
     constructor() {
@@ -45,17 +42,6 @@ class CuttingBoard extends Component {
         this.drawToCanvas(nextProps);
     }
 
-    /*getImage(props, callback) {
-        if (props.img) {
-            callback(props.img);
-        }
-        else if (props.imgUrl) {
-            PhotoHelper.LoadImage(props.imgUrl, (img) => {
-                callback(img);
-            })
-        }
-    }*/
-
     // Update on Handle move to store values and ensure image can be
     onCuttingOverlayChange(leftX, rightX, topY, bottomY, width, height) {
         if (this.props.onCropUpdate) {
@@ -67,14 +53,6 @@ class CuttingBoard extends Component {
             this.props.onCropUpdate({ leftPercent, rightPercent, topPercent, bottomPercent });
         }
     }
-
-    // Draw the source image into the source canvas
-    // gets called by parent when mounted and then by rotation function
-    /*drawImageToSourceCanvas(img, srcOrientation) {
-        PhotoHelper.drawImageToCanvas(img, this.cuttingBoardCanvas, srcOrientation, maxImageWidth, maxImageHeight, (widthToHeightRatio, heightToWidthRatio) => {
-            this.setState({ widthToHeightRatio, heightToWidthRatio });
-        })
-    }*/
 
     // converts percentages into actual numbers
     getCropData(w, h) {

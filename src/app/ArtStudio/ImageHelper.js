@@ -68,6 +68,7 @@ function GetPhotoOrientation(file, callback) {
     reader.readAsArrayBuffer(file);
 }
 
+// TODO: The following 3 functions should probably just be a single function with internal sub-functions if needed
 // Draws an image to a canvas
 export function drawImageToCanvas(img, canvas, orientation, maxCanvasWidth, maxCanvasHeight, callback) {
     const isPortrait = orientation > 4 && orientation < 9;

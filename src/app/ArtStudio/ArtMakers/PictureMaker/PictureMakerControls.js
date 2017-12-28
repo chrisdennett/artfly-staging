@@ -62,7 +62,7 @@ class PictureMakerControls extends Component {
                     Edit artist
                 </ControlPanelButt>
 
-                <ControlPanelButt
+                {/*<ControlPanelButt
                     linkTo={`/artStudio/${this.props.artworkId}/editFrame`}>
                     Edit Frame
                 </ControlPanelButt>
@@ -70,7 +70,7 @@ class PictureMakerControls extends Component {
                 <ControlPanelButt
                     linkTo={`/artStudio/${this.props.artworkId}/editRoom`}>
                     Edit Room
-                </ControlPanelButt>
+                </ControlPanelButt>*/}
 
                 <ControlPanelButt
                     linkTo={`/artStudio/${this.props.artworkId}/deleteArtwork`}>

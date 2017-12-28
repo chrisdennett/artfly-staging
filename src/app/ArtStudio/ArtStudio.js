@@ -49,7 +49,6 @@ class ArtStudio extends Component {
         // don't mount the component until data is ready for it
         if (isLoadingMakerData) return <p>Lovely loading animation here...</p>;
 
-
         return (
             <PictureMaker userId={userId}
                           isNewArtwork={isNewArtwork}

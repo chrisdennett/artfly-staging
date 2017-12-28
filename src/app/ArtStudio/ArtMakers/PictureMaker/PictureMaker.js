@@ -26,7 +26,7 @@ class ArtMaker extends Component {
         this.onDrawnToCanvas = this.onDrawnToCanvas.bind(this);
         this.updateArtwork = this.updateArtwork.bind(this);
 
-        this.state = { cuttingBoardData: null, masterCanvas: null, artworkData: {}, artwork: null };
+        this.state = { cuttingBoardData: null, masterCanvas: null, artworkData: {}, editedArtwork: null };
     }
 
     componentWillMount() {
@@ -46,20 +46,20 @@ class ArtMaker extends Component {
 
         if (artwork) {
             // set up for existing artwork
-            this.setState({ artwork, selectedImg: null });
+            this.setState({ editedArtwork:artwork, selectedImg: null });
         }
         else if (isNewArtwork) {
             const newArtwork = {};
-            this.setState({ artwork: newArtwork });
+            this.setState({ editedArtwork: newArtwork });
         }
     }
 
     onPhotoSelected(imgFile) {
         PhotoHelper.GetImage(imgFile, (img, imgOrientation, widthToHeightRatio, heightToWidthRatio) => {
 
-            const artwork = { widthToHeightRatio, heightToWidthRatio };
+            const editedArtwork = { widthToHeightRatio, heightToWidthRatio };
 
-            this.setState({ selectedImg: img, selectedImgOrientation: imgOrientation, artwork });
+            this.setState({ selectedImg: img, selectedImgOrientation: imgOrientation, editedArtwork });
         });
     }
 
@@ -90,7 +90,6 @@ class ArtMaker extends Component {
     }
 
     onArtworkDataChange(artworkData) {
-
         // this.setState({artworkData});
     }
 
@@ -100,9 +99,9 @@ class ArtMaker extends Component {
 
     render() {
         let { userId, isNewArtwork, windowSize, artworkId, selectedArtistId, currentEditScreen, artist } = this.props;
-        const { cuttingBoardData, artwork, masterCanvasReady, artworkData, selectedImg, selectedImgOrientation } = this.state;
+        const { cuttingBoardData, editedArtwork, masterCanvasReady, artworkData, selectedImg, selectedImgOrientation } = this.state;
 
-        const { widthToHeightRatio, heightToWidthRatio } = artwork;
+        const { widthToHeightRatio, heightToWidthRatio } = editedArtwork;
 
         const maxWidth = windowSize ? windowSize.windowWidth : 0;
         const maxHeight = windowSize ? windowSize.windowHeight : 0;
@@ -117,12 +116,12 @@ class ArtMaker extends Component {
                 <ArtworkPreview onMasterCanvasInit={this.onMasterCanvasInit}
                                 onDrawnToCanvas={this.onDrawnToCanvas}
                                 onArtworkDataChange={this.onArtworkDataChange}
-                                artwork={artwork}
+                                artwork={editedArtwork}
                                 selectedImgOrientation={selectedImgOrientation}
                                 selectedImg={selectedImg}/>
 
                 <div className='pictureMaker--sidebar'>
-                    <PictureMakerControls artistId={selectedArtistId}
+                    <PictureMakerControls artistId={artist.artistId}
                                           isNewArtwork={isNewArtwork}
                                           artworkId={artworkId}/>
                 </div>
@@ -180,7 +179,7 @@ class ArtMaker extends Component {
 
                     {currentEditScreen === 'editArtist' &&
                     <ArtistUpdater artworkId={artworkId}
-                                   initialArtistId={artwork.artistId}
+                                   initialArtistId={editedArtwork.artistId}
                                    manageUpload={true}
                                    onCancel={this.showArtworkInEditing}
                                    onUpdateComplete={this.showArtworkInEditing}/>
