@@ -58,10 +58,18 @@ class CropAndRotate extends Component {
     }
 
     onDoneClick() {
-        const { canvas, rotation, cropData } = this.state;
+        const { rotation, cropData } = this.state;
         const { leftPercent, rightPercent, topPercent, bottomPercent } = cropData;
-        const canvasW = canvas.width;
-        const canvasH = canvas.height;
+
+        this.props.onDone({
+            rotation,
+            leftPercent, rightPercent, topPercent, bottomPercent
+        });
+
+        /*
+         const { canvas, rotation, cropData } = this.state;
+         const canvasW = canvas.width;
+         const canvasH = canvas.height;
 
         this.props.onDone({
             canvas: canvas,
@@ -69,6 +77,7 @@ class CropAndRotate extends Component {
             leftX: canvasW * leftPercent, rightX: canvasW * rightPercent, topY: canvasH * topPercent, bottomY: canvasH * bottomPercent,
             leftPercent, rightPercent, topPercent, bottomPercent
         });
+        */
     }
 
     // Rotate using info from:

@@ -16,7 +16,14 @@ import ControlPanelButt from "../../../global/Butt/ControlPanelButt";
 
 class PictureMakerControls extends Component {
 
+
+
     render() {
+
+    const { artworkId, artistId} = this.props;
+
+    const doneLink = artistId ? `/gallery/${artistId}/artwork/${artworkId}` : '/';
+
         return (
             <div className='pictureMakerControls'>
 
@@ -38,7 +45,7 @@ class PictureMakerControls extends Component {
                 </ControlPanelButt>*/}
 
                 <ControlPanelButt
-                    linkTo={`/artStudio/${this.props.artworkId}/artworkPreview`}>
+                    linkTo={`/artStudio/${artworkId}/artworkPreview`}>
                     Artwork Preview
                 </ControlPanelButt>
 
@@ -48,17 +55,17 @@ class PictureMakerControls extends Component {
                 </ControlPanelButt>*/}
 
                 <ControlPanelButt
-                    linkTo={`/gallery/${this.props.artistId}/artwork/${this.props.artworkId}`}>
+                    linkTo={doneLink}>
                     DONE
                 </ControlPanelButt>
 
                 <ControlPanelButt
-                    linkTo={`/artStudio/${this.props.artworkId}/editPhoto`}>
+                    linkTo={`/artStudio/${artworkId}/editPhoto`}>
                     Edit Photo
                 </ControlPanelButt>
 
                 <ControlPanelButt
-                    linkTo={`/artStudio/${this.props.artworkId}/editArtist`}>
+                    linkTo={`/artStudio/${artworkId}/editArtist`}>
                     Edit artist
                 </ControlPanelButt>
 
@@ -73,7 +80,7 @@ class PictureMakerControls extends Component {
                 </ControlPanelButt>*/}
 
                 <ControlPanelButt
-                    linkTo={`/artStudio/${this.props.artworkId}/deleteArtwork`}>
+                    linkTo={`/artStudio/${artworkId}/deleteArtwork`}>
                     Delete Artwork
                 </ControlPanelButt>
             </div>

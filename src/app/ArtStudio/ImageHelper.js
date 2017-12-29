@@ -73,6 +73,8 @@ function GetPhotoOrientation(file, callback) {
 export function drawImageToCanvas(img, canvas, orientation, maxCanvasWidth, maxCanvasHeight, callback) {
     const isPortrait = orientation > 4 && orientation < 9;
 
+    console.log("orientation: ", orientation);
+
     const imgW = isPortrait ? img.height : img.width;
     const imgH = isPortrait ? img.width : img.height;
 

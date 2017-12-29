@@ -2,7 +2,7 @@ import React, { Component } from "react";
 // styles
 import './artworkPreviewStyles.css';
 // helpers
-import * as PhotoHelper from "../../../ImageHelper";
+import * as ImageHelper from "../../../ImageHelper";
 import Artwork from "../../../../Artwork/Artwork";
 import { calculateArtworkSizes } from "../../../../Artwork/assets/ArtworkCalculations";
 
@@ -20,6 +20,29 @@ class ArtworkPreview extends Component {
         this.redrawCanvas = this.redrawCanvas.bind(this);
 
         this.state = { artworkData: null }
+    }
+
+    componentWillMount() {
+        this.redrawCanvas(this.props);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const isDiffArtwork = nextProps.artwork !== this.props.artwork;
+        const hasNewCropData = nextProps.cropData !== this.props.cropData;
+
+        if (isDiffArtwork) {
+            this.redrawCanvas(nextProps);
+        }
+        else if (hasNewCropData) {
+            const {img} = this.state.artworkData;
+            const {cropData} = nextProps;
+            const {rotation, topPercent, rightPercent, bottomPercent, leftPercent} = cropData;
+
+            console.log("cropData: ", cropData);
+
+            this.updateCanvas(img, rotation);
+        }
+
     }
 
     onMasterCanvasInit(canvas) {
@@ -46,18 +69,9 @@ class ArtworkPreview extends Component {
         }
     }
 
-    componentWillMount() {
-        this.redrawCanvas(this.props);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.artwork !== this.props.artwork) {
-            this.redrawCanvas(nextProps);
-        }
-    }
 
     updateCanvas(img, orientation) {
-        PhotoHelper.drawImageToCanvas(img, this.masterCanvas, orientation, maxImageWidth, maxImageHeight, (widthToHeightRatio, heightToWidthRatio) => {
+        ImageHelper.drawImageToCanvas(img, this.masterCanvas, orientation, maxImageWidth, maxImageHeight, (widthToHeightRatio, heightToWidthRatio) => {
             // onCanvasInit(this.canvas, widthToHeightRatio, heightToWidthRatio);
 
             //source:   3000x3000 (max)
@@ -65,26 +79,27 @@ class ArtworkPreview extends Component {
             //medium:   640x640 // created using cloud functions
             //thumb:    150x150
 
-            PhotoHelper.drawCanvasToCanvas(this.largeCanvas, 960, 960, this.masterCanvas, 0, 0, this.masterCanvas.width, this.masterCanvas.height);
-            PhotoHelper.drawCanvasToCanvas(this.thumbCanvas, 150, 150, this.masterCanvas, 0, 0, this.masterCanvas.width, this.masterCanvas.height);
+            ImageHelper.drawCanvasToCanvas(this.largeCanvas, 960, 960, this.masterCanvas, 0, 0, this.masterCanvas.width, this.masterCanvas.height);
+            ImageHelper.drawCanvasToCanvas(this.thumbCanvas, 150, 150, this.masterCanvas, 0, 0, this.masterCanvas.width, this.masterCanvas.height);
 
-            this.updateArtworkData(img.src, widthToHeightRatio, heightToWidthRatio);
+            this.updateArtworkData(img, widthToHeightRatio, heightToWidthRatio);
 
             this.props.onDrawnToCanvas(this.masterCanvas);
         })
     }
 
-    updateArtworkData(imgSrc, widthToHeightRatio, heightToWidthRatio) {
+    updateArtworkData(img, widthToHeightRatio, heightToWidthRatio) {
         let artworkData = calculateArtworkSizes(150, 150, widthToHeightRatio, heightToWidthRatio, 5);
-        artworkData.imgSrc = imgSrc;
+
+        artworkData.imgSrc = img.src;
+        artworkData.img = img;
 
         this.setState({ artworkData }, () => {
-            this.props.onArtworkDataChange(artworkData);
+            this.props.onArtworkUpdated(artworkData);
         })
     }
 
     render() {
-
         const { artworkData } = this.state;
 
         return (
@@ -93,10 +108,10 @@ class ArtworkPreview extends Component {
                 <Artwork width={100}
                          height={100}
                          artworkData={artworkData}/>
-
-                <div className={'artworkPreview--canvasHolder'}>
                     <canvas className={'artworkPreview--canvas artworkPreview--hiddenCanvas'}
                             ref={this.onMasterCanvasInit}/>
+
+                <div className={'artworkPreview--canvasHolder'}>
 
                     <canvas className='artworkPreview--canvas artworkPreview--hiddenCanvas'
                             ref={(canvas) => this.largeCanvas = canvas}/>
@@ -104,8 +119,6 @@ class ArtworkPreview extends Component {
                     <canvas className={'artworkPreview--canvas artworkPreview--hiddenCanvas'}
                             ref={(canvas) => this.thumbCanvas = canvas}/>
                 </div>
-
-
 
             </div>
         );

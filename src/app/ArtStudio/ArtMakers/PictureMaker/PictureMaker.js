@@ -19,14 +19,14 @@ class ArtMaker extends Component {
 
         this.showArtworkInEditing = this.showArtworkInEditing.bind(this);
         this.showArtworkInGallery = this.showArtworkInGallery.bind(this);
-        this.onPhotoEditorDone = this.onPhotoEditorDone.bind(this);
         this.onMasterCanvasInit = this.onMasterCanvasInit.bind(this);
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
-        this.onArtworkDataChange = this.onArtworkDataChange.bind(this);
+        this.onArtworkPreviewUpdated = this.onArtworkPreviewUpdated.bind(this);
         this.onDrawnToCanvas = this.onDrawnToCanvas.bind(this);
         this.updateArtwork = this.updateArtwork.bind(this);
+        this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
 
-        this.state = { cuttingBoardData: null, masterCanvas: null, artworkData: {}, editedArtwork: null };
+        this.state = { masterCanvas: null, editedArtwork: null, cropData:null };
     }
 
     componentWillMount() {
@@ -54,6 +54,10 @@ class ArtMaker extends Component {
         }
     }
 
+    onCropAndRotateDone(cropData){
+        this.setState({cropData});
+    }
+
     onPhotoSelected(imgFile) {
         PhotoHelper.GetImage(imgFile, (img, imgOrientation, widthToHeightRatio, heightToWidthRatio) => {
 
@@ -75,7 +79,7 @@ class ArtMaker extends Component {
         history.push(`/gallery/${this.props.artist.artistId}`);
     }
 
-    onPhotoEditorDone(newData) {
+    /*onPhotoEditorDone(newData) {
         if (this.props.artworkId === 'new') {
             // send to photo uploader with new flag
             this.setState({ cuttingBoardData: newData }, () => {
@@ -87,9 +91,10 @@ class ArtMaker extends Component {
                 history.push(`/artStudio/${this.props.artworkId}/uploadPhoto`);
             });
         }
-    }
+    }*/
 
-    onArtworkDataChange(artworkData) {
+    onArtworkPreviewUpdated(artworkData) {
+        console.log("artworkData: ", artworkData);
         // this.setState({artworkData});
     }
 
@@ -98,8 +103,8 @@ class ArtMaker extends Component {
     }
 
     render() {
-        let { userId, isNewArtwork, windowSize, artworkId, selectedArtistId, currentEditScreen, artist } = this.props;
-        const { cuttingBoardData, editedArtwork, masterCanvasReady, artworkData, selectedImg, selectedImgOrientation } = this.state;
+        let { userId, isNewArtwork, windowSize, artworkId, currentEditScreen, artist } = this.props;
+        const { editedArtwork, cropData, masterCanvasReady, selectedImg, selectedImgOrientation } = this.state;
 
         const { widthToHeightRatio, heightToWidthRatio } = editedArtwork;
 
@@ -108,20 +113,22 @@ class ArtMaker extends Component {
 
         if (!currentEditScreen) currentEditScreen = 'artworkPreview';
 
-        if (!artworkData) currentEditScreen = 'uploadPhoto';
+        if (isNewArtwork && !selectedImg) currentEditScreen = 'uploadPhoto';
+        const artistId = artist ? artist.artistId : null;
 
         return (
             <div className='pictureMaker'>
 
                 <ArtworkPreview onMasterCanvasInit={this.onMasterCanvasInit}
                                 onDrawnToCanvas={this.onDrawnToCanvas}
-                                onArtworkDataChange={this.onArtworkDataChange}
+                                onArtworkUpdated={this.onArtworkPreviewUpdated}
+                                cropData={cropData}
                                 artwork={editedArtwork}
                                 selectedImgOrientation={selectedImgOrientation}
                                 selectedImg={selectedImg}/>
 
                 <div className='pictureMaker--sidebar'>
-                    <PictureMakerControls artistId={artist.artistId}
+                    <PictureMakerControls artistId={artistId}
                                           isNewArtwork={isNewArtwork}
                                           artworkId={artworkId}/>
                 </div>
@@ -166,6 +173,7 @@ class ArtMaker extends Component {
                                    widthToHeightRatio={widthToHeightRatio}
                                    heightToWidthRatio={heightToWidthRatio}
                                    onCancel={this.showArtworkInEditing}
+                                   onDone={this.onCropAndRotateDone}
                                    width={maxWidth}
                                    height={maxHeight}/>
                     }

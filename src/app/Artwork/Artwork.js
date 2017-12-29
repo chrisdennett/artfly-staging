@@ -61,6 +61,13 @@ const Artwork = function (props) {
                         imgWidth={imgWidth}
                         imgHeight={imgHeight}/>
 
+                    <foreignObject width={imgWidth} height={imgHeight}>
+                        <canvas width={imgWidth} height={imgHeight} id="thisCanvas"
+                                style={{border:'1px solid #000000'}}>
+                            alternate content for browsers that do not support Canvas
+                        </canvas>
+                    </foreignObject>
+
                 </svg>
 
                 <img alt="user artwork"
