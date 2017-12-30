@@ -30,9 +30,8 @@ export const SIGN_OUT_USER = "signOutUser";
 export const DELETE_USER = "deleteUser";
 export const ADD_USER_ARTIST = 'addUserArtist';
 
-/*
-*** AUTH ************************************************************
-*/
+
+// AUTH ************************************************************
 
 // SIGN IN - with google
 export function signInWithGoogle() {
@@ -80,9 +79,8 @@ export function signOutUser() {
     }
 }
 
-/*
-*** USER ************************************************************
-*/
+
+// USER ************************************************************
 
 // ADD NEW USER
 export function addNewUser(authId, formValues, callback = null) {
@@ -161,9 +159,7 @@ export function deleteUser() {
     }
 }
 
-/*
-*** ARTIST ************************************************************
-*/
+// ARTIST ************************************************************
 
 // ADD NEW ARTIST
 export function addNewArtist(userId, formValues, callback = null) {
@@ -245,9 +241,7 @@ export function listenForArtistChanges(artistId) {
     }
 }
 
-/*
-*** ARTWORK ************************************************************
-*/
+// ARTWORK ************************************************************
 
 // LISTEN FOR ARTWORK DATA CHANGES
 export function listenForArtistArtworkChanges(artistId, userId) {
@@ -337,7 +331,7 @@ export function addThumbnail(artworkId, artistId, thumbFile, callback = null) {
     }
 }
 
-export function updateArtworkImage(artworkId, artistId, newImg, widthToHeightRatio, heightToWidthRatio, callback = null){
+export function updateArtworkImage(artworkId, artistId, newImg, widthToHeightRatio, heightToWidthRatio, callback = null) {
     return dispatch => {
         fs_updateArtworkImage(artworkId, artistId, newImg, widthToHeightRatio, heightToWidthRatio, (updateProgressData) => {
             dispatch({
@@ -350,7 +344,7 @@ export function updateArtworkImage(artworkId, artistId, newImg, widthToHeightRat
     }
 }
 
-export function updateArtworkThumbnail(artworkId, artistId, newThumbImg, callback = null){
+export function updateArtworkThumbnail(artworkId, artistId, newThumbImg, callback = null) {
     return dispatch => {
         fs_updateThumbnail(artworkId, artistId, newThumbImg, (updateProgressData) => {
             dispatch({

@@ -17,10 +17,33 @@ class CuttingBoard extends Component {
         this.state = { displayWidth: 10, displayHeight: 10 };
     }
 
+    componentDidMount() {
+        this.drawToCanvas(this.props);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.drawToCanvas(nextProps);
+    }
+
     drawToCanvas(props) {
-        const { masterCanvas, maxWidth, maxHeight, rotation, widthToHeightRatio = 1, heightToWidthRatio = 1 } = props;
+        const { masterCanvas, rotation, maxWidth, maxHeight,  } = props;
 
         if (masterCanvas && this.cuttingBoardCanvas) {
+            // PhotoHelper.drawCanvasToCanvas(this.cuttingBoardCanvas, displayWidth, displayHeight, masterCanvas, 0, 0, masterCanvas.width, masterCanvas.height);
+            PhotoHelper.drawToCanvas(
+                {
+                    sourceCanvas: masterCanvas,
+                    outputCanvas: this.cuttingBoardCanvas,
+                    orientation: rotation,
+                    maxOutputCanvasWidth:maxWidth,
+                    maxOutputCanvasHeight:maxHeight
+                },
+                () => {
+                    this.setState({ displayWidth:this.cuttingBoardCanvas.width, displayHeight:this.cuttingBoardCanvas.height });
+                });
+        }
+
+        /*if (masterCanvas && this.cuttingBoardCanvas) {
             // PhotoHelper.drawCanvasToCanvas(this.cuttingBoardCanvas, displayWidth, displayHeight, masterCanvas, 0, 0, masterCanvas.width, masterCanvas.height);
             PhotoHelper.drawCanvasToCanvasWithRotation(
                 masterCanvas,
@@ -31,15 +54,7 @@ class CuttingBoard extends Component {
                 () => {
                     this.setState({ displayWidth:this.cuttingBoardCanvas.width, displayHeight:this.cuttingBoardCanvas.height });
                 });
-        }
-    }
-
-    componentDidMount() {
-        this.drawToCanvas(this.props);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.drawToCanvas(nextProps);
+        }*/
     }
 
     // Update on Handle move to store values and ensure image can be

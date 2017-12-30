@@ -23,25 +23,25 @@ class ArtMaker extends Component {
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.onArtworkPreviewUpdated = this.onArtworkPreviewUpdated.bind(this);
         this.onDrawnToCanvas = this.onDrawnToCanvas.bind(this);
-        this.updateArtwork = this.updateArtwork.bind(this);
+        this.updateArtworkState = this.updateArtworkState.bind(this);
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
 
         this.state = { masterCanvas: null, editedArtwork: null, cropData:null };
     }
 
     componentWillMount() {
-        this.updateArtwork(this.props)
+        this.updateArtworkState(this.props)
     }
 
     componentWillReceiveProps(nextProps) {
         const { artwork } = this.props;
 
         if (artwork !== nextProps.artwork) {
-            this.updateArtwork(nextProps)
+            this.updateArtworkState(nextProps)
         }
     }
 
-    updateArtwork(props) {
+    updateArtworkState(props) {
         const { artwork, isNewArtwork } = props;
 
         if (artwork) {
@@ -132,7 +132,6 @@ class ArtMaker extends Component {
                                           isNewArtwork={isNewArtwork}
                                           artworkId={artworkId}/>
                 </div>
-
 
                 <div className='pictureMaker--main'>
 

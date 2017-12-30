@@ -36,11 +36,9 @@ class ArtworkPreview extends Component {
         else if (hasNewCropData) {
             const {img} = this.state.artworkData;
             const {cropData} = nextProps;
-            const {rotation, topPercent, rightPercent, bottomPercent, leftPercent} = cropData;
+            const {rotation, ...cropPercents} = cropData;
 
-            console.log("cropData: ", cropData);
-
-            this.updateCanvas(img, rotation);
+            this.updateCanvas(img, rotation, cropPercents);
         }
 
     }
@@ -70,8 +68,8 @@ class ArtworkPreview extends Component {
     }
 
 
-    updateCanvas(img, orientation) {
-        ImageHelper.drawImageToCanvas(img, this.masterCanvas, orientation, maxImageWidth, maxImageHeight, (widthToHeightRatio, heightToWidthRatio) => {
+    updateCanvas(img, orientation, cropPercents) {
+        ImageHelper.drawToCanvas({sourceCanvas:img, outputCanvas:this.masterCanvas, orientation, cropPercents}, (widthToHeightRatio, heightToWidthRatio) => {
             // onCanvasInit(this.canvas, widthToHeightRatio, heightToWidthRatio);
 
             //source:   3000x3000 (max)
@@ -112,12 +110,12 @@ class ArtworkPreview extends Component {
                             ref={this.onMasterCanvasInit}/>
 
                 <div className={'artworkPreview--canvasHolder'}>
-
                     <canvas className='artworkPreview--canvas artworkPreview--hiddenCanvas'
                             ref={(canvas) => this.largeCanvas = canvas}/>
 
                     <canvas className={'artworkPreview--canvas artworkPreview--hiddenCanvas'}
                             ref={(canvas) => this.thumbCanvas = canvas}/>
+
                 </div>
 
             </div>

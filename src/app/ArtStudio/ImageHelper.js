@@ -1,3 +1,6 @@
+const maxImageWidth = 3000;
+const maxImageHeight = 3000;
+
 // Returns an image element given a file
 export function GetImage(imgFile, callback) {
     GetPhotoOrientation(imgFile, (orientation) => {
@@ -24,7 +27,7 @@ export function GetImage(imgFile, callback) {
     })
 }
 
-export function LoadImage(imgSrc, callback){
+/*export function LoadImage(imgSrc, callback) {
     let img = new Image();
     // the lack of this crossOrigin line caused me a world of pain!!!
     // https://stackoverflow.com/questions/20424279/canvas-todataurl-securityerror/27260385#27260385
@@ -34,7 +37,7 @@ export function LoadImage(imgSrc, callback){
     img.onload = (e) => {
         callback(e.target);
     }
-}
+}*/
 
 // Reads file as Array buffer to get camera orientation from exif data
 function GetPhotoOrientation(file, callback) {
@@ -69,18 +72,109 @@ function GetPhotoOrientation(file, callback) {
 }
 
 // TODO: The following 3 functions should probably just be a single function with internal sub-functions if needed
-// Draws an image to a canvas
-export function drawImageToCanvas(img, canvas, orientation, maxCanvasWidth, maxCanvasHeight, callback) {
+
+
+// Draws one canvas to another restricting to a specific size
+export function drawToCanvas({sourceCanvas, outputCanvas, orientation, cropPercents, maxOutputCanvasWidth=maxImageWidth, maxOutputCanvasHeight=maxImageHeight}, callback) {
+
+    const { topPercent, rightPercent, bottomPercent, leftPercent } = cropPercents ?
+        cropPercents : { topPercent: 0, rightPercent: 1, bottomPercent: 1, leftPercent: 0 };
+
     const isPortrait = orientation > 4 && orientation < 9;
 
-    console.log("orientation: ", orientation);
+    // switch height and width if it's portrait
+    let imgW = isPortrait ? sourceCanvas.height : sourceCanvas.width;
+    let imgH = isPortrait ? sourceCanvas.width : sourceCanvas.height;
+
+    // work out the crop sizes from the percentages
+    const leftCrop = imgW * leftPercent;
+    const rightCrop = imgW * (1 - rightPercent);
+    const topCrop = imgH * topPercent;
+    const bottomCrop = imgH * (1 - bottomPercent);
+    imgW -= leftCrop + rightCrop;
+    imgH -= topCrop + bottomCrop;
+
+    // Restrict to maximum image size allowed or sourceCanvas size, whichever is smaller
+    const maxW = imgW >= maxOutputCanvasWidth ? maxOutputCanvasWidth : imgW;
+    const maxH = imgH >= maxOutputCanvasHeight ? maxOutputCanvasHeight : imgH;
+
+    const widthToHeightRatio = imgH / imgW;
+    const heightToWidthRatio = imgW / imgH;
+
+    let canvasW = maxW;
+    let canvasH = maxW * widthToHeightRatio;
+
+    if (canvasH > maxH) {
+        canvasH = maxH;
+        canvasW = maxH * heightToWidthRatio;
+    }
+
+    const ctx = outputCanvas.getContext('2d');
+    ctx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
+
+    outputCanvas.width = canvasW;
+    outputCanvas.height = canvasH;
+
+    // save the context so it can be reset after transform
+    ctx.save();
+    // transform context before drawing image
+    switch (orientation) {
+        case 2:
+            ctx.transform(-1, 0, 0, 1, canvasH, 0);
+            break;
+        case 3:
+            ctx.transform(-1, 0, 0, -1, canvasW, canvasH);
+            break;
+        case 4:
+            ctx.transform(1, 0, 0, -1, 0, canvasW);
+            break;
+        case 5:
+            ctx.transform(0, 1, 1, 0, 0, 0);
+            break;
+        case 6:
+            ctx.transform(0, 1, -1, 0, canvasW, 0);
+            break;
+        case 7:
+            ctx.transform(0, -1, -1, 0, canvasW, canvasH);
+            break;
+        case 8:
+            ctx.transform(0, -1, 1, 0, 0, canvasH);
+            break;
+        default:
+            break;
+    }
+
+    const transformedCanvasW = isPortrait ? canvasH : canvasW;
+    const transformedCanvasH = isPortrait ? canvasW : canvasH;
+
+    const transformedImgW = isPortrait ? imgH : imgW;
+    const transformedImgH = isPortrait ? imgW : imgH;
+
+    // draw image: context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
+    ctx.drawImage(sourceCanvas, leftCrop, topCrop, transformedImgW, transformedImgH, 0, 0, transformedCanvasW, transformedCanvasH);
+    // restore ensures resets transform in case another image is added
+    ctx.restore();
+
+    if (callback) callback(widthToHeightRatio, heightToWidthRatio)
+}
+
+// Draws an image to a canvas
+export function drawImageToCanvas(img, canvas, orientation, cropDataPercents, callback) {
+
+    // default crop data to zero cropping
+    const { topPercent, rightPercent, bottomPercent, leftPercent } = cropDataPercents ?
+        cropDataPercents : { topPercent: 0, rightPercent: 1, bottomPercent: 1, leftPercent: 0 };
+
+    console.log("topPercent: ", topPercent);
+
+    const isPortrait = orientation > 4 && orientation < 9;
 
     const imgW = isPortrait ? img.height : img.width;
     const imgH = isPortrait ? img.width : img.height;
 
     // Restrict to maximum image size allowed or img size, whichever is smaller
-    const maxW = imgW >= maxCanvasWidth ? maxCanvasWidth : imgW;
-    const maxH = imgH >= maxCanvasHeight ? maxCanvasHeight : imgH;
+    const maxW = imgW >= maxImageWidth ? maxImageWidth : imgW;
+    const maxH = imgH >= maxImageHeight ? maxImageHeight : imgH;
 
     const widthToHeightRatio = imgH / imgW;
     const heightToWidthRatio = imgW / imgH;
@@ -140,7 +234,7 @@ export function drawImageToCanvas(img, canvas, orientation, maxCanvasWidth, maxC
 }
 
 // Draws one canvas to another restricting to a specific size
-export function drawCanvasToCanvas(outputCanvas, maxOutputWidth, maxOutputHeight, sourceCanvas, leftX, topY, rightX, bottomY){
+export function drawCanvasToCanvas(outputCanvas, maxOutputWidth, maxOutputHeight, sourceCanvas, leftX, topY, rightX, bottomY) {
     const sourceWidth = rightX - leftX;
     const sourceHeight = bottomY - topY;
 
@@ -166,7 +260,7 @@ export function drawCanvasToCanvas(outputCanvas, maxOutputWidth, maxOutputHeight
 }
 
 // Draws one canvas to another restricting to a specific size
-export function drawCanvasToCanvasWithRotation(sourceCanvas, outputCanvas, orientation, maxCanvasWidth, maxCanvasHeight, callback){
+export function drawCanvasToCanvasWithRotation(sourceCanvas, outputCanvas, orientation, maxCanvasWidth, maxCanvasHeight, callback) {
     const isPortrait = orientation > 4 && orientation < 9;
 
     const imgW = isPortrait ? sourceCanvas.height : sourceCanvas.width;
@@ -230,5 +324,5 @@ export function drawCanvasToCanvasWithRotation(sourceCanvas, outputCanvas, orien
     // restore ensures resets transform in case another image is added
     ctx.restore();
 
-    if(callback) callback(widthToHeightRatio, heightToWidthRatio)
+    if (callback) callback(widthToHeightRatio, heightToWidthRatio)
 }

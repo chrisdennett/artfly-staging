@@ -15,7 +15,7 @@ const Artwork = function (props) {
 
     if (!artworkData) return null;
 
-    const { imgSrc, imgWidth, imgHeight, skirtingY, skirtingHeight, floorY, floorHeight,  paddingTop, paddingLeft, frameThickness, mountThickness } = artworkData;
+    const { imgSrc, artCanvas, imgWidth, imgHeight, skirtingY, skirtingHeight, floorY, floorHeight,  paddingTop, paddingLeft, frameThickness, mountThickness } = artworkData;
 
     // const { imgSrc, imgWidth, imgHeight, paddingTop, paddingLeft, frameThickness, mountThickness, spaceBelowPicture } = artworkData;
 
@@ -61,18 +61,22 @@ const Artwork = function (props) {
                         imgWidth={imgWidth}
                         imgHeight={imgHeight}/>
 
+                    {artCanvas &&
                     <foreignObject width={imgWidth} height={imgHeight}>
                         <canvas width={imgWidth} height={imgHeight} id="thisCanvas"
                                 style={{border:'1px solid #000000'}}>
                             alternate content for browsers that do not support Canvas
                         </canvas>
                     </foreignObject>
+                    }
 
                 </svg>
 
+                {!artCanvas &&
                 <img alt="user artwork"
                      style={imgStyle}
                      src={imgSrc}/>
+                }
             </div>
 
         </ScrollbarRemover>

@@ -100,7 +100,7 @@ class CropAndRotate extends Component {
     render() {
         const { width, height, masterCanvas, masterCanvasReady, heightToWidthRatio, widthToHeightRatio } = this.props;
 
-        const { rotation, cropData } = this.state;;
+        const { rotation, cropData } = this.state;
 
         const cuttingBoardPadding = 40;
         const buttonHeight = 100;
