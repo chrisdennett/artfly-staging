@@ -26,7 +26,7 @@ class ArtMaker extends Component {
         this.updateArtworkState = this.updateArtworkState.bind(this);
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
 
-        this.state = { masterCanvas: null, editedArtwork: null, cropData:null };
+        this.state = { masterCanvas: null, editedArtwork: null, cropData: null };
     }
 
     componentWillMount() {
@@ -46,7 +46,7 @@ class ArtMaker extends Component {
 
         if (artwork) {
             // set up for existing artwork
-            this.setState({ editedArtwork:artwork, selectedImg: null });
+            this.setState({ editedArtwork: artwork, selectedImg: null });
         }
         else if (isNewArtwork) {
             const newArtwork = {};
@@ -54,8 +54,8 @@ class ArtMaker extends Component {
         }
     }
 
-    onCropAndRotateDone(cropData){
-        this.setState({cropData});
+    onCropAndRotateDone(cropData) {
+        this.setState({ cropData });
     }
 
     onPhotoSelected(imgFile) {
@@ -94,8 +94,9 @@ class ArtMaker extends Component {
     }*/
 
     onArtworkPreviewUpdated(artworkData) {
+        history.push(`/artStudio/${this.props.artworkId}`);
+        // TODO: Either need to save the artwork here or in the preview.
         console.log("artworkData: ", artworkData);
-        // this.setState({artworkData});
     }
 
     onDrawnToCanvas() {
@@ -171,6 +172,7 @@ class ArtMaker extends Component {
                                    masterCanvasReady={masterCanvasReady}
                                    widthToHeightRatio={widthToHeightRatio}
                                    heightToWidthRatio={heightToWidthRatio}
+                                   cropData={cropData}
                                    onCancel={this.showArtworkInEditing}
                                    onDone={this.onCropAndRotateDone}
                                    width={maxWidth}

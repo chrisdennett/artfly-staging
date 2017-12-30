@@ -29,10 +29,27 @@ class CropAndRotate extends Component {
         };
     }
 
-    componentWillMount() {
-        let { orientation, initialCropData } = this.props;
+    /*componentWillMount() {
+        this.setState({
+            rotation: 1, cropData: {
+                leftPercent: 0,
+                rightPercent: 1,
+                topPercent: 0,
+                bottomPercent: 1
+            }
+        });
+    }*/
+
+    componentWillReceiveProps(nextProps) {
+        let { cropData } = nextProps;
+
+        if (cropData) {
+            const { rotation, ...rest } = cropData;
+            this.setState({ rotation, cropData: rest });
+        }
+
         // default orientation
-        if (!orientation) orientation = 1;
+        /*if (!orientation) orientation = 1;
         // default crop data
         if (!initialCropData) initialCropData = {
             leftPercent: 0,
@@ -41,7 +58,7 @@ class CropAndRotate extends Component {
             bottomPercent: 1
         };
 
-        this.setState({ rotation: orientation, cropData: initialCropData });
+        this.setState({ rotation: orientation, cropData: initialCropData });*/
     }
 
     onCropUpdate(cropData) {
@@ -87,6 +104,7 @@ class CropAndRotate extends Component {
         const nextRotations = { 1: 6, 6: 3, 3: 8, 8: 1 }; // order of rotations by 90° clockwise increments
         const newRotation = nextRotations[currentRotation] || 6;
 
+        console.log("newRotation: ", newRotation);
         let { leftPercent, rightPercent, topPercent, bottomPercent } = this.state.cropData;
 
         const newL = 1 - bottomPercent;

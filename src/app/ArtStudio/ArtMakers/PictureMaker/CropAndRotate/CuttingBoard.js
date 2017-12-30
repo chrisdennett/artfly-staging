@@ -26,7 +26,9 @@ class CuttingBoard extends Component {
     }
 
     drawToCanvas(props) {
-        const { masterCanvas, rotation, maxWidth, maxHeight,  } = props;
+        const { masterCanvas, rotation, maxWidth, maxHeight  } = props;
+
+        console.log("rotation: ", rotation);
 
         if (masterCanvas && this.cuttingBoardCanvas) {
             // PhotoHelper.drawCanvasToCanvas(this.cuttingBoardCanvas, displayWidth, displayHeight, masterCanvas, 0, 0, masterCanvas.width, masterCanvas.height);
