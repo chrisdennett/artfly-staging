@@ -2,6 +2,8 @@
 import React, { Component } from "react";
 // styles
 import './cropAndRotate.css';
+// helpers
+import * as PhotoHelper from "../../../ImageHelper";
 // components
 import CuttingBoard from "./CuttingBoard";
 import Butt from "../../../../global/Butt/Butt";
@@ -16,6 +18,7 @@ class CropAndRotate extends Component {
         this.onRotateClockwiseClick = this.onRotateClockwiseClick.bind(this);
         this.onDoneClick = this.onDoneClick.bind(this);
         this.onCancelClick = this.onCancelClick.bind(this);
+        this.drawCuttingBoardCanvas = this.drawCuttingBoardCanvas.bind(this);
 
         this.state = {
             canvas: null,
@@ -29,24 +32,18 @@ class CropAndRotate extends Component {
         };
     }
 
-    /*componentWillMount() {
-        this.setState({
-            rotation: 1, cropData: {
-                leftPercent: 0,
-                rightPercent: 1,
-                topPercent: 0,
-                bottomPercent: 1
-            }
-        });
-    }*/
+    componentWillMount() {
+        this.drawCuttingBoardCanvas();
+    }
 
     componentWillReceiveProps(nextProps) {
-        let { cropData } = nextProps;
+        this.drawCuttingBoardCanvas(nextProps);
+        /*let { cropData } = nextProps;
 
         if (cropData) {
             const { rotation, ...rest } = cropData;
             this.setState({ rotation, cropData: rest });
-        }
+        }*/
 
         // default orientation
         /*if (!orientation) orientation = 1;
@@ -66,7 +63,14 @@ class CropAndRotate extends Component {
     }
 
     onCanvasSetup(canvas) {
-        this.setState({ canvas });
+        this.setState({ canvas }, () => {
+            this.drawCuttingBoardCanvas();
+        });
+
+        // const { masterCanvas } = this.props;
+
+
+        // PhotoHelper.drawToCanvas({ sourceCanvas: masterCanvas, outputCanvas: canvas, orientation: 1 });
     }
 
     // Cancel current changes
@@ -75,13 +79,33 @@ class CropAndRotate extends Component {
     }
 
     onDoneClick() {
+        const { masterCanvas, sourceImg } = this.props;
         const { rotation, cropData } = this.state;
-        const { leftPercent, rightPercent, topPercent, bottomPercent } = cropData;
 
-        this.props.onDone({
+        // update the master canvas and then either save or send back the data to save with
+        PhotoHelper.drawToCanvas({
+            sourceCanvas: sourceImg,
+            outputCanvas: masterCanvas,
+            orientation: rotation,
+            cropPercents: cropData
+        }, () => {
+
+
+            /*this.setState({
+                rotation: 1,
+                cropData: {
+                    leftPercent: 0,
+                    rightPercent: 1,
+                    topPercent: 0,
+                    bottomPercent: 1
+                }
+            })*/
+        })
+
+        /*this.props.onDone({
             rotation,
             leftPercent, rightPercent, topPercent, bottomPercent
-        });
+        });*/
 
         /*
          const { canvas, rotation, cropData } = this.state;
@@ -97,6 +121,28 @@ class CropAndRotate extends Component {
         */
     }
 
+    drawCuttingBoardCanvas(props = this.props) {
+        const { masterCanvas, width, height, sourceImg } = props;
+        const { rotation, canvas } = this.state;
+
+        if (!sourceImg || !width || !canvas) return;
+
+        const cuttingBoardPadding = 40;
+        const buttonHeight = 100;
+        const maxCuttingBoardWidth = width - (cuttingBoardPadding * 2);
+        const maxCuttingBoardHeight = height - (buttonHeight + (cuttingBoardPadding * 2));
+
+        PhotoHelper.drawToCanvas({
+            sourceCanvas: sourceImg,
+            outputCanvas: canvas,
+            orientation: rotation,
+            maxOutputCanvasWidth: maxCuttingBoardWidth,
+            maxOutputCanvasHeight: maxCuttingBoardHeight
+        });
+
+        this.setState({ maxCuttingBoardWidth, maxCuttingBoardHeight })
+    }
+
     // Rotate using info from:
     // https://stackoverflow.com/questions/7584794/accessing-jpeg-exif-rotation-data-in-javascript-on-the-client-side/32490603#32490603
     onRotateClockwiseClick() {
@@ -104,7 +150,6 @@ class CropAndRotate extends Component {
         const nextRotations = { 1: 6, 6: 3, 3: 8, 8: 1 }; // order of rotations by 90° clockwise increments
         const newRotation = nextRotations[currentRotation] || 6;
 
-        console.log("newRotation: ", newRotation);
         let { leftPercent, rightPercent, topPercent, bottomPercent } = this.state.cropData;
 
         const newL = 1 - bottomPercent;
@@ -112,20 +157,20 @@ class CropAndRotate extends Component {
         const newT = leftPercent;
         const newB = rightPercent;
 
-        this.setState({ rotation: newRotation, cropData: { leftPercent: newL, rightPercent: newR, topPercent: newT, bottomPercent: newB } });
+        this.setState({ rotation: newRotation, cropData: { leftPercent: newL, rightPercent: newR, topPercent: newT, bottomPercent: newB } }, () => {
+            this.drawCuttingBoardCanvas();
+        });
+
     }
 
     render() {
-        const { width, height, masterCanvas, masterCanvasReady, heightToWidthRatio, widthToHeightRatio } = this.props;
+        const { width, height, masterCanvas, sourceImg } = this.props;
+        const { maxCuttingBoardWidth, maxCuttingBoardHeight } = this.state;
 
         const { rotation, cropData } = this.state;
 
-        const cuttingBoardPadding = 40;
-        const buttonHeight = 100;
-        const maxCuttingBoardWidth = width - (cuttingBoardPadding * 2);
-        const maxCuttingBoardHeight = height - (buttonHeight + (cuttingBoardPadding * 2));
 
-        if (!masterCanvasReady) {
+        if (!sourceImg) {
             return <div>LOading CanVaS</div>
         }
 
@@ -140,8 +185,6 @@ class CropAndRotate extends Component {
                             onCanvasSetup={this.onCanvasSetup}
                             maxWidth={maxCuttingBoardWidth}
                             maxHeight={maxCuttingBoardHeight}
-                            widthToHeightRatio={widthToHeightRatio}
-                            heightToWidthRatio={heightToWidthRatio}
                             rotation={rotation}
                             cropData={cropData}/>
                     </div>

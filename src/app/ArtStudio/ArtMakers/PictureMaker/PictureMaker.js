@@ -26,7 +26,7 @@ class ArtMaker extends Component {
         this.updateArtworkState = this.updateArtworkState.bind(this);
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
 
-        this.state = { masterCanvas: null, editedArtwork: null, cropData: null };
+        this.state = { masterCanvas: null, editedArtwork: null, sourceImg:null };
     }
 
     componentWillMount() {
@@ -55,20 +55,20 @@ class ArtMaker extends Component {
     }
 
     onCropAndRotateDone(cropData) {
-        this.setState({ cropData });
+        // this.setState({ cropData });
     }
 
     onPhotoSelected(imgFile) {
-        PhotoHelper.GetImage(imgFile, (img, imgOrientation, widthToHeightRatio, heightToWidthRatio) => {
+        PhotoHelper.GetImage(imgFile, (img, imgOrientation) => {
 
-            const editedArtwork = { widthToHeightRatio, heightToWidthRatio };
+            const editedArtwork = { randomThing:'hello' };
 
             this.setState({ selectedImg: img, selectedImgOrientation: imgOrientation, editedArtwork });
         });
     }
 
-    onMasterCanvasInit(masterCanvas) {
-        this.setState({ masterCanvas: masterCanvas });
+    onMasterCanvasInit(masterCanvas, sourceImg) {
+        this.setState({ masterCanvas: masterCanvas, sourceImg });
     }
 
     showArtworkInEditing() {
@@ -94,20 +94,18 @@ class ArtMaker extends Component {
     }*/
 
     onArtworkPreviewUpdated(artworkData) {
-        history.push(`/artStudio/${this.props.artworkId}`);
+        // history.push(`/artStudio/${this.props.artworkId}`);
         // TODO: Either need to save the artwork here or in the preview.
         console.log("artworkData: ", artworkData);
     }
 
-    onDrawnToCanvas() {
-        this.setState({ masterCanvasReady: true });
+    onDrawnToCanvas(sourceImg) {
+        this.setState({ sourceImg });
     }
 
     render() {
         let { userId, isNewArtwork, windowSize, artworkId, currentEditScreen, artist } = this.props;
-        const { editedArtwork, cropData, masterCanvasReady, selectedImg, selectedImgOrientation } = this.state;
-
-        const { widthToHeightRatio, heightToWidthRatio } = editedArtwork;
+        const { editedArtwork, selectedImg, selectedImgOrientation } = this.state;
 
         const maxWidth = windowSize ? windowSize.windowWidth : 0;
         const maxHeight = windowSize ? windowSize.windowHeight : 0;
@@ -123,7 +121,6 @@ class ArtMaker extends Component {
                 <ArtworkPreview onMasterCanvasInit={this.onMasterCanvasInit}
                                 onDrawnToCanvas={this.onDrawnToCanvas}
                                 onArtworkUpdated={this.onArtworkPreviewUpdated}
-                                cropData={cropData}
                                 artwork={editedArtwork}
                                 selectedImgOrientation={selectedImgOrientation}
                                 selectedImg={selectedImg}/>
@@ -167,12 +164,8 @@ class ArtMaker extends Component {
                         }*/}
 
                     {currentEditScreen === 'editPhoto' &&
-                    <CropAndRotate loadedImg={this.state.selectedImg}
-                                   masterCanvas={this.state.masterCanvas}
-                                   masterCanvasReady={masterCanvasReady}
-                                   widthToHeightRatio={widthToHeightRatio}
-                                   heightToWidthRatio={heightToWidthRatio}
-                                   cropData={cropData}
+                    <CropAndRotate masterCanvas={this.state.masterCanvas}
+                                   sourceImg={this.state.sourceImg}
                                    onCancel={this.showArtworkInEditing}
                                    onDone={this.onCropAndRotateDone}
                                    width={maxWidth}

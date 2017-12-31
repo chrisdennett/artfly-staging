@@ -67,7 +67,6 @@ class ArtworkPreview extends Component {
         }
     }
 
-
     updateCanvas(img, orientation, cropPercents) {
         ImageHelper.drawToCanvas({sourceCanvas:img, outputCanvas:this.masterCanvas, orientation, cropPercents}, (widthToHeightRatio, heightToWidthRatio) => {
             // onCanvasInit(this.canvas, widthToHeightRatio, heightToWidthRatio);
@@ -82,7 +81,7 @@ class ArtworkPreview extends Component {
 
             this.updateArtworkData(img, widthToHeightRatio, heightToWidthRatio);
 
-            this.props.onDrawnToCanvas(this.masterCanvas);
+            this.props.onDrawnToCanvas(img);
         })
     }
 

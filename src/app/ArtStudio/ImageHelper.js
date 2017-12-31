@@ -115,6 +115,9 @@ export function drawToCanvas({sourceCanvas, outputCanvas, orientation, cropPerce
     outputCanvas.width = canvasW;
     outputCanvas.height = canvasH;
 
+    let xCropStart = leftCrop;
+    let yCropStart = topCrop;
+
     // save the context so it can be reset after transform
     ctx.save();
     // transform context before drawing image
@@ -123,6 +126,8 @@ export function drawToCanvas({sourceCanvas, outputCanvas, orientation, cropPerce
             ctx.transform(-1, 0, 0, 1, canvasH, 0);
             break;
         case 3:
+            xCropStart = rightCrop;
+            yCropStart = bottomCrop;
             ctx.transform(-1, 0, 0, -1, canvasW, canvasH);
             break;
         case 4:
@@ -132,12 +137,16 @@ export function drawToCanvas({sourceCanvas, outputCanvas, orientation, cropPerce
             ctx.transform(0, 1, 1, 0, 0, 0);
             break;
         case 6:
+            xCropStart = topCrop;
+            yCropStart = rightCrop;
             ctx.transform(0, 1, -1, 0, canvasW, 0);
             break;
         case 7:
             ctx.transform(0, -1, -1, 0, canvasW, canvasH);
             break;
         case 8:
+            xCropStart = bottomCrop;
+            yCropStart = leftCrop;
             ctx.transform(0, -1, 1, 0, 0, canvasH);
             break;
         default:
@@ -151,7 +160,7 @@ export function drawToCanvas({sourceCanvas, outputCanvas, orientation, cropPerce
     const transformedImgH = isPortrait ? imgW : imgH;
 
     // draw image: context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
-    ctx.drawImage(sourceCanvas, leftCrop, topCrop, transformedImgW, transformedImgH, 0, 0, transformedCanvasW, transformedCanvasH);
+    ctx.drawImage(sourceCanvas, xCropStart, yCropStart, transformedImgW, transformedImgH, 0, 0, transformedCanvasW, transformedCanvasH);
     // restore ensures resets transform in case another image is added
     ctx.restore();
 
