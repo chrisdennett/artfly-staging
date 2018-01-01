@@ -11,10 +11,9 @@ const maxImageHeight = 3000;
 
 class ArtworkPreview extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
-        this.onMasterCanvasInit = this.onMasterCanvasInit.bind(this);
         this.updateArtworkData = this.updateArtworkData.bind(this);
         this.updateCanvas = this.updateCanvas.bind(this);
         this.redrawCanvas = this.redrawCanvas.bind(this);
@@ -27,6 +26,14 @@ class ArtworkPreview extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+
+        console.log("this.testCanvas: ", this.testCanvas);
+
+        if (this.testCanvas && nextProps.masterCanvas) {
+            ImageHelper.drawToCanvas({ sourceCanvas: nextProps.masterCanvas, outputCanvas: this.testCanvas });
+        }
+
+
         const isDiffArtwork = nextProps.artwork !== this.props.artwork;
         const hasNewCropData = nextProps.cropData !== this.props.cropData;
 
@@ -34,19 +41,18 @@ class ArtworkPreview extends Component {
             this.redrawCanvas(nextProps);
         }
         else if (hasNewCropData) {
-            const {img} = this.state.artworkData;
-            const {cropData} = nextProps;
-            const {rotation, ...cropPercents} = cropData;
+            const { img } = this.state.artworkData;
+            const { cropData } = nextProps;
+            const { rotation, ...cropPercents } = cropData;
 
             this.updateCanvas(img, rotation, cropPercents);
         }
-
     }
 
-    onMasterCanvasInit(canvas) {
+    /*onMasterCanvasInit(canvas) {
         this.masterCanvas = canvas;
         this.props.onMasterCanvasInit(canvas);
-    }
+    }*/
 
     redrawCanvas(props) {
         const { selectedImg, selectedImgOrientation, artwork } = props;
@@ -68,7 +74,10 @@ class ArtworkPreview extends Component {
     }
 
     updateCanvas(img, orientation, cropPercents) {
-        ImageHelper.drawToCanvas({sourceCanvas:img, outputCanvas:this.masterCanvas, orientation, cropPercents}, (widthToHeightRatio, heightToWidthRatio) => {
+        const { masterCanvas } = this.props;
+
+
+        ImageHelper.drawToCanvas({ sourceCanvas: img, outputCanvas: masterCanvas, orientation, cropPercents }, (widthToHeightRatio, heightToWidthRatio) => {
             // onCanvasInit(this.canvas, widthToHeightRatio, heightToWidthRatio);
 
             //source:   3000x3000 (max)
@@ -76,8 +85,8 @@ class ArtworkPreview extends Component {
             //medium:   640x640 // created using cloud functions
             //thumb:    150x150
 
-            ImageHelper.drawCanvasToCanvas(this.largeCanvas, 960, 960, this.masterCanvas, 0, 0, this.masterCanvas.width, this.masterCanvas.height);
-            ImageHelper.drawCanvasToCanvas(this.thumbCanvas, 150, 150, this.masterCanvas, 0, 0, this.masterCanvas.width, this.masterCanvas.height);
+            ImageHelper.drawCanvasToCanvas(this.largeCanvas, 960, 960, masterCanvas, 0, 0, masterCanvas.width, masterCanvas.height);
+            ImageHelper.drawCanvasToCanvas(this.thumbCanvas, 150, 150, masterCanvas, 0, 0, masterCanvas.width, masterCanvas.height);
 
             this.updateArtworkData(img, widthToHeightRatio, heightToWidthRatio);
 
@@ -102,18 +111,23 @@ class ArtworkPreview extends Component {
         return (
             <div className={'artworkPreview'}>
 
-                <Artwork width={100}
+                {/*<Artwork width={100}
                          height={100}
-                         artworkData={artworkData}/>
-                    <canvas className={'artworkPreview--canvas artworkPreview--hiddenCanvas'}
-                            ref={this.onMasterCanvasInit}/>
+                         artworkData={artworkData}/>*/}
+
+                {/*<canvas className={'artworkPreview--canvas artworkPreview--hiddenCanvas'}
+                        ref={this.onMasterCanvasInit}/>*/}
+
+                {/*<canvas ref={(canvas) => this.testCanvas = canvas}
+                        className={'artworkPreview--canvas artworkPreview--hiddenCanvas'}/>*/}
+
 
                 <div className={'artworkPreview--canvasHolder'}>
+                    <canvas className={'artworkPreview--canvas artworkPreview--hiddenCanvas'}
+                            ref={(canvas) => this.thumbCanvas = canvas}/>
                     <canvas className='artworkPreview--canvas artworkPreview--hiddenCanvas'
                             ref={(canvas) => this.largeCanvas = canvas}/>
 
-                    <canvas className={'artworkPreview--canvas artworkPreview--hiddenCanvas'}
-                            ref={(canvas) => this.thumbCanvas = canvas}/>
 
                 </div>
 

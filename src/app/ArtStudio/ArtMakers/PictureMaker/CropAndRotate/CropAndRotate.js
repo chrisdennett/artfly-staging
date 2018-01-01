@@ -82,6 +82,16 @@ class CropAndRotate extends Component {
         const { masterCanvas, sourceImg } = this.props;
         const { rotation, cropData } = this.state;
 
+        /*
+         updateArtworkImage(
+                                 artworkId,
+                                 artistId,
+                                 newImg,
+                                 widthToHeightRatio,
+                                 heightToWidthRatio,
+                                 callback = null
+                             )
+        */
         // update the master canvas and then either save or send back the data to save with
         PhotoHelper.drawToCanvas({
             sourceCanvas: sourceImg,
@@ -90,7 +100,10 @@ class CropAndRotate extends Component {
             cropPercents: cropData
         }, () => {
 
-
+            this.props.onDone();
+            // TODO: Call the function that will update the image.
+            // this shouldn't be called here because other controls
+            // will potentially want to also change the image.
             /*this.setState({
                 rotation: 1,
                 cropData: {
@@ -101,6 +114,9 @@ class CropAndRotate extends Component {
                 }
             })*/
         })
+
+
+
 
         /*this.props.onDone({
             rotation,
@@ -168,7 +184,6 @@ class CropAndRotate extends Component {
         const { maxCuttingBoardWidth, maxCuttingBoardHeight } = this.state;
 
         const { rotation, cropData } = this.state;
-
 
         if (!sourceImg) {
             return <div>LOading CanVaS</div>

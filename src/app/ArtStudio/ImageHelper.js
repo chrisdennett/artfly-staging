@@ -2,6 +2,7 @@ const maxImageWidth = 3000;
 const maxImageHeight = 3000;
 
 // Returns an image element given a file
+
 export function GetImage(imgFile, callback) {
     GetPhotoOrientation(imgFile, (orientation) => {
         const reader = new FileReader();
@@ -25,6 +26,25 @@ export function GetImage(imgFile, callback) {
         };
         reader.readAsDataURL(imgFile);
     })
+}
+
+export function GetImageFromUrl(imgUrl, callback) {
+    const imgSrc = imgUrl;
+    // Create a new image element
+    let img = new Image();
+    img.setAttribute('crossOrigin', 'anonymous'); //
+    img.src = imgSrc;
+
+    // wait for it to be loaded and then return
+    img.onload = (e) => {
+        const w = img.width;
+        const h = img.height;
+
+        const widthToHeightRatio = h / w;
+        const heightToWidthRatio = w / h;
+
+        callback(img, widthToHeightRatio, heightToWidthRatio);
+    }
 }
 
 /*export function LoadImage(imgSrc, callback) {
@@ -75,7 +95,7 @@ function GetPhotoOrientation(file, callback) {
 
 
 // Draws one canvas to another restricting to a specific size
-export function drawToCanvas({sourceCanvas, outputCanvas, orientation, cropPercents, maxOutputCanvasWidth=maxImageWidth, maxOutputCanvasHeight=maxImageHeight}, callback) {
+export function drawToCanvas({ sourceCanvas, outputCanvas, orientation, cropPercents, maxOutputCanvasWidth = maxImageWidth, maxOutputCanvasHeight = maxImageHeight }, callback) {
 
     const { topPercent, rightPercent, bottomPercent, leftPercent } = cropPercents ?
         cropPercents : { topPercent: 0, rightPercent: 1, bottomPercent: 1, leftPercent: 0 };
