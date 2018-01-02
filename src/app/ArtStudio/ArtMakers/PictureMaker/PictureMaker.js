@@ -67,8 +67,6 @@ class ArtMaker extends Component {
 
             ImageHelper.GetImageFromUrl(artwork.url, (img) => {
 
-                this.setState({ sourceImg: img });
-
                 // TODO: This doesn't have to happen here.
                 // currently masterCanvas only needs to exists because it is passed to cropper
                 // if cropper didn't draw to the master canvas it could just use sourceImg
@@ -89,6 +87,7 @@ class ArtMaker extends Component {
 
                 let editedArtwork = { ...artwork };
                 editedArtwork.imgSrc = img.src;
+                editedArtwork.img = img;
                 this.setState({ editedArtwork });
             });
 
@@ -166,10 +165,9 @@ class ArtMaker extends Component {
                 maxOutputCanvasHeight: 150
             });
 
-            // const editedArtwork = { randomThing:'hello' };
-
             let editedArtwork = {widthToHeightRatio, heightToWidthRatio, ...this.state.editedArtwork};
             editedArtwork.imgSrc = img.src;
+            editedArtwork.img = img;
 
             this.setState({ editedArtwork });
             // this.setState({ selectedImg: img, selectedImgOrientation: imgOrientation, editedArtwork });
@@ -185,8 +183,8 @@ class ArtMaker extends Component {
     }
 
     render() {
-        let { userId, isNewArtwork, windowSize, artworkId, currentEditScreen, artist } = this.props;
-        const { editedArtwork, selectedImg, selectedImgOrientation } = this.state;
+        let { isNewArtwork, windowSize, artworkId, currentEditScreen, artist } = this.props;
+        const { editedArtwork } = this.state;
 
         const maxWidth = windowSize ? windowSize.windowWidth : 0;
         const maxHeight = windowSize ? windowSize.windowHeight : 0;
@@ -195,6 +193,7 @@ class ArtMaker extends Component {
 
         if (isNewArtwork && !editedArtwork.imgSrc) currentEditScreen = 'uploadPhoto';
         const artistId = artist ? artist.artistId : null;
+        const sourceImg = editedArtwork ? editedArtwork.img : null;
 
         return (
             <div className='pictureMaker'>
@@ -219,14 +218,14 @@ class ArtMaker extends Component {
                     }
 
                     {currentEditScreen === 'artworkPreview' &&
-                    <ArtworkPreview artwork={this.state.editedArtwork}
+                    <ArtworkPreview artwork={editedArtwork}
                                     maxWidth={maxWidth}
                                     maxHeight={maxHeight}/>
                     }
 
                     {currentEditScreen === 'editPhoto' &&
                     <CropAndRotate masterCanvas={this.masterCanvas}
-                                   sourceImg={this.state.sourceImg}
+                                   sourceImg={sourceImg}
                                    onCancel={this.showArtworkInEditing}
                                    onDone={this.onCropAndRotateDone}
                                    width={maxWidth}
