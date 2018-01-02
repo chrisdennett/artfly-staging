@@ -16,6 +16,20 @@ import ArtworkPreview from "./ArtworkPreview/ArtworkPreview";
 import PhotoSelector from "./PhotoSelector/PhotoSelector";
 import CropAndRotate from "./CropAndRotate/CropAndRotate";
 
+/*
+adminId:            "91A2lRDKlFfl9vtcEuMwKLVWCzx1"
+artistId:           "oEZpPyEdY7oZqhDaUFil"
+artworkId:          "8XvbOGbsHoGMyBqRJIFk"
+dateAdded:          1511611413981
+heightToWidthRatio: 0.84994640943194
+thumb_url:          "https://firebasestorage.googleapis.com/v0/b/art-blam..."
+url:                "https://firebasestorage.googleapis.com/v0/b/art-blam..."
+url_large:          "https://storage.googleapis.com/art-blam..."
+url_med:            "https://storage.googleapis.com/art-blam..."
+widthToHeightRatio: 1.176544766708701
+*/
+
+
 class ArtMaker extends Component {
 
     constructor() {
@@ -28,7 +42,6 @@ class ArtMaker extends Component {
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
 
         this.masterCanvas = document.createElement('canvas');
-        this.largeCanvas = document.createElement('canvas');
         this.thumbCanvas = document.createElement('canvas');
 
         this.state = { editedArtwork: null, sourceImg: null };
@@ -39,9 +52,7 @@ class ArtMaker extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { artwork } = this.props;
-
-        if (artwork !== nextProps.artwork) {
+        if (nextProps.artwork !== this.props.artwork) {
             this.updateArtworkState(nextProps)
         }
     }
@@ -49,22 +60,24 @@ class ArtMaker extends Component {
     updateArtworkState(props) {
         const { artwork, isNewArtwork } = props;
 
-        console.log("artwork: ", artwork);
+        console.log("props: ", props);
 
         if (artwork) {
             // set up for existing artwork
 
-            ImageHelper.GetImageFromUrl(artwork.url, (img, widthToHeightRatio, heightToWidthRatio) => {
+            ImageHelper.GetImageFromUrl(artwork.url, (img) => {
 
-                this.setState({ sourceImg:img });
+                this.setState({ sourceImg: img });
 
+                // TODO: This doesn't have to happen here.
+                // currently masterCanvas only needs to exists because it is passed to cropper
+                // if cropper didn't draw to the master canvas it could just use sourceImg
                 ImageHelper.drawToCanvas({
                     sourceCanvas: img,
                     outputCanvas: this.masterCanvas,
-                    maxOutputCanvasWidth: 960,
-                    maxOutputCanvasHeight: 960
+                    maxOutputCanvasWidth: 3000,
+                    maxOutputCanvasHeight: 3000
                 });
-
 
                 // draw to master canvas
                 ImageHelper.drawToCanvas({
@@ -74,13 +87,16 @@ class ArtMaker extends Component {
                     maxOutputCanvasHeight: 150
                 });
 
-                // const editedArtwork = { randomThing:'hello' };
-                // this.setState({ selectedImg: img, selectedImgOrientation: imgOrientation, editedArtwork });
+                let editedArtwork = { ...artwork };
+                editedArtwork.imgSrc = img.src;
+                this.setState({ editedArtwork });
             });
 
         }
         else if (isNewArtwork) {
-            const newArtwork = {};
+            const newArtwork = {
+                adminId: this.props.userId,
+            };
             this.setState({ editedArtwork: newArtwork });
         }
     }
@@ -91,68 +107,57 @@ class ArtMaker extends Component {
         }, 'image/jpeg', 0.95)
     }
 
+    // SAVING ARTWORK
     onCropAndRotateDone() {
-        // ImageHelper.drawToCanvas({ sourceCanvas: img, outputCanvas: masterCanvas, orientation, cropPercents }, (widthToHeightRatio, heightToWidthRatio) => {
-        // onCanvasInit(this.canvas, widthToHeightRatio, heightToWidthRatio);
-
         //source:   3000x3000 (max)
-        //large:    960x960
+        //large:    960x960 // created using cloud functions
         //medium:   640x640 // created using cloud functions
         //thumb:    150x150
 
         ImageHelper.drawToCanvas({
             sourceCanvas: this.masterCanvas,
-            outputCanvas: this.largeCanvas,
-            maxOutputCanvasWidth: 960,
-            maxOutputCanvasHeight: 960
-        }, () => {
+            outputCanvas: this.thumbCanvas,
+            maxOutputCanvasWidth: 150,
+            maxOutputCanvasHeight: 150
+        }, (widthToHeightRatio, heightToWidthRatio) => {
+
+            let masterCanvasBlob, thumbCanvasBlob;
+
+            this.getCanvasBlobData(this.masterCanvas, (masterCanvasData) => {
+                masterCanvasBlob = masterCanvasData;
+
+                this.getCanvasBlobData(this.thumbCanvas, (thumbCanvasData) => {
+                    thumbCanvasBlob = thumbCanvasData;
+
+                    const { artwork, artist } = this.props;
+
+                    this.props.updateArtworkImage(artwork.artworkId, artist.artistId, masterCanvasBlob, widthToHeightRatio, heightToWidthRatio, (saveProgressData) => {
+                        if (saveProgressData.status === 'complete') {
+                            this.props.updateArtworkThumbnail(artwork.artworkId, artist.artistId, thumbCanvasBlob, (thumbSaveProgress) => {
+                                if (thumbSaveProgress.status === 'complete') {
+                                    console.log("thumbSaveProgress.status: ", thumbSaveProgress.status);
+                                }
+                            })
+                        }
+                    });
+                })
+            });
+
+            // JUST FOR DEV PURPOSES
             ImageHelper.drawToCanvas({
                 sourceCanvas: this.masterCanvas,
-                outputCanvas: this.thumbCanvas,
+                outputCanvas: this.testCanvas,
                 maxOutputCanvasWidth: 150,
                 maxOutputCanvasHeight: 150
-            }, () => {
-                ImageHelper.drawToCanvas({
-                    sourceCanvas: this.masterCanvas,
-                    outputCanvas: this.testCanvas,
-                    maxOutputCanvasWidth: 150,
-                    maxOutputCanvasHeight: 150
-                }, (widthToHeightRatio, heightToWidthRatio) => {
-
-                    let masterCanvasBlob, largeCanvasBlob, thumbCanvasBlob;
-
-                    this.getCanvasBlobData(this.masterCanvas, (masterCanvasData) => {
-                        masterCanvasBlob = masterCanvasData;
-
-                        this.getCanvasBlobData(this.thumbCanvas, (thumbCanvasData) => {
-                            thumbCanvasBlob = thumbCanvasData;
-
-                            const {artwork, artist} = this.props;
-
-                            this.props.updateArtworkImage(artwork.artworkId, artist.artistId, masterCanvasBlob, widthToHeightRatio, heightToWidthRatio, (saveProgressData) => {
-                                if (saveProgressData.status === 'complete') {
-                                    this.props.updateArtworkThumbnail(artwork.artworkId, artist.artistId, thumbCanvasBlob, (thumbSaveProgress) => {
-                                        if (thumbSaveProgress.status === 'complete') {
-                                            console.log("thumbSaveProgress.status: ", thumbSaveProgress.status);
-                                        }
-                                    })
-                                }
-                            });
-                        })
-
-                    });
-
-
-                    // this.props.updateArtworkImage(artwork.artworkId, artist.artistId);
-                });
             });
         });
     }
 
     onPhotoSelected(imgFile) {
-        ImageHelper.GetImage(imgFile, (img, imgOrientation) => {
+        ImageHelper.GetImage(imgFile, (img, imgOrientation, widthToHeightRatio, heightToWidthRatio) => {
 
             // draw to master canvas
+            // TODO: this isnt' needed if we leave drawing the master canvas to the saving function
             ImageHelper.drawToCanvas({
                 sourceCanvas: img,
                 outputCanvas: this.masterCanvas,
@@ -161,9 +166,12 @@ class ArtMaker extends Component {
                 maxOutputCanvasHeight: 150
             });
 
-
             // const editedArtwork = { randomThing:'hello' };
 
+            let editedArtwork = {widthToHeightRatio, heightToWidthRatio, ...this.state.editedArtwork};
+            editedArtwork.imgSrc = img.src;
+
+            this.setState({ editedArtwork });
             // this.setState({ selectedImg: img, selectedImgOrientation: imgOrientation, editedArtwork });
         });
     }
@@ -176,20 +184,6 @@ class ArtMaker extends Component {
         history.push(`/gallery/${this.props.artist.artistId}`);
     }
 
-    /*onPhotoEditorDone(newData) {
-        if (this.props.artworkId === 'new') {
-            // send to photo uploader with new flag
-            this.setState({ cuttingBoardData: newData }, () => {
-                history.push(`/artStudio/${this.props.artworkId}/uploadPhoto`);
-            });
-        }
-        else {
-            this.setState({ cuttingBoardData: newData }, () => {
-                history.push(`/artStudio/${this.props.artworkId}/uploadPhoto`);
-            });
-        }
-    }*/
-
     render() {
         let { userId, isNewArtwork, windowSize, artworkId, currentEditScreen, artist } = this.props;
         const { editedArtwork, selectedImg, selectedImgOrientation } = this.state;
@@ -199,7 +193,7 @@ class ArtMaker extends Component {
 
         if (!currentEditScreen) currentEditScreen = 'artworkPreview';
 
-        if (isNewArtwork && !selectedImg) currentEditScreen = 'uploadPhoto';
+        if (isNewArtwork && !editedArtwork.imgSrc) currentEditScreen = 'uploadPhoto';
         const artistId = artist ? artist.artistId : null;
 
         return (
@@ -209,11 +203,6 @@ class ArtMaker extends Component {
                     <canvas ref={(canvas) => this.testCanvas = canvas}
                             className={'testCanvas'}/>
                 </div>
-
-                <ArtworkPreview masterCanvas={this.masterCanvas}
-                                artwork={editedArtwork}
-                                selectedImgOrientation={selectedImgOrientation}
-                                selectedImg={selectedImg}/>
 
                 <div className='pictureMaker--sidebar'>
                     <PictureMakerControls artistId={artistId}
@@ -229,29 +218,11 @@ class ArtMaker extends Component {
                         onPhotoSelect={this.onPhotoSelected}/>
                     }
 
-                    {/*{currentEditScreen === 'uploadPhoto' &&
-                        <UploadPhoto width={maxWidth}
-                                     height={maxHeight}
-                                     userId={userId}
-                                     onEdit={this.onPhotoUploaderEdit}
-                                     cuttingBoardData={cuttingBoardData}
-                                     selectedArtistId={selectedArtistId}
-                                     onUploadComplete={this.showArtworkInEditing}/>
-                        }*/}
-
                     {currentEditScreen === 'artworkPreview' &&
-                    <div>ArtworkPreview goes here</div>
+                    <ArtworkPreview artwork={this.state.editedArtwork}
+                                    maxWidth={maxWidth}
+                                    maxHeight={maxHeight}/>
                     }
-
-                    {/*{currentEditScreen === 'editPhoto' &&
-                        <PhotoEditor isNewImage={isNewArtwork}
-                                     artworkId={artworkId}
-                                     userId={userId}
-                                     url={artworkUrl}
-                                     img={photoUploaderImg}
-                                     onDone={this.onPhotoEditorDone}
-                                     onCancel={this.showArtworkInEditing}/>
-                        }*/}
 
                     {currentEditScreen === 'editPhoto' &&
                     <CropAndRotate masterCanvas={this.masterCanvas}
@@ -286,25 +257,3 @@ class ArtMaker extends Component {
 
 const mapActionsToProps = { updateArtworkImage, updateArtworkThumbnail };
 export default connect(null, mapActionsToProps)(ArtMaker);
-
-/*
-return (
-    <div>
-
-        {artworkId === 'new' &&
-        <AddPicture userId={userId}
-                    selectedArtistId={selectedArtistId}/>
-        }
-
-        {artworkId !== 'new' && artwork &&
-        <EditPicture currentEditScreen={currentEditScreen}
-                     windowSize={windowSize}
-                     userId={userId}
-                     artist={artist}
-                     artworkId={artworkId}
-                     artwork={artwork}/>
-        }
-
-    </div>
-)
- */

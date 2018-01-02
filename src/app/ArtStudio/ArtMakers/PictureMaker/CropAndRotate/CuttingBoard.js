@@ -1,7 +1,5 @@
 // externals
 import React, { Component } from "react";
-// helpers
-import * as PhotoHelper from "../../../ImageHelper";
 // components
 import CuttingOverlay from "./assets/CuttingOverlay";
 
@@ -10,44 +8,16 @@ class CuttingBoard extends Component {
         super();
 
         this.canvasInit = this.canvasInit.bind(this);
-        // this.drawImageToSourceCanvas = this.drawImageToSourceCanvas.bind(this);
         this.onCuttingOverlayChange = this.onCuttingOverlayChange.bind(this);
-        // this.drawToCanvas = this.drawToCanvas.bind(this);
 
         this.state = { displayWidth: 10, displayHeight: 10 };
     }
-
-    /*componentDidMount() {
-        this.drawToCanvas(this.props);
-    }*/
 
     componentWillReceiveProps(nextProps) {
         if (this.cuttingBoardCanvas) {
             this.setState({ displayWidth:this.cuttingBoardCanvas.width, displayHeight:this.cuttingBoardCanvas.height });
         }
     }
-
-    /*drawToCanvas(props) {
-        const { masterCanvas, rotation, maxWidth, maxHeight  } = props;
-
-        console.log("rotation: ", rotation);
-
-        if (masterCanvas && this.cuttingBoardCanvas) {
-            // PhotoHelper.drawCanvasToCanvas(this.cuttingBoardCanvas, displayWidth, displayHeight, masterCanvas, 0, 0, masterCanvas.width, masterCanvas.height);
-            PhotoHelper.drawToCanvas(
-                {
-                    sourceCanvas: masterCanvas,
-                    outputCanvas: this.cuttingBoardCanvas,
-                    orientation: rotation,
-                    maxOutputCanvasWidth:maxWidth,
-                    maxOutputCanvasHeight:maxHeight
-                },
-                () => {
-                    this.setState({ displayWidth:this.cuttingBoardCanvas.width, displayHeight:this.cuttingBoardCanvas.height });
-                });
-        }
-
-    }*/
 
     // Update on Handle move to store values and ensure image can be
     onCuttingOverlayChange(leftX, rightX, topY, bottomY, width, height) {

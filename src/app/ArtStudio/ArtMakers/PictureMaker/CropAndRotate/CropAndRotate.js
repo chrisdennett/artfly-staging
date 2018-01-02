@@ -36,27 +36,10 @@ class CropAndRotate extends Component {
         this.drawCuttingBoardCanvas();
     }
 
-    componentWillReceiveProps(nextProps) {
+    // Including this will redraw the img data, but with pre-save rotation
+    /*componentWillReceiveProps(nextProps) {
         this.drawCuttingBoardCanvas(nextProps);
-        /*let { cropData } = nextProps;
-
-        if (cropData) {
-            const { rotation, ...rest } = cropData;
-            this.setState({ rotation, cropData: rest });
-        }*/
-
-        // default orientation
-        /*if (!orientation) orientation = 1;
-        // default crop data
-        if (!initialCropData) initialCropData = {
-            leftPercent: 0,
-            rightPercent: 1,
-            topPercent: 0,
-            bottomPercent: 1
-        };
-
-        this.setState({ rotation: orientation, cropData: initialCropData });*/
-    }
+    }*/
 
     onCropUpdate(cropData) {
         this.setState({ cropData });
@@ -66,12 +49,7 @@ class CropAndRotate extends Component {
         this.setState({ canvas }, () => {
             this.drawCuttingBoardCanvas();
         });
-
-        // const { masterCanvas } = this.props;
-
-
-        // PhotoHelper.drawToCanvas({ sourceCanvas: masterCanvas, outputCanvas: canvas, orientation: 1 });
-    }
+  }
 
     // Cancel current changes
     onCancelClick() {
@@ -82,63 +60,18 @@ class CropAndRotate extends Component {
         const { masterCanvas, sourceImg } = this.props;
         const { rotation, cropData } = this.state;
 
-        /*
-         updateArtworkImage(
-                                 artworkId,
-                                 artistId,
-                                 newImg,
-                                 widthToHeightRatio,
-                                 heightToWidthRatio,
-                                 callback = null
-                             )
-        */
-        // update the master canvas and then either save or send back the data to save with
         PhotoHelper.drawToCanvas({
             sourceCanvas: sourceImg,
             outputCanvas: masterCanvas,
             orientation: rotation,
             cropPercents: cropData
         }, () => {
-
             this.props.onDone();
-            // TODO: Call the function that will update the image.
-            // this shouldn't be called here because other controls
-            // will potentially want to also change the image.
-            /*this.setState({
-                rotation: 1,
-                cropData: {
-                    leftPercent: 0,
-                    rightPercent: 1,
-                    topPercent: 0,
-                    bottomPercent: 1
-                }
-            })*/
         })
-
-
-
-
-        /*this.props.onDone({
-            rotation,
-            leftPercent, rightPercent, topPercent, bottomPercent
-        });*/
-
-        /*
-         const { canvas, rotation, cropData } = this.state;
-         const canvasW = canvas.width;
-         const canvasH = canvas.height;
-
-        this.props.onDone({
-            canvas: canvas,
-            rotation,
-            leftX: canvasW * leftPercent, rightX: canvasW * rightPercent, topY: canvasH * topPercent, bottomY: canvasH * bottomPercent,
-            leftPercent, rightPercent, topPercent, bottomPercent
-        });
-        */
     }
 
     drawCuttingBoardCanvas(props = this.props) {
-        const { masterCanvas, width, height, sourceImg } = props;
+        const { width, height, sourceImg } = props;
         const { rotation, canvas } = this.state;
 
         if (!sourceImg || !width || !canvas) return;
@@ -176,17 +109,16 @@ class CropAndRotate extends Component {
         this.setState({ rotation: newRotation, cropData: { leftPercent: newL, rightPercent: newR, topPercent: newT, bottomPercent: newB } }, () => {
             this.drawCuttingBoardCanvas();
         });
-
     }
 
     render() {
-        const { width, height, masterCanvas, sourceImg } = this.props;
+        const { width, height, sourceImg } = this.props;
         const { maxCuttingBoardWidth, maxCuttingBoardHeight } = this.state;
 
         const { rotation, cropData } = this.state;
 
         if (!sourceImg) {
-            return <div>LOading CanVaS</div>
+            return <div>Loading Canvas</div>
         }
 
         return (
@@ -195,7 +127,6 @@ class CropAndRotate extends Component {
                 <div className='cropAndRotate--content'>
                     <div className='cropAndRotate--cuttingBoardHolder'>
                         <CuttingBoard
-                            masterCanvas={masterCanvas}
                             onCropUpdate={this.onCropUpdate}
                             onCanvasSetup={this.onCanvasSetup}
                             maxWidth={maxCuttingBoardWidth}

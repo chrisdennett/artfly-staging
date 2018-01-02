@@ -13,7 +13,7 @@ const Artwork = function (props) {
 
     const { artworkData, imageLoading, allowScrollbars = false } = props;
 
-    if (!artworkData) return null;
+    if (!artworkData) return <div>No artwork data chris. Come on, sort it out.</div>;
 
     const { imgSrc, artCanvas, imgWidth, imgHeight, skirtingY, skirtingHeight, floorY, floorHeight,  paddingTop, paddingLeft, frameThickness, mountThickness } = artworkData;
 
