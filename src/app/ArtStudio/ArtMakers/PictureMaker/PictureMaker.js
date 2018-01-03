@@ -15,6 +15,7 @@ import history from "../../../global/history";
 import ArtworkPreview from "./ArtworkPreview/ArtworkPreview";
 import PhotoSelector from "./PhotoSelector/PhotoSelector";
 import CropAndRotate from "./CropAndRotate/CropAndRotate";
+import NewArtworkPhotoSelector from "./NewArtworkPhotoSelector/NewArtworkPhotoSelector";
 
 /*
 adminId:            "91A2lRDKlFfl9vtcEuMwKLVWCzx1"
@@ -40,6 +41,7 @@ class ArtMaker extends Component {
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.updateArtworkState = this.updateArtworkState.bind(this);
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
+        this.onNewPhotoSelectorArtistSelected = this.onNewPhotoSelectorArtistSelected.bind(this);
 
         this.masterCanvas = document.createElement('canvas');
         this.thumbCanvas = document.createElement('canvas');
@@ -161,6 +163,10 @@ class ArtMaker extends Component {
         }
     }
 
+    onNewPhotoSelectorArtistSelected(artistId){
+        console.log("artistId: ", artistId);
+    }
+
     onPhotoSelected(imgFile) {
         ImageHelper.GetImage(imgFile, (img, imgOrientation, widthToHeightRatio, heightToWidthRatio) => {
 
@@ -226,10 +232,12 @@ class ArtMaker extends Component {
                 <div className='pictureMaker--main'>
 
                     {currentEditScreen === 'uploadPhoto' &&
-                    <PhotoSelector
-                        uid={'new-artwork-selector'}
-                        onPhotoSelect={this.onPhotoSelected}/>
+                        <NewArtworkPhotoSelector
+                            onArtistSelected={this.onNewPhotoSelectorArtistSelected} />
                     }
+                    {/*<PhotoSelector
+                        id={'new-artwork-selector'}
+                        onPhotoSelect={this.onPhotoSelected}/>*/}
 
                     {currentEditScreen === 'artworkPreview' &&
                     <ArtworkPreview artwork={editedArtwork}

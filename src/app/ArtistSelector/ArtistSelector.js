@@ -83,8 +83,7 @@ const
             artists: state.artists
         }
     };
-const
-    mapActionsToProps = { getUserArtistChanges };
+const mapActionsToProps = { getUserArtistChanges };
 
 export default connect(mapStateToProps, mapActionsToProps)(ArtistSelector);
 

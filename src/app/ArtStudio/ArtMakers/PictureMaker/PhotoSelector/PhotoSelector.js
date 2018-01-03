@@ -9,6 +9,7 @@ class PhotoSelector extends Component {
         super();
 
         this.onFileSelect = this.onFileSelect.bind(this);
+        this.onInputClick = this.onInputClick.bind(this);
     }
 
     onFileSelect(e) {
@@ -20,16 +21,20 @@ class PhotoSelector extends Component {
         }
     }
 
+    onInputClick(e){
+        const {onInputClick, id} = this.props;
+        if(onInputClick){
+            onInputClick(id);
+        }
+    }
+
     render() {
-
-        const { onClick, uid } = this.props;
-
-        const id = !uid ? "123" : uid;
+        const { id='123', firstName, lastName } = this.props;
 
         return (
             <div className={'photoSelector'}>
                 <input className='photoSelector--input'
-                       onClick={onClick}
+                       onClick={this.onInputClick}
                        onChange={this.onFileSelect}
                        type="file"
                        accept="image/*"
@@ -47,7 +52,7 @@ class PhotoSelector extends Component {
                                     <path d="M46 14.5l13.72 13.72h-9.38v13.72h-8.861V28.22h-9.203z"/>
                                 </g>
                             </svg>
-                            <p className={'photoSelector--text'}>Add Photo...</p>
+                            <p className={'photoSelector--text'}>{firstName} {lastName}</p>
                         </div>
                     </div>
 
