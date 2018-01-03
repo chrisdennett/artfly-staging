@@ -26,18 +26,24 @@ class ArtStudio extends Component {
     }
 
     loadArtworkAndArtist(props) {
-        if (props.artworkId && !props.artwork) {
-            this.props.listenForArtworkChanges(props.artworkId);
+        if (props.artworkId === 'new') {
+            // load the default artist?
         }
-
-        if (props.artwork && !props.artist) {
-            const { artistId } = props.artwork;
-            this.props.listenForArtistChanges(artistId);
+        else {
+            // Artwork Id in params, but artwork not loaded
+            if (!props.artwork) {
+                this.props.listenForArtworkChanges(props.artworkId);
+            }
+            // Artwork has been loaded, but not artist
+            else if(!props.artist){
+                const { artistId } = props.artwork;
+                this.props.listenForArtistChanges(artistId);
+            }
         }
     }
 
     render() {
-        const {artworkId, artwork, artist, userId, currentEditScreen, windowSize} = this.props;
+        const { artworkId, artwork, artist, userId, currentEditScreen, windowSize } = this.props;
         const isNewArtwork = artworkId === 'new';
         let isLoadingMakerData = false;
 

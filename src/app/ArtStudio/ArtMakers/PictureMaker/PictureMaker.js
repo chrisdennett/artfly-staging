@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 // styles
 import './pictureMakerStyles.css';
 // actions
-import { updateArtworkImage, updateArtworkThumbnail } from '../../../../actions/UserDataActions';
+import { addArtwork, updateArtworkImage, updateArtworkThumbnail } from '../../../../actions/UserDataActions';
 // helpers
 import * as ImageHelper from "../../ImageHelper";
 // components
@@ -113,43 +113,52 @@ class ArtMaker extends Component {
         //medium:   640x640 // created using cloud functions
         //thumb:    150x150
 
-        ImageHelper.drawToCanvas({
-            sourceCanvas: this.masterCanvas,
-            outputCanvas: this.thumbCanvas,
-            maxOutputCanvasWidth: 150,
-            maxOutputCanvasHeight: 150
-        }, (widthToHeightRatio, heightToWidthRatio) => {
+        if(this.props.isNewArtwork){
+            // create new image
+            //export function addArtwork(userId, artistId, imgFile, widthToHeightRatio, heightToWidthRatio, callback = null)
 
-            let masterCanvasBlob, thumbCanvasBlob;
-
-            this.getCanvasBlobData(this.masterCanvas, (masterCanvasData) => {
-                masterCanvasBlob = masterCanvasData;
-
-                this.getCanvasBlobData(this.thumbCanvas, (thumbCanvasData) => {
-                    thumbCanvasBlob = thumbCanvasData;
-
-                    const { artwork, artist } = this.props;
-
-                    this.props.updateArtworkImage(artwork.artworkId, artist.artistId, masterCanvasBlob, widthToHeightRatio, heightToWidthRatio, (saveProgressData) => {
-                        if (saveProgressData.status === 'complete') {
-                            this.props.updateArtworkThumbnail(artwork.artworkId, artist.artistId, thumbCanvasBlob, (thumbSaveProgress) => {
-                                if (thumbSaveProgress.status === 'complete') {
-                                    console.log("thumbSaveProgress.status: ", thumbSaveProgress.status);
-                                }
-                            })
-                        }
-                    });
-                })
-            });
-
-            // JUST FOR DEV PURPOSES
+            const {userId, artist} = this.props;
+            console.log("userId, artist: ", userId, artist);
+        }
+        else{
             ImageHelper.drawToCanvas({
                 sourceCanvas: this.masterCanvas,
-                outputCanvas: this.testCanvas,
+                outputCanvas: this.thumbCanvas,
                 maxOutputCanvasWidth: 150,
                 maxOutputCanvasHeight: 150
+            }, (widthToHeightRatio, heightToWidthRatio) => {
+
+                let masterCanvasBlob, thumbCanvasBlob;
+
+                this.getCanvasBlobData(this.masterCanvas, (masterCanvasData) => {
+                    masterCanvasBlob = masterCanvasData;
+
+                    this.getCanvasBlobData(this.thumbCanvas, (thumbCanvasData) => {
+                        thumbCanvasBlob = thumbCanvasData;
+
+                        const { artwork, artist } = this.props;
+
+                        this.props.updateArtworkImage(artwork.artworkId, artist.artistId, masterCanvasBlob, widthToHeightRatio, heightToWidthRatio, (saveProgressData) => {
+                            if (saveProgressData.status === 'complete') {
+                                this.props.updateArtworkThumbnail(artwork.artworkId, artist.artistId, thumbCanvasBlob, (thumbSaveProgress) => {
+                                    if (thumbSaveProgress.status === 'complete') {
+                                        console.log("thumbSaveProgress.status: ", thumbSaveProgress.status);
+                                    }
+                                })
+                            }
+                        });
+                    })
+                });
+
+                // JUST FOR DEV PURPOSES
+                ImageHelper.drawToCanvas({
+                    sourceCanvas: this.masterCanvas,
+                    outputCanvas: this.testCanvas,
+                    maxOutputCanvasWidth: 150,
+                    maxOutputCanvasHeight: 150
+                });
             });
-        });
+        }
     }
 
     onPhotoSelected(imgFile) {
@@ -191,7 +200,12 @@ class ArtMaker extends Component {
 
         if (!currentEditScreen) currentEditScreen = 'artworkPreview';
 
-        if (isNewArtwork && !editedArtwork.imgSrc) currentEditScreen = 'uploadPhoto';
+        if (isNewArtwork){
+            if(!editedArtwork.imgSrc) currentEditScreen = 'uploadPhoto';
+            else currentEditScreen = 'editPhoto';
+        }
+
+
         const artistId = artist ? artist.artistId : null;
         const sourceImg = editedArtwork ? editedArtwork.img : null;
 
@@ -241,7 +255,7 @@ class ArtMaker extends Component {
 
                     {currentEditScreen === 'editArtist' &&
                     <ArtistUpdater artworkId={artworkId}
-                                   initialArtistId={editedArtwork.artistId}
+                                   initialArtistId={artistId}
                                    manageUpload={true}
                                    onCancel={this.showArtworkInEditing}
                                    onUpdateComplete={this.showArtworkInEditing}/>

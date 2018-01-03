@@ -1,9 +1,10 @@
 // externals
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 // actions
 import { getUserArtistChanges } from '../../actions/UserDataActions'
-import ArtistSelectorView from "./ArtistSelectorView";
+import ArtistSelectorOption from "./ArtistSelectorOption";
 
 class ArtistSelector extends Component {
     constructor() {
@@ -48,22 +49,29 @@ class ArtistSelector extends Component {
             else {
                 this.props.onArtistSelected(artistId);
             }
-
         });
     }
 
     render() {
-        const {labelText, artists} = this.props;
+        const { artists } = this.props;
         const { selectedArtistId } = this.state;
-        const label = labelText !== undefined ? labelText : 'Select Artist: ';
 
         if (selectedArtistId === '') return null;
 
         return (
-            <ArtistSelectorView label={label}
-                                artists={artists}
-                                selectedArtistId={selectedArtistId}
-                                onArtistSelected={this.onArtistSelected}/>
+            <div>
+                {
+                    _.map(artists, (artistData, artistId) => {
+                        return <ArtistSelectorOption
+                            key={artistId}
+                            isSelected={selectedArtistId === artistId}
+                            artistId={artistId}
+                            onSelected={this.onArtistSelected}
+                            firstName={artistData.firstName}
+                            lastName={artistData.lastName}/>
+                    })
+                }
+            </div>
         )
     }
 }
