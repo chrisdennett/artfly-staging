@@ -15,7 +15,7 @@ class NewArtworkPhotoSelector extends Component {
     }
 
     render() {
-        const { artists, onArtistSelected, onFileSelect } = this.props;
+        const { artists, onArtistSelected, onPhotoSelected } = this.props;
 
         return (
             <div>
@@ -24,7 +24,7 @@ class NewArtworkPhotoSelector extends Component {
                         return <PhotoSelector
                             key={artistId}
                             id={artistId}
-                            onFileSelect={onFileSelect}
+                            onPhotoSelected={onPhotoSelected}
                             onInputClick={onArtistSelected}
                             firstName={artistData.firstName}
                             lastName={artistData.lastName}/>

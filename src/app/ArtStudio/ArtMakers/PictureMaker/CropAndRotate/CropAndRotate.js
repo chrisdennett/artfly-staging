@@ -74,9 +74,6 @@ class CropAndRotate extends Component {
         const { width, height, sourceImg } = props;
         const { rotation, canvas } = this.state;
 
-        console.log("width, height, sourceImg : ", width, height, sourceImg );
-        console.log("rotation, canvas: ", rotation, canvas);
-
         if (!sourceImg || !width || !canvas) return;
 
         const cuttingBoardPadding = 40;

@@ -17,7 +17,7 @@ class PhotoSelector extends Component {
 
         if (e.target.files[0]) {
             const imgFile = e.target.files[0];
-            this.props.onPhotoSelect(imgFile);
+            this.props.onPhotoSelected(imgFile);
         }
     }
 
