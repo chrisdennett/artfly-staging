@@ -245,6 +245,7 @@ export function listenForArtistChanges(artistId) {
 
 // LISTEN FOR ARTWORK DATA CHANGES
 export function listenForArtistArtworkChanges(artistId, userId) {
+
     return (dispatch) => {
         fs_getArtistArtworkChanges(artistId, userId, (artworkData) => {
             dispatch({

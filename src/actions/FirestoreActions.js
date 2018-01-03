@@ -442,7 +442,7 @@ function int_saveImage(artworkId, artistId, blob, prefix, onChangeCallback, onCo
 
 // GET ARTIST ARTWORK CHANGES
 export function fs_getArtistArtworkChanges(artistId, userId, onChangeCallback = null) {
-    if (unsubscribers.artistArtworkListeners[artistId]) {
+    if (!userId || unsubscribers.artistArtworkListeners[artistId]) {
         return;
     }
 
