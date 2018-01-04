@@ -51,7 +51,7 @@ class ArtMaker extends Component {
         this.masterCanvas = document.createElement('canvas');
         this.thumbCanvas = document.createElement('canvas');
 
-        this.state = { editedArtwork: null, sourceImg: null };
+        this.state = { editedArtwork: null, sourceImg: null, isSaving: false };
     }
 
     componentWillMount() {
@@ -112,13 +112,14 @@ class ArtMaker extends Component {
     }
 
     // SAVING ARTWORK
-    onCropAndRotateDone() {
+    onCropAndRotateDone(rotation, cropData) {
         //source:   3000x3000 (max)
         //large:    960x960 // created using cloud functions
         //medium:   640x640 // created using cloud functions
         //thumb:    150x150
 
         let masterCanvasBlob, thumbCanvasBlob;
+        this.setState({ isSaving: true });
 
         if (this.props.isNewArtwork) {
             // create new image
@@ -130,6 +131,8 @@ class ArtMaker extends Component {
             ImageHelper.drawToCanvas({
                 sourceCanvas: img,
                 outputCanvas: this.masterCanvas,
+                orientation: rotation,
+                cropPercents: cropData,
                 maxOutputCanvasWidth: 3000,
                 maxOutputCanvasHeight: 3000
             }, () => {
@@ -149,12 +152,18 @@ class ArtMaker extends Component {
 
                             this.props.addArtwork(userId, artistId, masterCanvasBlob, widthToHeightRatio, heightToWidthRatio, (uploadData) => {
 
-                                const { artworkId } = uploadData;
-                                history.push(`/artStudio/${artworkId}`);
+                                if (uploadData.status === 'complete') {
+                                    const { artworkId } = uploadData;
 
-                                this.props.addThumbnail(artworkId, artistId, thumbCanvasBlob, (thumbUploadData) => {
-                                    console.log("thumb saved: ", thumbUploadData);
-                                })
+                                    this.props.addThumbnail(artworkId, artistId, thumbCanvasBlob, (thumbUploadData) => {
+                                        console.log("thumb saved: ", thumbUploadData);
+
+                                        this.setState({ isSaving: false }, () => {
+                                            history.push(`/artStudio/${artworkId}`);
+                                        })
+
+                                    })
+                                }
                             })
                         })
                     })
@@ -181,7 +190,9 @@ class ArtMaker extends Component {
                             if (saveProgressData.status === 'complete') {
                                 this.props.updateArtworkThumbnail(artwork.artworkId, artist.artistId, thumbCanvasBlob, (thumbSaveProgress) => {
                                     if (thumbSaveProgress.status === 'complete') {
-                                        console.log("thumbSaveProgress.status: ", thumbSaveProgress.status);
+                                        this.setState({ isSaving: false }, () => {
+                                            history.push(`/artStudio/${artwork.artworkId}`);
+                                        })
                                     }
                                 })
                             }
@@ -249,7 +260,7 @@ class ArtMaker extends Component {
 
     render() {
         let { isNewArtwork, windowSize, artworkId, currentEditScreen, artist } = this.props;
-        const { editedArtwork } = this.state;
+        const { editedArtwork, isSaving } = this.state;
 
         const maxWidth = windowSize ? windowSize.windowWidth : 0;
         const maxHeight = windowSize ? windowSize.windowHeight : 0;
@@ -279,6 +290,12 @@ class ArtMaker extends Component {
                                           artworkId={artworkId}/>
                 </div>
 
+                {isSaving &&
+                <div>Amazing saving animation...</div>
+                }
+
+
+                {!isSaving &&
                 <div className='pictureMaker--main'>
 
                     {currentEditScreen === 'uploadPhoto' &&
@@ -317,6 +334,7 @@ class ArtMaker extends Component {
                                    onUpdateComplete={this.showArtworkInEditing}/>
                     }
                 </div>
+                }
 
             </div>
 

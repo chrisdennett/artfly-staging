@@ -188,7 +188,7 @@ export function drawToCanvas({ sourceCanvas, outputCanvas, orientation, cropPerc
 }
 
 // Draws an image to a canvas
-export function drawImageToCanvas(img, canvas, orientation, cropDataPercents, callback) {
+/*export function drawImageToCanvas(img, canvas, orientation, cropDataPercents, callback) {
 
     // default crop data to zero cropping
     const { topPercent, rightPercent, bottomPercent, leftPercent } = cropDataPercents ?
@@ -258,10 +258,10 @@ export function drawImageToCanvas(img, canvas, orientation, cropDataPercents, ca
     ctx.restore();
 
     callback(widthToHeightRatio, heightToWidthRatio);
-}
+}*/
 
 // Draws one canvas to another restricting to a specific size
-export function drawCanvasToCanvas(outputCanvas, maxOutputWidth, maxOutputHeight, sourceCanvas, leftX, topY, rightX, bottomY) {
+/*export function drawCanvasToCanvas(outputCanvas, maxOutputWidth, maxOutputHeight, sourceCanvas, leftX, topY, rightX, bottomY) {
     const sourceWidth = rightX - leftX;
     const sourceHeight = bottomY - topY;
 
@@ -284,9 +284,10 @@ export function drawCanvasToCanvas(outputCanvas, maxOutputWidth, maxOutputHeight
         .getContext('2d')
         .drawImage(sourceCanvas, leftX, topY, sourceWidth, sourceHeight,
             outputX, outputY, outputWidth, outputHeight);
-}
+}*/
 
 // Draws one canvas to another restricting to a specific size
+/*
 export function drawCanvasToCanvasWithRotation(sourceCanvas, outputCanvas, orientation, maxCanvasWidth, maxCanvasHeight, callback) {
     const isPortrait = orientation > 4 && orientation < 9;
 
@@ -352,4 +353,4 @@ export function drawCanvasToCanvasWithRotation(sourceCanvas, outputCanvas, orien
     ctx.restore();
 
     if (callback) callback(widthToHeightRatio, heightToWidthRatio)
-}
+}*/

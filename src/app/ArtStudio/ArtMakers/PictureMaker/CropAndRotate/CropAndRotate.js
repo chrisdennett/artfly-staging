@@ -66,7 +66,7 @@ class CropAndRotate extends Component {
             orientation: rotation,
             cropPercents: cropData
         }, () => {
-            this.props.onDone();
+            this.props.onDone(rotation, cropData);
         })
     }
 
