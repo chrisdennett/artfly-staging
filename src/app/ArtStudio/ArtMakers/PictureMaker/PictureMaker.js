@@ -48,9 +48,6 @@ class ArtMaker extends Component {
         this.onNewPhotoSelectorArtistSelected = this.onNewPhotoSelectorArtistSelected.bind(this);
         this.onNewPhotoSelectorPhotoSelected = this.onNewPhotoSelectorPhotoSelected.bind(this);
 
-        this.masterCanvas = document.createElement('canvas');
-        this.thumbCanvas = document.createElement('canvas');
-
         this.state = { editedArtwork: null, sourceImg: null, isSaving: false };
     }
 
@@ -98,6 +95,8 @@ class ArtMaker extends Component {
         //large:    960x960 // created using cloud functions
         //medium:   640x640 // created using cloud functions
         //thumb:    150x150
+        const masterCanvas = document.createElement('canvas');
+        const thumbCanvas = document.createElement('canvas');
 
         let masterCanvasBlob, thumbCanvasBlob;
         this.setState({ isSaving: true });
@@ -113,7 +112,7 @@ class ArtMaker extends Component {
             // and applies the crop and rotation data.
             ImageHelper.drawToCanvas({
                 sourceCanvas: img,
-                outputCanvas: this.masterCanvas,
+                outputCanvas: masterCanvas,
                 orientation: rotation,
                 cropPercents: cropData,
                 maxOutputCanvasWidth: 3000,
@@ -122,20 +121,20 @@ class ArtMaker extends Component {
 
                 // A new image (blob data) is created from the master canvas
                 // this will be saved
-                this.getCanvasBlobData(this.masterCanvas, (masterCanvasData) => {
+                this.getCanvasBlobData(masterCanvas, (masterCanvasData) => {
                     masterCanvasBlob = masterCanvasData;
 
                     // draws thumb canvas from master canvas
                     // used master canvas so don't need to apply rotation and crop again
                     ImageHelper.drawToCanvas({
-                        sourceCanvas: this.masterCanvas,
-                        outputCanvas: this.thumbCanvas,
+                        sourceCanvas: masterCanvas,
+                        outputCanvas: thumbCanvas,
                         maxOutputCanvasWidth: 150,
                         maxOutputCanvasHeight: 150
                     }, () => {
 
                         // create new thumb image from canvas
-                        this.getCanvasBlobData(this.thumbCanvas, (thumbCanvasData) => {
+                        this.getCanvasBlobData(thumbCanvas, (thumbCanvasData) => {
                             thumbCanvasBlob = thumbCanvasData;
 
                             // add new artwork
@@ -161,7 +160,7 @@ class ArtMaker extends Component {
         else {
             ImageHelper.drawToCanvas({
                 sourceCanvas: img,
-                outputCanvas: this.masterCanvas,
+                outputCanvas: masterCanvas,
                 orientation: rotation,
                 cropPercents: cropData,
                 maxOutputCanvasWidth: 3000,
@@ -169,16 +168,16 @@ class ArtMaker extends Component {
             }, (widthToHeightRatio, heightToWidthRatio) => {
 
                 ImageHelper.drawToCanvas({
-                    sourceCanvas: this.masterCanvas,
-                    outputCanvas: this.thumbCanvas,
+                    sourceCanvas: masterCanvas,
+                    outputCanvas: thumbCanvas,
                     maxOutputCanvasWidth: 150,
                     maxOutputCanvasHeight: 150
                 }, () => {
 
-                    this.getCanvasBlobData(this.masterCanvas, (masterCanvasData) => {
+                    this.getCanvasBlobData(masterCanvas, (masterCanvasData) => {
                         masterCanvasBlob = masterCanvasData;
 
-                        this.getCanvasBlobData(this.thumbCanvas, (thumbCanvasData) => {
+                        this.getCanvasBlobData(thumbCanvas, (thumbCanvasData) => {
                             thumbCanvasBlob = thumbCanvasData;
 
                             const { artwork, artist } = this.props;
