@@ -194,8 +194,6 @@ export function drawImageToCanvas(img, canvas, orientation, cropDataPercents, ca
     const { topPercent, rightPercent, bottomPercent, leftPercent } = cropDataPercents ?
         cropDataPercents : { topPercent: 0, rightPercent: 1, bottomPercent: 1, leftPercent: 0 };
 
-    console.log("topPercent: ", topPercent);
-
     const isPortrait = orientation > 4 && orientation < 9;
 
     const imgW = isPortrait ? img.height : img.width;

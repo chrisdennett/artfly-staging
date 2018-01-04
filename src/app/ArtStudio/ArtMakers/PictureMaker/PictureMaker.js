@@ -4,7 +4,12 @@ import { connect } from 'react-redux';
 // styles
 import './pictureMakerStyles.css';
 // actions
-import { addArtwork, addThumbnail, updateArtworkImage, updateArtworkThumbnail } from '../../../../actions/UserDataActions';
+import {
+    addArtwork,
+    addThumbnail,
+    updateArtworkImage,
+    updateArtworkThumbnail
+} from '../../../../actions/UserDataActions';
 // helpers
 import * as ImageHelper from "../../ImageHelper";
 // components
@@ -37,9 +42,9 @@ class ArtMaker extends Component {
 
         this.showArtworkInEditing = this.showArtworkInEditing.bind(this);
         this.showArtworkInGallery = this.showArtworkInGallery.bind(this);
-        this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.updateArtworkState = this.updateArtworkState.bind(this);
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
+        this.onCropAndRotateCancel = this.onCropAndRotateCancel.bind(this);
         this.onNewPhotoSelectorArtistSelected = this.onNewPhotoSelectorArtistSelected.bind(this);
         this.onNewPhotoSelectorPhotoSelected = this.onNewPhotoSelectorPhotoSelected.bind(this);
 
@@ -120,7 +125,7 @@ class ArtMaker extends Component {
 
             const { userId } = this.props;
             const { editedArtwork } = this.state;
-            const { artistId, img, imgSrc, widthToHeightRatio, heightToWidthRatio } = editedArtwork;
+            const { artistId, img, widthToHeightRatio, heightToWidthRatio } = editedArtwork;
 
             ImageHelper.drawToCanvas({
                 sourceCanvas: img,
@@ -144,7 +149,7 @@ class ArtMaker extends Component {
 
                             this.props.addArtwork(userId, artistId, masterCanvasBlob, widthToHeightRatio, heightToWidthRatio, (uploadData) => {
 
-                                const {artworkId} = uploadData;
+                                const { artworkId } = uploadData;
                                 history.push(`/artStudio/${artworkId}`);
 
                                 this.props.addThumbnail(artworkId, artistId, thumbCanvasBlob, (thumbUploadData) => {
@@ -223,30 +228,19 @@ class ArtMaker extends Component {
 
     }
 
-    onPhotoSelected(imgFile) {
-        ImageHelper.GetImage(imgFile, (img, imgOrientation, widthToHeightRatio, heightToWidthRatio) => {
-
-            // draw to master canvas
-            // TODO: this isnt' needed if we leave drawing the master canvas to the saving function
-            ImageHelper.drawToCanvas({
-                sourceCanvas: img,
-                outputCanvas: this.masterCanvas,
-                orientation: imgOrientation,
-                maxOutputCanvasWidth: 150,
-                maxOutputCanvasHeight: 150
-            });
-
-            let editedArtwork = { widthToHeightRatio, heightToWidthRatio, ...this.state.editedArtwork };
-            editedArtwork.imgSrc = img.src;
-            editedArtwork.img = img;
-
-            this.setState({ editedArtwork });
-            // this.setState({ selectedImg: img, selectedImgOrientation: imgOrientation, editedArtwork });
-        });
-    }
-
     showArtworkInEditing() {
         history.push(`/artStudio/${this.props.artworkId}`);
+    }
+
+    onCropAndRotateCancel() {
+        if (this.props.isNewArtwork) {
+            this.setState({ editedArtwork: {} }, () => {
+                history.push('/artStudio/new/uploadPhoto');
+            })
+        }
+        else {
+            this.showArtworkInEditing();
+        }
     }
 
     showArtworkInGallery() {
@@ -292,9 +286,6 @@ class ArtMaker extends Component {
                         onPhotoSelected={this.onNewPhotoSelectorPhotoSelected}
                         onArtistSelected={this.onNewPhotoSelectorArtistSelected}/>
                     }
-                    {/*<PhotoSelector
-                        id={'new-artwork-selector'}
-                        onPhotoSelect={this.onPhotoSelected}/>*/}
 
                     {currentEditScreen === 'artworkPreview' &&
                     <ArtworkPreview artwork={editedArtwork}
@@ -305,7 +296,7 @@ class ArtMaker extends Component {
                     {currentEditScreen === 'editPhoto' &&
                     <CropAndRotate masterCanvas={this.masterCanvas}
                                    sourceImg={sourceImg}
-                                   onCancel={this.showArtworkInEditing}
+                                   onCancel={this.onCropAndRotateCancel}
                                    onDone={this.onCropAndRotateDone}
                                    width={maxWidth}
                                    height={maxHeight}/>
