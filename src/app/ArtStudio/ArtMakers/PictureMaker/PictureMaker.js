@@ -71,17 +71,6 @@ class ArtMaker extends Component {
             // set up for existing artwork
 
             ImageHelper.GetImageFromUrl(artwork.url, (img) => {
-
-                // TODO: This doesn't have to happen here.
-                // currently masterCanvas only needs to exists because it is passed to cropper
-                // if cropper didn't draw to the master canvas it could just use sourceImg
-                ImageHelper.drawToCanvas({
-                    sourceCanvas: img,
-                    outputCanvas: this.masterCanvas,
-                    maxOutputCanvasWidth: 3000,
-                    maxOutputCanvasHeight: 3000
-                });
-
                 let editedArtwork = { ...artwork };
                 editedArtwork.imgSrc = img.src;
                 editedArtwork.img = img;
@@ -112,13 +101,12 @@ class ArtMaker extends Component {
 
         let masterCanvasBlob, thumbCanvasBlob;
         this.setState({ isSaving: true });
+        const { userId } = this.props;
+        const { editedArtwork } = this.state;
+        const { artistId, img } = editedArtwork;
 
         // create new Artwork
         if (this.props.isNewArtwork) {
-
-            const { userId } = this.props;
-            const { editedArtwork } = this.state;
-            const { artistId, img } = editedArtwork;
 
             // Draws image to master canvas
             // this ensures it's limited to the maximum size
@@ -172,32 +160,42 @@ class ArtMaker extends Component {
         }
         else {
             ImageHelper.drawToCanvas({
-                sourceCanvas: this.masterCanvas,
-                outputCanvas: this.thumbCanvas,
-                maxOutputCanvasWidth: 150,
-                maxOutputCanvasHeight: 150
+                sourceCanvas: img,
+                outputCanvas: this.masterCanvas,
+                orientation: rotation,
+                cropPercents: cropData,
+                maxOutputCanvasWidth: 3000,
+                maxOutputCanvasHeight: 3000
             }, (widthToHeightRatio, heightToWidthRatio) => {
 
-                this.getCanvasBlobData(this.masterCanvas, (masterCanvasData) => {
-                    masterCanvasBlob = masterCanvasData;
+                ImageHelper.drawToCanvas({
+                    sourceCanvas: this.masterCanvas,
+                    outputCanvas: this.thumbCanvas,
+                    maxOutputCanvasWidth: 150,
+                    maxOutputCanvasHeight: 150
+                }, () => {
 
-                    this.getCanvasBlobData(this.thumbCanvas, (thumbCanvasData) => {
-                        thumbCanvasBlob = thumbCanvasData;
+                    this.getCanvasBlobData(this.masterCanvas, (masterCanvasData) => {
+                        masterCanvasBlob = masterCanvasData;
 
-                        const { artwork, artist } = this.props;
+                        this.getCanvasBlobData(this.thumbCanvas, (thumbCanvasData) => {
+                            thumbCanvasBlob = thumbCanvasData;
 
-                        this.props.updateArtworkImage(artwork.artworkId, artist.artistId, masterCanvasBlob, widthToHeightRatio, heightToWidthRatio, (saveProgressData) => {
-                            if (saveProgressData.status === 'complete') {
-                                this.props.updateArtworkThumbnail(artwork.artworkId, artist.artistId, thumbCanvasBlob, (thumbSaveProgress) => {
-                                    if (thumbSaveProgress.status === 'complete') {
-                                        this.setState({ isSaving: false }, () => {
-                                            history.push(`/artStudio/${artwork.artworkId}`);
-                                        })
-                                    }
-                                })
-                            }
-                        });
-                    })
+                            const { artwork, artist } = this.props;
+
+                            this.props.updateArtworkImage(artwork.artworkId, artist.artistId, masterCanvasBlob, widthToHeightRatio, heightToWidthRatio, (saveProgressData) => {
+                                if (saveProgressData.status === 'complete') {
+                                    this.props.updateArtworkThumbnail(artwork.artworkId, artist.artistId, thumbCanvasBlob, (thumbSaveProgress) => {
+                                        if (thumbSaveProgress.status === 'complete') {
+                                            this.setState({ isSaving: false }, () => {
+                                                history.push(`/artStudio/${artwork.artworkId}`);
+                                            })
+                                        }
+                                    })
+                                }
+                            });
+                        })
+                    });
                 });
             });
         }
@@ -210,16 +208,6 @@ class ArtMaker extends Component {
 
     onNewPhotoSelectorPhotoSelected(imgFile) {
         ImageHelper.GetImage(imgFile, (img, imgOrientation, widthToHeightRatio, heightToWidthRatio) => {
-
-            // draw to master canvas
-            // TODO: this isnt' needed if we leave drawing the master canvas to the saving function
-            ImageHelper.drawToCanvas({
-                sourceCanvas: img,
-                outputCanvas: this.masterCanvas,
-                orientation: imgOrientation,
-                maxOutputCanvasWidth: 150,
-                maxOutputCanvasHeight: 150
-            });
 
             let editedArtwork = { widthToHeightRatio, heightToWidthRatio, ...this.state.editedArtwork };
             editedArtwork.imgSrc = img.src;
@@ -298,8 +286,7 @@ class ArtMaker extends Component {
                     }
 
                     {currentEditScreen === 'editPhoto' &&
-                    <CropAndRotate masterCanvas={this.masterCanvas}
-                                   sourceImg={sourceImg}
+                    <CropAndRotate sourceImg={sourceImg}
                                    onCancel={this.onCropAndRotateCancel}
                                    onDone={this.onCropAndRotateDone}
                                    width={maxWidth}

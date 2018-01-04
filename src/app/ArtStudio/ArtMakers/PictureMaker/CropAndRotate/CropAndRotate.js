@@ -36,11 +36,6 @@ class CropAndRotate extends Component {
         this.drawCuttingBoardCanvas();
     }
 
-    // Including this will redraw the img data, but with pre-save rotation
-    /*componentWillReceiveProps(nextProps) {
-        this.drawCuttingBoardCanvas(nextProps);
-    }*/
-
     onCropUpdate(cropData) {
         this.setState({ cropData });
     }
@@ -49,7 +44,7 @@ class CropAndRotate extends Component {
         this.setState({ canvas }, () => {
             this.drawCuttingBoardCanvas();
         });
-  }
+    }
 
     // Cancel current changes
     onCancelClick() {
@@ -57,17 +52,8 @@ class CropAndRotate extends Component {
     }
 
     onDoneClick() {
-        const { masterCanvas, sourceImg } = this.props;
         const { rotation, cropData } = this.state;
-
-        PhotoHelper.drawToCanvas({
-            sourceCanvas: sourceImg,
-            outputCanvas: masterCanvas,
-            orientation: rotation,
-            cropPercents: cropData
-        }, () => {
-            this.props.onDone(rotation, cropData);
-        })
+        this.props.onDone(rotation, cropData);
     }
 
     drawCuttingBoardCanvas(props = this.props) {
