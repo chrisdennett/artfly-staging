@@ -82,14 +82,6 @@ class ArtMaker extends Component {
                     maxOutputCanvasHeight: 3000
                 });
 
-                // draw to master canvas
-                ImageHelper.drawToCanvas({
-                    sourceCanvas: img,
-                    outputCanvas: this.testCanvas,
-                    maxOutputCanvasWidth: 150,
-                    maxOutputCanvasHeight: 150
-                });
-
                 let editedArtwork = { ...artwork };
                 editedArtwork.imgSrc = img.src;
                 editedArtwork.img = img;
@@ -121,13 +113,16 @@ class ArtMaker extends Component {
         let masterCanvasBlob, thumbCanvasBlob;
         this.setState({ isSaving: true });
 
+        // create new Artwork
         if (this.props.isNewArtwork) {
-            // create new image
 
             const { userId } = this.props;
             const { editedArtwork } = this.state;
-            const { artistId, img, widthToHeightRatio, heightToWidthRatio } = editedArtwork;
+            const { artistId, img } = editedArtwork;
 
+            // Draws image to master canvas
+            // this ensures it's limited to the maximum size
+            // and applies the crop and rotation data.
             ImageHelper.drawToCanvas({
                 sourceCanvas: img,
                 outputCanvas: this.masterCanvas,
@@ -135,29 +130,34 @@ class ArtMaker extends Component {
                 cropPercents: cropData,
                 maxOutputCanvasWidth: 3000,
                 maxOutputCanvasHeight: 3000
-            }, () => {
+            }, (widthToHeightRatio, heightToWidthRatio) => {
 
+                // A new image (blob data) is created from the master canvas
+                // this will be saved
                 this.getCanvasBlobData(this.masterCanvas, (masterCanvasData) => {
                     masterCanvasBlob = masterCanvasData;
 
+                    // draws thumb canvas from master canvas
+                    // used master canvas so don't need to apply rotation and crop again
                     ImageHelper.drawToCanvas({
-                        sourceCanvas: img,
+                        sourceCanvas: this.masterCanvas,
                         outputCanvas: this.thumbCanvas,
                         maxOutputCanvasWidth: 150,
                         maxOutputCanvasHeight: 150
                     }, () => {
 
+                        // create new thumb image from canvas
                         this.getCanvasBlobData(this.thumbCanvas, (thumbCanvasData) => {
                             thumbCanvasBlob = thumbCanvasData;
 
+                            // add new artwork
                             this.props.addArtwork(userId, artistId, masterCanvasBlob, widthToHeightRatio, heightToWidthRatio, (uploadData) => {
 
                                 if (uploadData.status === 'complete') {
                                     const { artworkId } = uploadData;
 
-                                    this.props.addThumbnail(artworkId, artistId, thumbCanvasBlob, (thumbUploadData) => {
-                                        console.log("thumb saved: ", thumbUploadData);
-
+                                    // add artwork thumb
+                                    this.props.addThumbnail(artworkId, artistId, thumbCanvasBlob, () => {
                                         this.setState({ isSaving: false }, () => {
                                             history.push(`/artStudio/${artworkId}`);
                                         })
@@ -198,14 +198,6 @@ class ArtMaker extends Component {
                             }
                         });
                     })
-                });
-
-                // JUST FOR DEV PURPOSES
-                ImageHelper.drawToCanvas({
-                    sourceCanvas: this.masterCanvas,
-                    outputCanvas: this.testCanvas,
-                    maxOutputCanvasWidth: 150,
-                    maxOutputCanvasHeight: 150
                 });
             });
         }
@@ -278,11 +270,6 @@ class ArtMaker extends Component {
 
         return (
             <div className='pictureMaker'>
-
-                <div className={'testCanvasHolder'}>
-                    <canvas ref={(canvas) => this.testCanvas = canvas}
-                            className={'testCanvas'}/>
-                </div>
 
                 <div className='pictureMaker--sidebar'>
                     <PictureMakerControls artistId={artistId}
