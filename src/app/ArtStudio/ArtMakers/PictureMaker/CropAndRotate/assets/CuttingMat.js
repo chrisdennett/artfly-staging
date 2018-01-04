@@ -3,14 +3,12 @@ import React from 'react';
 const CuttingMat = function ({width, height}) {
 
     const cuttingMatPadding = 10;
-    const cuttingMatWidth = width - (cuttingMatPadding*2);
     const cuttingMatX = cuttingMatPadding;
-    const cuttingMatHeight = height - (cuttingMatPadding*2);
     const cuttingMatY = cuttingMatPadding;
 
-    const table = {fill: "url(#floorPattern)"};
+    /*const table = {fill: "url(#floorPattern)"};
     const tableColour = {fill: "#c49e71"};
-    const tablePatternStyle = {fill: "#ad8b65"};
+    const tablePatternStyle = {fill: "#ad8b65"};*/
 
     return (
         <svg className='cropAndRotate--cuttingMat'>
@@ -23,7 +21,7 @@ const CuttingMat = function ({width, height}) {
                     <path d="M 100 0 L 0 0 0 100" fill="none" stroke="#a2c656" strokeWidth="2"/>
                 </pattern>
 
-                <pattern id="floorPattern"
+               {/* <pattern id="floorPattern"
                          width={180} height={20}
                          patternUnits="userSpaceOnUse">
                     <rect style={tableColour} width="180" height="20"/>
@@ -46,15 +44,15 @@ const CuttingMat = function ({width, height}) {
                           transform="translate(-501 -135)"/>
                     <path style={tablePatternStyle} d="M525,137H704c-11-1-22-1-33,0H597c-9-1-18-1-27,0H525Z"
                           transform="translate(-501 -135)"/>
-                </pattern>
+                </pattern>*/}
             </defs>
 
-            <rect style={table} width={'100%'} height={'100%'}/>
+            {/*<rect style={table} width={'100%'} height={'100%'}/>*/}
 
-            <rect fill={'#044c33'} x={cuttingMatX+1} y={cuttingMatY + 2} width={cuttingMatWidth} height={cuttingMatHeight} rx={15} ry={15} />
-            <rect fill={'#04906a'} x={cuttingMatX} y={cuttingMatY} width={cuttingMatWidth} height={cuttingMatHeight} rx={15} ry={15} />
+            <rect fill={'#044c33'} x={cuttingMatX+1} y={cuttingMatY + 2} width={width} height={height} rx={15} ry={15} />
+            <rect fill={'#04906a'} x={cuttingMatX} y={cuttingMatY} width={width} height={height} rx={15} ry={15} />
 
-            <rect fill="url(#grid)" x={cuttingMatX+15} y={cuttingMatY+15} height={cuttingMatHeight-30} width={cuttingMatWidth-30} />
+            <rect fill="url(#grid)" x={cuttingMatX+15} y={cuttingMatY+15} height={height-30} width={width-30} />
 
         </svg>
     )

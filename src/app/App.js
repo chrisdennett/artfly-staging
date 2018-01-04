@@ -2,7 +2,7 @@ import React, { Component } from "react";
 // styles
 import './appStyles.css';
 // components
-import WindowController from "./global/WindowDimensionsTracker";
+import WindowDimensionsTracker from "./global/WindowDimensionsTracker";
 import Link from "./global/Butt/Link";
 import IconButt from "./global/Butt/IconButt";
 import GalleryControlsContainer from "./GalleryControls/GalleryControlsContainer";
@@ -47,9 +47,9 @@ class App extends Component {
                 </div>
                 }
 
-                <WindowController leftMargin={leftMargin}>
+                <WindowDimensionsTracker leftMargin={leftMargin}>
                     {children}
-                </WindowController>
+                </WindowDimensionsTracker>
 
             </div>
         );

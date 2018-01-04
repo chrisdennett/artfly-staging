@@ -6,12 +6,12 @@ import Artwork from "../../../../Artwork/Artwork";
 import { calculateArtworkSizes } from "../../../../Artwork/assets/ArtworkCalculations";
 
 const ArtworkPreview = (props) => {
-    // const { artworkData } = this.state;
     if (!props.artwork) return <div>no artwork data</div>;
 
     const { maxWidth, maxHeight, artwork } = props;
     const { imgSrc, widthToHeightRatio, heightToWidthRatio } = artwork;
-    let artworkData = calculateArtworkSizes(maxWidth, maxHeight, widthToHeightRatio, heightToWidthRatio, 5);
+    const minimumPadding = 15;
+    let artworkData = calculateArtworkSizes(maxWidth, maxHeight, widthToHeightRatio, heightToWidthRatio, minimumPadding);
     artworkData.imgSrc = imgSrc;
 
     return (

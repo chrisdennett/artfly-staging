@@ -12,6 +12,7 @@
 .pictureMaker--main {
     flex: 1;
     display: flex;
+    margin: 10px;
 }
 
 .testCanvasHolder{

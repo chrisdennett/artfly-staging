@@ -1,4 +1,5 @@
 .cropAndRotate--holder {
+    overflow: hidden;
     flex-direction: column;
     flex: 1;
     display: flex;
@@ -6,15 +7,15 @@
 
 .cropAndRotate--content {
     z-index: 1;
-    padding: 40px 40px 30px 40px;
     display: flex;
     flex: 1;
     align-items: center;
+    justify-content: center;
     position: relative;
 }
 
 .cropAndRotate--cuttingBoardHolder {
-    margin: 0 auto;
+    /*margin: 0 auto;*/
 }
 
 .cropAndRotate--cuttingBoard{
@@ -34,7 +35,7 @@
     min-height: 60px;
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
     z-index: 2;
 }
 

@@ -29,7 +29,7 @@ class PictureMakerControls extends Component {
 
                 <h4>ArtFly Studio: Picture Maker</h4>
 
-                <ControlPanelButt
+                {/*<ControlPanelButt
                     linkTo={`/artStudio/8XvbOGbsHoGMyBqRJIFk/editPhoto`}>
                     TEST pic
                 </ControlPanelButt>
@@ -37,11 +37,6 @@ class PictureMakerControls extends Component {
                 <ControlPanelButt
                     linkTo={`/artStudio/new/uploadPhoto`}>
                     TEST new artwork
-                </ControlPanelButt>
-
-                {/*<ControlPanelButt
-                    linkTo={`/artStudio/${this.props.artworkId}/uploadPhoto`}>
-                    Add new photo
                 </ControlPanelButt>*/}
 
                 <ControlPanelButt
