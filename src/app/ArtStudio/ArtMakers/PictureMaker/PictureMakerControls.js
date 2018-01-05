@@ -39,15 +39,16 @@ class PictureMakerControls extends Component {
                     TEST new artwork
                 </ControlPanelButt>*/}
 
+                {/*<ControlPanelButt
+                    linkTo={`/artStudio/${this.props.artworkId}/instructions`}>
+                    Instructions
+                </ControlPanelButt>*/}
+
                 <ControlPanelButt
                     linkTo={`/artStudio/${artworkId}/artworkPreview`}>
                     Artwork Preview
                 </ControlPanelButt>
 
-                {/*<ControlPanelButt
-                    linkTo={`/artStudio/${this.props.artworkId}/instructions`}>
-                    Instructions
-                </ControlPanelButt>*/}
 
                 <ControlPanelButt
                     linkTo={doneLink}>
@@ -84,18 +85,3 @@ class PictureMakerControls extends Component {
 }
 
 export default PictureMakerControls;
-
-/*
- return (
-
-
-
-     <div className='pictureMakerControls'>
-                <IconLogo/>
-                <h4>Edit Photo</h4>
-                <Butt>Rotate</Butt>
-                <Butt>Done</Butt>
-                <Butt>Cancel</Butt>
-            </div>
-);
-*/

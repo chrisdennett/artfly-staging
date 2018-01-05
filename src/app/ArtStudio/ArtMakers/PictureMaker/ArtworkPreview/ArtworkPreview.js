@@ -10,8 +10,9 @@ const ArtworkPreview = (props) => {
 
     const { maxWidth, maxHeight, artwork } = props;
     const { imgSrc, widthToHeightRatio, heightToWidthRatio } = artwork;
-    const minimumPadding = 15;
-    let artworkData = calculateArtworkSizes(maxWidth, maxHeight, widthToHeightRatio, heightToWidthRatio, minimumPadding);
+    const minimumPaddingTop = 15;
+    const minimumPaddingSides = 15;
+    let artworkData = calculateArtworkSizes(maxWidth, maxHeight, widthToHeightRatio, heightToWidthRatio, minimumPaddingTop, minimumPaddingSides);
     artworkData.imgSrc = imgSrc;
 
     return (

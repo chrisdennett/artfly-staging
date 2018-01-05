@@ -22,27 +22,18 @@ import CropAndRotate from "./CropAndRotate/CropAndRotate";
 import NewArtworkPhotoSelector from "./NewArtworkPhotoSelector/NewArtworkPhotoSelector";
 
 /*
-adminId:            "91A2lRDKlFfl9vtcEuMwKLVWCzx1"
-artistId:           "oEZpPyEdY7oZqhDaUFil"
-artworkId:          "8XvbOGbsHoGMyBqRJIFk"
-dateAdded:          1511611413981
-heightToWidthRatio: 0.84994640943194
-thumb_url:          "https://firebasestorage.googleapis.com/v0/b/art-blam..."
-url:                "https://firebasestorage.googleapis.com/v0/b/art-blam..."
-url_large:          "https://storage.googleapis.com/art-blam..."
-url_med:            "https://storage.googleapis.com/art-blam..."
-widthToHeightRatio: 1.176544766708701
+Artwork Data:   adminId, artistId, artworkId, dateAdded, heightToWidthRatio,
+                thumb_url, url, url_large, url_med, widthToHeightRatio:
 */
-
 
 class ArtMaker extends Component {
 
     constructor() {
         super();
 
+        this.setupArtwork = this.setupArtwork.bind(this);
         this.showArtworkInEditing = this.showArtworkInEditing.bind(this);
         this.showArtworkInGallery = this.showArtworkInGallery.bind(this);
-        this.updateArtworkState = this.updateArtworkState.bind(this);
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
         this.onCropAndRotateCancel = this.onCropAndRotateCancel.bind(this);
         this.onNewPhotoSelectorArtistSelected = this.onNewPhotoSelectorArtistSelected.bind(this);
@@ -52,35 +43,31 @@ class ArtMaker extends Component {
     }
 
     componentWillMount() {
-        this.updateArtworkState(this.props)
+        const { artwork, isNewArtwork } = this.props;
+        // set up for a new artwork
+        if (isNewArtwork) {
+            this.setState({ editedArtwork: { adminId: this.props.userId } });
+        }
+        // set up for existing artwork
+        else{
+            this.setupArtwork(artwork);
+        }
     }
 
+    // if an artwork is updated and saved, this loads in the new data
     componentWillReceiveProps(nextProps) {
         if (nextProps.artwork !== this.props.artwork) {
-            this.updateArtworkState(nextProps)
+            this.setupArtwork(nextProps.artwork);
         }
     }
 
-    updateArtworkState(props) {
-        const { artwork, isNewArtwork } = props;
-
-        if (artwork) {
-            // set up for existing artwork
-
-            ImageHelper.GetImageFromUrl(artwork.url, (img) => {
-                let editedArtwork = { ...artwork };
-                editedArtwork.imgSrc = img.src;
-                editedArtwork.img = img;
-                this.setState({ editedArtwork });
-            });
-
-        }
-        else if (isNewArtwork) {
-            const newArtwork = {
-                adminId: this.props.userId
-            };
-            this.setState({ editedArtwork: newArtwork });
-        }
+    setupArtwork(artwork){
+        ImageHelper.GetImageFromUrl(artwork.url, (img) => {
+            let editedArtwork = { ...artwork };
+            editedArtwork.imgSrc = img.src;
+            editedArtwork.img = img;
+            this.setState({ editedArtwork });
+        });
     }
 
     getCanvasBlobData(canvas, callback) {
@@ -90,11 +77,12 @@ class ArtMaker extends Component {
     }
 
     // SAVING ARTWORK
+    //source:   3000x3000 (max)
+    //large:    960x960 // created using cloud functions
+    //medium:   640x640 // created using cloud functions
+    //thumb:    150x150
+
     onCropAndRotateDone(rotation, cropData) {
-        //source:   3000x3000 (max)
-        //large:    960x960 // created using cloud functions
-        //medium:   640x640 // created using cloud functions
-        //thumb:    150x150
         const masterCanvas = document.createElement('canvas');
         const thumbCanvas = document.createElement('canvas');
 
@@ -104,40 +92,29 @@ class ArtMaker extends Component {
         const { editedArtwork } = this.state;
         const { artistId, img } = editedArtwork;
 
-        // create new Artwork
-        if (this.props.isNewArtwork) {
+        ImageHelper.drawToCanvas({
+            sourceCanvas: img,
+            outputCanvas: masterCanvas,
+            orientation: rotation,
+            cropPercents: cropData,
+            maxOutputCanvasWidth: 3000,
+            maxOutputCanvasHeight: 3000
+        }, (widthToHeightRatio, heightToWidthRatio) => {
 
-            // Draws image to master canvas
-            // this ensures it's limited to the maximum size
-            // and applies the crop and rotation data.
             ImageHelper.drawToCanvas({
-                sourceCanvas: img,
-                outputCanvas: masterCanvas,
-                orientation: rotation,
-                cropPercents: cropData,
-                maxOutputCanvasWidth: 3000,
-                maxOutputCanvasHeight: 3000
-            }, (widthToHeightRatio, heightToWidthRatio) => {
+                sourceCanvas: masterCanvas,
+                outputCanvas: thumbCanvas,
+                maxOutputCanvasWidth: 150,
+                maxOutputCanvasHeight: 150
+            }, () => {
 
-                // A new image (blob data) is created from the master canvas
-                // this will be saved
                 this.getCanvasBlobData(masterCanvas, (masterCanvasData) => {
                     masterCanvasBlob = masterCanvasData;
 
-                    // draws thumb canvas from master canvas
-                    // used master canvas so don't need to apply rotation and crop again
-                    ImageHelper.drawToCanvas({
-                        sourceCanvas: masterCanvas,
-                        outputCanvas: thumbCanvas,
-                        maxOutputCanvasWidth: 150,
-                        maxOutputCanvasHeight: 150
-                    }, () => {
+                    this.getCanvasBlobData(thumbCanvas, (thumbCanvasData) => {
+                        thumbCanvasBlob = thumbCanvasData;
 
-                        // create new thumb image from canvas
-                        this.getCanvasBlobData(thumbCanvas, (thumbCanvasData) => {
-                            thumbCanvasBlob = thumbCanvasData;
-
-                            // add new artwork
+                        if (this.props.isNewArtwork) {
                             this.props.addArtwork(userId, artistId, masterCanvasBlob, widthToHeightRatio, heightToWidthRatio, (uploadData) => {
 
                                 if (uploadData.status === 'complete') {
@@ -148,44 +125,24 @@ class ArtMaker extends Component {
                                         this.setState({ isSaving: false }, () => {
                                             history.push(`/artStudio/${artworkId}`);
                                         })
-
                                     })
                                 }
                             })
-                        })
-                    })
-                })
-            })
-        }
-        else {
-            ImageHelper.drawToCanvas({
-                sourceCanvas: img,
-                outputCanvas: masterCanvas,
-                orientation: rotation,
-                cropPercents: cropData,
-                maxOutputCanvasWidth: 3000,
-                maxOutputCanvasHeight: 3000
-            }, (widthToHeightRatio, heightToWidthRatio) => {
+                        }
+                        else {
 
-                ImageHelper.drawToCanvas({
-                    sourceCanvas: masterCanvas,
-                    outputCanvas: thumbCanvas,
-                    maxOutputCanvasWidth: 150,
-                    maxOutputCanvasHeight: 150
-                }, () => {
+                            const { artwork } = this.props;
 
-                    this.getCanvasBlobData(masterCanvas, (masterCanvasData) => {
-                        masterCanvasBlob = masterCanvasData;
-
-                        this.getCanvasBlobData(thumbCanvas, (thumbCanvasData) => {
-                            thumbCanvasBlob = thumbCanvasData;
-
-                            const { artwork, artist } = this.props;
-
-                            this.props.updateArtworkImage(artwork.artworkId, artist.artistId, masterCanvasBlob, widthToHeightRatio, heightToWidthRatio, (saveProgressData) => {
+                            this.props.updateArtworkImage(artwork.artworkId, artistId, masterCanvasBlob, widthToHeightRatio, heightToWidthRatio, (saveProgressData) => {
                                 if (saveProgressData.status === 'complete') {
-                                    this.props.updateArtworkThumbnail(artwork.artworkId, artist.artistId, thumbCanvasBlob, (thumbSaveProgress) => {
+
+                                    console.log("saveProgressData: ", saveProgressData);
+
+                                    this.props.updateArtworkThumbnail(artwork.artworkId, artistId, thumbCanvasBlob, (thumbSaveProgress) => {
                                         if (thumbSaveProgress.status === 'complete') {
+
+                                            console.log("thumbSaveProgress: ", thumbSaveProgress);
+
                                             this.setState({ isSaving: false }, () => {
                                                 history.push(`/artStudio/${artwork.artworkId}`);
                                             })
@@ -193,11 +150,11 @@ class ArtMaker extends Component {
                                     })
                                 }
                             });
-                        })
-                    });
+                        }
+                    })
                 });
-            });
-        }
+            })
+        });
     }
 
     onNewPhotoSelectorArtistSelected(artistId) {

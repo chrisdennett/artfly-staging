@@ -49,8 +49,8 @@ const CuttingMat = function ({width, height}) {
 
             {/*<rect style={table} width={'100%'} height={'100%'}/>*/}
 
-            <rect fill={'#044c33'} x={cuttingMatX+1} y={cuttingMatY + 2} width={width} height={height} rx={15} ry={15} />
-            <rect fill={'#04906a'} x={cuttingMatX} y={cuttingMatY} width={width} height={height} rx={15} ry={15} />
+            {/*<rect fill={'#044c33'} x={cuttingMatX+1} y={cuttingMatY + 2} width={width} height={height} rx={15} ry={15} />*/}
+            <rect fill={'#04906a'} x={cuttingMatX} y={cuttingMatY} width={width} height={height} rx={10} ry={10} />
 
             <rect fill="url(#grid)" x={cuttingMatX+15} y={cuttingMatY+15} height={height-30} width={width-30} />
 
