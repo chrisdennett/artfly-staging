@@ -27,7 +27,6 @@ const ARTWORK_TYPE = "picture";
 Artwork Data:   adminId, artistId, artworkId, dateAdded, heightToWidthRatio,
                 thumb_url, url, url_large, url_med, widthToHeightRatio:
 */
-
 class ArtMaker extends Component {
 
     constructor() {
@@ -47,10 +46,6 @@ class ArtMaker extends Component {
 
     componentWillMount() {
         const { artwork, isNewArtwork } = this.props;
-
-
-        console.log("artwork: ", artwork);
-
         // set up for a new artwork
         if (isNewArtwork) {
             this.setState({ editedArtwork: { adminId: this.props.userId } });
@@ -77,18 +72,6 @@ class ArtMaker extends Component {
         });
     }
 
-    getCanvasBlobData(canvas, callback) {
-        canvas.toBlob((canvasBlobData) => {
-            callback(canvasBlobData);
-        }, 'image/jpeg', 0.95)
-    }
-
-    // SAVING ARTWORK
-    //source:   3000x3000 (max)
-    //large:    960x960 // created using cloud functions
-    //medium:   640x640 // created using cloud functions
-    //thumb:    150x150
-
     getImageBlob(sourceImg, rotation, cropData, maxSize, callback) {
         const canvas = document.createElement('canvas');
 
@@ -100,21 +83,32 @@ class ArtMaker extends Component {
             maxOutputCanvasWidth: maxSize,
             maxOutputCanvasHeight: maxSize
         }, (widthToHeightRatio, heightToWidthRatio) => {
-            this.getCanvasBlobData(canvas, (blob) => {
-                callback(blob, widthToHeightRatio, heightToWidthRatio)
-            })
+
+            canvas.toBlob((canvasBlobData) => {
+                callback(canvasBlobData, widthToHeightRatio, heightToWidthRatio)
+            }, 'image/jpeg', 0.95);
+
         });
     }
 
+    // TODO: Some of this can be shifted off to the ImageHelper
+    // SAVING ARTWORK
+    //source:   3000x3000 (max)
+    //large:    960x960 // created using cloud functions
+    //medium:   640x640 // created using cloud functions
+    //thumb:    150x150
     onCropAndRotateDone(rotation, cropData) {
         this.setState({ isSaving: true });
         const { userId } = this.props;
         const { editedArtwork } = this.state;
         const { artistId, img } = editedArtwork;
 
+        // Get maximum size img data
         this.getImageBlob(img, rotation, cropData, 3000, (maxBlob, widthToHeightRatio, heightToWidthRatio) => {
+            // Get thumb data
             this.getImageBlob(img, rotation, cropData, 150, (thumbBlob) => {
 
+                // if new add an new atwork and thumbnail
                 if (this.props.isNewArtwork) {
                     this.props.addArtwork(ARTWORK_TYPE, userId, artistId, maxBlob, widthToHeightRatio, heightToWidthRatio, (uploadData) => {
 
@@ -129,6 +123,7 @@ class ArtMaker extends Component {
                         }
                     })
                 }
+                // if it's an existing artwork, update the images
                 else {
                     const { artwork } = this.props;
 
@@ -162,7 +157,6 @@ class ArtMaker extends Component {
             editedArtwork.img = img;
 
             this.setState({ editedArtwork });
-            // this.setState({ selectedImg: img, selectedImgOrientation: imgOrientation, editedArtwork });
         });
 
     }
