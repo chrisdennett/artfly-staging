@@ -288,9 +288,9 @@ export function clearImageUpload() {
     }
 }
 
-export function addArtwork(userId, artistId, imgFile, widthToHeightRatio, heightToWidthRatio, callback = null) {
+export function addArtwork(artworkType, userId, artistId, imgFile, widthToHeightRatio, heightToWidthRatio, callback = null) {
     return dispatch => {
-        fs_addArtwork(userId, artistId, imgFile, widthToHeightRatio, heightToWidthRatio, (uploadData) => {
+        fs_addArtwork(artworkType, userId, artistId, imgFile, widthToHeightRatio, heightToWidthRatio, (uploadData) => {
             if (uploadData.status === 'uploading') {
                 dispatch({
                     type: IMAGE_UPLOAD_PROGRESS,
@@ -305,7 +305,6 @@ export function addArtwork(userId, artistId, imgFile, widthToHeightRatio, height
 
                 if (callback) callback(uploadData);
             }
-
         });
     }
 }

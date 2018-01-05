@@ -20,7 +20,9 @@ import history from "../../../global/history";
 import ArtworkPreview from "./ArtworkPreview/ArtworkPreview";
 import CropAndRotate from "./CropAndRotate/CropAndRotate";
 import NewArtworkPhotoSelector from "./NewArtworkPhotoSelector/NewArtworkPhotoSelector";
+// const
 
+const ARTWORK_TYPE = "picture";
 /*
 Artwork Data:   adminId, artistId, artworkId, dateAdded, heightToWidthRatio,
                 thumb_url, url, url_large, url_med, widthToHeightRatio:
@@ -35,6 +37,7 @@ class ArtMaker extends Component {
         this.showArtworkInEditing = this.showArtworkInEditing.bind(this);
         this.showArtworkInGallery = this.showArtworkInGallery.bind(this);
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
+        this.getImageBlob = this.getImageBlob.bind(this);
         this.onCropAndRotateCancel = this.onCropAndRotateCancel.bind(this);
         this.onNewPhotoSelectorArtistSelected = this.onNewPhotoSelectorArtistSelected.bind(this);
         this.onNewPhotoSelectorPhotoSelected = this.onNewPhotoSelectorPhotoSelected.bind(this);
@@ -44,24 +47,28 @@ class ArtMaker extends Component {
 
     componentWillMount() {
         const { artwork, isNewArtwork } = this.props;
+
+
+        console.log("artwork: ", artwork);
+
         // set up for a new artwork
         if (isNewArtwork) {
             this.setState({ editedArtwork: { adminId: this.props.userId } });
         }
         // set up for existing artwork
-        else{
+        else {
             this.setupArtwork(artwork);
         }
     }
 
     // if an artwork is updated and saved, this loads in the new data
     componentWillReceiveProps(nextProps) {
-        if (nextProps.artwork !== this.props.artwork) {
+        if (nextProps.artwork && nextProps.artwork.lastUpdated !== this.props.artwork.lastUpdated) {
             this.setupArtwork(nextProps.artwork);
         }
     }
 
-    setupArtwork(artwork){
+    setupArtwork(artwork) {
         ImageHelper.GetImageFromUrl(artwork.url, (img) => {
             let editedArtwork = { ...artwork };
             editedArtwork.imgSrc = img.src;
@@ -82,77 +89,62 @@ class ArtMaker extends Component {
     //medium:   640x640 // created using cloud functions
     //thumb:    150x150
 
-    onCropAndRotateDone(rotation, cropData) {
-        const masterCanvas = document.createElement('canvas');
-        const thumbCanvas = document.createElement('canvas');
+    getImageBlob(sourceImg, rotation, cropData, maxSize, callback) {
+        const canvas = document.createElement('canvas');
 
-        let masterCanvasBlob, thumbCanvasBlob;
+        ImageHelper.drawToCanvas({
+            sourceCanvas: sourceImg,
+            outputCanvas: canvas,
+            orientation: rotation,
+            cropPercents: cropData,
+            maxOutputCanvasWidth: maxSize,
+            maxOutputCanvasHeight: maxSize
+        }, (widthToHeightRatio, heightToWidthRatio) => {
+            this.getCanvasBlobData(canvas, (blob) => {
+                callback(blob, widthToHeightRatio, heightToWidthRatio)
+            })
+        });
+    }
+
+    onCropAndRotateDone(rotation, cropData) {
         this.setState({ isSaving: true });
         const { userId } = this.props;
         const { editedArtwork } = this.state;
         const { artistId, img } = editedArtwork;
 
-        ImageHelper.drawToCanvas({
-            sourceCanvas: img,
-            outputCanvas: masterCanvas,
-            orientation: rotation,
-            cropPercents: cropData,
-            maxOutputCanvasWidth: 3000,
-            maxOutputCanvasHeight: 3000
-        }, (widthToHeightRatio, heightToWidthRatio) => {
+        this.getImageBlob(img, rotation, cropData, 3000, (maxBlob, widthToHeightRatio, heightToWidthRatio) => {
+            this.getImageBlob(img, rotation, cropData, 150, (thumbBlob) => {
 
-            ImageHelper.drawToCanvas({
-                sourceCanvas: masterCanvas,
-                outputCanvas: thumbCanvas,
-                maxOutputCanvasWidth: 150,
-                maxOutputCanvasHeight: 150
-            }, () => {
+                if (this.props.isNewArtwork) {
+                    this.props.addArtwork(ARTWORK_TYPE, userId, artistId, maxBlob, widthToHeightRatio, heightToWidthRatio, (uploadData) => {
 
-                this.getCanvasBlobData(masterCanvas, (masterCanvasData) => {
-                    masterCanvasBlob = masterCanvasData;
+                        if (uploadData.status === 'complete') {
+                            const { artworkId } = uploadData;
 
-                    this.getCanvasBlobData(thumbCanvas, (thumbCanvasData) => {
-                        thumbCanvasBlob = thumbCanvasData;
+                            this.props.addThumbnail(artworkId, artistId, thumbBlob, () => {
+                                this.setState({ isSaving: false }, () => {
+                                    history.push(`/artStudio/${artworkId}`);
+                                })
+                            })
+                        }
+                    })
+                }
+                else {
+                    const { artwork } = this.props;
 
-                        if (this.props.isNewArtwork) {
-                            this.props.addArtwork(userId, artistId, masterCanvasBlob, widthToHeightRatio, heightToWidthRatio, (uploadData) => {
+                    this.props.updateArtworkImage(artwork.artworkId, artistId, maxBlob, widthToHeightRatio, heightToWidthRatio, (saveProgressData) => {
+                        if (saveProgressData.status === 'complete') {
 
-                                if (uploadData.status === 'complete') {
-                                    const { artworkId } = uploadData;
-
-                                    // add artwork thumb
-                                    this.props.addThumbnail(artworkId, artistId, thumbCanvasBlob, () => {
-                                        this.setState({ isSaving: false }, () => {
-                                            history.push(`/artStudio/${artworkId}`);
-                                        })
+                            this.props.updateArtworkThumbnail(artwork.artworkId, artistId, thumbBlob, (thumbSaveProgress) => {
+                                if (thumbSaveProgress.status === 'complete') {
+                                    this.setState({ isSaving: false }, () => {
+                                        history.push(`/artStudio/${artwork.artworkId}`);
                                     })
                                 }
                             })
                         }
-                        else {
-
-                            const { artwork } = this.props;
-
-                            this.props.updateArtworkImage(artwork.artworkId, artistId, masterCanvasBlob, widthToHeightRatio, heightToWidthRatio, (saveProgressData) => {
-                                if (saveProgressData.status === 'complete') {
-
-                                    console.log("saveProgressData: ", saveProgressData);
-
-                                    this.props.updateArtworkThumbnail(artwork.artworkId, artistId, thumbCanvasBlob, (thumbSaveProgress) => {
-                                        if (thumbSaveProgress.status === 'complete') {
-
-                                            console.log("thumbSaveProgress: ", thumbSaveProgress);
-
-                                            this.setState({ isSaving: false }, () => {
-                                                history.push(`/artStudio/${artwork.artworkId}`);
-                                            })
-                                        }
-                                    })
-                                }
-                            });
-                        }
-                    })
-                });
+                    });
+                }
             })
         });
     }

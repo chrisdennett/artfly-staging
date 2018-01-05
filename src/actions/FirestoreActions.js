@@ -309,7 +309,7 @@ export function fs_getArtistChanges(artistId, onChangeCallback = null) {
 //*** ARTWORK ***********************************************************
 
 // ADD ARTWORK
-export function fs_addArtwork(userId, artistId, imgFile, widthToHeightRatio, heightToWidthRatio, onChangeCallback = null) {
+export function fs_addArtwork(type, userId, artistId, imgFile, widthToHeightRatio, heightToWidthRatio, onChangeCallback = null) {
     // Get artwork database id first so can be used for the filename
     const artworkDatabaseRef = db.collection('artworks').doc();
     const artworkId = artworkDatabaseRef.id;
@@ -321,6 +321,7 @@ export function fs_addArtwork(userId, artistId, imgFile, widthToHeightRatio, hei
         (onCompleteData) => {
             // Upload completed successfully - save artwork data
             const newArtworkData = {
+                type,
                 artistId,
                 widthToHeightRatio,
                 heightToWidthRatio,
@@ -377,7 +378,8 @@ export function fs_updateArtworkImage(artworkId, artistId, newImage, widthToHeig
                     let newArtworkData = {
                         widthToHeightRatio,
                         heightToWidthRatio,
-                        url: onCompleteData.downloadURL
+                        url: onCompleteData.downloadURL,
+                        lastUpdated:Date.now()
                     };
 
                     int_saveArtworkChanges(artworkId, newArtworkData, () => {
