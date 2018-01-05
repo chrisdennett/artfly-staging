@@ -129,9 +129,9 @@ class CropAndRotate extends Component {
                     </div>
 
                     <div className='cropAndRotate--controls'>
-                        <Butt inline onClick={this.onRotateClockwiseClick}>ROTATE</Butt>
-                        <Butt inline onClick={this.onDoneClick}>DONE</Butt>
-                        <Butt inline onClick={this.onCancelClick}>CANCEL</Butt>
+                        <Butt white inline onClick={this.onRotateClockwiseClick}>ROTATE</Butt>
+                        <Butt green inline onClick={this.onDoneClick}>DONE</Butt>
+                        <Butt red inline onClick={this.onCancelClick}>CANCEL</Butt>
                     </div>
 
                     <div className='cropAndRotate--cuttingMattHolder'>

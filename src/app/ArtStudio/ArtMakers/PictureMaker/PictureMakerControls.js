@@ -1,5 +1,7 @@
 // externals
 import React, { Component } from "react";
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { faEye, faObjectGroup, faTrashAlt, faInfoCircle, faCheckCircle, faChild } from '@fortawesome/fontawesome-free-solid';
 // styles
 import './pictureMakerControlsStyles.css';
 // components
@@ -39,30 +41,35 @@ class PictureMakerControls extends Component {
                     TEST new artwork
                 </ControlPanelButt>*/}
 
-                {/*<ControlPanelButt
+                <ControlPanelButt
                     linkTo={`/artStudio/${this.props.artworkId}/instructions`}>
-                    Instructions
-                </ControlPanelButt>*/}
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                </ControlPanelButt>
 
                 <ControlPanelButt
+                    label={'Preview'}
                     linkTo={`/artStudio/${artworkId}/artworkPreview`}>
-                    Artwork Preview
+                    <FontAwesomeIcon icon={faEye} />
                 </ControlPanelButt>
 
 
                 <ControlPanelButt
+                    label={'Done'}
                     linkTo={doneLink}>
-                    DONE
+
+                    <FontAwesomeIcon icon={faCheckCircle} />
                 </ControlPanelButt>
 
                 <ControlPanelButt
+                    label={'Crop/rotate'}
                     linkTo={`/artStudio/${artworkId}/editPhoto`}>
-                    Edit Photo
+                    <FontAwesomeIcon icon={faObjectGroup} />
                 </ControlPanelButt>
 
                 <ControlPanelButt
+                    label={'Edit Artist'}
                     linkTo={`/artStudio/${artworkId}/editArtist`}>
-                    Edit artist
+                    <FontAwesomeIcon icon={faChild} />
                 </ControlPanelButt>
 
                 {/*<ControlPanelButt
@@ -77,7 +84,7 @@ class PictureMakerControls extends Component {
 
                 <ControlPanelButt
                     linkTo={`/artStudio/${artworkId}/deleteArtwork`}>
-                    Delete Artwork
+                    <FontAwesomeIcon icon={faTrashAlt} />
                 </ControlPanelButt>
             </div>
         );

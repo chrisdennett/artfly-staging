@@ -15,7 +15,7 @@ const Artwork = function (props) {
 
     if (!artworkData) return <div>No artwork data chris. Come on, sort it out.</div>;
 
-    const { imgSrc, artCanvas, imgWidth, imgHeight, skirtingY, skirtingHeight, floorY, floorHeight,  paddingTop, paddingLeft, frameThickness, mountThickness } = artworkData;
+    const { imgSrc, artCanvas, imgWidth, imgHeight, skirtingY, skirtingHeight, floorY, floorHeight, paddingTop, paddingLeft, frameThickness, mountThickness } = artworkData;
 
     // const { imgSrc, imgWidth, imgHeight, paddingTop, paddingLeft, frameThickness, mountThickness, spaceBelowPicture } = artworkData;
 
@@ -47,9 +47,9 @@ const Artwork = function (props) {
 
                 <svg width={'100%'} height={'100%'}>
 
-                    <Wall />
+                    <Wall/>
 
-                    <Floor floorY={floorY} floorHeight={floorHeight} />
+                    <Floor floorY={floorY} floorHeight={floorHeight}/>
 
                     <SkirtingBoard top={skirtingY} height={skirtingHeight}/>
 
@@ -61,22 +61,31 @@ const Artwork = function (props) {
                         imgWidth={imgWidth}
                         imgHeight={imgHeight}/>
 
-                    {artCanvas &&
+                    {!artCanvas &&
+                    <image xlinkHref={imgSrc}
+                           x={paddingLeft + frameThickness + mountThickness}
+                           y={paddingTop + frameThickness + mountThickness}
+                           width={imgWidth}
+                           height={imgHeight}>
+                    </image>
+                    }
+
+                    {/*{artCanvas &&
                     <foreignObject width={imgWidth} height={imgHeight}>
                         <canvas width={imgWidth} height={imgHeight} id="thisCanvas"
-                                style={{border:'1px solid #000000'}}>
+                                style={{ border: '1px solid #000000' }}>
                             alternate content for browsers that do not support Canvas
                         </canvas>
                     </foreignObject>
-                    }
+                    }*/}
 
                 </svg>
 
-                {!artCanvas &&
+                {/* {!artCanvas &&
                 <img alt="user artwork"
                      style={imgStyle}
                      src={imgSrc}/>
-                }
+                }*/}
             </div>
 
         </ScrollbarRemover>
