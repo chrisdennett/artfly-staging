@@ -5,10 +5,11 @@
 }
 
 .pictureMaker--sidebar {
+    margin-top: 20px;
     width: 75px;
     min-height: 100%;
     display: flex;
-    align-items: center;
+    /*align-items: center;*/
 }
 
 .pictureMaker--main {

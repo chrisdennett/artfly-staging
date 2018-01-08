@@ -1,5 +1,7 @@
 // externals
 import React, { Component } from "react";
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { faRedo } from '@fortawesome/fontawesome-free-solid';
 // styles
 import './cropAndRotate.css';
 // helpers
@@ -129,7 +131,7 @@ class CropAndRotate extends Component {
                     </div>
 
                     <div className='cropAndRotate--controls'>
-                        <Butt white inline onClick={this.onRotateClockwiseClick}>ROTATE</Butt>
+                        <Butt white inline onClick={this.onRotateClockwiseClick}><FontAwesomeIcon icon={faRedo} fixedWidth/></Butt>
                         <Butt green inline onClick={this.onDoneClick}>DONE</Butt>
                         <Butt red inline onClick={this.onCancelClick}>CANCEL</Butt>
                     </div>

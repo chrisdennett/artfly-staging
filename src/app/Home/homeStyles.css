@@ -3,6 +3,36 @@
     flex: 1;
 }
 
+.home--title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home--artflyLogoSvg{
+    height: 110px;
+    width: 120px;
+    margin-right: 20px;
+}
+
+.home--artflyLogoSvg--fly{
+    animation-name: logoHover;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+
+@keyframes logoHover {
+    0% {transform: translate(0px, 0px);}
+    50% {transform: translate(-20px, -20px);}
+    100% {transform: translate(0px, 0px);}
+}
+
+.home--artflyNameSvg{
+    height:100px;
+    width:400px;
+}
+
 .home--tagLine {
     text-align: center;
     padding-top: 10px;

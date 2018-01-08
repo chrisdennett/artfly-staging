@@ -1,11 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
 
 const Title = function () {
     return (
-        <StyledTitle>
-            <StyledSvgLogo viewBox="0 0 149 149">
-                <g transform="rotate(45.001 79.249 66.397)" color="#000">
+        <div className={'home--title'}>
+            <svg className={'home--artflyLogoSvg'} viewBox="0 0 149 149">
+                <g className={'home--artflyLogoSvg--fly'} transform="rotate(45.001 79.249 66.397)" color="#000">
                     <path
                         d="M148 111.7c4.976-5.58 4.014-18-7.768-21.43-11.43-3.331-23.78-3.472-23.78-3.472-3.168 17.84 23.85 34.04 31.55 24.9z"
                         stroke="#000" strokeWidth="3" fill="#fff"/>
@@ -37,9 +36,9 @@ const Title = function () {
                     <ellipse rx="6.116" ry="6.192" transform="matrix(.999 .04553 .04553 .999 0 0)" cy="61.81" cx="103.6"
                              fill="#fff"/>
                 </g>
-            </StyledSvgLogo>
+            </svg>
 
-            <svg height="103.4" width="398.8" viewBox="0 0 398.81329 103.39782">
+            <svg className={'home--artflyNameSvg'} viewBox="0 0 398.81329 103.39782">
                 <text style={{ textAlign: "center" }} strokeWidth="0" fontFamily="'Source Code Pro'" fontSize="109.7"
                       y="82.714" x="203.309" fontWeight="900" color="#000" textAnchor="middle">
                     <tspan fontSize="110" y="82.714" x="203.309">ArtFly</tspan>
@@ -57,20 +56,8 @@ const Title = function () {
                     </tspan>
                 </text>
             </svg>
-        </StyledTitle>
+        </div>
     )
 };
 
 export default Title;
-
-const StyledTitle = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
-
-const StyledSvgLogo = styled.svg`
-    height:120px;
-    width:120px; 
-    margin-right: 20px;
-`;
