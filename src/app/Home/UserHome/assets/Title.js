@@ -4,7 +4,7 @@ const Title = function () {
     return (
         <div className={'home--title'}>
 
-            <svg className={'home--artflyLogoSvg'} viewBox="0 0 150 200">
+            <svg className={'home--artflyLogoSvg'} viewBox="0 0 153 200">
                 <g className={'home--artflyLogoSvg--fly'}>
                     <path d="M95.84 147c7.464-.427 15.57-9.89 9.66-20.65-5.727-10.44-14.36-19.27-14.36-19.27-14.85 10.37-7.205 40.93 4.702 39.92z" fill="#fff"  stroke="#000" strokeWidth="3"/>
                     <path d="M145.9 112.8c-5.492 12.88-22.3 21.91-35.24 13.49-12.55-8.164-21.31-20.44-21.31-20.44 22.67-20.91 65.34-19.59 56.55 6.944zM1.523 52.73c.441-7.478 9.914-15.58 20.67-9.68 10.43 5.72 19.27 14.36 19.27 14.36-10.37 14.85-40.92 7.205-39.94-4.681z" fill="#fff"  stroke="#000" strokeWidth="3"/>

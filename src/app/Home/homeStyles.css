@@ -16,6 +16,7 @@
 }
 
 .home--artflyLogoSvg--fly{
+    x:30;
     animation-name: logoHover;
     animation-duration: 2s;
     animation-iteration-count: infinite;
@@ -35,9 +36,9 @@
 }
 
 @keyframes logoHover {
-    0% {transform: translate(0px, 0px);}
-    50% {transform: translate(3px, -15px);}
-    100% {transform: translate(0px, 0px);}
+    0% {transform: translate(3px, 0px);}
+    50% {transform: translate(0px, -15px);}
+    100% {transform: translate(3px, 0px);}
 }
 
 @keyframes shadowGrow {

@@ -11,6 +11,7 @@ import CuttingBoard from "./CuttingBoard";
 import Butt from "../../../../global/Butt/Butt";
 import CuttingMat from "./assets/CuttingMat";
 import ScrollbarRemover from "../../../../global/ScrollbarRemover";
+import LoadingOverlay from '../../../../global/LoadingOverlay';
 
 class CropAndRotate extends Component {
     constructor() {
@@ -110,7 +111,7 @@ class CropAndRotate extends Component {
         const { rotation, cropData } = this.state;
 
         if (!sourceImg) {
-            return <div>Loading Canvas</div>
+            return <LoadingOverlay/>
         }
 
         return (
