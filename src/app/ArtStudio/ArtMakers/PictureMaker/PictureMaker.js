@@ -203,6 +203,7 @@ class ArtMaker extends Component {
 
                 <div className='pictureMaker--sidebar'>
                     <PictureMakerControls artistId={artistId}
+                                          currentEditScreen={currentEditScreen}
                                           isNewArtwork={isNewArtwork}
                                           artworkId={artworkId}/>
                 </div>

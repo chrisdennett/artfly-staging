@@ -6,9 +6,13 @@ import './controlPanelButtStyles.css';
 // components
 import history from '../history';
 
-const ControlPanelButt = function ({ icon, linkTo, label }) {
+const ControlPanelButt = function ({ icon, linkTo, label, isSelected }) {
+
+    const selectedClass = isSelected ? 'controlPanelButt--selected' : '';
+
     return (
-        <div className='controlPanelButt' onClick={() => {history.push(linkTo)}}>
+        <div className={`controlPanelButt ${selectedClass}`}
+             onClick={() => {history.push(linkTo)}}>
 
             <FontAwesomeIcon className={'controlPanelButt--icon'} icon={icon} fixedWidth/>
 

@@ -5,7 +5,8 @@ import {
     faObjectGroup,
     faTrashAlt,
     faCheckCircle,
-    faChild
+    faChild,
+    faRedo
 } from '@fortawesome/fontawesome-free-solid';
 // styles
 import './pictureMakerControlsStyles.css';
@@ -25,14 +26,14 @@ class PictureMakerControls extends Component {
 
     render() {
 
-        const { artworkId, artistId } = this.props;
+        const { artworkId, artistId, currentEditScreen } = this.props;
+
+        console.log("currentEditScreen: ", currentEditScreen);
 
         const doneLink = artistId ? `/gallery/${artistId}/artwork/${artworkId}` : '/';
 
         return (
             <div className='pictureMakerControls'>
-
-                <h4>ArtFly Studio: Picture Maker</h4>
 
                 {/*<ControlPanelButt
                     linkTo={`/artStudio/8XvbOGbsHoGMyBqRJIFk/editPhoto`}>
@@ -49,22 +50,26 @@ class PictureMakerControls extends Component {
                     <FontAwesomeIcon icon={faInfoCircle} />
                 </ControlPanelButt>*/}
 
+
                 <ControlPanelButt
                     icon={faCheckCircle}
                     label={'DONE'}
                     linkTo={doneLink}/>
 
                 <ControlPanelButt
+                    isSelected={currentEditScreen==='artworkPreview'}
                     icon={faEye}
                     label={'PREVIEW'}
                     linkTo={`/artStudio/${artworkId}/artworkPreview`}/>
 
                 <ControlPanelButt
+                    isSelected={currentEditScreen==='editPhoto'}
                     icon={faObjectGroup}
                     label={'CROP & ROTATE'}
                     linkTo={`/artStudio/${artworkId}/editPhoto`}/>
 
                 <ControlPanelButt
+                    isSelected={currentEditScreen==='editArtist'}
                     icon={faChild}
                     label={'EDIT ARTIST'}
                     linkTo={`/artStudio/${artworkId}/editArtist`}/>
@@ -80,6 +85,7 @@ class PictureMakerControls extends Component {
                 </ControlPanelButt>*/}
 
                 <ControlPanelButt
+                    isSelected={currentEditScreen==='deleteArtwork'}
                     icon={faTrashAlt}
                     label={'DELETE'}
                     linkTo={`/artStudio/${artworkId}/deleteArtwork`}/>
