@@ -3,42 +3,29 @@ import React from 'react';
 const Title = function () {
     return (
         <div className={'home--title'}>
-            <svg className={'home--artflyLogoSvg'} viewBox="0 0 149 149">
-                <g className={'home--artflyLogoSvg--fly'} transform="rotate(45.001 79.249 66.397)" color="#000">
-                    <path
-                        d="M148 111.7c4.976-5.58 4.014-18-7.768-21.43-11.43-3.331-23.78-3.472-23.78-3.472-3.168 17.84 23.85 34.04 31.55 24.9z"
-                        stroke="#000" strokeWidth="3" fill="#fff"/>
-                    <path
-                        d="M159.2 52.05c5.223 12.99-.272 31.26-15.38 34.46-14.65 3.104-29.52.619-29.52.619 1.245-30.82 32.35-60.06 44.9-35.08zM14.62 111.7c-4.976-5.6-4.01-18.03 7.77-21.46 11.42-3.33 23.78-3.47 23.78-3.47 3.17 17.83-23.84 34.03-31.55 24.93z"
-                        stroke="#000" strokeWidth="3" fill="#fff"/>
-                    <path
-                        d="M3.442 52.05c-5.223 12.99.272 31.26 15.38 34.46 14.65 3.104 29.52.619 29.52.619-1.24-30.81-32.35-60.06-44.9-35.08z"
-                        stroke="#000" strokeWidth="3" fill="#fff"/>
-                    <path d="M148.7 437.5H91.06l14.41-24.96 14.41-24.96 14.41 24.96z"
-                          transform="matrix(1.165 0 0 .7797 -57.96 -300.7)" stroke="#000" strokeWidth="3.148"
-                          fill="#e9ddaf"/>
-                    <path d="M68.17 17.26c8.326-2.324 17.25-2.784 27.21 0L81.78 1.49z" stroke="#000" strokeWidth="3"
-                          fill="red"/>
-                    <path d="M67.06 41.94c10.95-8.918 20.5-6.5 29.54 0v87.38H67.06z" stroke="#000" strokeWidth="3"
-                          fill="#fc0"/>
-                    <path
-                        d="M47.02 41.94c7.498-8.918 14.03-6.5 20.22 0v87.38H47.02zM96.42 41.94c7.498-8.918 14.03-6.5 20.22 0v87.38H96.42z"
-                        stroke="#000" strokeWidth="3" fill="#f60"/>
-                    <ellipse rx="20.44" ry="20.7" stroke="#000" cy="71.01" cx="60.8" strokeWidth="3" fill="#fff"/>
-                    <ellipse rx="9.527" ry="9.646" cy="71.01" cx="60.8"/>
-                    <ellipse rx="20.44" ry="20.7" stroke="#000" cy="71.01" cx="101.4" strokeWidth="3" fill="#fff"/>
-                    <ellipse rx="9.527" ry="9.646" cy="71.01" cx="101.4"/>
-                    <path d="M64.32 144.4l-17.37-13 19.81-12.5 29.75-1 19.89 13.4L99.06 144z" stroke="#000"
-                          strokeWidth="3" fill="#e9ddaf"/>
-                    <ellipse rx="10.24" ry="2.497" stroke="#000" cy="131.5" cx="81.86" strokeWidth="3" fill="red"/>
-                    <ellipse rx="6.116" ry="6.192" transform="matrix(.999 .04553 .04553 .999 0 0)" cy="63.72" cx="62.5"
-                             fill="#fff"/>
-                    <ellipse rx="6.116" ry="6.192" transform="matrix(.999 .04553 .04553 .999 0 0)" cy="61.81" cx="103.6"
-                             fill="#fff"/>
+
+            <svg className={'home--artflyLogoSvg'} viewBox="0 0 150 200">
+                <g className={'home--artflyLogoSvg--fly'}>
+                    <path d="M95.84 147c7.464-.427 15.57-9.89 9.66-20.65-5.727-10.44-14.36-19.27-14.36-19.27-14.85 10.37-7.205 40.93 4.702 39.92z" fill="#fff"  stroke="#000" strokeWidth="3"/>
+                    <path d="M145.9 112.8c-5.492 12.88-22.3 21.91-35.24 13.49-12.55-8.164-21.31-20.44-21.31-20.44 22.67-20.91 65.34-19.59 56.55 6.944zM1.523 52.73c.441-7.478 9.914-15.58 20.67-9.68 10.43 5.72 19.27 14.36 19.27 14.36-10.37 14.85-40.92 7.205-39.94-4.681z" fill="#fff"  stroke="#000" strokeWidth="3"/>
+                    <path d="M35.8 2.652c-12.88 5.492-21.91 22.3-13.49 35.24 8.164 12.55 20.44 21.31 20.44 21.31 20.91-22.66 19.59-65.34-6.944-56.55z" fill="#fff"  stroke="#000" strokeWidth="3"/>
+                    <path d="M123.1 73.5L75.62 26.02l51.26-3.781-1.891 25.63z" fill="#e9ddaf" stroke="#000" strokeWidth="3"/>
+                    <path d="M106.2 23.82c7.531 4.244 14.17 10.23 19.24 19.24l1.534-20.77z" fill="red"  stroke="#000" strokeWidth="3"/>
+                    <path d="M87.93 40.49c14.05 1.437 19.09 9.899 20.89 20.89l-61.79 61.79-20.89-20.89z" fill="#fc0"  stroke="#000" strokeWidth="3"/>
+                    <path d="M73.76 26.32c11.61-1.004 14.52 5.324 14.3 14.3l-61.79 61.79-14.3-14.3zM108.7 61.25c11.61-1.004 14.52 5.324 14.3 14.3l-61.79 61.79-14.3-14.3z" fill="#f60"  stroke="#000" strokeWidth="3"/>
+                    <ellipse transform="rotate(45)" cx="84.55" cy="-4.478" rx="20.44" ry="20.7" fill="#fff" stroke="#000" strokeWidth="3"/>
+                    <ellipse transform="rotate(45)" cx="84.55" cy="-4.478" rx="9.527" ry="9.646" />
+                    <ellipse transform="rotate(45)" cx="125.1" cy="-4.478" rx="20.44" ry="20.7" fill="#fff" stroke="#000" strokeWidth="3"/>
+                    <ellipse transform="rotate(45)" cx="125.1" cy="-4.478" rx="9.527" ry="9.646" />
+                    <path d="M13.54 111l-3.09-21.47 22.85 5.169 21.74 20.33 4.589 23.54-21.24-3.281z" fill="#e9ddaf"  stroke="#000" strokeWidth="3"/>
+                    <ellipse transform="rotate(45)" cx="105.6" cy="56.01" rx="10.24" ry="2.497" fill="red" stroke="#000" strokeWidth="3"/>
+                    <ellipse transform="scale(.9535 1.0445) rotate(45)" cx="89.77" cy="-13.09" rx="6.116" ry="6.192" fill="#fff" />
+                    <ellipse transform="scale(.9535 1.0445) rotate(45)" cx="130.9" cy="-15" rx="6.116" ry="6.192" fill="#fff" />
                 </g>
+                <rect className={'home--artflyLogoSvg--shadow'} ry="7.971" />
             </svg>
 
-            <svg className={'home--artflyNameSvg'} viewBox="0 0 398.81329 103.39782">
+            <svg className={'home--artflyNameSvg'} viewBox="0 0 399 103">
                 <text style={{ textAlign: "center" }} strokeWidth="0" fontFamily="'Source Code Pro'" fontSize="109.7"
                       y="82.714" x="203.309" fontWeight="900" color="#000" textAnchor="middle">
                     <tspan fontSize="110" y="82.714" x="203.309">ArtFly</tspan>

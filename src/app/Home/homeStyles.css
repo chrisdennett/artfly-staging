@@ -10,22 +10,40 @@
 }
 
 .home--artflyLogoSvg{
-    height: 110px;
+    height: 200px;
     width: 120px;
     margin-right: 20px;
 }
 
 .home--artflyLogoSvg--fly{
     animation-name: logoHover;
-    animation-duration: 4s;
+    animation-duration: 2s;
     animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
 }
 
+.home--artflyLogoSvg--shadow{
+    x:15;
+    y:160;
+    width:100px;
+    height:16px;
+    fill: rgba(0, 0, 0, 0.2);
+    animation-name: shadowGrow;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
 
 @keyframes logoHover {
     0% {transform: translate(0px, 0px);}
-    50% {transform: translate(-20px, -20px);}
+    50% {transform: translate(0, -10px);}
     100% {transform: translate(0px, 0px);}
+}
+
+@keyframes shadowGrow {
+    0% {width: 100px; transform: translate(0px, 0px);}
+    50% {width: 80px; transform: translate(10px, 0px);}
+    100% {width: 100px; transform: translate(0px, 0px);}
 }
 
 .home--artflyNameSvg{
