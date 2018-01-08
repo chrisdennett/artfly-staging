@@ -19,31 +19,31 @@
     animation-name: logoHover;
     animation-duration: 2s;
     animation-iteration-count: infinite;
-    animation-timing-function: ease-in-out;
+    animation-timing-function: ease;
 }
 
 .home--artflyLogoSvg--shadow{
     x:15;
     y:160;
-    width:100px;
+    width:80px;
     height:16px;
-    fill: rgba(0, 0, 0, 0.2);
+    fill: rgba(0, 0, 0, 0.1);
     animation-name: shadowGrow;
     animation-duration: 2s;
     animation-iteration-count: infinite;
-    animation-timing-function: ease-in-out;
+    animation-timing-function: ease;
 }
 
 @keyframes logoHover {
     0% {transform: translate(0px, 0px);}
-    50% {transform: translate(0, -10px);}
+    50% {transform: translate(3px, -15px);}
     100% {transform: translate(0px, 0px);}
 }
 
 @keyframes shadowGrow {
-    0% {width: 100px; transform: translate(0px, 0px);}
-    50% {width: 80px; transform: translate(10px, 0px);}
-    100% {width: 100px; transform: translate(0px, 0px);}
+    0% {width: 80px; transform: translate(0px, 0px);}
+    50% {width: 60px; transform: translate(10px, 0px);}
+    100% {width: 80px; transform: translate(0px, 0px);}
 }
 
 .home--artflyNameSvg{
