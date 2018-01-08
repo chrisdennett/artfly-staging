@@ -13,6 +13,7 @@ import {
 // helpers
 import * as ImageHelper from "../../ImageHelper";
 // components
+import LoadingOverlay from '../../../global/LoadingOverlay';
 import PictureMakerControls from "./PictureMakerControls";
 import ArtistUpdater from '../ArtistUpdater';
 import ArtworkDeleter from "./ArtworkDeleter";
@@ -23,6 +24,7 @@ import NewArtworkPhotoSelector from "./NewArtworkPhotoSelector/NewArtworkPhotoSe
 // const
 
 const ARTWORK_TYPE = "picture";
+
 /*
 Artwork Data:   adminId, artistId, artworkId, dateAdded, heightToWidthRatio,
                 thumb_url, url, url_large, url_med, widthToHeightRatio:
@@ -64,11 +66,12 @@ class ArtMaker extends Component {
     }
 
     setupArtwork(artwork) {
-        ImageHelper.GetImageFromUrl(artwork.url, (img) => {
-            let editedArtwork = { ...artwork };
-            editedArtwork.imgSrc = img.src;
-            editedArtwork.img = img;
-            this.setState({ editedArtwork });
+        this.setState({ editedArtwork: { ...artwork } }, () => {
+
+            // load image into state for use by cropper (and perhaps other comps in the future)
+            ImageHelper.GetImageFromUrl(artwork.url, (sourceImg) => {
+                this.setState({ sourceImg });
+            });
         });
     }
 
@@ -100,13 +103,13 @@ class ArtMaker extends Component {
     onCropAndRotateDone(rotation, cropData) {
         this.setState({ isSaving: true });
         const { userId } = this.props;
-        const { editedArtwork } = this.state;
-        const { artistId, img } = editedArtwork;
+        const { editedArtwork, sourceImg } = this.state;
+        const { artistId } = editedArtwork;
 
         // Get maximum size img data
-        this.getImageBlob(img, rotation, cropData, 3000, (maxBlob, widthToHeightRatio, heightToWidthRatio) => {
+        this.getImageBlob(sourceImg, rotation, cropData, 3000, (maxBlob, widthToHeightRatio, heightToWidthRatio) => {
             // Get thumb data
-            this.getImageBlob(img, rotation, cropData, 150, (thumbBlob) => {
+            this.getImageBlob(sourceImg, rotation, cropData, 150, (thumbBlob) => {
 
                 // if new add an new atwork and thumbnail
                 if (this.props.isNewArtwork) {
@@ -182,7 +185,7 @@ class ArtMaker extends Component {
 
     render() {
         let { isNewArtwork, windowSize, artworkId, currentEditScreen, artist } = this.props;
-        const { editedArtwork, isSaving } = this.state;
+        const { sourceImg, editedArtwork, isSaving } = this.state;
 
         const maxWidth = windowSize ? windowSize.windowWidth : 0;
         const maxHeight = windowSize ? windowSize.windowHeight : 0;
@@ -196,7 +199,6 @@ class ArtMaker extends Component {
 
 
         const artistId = artist ? artist.artistId : null;
-        const sourceImg = editedArtwork ? editedArtwork.img : null;
 
         return (
             <div className='pictureMaker'>
@@ -209,12 +211,12 @@ class ArtMaker extends Component {
                 </div>
 
                 {isSaving &&
-                <div>Amazing saving animation...</div>
+                <LoadingOverlay/>
                 }
-
 
                 {!isSaving &&
                 <div className='pictureMaker--main'>
+
 
                     {currentEditScreen === 'uploadPhoto' &&
                     <NewArtworkPhotoSelector

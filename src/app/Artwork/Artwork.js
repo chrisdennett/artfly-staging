@@ -2,34 +2,24 @@
 import React from "react";
 // styles
 import './artworkStyles.css';
+// helpers
+
 // components
 import Wall from "./assets/Wall";
 import Floor from "./assets/Floor";
 import SkirtingBoard from "./assets/SkirtingBoard";
 import PictureFrame from './PictureFrame/PictureFrame';
 import ScrollbarRemover from "../global/ScrollbarRemover";
+import { getAppropriateUrl } from "./artworkHelper";
 
-const Artwork = function (props) {
+const Artwork = function ({ artwork, artworkData, imageLoading, allowScrollbars = false }){
 
-    const { artworkData, imageLoading, allowScrollbars = false } = props;
+    if (!artworkData) return <div>No artwork data...</div>;
 
-    if (!artworkData) return <div>No artwork data chris. Come on, sort it out.</div>;
+    const { artCanvas, imgWidth, imgHeight, skirtingY, skirtingHeight, floorY, floorHeight, paddingTop, paddingLeft, frameThickness, mountThickness } = artworkData;
 
-    const { imgSrc, artCanvas, imgWidth, imgHeight, skirtingY, skirtingHeight, floorY, floorHeight, paddingTop, paddingLeft, frameThickness, mountThickness } = artworkData;
-
-    // const { imgSrc, imgWidth, imgHeight, paddingTop, paddingLeft, frameThickness, mountThickness, spaceBelowPicture } = artworkData;
-
-    let imgStyle = {
-        position: 'absolute',
-        width: imgWidth,
-        height: imgHeight,
-        top: paddingTop + frameThickness + mountThickness,
-        left: paddingLeft + frameThickness + mountThickness
-    };
-
-    if (imageLoading) {
-        imgStyle.display = 'none';
-    }
+    const { url, url_large, url_med, thumb_url } = artwork;
+    const artworkUrl = getAppropriateUrl({ imgWidth, imgHeight, url, url_large, url_med, thumb_url });
 
     return (
         <ScrollbarRemover showScrollbars={allowScrollbars}>
@@ -62,7 +52,7 @@ const Artwork = function (props) {
                         imgHeight={imgHeight}/>
 
                     {!artCanvas &&
-                    <image xlinkHref={imgSrc}
+                    <image xlinkHref={artworkUrl}
                            x={paddingLeft + frameThickness + mountThickness}
                            y={paddingTop + frameThickness + mountThickness}
                            width={imgWidth}

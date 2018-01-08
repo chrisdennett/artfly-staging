@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { listenForArtworkChanges, listenForArtistChanges } from '../../actions/UserDataActions';
 // components
 import PictureMaker from "./ArtMakers/PictureMaker/PictureMaker";
+import LoadingOverlay from "../global/LoadingOverlay";
 
 // In the future this screen will have options for the types of artwork
 // to make. Buttons would determine the maker to load
@@ -53,7 +54,7 @@ class ArtStudio extends Component {
         if (artwork && !artist) isLoadingMakerData = true;
 
         // don't mount the component until data is ready for it
-        if (isLoadingMakerData) return <p>Lovely loading animation here...</p>;
+        if (isLoadingMakerData) return <LoadingOverlay/>;
 
         return (
             <PictureMaker userId={userId}

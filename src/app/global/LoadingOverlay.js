@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LoadingOverlay = function (props) {
+const LoadingOverlay = function () {
     return (
         <div style={{ minWidth: '100vw', minHeight: '100vh', backgroundColor: 'rgba(0,0,0,0.9)' }}>
             <div style={{margin:'auto', width:200, paddingTop:50, color:'#fff'}}>

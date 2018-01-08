@@ -6,10 +6,9 @@ import Artwork from "../../../../Artwork/Artwork";
 import { calculateArtworkSizes } from "../../../../Artwork/assets/ArtworkCalculations";
 // import * as ImageHelper from "../../../ImageHelper";
 
-const ArtworkPreview = (props) => {
-    if (!props.artwork) return <div>no artwork data</div>;
+const ArtworkPreview = ({ maxWidth, maxHeight, artwork }) => {
+    if (!artwork) return <div>no artwork data</div>;
 
-    const { maxWidth, maxHeight, artwork } = props;
     const { imgSrc, widthToHeightRatio, heightToWidthRatio } = artwork;
     const minimumPaddingTop = 15;
     const minimumPaddingSides = 15;
@@ -31,6 +30,7 @@ const ArtworkPreview = (props) => {
         <div className={'artworkPreview'}>
             <Artwork width={maxWidth}
                      height={maxHeight}
+                     artwork={artwork}
                      artworkData={artworkData}/>
         </div>
     );
