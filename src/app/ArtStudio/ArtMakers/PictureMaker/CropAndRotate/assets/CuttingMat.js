@@ -2,9 +2,8 @@ import React from 'react';
 
 const CuttingMat = function ({width, height}) {
 
-    const cuttingMatPadding = 10;
-    const cuttingMatX = cuttingMatPadding;
-    const cuttingMatY = cuttingMatPadding;
+    const cuttingMatX = 0;
+    const cuttingMatY = 10;
 
     const gridHeight = height - 100;
 

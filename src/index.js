@@ -7,7 +7,7 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension'; // handy for debugging
 // reducer index.js
-import reducers from './actionReducers/';
+import reducers from './actionReducers/index';
 // homebrew routing
 import AppRouting from "./AppRouting";
 

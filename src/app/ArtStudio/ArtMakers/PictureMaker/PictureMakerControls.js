@@ -1,7 +1,12 @@
 // externals
 import React, { Component } from "react";
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { faEye, faObjectGroup, faTrashAlt, faInfoCircle, faCheckCircle, faChild } from '@fortawesome/fontawesome-free-solid';
+import {
+    faEye,
+    faObjectGroup,
+    faTrashAlt,
+    faCheckCircle,
+    faChild
+} from '@fortawesome/fontawesome-free-solid';
 // styles
 import './pictureMakerControlsStyles.css';
 // components
@@ -18,13 +23,11 @@ import ControlPanelButt from "../../../global/Butt/ControlPanelButt";
 
 class PictureMakerControls extends Component {
 
-
-
     render() {
 
-    const { artworkId, artistId} = this.props;
+        const { artworkId, artistId } = this.props;
 
-    const doneLink = artistId ? `/gallery/${artistId}/artwork/${artworkId}` : '/';
+        const doneLink = artistId ? `/gallery/${artistId}/artwork/${artworkId}` : '/';
 
         return (
             <div className='pictureMakerControls'>
@@ -41,36 +44,30 @@ class PictureMakerControls extends Component {
                     TEST new artwork
                 </ControlPanelButt>*/}
 
-                <ControlPanelButt
+                {/*<ControlPanelButt
                     linkTo={`/artStudio/${this.props.artworkId}/instructions`}>
                     <FontAwesomeIcon icon={faInfoCircle} />
-                </ControlPanelButt>
+                </ControlPanelButt>*/}
 
                 <ControlPanelButt
-                    label={'Preview'}
-                    linkTo={`/artStudio/${artworkId}/artworkPreview`}>
-                    <FontAwesomeIcon icon={faEye} />
-                </ControlPanelButt>
-
+                    icon={faCheckCircle}
+                    label={'DONE'}
+                    linkTo={doneLink}/>
 
                 <ControlPanelButt
-                    label={'Done'}
-                    linkTo={doneLink}>
-
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                </ControlPanelButt>
+                    icon={faEye}
+                    label={'PREVIEW'}
+                    linkTo={`/artStudio/${artworkId}/artworkPreview`}/>
 
                 <ControlPanelButt
-                    label={'Crop/rotate'}
-                    linkTo={`/artStudio/${artworkId}/editPhoto`}>
-                    <FontAwesomeIcon icon={faObjectGroup} />
-                </ControlPanelButt>
+                    icon={faObjectGroup}
+                    label={'CROP & ROTATE'}
+                    linkTo={`/artStudio/${artworkId}/editPhoto`}/>
 
                 <ControlPanelButt
-                    label={'Edit Artist'}
-                    linkTo={`/artStudio/${artworkId}/editArtist`}>
-                    <FontAwesomeIcon icon={faChild} />
-                </ControlPanelButt>
+                    icon={faChild}
+                    label={'EDIT ARTIST'}
+                    linkTo={`/artStudio/${artworkId}/editArtist`}/>
 
                 {/*<ControlPanelButt
                     linkTo={`/artStudio/${this.props.artworkId}/editFrame`}>
@@ -83,9 +80,9 @@ class PictureMakerControls extends Component {
                 </ControlPanelButt>*/}
 
                 <ControlPanelButt
-                    linkTo={`/artStudio/${artworkId}/deleteArtwork`}>
-                    <FontAwesomeIcon icon={faTrashAlt} />
-                </ControlPanelButt>
+                    icon={faTrashAlt}
+                    label={'DELETE'}
+                    linkTo={`/artStudio/${artworkId}/deleteArtwork`}/>
             </div>
         );
     }

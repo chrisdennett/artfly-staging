@@ -14,7 +14,7 @@ class App extends Component {
         const { artworkId, galleryId } = params;
         const { inArtStudio } = params;
 
-        const leftMargin = inArtStudio ? 150 : 0;
+        const leftMargin = inArtStudio ? 75 : 0;
 
         return (
             <div className='app'>

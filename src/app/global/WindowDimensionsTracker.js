@@ -33,7 +33,7 @@ class WindowDimensionsTracker extends Component {
 
         // TODO: Fix this had that reduces size if in editing mode so have room
         // for the control panel and margin.
-        const contentWidth = leftMargin ? pageWidth - (leftMargin + 20) : pageWidth;
+        const contentWidth = leftMargin ? pageWidth - (leftMargin + 10) : pageWidth;
         const contentHeight = leftMargin ? pageHeight - 20 : pageHeight;
 
         this.props.setWindowSize(contentWidth, contentHeight);

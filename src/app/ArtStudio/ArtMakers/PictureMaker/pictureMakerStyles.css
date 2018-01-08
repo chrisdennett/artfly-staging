@@ -5,14 +5,14 @@
 }
 
 .pictureMaker--sidebar {
-    width: 150px;
+    width: 75px;
     min-height: 100%;
 }
 
 .pictureMaker--main {
     flex: 1;
     display: flex;
-    margin: 10px;
+    margin: 10px 10px 10px 0;
 }
 
 .testCanvasHolder{
