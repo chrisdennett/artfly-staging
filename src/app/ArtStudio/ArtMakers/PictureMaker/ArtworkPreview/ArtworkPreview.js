@@ -26,11 +26,14 @@ const ArtworkPreview = ({ maxWidth, maxHeight, artwork }) => {
     });*/
 
     return (
+        <div className={'artworkPreview'} style={{width:maxWidth, height:maxHeight}}>
+
         <Artwork width={maxWidth}
                  height={maxHeight}
                  artwork={artwork}
                  allowScrollbars={true}
                  artworkData={artworkData}/>
+        </div>
 
     );
 }

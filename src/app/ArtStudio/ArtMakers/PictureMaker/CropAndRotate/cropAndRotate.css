@@ -21,8 +21,6 @@
 
 .cropAndRotate--cuttingBoard{
     position: relative;
-
-    border: #ff00f6 1px solid;
 }
 
 .cropAndRotate--cuttingMattHolder{
@@ -35,12 +33,9 @@
 }
 
 .cropAndRotate--controls {
-    min-height: 60px;
     display: flex;
     justify-content: center;
     z-index: 2;
-    padding: 10px 10px 10px 10px;
-    background-color: #04906a;
     overflow: hidden;
     border-radius: 0 0 10px 10px;
 }
