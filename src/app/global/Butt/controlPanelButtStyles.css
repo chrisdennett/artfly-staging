@@ -6,15 +6,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.45);
     width: 65px;
 }
 
 .controlPanelButt--selected{
    /* margin-left: 7px;
     background-color: rgb(48, 88, 49);*/
-    /*color: white;*/
-    color: #afad3b;
+    color: rgba(255, 255, 255, 0.7);
+    /*color: #afad3b;*/
     /*border: 1px dashed rgba(255,255,255,0.4);
     border-radius: 3px;
     box-shadow: 0 0 0 3px rgb(48, 88, 49), 2px 1px 6px 4px rgba(10,10,0,.5);*/

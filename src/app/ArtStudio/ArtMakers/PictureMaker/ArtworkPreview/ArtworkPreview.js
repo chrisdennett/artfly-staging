@@ -12,7 +12,11 @@ const ArtworkPreview = ({ maxWidth, maxHeight, artwork }) => {
     const { widthToHeightRatio, heightToWidthRatio } = artwork;
     const minimumPaddingTop = 15;
     const minimumPaddingSides = 15;
-    let artworkData = calculateArtworkSizes(maxWidth, maxHeight, widthToHeightRatio, heightToWidthRatio, minimumPaddingTop, minimumPaddingSides);
+    const artworkWidth = maxWidth - 30;
+    const artworkHeight = maxHeight - 60;
+
+
+    let artworkData = calculateArtworkSizes(artworkWidth, artworkHeight, widthToHeightRatio, heightToWidthRatio, minimumPaddingTop, minimumPaddingSides);
 
     // artworkData.imgSrc = artwork.url_large ? artwork.url_large : imgSrc;
 
@@ -26,16 +30,17 @@ const ArtworkPreview = ({ maxWidth, maxHeight, artwork }) => {
     });*/
 
     return (
-        <div className={'artworkPreview'} style={{width:maxWidth, height:maxHeight}}>
-
-        <Artwork width={maxWidth}
-                 height={maxHeight}
-                 artwork={artwork}
-                 allowScrollbars={true}
-                 artworkData={artworkData}/>
+        <div>
+            <div className={'artworkPreview'} style={{ width: artworkWidth, height: artworkHeight }}>
+                <Artwork width={artworkWidth}
+                         height={artworkHeight}
+                         artwork={artwork}
+                         allowScrollbars={true}
+                         artworkData={artworkData}/>
+            </div>
         </div>
 
     );
-}
+};
 
 export default ArtworkPreview;
