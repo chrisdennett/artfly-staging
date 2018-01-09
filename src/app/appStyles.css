@@ -30,7 +30,7 @@ html, body {
     min-width: 100%;
     margin: 0;
     padding: 0;
-    display: flex;
+    /*display: flex;*/
 }
 
 .app--sidebar{

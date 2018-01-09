@@ -15,12 +15,13 @@ import * as ImageHelper from "../../ImageHelper";
 // components
 import LoadingOverlay from '../../../global/LoadingOverlay';
 import PictureMakerControls from "./PictureMakerControls";
-import ArtistUpdater from '../ArtistUpdater';
 import ArtworkDeleter from "./ArtworkDeleter";
 import history from "../../../global/history";
 import ArtworkPreview from "./ArtworkPreview/ArtworkPreview";
 import CropAndRotate from "./CropAndRotate/CropAndRotate";
 import NewArtworkPhotoSelector from "./NewArtworkPhotoSelector/NewArtworkPhotoSelector";
+import ArtistSelector from "./ArtistSelector/ArtistSelector";
+import CuttingMat from "./CuttingMat/CuttingMat";
 // const
 
 const ARTWORK_TYPE = "picture";
@@ -153,13 +154,9 @@ class ArtMaker extends Component {
     }
 
     onNewPhotoSelectorPhotoSelected(imgFile) {
-        ImageHelper.GetImage(imgFile, (img, imgOrientation, widthToHeightRatio, heightToWidthRatio) => {
-
+        ImageHelper.GetImage(imgFile, (sourceImg, imgOrientation, widthToHeightRatio, heightToWidthRatio) => {
             let editedArtwork = { widthToHeightRatio, heightToWidthRatio, ...this.state.editedArtwork };
-            editedArtwork.imgSrc = img.src;
-            editedArtwork.img = img;
-
-            this.setState({ editedArtwork });
+            this.setState({ editedArtwork, sourceImg });
         });
 
     }
@@ -193,31 +190,38 @@ class ArtMaker extends Component {
         if (!currentEditScreen) currentEditScreen = 'artworkPreview';
 
         if (isNewArtwork) {
-            if (!editedArtwork.imgSrc) currentEditScreen = 'uploadPhoto';
+            if (!sourceImg) currentEditScreen = 'uploadPhoto';
             else currentEditScreen = 'editPhoto';
         }
 
-
+        const thumbUrl = editedArtwork.thumb_url;
         const artistId = artist ? artist.artistId : null;
+
+        const sideBarWidthAllowance = 95;
+        const mainContentMargin = 30;
+        const contentWidth = maxWidth - (sideBarWidthAllowance + mainContentMargin);
+        const contentHeight = maxHeight - (mainContentMargin * 2);
+
+        const mainContentStyle = {
+            width: contentWidth,
+            height: contentHeight,
+            top: mainContentMargin,
+            left: sideBarWidthAllowance
+        };
 
         return (
             <div className='pictureMaker'>
 
-                <div className='pictureMaker--sidebar'>
-                    <PictureMakerControls artistId={artistId}
-                                          currentEditScreen={currentEditScreen}
-                                          isNewArtwork={isNewArtwork}
-                                          artworkId={artworkId}/>
-                </div>
+                <CuttingMat width={maxWidth} height={maxHeight}/>
 
-                {isSaving &&
-                <LoadingOverlay/>
-                }
+                <PictureMakerControls artistId={artistId}
+                                      currentEditScreen={currentEditScreen}
+                                      isNewArtwork={isNewArtwork}
+                                      artworkId={artworkId}/>
+
 
                 {!isSaving &&
-                <div className='pictureMaker--main'>
-
-
+                <div className='pictureMaker--main' style={mainContentStyle}>
                     {currentEditScreen === 'uploadPhoto' &&
                     <NewArtworkPhotoSelector
                         onPhotoSelected={this.onNewPhotoSelectorPhotoSelected}
@@ -226,16 +230,16 @@ class ArtMaker extends Component {
 
                     {currentEditScreen === 'artworkPreview' &&
                     <ArtworkPreview artwork={editedArtwork}
-                                    maxWidth={maxWidth}
-                                    maxHeight={maxHeight}/>
+                                    maxWidth={contentWidth}
+                                    maxHeight={contentHeight}/>
                     }
 
                     {currentEditScreen === 'editPhoto' &&
                     <CropAndRotate sourceImg={sourceImg}
                                    onCancel={this.onCropAndRotateCancel}
                                    onDone={this.onCropAndRotateDone}
-                                   width={maxWidth}
-                                   height={maxHeight}/>
+                                   width={contentWidth}
+                                   height={contentHeight}/>
                     }
 
                     {currentEditScreen === 'deleteArtwork' &&
@@ -246,11 +250,13 @@ class ArtMaker extends Component {
                     }
 
                     {currentEditScreen === 'editArtist' &&
-                    <ArtistUpdater artworkId={artworkId}
-                                   initialArtistId={artistId}
-                                   manageUpload={true}
-                                   onCancel={this.showArtworkInEditing}
-                                   onUpdateComplete={this.showArtworkInEditing}/>
+                    <ArtistSelector
+                        thumbUrl={thumbUrl}
+                        artworkId={artworkId}
+                        initialArtistId={artistId}
+                        onCancel={this.showArtworkInEditing}
+                        onUpdateComplete={this.showArtworkInEditing}
+                    />
                     }
                 </div>
                 }
@@ -260,6 +266,13 @@ class ArtMaker extends Component {
         )
     }
 }
+
+/*
+<ArtistUpdater artworkId={artworkId}
+                                   initialArtistId={artistId}
+                                   onCancel={this.showArtworkInEditing}
+                                   onUpdateComplete={this.showArtworkInEditing}/>
+*/
 
 const mapActionsToProps = { addArtwork, addThumbnail, updateArtworkImage, updateArtworkThumbnail };
 export default connect(null, mapActionsToProps)(ArtMaker);

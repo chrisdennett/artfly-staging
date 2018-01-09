@@ -1,5 +1,5 @@
 import React from 'react';
-import Butt from "../global/Butt/Butt";
+import Butt from "../../../../global/Butt/Butt";
 
 const ArtistSelectorOption = function ({isSelected, artistId, firstName, lastName, onSelected}) {
 

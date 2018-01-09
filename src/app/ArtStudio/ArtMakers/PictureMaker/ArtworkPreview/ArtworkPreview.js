@@ -9,13 +9,12 @@ import { calculateArtworkSizes } from "../../../../Artwork/assets/ArtworkCalcula
 const ArtworkPreview = ({ maxWidth, maxHeight, artwork }) => {
     if (!artwork) return <div>no artwork data</div>;
 
-    const { imgSrc, widthToHeightRatio, heightToWidthRatio } = artwork;
+    const { widthToHeightRatio, heightToWidthRatio } = artwork;
     const minimumPaddingTop = 15;
     const minimumPaddingSides = 15;
     let artworkData = calculateArtworkSizes(maxWidth, maxHeight, widthToHeightRatio, heightToWidthRatio, minimumPaddingTop, minimumPaddingSides);
 
-    // TODO: I should really check which image is the correct size here. Medium might be better.
-    artworkData.imgSrc = artwork.url_large ? artwork.url_large : imgSrc;
+    // artworkData.imgSrc = artwork.url_large ? artwork.url_large : imgSrc;
 
     /*const canvas = document.createElement('canvas');
     const { imgWidth, imgHeight } = artworkData;
@@ -27,12 +26,12 @@ const ArtworkPreview = ({ maxWidth, maxHeight, artwork }) => {
     });*/
 
     return (
-        <div className={'artworkPreview'}>
-            <Artwork width={maxWidth}
-                     height={maxHeight}
-                     artwork={artwork}
-                     artworkData={artworkData}/>
-        </div>
+        <Artwork width={maxWidth}
+                 height={maxHeight}
+                 artwork={artwork}
+                 allowScrollbars={true}
+                 artworkData={artworkData}/>
+
     );
 }
 

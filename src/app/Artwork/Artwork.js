@@ -12,7 +12,7 @@ import PictureFrame from './PictureFrame/PictureFrame';
 import ScrollbarRemover from "../global/ScrollbarRemover";
 import { getAppropriateUrl } from "./artworkHelper";
 
-const Artwork = function ({ artwork, artworkData, imageLoading, allowScrollbars = false }){
+const Artwork = function ({ artwork, width, height, artworkData, imageLoading, allowScrollbars = false }){
 
     if (!artworkData) return <div>No artwork data...</div>;
 
@@ -23,21 +23,10 @@ const Artwork = function ({ artwork, artworkData, imageLoading, allowScrollbars 
 
     return (
         <ScrollbarRemover showScrollbars={allowScrollbars}>
-            <div className='artwork'>
-                {imageLoading
-                    ? <div style={{
-                        position: 'absolute',
-                        zIndex: 2000,
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translateX(-50%)'
-                    }}>Loading artwork...</div>
-                    : ""
-                }
 
-                <svg width={'100%'} height={'100%'}>
+                <svg width={width} height={height}>
 
-                    <Wall/>
+                    <Wall width={width} height={height}/>
 
                     <Floor floorY={floorY} floorHeight={floorHeight}/>
 
@@ -76,7 +65,7 @@ const Artwork = function ({ artwork, artworkData, imageLoading, allowScrollbars 
                      style={imgStyle}
                      src={imgSrc}/>
                 }*/}
-            </div>
+
 
         </ScrollbarRemover>
     )

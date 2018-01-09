@@ -1,32 +1,49 @@
 .pictureMaker {
-    flex: 1;
-    display: flex;
     min-height: 100vh;
+    min-width: 100vw;
 }
 
-.pictureMaker--sidebar {
-    margin-top: 20px;
-    width: 75px;
-    min-height: 100%;
-    display: flex;
-    /*align-items: center;*/
+.pictureMaker--content{
+    z-index: 2;
 }
+
+/*.pictureMaker--sidebar {
+    position: fixed;
+    z-index: 10;
+    margin: 20px 0 0 5px;
+    width: 75px;
+    display: flex;
+    overflow: scroll;
+    !*align-items: center;*!
+}*/
 
 .pictureMaker--main {
-    flex: 1;
-    display: flex;
-    margin: 10px 10px 10px 0;
+    position: absolute;
+    z-index: 11;
+    /*background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 3px, rgba(0, 0, 0, 0.4) 0 0 2px;*/
+    border-radius: 10px;
+    /*overflow: hidden;*/
 }
 
-.testCanvasHolder{
-    bottom: 0;
+.cuttingMat--svg {
+    z-index: 1;
     position: fixed;
-    display: flex;
-    flex-direction: column;
+    top:0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /*border: red 4px solid;*/
 }
 
-.testCanvas{
-    max-width: 100%;
-    max-height: 100%;
-    border: red 3px solid;
+.cuttingMat--svg--bg{
+    width: 100%;
+    height: 100%;
+}
+
+.cuttingMat--svg--gridRect{
+    width: 100%;
+    height: 100%;
 }

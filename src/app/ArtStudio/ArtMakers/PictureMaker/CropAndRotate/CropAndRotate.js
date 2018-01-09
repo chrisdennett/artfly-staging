@@ -9,7 +9,7 @@ import * as PhotoHelper from "../../../ImageHelper";
 // components
 import CuttingBoard from "./CuttingBoard";
 import Butt from "../../../../global/Butt/Butt";
-import CuttingMat from "./assets/CuttingMat";
+// import CuttingMat from "./assets/CuttingMat";
 import ScrollbarRemover from "../../../../global/ScrollbarRemover";
 import LoadingOverlay from '../../../../global/LoadingOverlay';
 
@@ -70,7 +70,7 @@ class CropAndRotate extends Component {
 
         if (!sourceImg || !width || !canvas) return;
 
-        const cuttingBoardPadding = 40;
+        const cuttingBoardPadding = 25;
         const buttonHeight = 100;
         const maxCuttingBoardWidth = width - (cuttingBoardPadding * 2);
         const maxCuttingBoardHeight = height - (buttonHeight + (cuttingBoardPadding * 2));
@@ -117,29 +117,28 @@ class CropAndRotate extends Component {
         return (
             <ScrollbarRemover>
 
-                <div className='cropAndRotate--holder'>
+                <div className='cropAndRotate--holder' style={{ width: width, height: height }}>
 
                     <div className='cropAndRotate--content'>
-                        <div className='cropAndRotate--cuttingBoardHolder'>
-                            <CuttingBoard
-                                onCropUpdate={this.onCropUpdate}
-                                onCanvasSetup={this.onCanvasSetup}
-                                maxWidth={maxCuttingBoardWidth}
-                                maxHeight={maxCuttingBoardHeight}
-                                rotation={rotation}
-                                cropData={cropData}/>
-                        </div>
+                        <CuttingBoard
+                            onCropUpdate={this.onCropUpdate}
+                            onCanvasSetup={this.onCanvasSetup}
+                            maxWidth={maxCuttingBoardWidth}
+                            maxHeight={maxCuttingBoardHeight}
+                            rotation={rotation}
+                            cropData={cropData}/>
                     </div>
 
                     <div className='cropAndRotate--controls'>
-                        <Butt white inline onClick={this.onRotateClockwiseClick}><FontAwesomeIcon icon={faRedo} fixedWidth/></Butt>
+                        <Butt white inline onClick={this.onRotateClockwiseClick}><FontAwesomeIcon icon={faRedo}
+                                                                                                  fixedWidth/></Butt>
                         <Butt green inline onClick={this.onDoneClick}>DONE</Butt>
                         <Butt red inline onClick={this.onCancelClick}>CANCEL</Butt>
                     </div>
 
-                    <div className='cropAndRotate--cuttingMattHolder'>
+                    {/*<div className='cropAndRotate--cuttingMattHolder'>
                         <CuttingMat width={width} height={height}/>
-                    </div>
+                    </div>*/}
 
                 </div>
             </ScrollbarRemover>

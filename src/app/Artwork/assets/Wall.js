@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Wall = function () {
+const Wall = function ({width, height}) {
     const wall = { fill: "#e0ded1" };
     const wallPattern = { fill: "url(#WallPattern)" };
 
     return (
-        <svg width={'100%'} height={'100%'}>
+        <svg width={width} height={height}>
 
             <defs>
                 <pattern id="WallPattern"

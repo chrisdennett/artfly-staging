@@ -1,5 +1,10 @@
 .pictureMakerControls{
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+    top: 0;
+    bottom:0;
+    position:fixed;
+    overflow-y:auto;
+    overflow-x:hidden;
+    z-index: 10;
+    margin: 20px 0 0 5px;
+    width: 75px;
 }

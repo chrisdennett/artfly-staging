@@ -87,6 +87,8 @@ class ArtworkHolder extends Component {
         const { artworkData, imageLoading } = this.state;
 
         return <Artwork artwork={artwork}
+                        width={width}
+                        height={height}
                         artworkData={artworkData}
                         allowScrollbars={allowScrollbars}
                         imageLoading={imageLoading}/>;

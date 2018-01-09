@@ -1,16 +1,9 @@
+
 .cropAndRotate--holder {
     overflow: hidden;
     flex-direction: column;
     flex: 1;
     display: flex;
-    box-shadow: rgba(0, 0, 0, 0.5) 3px 3px 3px, rgba(0, 0, 0, 0.5) 0 0 2px;
-    border-radius: 10px;
-    /*padding: 20px;*/
-    /*background: url("./../../../../images/grid_cuttingBoard_42.png"), radial-gradient(circle, #04906a, #04906a);*/
-}
-
-.cropAndRotate svg{
-    box-shadow: rgba(0, 0, 0, 0.5) 3px 3px 3px, rgba(0, 0, 0, 0.5) 0 0 2px;
 }
 
 .cropAndRotate--content {
@@ -22,19 +15,21 @@
     position: relative;
 }
 
-.cropAndRotate--cuttingBoardHolder {
-    /*margin: 0 auto;*/
-}
+/*.cropAndRotate svg{
+    box-shadow: rgba(0, 0, 0, 0.5) 3px 3px 3px, rgba(0, 0, 0, 0.5) 0 0 2px;
+}*/
 
 .cropAndRotate--cuttingBoard{
     position: relative;
+
+    border: #ff00f6 1px solid;
 }
 
 .cropAndRotate--cuttingMattHolder{
     z-index: 0;
     position: absolute;
     top: 0;
-    left: 75px;
+    left: 0;
     right: 0;
     bottom: 0;
 }
