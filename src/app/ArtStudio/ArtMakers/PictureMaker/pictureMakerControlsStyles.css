@@ -8,3 +8,8 @@
     margin: 20px 0 0 5px;
     width: 75px;
 }
+
+.pictureMakerControls--menuDivider{
+    margin: 10px 20px 0 10px;
+    border-bottom: rgba(255, 255, 255, 0.2) 4px double;
+}

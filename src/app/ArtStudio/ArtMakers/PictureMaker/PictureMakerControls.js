@@ -45,6 +45,8 @@ class PictureMakerControls extends Component {
                     label={'DONE'}
                     linkTo={doneLink}/>
 
+                <div className={'pictureMakerControls--menuDivider'} />
+
                 <ControlPanelButt
                     style={extraButtStyle}
                     isSelected={currentEditScreen==='artworkPreview'}
@@ -75,6 +77,8 @@ class PictureMakerControls extends Component {
                     linkTo={`/artStudio/${this.props.artworkId}/editRoom`}>
                     Edit Room
                 </ControlPanelButt>*/}
+
+                <div className={'pictureMakerControls--menuDivider'} />
 
                 <ControlPanelButt
                     style={extraButtStyle}
