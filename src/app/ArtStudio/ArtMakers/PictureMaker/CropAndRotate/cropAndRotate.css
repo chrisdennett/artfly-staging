@@ -23,21 +23,10 @@
     position: relative;
 }
 
-.cropAndRotate--cuttingMattHolder{
-    z-index: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-
 .cropAndRotate--controls {
     display: flex;
     justify-content: center;
     z-index: 2;
-    overflow: hidden;
-    border-radius: 0 0 10px 10px;
 }
 
 .cropAndRotate--cuttingMat{

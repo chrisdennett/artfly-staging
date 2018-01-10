@@ -10,7 +10,7 @@ class CuttingBoard extends Component {
         this.canvasInit = this.canvasInit.bind(this);
         this.onCuttingOverlayChange = this.onCuttingOverlayChange.bind(this);
 
-        this.state = { displayWidth: 10, displayHeight: 10 };
+        this.state = { displayWidth: 1, displayHeight: 1 };
     }
 
     componentWillReceiveProps(nextProps) {

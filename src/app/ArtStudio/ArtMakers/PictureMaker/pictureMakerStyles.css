@@ -8,6 +8,7 @@
 }
 
 .pictureMaker--main {
+    /*border: #ff6600 1px solid;*/
     position: absolute;
     z-index: 11;
     /*display: none;*/

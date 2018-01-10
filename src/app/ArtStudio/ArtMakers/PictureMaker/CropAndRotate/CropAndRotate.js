@@ -1,7 +1,7 @@
 // externals
 import React, { Component } from "react";
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { faRedo } from '@fortawesome/fontawesome-free-solid';
+// import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { faRedo, faTimes, faCheck } from '@fortawesome/fontawesome-free-solid';
 // styles
 import './cropAndRotate.css';
 // helpers
@@ -9,9 +9,9 @@ import * as PhotoHelper from "../../../ImageHelper";
 // components
 import CuttingBoard from "./CuttingBoard";
 import Butt from "../../../../global/Butt/Butt";
-// import CuttingMat from "./assets/CuttingMat";
 import ScrollbarRemover from "../../../../global/ScrollbarRemover";
 import LoadingOverlay from '../../../../global/LoadingOverlay';
+import ControlPanelButt from "../../../../global/Butt/ControlPanelButt";
 
 class CropAndRotate extends Component {
     constructor() {
@@ -70,10 +70,11 @@ class CropAndRotate extends Component {
 
         if (!sourceImg || !width || !canvas) return;
 
-        const cuttingBoardPadding = 25;
-        const buttonHeight = 100;
-        const maxCuttingBoardWidth = width - (cuttingBoardPadding * 2);
-        const maxCuttingBoardHeight = height - (buttonHeight + (cuttingBoardPadding * 2));
+        const paddingTop = 20;
+        const paddingSide = 40;
+        const spaceForButtons = 93;
+        const maxCuttingBoardWidth = width - (paddingSide * 2);
+        const maxCuttingBoardHeight = height - (spaceForButtons + paddingTop);
 
         PhotoHelper.drawToCanvas({
             sourceCanvas: sourceImg,
@@ -114,6 +115,8 @@ class CropAndRotate extends Component {
             return <LoadingOverlay/>
         }
 
+        const extraButtStyle = {marginLeft:10};
+
         return (
             <ScrollbarRemover>
 
@@ -130,18 +133,23 @@ class CropAndRotate extends Component {
                     </div>
 
                     <div className='cropAndRotate--controls'>
-                        <Butt white inline onClick={this.onRotateClockwiseClick}>
-                            <FontAwesomeIcon icon={faRedo} fixedWidth/>
-                        </Butt>
 
-                        <Butt green inline onClick={this.onDoneClick}>DONE</Butt>
+                        <ControlPanelButt icon={faRedo}
+                                          style={extraButtStyle}
+                                          label={'ROTATE'}
+                                          onClick={this.onRotateClockwiseClick}/>
 
-                        <Butt red inline onClick={this.onCancelClick}>CANCEL</Butt>
+                        <ControlPanelButt icon={faCheck}
+                                          style={extraButtStyle}
+                                          label={'DONE'}
+                                          onClick={this.onDoneClick}/>
+
+                        <ControlPanelButt icon={faTimes}
+                                          style={extraButtStyle}
+                                          label={'CANCEL'}
+                                          onClick={this.onDoneClick}/>
                     </div>
 
-                    {/*<div className='cropAndRotate--cuttingMattHolder'>
-                        <CuttingMat width={width} height={height}/>
-                    </div>*/}
 
                 </div>
             </ScrollbarRemover>

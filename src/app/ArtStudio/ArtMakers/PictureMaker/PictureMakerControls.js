@@ -18,6 +18,7 @@ class PictureMakerControls extends Component {
 
         const { artworkId, artistId, currentEditScreen } = this.props;
         const doneLink = artistId ? `/gallery/${artistId}/artwork/${artworkId}` : '/';
+        const extraButtStyle = {marginTop:10};
 
         return (
             <div className='pictureMakerControls'>
@@ -39,23 +40,27 @@ class PictureMakerControls extends Component {
 
 
                 <ControlPanelButt
+                    style={extraButtStyle}
                     icon={faCheckCircle}
                     label={'DONE'}
                     linkTo={doneLink}/>
 
                 <ControlPanelButt
+                    style={extraButtStyle}
                     isSelected={currentEditScreen==='artworkPreview'}
                     icon={faEye}
                     label={'PREVIEW'}
                     linkTo={`/artStudio/${artworkId}/artworkPreview`}/>
 
                 <ControlPanelButt
+                    style={extraButtStyle}
                     isSelected={currentEditScreen==='editPhoto'}
                     icon={faObjectGroup}
                     label={'CROP & ROTATE'}
                     linkTo={`/artStudio/${artworkId}/editPhoto`}/>
 
                 <ControlPanelButt
+                    style={extraButtStyle}
                     isSelected={currentEditScreen==='editArtist'}
                     icon={faChild}
                     label={'EDIT ARTIST'}
@@ -72,6 +77,7 @@ class PictureMakerControls extends Component {
                 </ControlPanelButt>*/}
 
                 <ControlPanelButt
+                    style={extraButtStyle}
                     isSelected={currentEditScreen==='deleteArtwork'}
                     icon={faTrashAlt}
                     label={'DELETE'}

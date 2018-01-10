@@ -197,8 +197,8 @@ class ArtMaker extends Component {
         const thumbUrl = editedArtwork.thumb_url;
         const artistId = artist ? artist.artistId : null;
 
-        const sideBarWidthAllowance = 95;
-        const mainContentMargin = 30;
+        const sideBarWidthAllowance = 70;
+        const mainContentMargin = 10;
         const contentWidth = maxWidth - (sideBarWidthAllowance + mainContentMargin);
         const contentHeight = maxHeight - (mainContentMargin * 2);
 

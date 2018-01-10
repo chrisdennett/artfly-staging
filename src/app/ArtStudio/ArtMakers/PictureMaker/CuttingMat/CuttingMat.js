@@ -8,26 +8,16 @@ const CuttingMat = function ({ width = 100, height = 100 }) {
     const matWidth = width - (matMargin * 2);
     const matHeight = height - (matMargin * 2);
 
-    /*const gridTop = matMargin + 15;
-    const gridRight = matMargin + 15;
-    const gridBottom = matMargin + 15;
-    const gridLeft = 80;
-    const gridWidth = width - (gridLeft + gridRight);
-    const gridHeight = height - (gridTop + gridBottom);*/
-
     const fillLight = '#12776e';
     const fill = '#0f6059';
-    // const origFill = '#04906a';
     const bgFill = '#043e28';
-
     const stroke = 'rgba(255,255,255,0.2)';
-    // const stroke = '#afad3b';
-    // const oldStroke = '#a2c656';
 
     const gridPadding = 30;
     const leftPadding = 85;
+    const gapForControls = 55;
     const gridWidth = width - (leftPadding + gridPadding);
-    const gridHeight = height - (gridPadding * 2);
+    const gridHeight = height - (gapForControls + (gridPadding * 2));
 
     let hLines = getHGridLines(gridWidth, gridHeight, leftPadding, gridPadding, width, height, stroke, fill);
     let vLines = getVGridLines(gridWidth, gridHeight, leftPadding, gridPadding, width, height, stroke, fill);
@@ -37,12 +27,6 @@ const CuttingMat = function ({ width = 100, height = 100 }) {
     const titleBg = <rect x={32} y={35} width={202} height={55} fill={fill}/>
     const title = <text x={40} y={62} fontSize={24} fontWeight={'bold'} fill={stroke}>CROP & ROTATE</text>;
     const subtitle = <text style={{textAlign:'center'}} x={40} y={82} fontSize={14} fill={stroke}>--Take it for a spin--</text>
-
-    /*let vLines = [];
-    for(let j=0; j<vGridLines+1; j++){
-        const y = j * actualSpacing;
-        hLines.push(<line key={y} x1={0} y1={y} x2={gridWidth-30} y2={y} strokeWidth={1} stroke={stroke}/>)
-    }*/
 
     const grid = <g transform={`translate(${leftPadding}, ${gridPadding})`}>
         {hLines}

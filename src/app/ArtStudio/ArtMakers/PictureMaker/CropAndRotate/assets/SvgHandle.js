@@ -6,8 +6,9 @@ const SvgHandle = function ({ type, isSelected }) {
         cursor: 'move'
     };
 
-    const innerCircleCol = isSelected ? 'rgba(138,43,226,0.1)' : 'rgba(0,0,0,0.1)';
-    const outerCircleCol = isSelected ? '#8A2BE2' : '#d4c328';
+    // const innerCircleCol = isSelected ? 'rgba(138,43,226,0.1)' : 'rgba(0,0,0,0.1)';
+    const outerCircleCol = isSelected ? 'rgba(212, 195, 40, 0.6)' : 'rgba(255,255,255,0.35)';
+    // const outerCircleCol = isSelected ? '#8A2BE2' : '#d4c328';
 
     const startX = 25;
     const startY = 0;
@@ -53,7 +54,8 @@ const SvgHandle = function ({ type, isSelected }) {
 
     return (
         <svg width={50} height={50} style={circleStyle}>
-            <circle cx={25} cy={25} r={25} fill={innerCircleCol}/>
+            <circle cx={25} cy={25} r={24} fill={'none'}
+            stroke={'rgba(255,255,255,0.2)'}/>
 
             <path transform={`rotate(${rotate}, 25, 25)`}
                   fill={outerCircleCol}
