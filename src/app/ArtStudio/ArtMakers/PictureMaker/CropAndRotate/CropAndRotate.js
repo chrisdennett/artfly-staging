@@ -1,6 +1,5 @@
 // externals
 import React, { Component } from "react";
-// import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { faRedo, faTimes, faCheck } from '@fortawesome/fontawesome-free-solid';
 // styles
 import './cropAndRotate.css';
@@ -8,7 +7,6 @@ import './cropAndRotate.css';
 import * as PhotoHelper from "../../../ImageHelper";
 // components
 import CuttingBoard from "./CuttingBoard";
-import Butt from "../../../../global/Butt/Butt";
 import ScrollbarRemover from "../../../../global/ScrollbarRemover";
 import LoadingOverlay from '../../../../global/LoadingOverlay';
 import ControlPanelButt from "../../../../global/Butt/ControlPanelButt";
@@ -38,6 +36,28 @@ class CropAndRotate extends Component {
 
     componentWillMount() {
         this.drawCuttingBoardCanvas();
+        this.props.setToolControls([
+
+            <ControlPanelButt icon={faRedo}
+                              key={'cropRotate'}
+                              label={'ROTATE'}
+                              onClick={this.onRotateClockwiseClick}/>,
+
+            <ControlPanelButt icon={faCheck}
+                              key={'cropDone'}
+                              label={'DONE'}
+                              onClick={this.onDoneClick}/>,
+
+            <ControlPanelButt icon={faTimes}
+                              key={'cropCancel'}
+                              label={'CANCEL'}
+                              onClick={this.onCancelClick}/>
+
+        ]);
+    }
+
+    componentWillUnmount() {
+        this.props.clearToolControls();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -115,7 +135,7 @@ class CropAndRotate extends Component {
             return <LoadingOverlay/>
         }
 
-        const extraButtStyle = {marginLeft:10};
+        const extraButtStyle = { marginLeft: 10 };
 
         return (
             <ScrollbarRemover>
@@ -131,25 +151,6 @@ class CropAndRotate extends Component {
                             rotation={rotation}
                             cropData={cropData}/>
                     </div>
-
-                    <div className='cropAndRotate--controls'>
-
-                        <ControlPanelButt icon={faRedo}
-                                          style={extraButtStyle}
-                                          label={'ROTATE'}
-                                          onClick={this.onRotateClockwiseClick}/>
-
-                        <ControlPanelButt icon={faCheck}
-                                          style={extraButtStyle}
-                                          label={'DONE'}
-                                          onClick={this.onDoneClick}/>
-
-                        <ControlPanelButt icon={faTimes}
-                                          style={extraButtStyle}
-                                          label={'CANCEL'}
-                                          onClick={this.onDoneClick}/>
-                    </div>
-
 
                 </div>
             </ScrollbarRemover>

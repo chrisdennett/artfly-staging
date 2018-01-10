@@ -15,13 +15,14 @@ import * as ImageHelper from "../../ImageHelper";
 // components
 import LoadingOverlay from '../../../global/LoadingOverlay';
 import PictureMakerControls from "./PictureMakerControls";
-import ArtworkDeleter from "./ArtworkDeleter";
+import ArtworkDeleter from "./DeleteArtwork/ArtworkDeleter";
 import history from "../../../global/history";
 import ArtworkPreview from "./ArtworkPreview/ArtworkPreview";
 import CropAndRotate from "./CropAndRotate/CropAndRotate";
 import NewArtworkPhotoSelector from "./NewArtworkPhotoSelector/NewArtworkPhotoSelector";
 import ArtistSelector from "./ArtistSelector/ArtistSelector";
 import CuttingMat from "./CuttingMat/CuttingMat";
+import PictureMakerToolControls from "./PictureMakerToolControls/PictureMakerToolControls";
 // const
 
 const ARTWORK_TYPE = "picture";
@@ -43,6 +44,8 @@ class ArtMaker extends Component {
         this.onCropAndRotateCancel = this.onCropAndRotateCancel.bind(this);
         this.onNewPhotoSelectorArtistSelected = this.onNewPhotoSelectorArtistSelected.bind(this);
         this.onNewPhotoSelectorPhotoSelected = this.onNewPhotoSelectorPhotoSelected.bind(this);
+        this.setToolControls = this.setToolControls.bind(this);
+        this.clearToolControls = this.clearToolControls.bind(this);
 
         this.state = { editedArtwork: null, sourceImg: null, isSaving: false };
     }
@@ -180,9 +183,17 @@ class ArtMaker extends Component {
         history.push(`/gallery/${this.props.artist.artistId}`);
     }
 
+    setToolControls(butts){
+        this.setState({currentToolButts: butts})
+    }
+
+    clearToolControls(){
+        this.setState({currentToolButts:null});
+    }
+
     render() {
         let { isNewArtwork, windowSize, artworkId, currentEditScreen, artist } = this.props;
-        const { sourceImg, editedArtwork, isSaving } = this.state;
+        const { sourceImg, editedArtwork, isSaving, currentToolButts } = this.state;
 
         const maxWidth = windowSize ? windowSize.windowWidth : 0;
         const maxHeight = windowSize ? windowSize.windowHeight : 0;
@@ -197,10 +208,11 @@ class ArtMaker extends Component {
         const thumbUrl = editedArtwork.thumb_url;
         const artistId = artist ? artist.artistId : null;
 
-        const sideBarWidthAllowance = 70;
+        const sideBarWidthAllowance = 65;
         const mainContentMargin = 10;
+        const toolButtAllowance = 65;
         const contentWidth = maxWidth - (sideBarWidthAllowance + mainContentMargin);
-        const contentHeight = maxHeight - (mainContentMargin * 2);
+        const contentHeight = maxHeight - (toolButtAllowance + mainContentMargin);
 
         const mainContentStyle = {
             width: contentWidth,
@@ -236,6 +248,8 @@ class ArtMaker extends Component {
 
                     {currentEditScreen === 'editPhoto' &&
                     <CropAndRotate sourceImg={sourceImg}
+                                   setToolControls={this.setToolControls}
+                                   clearToolControls={this.clearToolControls}
                                    onCancel={this.onCropAndRotateCancel}
                                    onDone={this.onCropAndRotateDone}
                                    width={contentWidth}
@@ -244,6 +258,8 @@ class ArtMaker extends Component {
 
                     {currentEditScreen === 'deleteArtwork' &&
                     <ArtworkDeleter artworkId={artworkId}
+                                    setToolControls={this.setToolControls}
+                                    clearToolControls={this.clearToolControls}
                                     artist={artist}
                                     onDeleteArtworkComplete={this.showArtworkInGallery}
                                     onDeleteArtworkCancel={this.showArtworkInEditing}/>
@@ -260,6 +276,8 @@ class ArtMaker extends Component {
                     }
                 </div>
                 }
+
+                <PictureMakerToolControls butts={currentToolButts}/>
 
             </div>
 
