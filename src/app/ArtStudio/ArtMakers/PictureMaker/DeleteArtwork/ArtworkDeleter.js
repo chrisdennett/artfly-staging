@@ -20,7 +20,7 @@ class ArtworkDeleter extends Component {
         this.state = { artworkDeleting: false }
     }
 
-    componentWillMount(){
+    componentDidMount(){
         this.props.setToolControls([
             <ControlPanelButt key={'doDelete'} label={'DELETE IT'} icon={faCheck} onClick={this.onDeleteConfirm}/>,
             <ControlPanelButt key={'doNotDelete'} label={'DON\'T DO IT'} icon={faTimes} onClick={this.onDeleteCancel}/>

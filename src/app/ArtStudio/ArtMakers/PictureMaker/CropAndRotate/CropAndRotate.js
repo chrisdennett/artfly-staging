@@ -34,10 +34,9 @@ class CropAndRotate extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.drawCuttingBoardCanvas();
         this.props.setToolControls([
-
             <ControlPanelButt icon={faRedo}
                               key={'cropRotate'}
                               label={'ROTATE'}
@@ -52,7 +51,6 @@ class CropAndRotate extends Component {
                               key={'cropCancel'}
                               label={'CANCEL'}
                               onClick={this.onCancelClick}/>
-
         ]);
     }
 
@@ -135,11 +133,8 @@ class CropAndRotate extends Component {
             return <LoadingOverlay/>
         }
 
-        const extraButtStyle = { marginLeft: 10 };
-
         return (
             <ScrollbarRemover>
-
                 <div className='cropAndRotate--holder' style={{ width: width, height: height }}>
 
                     <div className='cropAndRotate--content'>

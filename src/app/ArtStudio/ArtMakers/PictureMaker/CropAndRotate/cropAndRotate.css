@@ -1,4 +1,3 @@
-
 .cropAndRotate--holder {
     overflow: hidden;
     flex-direction: column;
@@ -15,25 +14,6 @@
     position: relative;
 }
 
-/*.cropAndRotate svg{
-    box-shadow: rgba(0, 0, 0, 0.5) 3px 3px 3px, rgba(0, 0, 0, 0.5) 0 0 2px;
-}*/
-
 .cropAndRotate--cuttingBoard{
     position: relative;
-}
-
-.cropAndRotate--controls {
-    display: flex;
-    justify-content: center;
-    z-index: 2;
-}
-
-.cropAndRotate--cuttingMat{
-    width: 100%;
-    height: 100%;
-}
-
-.cropAndRotate--cuttingOverlay{
-
 }
