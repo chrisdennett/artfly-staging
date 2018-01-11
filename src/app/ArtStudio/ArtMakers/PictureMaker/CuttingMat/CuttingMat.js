@@ -2,14 +2,60 @@ import React from 'react';
 // styles
 import './cuttingMat_styles.css';
 
-const CuttingMat = function ({ width = 100, height = 100 }) {
+const CuttingMat = function ({ width = 100, height = 100, colour = 'green', label = 'CROP & ROTATE' }) {
 
     const matMargin = 3;
     const matWidth = width - (matMargin * 2);
     const matHeight = height - (matMargin * 2);
 
-    const fillLight = '#12776e';
-    const fill = '#0f6059';
+    let fill, fillLight;
+
+    switch (colour) {
+        case 'green':
+            fill = '#0f6059';
+            fillLight = '#12776e';
+            break;
+
+        case 'light-green':
+            fill = '#accc63';
+            fillLight = '#ceea88';
+            break;
+
+        case 'pink':
+            fill = '#de7e98';
+            fillLight = '#fe96b1';
+            break;
+
+        case 'purple':
+            fill = '#9862a8';
+            fillLight = '#b77dc7';
+            break;
+
+        case 'red':
+            fill = '#b23e4d';
+            fillLight = '#d14453';
+            break;
+
+        case 'slate':
+            fill = '#52575c';
+            fillLight = '#70757a';
+            break;
+
+        case 'putty':
+            fill = '#c6c3a2';
+            fillLight = '#e1dcce';
+            break;
+
+        case 'yellow':
+            fill = '#eec432';
+            fillLight = '#ffdc51';
+            break;
+
+        default :
+            break;
+    }
+
+    // const fillLight = '#12776e';
     const bgFill = '#043e28';
     const stroke = 'rgba(255,255,255,0.2)';
 
@@ -24,9 +70,10 @@ const CuttingMat = function ({ width = 100, height = 100 }) {
 
     const diagonal = <line key={'diag'} x1={0} y1={gridHeight} x2={gridWidth} y2={0} strokeWidth={1} stroke={stroke}/>
 
-    const titleBg = <rect x={32} y={35} width={202} height={55} fill={fill}/>
-    const title = <text x={40} y={62} fontSize={24} fontWeight={'bold'} fill={stroke}>CROP & ROTATE</text>;
-    const subtitle = <text style={{textAlign:'center'}} x={40} y={82} fontSize={14} fill={stroke}>--Take it for a spin--</text>
+    const titleBg = <rect x={30} y={30} width={240} height={62} fill={fill} stroke={stroke}/>;
+    const title = <text x={40} y={60} fontSize={24} fontWeight={'bold'} fill={stroke}>{label}</text>;
+    const subtitle = <text style={{ textAlign: 'center' }} x={40} y={82} fontSize={14} fill={stroke}>--Artfly editing
+        mat--</text>;
 
     const grid = <g transform={`translate(${leftPadding}, ${gridPadding})`}>
         {hLines}
@@ -106,8 +153,8 @@ const getHGridLines = (gridWidth, gridHeight, leftPadding, gridPadding, width, h
             lines.push(<text key={`tfH${y}`} x={15} y={y + 5} fill={stroke} textAnchor={'middle'}
                              fontSize="12">{totalLines - i}</text>);
 
-            lines.push(<rect key={`tfBgH2${y}`} x={gridWidth-17} y={y - 5} height={10} width={16} fill={fill}/>);
-            lines.push(<text key={`tfH2${y}`} x={gridWidth-10} y={y + 5} fill={stroke} textAnchor={'middle'}
+            lines.push(<rect key={`tfBgH2${y}`} x={gridWidth - 17} y={y - 5} height={10} width={16} fill={fill}/>);
+            lines.push(<text key={`tfH2${y}`} x={gridWidth - 10} y={y + 5} fill={stroke} textAnchor={'middle'}
                              fontSize="12">{totalLines - i}</text>)
 
         }
@@ -149,13 +196,13 @@ const getVGridLines = (gridWidth, gridHeight, leftPadding, gridPadding, width, h
 
         if (i % 2 === 0 && i > 0 && i < totalLines) {
             // add numbers at the top
-            lines.push(<rect key={`tfBgV${x}`} x={x-5} y={7} height={14} width={10} fill={fill}/>);
+            lines.push(<rect key={`tfBgV${x}`} x={x - 5} y={7} height={14} width={10} fill={fill}/>);
             lines.push(<text key={`tfV${x}`} x={x} y={18} fill={stroke} textAnchor={'middle'}
                              fontSize="12">{i}</text>)
 
             // add numbers at the bottom
-            lines.push(<rect key={`tfBgV2${x}`} x={x-5} y={gridHeight - 17} height={14} width={10} fill={fill}/>);
-            lines.push(<text key={`tfV2${x}`} x={x} y={gridHeight-7} fill={stroke} textAnchor={'middle'}
+            lines.push(<rect key={`tfBgV2${x}`} x={x - 5} y={gridHeight - 17} height={14} width={10} fill={fill}/>);
+            lines.push(<text key={`tfV2${x}`} x={x} y={gridHeight - 7} fill={stroke} textAnchor={'middle'}
                              fontSize="12">{i}</text>)
         }
     }

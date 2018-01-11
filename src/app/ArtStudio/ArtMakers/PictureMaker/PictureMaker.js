@@ -188,12 +188,12 @@ class ArtMaker extends Component {
         history.push(`/gallery/${this.props.artist.artistId}`);
     }
 
-    setToolControls(butts){
-        this.setState({currentToolButts: butts})
+    setToolControls(butts) {
+        this.setState({ currentToolButts: butts })
     }
 
-    clearToolControls(){
-        this.setState({currentToolButts:null});
+    clearToolControls() {
+        this.setState({ currentToolButts: null });
     }
 
     render() {
@@ -225,10 +225,40 @@ class ArtMaker extends Component {
             left: sideBarWidthAllowance
         };
 
+        let cuttingMatData = {};
+        switch (currentEditScreen) {
+            case 'editPhoto':
+                cuttingMatData.colour = 'green';
+                cuttingMatData.label = 'Crop & Rotate';
+                break;
+
+            case 'artworkPreview':
+                cuttingMatData.colour = 'purple';
+                cuttingMatData.label = 'Crop & Rotate';
+                break;
+
+            case 'editArtist':
+                cuttingMatData.colour = 'slate';
+                cuttingMatData.label = 'Edit Artist';
+                break;
+
+            case 'deleteArtwork':
+                cuttingMatData.colour = 'red';
+                cuttingMatData.label = 'Delete Artwork';
+                break;
+
+            default:
+                break;
+        }
+
         return (
             <div className='pictureMaker'>
 
-                <CuttingMat width={maxWidth} height={maxHeight}/>
+                <CuttingMat width={maxWidth}
+                            height={maxHeight}
+                            colour={cuttingMatData.colour}
+                            label={cuttingMatData.label}
+                />
 
                 <PictureMakerControls artistId={artistId}
                                       currentEditScreen={currentEditScreen}
