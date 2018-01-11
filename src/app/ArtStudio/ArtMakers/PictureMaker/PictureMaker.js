@@ -39,6 +39,7 @@ class ArtMaker extends Component {
         this.setupArtwork = this.setupArtwork.bind(this);
         this.showArtworkInEditing = this.showArtworkInEditing.bind(this);
         this.showArtworkInGallery = this.showArtworkInGallery.bind(this);
+        this.showArtistGallery = this.showArtistGallery.bind(this);
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
         this.getImageBlob = this.getImageBlob.bind(this);
         this.onCropAndRotateCancel = this.onCropAndRotateCancel.bind(this);
@@ -164,10 +165,6 @@ class ArtMaker extends Component {
 
     }
 
-    showArtworkInEditing() {
-        history.push(`/artStudio/${this.props.artworkId}`);
-    }
-
     onCropAndRotateCancel() {
         if (this.props.isNewArtwork) {
             this.setState({ editedArtwork: {} }, () => {
@@ -179,7 +176,15 @@ class ArtMaker extends Component {
         }
     }
 
+    showArtworkInEditing() {
+        history.push(`/artStudio/${this.props.artworkId}`);
+    }
+
     showArtworkInGallery() {
+        history.push(`/gallery/${this.props.artist.artistId}/artwork/${this.props.artworkId}`);
+    }
+
+    showArtistGallery() {
         history.push(`/gallery/${this.props.artist.artistId}`);
     }
 
@@ -241,6 +246,9 @@ class ArtMaker extends Component {
 
                     {currentEditScreen === 'artworkPreview' &&
                     <ArtworkPreview artwork={editedArtwork}
+                                    setToolControls={this.setToolControls}
+                                    clearToolControls={this.clearToolControls}
+                                    onDone={this.showArtworkInGallery}
                                     maxWidth={contentWidth}
                                     maxHeight={contentHeight}/>
                     }
@@ -261,7 +269,7 @@ class ArtMaker extends Component {
                                     artist={artist}
                                     setToolControls={this.setToolControls}
                                     clearToolControls={this.clearToolControls}
-                                    onDeleteArtworkComplete={this.showArtworkInGallery}
+                                    onDeleteArtworkComplete={this.showArtistGallery}
                                     onDeleteArtworkCancel={this.showArtworkInEditing}/>
                     }
 

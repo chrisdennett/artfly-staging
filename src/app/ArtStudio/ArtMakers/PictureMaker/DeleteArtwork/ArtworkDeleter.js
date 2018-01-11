@@ -23,9 +23,9 @@ class ArtworkDeleter extends Component {
 
     componentDidMount() {
         this.props.setToolControls([
-            <ControlPanelButt key={'doDelete'} isSelected={true} label={'DELETE IT'} icon={faCheck}
+            <ControlPanelButt key={'doDelete'} isSelected={true} label={'DELETE'} icon={faCheck}
                               onClick={this.onDeleteConfirm}/>,
-            <ControlPanelButt key={'doNotDelete'} isSelected={true} label={'DON\'T DO IT'} icon={faTimes}
+            <ControlPanelButt key={'doNotDelete'} isSelected={true} label={'CANCEL'} icon={faTimes}
                               onClick={this.onDeleteCancel}/>
         ]);
     }
