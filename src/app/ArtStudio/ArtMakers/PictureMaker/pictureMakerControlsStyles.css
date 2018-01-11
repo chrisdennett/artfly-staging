@@ -4,9 +4,20 @@
     position:fixed;
     overflow-y:auto;
     overflow-x:hidden;
-    z-index: 10;
+    z-index: 12;
     margin: 20px 0 0 5px;
     width: 75px;
+}
+
+.pictureMakerControls::-webkit-scrollbar
+{
+    width: 10px;
+    background-color: rgba(245, 245, 245, 0.11);
+}
+
+.pictureMakerControls::-webkit-scrollbar-thumb
+{
+    background-color: rgba(0, 0, 0, 0.34);
 }
 
 .pictureMakerControls--menuDivider{

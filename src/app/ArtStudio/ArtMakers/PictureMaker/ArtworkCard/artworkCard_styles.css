@@ -1,0 +1,33 @@
+.artworkCard{
+    background: url("../../../../images/lined_paper.png"), white;
+
+    padding: 40px;
+    display: flex;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+}
+
+.artworkCard--thumbHolder{
+    position: relative;
+    margin-right: 20px;
+    background: white;
+}
+
+.artworkCard--svg{
+    position: absolute;
+    left:-5px;
+    top:-5px;
+    /*border: #704cb0 1px solid;*/
+}
+
+.artworkCard--imgHolder{
+    left: 5px;
+    line-height: 0;
+    padding: 10px;
+    /*border: #ff6600 solid 1px;*/
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.46), 0 0 1px rgba(0, 0, 0, 0.2);
+}
+
+.artworkCard--imgHolder--img{
+    /*border: #ff00ea solid 1px;*/
+}
+

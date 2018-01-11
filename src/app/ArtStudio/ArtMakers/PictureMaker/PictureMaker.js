@@ -13,7 +13,7 @@ import {
 // helpers
 import * as ImageHelper from "../../ImageHelper";
 // components
-import LoadingOverlay from '../../../global/LoadingOverlay';
+// import LoadingOverlay from '../../../global/LoadingOverlay';
 import PictureMakerControls from "./PictureMakerControls";
 import ArtworkDeleter from "./DeleteArtwork/ArtworkDeleter";
 import history from "../../../global/history";
@@ -208,7 +208,7 @@ class ArtMaker extends Component {
         const thumbUrl = editedArtwork.thumb_url;
         const artistId = artist ? artist.artistId : null;
 
-        const sideBarWidthAllowance = 65;
+        const sideBarWidthAllowance = 70;
         const mainContentMargin = 10;
         const toolButtAllowance = 65;
         const contentWidth = maxWidth - (sideBarWidthAllowance + mainContentMargin);
@@ -258,6 +258,7 @@ class ArtMaker extends Component {
 
                     {currentEditScreen === 'deleteArtwork' &&
                     <ArtworkDeleter artworkId={artworkId}
+                                    artwork={editedArtwork}
                                     setToolControls={this.setToolControls}
                                     clearToolControls={this.clearToolControls}
                                     artist={artist}

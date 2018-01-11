@@ -8,6 +8,7 @@ import './deleteArtwork_styles.css';
 import { deleteArtwork } from '../../../../../actions/UserDataActions';
 // components
 import ControlPanelButt from "../../../../global/Butt/ControlPanelButt";
+import ArtworkCard from '../ArtworkCard/ArtworkCard';
 
 class ArtworkDeleter extends Component {
 
@@ -20,14 +21,14 @@ class ArtworkDeleter extends Component {
         this.state = { artworkDeleting: false }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.setToolControls([
             <ControlPanelButt key={'doDelete'} label={'DELETE IT'} icon={faCheck} onClick={this.onDeleteConfirm}/>,
             <ControlPanelButt key={'doNotDelete'} label={'DON\'T DO IT'} icon={faTimes} onClick={this.onDeleteCancel}/>
         ]);
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.props.clearToolControls();
     }
 
@@ -48,7 +49,7 @@ class ArtworkDeleter extends Component {
     }
 
     render() {
-        const { thumbUrl, artist } = this.props;
+        const { artwork, artist } = this.props;
 
         return (
             <div className={'deleteArtwork'}>
@@ -60,12 +61,9 @@ class ArtworkDeleter extends Component {
 
                 {this.state.artworkDeleting === false &&
                 <div>
-                    <p>Are you sure you want to delete the artwork?</p>
-                    <div className={'artistSelector--artworkCard'}>
-                        <img className={'artistSelector--artworkCard--img'} src={thumbUrl} alt={''}/>
-                        <p>Artist: <strong>Artist name goes here.</strong></p>
-                    </div>
-                   {/* <div className='cropAndRotate--controls'>
+                    <p className={'deleteArtwork--question'}>Are you sure you want to delete this artwork?</p>
+                    <ArtworkCard artwork={artwork} artist={artist}/>
+                    {/* <div className='cropAndRotate--controls'>
                         <ControlPanelButt label={'DELETE IT'} icon={faCheck} onClick={this.onDeleteConfirm}/>
                         <ControlPanelButt label={'DON\'T DO IT'} icon={faTimes} onClick={this.onDeleteCancel}/>
                     </div>*/}
