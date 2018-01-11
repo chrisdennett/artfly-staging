@@ -2,10 +2,10 @@ import React from 'react';
 // styles
 import './artworkCard_styles.css';
 
-const ArtworkCard = function ({ artwork, artist }) {
+const ArtworkCard = function ({ artwork, artist, children }) {
 
     const { firstName, lastName } = artist;
-    const { thumb_url, widthToHeightRatio } = artwork;
+    const { thumb_url, widthToHeightRatio, dateAdded } = artwork;
     const imgPadding = 10; // set in css
     const thumbnailWidth = 150;
     const thumbnailHeight = thumbnailWidth * widthToHeightRatio;
@@ -14,6 +14,9 @@ const ArtworkCard = function ({ artwork, artist }) {
     const svgWidth = cornerOffset + cornerOffset + thumbnailWidth + (imgPadding * 2);
     const svgHeight = cornerOffset + cornerOffset + thumbnailHeight + (imgPadding * 2);
 
+    const addedDateTime = new Date(dateAdded);
+
+    const addedText = addedDateTime.toLocaleString();
 
     return (
         <div className={'artworkCard'}>
@@ -24,15 +27,16 @@ const ArtworkCard = function ({ artwork, artist }) {
                     <g stroke={'rgba(0,0,0,0.1)'} fill={'#fffebe'}>
                         <polygon points={`0,0 0,25 25,0`}/>
 
-                        <polygon points={`${svgWidth},0 ${svgWidth},25 ${svgWidth-25},0`}/>
+                        <polygon points={`${svgWidth},0 ${svgWidth},25 ${svgWidth - 25},0`}/>
 
                         <polygon points={`0,${svgHeight - 25} 25,${svgHeight} 0,${svgHeight}`}/>
 
-                        <polygon points={`${svgWidth},${svgHeight} ${svgWidth-25},${svgHeight} ${svgWidth},${svgHeight-25}`}/>
+                        <polygon
+                            points={`${svgWidth},${svgHeight} ${svgWidth - 25},${svgHeight} ${svgWidth},${svgHeight - 25}`}/>
                     </g>
                 </svg>
 
-                <div className={'artworkCard--imgHolder'} width={thumbnailWidth} height={thumbnailHeight}>
+                <div className={'artworkCard--imgHolder'}>
                     <img className={'artworkCard--imgHolder--img'}
                          width={thumbnailWidth}
                          height={thumbnailHeight}
@@ -40,7 +44,15 @@ const ArtworkCard = function ({ artwork, artist }) {
                          alt={`artwork by ${firstName} ${lastName}`}/>
                 </div>
             </div>
-            <p>by <strong>{firstName} {lastName}</strong></p>
+
+            <div>
+                <p>by <strong>{firstName} {lastName}</strong></p>
+                <p>Added on <strong>{addedText}</strong></p>
+            </div>
+
+            <div>
+                {children}
+            </div>
         </div>
     )
 };

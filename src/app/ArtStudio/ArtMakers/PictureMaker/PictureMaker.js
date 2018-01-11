@@ -205,12 +205,11 @@ class ArtMaker extends Component {
             else currentEditScreen = 'editPhoto';
         }
 
-        const thumbUrl = editedArtwork.thumb_url;
         const artistId = artist ? artist.artistId : null;
 
         const sideBarWidthAllowance = 70;
         const mainContentMargin = 10;
-        const toolButtAllowance = 65;
+        const toolButtAllowance = 75;
         const contentWidth = maxWidth - (sideBarWidthAllowance + mainContentMargin);
         const contentHeight = maxHeight - (toolButtAllowance + mainContentMargin);
 
@@ -259,16 +258,19 @@ class ArtMaker extends Component {
                     {currentEditScreen === 'deleteArtwork' &&
                     <ArtworkDeleter artworkId={artworkId}
                                     artwork={editedArtwork}
+                                    artist={artist}
                                     setToolControls={this.setToolControls}
                                     clearToolControls={this.clearToolControls}
-                                    artist={artist}
                                     onDeleteArtworkComplete={this.showArtworkInGallery}
                                     onDeleteArtworkCancel={this.showArtworkInEditing}/>
                     }
 
                     {currentEditScreen === 'editArtist' &&
                     <ArtistSelector
-                        thumbUrl={thumbUrl}
+                        artwork={editedArtwork}
+                        artist={artist}
+                        setToolControls={this.setToolControls}
+                        clearToolControls={this.clearToolControls}
                         artworkId={artworkId}
                         initialArtistId={artistId}
                         onCancel={this.showArtworkInEditing}

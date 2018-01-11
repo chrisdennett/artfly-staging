@@ -9,6 +9,9 @@ import { getUserArtistChanges, updateArtworkArtist } from '../../../../../action
 // components
 import ArtistSelectorOption from "./ArtistSelectorOption";
 import Butt from "../../../../global/Butt/Butt";
+import ArtworkCard from "../ArtworkCard/ArtworkCard";
+import { faCheck, faTimes } from "@fortawesome/fontawesome-free-solid/index.es";
+import ControlPanelButt from "../../../../global/Butt/ControlPanelButt";
 
 class ArtistSelector extends Component {
     constructor() {
@@ -27,6 +30,18 @@ class ArtistSelector extends Component {
 
         this.setInitialArtist(this.props);
     }
+
+    componentDidMount() {
+        this.props.setToolControls([
+            <ControlPanelButt key={'doDelete'} isSelected={true} label={'SAVE'} icon={faCheck} onClick={this.uploadChanges}/>,
+            <ControlPanelButt key={'doNotDelete'} isSelected={true} label={'CANCEL'} icon={faTimes} onClick={this.onCancel}/>
+        ]);
+    }
+
+    componentWillUnmount() {
+        this.props.clearToolControls();
+    }
+
 
     componentWillReceiveProps(nextProps) {
         this.setInitialArtist(nextProps);
@@ -64,18 +79,17 @@ class ArtistSelector extends Component {
     }
 
     render() {
-        const { artists, thumbUrl } = this.props;
+        const { artists, artist, artwork } = this.props;
         const { selectedArtistId } = this.state;
 
         if (selectedArtistId === '') return null;
 
+        const currentSelectedArtist = selectedArtistId ? artists[selectedArtistId] : artist;
+
         return (
             <div className={'artistSelector'}>
 
-                <div className={'artistSelector--artworkCard'}>
-                    <img className={'artistSelector--artworkCard--img'} src={thumbUrl} alt={''} />
-                    <p>Artist: <strong>Artist name goes here.</strong></p>
-                </div>
+                <ArtworkCard artist={currentSelectedArtist} artwork={artwork}/>
 
                 <div className={'artistSelector--artists'}>
                     {
@@ -91,10 +105,6 @@ class ArtistSelector extends Component {
                     }
                 </div>
 
-                <div className={'artistSelector-- controls'}>
-                    <Butt onClick={this.uploadChanges}>Save changes</Butt>
-                    <Butt onClick={this.onCancel}>Cancel</Butt>
-                </div>
             </div>
         )
     }

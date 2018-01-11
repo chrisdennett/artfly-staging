@@ -10,6 +10,8 @@
 .pictureMaker--main {
     position: absolute;
     z-index: 11;
+    overflow-y: auto;
+    overflow-x: hidden;
     /*display: none;*/
 }
 

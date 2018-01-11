@@ -38,16 +38,19 @@ class CropAndRotate extends Component {
         this.drawCuttingBoardCanvas();
         this.props.setToolControls([
             <ControlPanelButt icon={faRedo}
+                              isSelected={true}
                               key={'cropRotate'}
                               label={'ROTATE'}
                               onClick={this.onRotateClockwiseClick}/>,
 
             <ControlPanelButt icon={faCheck}
+                              isSelected={true}
                               key={'cropDone'}
                               label={'DONE'}
                               onClick={this.onDoneClick}/>,
 
             <ControlPanelButt icon={faTimes}
+                              isSelected={true}
                               key={'cropCancel'}
                               label={'CANCEL'}
                               onClick={this.onCancelClick}/>

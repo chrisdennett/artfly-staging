@@ -23,8 +23,10 @@ class ArtworkDeleter extends Component {
 
     componentDidMount() {
         this.props.setToolControls([
-            <ControlPanelButt key={'doDelete'} label={'DELETE IT'} icon={faCheck} onClick={this.onDeleteConfirm}/>,
-            <ControlPanelButt key={'doNotDelete'} label={'DON\'T DO IT'} icon={faTimes} onClick={this.onDeleteCancel}/>
+            <ControlPanelButt key={'doDelete'} isSelected={true} label={'DELETE IT'} icon={faCheck}
+                              onClick={this.onDeleteConfirm}/>,
+            <ControlPanelButt key={'doNotDelete'} isSelected={true} label={'DON\'T DO IT'} icon={faTimes}
+                              onClick={this.onDeleteCancel}/>
         ]);
     }
 
@@ -53,21 +55,13 @@ class ArtworkDeleter extends Component {
 
         return (
             <div className={'deleteArtwork'}>
-                {this.state.artworkDeleting &&
-                <div>
-                    Deleting artwork...
-                </div>
-                }
-
-                {this.state.artworkDeleting === false &&
-                <div>
+                <ArtworkCard artwork={artwork} artist={artist}>
                     <p className={'deleteArtwork--question'}>Are you sure you want to delete this artwork?</p>
-                    <ArtworkCard artwork={artwork} artist={artist}/>
-                    {/* <div className='cropAndRotate--controls'>
+                </ArtworkCard>
+                {/* <div className='cropAndRotate--controls'>
                         <ControlPanelButt label={'DELETE IT'} icon={faCheck} onClick={this.onDeleteConfirm}/>
                         <ControlPanelButt label={'DON\'T DO IT'} icon={faTimes} onClick={this.onDeleteCancel}/>
                     </div>*/}
-                </div>}
             </div>
         );
     }
