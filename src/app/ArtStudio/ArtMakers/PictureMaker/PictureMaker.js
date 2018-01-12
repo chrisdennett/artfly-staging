@@ -227,6 +227,11 @@ class ArtMaker extends Component {
 
         let cuttingMatData = {};
         switch (currentEditScreen) {
+            case 'uploadPhoto':
+                cuttingMatData.colour = 'yellow';
+                cuttingMatData.label = 'New Artwork';
+                break;
+
             case 'editPhoto':
                 cuttingMatData.colour = 'green';
                 cuttingMatData.label = 'Crop & Rotate';
