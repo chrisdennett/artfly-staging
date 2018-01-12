@@ -19,7 +19,7 @@ import ArtworkDeleter from "./DeleteArtwork/ArtworkDeleter";
 import history from "../../../global/history";
 import ArtworkPreview from "./ArtworkPreview/ArtworkPreview";
 import CropAndRotate from "./CropAndRotate/CropAndRotate";
-import NewArtworkPhotoSelector from "./NewArtworkPhotoSelector/NewArtworkPhotoSelector";
+import NewArtworkPhotoSelector from "./PhotoUploader/NewArtworkPhotoSelector";
 import ArtistSelector from "./ArtistSelector/ArtistSelector";
 import CuttingMat from "./CuttingMat/CuttingMat";
 import PictureMakerToolControls from "./PictureMakerToolControls/PictureMakerToolControls";

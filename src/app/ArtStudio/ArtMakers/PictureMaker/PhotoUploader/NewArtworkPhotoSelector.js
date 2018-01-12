@@ -2,10 +2,12 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import _ from 'lodash';
+// styles
+import './newArtworkPhotoSelector_styles.css';
 // actions
 import { getUserArtistChanges } from '../../../../../actions/UserDataActions'
 // import ArtistSelectorOption from "../../../../ArtistSelector/ArtistSelectorOption";
-import PhotoSelector from "../PhotoSelector/PhotoSelector";
+import PhotoSelector from "./PhotoSelector/PhotoSelector";
 
 class NewArtworkPhotoSelector extends Component {
 
@@ -18,7 +20,7 @@ class NewArtworkPhotoSelector extends Component {
         const { artists, onArtistSelected, onPhotoSelected } = this.props;
 
         return (
-            <div>
+            <div className={'newArtworkPhotoSelector'}>
                 {
                     _.map(artists, (artistData, artistId) => {
                         return <PhotoSelector

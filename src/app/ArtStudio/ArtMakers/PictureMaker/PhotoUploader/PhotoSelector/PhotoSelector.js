@@ -33,6 +33,7 @@ class PhotoSelector extends Component {
 
         return (
             <div className={'photoSelector'}>
+
                 <input className='photoSelector--input'
                        onClick={this.onInputClick}
                        onChange={this.onFileSelect}
@@ -52,7 +53,9 @@ class PhotoSelector extends Component {
                                     <path d="M46 14.5l13.72 13.72h-9.38v13.72h-8.861V28.22h-9.203z"/>
                                 </g>
                             </svg>
-                            <p className={'photoSelector--text'}>{firstName} {lastName}</p>
+
+                            <p className={'photoSelector--text'}>Add artwork for:</p>
+                            <p className={'photoSelector--label'}>{firstName} {lastName}</p>
                         </div>
                     </div>
 
