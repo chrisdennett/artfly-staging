@@ -8,8 +8,21 @@ import './newArtworkPhotoSelector_styles.css';
 import { getUserArtistChanges } from '../../../../../actions/UserDataActions'
 // import ArtistSelectorOption from "../../../../ArtistSelector/ArtistSelectorOption";
 import PhotoSelector from "./PhotoSelector/PhotoSelector";
+import { faTimes } from "@fortawesome/fontawesome-free-solid/index.es";
+import ControlPanelButt from "../../../../global/Butt/ControlPanelButt";
 
 class NewArtworkPhotoSelector extends Component {
+
+    componentDidMount() {
+        this.props.setToolControls([
+            <ControlPanelButt key={'doNotDelete'} isSelected={true} label={'CANCEL'} icon={faTimes}
+                              onClick={this.props.onCancel}/>
+        ]);
+    }
+
+    componentWillUnmount() {
+        this.props.clearToolControls();
+    }
 
     componentWillMount() {
         // Load in the users artists

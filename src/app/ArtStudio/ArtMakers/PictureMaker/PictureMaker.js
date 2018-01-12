@@ -162,12 +162,11 @@ class ArtMaker extends Component {
             let editedArtwork = { widthToHeightRatio, heightToWidthRatio, ...this.state.editedArtwork };
             this.setState({ editedArtwork, sourceImg });
         });
-
     }
 
     onCropAndRotateCancel() {
         if (this.props.isNewArtwork) {
-            this.setState({ editedArtwork: {} }, () => {
+            this.setState({ editedArtwork: {}, sourceImg:null }, () => {
                 history.push('/artStudio/new/uploadPhoto');
             })
         }
@@ -275,6 +274,9 @@ class ArtMaker extends Component {
                 <div className='pictureMaker--main' style={mainContentStyle}>
                     {currentEditScreen === 'uploadPhoto' &&
                     <NewArtworkPhotoSelector
+                        setToolControls={this.setToolControls}
+                        clearToolControls={this.clearToolControls}
+                        onCancel={() => history.push('/')}
                         onPhotoSelected={this.onNewPhotoSelectorPhotoSelected}
                         onArtistSelected={this.onNewPhotoSelectorArtistSelected}/>
                     }
