@@ -54,7 +54,7 @@ class PictureMakerControls extends Component {
                 {isNewArtwork &&
                 <ControlPanelButt
                     style={extraButtStyle}
-                    isSelected={currentEditScreen === 'uploadPhoto'}
+                    isSelected={currentEditScreen === 'uploadPhoto' || currentEditScreen === 'editPhoto'}
                     icon={faObjectGroup}
                     label={'UPLOAD PHOTO'}
                     linkTo={`/artStudio/${artworkId}/editPhoto`}/>

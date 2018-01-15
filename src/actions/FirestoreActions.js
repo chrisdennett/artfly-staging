@@ -378,8 +378,7 @@ export function fs_updateArtworkImage(artworkId, artistId, newImage, widthToHeig
                     let newArtworkData = {
                         widthToHeightRatio,
                         heightToWidthRatio,
-                        url: onCompleteData.downloadURL,
-                        lastUpdated:Date.now()
+                        url: onCompleteData.downloadURL
                     };
 
                     int_saveArtworkChanges(artworkId, newArtworkData, () => {
@@ -409,6 +408,9 @@ export function fs_updateThumbnail(artworkId, artistId, thumbFile, onChangeCallb
 
 // INTERNAL SAVE ARTWORK CHANGES
 function int_saveArtworkChanges(artworkId, newData, onChangeCallback = null) {
+
+    newData.lastUpdated = Date.now();
+
     db.collection('artworks')
         .doc(artworkId)
         .set(newData, { merge: true })
@@ -478,7 +480,7 @@ export function fs_getArtistArtworkChanges(artistId, userId, onChangeCallback = 
 }
 
 // GET ARTWORK CHANGES
-export function fs_getArtworkChanges(artworkId, onChangeCallback = null) {
+export function fs_getArtworkChanges(artworkId, onChangeCallback = null, onErrorCallback) {
     if (unsubscribers.artworkListeners[artworkId]) {
         return "already_running";
     }
@@ -487,7 +489,7 @@ export function fs_getArtworkChanges(artworkId, onChangeCallback = null) {
         .doc(artworkId)
         .onSnapshot(doc => {
                 if (!doc.exists) {
-                    // TODO: should return something so ui can deal with this.
+                    if(onErrorCallback) onErrorCallback();
                     return;
                 }
 
@@ -499,6 +501,7 @@ export function fs_getArtworkChanges(artworkId, onChangeCallback = null) {
                 if (onChangeCallback) onChangeCallback(artworkDataWithId);
             },
             (error) => {
+                if(onErrorCallback) onErrorCallback(error);
                 console.log("artwork changes listener error: ", error);
             });
 }

@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 // actions
 import { listenForArtworkChanges, listenForArtistChanges } from '../../actions/UserDataActions';
 // components
+import history from '../global/history';
 import PictureMaker from "./ArtMakers/PictureMaker/PictureMaker";
-import LoadingOverlay from "../global/LoadingOverlay";
 
 // In the future this screen will have options for the types of artwork
 // to make. Buttons would determine the maker to load
@@ -33,7 +33,10 @@ class ArtStudio extends Component {
         else {
             // Artwork Id in params, but artwork not loaded
             if (!props.artwork) {
-                this.props.listenForArtworkChanges(props.artworkId);
+                this.props.listenForArtworkChanges(props.artworkId, (error) => {
+                    // redirects to home paged if there's an error
+                    history.push('/');
+                });
             }
             // Artwork has been loaded, but not artist
             else if(!props.artist){
@@ -54,10 +57,11 @@ class ArtStudio extends Component {
         if (artwork && !artist) isLoadingMakerData = true;
 
         // don't mount the component until data is ready for it
-        if (isLoadingMakerData) return <LoadingOverlay/>;
+        // if (isLoadingMakerData) return <LoadingOverlay/>;
 
         return (
             <PictureMaker userId={userId}
+                          isLoadingData={isLoadingMakerData}
                           isNewArtwork={isNewArtwork}
                           windowSize={windowSize}
                           artworkId={artworkId}

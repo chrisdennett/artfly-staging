@@ -256,14 +256,16 @@ export function listenForArtistArtworkChanges(artistId, userId) {
     }
 }
 
-export function listenForArtworkChanges(artworkId) {
+export function listenForArtworkChanges(artworkId, errorCallback) {
     return (dispatch) => {
         fs_getArtworkChanges(artworkId, (artworkData) => {
             dispatch({
                 type: ARTWORK_CHANGE,
                 payload: artworkData
             });
-        })
+        }, () => {
+            if(errorCallback) errorCallback(artworkId);
+        } )
     }
 }
 

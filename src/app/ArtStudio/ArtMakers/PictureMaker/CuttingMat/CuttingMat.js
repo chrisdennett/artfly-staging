@@ -5,65 +5,56 @@ import './cuttingMat_styles.css';
 //https://css-tricks.com/examples/HSLaExplorer/
 //http://hslpicker.com/#0f615a
 
-const CuttingMat = function ({ width = 100, height = 100, colour = 'green', label = 'CROP & ROTATE' }) {
+const CuttingMat = function ({ showSpinner = false, spinnerLabel = 'LOADING', width = 100, height = 100, colour = 'green', label = 'CROP & ROTATE' }) {
 
     const matMargin = 3;
     const matWidth = width - (matMargin * 2);
     const matHeight = height - (matMargin * 2);
 
-    let fill, fillLight, ref;
+    let fill;
     let lineColour = 'rgba(255,255,255,0.2)';
     const bgFill = '#363636';
 
     switch (colour) {
         case 'green':
-            ref = '#0f6059';
+            // ref = '#0f6059';
             fill = 'hsl(175, 73%, 22%)';
-            fillLight = 'hsl(175, 73%, 30%)';
             break;
 
         case 'light-green':
-            ref = '#accc63';
+            // ref = '#accc63';
             fill = 'hsl(78, 51%, 59%)';
-            fillLight = 'hsl(78, 51%, 69%)';
             break;
 
         case 'pink':
-            ref = '#b75e78';
+            // ref = '#b75e78';
             fill = 'hsl(342, 38%, 54%)';
-            fillLight = 'hsl(342, 38%, 64%)';
             break;
 
         case 'purple':
-            ref = '#9862a8';
+            // ref = '#9862a8';
             fill = 'hsl(286, 29%, 52%)';
-            fillLight = 'hsl(286, 29%, 67%)';
             break;
 
         case 'red':
-            ref = '#b23e4d';
+            // ref = '#b23e4d';
             fill = 'hsl(352, 48%, 47%)';
-            fillLight = 'hsl(352, 48%, 57%)';
             break;
 
         case 'slate':
-            ref = '#52575c';
+            // ref = '#52575c';
             fill = 'hsl(210, 6%, 34%)';
-            fillLight = 'hsl(210, 6%, 44%)';
             break;
 
         case 'putty':
-            ref = '#c6c3a2';
+            // ref = '#c6c3a2';
             fill = 'hsl(55, 24%, 71%)';
-            fillLight = '#e1dcce';
             lineColour = 'rgba(0,0,0,0.1)';
             break;
 
         case 'yellow':
-            // fill = '#eec432';
-            ref = '#c59e2f';
+            // ref = '#c59e2f';
             fill = 'hsl(47,95%,40%)';
-            fillLight = 'hsl(47,95%,55%)';
             lineColour = 'hsla(47,95%,10%,0.2)';
             break;
 
@@ -80,11 +71,14 @@ const CuttingMat = function ({ width = 100, height = 100, colour = 'green', labe
     let hLines = getHGridLines(gridWidth, gridHeight, leftPadding, gridPadding, width, height, lineColour, fill);
     let vLines = getVGridLines(gridWidth, gridHeight, leftPadding, gridPadding, width, height, lineColour, fill);
 
-    const diagonal = <line key={'diag'} x1={0} y1={gridHeight} x2={gridWidth} y2={0} strokeWidth={1} stroke={lineColour}/>
+    const diagonal = <line key={'diag'} x1={0} y1={gridHeight} x2={gridWidth} y2={0} strokeWidth={1}
+                           stroke={lineColour}/>
 
     const titleBg = <rect x={30} y={30} width={240} height={62} fill={fill} stroke={lineColour}/>;
-    const title = <text x={40} y={60} fontSize={24} fontWeight={'bold'} fill={lineColour}>{label}</text>;
-    const subtitle = <text style={{ textAlign: 'center' }} x={40} y={82} fontSize={14} fill={lineColour}>--Artfly editing
+    const title = <text textAnchor={'middle'} width={240} x={150} y={60} fontSize={24} fontWeight={'bold'}
+                        fill={lineColour}>{label}</text>;
+    const subtitle = <text textAnchor={'middle'} width={240} x={150} y={82} fontSize={14} fill={lineColour}>--Artfly
+        editing
         mat--</text>;
 
     const grid = <g transform={`translate(${leftPadding}, ${gridPadding})`}>
@@ -96,14 +90,16 @@ const CuttingMat = function ({ width = 100, height = 100, colour = 'green', labe
         {subtitle}
     </g>;
 
+    const matCenterX = width / 2;
+    const matCenterY = height / 2;
 
     return (
         <svg className='cuttingMat--svg' width={width} height={height}>
 
             <defs>
-                <radialGradient id="exampleGradient">
-                    <stop offset="10%" stopColor={fillLight}/>
-                    <stop offset="85%" stopColor={fill}/>
+                <radialGradient id="exampleGradient" cx={'30%'} cy={'40%'}>
+                    <stop offset="10%" stopColor={'rgba(255,255,255,0.25)'}/>
+                    <stop offset="85%" stopColor={'rgba(255,255,255,0)'}/>
                 </radialGradient>
             </defs>
 
@@ -112,7 +108,7 @@ const CuttingMat = function ({ width = 100, height = 100, colour = 'green', labe
                   height={height}
             />
 
-            <rect fill="url(#exampleGradient)"
+            <rect fill={fill}
                   x={matMargin}
                   y={matMargin}
                   width={matWidth}
@@ -122,6 +118,34 @@ const CuttingMat = function ({ width = 100, height = 100, colour = 'green', labe
             />
 
             {grid}
+
+            {showSpinner &&
+            <g transform={`translate(${matCenterX}, ${matCenterY})`}>
+
+                <circle r="100" stroke={lineColour} strokeWidth="1" fill={fill}/>
+                <text textAnchor={'middle'}
+                      width={240}
+                      fontSize={24}
+                      opacity={0.7}
+                      fill={'white'}>
+                    {spinnerLabel}
+                </text>
+
+                <polygon className={'cuttingMat--spinner'}
+                         points={`0,0, 100, 0, 100, 10`}
+                         fill={lineColour} />
+            </g>
+            }
+
+
+            <rect fill="url(#exampleGradient)"
+                  x={matMargin}
+                  y={matMargin}
+                  width={matWidth}
+                  height={matHeight}
+                  rx={10}
+                  ry={10}
+            />
 
         </svg>
     )

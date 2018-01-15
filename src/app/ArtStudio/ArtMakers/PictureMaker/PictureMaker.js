@@ -13,7 +13,6 @@ import {
 // helpers
 import * as ImageHelper from "../../ImageHelper";
 // components
-// import LoadingOverlay from '../../../global/LoadingOverlay';
 import PictureMakerControls from "./PictureMakerControls";
 import ArtworkDeleter from "./DeleteArtwork/ArtworkDeleter";
 import history from "../../../global/history";
@@ -52,32 +51,41 @@ class ArtMaker extends Component {
     }
 
     componentWillMount() {
-        const { artwork, isNewArtwork } = this.props;
+        if (this.props.isLoadingData) return;
+
+        this.setupArtwork(this.props);
+    }
+
+    // if an artwork is updated and saved, this loads in the new data
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.isLoadingData) return;
+
+        const finishedLoading = !nextProps.isLoadingData && this.props.isLoadingData;
+        const noPreviousArtwork = nextProps.artwork && !this.props.artwork;
+
+        console.log("noPreviousArtwork: ", noPreviousArtwork);
+
+        if (finishedLoading || noPreviousArtwork || nextProps.artwork.lastUpdated !== this.props.artwork.lastUpdated) {
+            this.setupArtwork(nextProps);
+        }
+    }
+
+    setupArtwork(props) {
+        const { artwork, isNewArtwork } = props;
         // set up for a new artwork
         if (isNewArtwork) {
             this.setState({ editedArtwork: { adminId: this.props.userId } });
         }
         // set up for existing artwork
         else {
-            this.setupArtwork(artwork);
-        }
-    }
+            this.setState({ editedArtwork: { ...artwork } }, () => {
 
-    // if an artwork is updated and saved, this loads in the new data
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.artwork && nextProps.artwork.lastUpdated !== this.props.artwork.lastUpdated) {
-            this.setupArtwork(nextProps.artwork);
-        }
-    }
-
-    setupArtwork(artwork) {
-        this.setState({ editedArtwork: { ...artwork } }, () => {
-
-            // load image into state for use by cropper (and perhaps other comps in the future)
-            ImageHelper.GetImageFromUrl(artwork.url, (sourceImg) => {
-                this.setState({ sourceImg });
+                // load image into state for use by cropper (and perhaps other comps in the future)
+                ImageHelper.GetImageFromUrl(artwork.url, (sourceImg) => {
+                    this.setState({ sourceImg });
+                });
             });
-        });
+        }
     }
 
     getImageBlob(sourceImg, rotation, cropData, maxSize, callback) {
@@ -166,7 +174,7 @@ class ArtMaker extends Component {
 
     onCropAndRotateCancel() {
         if (this.props.isNewArtwork) {
-            this.setState({ editedArtwork: {}, sourceImg:null }, () => {
+            this.setState({ editedArtwork: {}, sourceImg: null }, () => {
                 history.push('/artStudio/new/uploadPhoto');
             })
         }
@@ -196,7 +204,7 @@ class ArtMaker extends Component {
     }
 
     render() {
-        let { isNewArtwork, windowSize, artworkId, currentEditScreen, artist } = this.props;
+        let { isLoadingData, isNewArtwork, windowSize, artworkId, currentEditScreen, artist } = this.props;
         const { sourceImg, editedArtwork, isSaving, currentToolButts } = this.state;
 
         const maxWidth = windowSize ? windowSize.windowWidth : 0;
@@ -238,7 +246,7 @@ class ArtMaker extends Component {
 
             case 'artworkPreview':
                 cuttingMatData.colour = 'purple';
-                cuttingMatData.label = 'Crop & Rotate';
+                cuttingMatData.label = 'Preview';
                 break;
 
             case 'editArtist':
@@ -255,11 +263,20 @@ class ArtMaker extends Component {
                 break;
         }
 
+        const isLoadingOrSaving = isLoadingData || isSaving || !editedArtwork;
+        const spinnerText = isLoadingOrSaving && isLoadingData ? 'Loading...' : 'Saving...';
+
+        console.log("isLoadingOrSaving: ", isLoadingOrSaving);
+        console.log("isSaving: ", isSaving);
+        console.log("editedArtwork: ", editedArtwork);
+
         return (
             <div className='pictureMaker'>
 
                 <CuttingMat width={maxWidth}
                             height={maxHeight}
+                            showSpinner={isLoadingOrSaving}
+                            spinnerLabel={spinnerText}
                             colour={cuttingMatData.colour}
                             label={cuttingMatData.label}
                 />
@@ -270,7 +287,7 @@ class ArtMaker extends Component {
                                       artworkId={artworkId}/>
 
 
-                {!isSaving &&
+                {!isLoadingOrSaving &&
                 <div className='pictureMaker--main' style={mainContentStyle}>
                     {currentEditScreen === 'uploadPhoto' &&
                     <NewArtworkPhotoSelector
@@ -325,7 +342,9 @@ class ArtMaker extends Component {
                 </div>
                 }
 
+                {!isLoadingOrSaving &&
                 <PictureMakerToolControls butts={currentToolButts}/>
+                }
 
             </div>
 
@@ -333,12 +352,7 @@ class ArtMaker extends Component {
     }
 }
 
-/*
-<ArtistUpdater artworkId={artworkId}
-                                   initialArtistId={artistId}
-                                   onCancel={this.showArtworkInEditing}
-                                   onUpdateComplete={this.showArtworkInEditing}/>
-*/
 
-const mapActionsToProps = { addArtwork, addThumbnail, updateArtworkImage, updateArtworkThumbnail };
-export default connect(null, mapActionsToProps)(ArtMaker);
+const
+    mapActionsToProps = { addArtwork, addThumbnail, updateArtworkImage, updateArtworkThumbnail };
+export default connect( null,  mapActionsToProps)(   ArtMaker);

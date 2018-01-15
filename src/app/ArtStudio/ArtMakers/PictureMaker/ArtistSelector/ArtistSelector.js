@@ -8,7 +8,6 @@ import './artistSelectorStyles.css';
 import { getUserArtistChanges, updateArtworkArtist } from '../../../../../actions/UserDataActions'
 // components
 import ArtistSelectorOption from "./ArtistSelectorOption";
-import Butt from "../../../../global/Butt/Butt";
 import ArtworkCard from "../ArtworkCard/ArtworkCard";
 import { faCheck, faTimes } from "@fortawesome/fontawesome-free-solid/index.es";
 import ControlPanelButt from "../../../../global/Butt/ControlPanelButt";
