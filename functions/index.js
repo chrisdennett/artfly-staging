@@ -1,12 +1,15 @@
 'use strict';
 
+// SAMPLE THUMBNAIL FUNCTION
+//https://github.com/firebase/functions-samples/blob/master/generate-thumbnail/functions/index.js
+
 const functions = require(`firebase-functions`);
 const Firestore = require('@google-cloud/firestore');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
 // const SDKFile = 'art-blam-firebase-adminsdk-zebo2-cc2250b8ef.json';
-const stagingSDKFile = 'art-blam-firebase-adminsdk-zebo2-cc2250b8ef.json';
+const stagingSDKFile = 'artfly-staging-firebase-adminsdk-eiano-9702287a36.json';
 
 // CHANGE FOR DEV / PRODUCTION
 const gcs = require('@google-cloud/storage')({  keyFilename: stagingSDKFile });
@@ -25,19 +28,19 @@ exports.removeImagesOnDelete = functions.storage.object()
         // If it's not a deletion event I'm not interested.
         if (event.data.resourceState !== `not_exists`) {
             console.log(`This is not a deletion event - take no action.`);
-            return;
+            return false;
         }
 
         // Exit if this is triggered on a file that is not an image.
         if (!event.data.contentType.startsWith(`image/`)) {
             console.log(`This is not an image - take no action.`);
-            return;
+            return false;
         }
 
         // Exit if the image is already a thumbnail.
         if (fileName.startsWith("large_") || fileName.startsWith("medium_") || fileName.startsWith("thumbnail_")) {
             console.log(`A thumbnail is being deleted - take no action.`);
-            return;
+            return false;
         }
 
         const largeImageFilePath = filePath.replace(fileName, "large_" + fileName);
@@ -88,18 +91,18 @@ exports.generateDifferentImageSizes = functions.storage.object()
         // Exit if this is triggered on a file that is not an image.
         if (!event.data.contentType.startsWith(`image/`)) {
             console.log(`This is not an image.`);
-            return;
+            return false;
         }
 
         // Exit if this is a move or deletion event.
         if (event.data.resourceState === `not_exists`) {
             console.log(`This is a deletion event.`);
-            return;
+            return false;
         }
 
         // Exit if the image is already a thumbnail.
         if (fileName.startsWith("large_") || fileName.startsWith("medium_") || fileName.startsWith("thumbnail_")) {
-            return;
+            return false;
         }
 
         // download a copy of the original image
@@ -183,6 +186,7 @@ exports.generateDifferentImageSizes = functions.storage.object()
             })
             .catch(error => {
                 console.log("error catch: ", error);
+                return error;
             })
     });
 

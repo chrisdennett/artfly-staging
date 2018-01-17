@@ -36,6 +36,9 @@ firebase deploy --only functions:subscriptionEvent
 firebase open
 // and select the option
 
+// SAMPLE THUMBNAIL FUNCTION
+https://github.com/firebase/functions-samples/blob/master/generate-thumbnail/functions/index.js
+
 ********************************************************************************
 ********************************************************************************
 
