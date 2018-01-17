@@ -4,7 +4,7 @@ import { faRedo, faTimes, faCheck } from '@fortawesome/fontawesome-free-solid';
 // styles
 import './cropAndRotate.css';
 // helpers
-import * as PhotoHelper from "../../../ImageHelper";
+import * as ImageHelper from "../../../ImageHelper";
 // components
 import CuttingBoard from "./CuttingBoard";
 import ScrollbarRemover from "../../../../global/ScrollbarRemover";
@@ -97,7 +97,7 @@ class CropAndRotate extends Component {
         const maxCuttingBoardWidth = width - (paddingSide * 2);
         const maxCuttingBoardHeight = height - (spaceForButtons + paddingTop);
 
-        PhotoHelper.drawToCanvas({
+        ImageHelper.drawToCanvas({
             sourceCanvas: sourceImg,
             outputCanvas: canvas,
             orientation: rotation,

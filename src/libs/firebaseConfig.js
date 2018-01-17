@@ -1,7 +1,21 @@
 import * as firebase from 'firebase';
 import firestore from 'firebase/firestore';
 
-const config = {
+// FOR STAGING
+const stagingOnlyConfig = {
+    apiKey: "AIzaSyBw4JO9UT1KXpDpnb6gvF2DfkIrXXQ4Vac",
+    authDomain: "artfly-staging.firebaseapp.com",
+    databaseURL: "https://artfly-staging.firebaseio.com",
+    projectId: "artfly-staging",
+    storageBucket: "artfly-staging.appspot.com",
+    messagingSenderId: "133898795032"
+};
+firebase.initializeApp(stagingOnlyConfig);
+
+if(1===2) console.log("fs: ", firestore); //just prevents annoying not used console warning
+
+// FOR PRODUCTION
+/*const config = {
     apiKey: "AIzaSyDlCRPX8Hf1w0tssjgxT7O05SY6aRIZWxY",
     authDomain: "art-blam.firebaseapp.com",
     projectId: "art-blam",
@@ -9,10 +23,7 @@ const config = {
     storageBucket: "art-blam.appspot.com",
     messagingSenderId: "156669954952"
 };
-
-firebase.initializeApp(config);
-
-if (1 === 2) console.log("firestore: ", firestore);
+firebase.initializeApp(config);*/
 
 firebase.firestore().enablePersistence()
     .then(function () {

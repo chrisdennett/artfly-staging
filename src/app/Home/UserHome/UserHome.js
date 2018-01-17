@@ -19,12 +19,14 @@ class UserHome extends Component {
     }
 
     render() {
+        const {maxArtworksReached, userArtists} = this.props;
+
         return (
             <div>
                 <AccountWarning className='userHome--accountWarning'
-                                maxArtworksReached={true}/>
+                                maxArtworksReached={maxArtworksReached}/>
 
-                <YourArtists userArtists={this.props.userArtists}/>
+                <YourArtists userArtists={userArtists}/>
 
                 <AccountSettings/>
             </div>
@@ -33,14 +35,17 @@ class UserHome extends Component {
 }
 
 const mapStateToProps = (state) => {
+
+    const {uid, maxArtworksReached, maxArtworks, planName, totalArtworks, status} = state.user;
+
     return {
-        maxArtworksReached: state.user.maxArtworksReached,
-        maxArtworks: state.user.maxArtworks,
-        planName: state.user.planName,
-        totalArtworks: state.user.totalArtworks,
-        userId: state.user.uid,
-        userStatus: state.user.status,
-        userArtists: getUserArtists(state.user.uid, state.artists)
+        maxArtworksReached: maxArtworksReached,
+        maxArtworks: maxArtworks,
+        planName: planName,
+        totalArtworks: totalArtworks,
+        userId: uid,
+        userStatus: status,
+        userArtists: getUserArtists(uid, state.artists)
     }
 };
 const mapActionsToProps = { updateSubscription, cancelSubscription, getUserArtistChanges };

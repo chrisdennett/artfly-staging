@@ -63,8 +63,6 @@ class ArtMaker extends Component {
         const finishedLoading = !nextProps.isLoadingData && this.props.isLoadingData;
         const noPreviousArtwork = nextProps.artwork && !this.props.artwork;
 
-        console.log("noPreviousArtwork: ", noPreviousArtwork);
-
         if (finishedLoading || noPreviousArtwork || nextProps.artwork.lastUpdated !== this.props.artwork.lastUpdated) {
             this.setupArtwork(nextProps);
         }
@@ -265,10 +263,6 @@ class ArtMaker extends Component {
 
         const isLoadingOrSaving = isLoadingData || isSaving || !editedArtwork;
         const spinnerText = isLoadingOrSaving && isLoadingData ? 'Loading...' : 'Saving...';
-
-        console.log("isLoadingOrSaving: ", isLoadingOrSaving);
-        console.log("isSaving: ", isSaving);
-        console.log("editedArtwork: ", editedArtwork);
 
         return (
             <div className='pictureMaker'>

@@ -13,6 +13,8 @@ npm run build
 firebase use staging
 firebase use default
 
+// change the firebase config
+
 firebase deploy
 firebase open hosting:site
 

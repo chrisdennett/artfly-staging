@@ -15,7 +15,7 @@ class NewArtworkPhotoSelector extends Component {
 
     componentDidMount() {
         this.props.setToolControls([
-            <ControlPanelButt key={'doNotDelete'} isSelected={true} label={'CANCEL'} icon={faTimes}
+            <ControlPanelButt key={'cancelUpload'} isSelected={true} label={'CANCEL'} icon={faTimes}
                               onClick={this.props.onCancel}/>
         ]);
     }
