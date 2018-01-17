@@ -1,6 +1,15 @@
 Upgrading npm.  Follow the instructions here:
 https://github.com/felixrieseberg/npm-windows-upgrade
 
+********************************************************************************
+FIREBASE SDK
+https://firebase.google.com/docs/functions/get-started#set_up_and_initialize_functions_sdk
+
+In many cases, new features and bug fixes are available only with the latest version of the Firebase CLI and the firebase-functions SDK. It's a good practice to frequently update both the Firebase CLI and the SDK with these commands inside the functions folder of your Firebase project:
+
+npm install firebase-functions@latest firebase-admin@latest --save
+npm install -g firebase-tools
+
 
 ********************************************************************************
 ********************************************************************************
@@ -51,7 +60,6 @@ There was a cross domain error - change when go live
   }
 ]
 
-gsutil cors set cors.json gs://art-blam.appspot.com
 
 ********************************************************************************
 ********************************************************************************

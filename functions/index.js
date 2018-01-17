@@ -1,11 +1,16 @@
 'use strict';
+
 const functions = require(`firebase-functions`);
 const Firestore = require('@google-cloud/firestore');
 const admin = require('firebase-admin');
-const gcs = require('@google-cloud/storage')({ keyFilename: 'art-blam-firebase-adminsdk-zebo2-cc2250b8ef.json' });
-const spawn = require(`child-process-promise`).spawn;
-
 admin.initializeApp(functions.config().firebase);
+
+// const SDKFile = 'art-blam-firebase-adminsdk-zebo2-cc2250b8ef.json';
+const stagingSDKFile = 'art-blam-firebase-adminsdk-zebo2-cc2250b8ef.json';
+
+// CHANGE FOR DEV / PRODUCTION
+const gcs = require('@google-cloud/storage')({  keyFilename: stagingSDKFile });
+const spawn = require(`child-process-promise`).spawn;
 
 const firestore = new Firestore();
 
