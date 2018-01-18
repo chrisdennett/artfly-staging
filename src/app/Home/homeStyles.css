@@ -1,5 +1,5 @@
 .home--heading {
-    padding: 5rem 10px 1rem 10px;
+    padding: 5rem 10px 0 10px;
     flex: 1;
 }
 
@@ -73,10 +73,11 @@
 
 .home--footer{
     margin-top: 4rem;
-    background-color: rgba(0, 0, 0, 0.68);
+    border-top: 20px solid white;
+    /*background-color: rgba(0, 0, 0, 0.68);*/
+    background: url("../images/floor-boards.png"), radial-gradient(circle, #fefce0, #e6e5cb);
     padding: 1.5rem;
-    border-radius: 5px;
-    color: white;
+    color: rgba(0, 0, 0, 0.54);
 }
 
 .home--footer h3{
@@ -86,6 +87,8 @@
 .home--footer--p{
     font-size: 1rem;
     margin-bottom: 1rem;
+
+
 }
 
 @media (max-width: 600px) {

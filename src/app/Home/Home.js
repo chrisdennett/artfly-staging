@@ -8,12 +8,14 @@ import Page from "../global/Page";
 import SignInOut from '../SignInOut/SignInOut';
 import PublicHome from "./PublicHome/PublicHome";
 import UserHome from "./UserHome/UserHome";
+import Skirting from "../global/flooring/skirting/Skirting";
+import Flooring from "../global/flooring/Flooring";
 
 const Home = ({ user }) => {
     const userLoggedIn = user && user.loginStatus === 'loggedIn';
 
     return (
-        <Page>
+        <div>
             <div className='home--heading'>
                 <div>
                     <Title/>
@@ -38,7 +40,8 @@ const Home = ({ user }) => {
             }
 
 
-            <div className='home--footer'>
+
+            <Flooring>
                 <h3>About us</h3>
                 <div className='home--footer--p'>
                     ArtFly is a massive global corporate monster run by the high-powered business types below from
@@ -56,8 +59,8 @@ const Home = ({ user }) => {
                 <div className='home--footer--personTile'>
                     Dot
                 </div>
-            </div>
-        </Page>
+            </Flooring>
+        </div>
     );
 };
 
