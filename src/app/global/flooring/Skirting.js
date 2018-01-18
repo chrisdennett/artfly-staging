@@ -1,6 +1,4 @@
 import React from 'react';
-//
-import './skirting_styles.css';
 
 const Skirting = function ({height=42}) {
 

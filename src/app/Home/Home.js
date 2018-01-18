@@ -4,11 +4,9 @@ import React from "react";
 import './homeStyles.css';
 // components
 import Title from "./UserHome/assets/Title";
-import Page from "../global/Page";
 import SignInOut from '../SignInOut/SignInOut';
 import PublicHome from "./PublicHome/PublicHome";
 import UserHome from "./UserHome/UserHome";
-import Skirting from "../global/flooring/skirting/Skirting";
 import Flooring from "../global/flooring/Flooring";
 
 const Home = ({ user }) => {
@@ -38,8 +36,6 @@ const Home = ({ user }) => {
             {!userLoggedIn &&
             <PublicHome/>
             }
-
-
 
             <Flooring>
                 <h3>About us</h3>

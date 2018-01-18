@@ -5,8 +5,6 @@ const Floor = function ({floorY, floorHeight}) {
     const floorColour = { fill: "#c49e71" };
     const floorPatternStyle = { fill: "#ad8b65" };
 
-
-
     return (
         <svg width={'100%'} height={'100%'}>
 

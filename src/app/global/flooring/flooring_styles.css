@@ -13,5 +13,5 @@
     margin: 0;
     /*background-color: rgba(0, 0, 0, 0.68);*/
     background: url("../../images/floor-boards.png"), radial-gradient(circle, #fefce0, #e6e5cb);
-    padding: 1.5rem;
+    padding: 1.5rem 1.5rem 5rem 1.5rem;
 }
