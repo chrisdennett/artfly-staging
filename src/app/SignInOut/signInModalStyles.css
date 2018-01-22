@@ -1,6 +1,5 @@
 .signInModal{
-    /*background: radial-gradient(circle, #039BE5, #01579b);*/
-    background: #d3e4f0 url("./../images/grid_42.png");
+    background: url("./../images/brickwall.png"), radial-gradient(circle, #daedfe, #9fb0c1);
     position: fixed;
     display: flex;
     top: 0;
