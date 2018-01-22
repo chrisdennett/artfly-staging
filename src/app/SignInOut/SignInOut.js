@@ -43,7 +43,7 @@ class SignInOut extends Component {
         const userLoggedIn = loginStatus === 'loggedIn';
 
         return (
-            <span>
+            <div>
                 <SignInModal closeModal={this.closeModal}
                              signInWithGoogleClick={this.signInWithGoogleClick}
                              signInWithFacebookClick={this.signInWithFacebookClick}
@@ -63,7 +63,7 @@ class SignInOut extends Component {
                       label={'Sign in'}
                       onClick={this.openModal}/>
                 }
-            </span>
+            </div>
         )
     }
 }

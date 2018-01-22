@@ -10,16 +10,18 @@ import GalleryControlsContainer from "./GalleryControls/GalleryControlsContainer
 class App extends Component {
 
     render() {
-        const { params, children } = this.props;
+        const { params, children, page, user } = this.props;
         const { artworkId, galleryId } = params;
         const { inArtStudio } = params;
 
         const leftMargin = inArtStudio ? 75 : 0;
 
+        console.log("this.props: ", this.props);
+
         return (
             <div className='app'>
 
-                {!inArtStudio &&
+                {!inArtStudio && page !== 'home' &&
                 <Link className='app--homeButt' linkTo={'/'}>
                     <IconButt icon={'logo'}
                               leftCorner={true}
@@ -29,7 +31,7 @@ class App extends Component {
                 </Link>
                 }
 
-                {!inArtStudio &&
+                {!inArtStudio && user.loginStatus === 'loggedIn' &&
                 <Link className='app--addArtButt' linkTo={`/artStudio/new/uploadPhoto`}>
                     <IconButt icon={'addArt'}
                               rightCorner={true}

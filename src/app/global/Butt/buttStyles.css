@@ -1,20 +1,21 @@
 .butt {
-    display: inline-flex;
+    display: flex;
     text-decoration: none;
-    flex-grow: 1;
     padding: 10px;
     margin: 10px;
     font-size: 1.5rem;
-    align-items: center;
     cursor: pointer;
     outline: none;
     background: rgba(255, 255, 255, 0);
     color: rgba(0, 0, 0, 0.8);
     border: 3px solid rgba(0, 0, 0, 0.7);
     box-shadow: 3px 3px rgba(0, 0, 0, 0.7);
-    justify-content: center;
-    /*font-weight: bold;*/
+    align-items: center;
     font-family: 'Stardos Stencil', cursive;
+}
+
+.butt--iconHolder{
+    margin-right: 5px;
 }
 
 .butt--small {
@@ -41,6 +42,7 @@
 
 .butt--yellow {
     background-color: #FFCC00;
+    background-blend-mode: multiply;
 
     /*background: repeating-linear-gradient(
             45deg,

@@ -14,8 +14,8 @@ const YourArtists = function ({ userArtists }) {
             <h2 className='home--subHeading'>Artists</h2>
 
             <Link linkTo={`/addOrEditArtist/`}>
-                <Butt>
-                    <IconGallery width={21} height={21}/> Add New Artist
+                <Butt svgIcon={<IconGallery/>}>
+                    Add New Artist
                 </Butt>
             </Link>
 
@@ -32,14 +32,14 @@ const YourArtists = function ({ userArtists }) {
                                 </div>
 
                                 <Link linkTo={`/gallery/${artist.artistId}`}>
-                                    <Butt yellow fullWidth>
-                                        <IconGallery width={21} height={21}/> Open Gallery
+                                    <Butt yellow svgIcon={<IconGallery/>}>
+                                        Open Gallery
                                     </Butt>
                                 </Link>
 
                                 <Link linkTo={`/addOrEditArtist/${artist.artistId}`}>
-                                    <Butt blue>
-                                        <IconGallery width={21} height={21}/> Edit Artist
+                                    <Butt blue svgIcon={<IconGallery/>}>
+                                        Edit Artist
                                     </Butt>
                                 </Link>
 

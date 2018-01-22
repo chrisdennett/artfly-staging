@@ -3,6 +3,7 @@ import React from "react";
 // styles
 import './homeStyles.css';
 // components
+import {IN_BETA_TESTING} from '../global/GLOBAL_CONSTANTS';
 import Title from "./Title";
 import SignInOut from '../SignInOut/SignInOut';
 import PublicHome from "./PublicHome/PublicHome";
@@ -23,9 +24,11 @@ const Home = ({ user }) => {
                     place...
                 </div>
 
+                {!IN_BETA_TESTING &&
                 <div className='home--signInOut'>
                     <SignInOut/>
                 </div>
+                }
 
             </div>
 

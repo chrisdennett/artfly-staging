@@ -24,12 +24,7 @@ class Butt extends Component {
     render() {
         const { label, onClick, alignLeft, size, svgIcon, showAsLink, fullWidth, ...rest } = this.props;
 
-        const labelPadding = svgIcon ? 10 : 0;
-        const labelStyle = { paddingLeft: labelPadding };
-
-        let buttonStyle = {
-
-        };
+        let buttonStyle = {  };
 
         if(alignLeft){
             buttonStyle.justifyContent = 'left';
@@ -65,16 +60,17 @@ class Butt extends Component {
         else if(blue) classes += ' butt--blue';
         else if(purple) classes += ' butt--purple';
 
+        const wording = label ? label : this.props.children;
+
         return (
-            <button onClick={onClick}
+            <div onClick={onClick}
                     className={classes}
                     style={buttonStyle}
                     onMouseEnter={this.onMouseEnter}
                     onMouseLeave={this.onMouseLeave}>
-                <span style={{paddingTop: 3}}>{svgIcon}</span>
-                <span style={labelStyle}>{label}</span>
-                {this.props.children}
-            </button>
+                <div className={'butt--iconHolder'}>{svgIcon}</div>
+                <div>{wording}</div>
+            </div>
         )
     }
 }
