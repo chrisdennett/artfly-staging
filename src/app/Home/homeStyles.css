@@ -10,9 +10,8 @@
 }
 
 .home--artflyLogoSvg{
-    height: 200px;
+    height: 170px;
     width: 120px;
-    margin-right: 20px;
 }
 
 .home--artflyLogoSvg--fly{
@@ -50,6 +49,7 @@
 .home--artflyNameSvg{
     height:100px;
     width:400px;
+    margin-left: 10px;
 }
 
 .home--tagLine {
@@ -76,7 +76,7 @@
     margin-top: 4rem;
     border-top: 20px solid white;
     /*background-color: rgba(0, 0, 0, 0.68);*/
-    background: url("../images/floor-boards.png"), radial-gradient(circle, #fefce0, #e6e5cb);
+    background: url("../images/floor-boards.png");
     padding: 1.5rem;
     color: rgba(0, 0, 0, 0.54);
 }

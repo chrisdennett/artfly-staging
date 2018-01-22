@@ -16,8 +16,6 @@ class App extends Component {
 
         const leftMargin = inArtStudio ? 75 : 0;
 
-        console.log("this.props: ", this.props);
-
         return (
             <div className='app'>
 

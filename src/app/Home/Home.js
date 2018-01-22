@@ -8,7 +8,7 @@ import Title from "./Title";
 import SignInOut from '../SignInOut/SignInOut';
 import PublicHome from "./PublicHome/PublicHome";
 import UserHome from "./UserHome/UserHome";
-import Flooring from "../global/flooring/Flooring";
+import Footer from "./Footer/Footer";
 
 const Home = ({ user }) => {
     const userLoggedIn = user && user.loginStatus === 'loggedIn';
@@ -40,25 +40,8 @@ const Home = ({ user }) => {
             <PublicHome/>
             }
 
-            <Flooring>
-                <h3>About us</h3>
-                <div className='home--footer--p'>
-                    ArtFly is a massive global corporate monster run by the high-powered business types below from
-                    the sprawling metropolis of Ulverson, Cumbria, UK.
-                </div>
-                <div className='home--footer--personTile'>
-                    Chris
-                </div>
-                <div className='home--footer--personTile'>
-                    Jennie
-                </div>
-                <div className='home--footer--personTile'>
-                    Holly
-                </div>
-                <div className='home--footer--personTile'>
-                    Dot
-                </div>
-            </Flooring>
+            <Footer/>
+
         </div>
     );
 };
