@@ -3,7 +3,7 @@ import { Field, reduxForm } from 'redux-form';
 
 import './artistEditor.css';
 
-import FormRenderField from '../global/FormRenderField';
+import FormRenderField from '../global/formField/FormRenderField';
 import Butt from "../global/Butt/Butt";
 import LinkButt from "../global/Butt/LinkButt";
 import Modal from "../global/Modal";

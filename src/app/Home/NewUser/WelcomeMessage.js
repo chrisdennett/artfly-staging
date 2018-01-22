@@ -1,5 +1,5 @@
 import React from 'react';
-import Page from "../global/Page";
+import Page from "../../global/Page";
 
 const WelcomeMessage = () => {
     return (

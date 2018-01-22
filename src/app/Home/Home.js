@@ -3,7 +3,7 @@ import React from "react";
 // styles
 import './homeStyles.css';
 // components
-import Title from "./UserHome/assets/Title";
+import Title from "./Title";
 import SignInOut from '../SignInOut/SignInOut';
 import PublicHome from "./PublicHome/PublicHome";
 import UserHome from "./UserHome/UserHome";

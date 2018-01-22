@@ -60,7 +60,7 @@ class SignInOut extends Component {
                 {!userLoggedIn &&
                 <Butt className='userHome--signOutButt'
                       svgIcon={<IconSignIn width={25} height={25} fill={'rgba(0, 0, 0, 0.8)'}/>}
-                      label={'Sign in (beta testers only for now)'}
+                      label={'Sign in'}
                       onClick={this.openModal}/>
                 }
             </span>
