@@ -7,3 +7,10 @@
     margin: 0 auto;
     box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 3px ;
 }
+
+@media screen and (max-width: 600px) {
+
+    .gallerySign{
+        padding: 1rem;
+    }
+}

@@ -1,6 +1,5 @@
 .home--heading {
-    padding: 5rem 10px 0 10px;
-    flex: 1;
+    padding: 3rem 10px 0 10px;
 }
 
 .home--title{
@@ -93,8 +92,14 @@
 }
 
 @media (max-width: 600px) {
+    .home--heading {
+        padding: 8% 10px 0 10px;
+    }
+
+
     .home--tagLine {
-        font-size: 1.3rem;
+        padding: 0;
+        font-size: 1rem;
     }
 }
 

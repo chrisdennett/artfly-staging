@@ -1,5 +1,7 @@
+/*@import url('https://fonts.googleapis.com/css?family=Roboto');*/
 @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:500,600,700,900');
 @import url('https://fonts.googleapis.com/css?family=Stardos+Stencil');
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:500');
 /*@import url('https://fonts.googleapis.com/css?family=Bungee+Inline|Cabin+Sketch|Codystar|Fredericka+the+Great|Jacques+Francois+Shadow|Kranky|Life+Savers:700|Londrina+Shadow|Love+Ya+Like+A+Sister');*/
 /*@import url('https://fonts.googleapis.com/css?family=Comfortaa:300,400,700');*/
 /*@import url('https://fonts.googleapis.com/css?family=Averia+Sans+Libre:300,400,700');*/
@@ -14,8 +16,12 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: 'Source Code Pro', monospace;
-    color: rgba(0, 0, 0, 0.8);
+    /*font-family: 'Roboto', sans-serif;*/
+    /*font-family: 'Source Code Pro', monospace;*/
+    font-family: 'Work Sans', sans-serif;
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 1.1rem;
+    /*color:red;*/
     line-height: 1.6rem;
 }
 
@@ -46,12 +52,12 @@ html, body {
     font-size: 3rem;
     font-weight: normal;
     line-height: 3rem;
-    color: rgba(0, 0, 0, 0.8);
     text-align: center;
 }
 
 .app--section {
     margin-top: 3rem;
+    padding: 3rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -59,7 +65,6 @@ html, body {
 
 .app--section--dark {
     background: rgba(0, 0, 0, 0.07);
-    padding: 50px;
 }
 
 .app--section--header {
@@ -123,7 +128,15 @@ html, body {
     height: 65px;
 }
 
-/*
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 600px) {
 
-}*/
+    .app--section {
+        margin-top: 1rem;
+        padding: 4%;
+    }
+
+    .app--stencil-header {
+        font-size: 2rem;
+        line-height: 2rem;
+    }
+}

@@ -1,9 +1,19 @@
 .stencilHeader {
     font-family: 'Stardos Stencil', cursive;
-    font-size: 3rem;
+    font-size: 2.8rem;
     font-weight: normal;
     line-height: 3rem;
     color: rgba(0, 0, 0, 0.8);
     text-align: center;
-    margin: 2rem 1rem 1.5rem 1rem
+    margin: 0 1rem 1.5rem 1rem;
 }
+
+@media screen and (max-width: 600px) {
+    .stencilHeader {
+        font-size: 2rem;
+        line-height: 2rem;
+        margin: 1rem 1rem 1.5rem 1rem;
+    }
+}
+
+
