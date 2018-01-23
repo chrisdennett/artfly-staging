@@ -3,6 +3,10 @@ import React from 'react';
 import './footer_styles.css';
 // images
 import chrisPic from './../../images/chris_150.png';
+import jenniePic from './../../images/jennie_150.png';
+import hollyPic from './../../images/holly_150.png';
+import dotPic from './../../images/dot_150.png';
+import stitchPic from './../../images/stitch_150.png';
 // comps
 import Flooring from "../../global/flooring/Flooring";
 
@@ -30,39 +34,55 @@ const Footer = function () {
 
 
                     {/*<h3>About us</h3>*/}
-                    <div>
-                        ArtFly is a massive corporate monster run by the high-powered business types below.
-                        Based in the sprawling metropolis of Ulverston, Cumbria, UK.
+                    <div className={'footer--intro'}>
+                        <p>ArtFly is a massive corporate monster run by the high-powered business types below.</p>
+                            <p>Based in the sprawling metropolis of Ulverston, Cumbria, UK.</p>
                     </div>
                     <div className='footer--personTiles'>
                         <div className='footer--personTile'>
-                            <img src={chrisPic} alt={'Chris'}/>
-                            <p className='footer--personTile--label'>
+                            <img width={150} height={150} src={chrisPic} alt={'Chris'}/>
+                            <p className='footer--personTile--name'>
                                 Chris
                             </p>
+                            <p className='footer--personTile--role'>
+                                Head of hair
+                            </p>
+
                         </div>
                         <div className='footer--personTile'>
-                            <img src={chrisPic} alt={'Chris'}/>
-                            <p className='footer--personTile--label'>
+                            <img src={jenniePic} alt={'Chris'}/>
+                            <p className='footer--personTile--name'>
                                 Jennie
                             </p>
+                            <p className='footer--personTile--role'>
+                                Big Cheese (hat)
+                            </p>
                         </div>
                         <div className='footer--personTile'>
-                            <img src={chrisPic} alt={'Chris'}/>
-                            <p className='footer--personTile--label'>
+                            <img src={hollyPic} alt={'Chris'}/>
+                            <p className='footer--personTile--name'>
                                 Holly
                             </p>
-                        </div>
-                        <div className='footer--personTile'>
-                            <img src={chrisPic} alt={'Chris'}/>
-                            <p className='footer--personTile--label'>
-                                Dot
+                            <p className='footer--personTile--role'>
+                                CEO of Hard Stares
                             </p>
                         </div>
                         <div className='footer--personTile'>
-                            <img src={chrisPic} alt={'Chris'}/>
-                            <p className='footer--personTile--label'>
+                            <img src={dotPic} alt={'Chris'}/>
+                            <p className='footer--personTile--name'>
+                                Dot
+                            </p>
+                            <p className='footer--personTile--role'>
+                                Spells and Potions
+                            </p>
+                        </div>
+                        <div className='footer--personTile'>
+                            <img src={stitchPic} alt={'Chris'}/>
+                            <p className='footer--personTile--name'>
                                 Stitch
+                            </p>
+                            <p className='footer--personTile--role'>
+                                Boss
                             </p>
                         </div>
                     </div>
