@@ -4,7 +4,10 @@ import React from 'react';
 import './publicHomeStyles.css';
 import GallerySign from "../../global/gallerySign/GallerySign";
 import StencilHeader from "../../global/stencilHeader/StencilHeader";
-import HoverLogo from "../HoverLogo";
+import HoverLogo from "../animatedIcons/HoverLogo";
+import SnapPicIcon from "../animatedIcons/SnapPicIcon";
+import PrepareTheCanvasIcon from "../animatedIcons/PrepareTheCanvasIcon";
+import Animator from "../animatedIcons/Animator";
 
 const PublicHome = function () {
 
@@ -32,14 +35,17 @@ const PublicHome = function () {
                         artwork. Here's how it'll work:</p>
 
                     <div className={'app--section-content--cards'}>
+
+                        <Animator/>
+
                         <div className={'app--section-content--card'}>
-                            <HoverLogo/>
+                            <SnapPicIcon/>
                             <p>Add a Photo of the artwork</p>
                         </div>
 
                         <div className={'app--section-content--card'}>
-                            <HoverLogo/>
-                            <p>Trim and frame it</p>
+                            <PrepareTheCanvasIcon />
+                            <p>Prepare the canvas</p>
                         </div>
 
                         <div className={'app--section-content--card'}>

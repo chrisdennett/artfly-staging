@@ -1,0 +1,74 @@
+.home--artflyLogoSvg{
+    height: 170px;
+    width: 120px;
+}
+
+.home--artflyLogoSvg--fly{
+    x:30;
+    animation-name: logoHover;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+}
+
+.home--artflyLogoSvg--shadow{
+    x:15;
+    y:160;
+    width:80px;
+    height:16px;
+    fill: rgba(0, 0, 0, 0.1);
+    animation-name: shadowGrow;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+}
+
+#flash{
+    opacity: 0;
+    animation-name: flashOnOff;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+.thumb{
+    transform: rotateZ(-10deg);
+    animation-name: thumbPress;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes thumbPress {
+    0% {transform: rotateZ(-10deg);}
+    50% {transform: rotateZ(0deg);}
+    55% {transform: rotateZ(1deg);}
+    70% {transform: rotateZ(1deg);}
+    100% {transform: rotateZ(-10deg);}
+}
+
+@keyframes flashOnOff {
+    0% {opacity:0}
+    70% {opacity:0}
+    75% {opacity:1}
+    80% {opacity:0}
+    75% {opacity:1}
+    100% {opacity:1}
+}
+
+@keyframes logoHover {
+    0% {transform: translate(3px, 0px);}
+    50% {transform: translate(0px, -15px);}
+    100% {transform: translate(3px, 0px);}
+}
+
+@keyframes shadowGrow {
+    0% {width: 80px; transform: translate(0px, 0px);}
+    50% {width: 60px; transform: translate(10px, 0px);}
+    100% {width: 80px; transform: translate(0px, 0px);}
+}
+.home--snapPicIcon{
+    height: 170px;
+    width: 120px;
+}
+
+
+

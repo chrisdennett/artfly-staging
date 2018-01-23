@@ -1,0 +1,134 @@
+.prepareTheCanvasIcon{
+    height: 170px;
+    width: 120px;
+}
+
+/*
+- guides should start invisible and off to the sides
+- they should fade in as they move into position
+- the slices should immediately jump to show a gap
+- then slide off to the sides
+- then reappear back where they started.
+
+*/
+
+#topSlice{
+    animation-name: topSliceAnim;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+#bottomSlice{
+    animation-name: bottomSliceAnim;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+#leftSlice{
+    animation-name: leftSliceAnim;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+#rightSlice{
+    animation-name: rightSliceAnim;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+
+.topGuide{
+    transform: translate(0, -32px);
+    animation-name: topGuideAnim;
+    opacity: 0;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+.bottomGuide{
+    transform: translate(0, 32px);
+    animation-name: bottomGuideAnim;
+    opacity: 0;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+.leftGuide{
+    transform: translate(-32px, 0);
+    animation-name: leftGuideAnim;
+    opacity: 0;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+.rightGuide{
+    transform: translate(32px, 0);
+    animation-name: rightGuideAnim;
+    opacity: 0;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+
+@keyframes topGuideAnim {
+    0% {opacity: 0; transform: translate(0, -32px);}
+    30% {opacity: 1; transform: translate(0,0);}
+    50% {opacity: 1; transform: translate(0,0);}
+    100% {opacity: 0; ; transform: translate(0,0);}
+}
+
+@keyframes bottomGuideAnim {
+    0% {opacity: 0; transform: translate(0, 32px);}
+    30% {opacity: 1; transform: translate(0,0);}
+    50% {opacity: 1; transform: translate(0,0);}
+    100% {opacity: 0; ; transform: translate(0,0);}
+}
+
+@keyframes leftGuideAnim {
+    0% {opacity: 0; transform: translate(-32px, 0);}
+    30% {opacity: 1; transform: translate(0,0);}
+    50% {opacity: 1; transform: translate(0,0);}
+    100% {opacity: 0; ; transform: translate(0,0);}
+}
+
+@keyframes rightGuideAnim {
+    0% {opacity: 0; transform: translate(32px, 0);}
+    30% {opacity: 1; transform: translate(0,0);}
+    50% {opacity: 1; transform: translate(0,0);}
+    100% {opacity: 0; ; transform: translate(0,0);}
+}
+
+/*SLICES*/
+@keyframes topSliceAnim {
+    0% {opacity: 1; transform: translate(0, 0);}
+    33% {opacity: 1; transform: translate(0,0);}
+    35% {opacity: 1; transform: translate(0,-5px);}
+    80% {opacity: 0; transform: translate(0,-5px);}
+    90% {opacity: 0; transform: translate(0,0); }
+}
+
+@keyframes bottomSliceAnim {
+    0% {opacity: 1; transform: translate(0, 0);}
+    33% {opacity: 1; transform: translate(0,0);}
+    35% {opacity: 1; transform: translate(0,5px);}
+    80% {opacity: 0; transform: translate(0,5px);}
+    90% {opacity: 0; transform: translate(0,0); }
+}
+
+@keyframes leftSliceAnim {
+    0% {opacity: 1; transform: translate(0, 0);}
+    33% {opacity: 1; transform: translate(0,0);}
+    35% {opacity: 1; transform: translate(-5px,0);}
+    80% {opacity: 0; transform: translate(-5px,0);}
+    90% {opacity: 0; transform: translate(0,0); }
+}
+
+@keyframes rightSliceAnim {
+    0% {opacity: 1; transform: translate(0, 0);}
+    33% {opacity: 1; transform: translate(0,0);}
+    35% {opacity: 1; transform: translate(5px,0);}
+    80% {opacity: 0; transform: translate(5px,0);}
+    90% {opacity: 0; transform: translate(0,0); }
+}
+
+

@@ -3,14 +3,14 @@
     text-decoration: none;
     padding: 5px 10px;
     margin: 10px;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     cursor: pointer;
     outline: none;
     background: rgba(255, 255, 255, 0);
     color: rgba(0, 0, 0, 0.8);
     border: 3px solid rgba(0, 0, 0, 0.7);
     box-shadow: 3px 3px rgba(0, 0, 0, 0.7);
-    font-weight: bold;
+    /*font-weight: bold;*/
     align-items: center;
     /*font-family: 'Stardos Stencil', cursive;*/
 }

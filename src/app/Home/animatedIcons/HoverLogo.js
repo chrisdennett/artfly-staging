@@ -1,6 +1,7 @@
 import React from 'react';
+import './animationStyles.css';
 
-const HoverLogo = function (props) {
+const HoverLogo = function () {
     return (
         <svg className={'home--artflyLogoSvg'} viewBox="0 0 153 153">
             <g className={'home--artflyLogoSvg--fly'}>
