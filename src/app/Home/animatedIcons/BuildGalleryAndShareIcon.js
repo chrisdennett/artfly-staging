@@ -3,8 +3,8 @@ import './buildGalleryIcon_styles.css';
 
 const BuildGalleryAndShareIcon = function () {
     return (
-        <svg className={'buildGalleryIcon'} width="155.4" height="184.4" viewBox="0 0 155.4 184.4">
-            <g strokeWidth=".992">
+        <svg className={'buildGalleryIcon'} width="155.4" height="184.4" viewBox="0 0 170 170">
+            {/*<g strokeWidth=".992">
                 <path fill="#eed7be" d="M155.484 168.12h-59.18v3.518h59.18z"/>
                 <path fill="#e7c9aa" d="M96.3 168.12H37.12v3.518H96.3z"/>
                 <path fill="#f9e4d0" d="M37.1 168.12H-.28v3.518H37.1z"/>
@@ -24,7 +24,34 @@ const BuildGalleryAndShareIcon = function () {
                 <path fill="#eed7be" d="M78.537 158.473h59.18v3.519h-59.18z"/>
                 <path fill="#e7c9aa" d="M137.687 158.473h17.73v3.519h-17.73zM26.177 158.473H-.303v3.519h26.48z"/>
             </g>
-            <path fill="#fff" d="M-.297 151.2h156v-2.356h-156z"/>
+            <path fill="#fff" d="M-.297 151.2h156v-2.356h-156z"/>*/}
+
+
+            <rect x="17"
+                  y="15"
+                  width="45"
+                  height="55"
+                  fill="none" stroke={'#000'} strokeDasharray={'5,5'} opacity={0.2}/>
+
+            <rect x="17"
+                  y="85"
+                  width="55"
+                  height="45"
+                  fill="none" stroke={'#000'} strokeDasharray={'5,5'} opacity={0.2}/>
+
+            <rect x="80"
+                  y="17"
+                  width="55"
+                  height="45"
+                  fill="none" stroke={'#000'} strokeDasharray={'5,5'} opacity={0.2}/>
+
+            <rect x="93"
+                  y="80"
+                  width="50"
+                  height="58"
+                  fill="none" stroke={'#000'} strokeDasharray={'5,5'} opacity={0.2}/>
+
+
             <g className={'buildGalleryIcon--pic1'} transform="translate(0 2)">
                 <path id="frameBottomRight" d="M64.98 8.024l-49.32 60.63h49.32z" fill="#1a1a1a"/>
                 <path id="frameTopLeft" d="M64.98 8.024l-49.32 60.63V8.024z" fill="#393939"/>
@@ -74,6 +101,7 @@ const BuildGalleryAndShareIcon = function () {
                 <ellipse transform="matrix(.8883 -.4592 .5476 .8367 0 0)" cx="67.71" cy="82.42" rx="1.035" ry="1.039" fill="#fff"/>
                 <ellipse transform="matrix(.8883 -.4592 .5476 .8367 0 0)" cx="74.67" cy="82.1" rx="1.035" ry="1.039" fill="#fff"/>
             </g>
+
             <g className={'buildGalleryIcon--pic3'}  transform="translate(0 2)">
                 <path d="M14.46 129.4l58.37-47.23v47.23z" fill="#ca4040"/>
                 <path d="M14.46 129.4l58.37-47.23H14.46z" fill="#aa2f2f"/>
@@ -172,6 +200,9 @@ const BuildGalleryAndShareIcon = function () {
                 <ellipse transform="matrix(-.889 .458 -.5489 -.8359 0 0)" cx="14.43" cy="-126.2" rx=".34" ry=".34" fill="#fff"/>
                 <ellipse transform="matrix(-.889 .458 -.5489 -.8359 0 0)" cx="16.71" cy="-126.3" rx=".34" ry=".34" fill="#fff"/>
             </g>
+
+
+
             <g className={'buildGalleryIcon--pic4'}  transform="translate(0 2)">
                 <path d="M142.5 76.8l-49.32 60.63h49.32z" fill="#1a1a1a"/>
                 <path d="M142.5 76.8l-49.32 60.63V76.8z" fill="#393939"/>
@@ -193,7 +224,7 @@ const BuildGalleryAndShareIcon = function () {
                 <ellipse transform="matrix(.6735 .7392 -.6665 .7455 0 0)" cx="157.3" cy="-17.44" rx="1.035" ry="1.039" fill="#fff"/>
                 <ellipse transform="matrix(.6735 .7392 -.6665 .7455 0 0)" cx="164.3" cy="-17.76" rx="1.035" ry="1.039" fill="#fff"/>
             </g>
-            <path fill="#fcfcfc" d="M-.297 151.2h156v7.218h-156z"/>
+            {/*<path fill="#fcfcfc" d="M-.297 151.2h156v7.218h-156z"/>
             <path opacity=".239" d="M-.297 158.9h156v-.486h-156zM-.297 151.5h156v-.3h-156z"/>
             <g strokeWidth=".992">
                 <path fill="#eed7be" d="M155.484 181.25h-59.18v3.518h59.18z"/>
@@ -215,7 +246,7 @@ const BuildGalleryAndShareIcon = function () {
                 <path fill="#eed7be" d="M58.884 171.603h44.426v3.519H58.884z"/>
                 <path fill="#e7c9aa" d="M103.288 171.603h33.098v3.519h-33.098zM19.577 171.603H-.3v3.519h19.878z"/>
                 <path fill="#f9e4d0" d="M155.462 171.603h-19.046v3.519h19.046z"/>
-            </g>
+            </g>*/}
         </svg>
 
 
