@@ -1,0 +1,42 @@
+.buildGalleryIcon{
+    /*height: 170px;*/
+    /*width: 120px;*/
+}
+
+.buildGalleryIcon--pic1{
+    opacity: 0;
+    animation-name: frameAnim;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+.buildGalleryIcon--pic2{
+    opacity: 0;
+    animation-name: frameAnim;
+    animation-delay: 250ms;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+.buildGalleryIcon--pic3{
+    opacity: 0;
+    animation-name: frameAnim;
+    animation-delay: 500ms;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+.buildGalleryIcon--pic4{
+    opacity: 0;
+    animation-name: frameAnim;
+    animation-delay: 750ms;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes frameAnim {
+    0% {opacity:0}
+    25% {opacity:0}
+    50% {opacity:1}
+    70% {opacity:1}
+}

@@ -23,6 +23,8 @@ gulp.task('optimise-svgs', function () {
     gulp.src('src/svg-source/svg_exports/*.svg')
         .pipe(replace('xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"', ''))
         .pipe(replace(" xmlns=\"http://www.w3.org/2000/svg\"", ''))
+        .pipe(replace(/ solid-color="#000000"/g, ''))
+        .pipe(replace(/ color="#000000"/g, ''))
         .pipe(replace(/mix-blend-mode:normal;isolation:auto/g, ''))
         .pipe(replace(/isolation:auto;mix-blend-mode:normal/g, ''))
         .pipe(replace(/ stroke-linejoin="round"/g, ''))

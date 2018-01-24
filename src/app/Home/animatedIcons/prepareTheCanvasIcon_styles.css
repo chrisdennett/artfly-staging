@@ -74,28 +74,28 @@
     0% {opacity: 0; transform: translate(0, -32px);}
     30% {opacity: 1; transform: translate(0,0);}
     50% {opacity: 1; transform: translate(0,0);}
-    100% {opacity: 0; ; transform: translate(0,0);}
+    100% {opacity: 0; transform: translate(0,0);}
 }
 
 @keyframes bottomGuideAnim {
     0% {opacity: 0; transform: translate(0, 32px);}
     30% {opacity: 1; transform: translate(0,0);}
     50% {opacity: 1; transform: translate(0,0);}
-    100% {opacity: 0; ; transform: translate(0,0);}
+    100% {opacity: 0; transform: translate(0,0);}
 }
 
 @keyframes leftGuideAnim {
     0% {opacity: 0; transform: translate(-32px, 0);}
     30% {opacity: 1; transform: translate(0,0);}
     50% {opacity: 1; transform: translate(0,0);}
-    100% {opacity: 0; ; transform: translate(0,0)npm start;}
+    100% {opacity: 0; transform: translate(0,0);}
 }
 
 @keyframes rightGuideAnim {
     0% {opacity: 0; transform: translate(32px, 0);}
     30% {opacity: 1; transform: translate(0,0);}
     50% {opacity: 1; transform: translate(0,0);}
-    100% {opacity: 0; ; transform: translate(0,0);}
+    100% {opacity: 0; transform: translate(0,0);}
 }
 
 /*SLICES*/

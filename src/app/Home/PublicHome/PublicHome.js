@@ -8,6 +8,7 @@ import HoverLogo from "../animatedIcons/HoverLogo";
 import SnapPicIcon from "../animatedIcons/SnapPicIcon";
 import PrepareTheCanvasIcon from "../animatedIcons/PrepareTheCanvasIcon";
 import FrameItIcon from "../animatedIcons/FrameItIcon";
+import BuildGalleryAndShareIcon from "../animatedIcons/BuildGalleryAndShareIcon";
 
 const PublicHome = function () {
 
@@ -38,27 +39,27 @@ const PublicHome = function () {
 
                         <div className={'app--section-content--card'}>
                             <SnapPicIcon/>
-                            <p>Snap the artwork</p>
+                            <p>1. Snap the artwork</p>
                         </div>
 
                         <div className={'app--section-content--card'}>
                             <PrepareTheCanvasIcon />
-                            <p>Prepare the canvas</p>
+                            <p>2. Prepare the canvas</p>
                         </div>
 
                         <div className={'app--section-content--card'}>
                             <FrameItIcon />
-                            <p>Frame it</p>
+                            <p>3. Frame it</p>
+                        </div>
+
+                        <div className={'app--section-content--card'}>
+                            <BuildGalleryAndShareIcon/>
+                            <p>4. Build and Share your gallery</p>
                         </div>
 
                         <div className={'app--section-content--card'}>
                             <HoverLogo/>
-                            <p>Share it</p>
-                        </div>
-
-                        <div className={'app--section-content--card'}>
-                            <HoverLogo/>
-                            <p>Use your artwork to develop new creations in the ArtFly studio</p>
+                            <p>Art projects coming soon...</p>
                         </div>
                     </div>
 
