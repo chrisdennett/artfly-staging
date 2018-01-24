@@ -7,7 +7,7 @@ import StencilHeader from "../../global/stencilHeader/StencilHeader";
 import HoverLogo from "../animatedIcons/HoverLogo";
 import SnapPicIcon from "../animatedIcons/SnapPicIcon";
 import PrepareTheCanvasIcon from "../animatedIcons/PrepareTheCanvasIcon";
-import Animator from "../animatedIcons/Animator";
+import FrameItIcon from "../animatedIcons/FrameItIcon";
 
 const PublicHome = function () {
 
@@ -36,11 +36,9 @@ const PublicHome = function () {
 
                     <div className={'app--section-content--cards'}>
 
-                        <Animator/>
-
                         <div className={'app--section-content--card'}>
                             <SnapPicIcon/>
-                            <p>Add a Photo of the artwork</p>
+                            <p>Snap the artwork</p>
                         </div>
 
                         <div className={'app--section-content--card'}>
@@ -49,8 +47,13 @@ const PublicHome = function () {
                         </div>
 
                         <div className={'app--section-content--card'}>
+                            <FrameItIcon />
+                            <p>Frame it</p>
+                        </div>
+
+                        <div className={'app--section-content--card'}>
                             <HoverLogo/>
-                            <p>Hang it in your gallery and share it</p>
+                            <p>Share it</p>
                         </div>
 
                         <div className={'app--section-content--card'}>

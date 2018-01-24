@@ -1,24 +1,27 @@
 import React, { Component } from "react";
 
-const topLineAnim = {
-    startY: -32,
+/*
+WIP
+I imagine this being used as a timer.
+Helper functions would proved the current value based on:
+ - current time
+ - a set of keyframe times
+ - tween settings.
+*/
 
-};
 
 class Animator extends Component {
 
     constructor(props) {
         super(props);
 
-        this.state = { progress:null, request: null, yPos: -32 };
+        this.state = { seconds:0 };
 
         this.tick = this.tick.bind(this);
     }
 
     componentDidMount() {
-        this.setState({
-            request: requestAnimationFrame(this.tick)
-        });
+        this.request = requestAnimationFrame(this.tick);
     }
 
     componentWillUnmount() {
@@ -26,32 +29,13 @@ class Animator extends Component {
     }
 
     tick(timestamp) {
-
-        
-        
-        const start = this.state.start ? this.state.start : timestamp;
-        const seconds = Math.floor((timestamp - start) / 1000);
-
-
-        this.setState((prevState) => {
-
-            let { yPos } = prevState;
-            yPos ++;
-            if (yPos > 100) {
-                yPos = -32;
-            }
-
-            return {
-                seconds,
-                start,
-                yPos,
-                request: requestAnimationFrame(this.tick)
-            }
-        });
+        if(!this.start) this.start = timestamp;
+        const seconds = Math.floor((timestamp - this.start) / 1000);
+        this.setState({ seconds  }, () => this.request = requestAnimationFrame(this.tick));
     }
 
     render() {
-        const { yPos, seconds } = this.state;
+        const { seconds } = this.state;
 
         return (
             <div>
@@ -150,7 +134,7 @@ class Animator extends Component {
                         <path d="M131.7 149.3v7.117M131.6 156.4h-110M21.57 149.3v7.117" fill="#0b4843" stroke="#000"
                               strokeLinecap="square" strokeWidth="2"/>
                     </g>
-                    <g className={'tGuide'} transform={`translate(0,${yPos})`}>
+                    <g className={'tGuide'} transform={`translate(0,${0})`}>
                         <path d="M155.1 32.45H1.3" stroke="#f0f" strokeLinecap="square" strokeWidth="2"/>
                     </g>
                     <g className={'lGuide'}>

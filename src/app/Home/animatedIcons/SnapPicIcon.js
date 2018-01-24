@@ -1,5 +1,5 @@
 import React from 'react';
-import './animationStyles.css';
+import './snapPic_styles.css';
 
 const SnapPicIcon = function () {
     return (

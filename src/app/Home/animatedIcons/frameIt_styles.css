@@ -1,0 +1,32 @@
+.frameItIcon{
+    height: 170px;
+    width: 120px;
+}
+
+.frameItIcon--frame{
+    opacity: 0;
+    animation-name: frameAnim;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes frameAnim {
+    0% {opacity:0}
+    25% {opacity:0}
+    50% {opacity:1}
+    70% {opacity:1}
+}
+
+.frameItIcon--mount{
+    opacity: 0;
+    animation-name: mountAnim;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes mountAnim {
+    0% {opacity:0}
+    10% {opacity:0}
+    40% {opacity:1}
+    90% {opacity:1}
+}
