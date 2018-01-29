@@ -1,0 +1,10 @@
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="75.19" width="36.35" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 36.350746 75.194313">
+ <g>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" height="75" width="31.83" y=".1943" x="-3.278e-7" fill="#fff"/>
+  <path d="m30.69.1943v75" fill-rule="evenodd" stroke="#666" stroke-width="1px" fill="#666"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" fill-opacity=".9968" height="11.68" width="33.3" stroke="#666" y="57.12" x="2.546" fill="#999"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" fill-opacity=".9968" height="12.19" width="15.48" stroke="#666" y="38.12" x="20.37" fill="#ccc"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" fill-opacity=".9968" height="12.19" width="22.55" stroke="#666" y="0.5" x="13.3" fill="#ccc"/>
+  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" fill-opacity=".9968" height="11.81" width="33.3" stroke="#666" y="19.5" x="2.546" fill="#999"/>
+ </g>
+</svg>

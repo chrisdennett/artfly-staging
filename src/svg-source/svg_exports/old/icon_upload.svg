@@ -1,0 +1,9 @@
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="93.06" width="93.06" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 93.062921 93.062921">
+ <g>
+  <circle style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" cy="46.53" cx="46.53" r="46.53" fill="#b298fe"/>
+  <g transform="translate(-1280 -470.7)" fill="#3d3457">
+   <path d="m1355 517.1-10.14-9.509c-.2573-.2466-.6646-.2251-.9112.0322l-1.458 1.565c-.2465.2573-.225.6647.033.9112l6.357 5.961h-12.38l-3.43 6.861h-14.62l-3.43-6.861h-12.37l6.357-5.961c.2573-.2466.268-.6540.033-.9112l-1.469-1.565c-.2466-.2573-.654-.2680-.9113-.0322l-10.14 9.509c-1.04.9756-1.63 2.326-1.63 3.752v10.63c0 2.841 2.305 5.146 5.146 5.146h51.46c2.841 0 5.146-2.305 5.146-5.146v-10.63c0-1.426-.5895-2.777-1.629-3.752z"/>
+   <path d="m1326 485.2 13.72 13.72h-9.38v13.72h-8.861v-13.72h-9.203z"/>
+  </g>
+ </g>
+</svg>

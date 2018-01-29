@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { addNewUser, signOutUser } from '../../actions/UserDataActions';
 // components
 import NewUserForm from './NewUserForm';
-import WelcomeMessage from "./WelcomeMessage";
+import Redirect from "../global/Redirect";
 
 class UserEditorHolder extends Component {
 
@@ -13,7 +13,7 @@ class UserEditorHolder extends Component {
         const { userId, userStatus, userEmail, addNewUser, signOutUser } = this.props;
 
         if (userStatus === 'complete') {
-            return ( <WelcomeMessage/>);
+            return <Redirect to={'/'}/>
         }
         else {
 
