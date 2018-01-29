@@ -51,6 +51,7 @@ class ArtistEditorHolder extends Component {
     render() {
         const { initialValues, formType, status, isOpen, onCancel } = this.props;
 
+
         // Form doesn't update if you render it and then update the values
         // so need to wait until they are all present and correct
         if (status === "waiting") {
