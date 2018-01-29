@@ -1,12 +1,13 @@
 // externals
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import {faSignOutAlt, faSignInAlt} from '@fortawesome/fontawesome-free-solid';
 // actions
 import { signInWithGoogle, signInWithFacebook, signOutUser } from '../../actions/UserDataActions';
 // components
 import SignInModal from "./SignInModal";
 import Butt from "../global/Butt/Butt";
-import IconSignOut from "../global/icon/icons/IconSignOut";
 import IconSignIn from "../global/icon/icons/IconSignIn";
 
 class SignInOut extends Component {
@@ -52,14 +53,14 @@ class SignInOut extends Component {
 
                 {userLoggedIn &&
                 <Butt className='userHome--signOutButt'
-                      svgIcon={<IconSignOut width={25} height={25} fill={'rgba(0, 0, 0, 0.8)'}/>}
+                      svgIcon={<FontAwesomeIcon icon={faSignOutAlt}/>}
                       label={'Sign out'}
                       onClick={signOutUser}/>
                 }
 
                 {!userLoggedIn &&
                 <Butt className='userHome--signOutButt'
-                      svgIcon={<IconSignIn width={25} height={25} fill={'rgba(0, 0, 0, 0.8)'}/>}
+                      svgIcon={<FontAwesomeIcon icon={faSignInAlt}/>}
                       label={'Sign in'}
                       onClick={this.openModal}/>
                 }

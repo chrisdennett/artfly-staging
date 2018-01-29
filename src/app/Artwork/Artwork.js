@@ -26,7 +26,7 @@ const Artwork = function ({ artwork, width, height, artworkData, imageLoading, a
 
                 <svg width={width} height={height}>
 
-                    <Wall width={width} height={height}/>
+                    {/*<Wall width={width} height={height}/>*/}
 
                     <Floor floorY={floorY} floorHeight={floorHeight}/>
 

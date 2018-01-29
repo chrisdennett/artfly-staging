@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import {faPlusSquare, faAddressCard} from '@fortawesome/fontawesome-free-solid';
 // styles
 import './userHomeStyles.css';
 // actions
@@ -9,6 +11,8 @@ import { getUserArtistChanges } from "../../../actions/UserDataActions";
 import YourArtists from "./assets/YourArtists";
 import AccountSettings from "./assets/AccountSettings";
 import AccountWarning from "./assets/AccountWarning";
+import LinkButt from "../../global/Butt/LinkButt";
+import StencilHeader from "../../global/stencilHeader/StencilHeader";
 
 class UserHome extends Component {
 
@@ -19,16 +23,29 @@ class UserHome extends Component {
     }
 
     render() {
-        const {maxArtworksReached, userArtists} = this.props;
+        const { maxArtworksReached, userArtists } = this.props;
 
         return (
             <div>
+
                 <AccountWarning className='userHome--accountWarning'
                                 maxArtworksReached={maxArtworksReached}/>
 
-                <YourArtists userArtists={userArtists}/>
+                <div className={'app--section app--section--dark'}>
 
-                <AccountSettings/>
+                    <StencilHeader wording={'Your Artists'}/>
+                    <LinkButt svgIcon={<FontAwesomeIcon icon={faPlusSquare}/>}
+                              linkTo={`/addOrEditArtist/`}>
+                        Add New Artist
+                    </LinkButt>
+
+                    <YourArtists userArtists={userArtists}/>
+                </div>
+
+                <div className={'app--section'}>
+                    <StencilHeader wording={'Membership details'}/>
+                    <AccountSettings/>
+                </div>
             </div>
         );
     }
@@ -36,7 +53,7 @@ class UserHome extends Component {
 
 const mapStateToProps = (state) => {
 
-    const {uid, maxArtworksReached, maxArtworks, planName, totalArtworks, status} = state.user;
+    const { uid, maxArtworksReached, maxArtworks, planName, totalArtworks, status } = state.user;
 
     return {
         maxArtworksReached: maxArtworksReached,

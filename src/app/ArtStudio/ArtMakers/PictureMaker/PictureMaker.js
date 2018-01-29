@@ -60,11 +60,13 @@ class ArtMaker extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.isLoadingData) return;
 
-        const finishedLoading = !nextProps.isLoadingData && this.props.isLoadingData;
-        const noPreviousArtwork = nextProps.artwork && !this.props.artwork;
+        if (nextProps.artwork) {
+            const finishedLoading = !nextProps.isLoadingData && this.props.isLoadingData;
+            const noPreviousArtwork = nextProps.artwork && !this.props.artwork;
 
-        if (finishedLoading || noPreviousArtwork || nextProps.artwork.lastUpdated !== this.props.artwork.lastUpdated) {
-            this.setupArtwork(nextProps);
+            if (finishedLoading || noPreviousArtwork || nextProps.artwork.lastUpdated !== this.props.artwork.lastUpdated) {
+                this.setupArtwork(nextProps);
+            }
         }
     }
 
@@ -349,4 +351,4 @@ class ArtMaker extends Component {
 
 const
     mapActionsToProps = { addArtwork, addThumbnail, updateArtworkImage, updateArtworkThumbnail };
-export default connect( null,  mapActionsToProps)(   ArtMaker);
+export default connect(null, mapActionsToProps)(ArtMaker);

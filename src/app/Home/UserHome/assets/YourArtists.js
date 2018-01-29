@@ -1,53 +1,47 @@
 // externals
 import React from 'react';
 import _ from 'lodash';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import {faAddressCard, faBuilding} from '@fortawesome/fontawesome-free-solid';
 // styles
 import './yourGalleriesStyles.css';
 // components
-import IconGallery from "../../../global/icon/icons/IconGallery";
 import Link from "../../../global/Butt/Link";
 import Butt from "../../../global/Butt/Butt";
 
 const YourArtists = function ({ userArtists }) {
     return (
-        <div className='userHome--section'>
-            <h2 className='home--subHeading'>Artists</h2>
+        <div className='yourGalleries--cards'>
 
-            <Link linkTo={`/addOrEditArtist/`}>
-                <Butt svgIcon={<IconGallery/>}>
-                    Add New Artist
-                </Butt>
-            </Link>
 
-            <div className='yourGalleries--cards'>
-                {
-                    _.map(userArtists, (artist) => {
 
-                        return (
-                            <div className='yourGalleries--galleryCard' key={artist.artistId}
-                                 style={{ display: 'inline-block' }}>
-                                <div className='yourGalleries--nameBox'>
-                                    <p className='yourGalleries--nameBox--artistName'>{artist.firstName}</p>
-                                    <p className='yourGalleries--nameBox--artistName'>{artist.lastName}</p>
-                                </div>
+            {
+                _.map(userArtists, (artist) => {
 
-                                <Link linkTo={`/gallery/${artist.artistId}`}>
-                                    <Butt yellow svgIcon={<IconGallery/>}>
-                                        Open Gallery
-                                    </Butt>
-                                </Link>
+                    return (
+                        <div className='yourGalleries--galleryCard' key={artist.artistId}
+                             style={{ display: 'inline-block' }}>
+                            <div className='yourGalleries--nameBox'>
+                                <p className='yourGalleries--nameBox--artistName'>{artist.firstName}</p>
+                                <p className='yourGalleries--nameBox--artistName'>{artist.lastName}</p>
+                            </div>
 
-                                <Link linkTo={`/addOrEditArtist/${artist.artistId}`}>
-                                    <Butt blue svgIcon={<IconGallery/>}>
-                                        Edit Artist
-                                    </Butt>
-                                </Link>
+                            <Link linkTo={`/gallery/${artist.artistId}`}>
+                                <Butt yellow svgIcon={<FontAwesomeIcon icon={faBuilding}/>}>
+                                    Open Gallery
+                                </Butt>
+                            </Link>
 
-                                <p>Total artworks: {artist.totalArtworks}</p>
-                            </div>)
-                    })
-                }
-            </div>
+                            <Link linkTo={`/addOrEditArtist/${artist.artistId}`}>
+                                <Butt blue svgIcon={<FontAwesomeIcon icon={faAddressCard}/>}>
+                                    Edit Artist
+                                </Butt>
+                            </Link>
+
+                            <p>Total artworks: {artist.totalArtworks}</p>
+                        </div>)
+                })
+            }
         </div>
     )
 };
