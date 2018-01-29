@@ -4,26 +4,22 @@ import _ from 'lodash';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import {faAddressCard, faBuilding} from '@fortawesome/fontawesome-free-solid';
 // styles
-import './yourGalleriesStyles.css';
+import './yourArtists_styles.css';
 // components
 import Link from "../../../global/Butt/Link";
 import Butt from "../../../global/Butt/Butt";
 
 const YourArtists = function ({ userArtists }) {
     return (
-        <div className='yourGalleries--cards'>
-
-
-
+        <div className={'yourArtists'}>
             {
                 _.map(userArtists, (artist) => {
 
                     return (
-                        <div className='yourGalleries--galleryCard' key={artist.artistId}
+                        <div className='yourArtists--artistCard' key={artist.artistId}
                              style={{ display: 'inline-block' }}>
-                            <div className='yourGalleries--nameBox'>
-                                <p className='yourGalleries--nameBox--artistName'>{artist.firstName}</p>
-                                <p className='yourGalleries--nameBox--artistName'>{artist.lastName}</p>
+                            <div className='yourArtists--artistCard--nameBox'>
+                                {artist.firstName} {artist.lastName}
                             </div>
 
                             <Link linkTo={`/gallery/${artist.artistId}`}>

@@ -1,0 +1,22 @@
+.yourArtists{
+    display: flex;
+    /*background-color: rgba(254, 0, 255, 0.36);*/
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.yourArtists--artistCard{
+    padding: 1rem;
+    flex: 1;
+    margin: 1rem 2rem;
+    text-align: center;
+    background-color: white;
+    min-width: 360px;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
+}
+
+.yourArtists--artistCard--nameBox{
+    font-size: 1.5rem;
+    margin: 1rem;
+}
