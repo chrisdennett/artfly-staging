@@ -13,6 +13,8 @@ class ArtistEditor extends Component {
         this.state = { showDeleteConfirmation: false };
 
         this.onDeleteClick = this.onDeleteClick.bind(this);
+        this.onDeleteConfirm = this.onDeleteConfirm.bind(this);
+        this.onDeleteCancel = this.onDeleteCancel.bind(this);
     }
 
     onDeleteClick() {
@@ -29,29 +31,29 @@ class ArtistEditor extends Component {
 
     render() {
         const { handleSubmit } = this.props; // handleSubmit is added to props by redux-form
-        const {showDeleteConfirmation} = this.state;
+        const { showDeleteConfirmation } = this.state;
 
         // Delete confirmation content - don't allow delete if last artist.
         let deleteMessage = (
             <div>
                 <h3>Delete Artist</h3>
                 <p>Are you sure you want to delete this artist and all their artworks?</p>
-                <Butt type={'button'} label={'Yes, delete away'} onClick={this.onDeleteConfirm.bind(this)}/>
-                <Butt type={'button'} label={'No do not delete'} onClick={this.onDeleteCancel.bind(this)}/>
+                <Butt type={'button'} label={'Yes, delete away'} onClick={this.onDeleteConfirm}/>
+                <Butt type={'button'} label={'No do not delete'} onClick={this.onDeleteCancel}/>
             </div>
         );
         if (this.props.allowDelete === false) {
             deleteMessage = (
                 <div>
                     <h3>Artist can't be deleted</h3>
-                    <p>Sorry, you you always need at least one artist - Create a new artist first if you want to get rid
+                    <p>Sorry, you always need at least one artist - Create a new artist first if you want to get rid
                         of this one.</p>
-                    <Butt label={'Close message'} type="button" onClick={this.onDeleteCancel.bind(this)}/>
+                    <Butt label={'Close message'}
+                          type="button"
+                          onClick={this.onDeleteCancel}/>
                 </div>
             );
         }
-
-        console.log("this.state.showDeleteConfirmation: ", this.state.showDeleteConfirmation);
 
         return (
             <div>

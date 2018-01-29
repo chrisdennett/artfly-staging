@@ -35,10 +35,8 @@ class ArtistEditorHolder extends Component {
     }
 
     deleteArtist() {
-        const { artist, onComplete, deleteArtist } = this.props;
-        deleteArtist(artist.artistId, () => {
-            onComplete();
-        });
+        const { artist, deleteArtist } = this.props;
+        deleteArtist(artist.artistId);
     }
 
     render() {
@@ -60,7 +58,6 @@ class ArtistEditorHolder extends Component {
 const mapStateToProps = (state, ownProps) => {
     const { artist } = ownProps;
     const formType = artist ? "edit" : "new";
-    let status = "";
 
     let initialFormValues = {
         firstName: '',
@@ -73,7 +70,6 @@ const mapStateToProps = (state, ownProps) => {
     }
 
     return {
-        status: status,
         userId: state.user.uid,
         formType: formType,
         initialValues: initialFormValues,
