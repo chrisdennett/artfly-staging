@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
-import { addNewUser, signOutUser } from '../../../actions/UserDataActions';
+import { addNewUser, signOutUser } from '../../actions/UserDataActions';
 // components
 import NewUserForm from './NewUserForm';
 import WelcomeMessage from "./WelcomeMessage";
@@ -32,6 +32,7 @@ class UserEditorHolder extends Component {
 
 // Map state to props maps to the intermediary component which uses or passes them through
 const mapStateToProps = (state) => {
+
     return {
         userId: state.user.uid,
         userStatus: state.user.status,

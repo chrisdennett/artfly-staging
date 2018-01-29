@@ -9,6 +9,7 @@ import SnapPicIcon from "../animatedIcons/SnapPicIcon";
 import PrepareTheCanvasIcon from "../animatedIcons/PrepareTheCanvasIcon";
 import FrameItIcon from "../animatedIcons/FrameItIcon";
 import BuildGalleryAndShareIcon from "../animatedIcons/BuildGalleryAndShareIcon";
+import SignUpForm from "../../SignUpForm/SignUpForm";
 
 const PublicHome = function () {
 
@@ -22,8 +23,16 @@ const PublicHome = function () {
                             d="M97.06 50H85.3V27.69l6.491-6.491a2.94 2.94 0 1 0-4.159-4.159l-6.491 6.491h-7.422c-.01-13-10.53-23.53-23.54-23.53-13 0-23.53 10.52-23.53 23.53H18.86l-7.962-7.962a2.941 2.941 0 1 0-4.16 4.159L14.7 27.69V50H2.94a2.941 2.941 0 0 0-.001 5.881h11.76v4.412c0 6.734 2.069 12.99 5.604 18.18l-10.62 10.63a2.94 2.94 0 1 0 4.159 4.159l10.22-10.22c5.868 5.933 14.01 9.615 22.99 9.615h5.882c8.984 0 17.12-3.682 22.99-9.614l10.22 10.22a2.94 2.94 0 1 0 4.159-4.159l-10.61-10.64a32.164 32.164 0 0 0 5.603-18.18v-4.412h11.76a2.941 2.941 0 0 0 0-5.882zM50.18 5.88c9.746 0 17.65 7.901 17.65 17.65H32.54c0-9.746 7.901-17.65 17.65-17.65zm2.757 80.88V43.38a2.206 2.206 0 0 0-2.206-2.206H49.26a2.206 2.206 0 0 0-2.206 2.206v43.38c-14.6 0-26.47-11.87-26.47-26.47V29.41h58.82v30.88c0 14.6-11.87 26.47-26.47 26.47z"/>
                     </svg>
 
-                    <p>When it's ready I'm hoping Artfly will encourage and celebrate every
+                    <p>When it's ready I want Artfly to encourage and celebrate every
                         artwork, big or small.</p>
+
+                    <div className={'publicHome--signUpSection'}>
+                        <p>
+                            Sign up to hear when it's ready.
+                        </p>
+
+                        <SignUpForm/>
+                    </div>
                 </GallerySign>
             </div>
 
@@ -43,12 +52,12 @@ const PublicHome = function () {
                         </div>
 
                         <div className={'app--section-content--card'}>
-                            <PrepareTheCanvasIcon />
+                            <PrepareTheCanvasIcon/>
                             <p>2. Prepare the canvas</p>
                         </div>
 
                         <div className={'app--section-content--card'}>
-                            <FrameItIcon />
+                            <FrameItIcon/>
                             <p>3. Frame it</p>
                         </div>
 

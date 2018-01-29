@@ -27,15 +27,16 @@
     "Paddle": "Paddle"
   },
   "devDependencies": {
+    "firebase-tools": "^3.17.3",
     "gulp": "^3.9.1",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.6.1",
     "gulp-svg-inject": "^1.0.1",
     "gulp-svgmin": "^1.2.4",
-    "react-scripts": "^1.1.0",
-    "firebase-tools": "^3.16.0",
     "npm-windows-upgrade": "^4.1.0",
-    "serve": "^6.4.8"
+    "react-scripts": "^1.1.0",
+    "serve": "^6.4.8",
+    "@storybook/react": "^3.3.10"
   },
   "scripts": {
     "start": "react-scripts start",

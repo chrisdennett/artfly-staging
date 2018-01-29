@@ -14,19 +14,25 @@ npm install -g firebase-tools
 ********************************************************************************
 ********************************************************************************
 BUILD AND DEPLOY
-// build the app
+// 1. change the IN_STAGING, IN_BETA_TESTING flags as necessary in GLOBAL_CONSTANTS.js
+
+// 2. build the app
 npm run build
 
-// deploy to firebase
-// pick staging or default
+// 3. test the build runs as expected
+serve -s build
+
+// 4. Set to staging or default (production):
 firebase use staging
 firebase use default
 
-// change the firebase config
-
+// 5. deploy to firebase
 firebase deploy
+
+// 6. open site
 firebase open hosting:site
 
+// DEPLOY FUNCTIONS
 firebase deploy --only functions
 // can restrict to individual functions and other stuff...
 // https://firebase.google.com/docs/cli/

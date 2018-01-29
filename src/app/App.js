@@ -6,6 +6,7 @@ import WindowDimensionsTracker from "./global/WindowDimensionsTracker";
 import Link from "./global/Butt/Link";
 import IconButt from "./global/Butt/IconButt";
 import GalleryControlsContainer from "./GalleryControls/GalleryControlsContainer";
+import { IN_STAGING } from "./global/GLOBAL_CONSTANTS";
 
 class App extends Component {
 
@@ -19,7 +20,13 @@ class App extends Component {
         return (
             <div className='app'>
 
-                {!inArtStudio && page !== 'home' &&
+                {IN_STAGING &&
+                <div className={'app--betaTestingFlag'}>
+                    IN STAGING MODE
+                </div>
+                }
+
+                {!inArtStudio && page !== 'home' && page !== 'newUser' &&
                 <Link className='app--homeButt' linkTo={'/'}>
                     <IconButt icon={'logo'}
                               leftCorner={true}
@@ -29,7 +36,7 @@ class App extends Component {
                 </Link>
                 }
 
-                {!inArtStudio && user.loginStatus === 'loggedIn' &&
+                {!inArtStudio && user.loginStatus === 'loggedIn' && page !== 'newUser' &&
                 <Link className='app--addArtButt' linkTo={`/artStudio/new/uploadPhoto`}>
                     <IconButt icon={'addArt'}
                               rightCorner={true}

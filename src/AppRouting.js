@@ -12,7 +12,7 @@ import Redirect from "./app/global/Redirect";
 import Home from './app/Home/Home';
 import GalleryContainer from './app/Gallery/GalleryContainer';
 import ArtistEditorContainer from "./app/ArtistEditor/ArtistEditorContainer";
-import NewUserFormContainer from "./app/Home/NewUser/NewUserFormContainer";
+import NewUserFormContainer from "./app/NewUser/NewUserFormContainer";
 import ArtworkContainer from './app/Artwork/ArtworkContainer';
 import ArtStudio from "./app/ArtStudio/ArtStudio";
 import FourOhFour from "./app/FourOhFour/FourOhFour";

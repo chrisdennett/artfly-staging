@@ -4,7 +4,7 @@
 }
 
 .newUserForm--holder {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,6 +26,7 @@
 .newUserForm--butts {
     display: flex;
     margin-top: 20px;
+    margin-bottom: 40px;
     max-width: 600px;
     align-self: center;
 }

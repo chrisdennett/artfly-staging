@@ -1,5 +1,6 @@
 import * as firebase from 'firebase';
 import firestore from 'firebase/firestore';
+import {IN_STAGING} from '../app/global/GLOBAL_CONSTANTS';
 
 // FOR STAGING
 const stagingOnlyConfig = {
@@ -10,12 +11,9 @@ const stagingOnlyConfig = {
     storageBucket: "artfly-staging.appspot.com",
     messagingSenderId: "133898795032"
 };
-firebase.initializeApp(stagingOnlyConfig);
-
-if(1===2) console.log("fs: ", firestore); //just prevents annoying not used console warning
 
 // FOR PRODUCTION
-/*const config = {
+const productionConfig = {
     apiKey: "AIzaSyDlCRPX8Hf1w0tssjgxT7O05SY6aRIZWxY",
     authDomain: "art-blam.firebaseapp.com",
     projectId: "art-blam",
@@ -23,7 +21,12 @@ if(1===2) console.log("fs: ", firestore); //just prevents annoying not used cons
     storageBucket: "art-blam.appspot.com",
     messagingSenderId: "156669954952"
 };
-firebase.initializeApp(config);*/
+
+const config = IN_STAGING ? stagingOnlyConfig : productionConfig;
+
+firebase.initializeApp(config);
+
+if(1===2) console.log("fs: ", firestore); //just prevents annoying not used console warning
 
 firebase.firestore().enablePersistence()
     .then(function () {

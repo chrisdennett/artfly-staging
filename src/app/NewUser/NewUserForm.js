@@ -4,24 +4,24 @@ import { Field, reduxForm } from 'redux-form';
 // styles
 import './newUser_styles.css';
 // components
-import FormRenderField from '../../global/formField/FormRenderField'
-import Butt from "../../global/Butt/Butt";
+import FormRenderField from '../global/formField/FormRenderField'
+import Butt from "../global/Butt/Butt";
 // import Title from '../Title';
-import GallerySign from "../../global/gallerySign/GallerySign";
-import StencilHeader from "../../global/stencilHeader/StencilHeader";
+import GallerySign from "../global/gallerySign/GallerySign";
+import StencilHeader from "../global/stencilHeader/StencilHeader";
 
 class NewUserForm extends Component {
 
     render() {
-        const { handleSubmit } = this.props; // handleSubmit is added to props by redux-form
+        const { handleSubmit, pristine, submitting, addNewUser, signOutUser, userId } = this.props; // handleSubmit is added to props by redux-form
 
         return (
             <div className={'newUserForm--holder'}>
                 {/*<Title/>*/}
                 <form className={'newUserForm'}
-                      onSubmit={handleSubmit((values) => this.props.addNewUser(this.props.userId, values))}>
+                      onSubmit={handleSubmit((values) => addNewUser(userId, values))}>
 
-                    <StencilHeader wording={'New User Form'}/>
+                    <StencilHeader wording={'Set up your Artfly account'}/>
 
                     <div className={'newUserForm--signHolder'}>
                         <GallerySign>
@@ -50,8 +50,8 @@ class NewUserForm extends Component {
                     </div>
 
                     <div className={'newUserForm--butts'}>
-                        <Butt fullWidth={true} label={'Set up'} type="submit"/>
-                        <Butt fullWidth={true} label={'Cancel'} type="button" onClick={this.props.signOutUser}/>
+                        <Butt type="submit" disabled={pristine || submitting}>Set up</Butt>
+                        <Butt fullWidth={true} label={'Cancel'} type="button" onClick={signOutUser}/>
                     </div>
                 </form>
             </div>

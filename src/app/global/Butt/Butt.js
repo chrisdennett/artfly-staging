@@ -24,13 +24,13 @@ class Butt extends Component {
     render() {
         const { label, onClick, alignLeft, size, svgIcon, showAsLink, fullWidth, ...rest } = this.props;
 
-        let buttonStyle = {  };
+        let buttonStyle = {};
 
-        if(alignLeft){
+        if (alignLeft) {
             buttonStyle.justifyContent = 'left';
         }
 
-        if(fullWidth){
+        if (fullWidth) {
             buttonStyle.flexGrow = 1;
         }
 
@@ -39,38 +39,42 @@ class Butt extends Component {
             buttonStyle.boxShadow = 'none';
         }
 
-        if(rest.style){
-            buttonStyle = {...buttonStyle, ...rest.style}
+        if (rest.style) {
+            buttonStyle = { ...buttonStyle, ...rest.style }
         }
 
         let classes = 'butt';
-        if(size === 'small') classes += ' butt--small';
-        if(this.state.hover) classes += ' butt--hover';
+        if (size === 'small') classes += ' butt--small';
+        if (this.state.hover) classes += ' butt--hover';
 
-        const {facebook, google, link, red, orange, white, yellow, green, blue, purple} = rest;
+        const { facebook, google, link, red, orange, white, yellow, green, blue, purple } = rest;
 
-        if(facebook) classes += ' butt--facebook';
-        else if(google) classes += ' butt--google';
-        else if(link) classes += ' butt--link';
-        else if(red) classes += ' butt--red';
-        else if(orange) classes += ' butt--orange';
-        else if(white) classes += ' butt--white';
-        else if(yellow) classes += ' butt--yellow';
-        else if(green) classes += ' butt--green';
-        else if(blue) classes += ' butt--blue';
-        else if(purple) classes += ' butt--purple';
+        if (facebook) classes += ' butt--facebook';
+        else if (google) classes += ' butt--google';
+        else if (link) classes += ' butt--link';
+        else if (red) classes += ' butt--red';
+        else if (orange) classes += ' butt--orange';
+        else if (white) classes += ' butt--white';
+        else if (yellow) classes += ' butt--yellow';
+        else if (green) classes += ' butt--green';
+        else if (blue) classes += ' butt--blue';
+        else if (purple) classes += ' butt--purple';
 
         const wording = label ? label : this.props.children;
 
         return (
-            <div onClick={onClick}
-                    className={classes}
-                    style={buttonStyle}
-                    onMouseEnter={this.onMouseEnter}
-                    onMouseLeave={this.onMouseLeave}>
+            <button onClick={onClick}
+                 className={classes}
+                 style={buttonStyle}
+                 onMouseEnter={this.onMouseEnter}
+                 onMouseLeave={this.onMouseLeave}>
+
+                {svgIcon &&
                 <div className={'butt--iconHolder'}>{svgIcon}</div>
+                }
+
                 <div>{wording}</div>
-            </div>
+            </button>
         )
     }
 }

@@ -1,0 +1,37 @@
+.signUpForm--label{
+    display: flex;
+}
+
+.signUpForm--labelText{
+    margin-right: 10px;
+}
+
+.signUpForm--input{
+    flex: 1;
+    margin: 0;
+    padding: 10px;
+    font-size: 16px;
+    background: #fff;
+    border: 2px solid #d0d0d0 !important;
+    border-radius: 3px;
+}
+
+.signUpForm--submitButt{
+    flex: 1;
+    font-weight: 500;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 10px;
+    line-height: 42px;
+    white-space: nowrap;
+    height: 42px;
+    padding: 0 22px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    border: 0;
+    border-radius: 3px;
+    vertical-align: top;
+    background-color: #5d5d5d !important;
+    color: #ffffff !important;
+}
