@@ -18,6 +18,11 @@
      flex-direction: column;
  }
 
+.artistEditor--butts{
+    display: flex;
+    justify-content: center;
+}
+
 @media only screen and (max-width: 500px) {
     .artist-editor-content{
         /*padding: 30px 20px;*/

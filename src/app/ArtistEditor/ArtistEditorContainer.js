@@ -10,6 +10,13 @@ import ArtistEditor from './ArtistEditor';
 // Created an intermediate component so can trigger the data loading outside
 class ArtistEditorHolder extends Component {
 
+    constructor(props){
+        super(props);
+
+        this.onSubmit = this.onSubmit.bind(this);
+        this.deleteArtist = this.deleteArtist.bind(this);
+    }
+
     componentWillMount() {
         if (this.props.artistId) {
             this.props.listenForArtistChanges(this.props.artistId);
@@ -21,7 +28,7 @@ class ArtistEditorHolder extends Component {
 
         if (formType === "new") {
             addNewArtist(userId, values, () => {
-                history.push("/");
+                this.props.onComplete();
             });
         }
         else {
@@ -29,7 +36,7 @@ class ArtistEditorHolder extends Component {
             const newArtistData = { firstName: firstName, lastName: lastName };
             // update artist
             updateArtist(artistId, newArtistData, () => {
-                history.push("/");
+                this.props.onComplete();
             });
         }
     }
@@ -42,7 +49,7 @@ class ArtistEditorHolder extends Component {
     }
 
     render() {
-        const { initialValues, formType, status } = this.props;
+        const { initialValues, formType, status, isOpen, onCancel } = this.props;
 
         // Form doesn't update if you render it and then update the values
         // so need to wait until they are all present and correct
@@ -54,11 +61,13 @@ class ArtistEditorHolder extends Component {
         let allowDelete = this.props.totalUserArtists && this.props.totalUserArtists > 1;
 
         return <ArtistEditor
+            isOpen={isOpen}
+            onCancel={onCancel}
             initialValues={initialValues}
             formType={formType}
             allowDelete={allowDelete}
-            deleteArtist={this.deleteArtist.bind(this)}
-            onSubmit={this.onSubmit.bind(this)}/>;
+            deleteArtist={this.deleteArtist}
+            onSubmit={this.onSubmit}/>;
     }
 }
 

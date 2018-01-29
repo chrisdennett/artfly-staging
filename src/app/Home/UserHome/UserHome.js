@@ -11,8 +11,8 @@ import { getUserArtistChanges } from "../../../actions/UserDataActions";
 import YourArtists from "./assets/YourArtists";
 import AccountSettings from "./assets/AccountSettings";
 import AccountWarning from "./assets/AccountWarning";
-import LinkButt from "../../global/Butt/LinkButt";
 import StencilHeader from "../../global/stencilHeader/StencilHeader";
+import AddNewArtist from "../../ArtistEditor/AddNewArtist";
 
 class UserHome extends Component {
 
@@ -34,10 +34,8 @@ class UserHome extends Component {
                 <div className={'app--section app--section--dark'}>
 
                     <StencilHeader wording={'Your Artists'}/>
-                    <LinkButt svgIcon={<FontAwesomeIcon icon={faPlusSquare}/>}
-                              linkTo={`/addOrEditArtist/`}>
-                        Add New Artist
-                    </LinkButt>
+
+                    <AddNewArtist/>
 
                     <YourArtists userArtists={userArtists}/>
                 </div>

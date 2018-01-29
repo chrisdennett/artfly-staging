@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-
+// styles
 import './artistEditor.css';
-
+// comps
 import FormRenderField from '../global/formField/FormRenderField';
 import Butt from "../global/Butt/Butt";
-import LinkButt from "../global/Butt/LinkButt";
 import Modal from "../global/Modal";
-import Page from "../global/Page";
 
 class ArtistEditor extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { showDeleteConfirmation: false };
+        this.state = { showDeleteConfirmation: false, isOpen: false };
     }
 
     onDeleteClick() {
@@ -29,7 +27,7 @@ class ArtistEditor extends Component {
     }
 
     render() {
-        const { handleSubmit } = this.props; // handleSubmit is added to props by redux-form
+        const { handleSubmit, isOpen } = this.props; // handleSubmit is added to props by redux-form
 
         // I'm using the same form for editing and adding new artists
         // formType tells me which it is
@@ -58,28 +56,31 @@ class ArtistEditor extends Component {
             );
         }
 
+        if (!isOpen) return null;
+
         return (
-            <Page title={formTitle}>
+            <div>
 
                 {modal}
 
-                <section className={'page-main-section'}>
-                    <form onSubmit={handleSubmit(this.props.onSubmit.bind(this))}>
-                        <Field
-                            name="firstName"
-                            label="First Name: "
-                            component={FormRenderField}
-                        />
-                        <Field
-                            name="lastName"
-                            label="Last Name: "
-                            component={FormRenderField}
-                        />
+                <form onSubmit={handleSubmit(this.props.onSubmit.bind(this))}>
+                    <Field
+                        name="firstName"
+                        label="First Name: "
+                        component={FormRenderField}
+                    />
+                    <Field
+                        name="lastName"
+                        label="Last Name: "
+                        component={FormRenderField}
+                    />
 
+                    <div className={'artistEditor--butts'}>
                         <Butt type="submit" label={'Done'}/>
 
-                        <LinkButt fullWidth={true} label={`Cancel`} linkTo={`/`}/>
-
+                        <Butt onClick={this.props.onCancel}>
+                            Cancel
+                        </Butt>
                         {
                             this.props.formType === 'edit' &&
                             <Butt type="button"
@@ -88,10 +89,10 @@ class ArtistEditor extends Component {
                                   shadowColour={'#540000'}
                                   onClick={this.onDeleteClick.bind(this)}/>
                         }
+                    </div>
 
-                    </form>
-                </section>
-            </Page>
+                </form>
+            </div>
         )
     }
 }
