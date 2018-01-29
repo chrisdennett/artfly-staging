@@ -8,7 +8,6 @@ import { signInWithGoogle, signInWithFacebook, signOutUser } from '../../actions
 // components
 import SignInModal from "./SignInModal";
 import Butt from "../global/Butt/Butt";
-import IconSignIn from "../global/icon/icons/IconSignIn";
 
 class SignInOut extends Component {
     constructor() {

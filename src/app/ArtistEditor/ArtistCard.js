@@ -14,11 +14,16 @@ class ArtistCard extends Component {
         this.state = { editorIsOpen: false };
 
         this.onEditArtistClick = this.onEditArtistClick.bind(this);
+        this.onArtistEditorComplete = this.onArtistEditorComplete.bind(this);
         this.onArtistEditorCancel = this.onArtistEditorCancel.bind(this);
     }
 
     onEditArtistClick(){
         this.setState({editorIsOpen:true})
+    }
+
+    onArtistEditorComplete(){
+        this.setState({editorIsOpen:false})
     }
 
     onArtistEditorCancel(){
@@ -54,7 +59,9 @@ class ArtistCard extends Component {
                 }
 
                 {editorIsOpen &&
-                <ArtistEditorContainer artistId={artist.artistId} isOpen={true} onCancel={this.onArtistEditorCancel}/>
+                <ArtistEditorContainer artist={artist}
+                                       onComplete={this.onArtistEditorComplete}
+                                       onCancel={this.onArtistEditorCancel}/>
                 }
 
             </div>

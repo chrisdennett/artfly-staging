@@ -5,7 +5,7 @@ import './artworkStyles.css';
 // helpers
 
 // components
-import Wall from "./assets/Wall";
+// import Wall from "./assets/Wall";
 import Floor from "./assets/Floor";
 import SkirtingBoard from "./assets/SkirtingBoard";
 import PictureFrame from './PictureFrame/PictureFrame';

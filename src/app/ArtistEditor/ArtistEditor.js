@@ -5,13 +5,14 @@ import './artistEditor.css';
 // comps
 import FormRenderField from '../global/formField/FormRenderField';
 import Butt from "../global/Butt/Butt";
-import Modal from "../global/Modal";
 
 class ArtistEditor extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { showDeleteConfirmation: false, isOpen: false };
+        this.state = { showDeleteConfirmation: false };
+
+        this.onDeleteClick = this.onDeleteClick.bind(this);
     }
 
     onDeleteClick() {
@@ -27,42 +28,33 @@ class ArtistEditor extends Component {
     }
 
     render() {
-        const { handleSubmit, isOpen } = this.props; // handleSubmit is added to props by redux-form
-
-        // I'm using the same form for editing and adding new artists
-        // formType tells me which it is
-        let formTitle = "Add New Artist";
-        if (this.props.formType === "edit") {
-            formTitle = "Edit Artist";
-        }
+        const { handleSubmit } = this.props; // handleSubmit is added to props by redux-form
+        const {showDeleteConfirmation} = this.state;
 
         // Delete confirmation content - don't allow delete if last artist.
-        let modal = (
-            <Modal isOpen={this.state.showDeleteConfirmation}
-                   title={"Delete Artist"}>
+        let deleteMessage = (
+            <div>
+                <h3>Delete Artist</h3>
                 <p>Are you sure you want to delete this artist and all their artworks?</p>
                 <Butt type={'button'} label={'Yes, delete away'} onClick={this.onDeleteConfirm.bind(this)}/>
                 <Butt type={'button'} label={'No do not delete'} onClick={this.onDeleteCancel.bind(this)}/>
-            </Modal>
+            </div>
         );
         if (this.props.allowDelete === false) {
-            modal = (
-                <Modal isOpen={this.state.showDeleteConfirmation}
-                       title={"Artist can't be deleted"}>
+            deleteMessage = (
+                <div>
+                    <h3>Artist can't be deleted</h3>
                     <p>Sorry, you you always need at least one artist - Create a new artist first if you want to get rid
                         of this one.</p>
                     <Butt label={'Close message'} type="button" onClick={this.onDeleteCancel.bind(this)}/>
-                </Modal>
+                </div>
             );
         }
 
-        if (!isOpen) return null;
+        console.log("this.state.showDeleteConfirmation: ", this.state.showDeleteConfirmation);
 
         return (
             <div>
-
-                {modal}
-
                 <form onSubmit={handleSubmit(this.props.onSubmit.bind(this))}>
                     <Field
                         name="firstName"
@@ -75,6 +67,7 @@ class ArtistEditor extends Component {
                         component={FormRenderField}
                     />
 
+                    {!showDeleteConfirmation &&
                     <div className={'artistEditor--butts'}>
                         <Butt type="submit" label={'Done'}/>
 
@@ -87,9 +80,14 @@ class ArtistEditor extends Component {
                                   label={'Delete Artist'}
                                   backgroundColour={'#920000'}
                                   shadowColour={'#540000'}
-                                  onClick={this.onDeleteClick.bind(this)}/>
+                                  onClick={this.onDeleteClick}/>
                         }
                     </div>
+                    }
+
+                    {showDeleteConfirmation &&
+                    deleteMessage
+                    }
 
                 </form>
             </div>

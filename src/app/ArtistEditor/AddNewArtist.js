@@ -44,8 +44,7 @@ class AddNewArtist extends Component {
                 {isOpen &&
                 <div>
                     <h3>Add new artist:</h3>
-                    <ArtistEditorContainer isOpen={isOpen}
-                                           onComplete={this.onAddNewArtistComplete}
+                    <ArtistEditorContainer onComplete={this.onAddNewArtistComplete}
                                            onCancel={this.onAddNewArtistCancel}/>
                 </div>
                 }
