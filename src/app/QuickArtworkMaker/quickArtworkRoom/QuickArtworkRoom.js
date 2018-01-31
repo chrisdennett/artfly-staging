@@ -1,20 +1,28 @@
-import React from 'react';
+import React, { Component } from 'react';
+import sizeMe from 'react-sizeme';
 //
 import './quickArtworkRoom_styles.css';
 // import Flooring from "../../global/flooring/Flooring";
 import QuickArtworkRoomFloor from "./quickArtworkRoom--floor/QuickArtworkRoomFloor";
+
 // import BrickWall from '../../images/brickwall.png';
 
-const QuickArtworkRoom = function (props) {
+class QuickArtworkRoom extends Component {
 
+    render() {
 
-    return (
-        <div className={'quickArtworkRoom'}>
-            <div className={'quickArtworkRoom--floorHolder'}>
-                <QuickArtworkRoomFloor height={130}/>
+        const { height } = this.props.size;
+        const floorPercentage = 0.15;
+        const floorHeight = height * floorPercentage;
+
+        return (
+            <div className={'quickArtworkRoom'}>
+                <div className={'quickArtworkRoom--floorHolder'}>
+                    <QuickArtworkRoomFloor height={floorHeight}/>
+                </div>
             </div>
-        </div>
-    )
-};
+        )
+    }
+}
 
-export default QuickArtworkRoom;
+export default sizeMe({ monitorHeight: true })(QuickArtworkRoom);

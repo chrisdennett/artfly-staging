@@ -54,7 +54,7 @@ class PhotoSelector extends Component {
                                 </g>
                             </svg>
 
-                            <p className={'quickPhotoSelector--text'}>Select Photo</p>
+                            <p className={'quickPhotoSelector--text'}>Grab a Photo for this blank wall...</p>
                         </div>
                     </div>
 
