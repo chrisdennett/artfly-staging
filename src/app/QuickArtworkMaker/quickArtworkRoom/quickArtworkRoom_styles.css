@@ -4,6 +4,10 @@
     background-image: url("../../images/brickwall.png");
 }
 
+.quickArtworkRoom--vignette{
+    background: radial-gradient(circle, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.21) );;
+}
+
 .quickArtworkRoom--floorHolder{
     position: absolute;
     bottom: 0;
