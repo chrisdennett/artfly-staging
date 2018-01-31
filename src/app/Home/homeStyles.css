@@ -2,13 +2,6 @@
     padding: 3rem 10px 0 10px;
 }
 
-.app--betaTestingFlag{
-    position: fixed;
-    font-weight: bold;
-    top: 0;
-    left: 45%;
-}
-
 .home--title{
     display: flex;
     justify-content: center;

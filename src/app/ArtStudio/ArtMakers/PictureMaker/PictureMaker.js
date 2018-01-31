@@ -32,8 +32,8 @@ Artwork Data:   adminId, artistId, artworkId, dateAdded, heightToWidthRatio,
 */
 class ArtMaker extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.setupArtwork = this.setupArtwork.bind(this);
         this.showArtworkInEditing = this.showArtworkInEditing.bind(this);

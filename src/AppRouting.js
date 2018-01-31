@@ -19,10 +19,12 @@ import FourOhFour from "./app/FourOhFour/FourOhFour";
 import LoadingOverlay from "./app/global/LoadingOverlay";
 import StyleGuide from "./app/StyleGuide/StyleGuide";
 import App from "./app/App";
+import QuickArtworkMaker from "./app/QuickArtworkMaker/QuickArtworkMaker";
 
 const routes = {
     styleGuide: { component: StyleGuide },
     home: { component: Home },
+    quickArtworkMaker: { component: QuickArtworkMaker },
     gallery: { component: GalleryContainer },
     artwork: { component: ArtworkContainer },
     artStudio: { component: ArtStudio, adminOnly: true },

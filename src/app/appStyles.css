@@ -33,12 +33,19 @@ html, body {
 .app {
     /*background: #fff url("./images/tiny_grid_@2X.png");*/
     /*background: url("./images/grid_42.png"), radial-gradient(circle, #fefce0, #e6e5cb);*/
-    background: url("./images/brickwall.png"), radial-gradient(circle, #fefce0, #e6e5cb);
+    /*background: url("./images/brickwall.png"), radial-gradient(circle, #fefce0, #e6e5cb);*/
     min-height: 100vh;
     min-width: 100%;
     margin: 0;
     padding: 0;
     /*display: flex;*/
+}
+
+.app--betaTestingFlag{
+    position: fixed;
+    font-weight: bold;
+    top: 0;
+    left: 45%;
 }
 
 .app--sidebar {

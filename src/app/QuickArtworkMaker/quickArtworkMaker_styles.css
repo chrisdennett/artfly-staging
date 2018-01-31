@@ -1,0 +1,11 @@
+.quickArtworkMaker{
+
+}
+
+.quickArtworkMaker--photoSelectorHolder{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    margin-top: -82px;
+    margin-left: -82px;
+}
