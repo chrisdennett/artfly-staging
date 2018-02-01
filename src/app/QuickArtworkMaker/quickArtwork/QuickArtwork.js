@@ -1,11 +1,13 @@
 import React from 'react';
 import PictureFrame from "../../Artwork/PictureFrame/PictureFrame";
 
-const QuickArtwork = function ({artworkData, height, width}) {
+const QuickArtwork = function ({ artworkData, height, width }) {
 
-    const {sourceImg, imgOrientation, widthToHeightRatio, heightToWidthRatio} = artworkData;
+    const { sourceImg, widthToHeightRatio, heightToWidthRatio } = artworkData;
 
     const { imgX, imgY, imgWidth, imgHeight, paddingTop, paddingLeft, frameThickness, mountThickness } = calculateArtworkSizes(width, height, widthToHeightRatio, heightToWidthRatio, 20, 5)
+
+    if (height < 1 || width < 1) return null;
 
     return (
         <svg height={height} width={width}>
@@ -24,16 +26,17 @@ const QuickArtwork = function ({artworkData, height, width}) {
                    width={imgWidth}
                    height={imgHeight}>
             </image>
+
         </svg>
     )
 };
 
 export default QuickArtwork;
 
-const calculateArtworkSizes = function(width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop=60, minPaddingSides=10) {
+const calculateArtworkSizes = function (width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 60, minPaddingSides = 10) {
     const frameThicknessPercent = 0.03;
     const mountThicknessPercent = 0.06;
-    const spaceBelowPicturePercent = 0.05;
+    const spaceBelowPicturePercent = 0.02;
 
     const spaceBelowPicture = spaceBelowPicturePercent * height;
 

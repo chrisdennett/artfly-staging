@@ -2,17 +2,33 @@
     overflow: hidden;
 }
 
-.quickArtworkMaker--artworkHolder {
-    position: absolute;
-    top: 0;
+.quickArtworkMaker svg{
+    /*border: red solid 1px;*/
+}
+
+.quickArtworkMaker--sideBar{
+    position: fixed;
+    top:0;
     left: 0;
+    bottom: 0;
+}
+
+.quickArtworkMaker--main {
+    position: fixed;
+    top: 0;
+    left: 70px;
     right: 0;
+    bottom: 0;
+    /*display: flex;
+    justify-content: center;
+    align-items: center;*/
+    /*border: #704cb0 1px solid;*/
 }
 
 .quickArtworkMaker--photoSelectorHolder {
-    position: absolute;
+    /*position: absolute;
     top: 40%;
     left: 50%;
     margin-top: -100px;
-    margin-left: -100px;
+    margin-left: -100px;*/
 }

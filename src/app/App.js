@@ -3,15 +3,16 @@ import React, { Component } from "react";
 import './appStyles.css';
 // components
 import WindowDimensionsTracker from "./global/WindowDimensionsTracker";
-import Link from "./global/Butt/Link";
-import IconButt from "./global/Butt/IconButt";
+// import Link from "./global/Butt/Link";
+// import IconButt from "./global/Butt/IconButt";
 import GalleryControlsContainer from "./GalleryControls/GalleryControlsContainer";
 import { IN_STAGING } from "./global/GLOBAL_CONSTANTS";
 
 class App extends Component {
 
     render() {
-        const { params, children, page, user } = this.props;
+        // const { params, children, page, user } = this.props;
+        const { params, children } = this.props;
         const { artworkId, galleryId } = params;
         const { inArtStudio } = params;
 
@@ -26,7 +27,7 @@ class App extends Component {
                 </div>
                 }
 
-                {!inArtStudio && page !== 'home' && page !== 'newUser' &&
+                {/*{!inArtStudio && page !== 'home' && page !== 'newUser' &&
                 <Link className='app--homeButt' linkTo={'/'}>
                     <IconButt icon={'logo'}
                               leftCorner={true}
@@ -34,9 +35,9 @@ class App extends Component {
                               fill={'#fff'}
                               label={'home'}/>
                 </Link>
-                }
+                }*/}
 
-                {!inArtStudio && user.loginStatus === 'loggedIn' && page !== 'newUser' &&
+                {/*{!inArtStudio && user.loginStatus === 'loggedIn' && page !== 'newUser' &&
                 <Link className='app--addArtButt' linkTo={`/artStudio/new/uploadPhoto`}>
                     <IconButt icon={'addArt'}
                               rightCorner={true}
@@ -44,7 +45,7 @@ class App extends Component {
                               fill={'#fff'}
                               label={'+new'}/>
                 </Link>
-                }
+                }*/}
 
                 {galleryId &&
                 <div className='app--galleryControls'>

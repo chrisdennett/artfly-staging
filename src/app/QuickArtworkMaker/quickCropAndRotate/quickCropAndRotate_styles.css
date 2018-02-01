@@ -1,0 +1,30 @@
+.quickCropAndRotate--holder {
+    /*border: red 1px solid;*/
+    position: relative;
+    line-height: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.quickCropAndRotate--cuttingMatHolder {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.quickCropAndRotate--cuttingBoardHolder {
+    top: 0;
+    left: 0;
+
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.cropAndRotate--cuttingBoard{
+    /*position: relative;*/
+}
