@@ -55,6 +55,16 @@ class QuickShare extends Component {
 
                 drawRadialGradientOverlay(ctx, width, wallHeight);
 
+                ctx.save();
+                ctx.shadowColor = 'rgba(0,0,0,0.4)';
+                ctx.shadowBlur = 25;
+                ctx.shadowOffsetX = 9;
+                ctx.shadowOffsetY = 15;
+
+                ctx.fillStyle = 'white';
+                ctx.fillRect(frameX, frameY, frameWidth, frameHeight);
+                ctx.restore(); // clear it or will be added to everything
+
                 drawFrame(ctx, frameX, frameY, frameWidth, frameHeight, frameThickness);
                 drawMount(ctx, mountX, mountY, mountWidth, mountHeight, mountThickness);
 
@@ -63,6 +73,11 @@ class QuickShare extends Component {
 
                 // add skirting board
                 drawSkirtingBoard(ctx, 0, skirtingY, width, skirtingHeight);
+
+
+
+
+
             });
         });
     }
