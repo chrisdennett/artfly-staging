@@ -55,8 +55,8 @@ class QuickArtworkMaker extends Component {
         return (
             <div className={'quickArtworkMaker'}>
 
-                <QuickArtworkRoom height={height}
-                                  floorHeight={floorHeight}/>
+                {/*<QuickArtworkRoom height={height}
+                                  floorHeight={floorHeight}/>*/}
 
                 <div className={'quickArtworkMaker--sideBar'} style={{width:sidebarWidth}}>
                     <QuickArtMakerTools onToolSelect={this.onToolSelect}/>
@@ -79,7 +79,7 @@ class QuickArtworkMaker extends Component {
                     {currentTool === 'share' &&
                     <QuickShare artworkData={artworkData}
                                 width={contentWidth}
-                                height={wallHeight}/>
+                                height={height}/>
                     }
 
                     {currentTool === 'upload' &&

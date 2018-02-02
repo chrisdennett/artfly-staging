@@ -1,8 +1,13 @@
 import React, { Component } from "react";
 // styles
 import './quickShare_styles.css';
+// images
+import WallTile from './../../images/brickwall.png';
+import FloorboardsTile from './../../images/floor-boards.png';
 
 const drawFrame = (ctx, startX, startY, width, height, thickness) => {
+    ctx.fillStyle = '#000000';
+
     ctx.beginPath();
     ctx.moveTo(startX, startY);
     ctx.lineTo(startX + width, startY);
@@ -53,7 +58,7 @@ const drawMount = (ctx, startX, startY, width, height, thickness) => {
     ctx.fill();
 };
 
-const drawPolygon = (ctx,x1,y1,x2,y2,x3,y3,x4,y4)=>{
+const drawPolygon = (ctx, x1, y1, x2, y2, x3, y3, x4, y4) => {
     ctx.beginPath();
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
@@ -62,26 +67,109 @@ const drawPolygon = (ctx,x1,y1,x2,y2,x3,y3,x4,y4)=>{
     ctx.closePath();
 };
 
+const drawSkirtingBoard = (ctx, startX, startY, width, height) => {
+    const topBarPercent = 0.16;
+    const topBarShadowPercent = 0.04;
+    const bottomShadowPercent = 0.02;
+    const mainPanelPercent = 1 - (topBarPercent + topBarShadowPercent + bottomShadowPercent);
+
+    const topBarHeight = height * topBarPercent;
+    const topBarShadowHeight = height * topBarShadowPercent;
+    const mainPanelHeight = height * mainPanelPercent;
+    const bottomShadowHeight = height * bottomShadowPercent;
+
+    const topBarShadowY = startY + topBarHeight;
+    const mainPanelY = topBarShadowY + topBarShadowHeight;
+    const bottomShadowY = mainPanelY + mainPanelHeight;
+
+    // top bar
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(startX, startY, width, topBarHeight);
+
+    // main panel
+    ctx.fillStyle = '#f7f7f7';
+    ctx.fillRect(startX, mainPanelY, width, mainPanelHeight);
+
+    // top bar shadow
+    ctx.fillStyle = '#d3d3d3';
+    ctx.fillRect(startX, topBarShadowY, width, topBarShadowHeight);
+
+    // top bar shadow
+    ctx.fillStyle = '#515151';
+    ctx.fillRect(startX, bottomShadowY, width, bottomShadowHeight);
+};
+
+const drawFloor = (ctx, startX, startY, width, height, callback) => {
+    let img = new Image();
+    img.setAttribute('crossOrigin', 'anonymous'); //
+    img.src = FloorboardsTile;
+    img.onload = () => {
+        const pat = ctx.createPattern(img, "repeat");
+        ctx.beginPath();
+        ctx.rect(startX, startY, width, height);
+        ctx.fillStyle = pat;
+        ctx.fill();
+        ctx.closePath();
+
+        if (callback) callback();
+    };
+};
+
+const drawWall = (ctx, startX, startY, width, height, callback) => {
+    let img = new Image();
+    img.setAttribute('crossOrigin', 'anonymous'); //
+    img.src = WallTile;
+    img.onload = () => {
+        const pat = ctx.createPattern(img, "repeat");
+        ctx.beginPath();
+        ctx.rect(startX, startY, width, height);
+        ctx.fillStyle = pat;
+        ctx.fill();
+        ctx.closePath();
+
+        if (callback) callback();
+    };
+};
+
 class QuickShare extends Component {
 
     componentWillReceiveProps(nextProps) {
-        console.log("this.canvas: ", this.canvas);
-        console.log("this.nextProps: ", nextProps);
-
         const { artworkData, width, height } = nextProps;
         const { sourceImg, widthToHeightRatio, heightToWidthRatio } = artworkData;
+
         const artworkSizes = calculateCanvasArtworkSizes(width, height, widthToHeightRatio, heightToWidthRatio);
-        const { imgX, imgY, imgWidth, imgHeight, frameX, frameY, frameWidth, frameHeight, mountWidth, mountHeight, mountX, mountY, frameThickness, mountThickness } = artworkSizes;
+        const {
+                  imgX, imgY, imgWidth, imgHeight,
+                  frameX, frameY, frameWidth, frameHeight, frameThickness,
+                  mountX, mountY, mountWidth, mountHeight, mountThickness,
+                  skirtingY, skirtingHeight, floorY, floorHeight
+              } = artworkSizes;
 
         this.canvas.width = width;
         this.canvas.height = height;
 
         const ctx = this.canvas.getContext('2d');
-        drawFrame(ctx, frameX, frameY, frameWidth, frameHeight, frameThickness);
-        drawMount(ctx, mountX, mountY, mountWidth, mountHeight, mountThickness);
 
+        drawWall(ctx, 0, 0, width, height, () => {
+            // add the floor
+            drawFloor(ctx, 0, floorY, width, floorHeight, () => {
 
-        ctx.drawImage(sourceImg, 0, 0, sourceImg.width, sourceImg.height, imgX, imgY, imgWidth, imgHeight);
+                let gradient = ctx.createRadialGradient(width / 2, height / 2, width / 2, width / 2, height / 2, width / 5);
+                gradient.addColorStop(0, 'rgba(0,0,0,0.2)');
+                gradient.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, width, height);
+
+                drawFrame(ctx, frameX, frameY, frameWidth, frameHeight, frameThickness);
+                drawMount(ctx, mountX, mountY, mountWidth, mountHeight, mountThickness);
+
+                // add artwork
+                ctx.drawImage(sourceImg, 0, 0, sourceImg.width, sourceImg.height, imgX, imgY, imgWidth, imgHeight);
+
+                // add skirting board
+                drawSkirtingBoard(ctx, 0, skirtingY, width, skirtingHeight);
+            });
+        });
     }
 
     render() {
@@ -96,10 +184,14 @@ class QuickShare extends Component {
 
 export default QuickShare;
 
-const calculateCanvasArtworkSizes = function (width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 10, minPaddingSides = 10) {
+
+const calculateCanvasArtworkSizes = function (width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 10, minPaddingSides = 50) {
     const frameThicknessPercent = 0.03;
     const mountThicknessPercent = 0.06;
-    const spaceBelowPicturePercent = 0.02;
+    const spaceBelowPicturePercent = 0.15;
+    const maxPercentageTakenUpBySkirting = 0.3;
+    const maxSkirtingHeight = 34;
+    const minGapPercent = 0.3;
 
     const spaceBelowPicture = spaceBelowPicturePercent * height;
 
@@ -146,7 +238,16 @@ const calculateCanvasArtworkSizes = function (width, height, widthToHeightRatio,
     const mountWidth = frameWidth - (frameThickness * 2);
     const mountHeight = frameHeight - (frameThickness * 2);
 
+    let skirtingHeight = spaceBelowPicture * maxPercentageTakenUpBySkirting;
+    if (skirtingHeight > maxSkirtingHeight) skirtingHeight = maxSkirtingHeight;
+    const gapBetweenPictureAndSkirting = spaceBelowPicture * minGapPercent;
+
+    const skirtingY = height - (spaceBelowPicture - gapBetweenPictureAndSkirting);
+    const floorY = skirtingY + skirtingHeight;
+    const floorHeight = height - floorY;
+
     return {
+        skirtingY, skirtingHeight, floorY, floorHeight,
         imgX, imgY, frameX, frameY, mountX, mountY,
         frameWidth, frameHeight,
         mountWidth, mountHeight,
