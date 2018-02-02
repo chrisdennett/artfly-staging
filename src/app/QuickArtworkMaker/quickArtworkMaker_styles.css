@@ -21,10 +21,10 @@
     left: 70px;
     right: 0;
     bottom: 0;
-    /*display: flex;
+
+    display: flex;
     justify-content: center;
-    align-items: center;*/
-    /*border: #704cb0 1px solid;*/
+    align-items: center;
 }
 
 .quickArtworkMaker--photoSelectorHolder {

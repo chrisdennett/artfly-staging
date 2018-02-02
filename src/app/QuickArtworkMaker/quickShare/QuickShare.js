@@ -5,6 +5,78 @@ import './quickShare_styles.css';
 import WallTile from './../../images/brickwall.png';
 import FloorboardsTile from './../../images/floor-boards.png';
 
+class QuickShare extends Component {
+
+    constructor(props){
+        super(props);
+
+        this.setupCanvas = this.setupCanvas.bind(this);
+        this.onCanvasInit = this.onCanvasInit.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps){
+        this.setupCanvas(nextProps);
+    }
+
+    onCanvasInit(canvas){
+        this.canvas = canvas;
+        this.setupCanvas(this.props);
+    }
+
+    setupCanvas(props) {
+        const { artworkData, width, height } = props;
+
+        // prevent errors by stopping if critical elements not available
+        if(!this.canvas || width < 1 || height < 1 || !artworkData){
+            return null;
+        }
+
+        const { sourceImg, widthToHeightRatio, heightToWidthRatio } = artworkData;
+
+        const artworkSizes = calculateCanvasArtworkSizes(width, height, widthToHeightRatio, heightToWidthRatio);
+        const {
+                  imgX, imgY, imgWidth, imgHeight,
+                  frameX, frameY, frameWidth, frameHeight, frameThickness,
+                  mountX, mountY, mountWidth, mountHeight, mountThickness,
+                  skirtingY, skirtingHeight, floorY, floorHeight
+              } = artworkSizes;
+
+        this.canvas.width = width;
+        this.canvas.height = height;
+
+        const ctx = this.canvas.getContext('2d');
+
+        drawWall(ctx, 0, 0, width, height, () => {
+            // add the floor
+            drawFloor(ctx, 0, floorY, width, floorHeight, () => {
+
+                drawRadialGradientOverlay(ctx, width, height);
+
+                drawFrame(ctx, frameX, frameY, frameWidth, frameHeight, frameThickness);
+                drawMount(ctx, mountX, mountY, mountWidth, mountHeight, mountThickness);
+
+                // add artwork
+                ctx.drawImage(sourceImg, 0, 0, sourceImg.width, sourceImg.height, imgX, imgY, imgWidth, imgHeight);
+
+                // add skirting board
+                drawSkirtingBoard(ctx, 0, skirtingY, width, skirtingHeight);
+            });
+        });
+    }
+
+    render() {
+        return (
+            <canvas className={'quickShare--canvas'}
+                    ref={this.onCanvasInit}
+                    width={300}
+                    height={300}/>
+        );
+    }
+}
+
+export default QuickShare;
+
+
 const drawFrame = (ctx, startX, startY, width, height, thickness) => {
     ctx.fillStyle = '#000000';
 
@@ -25,7 +97,7 @@ const drawMount = (ctx, startX, startY, width, height, thickness) => {
     ctx.fillRect(startX, startY, width, height);
 
     // draw mount edges
-    const edgeThickness = 5;
+    const edgeThickness = 2;
 
     const innerTop = startY + thickness;
     const innerBottom = startY + height - thickness;
@@ -131,58 +203,14 @@ const drawWall = (ctx, startX, startY, width, height, callback) => {
     };
 };
 
-class QuickShare extends Component {
+const drawRadialGradientOverlay = (ctx, width, height) => {
+    let gradient = ctx.createRadialGradient(width / 2, height / 2, width / 2, width / 2, height / 2, width / 5);
+    gradient.addColorStop(0, 'rgba(0,0,0,0.15)');
+    gradient.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+};
 
-    componentWillReceiveProps(nextProps) {
-        const { artworkData, width, height } = nextProps;
-        const { sourceImg, widthToHeightRatio, heightToWidthRatio } = artworkData;
-
-        const artworkSizes = calculateCanvasArtworkSizes(width, height, widthToHeightRatio, heightToWidthRatio);
-        const {
-                  imgX, imgY, imgWidth, imgHeight,
-                  frameX, frameY, frameWidth, frameHeight, frameThickness,
-                  mountX, mountY, mountWidth, mountHeight, mountThickness,
-                  skirtingY, skirtingHeight, floorY, floorHeight
-              } = artworkSizes;
-
-        this.canvas.width = width;
-        this.canvas.height = height;
-
-        const ctx = this.canvas.getContext('2d');
-
-        drawWall(ctx, 0, 0, width, height, () => {
-            // add the floor
-            drawFloor(ctx, 0, floorY, width, floorHeight, () => {
-
-                let gradient = ctx.createRadialGradient(width / 2, height / 2, width / 2, width / 2, height / 2, width / 5);
-                gradient.addColorStop(0, 'rgba(0,0,0,0.2)');
-                gradient.addColorStop(1, 'rgba(0,0,0,0)');
-                ctx.fillStyle = gradient;
-                ctx.fillRect(0, 0, width, height);
-
-                drawFrame(ctx, frameX, frameY, frameWidth, frameHeight, frameThickness);
-                drawMount(ctx, mountX, mountY, mountWidth, mountHeight, mountThickness);
-
-                // add artwork
-                ctx.drawImage(sourceImg, 0, 0, sourceImg.width, sourceImg.height, imgX, imgY, imgWidth, imgHeight);
-
-                // add skirting board
-                drawSkirtingBoard(ctx, 0, skirtingY, width, skirtingHeight);
-            });
-        });
-    }
-
-    render() {
-        return (
-            <canvas className={'quickShare--canvas'}
-                    ref={(c) => this.canvas = c}
-                    width={300}
-                    height={300}/>
-        );
-    }
-}
-
-export default QuickShare;
 
 
 const calculateCanvasArtworkSizes = function (width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 10, minPaddingSides = 50) {

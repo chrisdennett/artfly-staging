@@ -23,9 +23,9 @@ class QuickArtworkMaker extends Component {
     }
 
     // TEST ONLY
-    componentDidMount() {
+    /*componentDidMount() {
         this.setState({ artworkData: testArtworkData, currentTool: 'share' })
-    }
+    }*/
 
     onToolSelect(toolName) {
         this.setState({ currentTool: toolName })
@@ -38,7 +38,7 @@ class QuickArtworkMaker extends Component {
                     artworkData: {
                         sourceImg, widthToHeightRatio, heightToWidthRatio
                     },
-                    currentTool: 'view'
+                    currentTool: 'share'
                 });
             });
     }
@@ -55,8 +55,8 @@ class QuickArtworkMaker extends Component {
         return (
             <div className={'quickArtworkMaker'}>
 
-                {/*<QuickArtworkRoom height={height}
-                                  floorHeight={floorHeight}/>*/}
+                <QuickArtworkRoom height={height}
+                                  floorHeight={floorHeight}/>
 
                 <div className={'quickArtworkMaker--sideBar'} style={{width:sidebarWidth}}>
                     <QuickArtMakerTools onToolSelect={this.onToolSelect}/>
