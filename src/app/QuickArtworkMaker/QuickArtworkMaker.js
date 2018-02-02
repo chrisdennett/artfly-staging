@@ -23,9 +23,9 @@ class QuickArtworkMaker extends Component {
     }
 
     // TEST ONLY
-    /*componentDidMount() {
+    componentDidMount() {
         this.setState({ artworkData: testArtworkData, currentTool: 'share' })
-    }*/
+    }
 
     onToolSelect(toolName) {
         this.setState({ currentTool: toolName })

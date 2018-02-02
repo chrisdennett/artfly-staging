@@ -7,18 +7,18 @@ import FloorboardsTile from './../../images/floor-boards.png';
 
 class QuickShare extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.setupCanvas = this.setupCanvas.bind(this);
         this.onCanvasInit = this.onCanvasInit.bind(this);
     }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         this.setupCanvas(nextProps);
     }
 
-    onCanvasInit(canvas){
+    onCanvasInit(canvas) {
         this.canvas = canvas;
         this.setupCanvas(this.props);
     }
@@ -27,7 +27,7 @@ class QuickShare extends Component {
         const { artworkData, width, height } = props;
 
         // prevent errors by stopping if critical elements not available
-        if(!this.canvas || width < 1 || height < 1 || !artworkData){
+        if (!this.canvas || width < 1 || height < 1 || !artworkData) {
             return null;
         }
 
@@ -44,13 +44,16 @@ class QuickShare extends Component {
         this.canvas.width = width;
         this.canvas.height = height;
 
+        const wallHeight = height - floorHeight;
+
         const ctx = this.canvas.getContext('2d');
+
 
         drawWall(ctx, 0, 0, width, height, () => {
             // add the floor
             drawFloor(ctx, 0, floorY, width, floorHeight, () => {
 
-                drawRadialGradientOverlay(ctx, width, height);
+                drawRadialGradientOverlay(ctx, width, wallHeight);
 
                 drawFrame(ctx, frameX, frameY, frameWidth, frameHeight, frameThickness);
                 drawMount(ctx, mountX, mountY, mountWidth, mountHeight, mountThickness);
@@ -76,16 +79,80 @@ class QuickShare extends Component {
 
 export default QuickShare;
 
-
 const drawFrame = (ctx, startX, startY, width, height, thickness) => {
-    ctx.fillStyle = '#000000';
+    // draw basic mount rect
+    /*ctx.beginPath();
+    ctx.fillStyle = '#64048b';
+    ctx.fillRect(startX, startY, width, height);*/
 
-    ctx.beginPath();
-    ctx.moveTo(startX, startY);
-    ctx.lineTo(startX + width, startY);
-    ctx.lineTo(startX + width, startY + height);
-    ctx.lineTo(startX, startY + height);
-    ctx.lineTo(startX, startY);
+    // top frame section
+    ctx.fillStyle = '#d6b000';
+    drawPolygon(ctx,
+        startX, startY,
+        startX + width, startY,
+        startX + width - thickness, startY + thickness,
+        startX + thickness, startY + thickness);
+    ctx.fill();
+
+    // right frame section
+    ctx.fillStyle = '#64048b';
+    drawPolygon(ctx,
+        startX + width - thickness, startY +thickness,
+        startX + width, startY,
+        startX + width, startY + height,
+        startX + width - thickness, startY + height - thickness);
+    ctx.fill();
+
+    // bottom frame section
+    ctx.fillStyle = '#d6b000';
+    drawPolygon(ctx,
+        startX + thickness, startY + height - thickness,
+        startX + width - thickness, startY + height - thickness,
+        startX + width, startY + height,
+        startX, startY + height);
+    ctx.fill();
+
+    // left frame section
+    ctx.fillStyle = '#64048b';
+    drawPolygon(ctx,
+        startX, startY,
+        startX + thickness, startY + thickness,
+        startX + thickness, startY + height - thickness,
+        startX, startY + height);
+    ctx.fill();
+
+
+    // draw mount edges
+    const edgeThickness = 3;
+
+    const innerTop = startY + thickness;
+    const innerBottom = startY + height - thickness;
+    const outerTop = innerTop - edgeThickness;
+    const outerBottom = innerBottom + edgeThickness;
+
+    const innerLeft = startX + thickness;
+    const innerRight = startX + width - thickness;
+    const outerLeft = innerLeft - edgeThickness;
+    const outerRight = innerRight + edgeThickness;
+
+    // top edge
+    ctx.fillStyle = 'rgba(255,255,255,0.1)';
+    drawPolygon(ctx, outerLeft, outerTop, outerRight, outerTop, innerRight, innerTop, innerLeft, innerTop);
+    ctx.fill();
+
+    // right edge
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    drawPolygon(ctx, outerRight, outerTop, innerRight, innerTop, innerRight, innerBottom, outerRight, outerBottom);
+    ctx.fill();
+
+    // bottom edge
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    drawPolygon(ctx, innerLeft, innerBottom, innerRight, innerBottom, outerRight, outerBottom, outerLeft, outerBottom);
+    ctx.fill();
+
+    // left edge
+    ctx.fillStyle = 'rgba(255,255,255,0.1)';
+    drawPolygon(ctx, outerLeft, outerTop, innerLeft, innerTop, innerLeft, innerBottom, outerLeft, outerBottom);
     ctx.fill();
 };
 
@@ -142,7 +209,7 @@ const drawPolygon = (ctx, x1, y1, x2, y2, x3, y3, x4, y4) => {
 const drawSkirtingBoard = (ctx, startX, startY, width, height) => {
     const topBarPercent = 0.16;
     const topBarShadowPercent = 0.04;
-    const bottomShadowPercent = 0.02;
+    const bottomShadowPercent = 0.01;
     const mainPanelPercent = 1 - (topBarPercent + topBarShadowPercent + bottomShadowPercent);
 
     const topBarHeight = height * topBarPercent;
@@ -169,6 +236,13 @@ const drawSkirtingBoard = (ctx, startX, startY, width, height) => {
     // top bar shadow
     ctx.fillStyle = '#515151';
     ctx.fillRect(startX, bottomShadowY, width, bottomShadowHeight);
+
+    const gradient = ctx.createLinearGradient(0, 0, width, 0);
+    gradient.addColorStop(0, 'rgba(0,0,0,0.08)');
+    gradient.addColorStop(0.5, 'rgba(0,0,0,0)');
+    gradient.addColorStop(1, 'rgba(0,0,0,0.08)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, startY, width, height);
 };
 
 const drawFloor = (ctx, startX, startY, width, height, callback) => {
@@ -205,16 +279,15 @@ const drawWall = (ctx, startX, startY, width, height, callback) => {
 
 const drawRadialGradientOverlay = (ctx, width, height) => {
     let gradient = ctx.createRadialGradient(width / 2, height / 2, width / 2, width / 2, height / 2, width / 5);
-    gradient.addColorStop(0, 'rgba(0,0,0,0.15)');
+    gradient.addColorStop(0, 'rgba(0,0,0,0.17)');
     gradient.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
 };
 
 
-
 const calculateCanvasArtworkSizes = function (width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 10, minPaddingSides = 50) {
-    const frameThicknessPercent = 0.03;
+    const frameThicknessPercent = 0.04;
     const mountThicknessPercent = 0.06;
     const spaceBelowPicturePercent = 0.15;
     const maxPercentageTakenUpBySkirting = 0.3;
