@@ -2,10 +2,7 @@
     overflow: hidden;
     min-width:100vw;
     min-height:100vh;
-}
-
-.quickArtworkMaker svg{
-    /*border: red solid 1px;*/
+    background: white;
 }
 
 .quickArtworkMaker--sideBar{
@@ -21,16 +18,4 @@
     left: 70px;
     right: 0;
     bottom: 0;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.quickArtworkMaker--photoSelectorHolder {
-    /*position: absolute;
-    top: 40%;
-    left: 50%;
-    margin-top: -100px;
-    margin-left: -100px;*/
 }

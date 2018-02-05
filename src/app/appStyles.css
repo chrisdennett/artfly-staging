@@ -25,6 +25,11 @@ html, body {
     line-height: 1.6rem;
 }
 
+button, a{
+    /*font-family: 'Work Sans', sans-serif;*/
+    font-family: 'Stardos Stencil', cursive;
+}
+
 .no-scroll-bars {
     overflow: hidden;
 }

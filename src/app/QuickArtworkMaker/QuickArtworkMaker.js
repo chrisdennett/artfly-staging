@@ -24,7 +24,7 @@ class QuickArtworkMaker extends Component {
 
     // TEST ONLY
     componentDidMount() {
-        this.setState({ artworkData: testArtworkData, currentTool: 'share' })
+        this.setState({ artworkData: testArtworkData, currentTool: 'view' })
     }
 
     onToolSelect(toolName) {
@@ -46,26 +46,23 @@ class QuickArtworkMaker extends Component {
     render() {
         const { artworkData, currentTool } = this.state;
         const { height, width } = this.props.size;
-        const floorPercentage = 0.10;
-        const floorHeight = height * floorPercentage;
         const sidebarWidth = 70;
         const contentWidth = width - sidebarWidth;
-        const wallHeight = height - floorHeight;
 
         return (
             <div className={'quickArtworkMaker'}>
 
-                <QuickArtworkRoom height={height}
-                                  floorHeight={floorHeight}/>
+                {/*<QuickArtworkRoom height={height}
+                                  floorHeight={floorHeight}/>*/}
 
-                <div className={'quickArtworkMaker--sideBar'} style={{width:sidebarWidth}}>
+                <div className={'quickArtworkMaker--sideBar'} style={{ width: sidebarWidth }}>
                     <QuickArtMakerTools onToolSelect={this.onToolSelect}/>
                 </div>
 
                 <div className={'quickArtworkMaker--main'}>
 
                     {currentTool === 'view' &&
-                    <QuickArtwork height={wallHeight}
+                    <QuickArtwork height={height}
                                   width={contentWidth}
                                   artworkData={artworkData}/>
                     }
@@ -83,9 +80,7 @@ class QuickArtworkMaker extends Component {
                     }
 
                     {currentTool === 'upload' &&
-                    <div className={'quickArtworkMaker--photoSelectorHolder'}>
-                        <QuickPhotoSelector onPhotoSelected={this.onPhotoSelect}/>
-                    </div>
+                    <QuickPhotoSelector onPhotoSelected={this.onPhotoSelect}/>
                     }
                 </div>
             </div>

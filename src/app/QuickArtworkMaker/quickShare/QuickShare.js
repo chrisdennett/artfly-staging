@@ -4,6 +4,9 @@ import './quickShare_styles.css';
 // images
 import WallTile from './../../images/brickwall.png';
 import FloorboardsTile from './../../images/floor-boards.png';
+import Butt from "../../global/Butt/Butt";
+// import People from './../../images/bench-girls-sillhouette-400-260.png';
+// import People from './../../images/business-2089532_640.png';
 
 class QuickShare extends Component {
 
@@ -12,6 +15,9 @@ class QuickShare extends Component {
 
         this.setupCanvas = this.setupCanvas.bind(this);
         this.onCanvasInit = this.onCanvasInit.bind(this);
+        this.saveImage = this.saveImage.bind(this);
+
+        this.state = { downloadUrl: '' };
     }
 
     componentWillReceiveProps(nextProps) {
@@ -24,7 +30,10 @@ class QuickShare extends Component {
     }
 
     setupCanvas(props) {
-        const { artworkData, width, height } = props;
+        const { artworkData } = props;
+
+        const width = 400;
+        const height = 400;
 
         // prevent errors by stopping if critical elements not available
         if (!this.canvas || width < 1 || height < 1 || !artworkData) {
@@ -48,24 +57,16 @@ class QuickShare extends Component {
 
         const ctx = this.canvas.getContext('2d');
 
-
         drawWall(ctx, 0, 0, width, height, () => {
             // add the floor
             drawFloor(ctx, 0, floorY, width, floorHeight, () => {
 
                 drawRadialGradientOverlay(ctx, width, wallHeight);
 
-                ctx.save();
-                ctx.shadowColor = 'rgba(0,0,0,0.4)';
-                ctx.shadowBlur = 25;
-                ctx.shadowOffsetX = 9;
-                ctx.shadowOffsetY = 15;
-
-                ctx.fillStyle = 'white';
-                ctx.fillRect(frameX, frameY, frameWidth, frameHeight);
-                ctx.restore(); // clear it or will be added to everything
+                drawFrameShadow(ctx, frameX, frameY, frameWidth, frameHeight);
 
                 drawFrame(ctx, frameX, frameY, frameWidth, frameHeight, frameThickness);
+
                 drawMount(ctx, mountX, mountY, mountWidth, mountHeight, mountThickness);
 
                 // add artwork
@@ -74,20 +75,33 @@ class QuickShare extends Component {
                 // add skirting board
                 drawSkirtingBoard(ctx, 0, skirtingY, width, skirtingHeight);
 
-
-
-
+                // add people
+                // drawPeople(ctx, width, height);
 
             });
         });
     }
 
+
+    saveImage() {
+        this.setState({ downloadUrl: this.canvas.toDataURL() })
+    }
+
     render() {
+        const { downloadUrl } = this.state;
+
         return (
-            <canvas className={'quickShare--canvas'}
-                    ref={this.onCanvasInit}
-                    width={300}
-                    height={300}/>
+
+            <div>
+                <Butt useATag={true} href={downloadUrl} download={'artwork'} onClick={this.saveImage}>
+                    Download image
+                </Butt>
+
+                <canvas className={'quickShare--canvas'}
+                        ref={this.onCanvasInit}
+                        width={300}
+                        height={300}/>
+            </div>
         );
     }
 }
@@ -95,13 +109,13 @@ class QuickShare extends Component {
 export default QuickShare;
 
 const drawFrame = (ctx, startX, startY, width, height, thickness) => {
-    // draw basic mount rect
-    /*ctx.beginPath();
-    ctx.fillStyle = '#64048b';
-    ctx.fillRect(startX, startY, width, height);*/
+
+    // if you don't draw a rectangle behind you get seams see:https://stackoverflow.com/questions/19319963/how-to-avoid-seams-between-filled-areas-in-canvas
+    ctx.fillStyle = '#4c4c4c';
+    ctx.fillRect(startX, startY, width, height);
 
     // top frame section
-    ctx.fillStyle = '#d6b000';
+    ctx.fillStyle = '#4c4c4c';
     drawPolygon(ctx,
         startX, startY,
         startX + width, startY,
@@ -110,16 +124,16 @@ const drawFrame = (ctx, startX, startY, width, height, thickness) => {
     ctx.fill();
 
     // right frame section
-    ctx.fillStyle = '#64048b';
+    ctx.fillStyle = '#3b3b3b';
     drawPolygon(ctx,
-        startX + width - thickness, startY +thickness,
+        startX + width - thickness, startY + thickness,
         startX + width, startY,
         startX + width, startY + height,
         startX + width - thickness, startY + height - thickness);
     ctx.fill();
 
     // bottom frame section
-    ctx.fillStyle = '#d6b000';
+    ctx.fillStyle = '#2a2a2a';
     drawPolygon(ctx,
         startX + thickness, startY + height - thickness,
         startX + width - thickness, startY + height - thickness,
@@ -128,7 +142,7 @@ const drawFrame = (ctx, startX, startY, width, height, thickness) => {
     ctx.fill();
 
     // left frame section
-    ctx.fillStyle = '#64048b';
+    ctx.fillStyle = '#3b3b3b';
     drawPolygon(ctx,
         startX, startY,
         startX + thickness, startY + thickness,
@@ -300,6 +314,31 @@ const drawRadialGradientOverlay = (ctx, width, height) => {
     ctx.fillRect(0, 0, width, height);
 };
 
+const drawFrameShadow = (ctx, x, y, width, height) => {
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,0.4)';
+    ctx.shadowBlur = 25;
+    ctx.shadowOffsetX = 9;
+    ctx.shadowOffsetY = 15;
+
+    ctx.fillStyle = 'white';
+    ctx.fillRect(x, y, width, height);
+    ctx.restore(); // clear it or will be added to everything
+};
+
+/*const drawPeople = (ctx, width, height, callback) => {
+    let img = new Image();
+    img.setAttribute('crossOrigin', 'anonymous'); //
+    img.src = People;
+    img.onload = () => {
+
+        ctx.drawImage(img, 0, 0, 400, 260, 300, height-260, 400, 260);
+
+
+        if (callback) callback();
+    };
+};*/
+
 
 const calculateCanvasArtworkSizes = function (width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 10, minPaddingSides = 50) {
     const frameThicknessPercent = 0.04;
@@ -319,24 +358,24 @@ const calculateCanvasArtworkSizes = function (width, height, widthToHeightRatio,
     const maxHeight = height - (minPaddingTop + minPaddingBottom);
 
     // calculate to maximise width
-    let frameThickness = maxWidth * frameThicknessPercent;
-    let mountThickness = maxWidth * mountThicknessPercent;
+    let frameThickness = Math.round(maxWidth * frameThicknessPercent);
+    let mountThickness = Math.round(maxWidth * mountThicknessPercent);
     let totalFrameAndMountThickness = (frameThickness * 2) + (mountThickness * 2);
     let imgWidth = maxWidth - totalFrameAndMountThickness;
     let imgHeight = imgWidth * widthToHeightRatio;
-    let frameHeight = imgHeight + totalFrameAndMountThickness;
+    let frameHeight = Math.round(imgHeight + totalFrameAndMountThickness);
 
     // if it doesn't fit the height, calculate to maximise height
     if (frameHeight > maxHeight) {
-        frameThickness = maxHeight * frameThicknessPercent;
-        mountThickness = maxHeight * mountThicknessPercent;
+        frameThickness = Math.round(maxHeight * frameThicknessPercent);
+        mountThickness = Math.round(maxHeight * mountThicknessPercent);
         totalFrameAndMountThickness = (frameThickness * 2) + (mountThickness * 2);
         imgHeight = maxHeight - totalFrameAndMountThickness;
         imgWidth = imgHeight * heightToWidthRatio;
-        frameHeight = imgHeight + totalFrameAndMountThickness;
+        frameHeight = Math.round(imgHeight + totalFrameAndMountThickness);
     }
 
-    let frameWidth = imgWidth + totalFrameAndMountThickness;
+    let frameWidth = Math.round(imgWidth + totalFrameAndMountThickness);
     // work out the padding around the picture
     const totalFramedPictureWidth = imgWidth + totalFrameAndMountThickness;
     const extraHorizontalSpace = width - (totalFramedPictureWidth + minPaddingLeft + minPaddingRight);
@@ -345,14 +384,14 @@ const calculateCanvasArtworkSizes = function (width, height, widthToHeightRatio,
     const extraVerticalSpace = height - (imgHeight + totalFrameAndMountThickness + minPaddingTop + minPaddingBottom);
     const paddingTop = minPaddingTop + (extraVerticalSpace / 2);
 
-    const frameX = paddingLeft;
-    const frameY = paddingTop;
-    const mountX = frameX + frameThickness;
-    const mountY = frameY + frameThickness;
-    const imgX = mountX + mountThickness;
-    const imgY = mountY + mountThickness;
-    const mountWidth = frameWidth - (frameThickness * 2);
-    const mountHeight = frameHeight - (frameThickness * 2);
+    const frameX = Math.round(paddingLeft);
+    const frameY = Math.round(paddingTop);
+    const mountX = Math.round(frameX + frameThickness);
+    const mountY = Math.round(frameY + frameThickness);
+    const imgX = Math.round(mountX + mountThickness);
+    const imgY = Math.round(mountY + mountThickness);
+    const mountWidth = Math.round(frameWidth - (frameThickness * 2));
+    const mountHeight = Math.round(frameHeight - (frameThickness * 2));
 
     let skirtingHeight = spaceBelowPicture * maxPercentageTakenUpBySkirting;
     if (skirtingHeight > maxSkirtingHeight) skirtingHeight = maxSkirtingHeight;

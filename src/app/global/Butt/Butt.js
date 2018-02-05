@@ -22,7 +22,7 @@ class Butt extends Component {
     }
 
     render() {
-        const { label, onClick, alignLeft, size, svgIcon, showAsLink, fullWidth, ...rest } = this.props;
+        const { label, useATag = false, onClick, alignLeft, size, svgIcon, showAsLink, fullWidth, ...rest } = this.props;
 
         let buttonStyle = {};
 
@@ -62,12 +62,33 @@ class Butt extends Component {
 
         const wording = label ? label : this.props.children;
 
+        if (useATag) {
+            buttonStyle.display = 'inline-flex';
+
+            return (
+                <a onClick={onClick}
+                   href={this.props.href}
+                   download={this.props.download}
+                   className={classes}
+                   style={buttonStyle}
+                   onMouseEnter={this.onMouseEnter}
+                   onMouseLeave={this.onMouseLeave}>
+
+                    {svgIcon &&
+                    <div className={'butt--iconHolder'}>{svgIcon}</div>
+                    }
+
+                    <div>{wording}</div>
+                </a>
+            )
+        }
+
         return (
             <button onClick={onClick}
-                 className={classes}
-                 style={buttonStyle}
-                 onMouseEnter={this.onMouseEnter}
-                 onMouseLeave={this.onMouseLeave}>
+                    className={classes}
+                    style={buttonStyle}
+                    onMouseEnter={this.onMouseEnter}
+                    onMouseLeave={this.onMouseLeave}>
 
                 {svgIcon &&
                 <div className={'butt--iconHolder'}>{svgIcon}</div>
