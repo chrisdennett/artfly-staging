@@ -26,14 +26,34 @@ class QuickArtwork extends Component {
     }
 
     setupCanvas(props) {
-        const { artworkData, width, height } = props;
+        const { artworkData, width, height, cropData, rotation } = props;
+
+        console.log("cropData, rotation: ", cropData, rotation);
 
         // prevent errors by stopping if critical elements not available
         if (!this.canvas || width < 1 || height < 1 || !artworkData) {
             return null;
         }
 
-        const { sourceImg, widthToHeightRatio, heightToWidthRatio } = artworkData;
+        let { sourceImg, widthToHeightRatio, heightToWidthRatio } = artworkData;
+
+        if (cropData) {
+            const { leftPercent, rightPercent, topPercent, bottomPercent } = cropData;
+
+            const srcWidth = sourceImg.width;
+            const srcHeight = sourceImg.height;
+
+            const cropWidthPercent = leftPercent + (1 - rightPercent);
+            const widthToCrop = srcWidth * cropWidthPercent;
+            const croppedWidth = srcWidth - widthToCrop;
+
+            const cropHeightPercent = topPercent + (1 - bottomPercent);
+            const heightToCrop = srcHeight * cropHeightPercent;
+            const croppedHeight = srcHeight - heightToCrop;
+
+            widthToHeightRatio = croppedHeight / croppedWidth;
+            heightToWidthRatio = croppedWidth / croppedHeight;
+        }
 
         const artworkSizes = calculateCanvasArtworkSizes(width, height, widthToHeightRatio, heightToWidthRatio);
         const {
@@ -63,7 +83,7 @@ class QuickArtwork extends Component {
                 drawMount(ctx, mountX, mountY, mountWidth, mountHeight, mountThickness);
 
                 // add artwork
-                ctx.drawImage(sourceImg, 0, 0, sourceImg.width, sourceImg.height, imgX, imgY, imgWidth, imgHeight);
+                drawArtworkImage(ctx, sourceImg, imgX, imgY, imgWidth, imgHeight, cropData, rotation);
 
                 // add skirting board
                 drawSkirtingBoard(ctx, 0, skirtingY, width, skirtingHeight);
@@ -86,6 +106,22 @@ class QuickArtwork extends Component {
 }
 
 export default QuickArtwork;
+
+const drawArtworkImage = (ctx, sourceImg, imgX, imgY, imgWidth, imgHeight, cropData, rotation) => {
+
+    const srcW = sourceImg.width;
+    const srcH = sourceImg.height;
+    const srcRight = srcW * cropData.rightPercent;
+    const srcLeft = srcW * cropData.leftPercent;
+    const croppedW = srcRight - srcLeft;
+
+    const srcTop = srcH * cropData.topPercent;
+    const srcBottom = srcH * cropData.bottomPercent;
+
+    const croppedH = srcBottom - srcTop;
+
+    ctx.drawImage(sourceImg, srcLeft, srcTop, croppedW, croppedH, imgX, imgY, imgWidth, imgHeight);
+};
 
 const drawFrame = (ctx, startX, startY, width, height, thickness) => {
 

@@ -21,12 +21,15 @@ class QuickArtworkMaker extends Component {
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
         this.onCropAndRotateCancel = this.onCropAndRotateCancel.bind(this);
 
-        this.state = { artworkData: null, currentTool: 'upload' };
+        // const cropData = {leftPercent:0.17, rightPercent:1, topPercent:0.1, bottomPercent:0.8};
+        const cropData = {leftPercent:0, rightPercent:1, topPercent:0, bottomPercent:1};
+
+        this.state = { artworkData: null, currentTool: 'upload', cropData, rotation: 1 };
     }
 
     // TEST ONLY
     componentDidMount() {
-        this.setState({ artworkData: testArtworkData, currentTool: 'crop' })
+        this.setState({ artworkData: testArtworkData, currentTool: 'view' })
     }
 
     onToolSelect(toolName) {
@@ -45,16 +48,16 @@ class QuickArtworkMaker extends Component {
             });
     }
 
-    onCropAndRotateDone(rotation, cropData){
-console.log("rotation, cropData: ", rotation, cropData);
+    onCropAndRotateDone(rotation, cropData) {
+        this.setState({ rotation, cropData });
     }
 
-    onCropAndRotateCancel(){
+    onCropAndRotateCancel() {
         this.setState({ currentTool: 'view' })
     }
 
     render() {
-        const { artworkData, currentTool } = this.state;
+        const { artworkData, currentTool, rotation, cropData } = this.state;
         const { height, width } = this.props.size;
         const sidebarWidth = 70;
         const contentWidth = width - sidebarWidth;
@@ -71,6 +74,8 @@ console.log("rotation, cropData: ", rotation, cropData);
                     {currentTool === 'view' &&
                     <QuickArtwork height={height}
                                   width={contentWidth}
+                                  rotation={rotation}
+                                  cropData={cropData}
                                   artworkData={artworkData}/>
                     }
 
