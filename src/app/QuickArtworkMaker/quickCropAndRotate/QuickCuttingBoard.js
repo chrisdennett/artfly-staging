@@ -1,9 +1,9 @@
 // externals
 import React, { Component } from "react";
 // components
-import CuttingOverlay from "./assets/CuttingOverlay";
+import QuickCuttingOverlay from "./assets/QuickCuttingOverlay";
 
-class CuttingBoard extends Component {
+class QuickCuttingBoard extends Component {
     constructor(props) {
         super(props);
 
@@ -59,7 +59,7 @@ class CuttingBoard extends Component {
 
         return (
             <div className='cropAndRotate--cuttingBoard'>
-                <CuttingOverlay
+                <QuickCuttingOverlay
                     onChange={this.onCuttingOverlayChange}
                     {...cropData}/>
 
@@ -70,4 +70,4 @@ class CuttingBoard extends Component {
     }
 }
 
-export default CuttingBoard;
+export default QuickCuttingBoard;

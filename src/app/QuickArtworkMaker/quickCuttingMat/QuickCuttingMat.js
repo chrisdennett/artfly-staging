@@ -11,6 +11,8 @@ const QuickCuttingMat = function ({ showSpinner = false, spinnerLabel = 'LOADING
     const matWidth = width - (matMargin * 2);
     const matHeight = height - (matMargin * 2);
 
+    if(matWidth < 1 || matHeight < 1) return null;
+
     let fill;
     let lineColour = 'rgba(255,255,255,0.2)';
     // const bgFill = '#363636';

@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import DragHandle from "./DragHandle";
 import DragRectangle from "./DragRectangle";
 
-class CuttingOverlay extends Component {
+class QuickCuttingOverlay extends Component {
 
     constructor() {
         super();
@@ -152,4 +152,4 @@ class CuttingOverlay extends Component {
     }
 }
 
-export default CuttingOverlay;
+export default QuickCuttingOverlay;

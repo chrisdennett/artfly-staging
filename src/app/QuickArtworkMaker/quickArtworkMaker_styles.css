@@ -2,7 +2,7 @@
     overflow: hidden;
     min-width:100vw;
     min-height:100vh;
-    background: white;
+    background: url("./../images/brickwall.png");
 }
 
 .quickArtworkMaker--sideBar{

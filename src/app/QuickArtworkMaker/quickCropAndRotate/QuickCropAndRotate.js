@@ -1,14 +1,15 @@
 // externals
 import React, { Component } from "react";
-// import { faRedo, faTimes, faCheck } from '@fortawesome/fontawesome-free-solid';
+import { faRedo, faTimes, faCheck } from '@fortawesome/fontawesome-free-solid';
 // styles
 import './quickCropAndRotate_styles.css';
 // helpers
 import * as ImageHelper from "../../ArtStudio/ImageHelper";
 // components
-import CuttingBoard from "./CuttingBoard";
+import QuickCuttingBoard from "./QuickCuttingBoard";
 // import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 import QuickCuttingMat from "../quickCuttingMat/QuickCuttingMat";
+import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 
 class QuickCropAndRotate extends Component {
     constructor(props) {
@@ -35,25 +36,6 @@ class QuickCropAndRotate extends Component {
 
     componentDidMount() {
         this.drawCuttingBoardCanvas();
-        /*this.props.setToolControls([
-            <ControlPanelButt icon={faRedo}
-                              isSelected={true}
-                              key={'cropRotate'}
-                              label={'ROTATE'}
-                              onClick={this.onRotateClockwiseClick}/>,
-
-            <ControlPanelButt icon={faCheck}
-                              isSelected={true}
-                              key={'cropDone'}
-                              label={'DONE'}
-                              onClick={this.onDoneClick}/>,
-
-            <ControlPanelButt icon={faTimes}
-                              isSelected={true}
-                              key={'cropCancel'}
-                              label={'CANCEL'}
-                              onClick={this.onCancelClick}/>
-        ]);*/
     }
 
     /*componentWillUnmount() {
@@ -92,7 +74,7 @@ class QuickCropAndRotate extends Component {
 
         const paddingTop = 20;
         const paddingSide = 40;
-        const spaceForButtons = 93;
+        const spaceForButtons = 112;
         const maxCuttingBoardWidth = width - (paddingSide * 2);
         const maxCuttingBoardHeight = height - (spaceForButtons + paddingTop);
 
@@ -103,6 +85,8 @@ class QuickCropAndRotate extends Component {
             maxOutputCanvasWidth: maxCuttingBoardWidth,
             maxOutputCanvasHeight: maxCuttingBoardHeight
         });
+
+        // this isn't needed for any other reason than to trigger a redraw
         this.setState({ maxCuttingBoardWidth, maxCuttingBoardHeight })
     }
 
@@ -127,8 +111,6 @@ class QuickCropAndRotate extends Component {
 
     render() {
         const { width, height } = this.props;
-        const { maxCuttingBoardWidth, maxCuttingBoardHeight } = this.state;
-
         const { rotation, cropData } = this.state;
 
         return (
@@ -142,16 +124,34 @@ class QuickCropAndRotate extends Component {
                     />
                 </div>
 
-                {/*<div className='quickCropAndRotate--cuttingBoardHolder'>*/}
+                <div className='quickCropAndRotate--controls'>
+                    <ControlPanelButt icon={faRedo}
+                                      isSelected={true}
+                                      key={'cropRotate'}
+                                      label={'ROTATE'}
+                                      onClick={this.onRotateClockwiseClick}/>
 
-                    <CuttingBoard
+                    <ControlPanelButt icon={faCheck}
+                                      isSelected={true}
+                                      key={'cropDone'}
+                                      label={'DONE'}
+                                      onClick={this.onDoneClick}/>
+
+                    <ControlPanelButt icon={faTimes}
+                                      isSelected={true}
+                                      key={'cropCancel'}
+                                      label={'CANCEL'}
+                                      onClick={this.onCancelClick}/>
+                </div>
+
+                <div className='quickCropAndRotate--cuttingBoardHolder'>
+
+                    <QuickCuttingBoard
                         onCropUpdate={this.onCropUpdate}
                         onCanvasSetup={this.onCanvasSetup}
-                        maxWidth={maxCuttingBoardWidth}
-                        maxHeight={maxCuttingBoardHeight}
                         rotation={rotation}
                         cropData={cropData}/>
-                {/*</div>*/}
+                </div>
 
             </div>
         );

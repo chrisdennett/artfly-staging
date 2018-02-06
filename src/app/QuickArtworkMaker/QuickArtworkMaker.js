@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import sizeMe from 'react-sizeme';
 // styles
 import './quickArtworkMaker_styles.css';
+// helpers
+import * as ImageHelper from "../ArtStudio/ImageHelper";
 // comps
 import QuickPhotoSelector from "./quickPhotoSelector/QuickPhotoSelector";
-import QuickArtworkRoom from "./quickArtworkRoom/QuickArtworkRoom";
-import * as ImageHelper from "../ArtStudio/ImageHelper";
 import QuickArtwork from "./quickArtwork/QuickArtwork";
 import QuickCropAndRotate from "./quickCropAndRotate/QuickCropAndRotate";
 import QuickArtMakerTools from "./quickArtMakerTools/QuickArtMakerTools";
@@ -18,13 +18,15 @@ class QuickArtworkMaker extends Component {
 
         this.onPhotoSelect = this.onPhotoSelect.bind(this);
         this.onToolSelect = this.onToolSelect.bind(this);
+        this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
+        this.onCropAndRotateCancel = this.onCropAndRotateCancel.bind(this);
 
         this.state = { artworkData: null, currentTool: 'upload' };
     }
 
     // TEST ONLY
     componentDidMount() {
-        this.setState({ artworkData: testArtworkData, currentTool: 'view' })
+        this.setState({ artworkData: testArtworkData, currentTool: 'crop' })
     }
 
     onToolSelect(toolName) {
@@ -38,9 +40,17 @@ class QuickArtworkMaker extends Component {
                     artworkData: {
                         sourceImg, widthToHeightRatio, heightToWidthRatio
                     },
-                    currentTool: 'share'
+                    currentTool: 'view'
                 });
             });
+    }
+
+    onCropAndRotateDone(rotation, cropData){
+console.log("rotation, cropData: ", rotation, cropData);
+    }
+
+    onCropAndRotateCancel(){
+        this.setState({ currentTool: 'view' })
     }
 
     render() {
@@ -51,9 +61,6 @@ class QuickArtworkMaker extends Component {
 
         return (
             <div className={'quickArtworkMaker'}>
-
-                {/*<QuickArtworkRoom height={height}
-                                  floorHeight={floorHeight}/>*/}
 
                 <div className={'quickArtworkMaker--sideBar'} style={{ width: sidebarWidth }}>
                     <QuickArtMakerTools onToolSelect={this.onToolSelect}/>
@@ -69,6 +76,8 @@ class QuickArtworkMaker extends Component {
 
                     {currentTool === 'crop' &&
                     <QuickCropAndRotate sourceImg={artworkData.sourceImg}
+                                        onCancel={this.onCropAndRotateCancel}
+                                        onDone={this.onCropAndRotateDone}
                                         width={contentWidth}
                                         height={height}/>
                     }

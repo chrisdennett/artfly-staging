@@ -39,7 +39,7 @@ class PhotoSelector extends Component {
                            onClick={this.onInputClick}
                            onChange={this.onFileSelect}
                            type="file"
-                           accept="image/*"
+                           accept="image/*;capture=camera"
                            name={id}
                            id={id}/>
 

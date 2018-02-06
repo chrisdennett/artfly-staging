@@ -9,15 +9,24 @@
     align-items: center;
 }
 
+.quickCropAndRotate--controls{
+    position: fixed;
+    bottom: 10px;
+    display: flex;
+}
+
 .quickCropAndRotate--cuttingMatHolder {
-    position: absolute;
+    /*position: absolute;
     top: 0;
-    left: 0;
+    left: 0;*/
 }
 
 .quickCropAndRotate--cuttingBoardHolder {
+    position: absolute;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 67px;
 
     display: flex;
     flex: 1;
@@ -26,5 +35,5 @@
 }
 
 .cropAndRotate--cuttingBoard{
-    /*position: relative;*/
+    position: relative;
 }

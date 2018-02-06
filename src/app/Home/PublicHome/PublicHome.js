@@ -10,11 +10,18 @@ import PrepareTheCanvasIcon from "../animatedIcons/PrepareTheCanvasIcon";
 import FrameItIcon from "../animatedIcons/FrameItIcon";
 import BuildGalleryAndShareIcon from "../animatedIcons/BuildGalleryAndShareIcon";
 import SignUpForm from "../../SignUpForm/SignUpForm";
+import LinkButt from "../../global/Butt/LinkButt";
 
 const PublicHome = function () {
 
     return (
         <div>
+
+            <div className={'app--section'}>
+                Try out a test version.
+                <LinkButt linkTo={'/quickArtworkMaker'}>TRY IT OUT</LinkButt>
+            </div>
+
             <div className={'app--section app--section--dark'}>
                 <GallerySign>
                     <p>ArtFly is currently in private beta.</p>
