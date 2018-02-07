@@ -25,7 +25,7 @@ class QuickArtworkMaker extends Component {
         // const cropData = { leftPercent: 0.15, rightPercent: 1, topPercent: 0.1, bottomPercent: 0.78 };
         const cropData = { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 };
 
-        this.state = { currentTool: 'upload', cropData, rotation: 1 };
+        this.state = { currentTool: 'upload', cropData, orientation: 1 };
     }
 
     // TEST ONLY
@@ -46,7 +46,6 @@ class QuickArtworkMaker extends Component {
     onPhotoSelect(imgFile) {
         ImageHelper.GetImage(imgFile,
             (sourceImg, imgOrientation) => {
-                this.sourceImg = sourceImg;
                 this.updateMasterCanvas(sourceImg, imgOrientation);
             });
     }
@@ -57,6 +56,7 @@ class QuickArtworkMaker extends Component {
         ImageHelper.drawImageToCanvas({ sourceImg, outputCanvas: masterCanvas, orientation },
             (widthToHeightRatio, heightToWidthRatio) => {
                 this.setState({
+                    sourceImg,
                     masterCanvas,
                     widthToHeightRatio,
                     heightToWidthRatio,
@@ -66,13 +66,9 @@ class QuickArtworkMaker extends Component {
     }
 
     onCropAndRotateDone(orientation, cropData) {
-        // rotate the master canvas, then reset rotation to 1.
-        // Or rather never save the rotation in state.
-        console.log("orientation: ", orientation);
-
         ImageHelper.drawImageToCanvas({ sourceImg: this.sourceImg, outputCanvas: this.state.masterCanvas, orientation },
             () => {
-                this.setState({ cropData, currentTool: 'view' });
+                this.setState({ orientation, cropData, currentTool: 'view' });
             });
     }
 
@@ -81,7 +77,7 @@ class QuickArtworkMaker extends Component {
     }
 
     render() {
-        const { artworkData, currentTool, rotation, cropData, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.state;
+        const { artworkData, currentTool, orientation, cropData, sourceImg, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.state;
         const { height, width } = this.props.size;
         const sidebarWidth = 70;
         const contentWidth = width - sidebarWidth;
@@ -98,7 +94,6 @@ class QuickArtworkMaker extends Component {
                     {currentTool === 'view' &&
                     <QuickArtwork height={height}
                                   width={contentWidth}
-                                  rotation={rotation}
                                   cropData={cropData}
                                   masterCanvas={masterCanvas}
                                   widthToHeightRatio={widthToHeightRatio}
@@ -108,8 +103,8 @@ class QuickArtworkMaker extends Component {
 
                     {currentTool === 'crop' &&
                     <QuickCropAndRotate cropData={cropData}
-                                        rotation={rotation}
-                                        masterCanvas={masterCanvas}
+                                        orientation={orientation}
+                                        sourceImg={sourceImg}
                                         widthToHeightRatio={widthToHeightRatio}
                                         heightToWidthRatio={heightToWidthRatio}
                                         onCancel={this.onCropAndRotateCancel}

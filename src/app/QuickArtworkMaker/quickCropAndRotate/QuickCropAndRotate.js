@@ -7,7 +7,6 @@ import './quickCropAndRotate_styles.css';
 import * as ImageHelper from "../../ArtStudio/ImageHelper";
 // components
 import QuickCuttingBoard from "./QuickCuttingBoard";
-// import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 import QuickCuttingMat from "../quickCuttingMat/QuickCuttingMat";
 import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 
@@ -24,17 +23,13 @@ class QuickCropAndRotate extends Component {
 
         this.state = {
             canvas: null,
-            rotation: 1,
-            cropData: {
-                leftPercent: 0,
-                rightPercent: 1,
-                topPercent: 0,
-                bottomPercent: 1
-            }
+            orientation: null,
+            cropData: null
         };
     }
 
     componentWillMount() {
+        // set crop data and rotation to default or values set be parents
         const {
                   cropData = {
                       leftPercent: 0,
@@ -42,11 +37,11 @@ class QuickCropAndRotate extends Component {
                       topPercent: 0,
                       bottomPercent: 1
                   },
-                  rotation = 1
+                  orientation = 1
               } = this.props;
 
 
-        this.setState({ cropData, rotation })
+        this.setState({ cropData, orientation })
     }
 
     componentDidMount() {
@@ -69,15 +64,15 @@ class QuickCropAndRotate extends Component {
     }
 
     onDoneClick() {
-        const { rotation, cropData } = this.state;
-        this.props.onDone(rotation, cropData);
+        const { orientation, cropData } = this.state;
+        this.props.onDone(orientation, cropData);
     }
 
     drawCuttingBoardCanvas(props = this.props) {
-        const { width, height, masterCanvas } = props;
-        const { rotation, canvas } = this.state;
+        const { width, height, sourceImg } = props;
+        const { orientation, canvas } = this.state;
 
-        if (!masterCanvas || !width || !canvas) return;
+        if (!sourceImg || !width || !canvas) return;
 
         const paddingTop = 20;
         const paddingSide = 40;
@@ -86,9 +81,9 @@ class QuickCropAndRotate extends Component {
         const maxCuttingBoardHeight = height - (spaceForButtons + paddingTop);
 
         ImageHelper.drawToCanvas({
-            sourceCanvas: masterCanvas,
+            sourceCanvas: sourceImg,
             outputCanvas: canvas,
-            orientation: rotation,
+            orientation: orientation,
             maxOutputCanvasWidth: maxCuttingBoardWidth,
             maxOutputCanvasHeight: maxCuttingBoardHeight
         });
@@ -100,9 +95,9 @@ class QuickCropAndRotate extends Component {
     // Rotate using info from:
     // https://stackoverflow.com/questions/7584794/accessing-jpeg-exif-rotation-data-in-javascript-on-the-client-side/32490603#32490603
     onRotateClockwiseClick() {
-        const currentRotation = this.state.rotation ? this.state.rotation : 1;
+        const currentRotation = this.state.orientation ? this.state.orientation : 1;
         const nextRotations = { 1: 6, 6: 3, 3: 8, 8: 1 }; // order of rotations by 90° clockwise increments
-        const newRotation = nextRotations[currentRotation] || 6;
+        const newOrientation = nextRotations[currentRotation] || 6;
 
         let { leftPercent, rightPercent, topPercent, bottomPercent } = this.state.cropData;
 
@@ -111,14 +106,14 @@ class QuickCropAndRotate extends Component {
         const newT = leftPercent;
         const newB = rightPercent;
 
-        this.setState({ rotation: newRotation, cropData: { leftPercent: newL, rightPercent: newR, topPercent: newT, bottomPercent: newB } }, () => {
+        this.setState({ orientation: newOrientation, cropData: { leftPercent: newL, rightPercent: newR, topPercent: newT, bottomPercent: newB } }, () => {
             this.drawCuttingBoardCanvas();
         });
     }
 
     render() {
         const { width, height } = this.props;
-        const { rotation, cropData } = this.state;
+        const { cropData } = this.state;
 
         return (
 
@@ -156,7 +151,6 @@ class QuickCropAndRotate extends Component {
                     <QuickCuttingBoard
                         onCropUpdate={this.onCropUpdate}
                         onCanvasSetup={this.onCanvasSetup}
-                        rotation={rotation}
                         cropData={cropData}/>
                 </div>
 

@@ -1,8 +1,4 @@
 import React, { Component } from "react";
-// styles
-// import './quickShare_styles.css';
-// helpers
-import * as ImageHelper from "../../ArtStudio/ImageHelper";
 // images
 import WallTile from './../../images/brickwall.png';
 import FloorboardsTile from './../../images/floor-boards.png';
