@@ -91,7 +91,64 @@ function GetPhotoOrientation(file, callback) {
     reader.readAsArrayBuffer(file);
 }
 
-// TODO: The following 3 functions should probably just be a single function with internal sub-functions if needed
+
+// Draws an image to a canvas restricting to a specific size
+export function drawImageToCanvas({ sourceImg, outputCanvas, orientation, maxOutputCanvasWidth = maxImageWidth, maxOutputCanvasHeight = maxImageHeight }, callback) {
+    const isPortrait = orientation > 4 && orientation < 9;
+
+    // if portrait the final canvas dimensions will be the other way round
+    const canvasH = isPortrait ? sourceImg.width : sourceImg.height;
+    const canvasW = isPortrait ? sourceImg.height : sourceImg.width;
+    outputCanvas.width = canvasW;
+    outputCanvas.height = canvasH;
+
+    const ctx = outputCanvas.getContext('2d');
+
+    // save the context so it can be reset after transform
+    ctx.save();
+    // transform context before drawing image
+    switch (orientation) {
+        case 2:
+            // flipped horizontally
+            ctx.transform(-1, 0, 0, 1, canvasH, 0);
+            break;
+        case 3:
+            // rotated 180°
+            ctx.transform(-1, 0, 0, -1, canvasW, canvasH);
+            break;
+        case 4:
+            // flipped horizontally and rotated 180°
+            ctx.transform(1, 0, 0, -1, 0, canvasW);
+            break;
+        case 5:
+            // flipped horizontally and rotated 270°
+            ctx.transform(0, 1, 1, 0, 0, 0);
+            break;
+        case 6:
+            // rotated 90°
+            ctx.transform(0, 1, -1, 0, canvasW, 0);
+            break;
+        case 7:
+            // flipped horizontally and rotated 90°
+            ctx.transform(0, -1, -1, 0, canvasW, canvasH);
+            break;
+        case 8:
+            // rotated 270°
+            ctx.transform(0, -1, 1, 0, 0, canvasH);
+            break;
+        default:
+            break;
+    }
+
+    ctx.drawImage(sourceImg,0,0);
+    // restore ensures resets transform in case another image is added
+    ctx.restore();
+
+    const widthToHeightRatio = canvasH / canvasW;
+    const heightToWidthRatio = canvasW / canvasH;
+
+    if (callback) callback(widthToHeightRatio, heightToWidthRatio)
+}
 
 
 // Draws one canvas to another restricting to a specific size
@@ -130,7 +187,7 @@ export function drawToCanvas({ sourceCanvas, outputCanvas, orientation, cropPerc
     }
 
     const ctx = outputCanvas.getContext('2d');
-    ctx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
+    // ctx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
 
     outputCanvas.width = canvasW;
     outputCanvas.height = canvasH;

@@ -20,36 +20,60 @@ class QuickArtworkMaker extends Component {
         this.onToolSelect = this.onToolSelect.bind(this);
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
         this.onCropAndRotateCancel = this.onCropAndRotateCancel.bind(this);
+        this.updateMasterCanvas = this.updateMasterCanvas.bind(this);
 
-        // const cropData = {leftPercent:0.17, rightPercent:1, topPercent:0.1, bottomPercent:0.8};
-        const cropData = {leftPercent:0, rightPercent:1, topPercent:0, bottomPercent:1};
+        // const cropData = { leftPercent: 0.15, rightPercent: 1, topPercent: 0.1, bottomPercent: 0.78 };
+        const cropData = { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 };
 
-        this.state = { artworkData: null, currentTool: 'upload', cropData, rotation: 1 };
+        this.state = { currentTool: 'upload', cropData, rotation: 1 };
     }
 
     // TEST ONLY
     componentDidMount() {
-        this.setState({ artworkData: testArtworkData, currentTool: 'view' })
+        //const cropData = {leftPercent:0, rightPercent:1, topPercent:0, bottomPercent:1};
+        // this.setState({ currentTool: 'view', cropData })
+
+        this.sourceImg = testArtworkData.sourceImg;
+        this.updateMasterCanvas(this.sourceImg, 1);
     }
 
+    // Left nav tool selection
     onToolSelect(toolName) {
         this.setState({ currentTool: toolName })
     }
 
+    // Photo selected
     onPhotoSelect(imgFile) {
         ImageHelper.GetImage(imgFile,
-            (sourceImg, imgOrientation, widthToHeightRatio, heightToWidthRatio) => {
-                this.setState({
-                    artworkData: {
-                        sourceImg, widthToHeightRatio, heightToWidthRatio
-                    },
-                    currentTool: 'view'
-                });
+            (sourceImg, imgOrientation) => {
+                this.sourceImg = sourceImg;
+                this.updateMasterCanvas(sourceImg, imgOrientation);
             });
     }
 
-    onCropAndRotateDone(rotation, cropData) {
-        this.setState({ rotation, cropData });
+    // Use Master canvas
+    updateMasterCanvas(sourceImg, orientation) {
+        const masterCanvas = document.createElement('canvas');
+        ImageHelper.drawImageToCanvas({ sourceImg, outputCanvas: masterCanvas, orientation },
+            (widthToHeightRatio, heightToWidthRatio) => {
+                this.setState({
+                    masterCanvas,
+                    widthToHeightRatio,
+                    heightToWidthRatio,
+                    currentTool: 'view'
+                });
+            })
+    }
+
+    onCropAndRotateDone(orientation, cropData) {
+        // rotate the master canvas, then reset rotation to 1.
+        // Or rather never save the rotation in state.
+        console.log("orientation: ", orientation);
+
+        ImageHelper.drawImageToCanvas({ sourceImg: this.sourceImg, outputCanvas: this.state.masterCanvas, orientation },
+            () => {
+                this.setState({ cropData, currentTool: 'view' });
+            });
     }
 
     onCropAndRotateCancel() {
@@ -57,7 +81,7 @@ class QuickArtworkMaker extends Component {
     }
 
     render() {
-        const { artworkData, currentTool, rotation, cropData } = this.state;
+        const { artworkData, currentTool, rotation, cropData, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.state;
         const { height, width } = this.props.size;
         const sidebarWidth = 70;
         const contentWidth = width - sidebarWidth;
@@ -76,11 +100,18 @@ class QuickArtworkMaker extends Component {
                                   width={contentWidth}
                                   rotation={rotation}
                                   cropData={cropData}
-                                  artworkData={artworkData}/>
+                                  masterCanvas={masterCanvas}
+                                  widthToHeightRatio={widthToHeightRatio}
+                                  heightToWidthRatio={heightToWidthRatio}
+                    />
                     }
 
                     {currentTool === 'crop' &&
-                    <QuickCropAndRotate sourceImg={artworkData.sourceImg}
+                    <QuickCropAndRotate cropData={cropData}
+                                        rotation={rotation}
+                                        masterCanvas={masterCanvas}
+                                        widthToHeightRatio={widthToHeightRatio}
+                                        heightToWidthRatio={heightToWidthRatio}
                                         onCancel={this.onCropAndRotateCancel}
                                         onDone={this.onCropAndRotateDone}
                                         width={contentWidth}

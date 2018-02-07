@@ -34,16 +34,23 @@ class QuickCropAndRotate extends Component {
         };
     }
 
-    componentDidMount() {
-        this.drawCuttingBoardCanvas();
+    componentWillMount() {
+        const {
+                  cropData = {
+                      leftPercent: 0,
+                      rightPercent: 1,
+                      topPercent: 0,
+                      bottomPercent: 1
+                  },
+                  rotation = 1
+              } = this.props;
+
+
+        this.setState({ cropData, rotation })
     }
 
-    /*componentWillUnmount() {
-        this.props.clearToolControls();
-    }*/
-
-    componentWillReceiveProps(nextProps) {
-        this.drawCuttingBoardCanvas(nextProps);
+    componentDidMount() {
+        this.drawCuttingBoardCanvas();
     }
 
     onCropUpdate(cropData) {
@@ -67,10 +74,10 @@ class QuickCropAndRotate extends Component {
     }
 
     drawCuttingBoardCanvas(props = this.props) {
-        const { width, height, sourceImg } = props;
+        const { width, height, masterCanvas } = props;
         const { rotation, canvas } = this.state;
 
-        if (!sourceImg || !width || !canvas) return;
+        if (!masterCanvas || !width || !canvas) return;
 
         const paddingTop = 20;
         const paddingSide = 40;
@@ -79,7 +86,7 @@ class QuickCropAndRotate extends Component {
         const maxCuttingBoardHeight = height - (spaceForButtons + paddingTop);
 
         ImageHelper.drawToCanvas({
-            sourceCanvas: sourceImg,
+            sourceCanvas: masterCanvas,
             outputCanvas: canvas,
             orientation: rotation,
             maxOutputCanvasWidth: maxCuttingBoardWidth,
