@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+// styles
+import './quickArtwork_styles.css';
 // images
 import WallTile from './../../images/brickwall.png';
 import FloorboardsTile from './../../images/floor-boards.png';
@@ -22,7 +24,7 @@ class QuickArtwork extends Component {
         this.canvas = canvas;
         this.setupCanvas(this.props);
 
-        if(this.props.onCanvasSetUp) this.props.onCanvasSetUp(canvas)
+        if (this.props.onCanvasSetUp) this.props.onCanvasSetUp(canvas)
     }
 
     setupCanvas(props) {
@@ -31,7 +33,8 @@ class QuickArtwork extends Component {
         // prevent errors by stopping if critical elements not available
         if (!this.canvas || width < 1 || height < 1 || !masterCanvas) {
             return null;
-        };
+        }
+        ;
 
         if (cropData) {
             const { leftPercent, rightPercent, topPercent, bottomPercent } = cropData;
@@ -91,9 +94,11 @@ class QuickArtwork extends Component {
         });
     }
 
+
+
     render() {
         return (
-            <canvas className={'quickShare--canvas'}
+            <canvas className={'quickArtwork--canvas'}
                     ref={this.onCanvasInit}
                     width={300}
                     height={300}/>

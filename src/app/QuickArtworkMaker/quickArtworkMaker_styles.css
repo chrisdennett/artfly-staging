@@ -16,10 +16,19 @@
     bottom: 0;
 }
 
-.quickArtworkMaker--main {
+.quickArtworkMaker--mainScrollable {
+    margin-left: 60px;
+    /*position: fixed;
+    top: 0;
+    left: 60px;
+    right: 0;
+    bottom: 0;*/
+}
+
+.quickArtworkMaker--mainFixed{
     position: fixed;
     top: 0;
-    left: 70px;
+    left: 60px;
     right: 0;
     bottom: 0;
 }

@@ -6,6 +6,7 @@
     "@fortawesome/fontawesome": "^1.1.2",
     "@fortawesome/fontawesome-free-brands": "^5.0.6",
     "@fortawesome/fontawesome-free-solid": "^5.0.4",
+    "@fortawesome/fontawesome-pro-solid": "^5.0.6",
     "@fortawesome/react-fontawesome": "0.0.17",
     "babel-polyfill": "^6.26.0",
     "firebase": "^4.8.2",

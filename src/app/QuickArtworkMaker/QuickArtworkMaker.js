@@ -79,8 +79,14 @@ class QuickArtworkMaker extends Component {
     render() {
         const { currentTool, orientation, cropData, sourceImg, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.state;
         const { height, width } = this.props.size;
-        const sidebarWidth = 70;
+        const sidebarWidth = 60;
         const contentWidth = width - sidebarWidth;
+
+        let classesForMain = 'quickArtworkMaker--mainFixed';
+
+        if(currentTool === 'share'){
+            classesForMain = 'quickArtworkMaker--mainScrollable';
+        }
 
         return (
             <div className={'quickArtworkMaker'}>
@@ -89,11 +95,12 @@ class QuickArtworkMaker extends Component {
                     <QuickArtMakerTools onToolSelect={this.onToolSelect}/>
                 </div>
 
-                <div className={'quickArtworkMaker--main'}>
+                <div className={classesForMain}>
 
                     {currentTool === 'view' &&
                     <QuickArtwork height={height}
                                   width={contentWidth}
+                                  isFixed={true}
                                   cropData={cropData}
                                   masterCanvas={masterCanvas}
                                   widthToHeightRatio={widthToHeightRatio}

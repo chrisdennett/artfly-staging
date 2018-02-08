@@ -44,6 +44,10 @@ class QuickCropAndRotate extends Component {
         this.setState({ cropData, orientation })
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.drawCuttingBoardCanvas(nextProps);
+    }
+
     componentDidMount() {
         this.drawCuttingBoardCanvas();
     }

@@ -24,7 +24,7 @@ class Butt extends Component {
     render() {
         const { label, useATag = false, onClick, alignLeft, size, svgIcon, showAsLink, fullWidth, ...rest } = this.props;
 
-        let buttonStyle = {};
+        let buttonStyle = {display:'inline-flex'};
 
         if (alignLeft) {
             buttonStyle.justifyContent = 'left';
@@ -49,6 +49,8 @@ class Butt extends Component {
 
         const { facebook, google, link, red, orange, white, yellow, green, blue, purple } = rest;
 
+        console.log("rest: ", rest);
+
         if (facebook) classes += ' butt--facebook';
         else if (google) classes += ' butt--google';
         else if (link) classes += ' butt--link';
@@ -62,9 +64,18 @@ class Butt extends Component {
 
         const wording = label ? label : this.props.children;
 
+        const iconHolderStyles = {};
+            if(!wording){
+                buttonStyle.paddingTop = 10;
+                iconHolderStyles.padding = 0;
+                iconHolderStyles.margin = 0;
+
+            }
+
         if (useATag) {
-            buttonStyle.display = 'inline-flex';
-            buttonStyle.paddingTop = 10;
+            // buttonStyle.display = 'inline-flex';
+            // buttonStyle.paddingTop = 10;
+
 
             return (
                 <a onClick={onClick}
@@ -76,10 +87,11 @@ class Butt extends Component {
                    onMouseLeave={this.onMouseLeave}>
 
                     {svgIcon &&
-                    <div className={'butt--iconHolder'}>{svgIcon}</div>
+                    <div className={'butt--iconHolder'} style={iconHolderStyles}>{svgIcon}</div>
                     }
 
                     <div>{wording}</div>
+
                 </a>
             )
         }
@@ -92,7 +104,7 @@ class Butt extends Component {
                     onMouseLeave={this.onMouseLeave}>
 
                 {svgIcon &&
-                <div className={'butt--iconHolder'}>{svgIcon}</div>
+                <div className={'butt--iconHolder'} style={iconHolderStyles}>{svgIcon}</div>
                 }
 
                 <div>{wording}</div>
