@@ -60,7 +60,7 @@ class QuickArtworkMaker extends Component {
                     masterCanvas,
                     widthToHeightRatio,
                     heightToWidthRatio,
-                    currentTool: 'view'
+                    currentTool: 'share'
                 });
             })
     }
@@ -77,7 +77,7 @@ class QuickArtworkMaker extends Component {
     }
 
     render() {
-        const { artworkData, currentTool, orientation, cropData, sourceImg, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.state;
+        const { currentTool, orientation, cropData, sourceImg, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.state;
         const { height, width } = this.props.size;
         const sidebarWidth = 70;
         const contentWidth = width - sidebarWidth;
@@ -114,7 +114,10 @@ class QuickArtworkMaker extends Component {
                     }
 
                     {currentTool === 'share' &&
-                    <QuickShare artworkData={artworkData}
+                    <QuickShare cropData={cropData}
+                                masterCanvas={masterCanvas}
+                                widthToHeightRatio={widthToHeightRatio}
+                                heightToWidthRatio={heightToWidthRatio}
                                 width={contentWidth}
                                 height={height}/>
                     }

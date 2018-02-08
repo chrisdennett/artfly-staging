@@ -64,6 +64,7 @@ class Butt extends Component {
 
         if (useATag) {
             buttonStyle.display = 'inline-flex';
+            buttonStyle.paddingTop = 10;
 
             return (
                 <a onClick={onClick}

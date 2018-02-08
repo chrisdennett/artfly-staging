@@ -21,6 +21,8 @@ class QuickArtwork extends Component {
     onCanvasInit(canvas) {
         this.canvas = canvas;
         this.setupCanvas(this.props);
+
+        if(this.props.onCanvasSetUp) this.props.onCanvasSetUp(canvas)
     }
 
     setupCanvas(props) {

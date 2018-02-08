@@ -1,7 +1,7 @@
 /*@import url('https://fonts.googleapis.com/css?family=Roboto');*/
 @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:500,600,700,900');
 @import url('https://fonts.googleapis.com/css?family=Stardos+Stencil');
-@import url('https://fonts.googleapis.com/css?family=Work+Sans:500');
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:400');
 /*@import url('https://fonts.googleapis.com/css?family=Bungee+Inline|Cabin+Sketch|Codystar|Fredericka+the+Great|Jacques+Francois+Shadow|Kranky|Life+Savers:700|Londrina+Shadow|Love+Ya+Like+A+Sister');*/
 /*@import url('https://fonts.googleapis.com/css?family=Comfortaa:300,400,700');*/
 /*@import url('https://fonts.googleapis.com/css?family=Averia+Sans+Libre:300,400,700');*/
@@ -26,8 +26,8 @@ html, body {
 }
 
 button, a{
-    /*font-family: 'Work Sans', sans-serif;*/
-    font-family: 'Stardos Stencil', cursive;
+    font-family: 'Work Sans', sans-serif;
+    /*font-family: 'Stardos Stencil', cursive;*/
 }
 
 .no-scroll-bars {

@@ -1,3 +1,40 @@
-.quickShare--canvas{
-    /*border: red 1px solid;*/
+.quickShare {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.quickShare--controls {
+    width: 300px;
+}
+
+.quickShare--presets {
+
+}
+
+.quickShare--imagePreview {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+    background: white;
+    border-radius: 10px;
+    border: rgba(0, 0, 0, 0.3) 1px solid;
+}
+
+.quickShare--quickArtworkHolder {
+    line-height: 0;
+
+    /*max-width: 100%;*/
+}
+
+.quickShare--quickArtworkHolder--label {
+    /*margin: 20px 0 0 0;*/
+    /*padding: 0;*/
+}
+
+.quickShare--canvas {
+    max-width: 100%;
+    max-height: 100%;
 }

@@ -2,11 +2,15 @@
     overflow: hidden;
     min-width:100vw;
     min-height:100vh;
-    background: url("./../images/brickwall.png");
+    /*background: url("./../images/brickwall.png");*/
+    background: url("./../images/retina_wood.png");
 }
 
 .quickArtworkMaker--sideBar{
+    background: white;
     position: fixed;
+    z-index: 9999;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.4);
     top:0;
     left: 0;
     bottom: 0;
