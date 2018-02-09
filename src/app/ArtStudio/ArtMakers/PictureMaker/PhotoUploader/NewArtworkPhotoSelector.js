@@ -8,7 +8,7 @@ import './newArtworkPhotoSelector_styles.css';
 import { getUserArtistChanges } from '../../../../../actions/UserDataActions'
 // import ArtistSelectorOption from "../../../../ArtistSelector/ArtistSelectorOption";
 import PhotoSelector from "./PhotoSelector/PhotoSelector";
-import { faTimes } from "@fortawesome/fontawesome-free-solid/index.es";
+import { faTimes } from "@fortawesome/fontawesome-pro-solid/index.es";
 import ControlPanelButt from "../../../../global/Butt/ControlPanelButt";
 
 class NewArtworkPhotoSelector extends Component {

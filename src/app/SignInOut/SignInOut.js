@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import {faSignOutAlt, faSignInAlt} from '@fortawesome/fontawesome-free-solid';
+import {faSignOutAlt, faSignInAlt} from '@fortawesome/fontawesome-pro-solid';
 // actions
 import { signInWithGoogle, signInWithFacebook, signOutUser } from '../../actions/UserDataActions';
 // components

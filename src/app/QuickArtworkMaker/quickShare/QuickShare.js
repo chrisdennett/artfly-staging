@@ -157,24 +157,25 @@ class QuickShare extends Component {
                 </div>
 
 
-                <div className={'quickShare--imagePreview'}>
+                <div className={'quickShare--controls'}>
 
-                    <div className={'quickShare--controls'}>
+                    <div className={'quickShare--presets'}>
+                        {
+                            presets.map((preset) => {
+                                return <PresetButton icon={preset.icon}
+                                                     key={preset.label}
+                                                     onSelect={this.onPresetSelected}
+                                                     width={preset.width}
+                                                     height={preset.height}
+                                                     label={preset.label}/>
+                            })
 
-                        <div className={'quickShare--controls--dimensions'}>
-                            <div className={'quickShare--presets'}>
-                                {
-                                    presets.map((preset) => {
-                                        return <PresetButton icon={preset.icon}
-                                                             key={preset.label}
-                                                             onSelect={this.onPresetSelected}
-                                                             width={preset.width}
-                                                             height={preset.height}
-                                                             label={preset.label}/>
-                                    })
+                        }
+                    </div>
 
-                                }
-                            </div>
+                    <div className={'quickShare--controls--dimensions'}>
+
+                        <div className={'quickShare--controls--dimensions--inputs'}>
 
                             Dimensions:
 
@@ -189,18 +190,14 @@ class QuickShare extends Component {
                                    className={'quickShare--controls--dimensions--input'}
                                    type="text"
                                    value={presetHeight}/>
-
-                            <Butt green useATag={true}
-                                  svgIcon={<FontAwesomeIcon icon={faDownload}/>}
-                                  href={downloadUrl}
-                                  download={`artfly_${presetWidth}x${presetHeight}`}
-                                  onClick={this.saveImage}>
-                                Download image
-                            </Butt>
                         </div>
 
                     </div>
 
+                </div>
+
+
+                <div className={'quickShare--imagePreview'}>
                     <div className={'quickShare--quickArtworkHolder'}>
                         <QuickArtwork width={presetWidth}
                                       height={presetHeight}
@@ -212,6 +209,16 @@ class QuickShare extends Component {
                     </div>
 
                     {/*<p className={'quickShare--quickArtworkHolder--label'}>Dimensions: {presetWidth} x {presetHeight}</p>*/}
+                </div>
+
+                <div className={'quickShare--downloadSection'}>
+                    <Butt green useATag={true}
+                          svgIcon={<FontAwesomeIcon icon={faDownload}/>}
+                          href={downloadUrl}
+                          download={`artfly_${presetWidth}x${presetHeight}`}
+                          onClick={this.saveImage}>
+                        Download image
+                    </Butt>
                 </div>
             </div>
         );

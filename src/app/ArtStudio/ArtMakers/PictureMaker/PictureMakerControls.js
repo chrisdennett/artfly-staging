@@ -6,7 +6,7 @@ import {
     faTrashAlt,
     faCheckCircle,
     faChild
-} from '@fortawesome/fontawesome-free-solid';
+} from '@fortawesome/fontawesome-pro-solid';
 // styles
 import './pictureMakerControlsStyles.css';
 // components

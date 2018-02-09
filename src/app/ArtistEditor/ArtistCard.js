@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { faAddressCard, faBuilding } from '@fortawesome/fontawesome-free-solid';
+import { faAddressCard, faBuilding } from '@fortawesome/fontawesome-pro-solid';
 // comps
 import Link from "../global/Butt/Link";
 import Butt from "../global/Butt/Butt";

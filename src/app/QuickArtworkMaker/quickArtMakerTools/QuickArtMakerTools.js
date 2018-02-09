@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { faObjectGroup, faShare, faUpload } from "@fortawesome/fontawesome-free-solid/index";
+import { faObjectGroup, faShare, faUpload } from "@fortawesome/fontawesome-pro-solid/index";
 // styles
 import './quickArtMakerTools_styles.css';
 // comps

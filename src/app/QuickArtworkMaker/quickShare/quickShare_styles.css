@@ -7,24 +7,38 @@
 }
 
 .quickShare--intro {
-    padding: 40px 20px 20px 20px;
+    padding: 40px 20px 0 20px;
     text-align: center;
     max-width: 800px;
 }
 
 .quickShare--controls {
     text-align: center;
-    max-width: 800px;
+    /*max-width: 800px;*/
+    margin: 20px 0 40px 0;
+    padding: 10px 0;
+    background-color: rgba(0,0,0,0.1);
     width: 100%;
-    background: rgba(255, 255, 255, 1);
+    /*background: rgba(255, 255, 255, 1);*/
 }
 
 .quickShare--controls--dimensions {
-    padding: 20px;
-    margin-bottom: 10px;
+    /*padding: 10px 0;*/
+    /*background-color: rgba(0,0,0,0.15);*/
+    /*border-top: 2px rgba(0, 0, 0, 0.2) solid;*/
+    /*border-bottom: 2px rgba(0, 0, 0, 0.2) solid;*/
+    /*margin: 20px 0;*/
+}
+
+.quickShare--downloadSection {
     width: 100%;
-    background: #6a859436;
-    border: 1px rgba(0, 0, 0, 0.1) solid;
+    text-align: center;
+    padding: 1px 0;
+    margin-bottom: 40px;
+}
+
+.quickShare--controls--dimensions--inputs{
+    padding: 10px 0;
 }
 
 .quickShare--controls--dimensions--input {
@@ -58,6 +72,7 @@
 
 .quickShare--quickArtworkHolder canvas {
     border: 1px rgba(0, 0, 0, 0.3) solid;
+    max-height: 400px;
 }
 
 .quickShare--quickArtworkHolder--label {

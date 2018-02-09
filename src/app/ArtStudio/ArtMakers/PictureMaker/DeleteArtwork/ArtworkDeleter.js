@@ -1,7 +1,7 @@
 // externals
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { faCheck, faTimes } from '@fortawesome/fontawesome-free-solid';
+import { faCheck, faTimes } from '@fortawesome/fontawesome-pro-solid';
 // styles
 import './deleteArtwork_styles.css';
 // actions

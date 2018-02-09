@@ -1,6 +1,6 @@
 // externals
 import React, { Component } from "react";
-import { faRedo, faTimes, faCheck } from '@fortawesome/fontawesome-free-solid';
+import { faRedo, faTimes, faCheck } from '@fortawesome/fontawesome-pro-solid';
 // styles
 import './cropAndRotate.css';
 // helpers
