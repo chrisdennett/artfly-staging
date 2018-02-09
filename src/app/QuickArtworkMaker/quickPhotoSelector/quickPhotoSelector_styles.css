@@ -1,5 +1,6 @@
 .quickPhotoSelectorPage{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
@@ -9,6 +10,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     flex: 1;
     max-width: 220px;
 }
@@ -23,18 +25,18 @@
 }
 
 .quickPhotoSelector--customInputButton{
-    background: rgba(255,255,255,0.05);
+    /*background: rgba(255,255,255,0.05);*/
     cursor: pointer;
     max-width: 600px;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 0;
+    padding: 40px;
+    margin: 30px;
     outline: none;
     text-align: center;
+    border: rgba(0, 0, 0, 0.4) 10px dashed;
 }
 
 .quickPhotoSelector--iconBg{
-    fill: rgba(0, 0, 0, 0.3);
+    fill: rgba(0, 0, 0, 0.4);
 }
 
 .quickPhotoSelector--icon{
@@ -42,12 +44,16 @@
 }
 
 .quickPhotoSelector--text{
-    color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    color: rgba(0, 0, 0, 0.4);
+    font-family: 'Stardos Stencil', cursive;
     margin: 0;
+    font-size: 2rem;
+    line-height: 2rem;
 }
 
 .quickPhotoSelector--label{
-    color: rgba(0, 0, 0, 0.8);
+    /*color: rgba(0, 0, 0, 0.8);
     font-weight: bold;
-    margin: 0;
+    margin: 0;*/
 }

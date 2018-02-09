@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { faDesktop, faDownload } from '@fortawesome/fontawesome-pro-solid';
+import { faDesktop, faDownload, faShare } from '@fortawesome/fontawesome-pro-solid';
 import { faFacebook, faInstagram, faPinterest, faTwitter, faGooglePlus } from '@fortawesome/fontawesome-free-brands';
 // styles
 import './quickShare_styles.css';
@@ -90,7 +90,6 @@ const presets = [
     }
 ];
 
-
 class QuickShare extends Component {
 
     constructor(props) {
@@ -118,7 +117,6 @@ class QuickShare extends Component {
     }
 
     onPresetWidthInputChange(e) {
-
         let proposedWidth = e.target.value;
         const maxWidth = 3000;
 
@@ -127,11 +125,9 @@ class QuickShare extends Component {
         }
 
         this.setState({ presetWidth: proposedWidth })
-
     }
 
     onPresetHeightInputChange(e) {
-
         let proposedHeight = e.target.value;
         const maxHeight = 3000;
 
@@ -140,19 +136,20 @@ class QuickShare extends Component {
         }
 
         this.setState({ presetHeight: proposedHeight })
-
     }
 
     render() {
         const { downloadUrl, presetWidth, presetHeight } = this.state;
-        const { cropData, masterCanvas, widthToHeightRatio, heightToWidthRatio, width, height } = this.props;
+        const { cropData, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.props;
 
         return (
 
             <div className={'quickShare'}>
 
                 <div className={'quickShare--intro'}>
-                    <StencilHeader wording={'Saving and Sharing'}/>
+                    <StencilHeader wording={'Saving and Sharing'}
+                                   icon={<FontAwesomeIcon icon={faShare}/>}/>
+
                     <p>Now your artwork is framed and looking divine, you'll want to download it for backgrounds, mugs,
                         t-shirts, tattoos and to share with the world.</p>
                     <p>Pick your own size or use one of the presets.</p>
@@ -163,7 +160,6 @@ class QuickShare extends Component {
                 <div className={'quickShare--imagePreview'}>
 
                     <div className={'quickShare--controls'}>
-
 
                         <div className={'quickShare--controls--dimensions'}>
                             <div className={'quickShare--presets'}>

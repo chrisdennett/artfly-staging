@@ -2,11 +2,13 @@
 import React, { Component } from 'react';
 // styles
 import './quickPhotoSelector_styles.css';
+// comps
+import Flooring from "../../global/flooring/Flooring";
 
 class PhotoSelector extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.onFileSelect = this.onFileSelect.bind(this);
         this.onInputClick = this.onInputClick.bind(this);
@@ -21,7 +23,7 @@ class PhotoSelector extends Component {
         }
     }
 
-    onInputClick(e) {
+    onInputClick() {
         const { onInputClick, id } = this.props;
         if (onInputClick) {
             onInputClick(id);
@@ -43,6 +45,8 @@ class PhotoSelector extends Component {
                            name={id}
                            id={id}/>
 
+                    <h2 className={'quickPhotoSelector--text'}>Grab a Photo for this blank wall...</h2>
+
                     <label htmlFor={id}>
                         <div className={'quickPhotoSelector--customInputButton'}>
                             <div>
@@ -55,12 +59,13 @@ class PhotoSelector extends Component {
                                     </g>
                                 </svg>
 
-                                <p className={'quickPhotoSelector--text'}>Grab a Photo for this blank wall...</p>
                             </div>
                         </div>
 
                     </label>
                 </div>
+
+                <Flooring/>
             </div>
         )
     }

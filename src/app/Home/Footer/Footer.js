@@ -32,7 +32,6 @@ const Footer = function () {
 
                 <div className={'footer--content'}>
 
-
                     {/*<h3>About us</h3>*/}
                     <div className={'footer--intro'}>
                         <p>ArtFly is a massive corporate monster run by the high-powered business types below.</p>

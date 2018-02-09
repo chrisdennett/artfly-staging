@@ -1,30 +1,42 @@
 import React, { Component } from "react";
-import { faObjectGroup, faShare } from "@fortawesome/fontawesome-free-solid/index";
+import { faObjectGroup, faShare, faUpload } from "@fortawesome/fontawesome-free-solid/index";
+// styles
+import './quickArtMakerTools_styles.css';
 // comps
 import ControlPanelButt from "../../global/Butt/ControlPanelButt";
+import IconLogo from "../../global/icon/icons/IconLogo";
 
 class QuickArtMakerTools extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
+        this.onAddPicClick = this.onAddPicClick.bind(this);
         this.onCropClick = this.onCropClick.bind(this);
-        this.onShareClick = this.onShareClick.bind(this);
         this.onViewClick = this.onViewClick.bind(this);
+        this.onShareClick = this.onShareClick.bind(this);
     }
 
+    onAddPicClick() { this.props.onToolSelect('upload') }
+
+    onCropClick() { this.props.onToolSelect('crop') }
+
     onViewClick() { this.props.onToolSelect('view') }
-    onCropClick(){ this.props.onToolSelect('crop') }
+
     onShareClick() { this.props.onToolSelect('share') }
 
     render() {
         return (
-            <div>
+            <div className={'quickArtMakerTools'}>
+                <div className={'quickArtMakerTools--logoHolder'}>
+                    <IconLogo/>
+                </div>
+
                 <ControlPanelButt
                     isSelected={false}
-                    icon={faObjectGroup}
-                    onClick={this.onViewClick}
-                    label={'VIEW'}/>
+                    icon={faUpload}
+                    onClick={this.onAddPicClick}
+                    label={'ADD PIC'}/>
 
                 <ControlPanelButt
                     isSelected={false}
@@ -34,9 +46,15 @@ class QuickArtMakerTools extends Component {
 
                 <ControlPanelButt
                     isSelected={false}
+                    icon={faObjectGroup}
+                    onClick={this.onViewClick}
+                    label={'VIEW'}/>
+
+                <ControlPanelButt
+                    isSelected={false}
                     icon={faShare}
                     onClick={this.onShareClick}
-                    label={'SHARE'}/>
+                    label={'SAVE & SHARE'}/>
             </div>
         );
     }

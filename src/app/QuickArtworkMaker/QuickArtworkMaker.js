@@ -32,9 +32,8 @@ class QuickArtworkMaker extends Component {
     componentDidMount() {
         //const cropData = {leftPercent:0, rightPercent:1, topPercent:0, bottomPercent:1};
         // this.setState({ currentTool: 'view', cropData })
-
-        this.sourceImg = testArtworkData.sourceImg;
-        this.updateMasterCanvas(this.sourceImg, 1);
+        // this.sourceImg = testArtworkData.sourceImg;
+        // this.updateMasterCanvas(this.sourceImg, 1);
     }
 
     // Left nav tool selection
@@ -53,14 +52,17 @@ class QuickArtworkMaker extends Component {
     // Use Master canvas
     updateMasterCanvas(sourceImg, orientation) {
         const masterCanvas = document.createElement('canvas');
+        this.sourceImg = sourceImg;
+
         ImageHelper.drawImageToCanvas({ sourceImg, outputCanvas: masterCanvas, orientation },
             (widthToHeightRatio, heightToWidthRatio) => {
+
                 this.setState({
                     sourceImg,
                     masterCanvas,
                     widthToHeightRatio,
                     heightToWidthRatio,
-                    currentTool: 'share'
+                    currentTool: 'crop'
                 });
             })
     }

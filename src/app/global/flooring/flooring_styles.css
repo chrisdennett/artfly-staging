@@ -3,6 +3,7 @@
     color: rgba(0, 0, 0, 0.54);
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .flooring svg{
@@ -11,6 +12,7 @@
 
 .flooring--floorBoards{
     margin: 0;
+    min-height: 80px;
     /*background-color: rgba(0, 0, 0, 0.68);*/
     background: url("../../images/floor-boards.png"), radial-gradient(circle, #fefce0, #e6e5cb);
     /*padding: 1.5rem 1.5rem 5rem 1.5rem;*/
