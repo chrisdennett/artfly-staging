@@ -1,0 +1,24 @@
+.presetButt {
+    display: inline-flex;
+    width: 100px;
+    text-decoration: none;
+    padding: 5px 10px 10px 10px;
+    margin: 10px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    outline: none;
+    background: rgba(255, 255, 255, 0);
+    color: rgba(0, 0, 0, 0.8);
+    border: 3px solid rgba(0, 0, 0, 0.7);
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.7);
+    flex-direction: column;
+    align-items: center;
+}
+
+.presetButt--iconHolder{
+
+}
+
+.presetButt--label{
+    font-size: 0.7rem;
+}

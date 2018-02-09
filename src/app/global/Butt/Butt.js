@@ -4,8 +4,8 @@ import './buttStyles.css';
 
 class Butt extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = { hover: false };
 
@@ -48,8 +48,6 @@ class Butt extends Component {
         if (this.state.hover) classes += ' butt--hover';
 
         const { facebook, google, link, red, orange, white, yellow, green, blue, purple } = rest;
-
-        console.log("rest: ", rest);
 
         if (facebook) classes += ' butt--facebook';
         else if (google) classes += ' butt--google';
