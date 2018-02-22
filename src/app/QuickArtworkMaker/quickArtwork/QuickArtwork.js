@@ -332,9 +332,9 @@ const drawRadialGradientOverlay = (ctx, width, height) => {
 const drawFrameShadow = (ctx, x, y, width, height) => {
     ctx.save();
     ctx.shadowColor = 'rgba(0,0,0,0.4)';
-    ctx.shadowBlur = 25;
-    ctx.shadowOffsetX = 9;
-    ctx.shadowOffsetY = 15;
+    ctx.shadowBlur = 10;
+    ctx.shadowOffsetX = 5;
+    ctx.shadowOffsetY = 5;
 
     ctx.fillStyle = 'white';
     ctx.fillRect(x, y, width, height);

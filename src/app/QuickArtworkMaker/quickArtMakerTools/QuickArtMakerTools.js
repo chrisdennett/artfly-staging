@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { faObjectGroup, faShare, faUpload } from "@fortawesome/fontawesome-pro-solid/index";
+import { faObjectGroup, faShare, faUpload } from "@fortawesome/fontawesome-pro-solid";
 // styles
 import './quickArtMakerTools_styles.css';
 // comps
@@ -26,6 +26,8 @@ class QuickArtMakerTools extends Component {
     onShareClick() { this.props.onToolSelect('share') }
 
     render() {
+        const {currentTool} = this.props;
+
         return (
             <div className={'quickArtMakerTools'}>
                 <div className={'quickArtMakerTools--logoHolder'}>
@@ -33,25 +35,25 @@ class QuickArtMakerTools extends Component {
                 </div>
 
                 <ControlPanelButt
-                    isSelected={false}
+                    isSelected={currentTool === 'upload'}
                     icon={faUpload}
                     onClick={this.onAddPicClick}
                     label={'ADD PIC'}/>
 
                 <ControlPanelButt
-                    isSelected={false}
+                    isSelected={currentTool === 'crop'}
                     icon={faObjectGroup}
                     onClick={this.onCropClick}
                     label={'CROP & ROTATE'}/>
 
                 <ControlPanelButt
-                    isSelected={false}
+                    isSelected={currentTool === 'view'}
                     icon={faObjectGroup}
                     onClick={this.onViewClick}
                     label={'VIEW'}/>
 
                 <ControlPanelButt
-                    isSelected={false}
+                    isSelected={currentTool === 'share'}
                     icon={faShare}
                     onClick={this.onShareClick}
                     label={'SAVE & SHARE'}/>

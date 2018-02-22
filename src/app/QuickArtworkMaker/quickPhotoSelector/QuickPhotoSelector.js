@@ -45,7 +45,7 @@ class PhotoSelector extends Component {
                            name={id}
                            id={id}/>
 
-                    <h2 className={'quickPhotoSelector--text'}>Grab a Photo for this blank wall...</h2>
+                    <h2 className={'quickPhotoSelector--text'}>Add an Artwork to this dull, blank wall...</h2>
 
                     <label htmlFor={id}>
                         <div className={'quickPhotoSelector--customInputButton'}>

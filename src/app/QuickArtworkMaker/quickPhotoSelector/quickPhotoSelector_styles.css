@@ -12,7 +12,7 @@
     align-items: center;
     flex-direction: column;
     flex: 1;
-    max-width: 220px;
+    max-width: 420px;
 }
 
 .quickPhotoSelector--input{
@@ -25,10 +25,9 @@
 }
 
 .quickPhotoSelector--customInputButton{
-    /*background: rgba(255,255,255,0.05);*/
     cursor: pointer;
     max-width: 600px;
-    padding: 40px;
+    padding: 60px;
     margin: 30px;
     outline: none;
     text-align: center;

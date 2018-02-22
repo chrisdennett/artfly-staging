@@ -94,7 +94,8 @@ class QuickArtworkMaker extends Component {
             <div className={'quickArtworkMaker'}>
 
                 <div className={'quickArtworkMaker--sideBar'} style={{ width: sidebarWidth }}>
-                    <QuickArtMakerTools onToolSelect={this.onToolSelect}/>
+                    <QuickArtMakerTools onToolSelect={this.onToolSelect}
+                                        currentTool={currentTool}/>
                 </div>
 
                 <div className={classesForMain}>
