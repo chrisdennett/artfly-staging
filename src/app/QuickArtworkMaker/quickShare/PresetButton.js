@@ -2,10 +2,10 @@ import React from 'react';
 // styles
 import './presetButt_styles.css';
 
-const PresetButton = function ({ icon, label, width, height, onSelect }) {
+const PresetButton = function ({ icon, presetName, width, height, onSelect }) {
 
     const onClick = () => {
-        onSelect(width, height);
+        onSelect(width, height, presetName);
     };
 
     return (
@@ -15,8 +15,7 @@ const PresetButton = function ({ icon, label, width, height, onSelect }) {
                 {icon}
             </div>
 
-            <div className={'presetButt--label'}>
-                {/*{label}<br/>*/}
+            <div className={'presetButt--label'}>}
                 {width}×{height}
             </div>
 

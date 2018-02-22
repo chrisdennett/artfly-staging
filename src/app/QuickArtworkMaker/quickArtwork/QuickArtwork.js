@@ -18,17 +18,12 @@ class QuickArtwork extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-
-        console.log("componentWillReceiveProps");
-
         this.setupCanvas(nextProps);
     }
 
     onCanvasInit(canvas) {
         this.canvas = canvas;
         this.setupCanvas(this.props);
-        console.log("onCanvasInit");
-
         if (this.props.onCanvasSetUp) this.props.onCanvasSetUp(canvas)
     }
 
@@ -330,47 +325,11 @@ const drawWall = (ctx, wallTile, startX, startY, width, height) => {
     ctx.closePath();
 };
 
-/*
-const drawFloor = (ctx, startX, startY, width, height, callback) => {
-    let img = new Image();
-    img.setAttribute('crossOrigin', 'anonymous'); //
-    img.src = FloorboardsTile;
-    img.onload = () => {
-        const pat = ctx.createPattern(img, "repeat");
-        ctx.beginPath();
-        ctx.rect(startX, startY, width, height);
-        ctx.fillStyle = pat;
-        ctx.fill();
-        ctx.closePath();
-
-        if (callback) callback();
-    };
-};
-
-const drawWall = (ctx, startX, startY, width, height, callback) => {
-    let img = new Image();
-    img.setAttribute('crossOrigin', 'anonymous'); //
-    img.src = WallTile;
-    img.onload = () => {
-        const pat = ctx.createPattern(img, "repeat");
-        ctx.beginPath();
-        ctx.rect(startX, startY, width, height);
-        ctx.fillStyle = pat;
-        ctx.fill();
-        ctx.closePath();
-
-        if (callback) callback();
-    };
-};
-*/
-
 const drawRadialGradientOverlay = (ctx, width, height) => {
     const centerX = width / 2;
     const centerY = height / 2;
     const radiusOfStartCircle = Math.max(width / 2, height / 2); // outer shadow circle
     const radiusOfEndCircle = Math.max(width / 5, height / 5); // inner shadow circle
-
-    console.log("radiusOfEndCircle: ", radiusOfEndCircle);
 
     let gradient = ctx.createRadialGradient(centerX, centerY, radiusOfStartCircle, centerX, centerY, radiusOfEndCircle);
     gradient.addColorStop(0, 'rgba(0,0,0,0.1)');
@@ -397,9 +356,7 @@ const drawFrameShadow = (ctx, x, y, width, height) => {
     img.setAttribute('crossOrigin', 'anonymous'); //
     img.src = People;
     img.onload = () => {
-
-        ctx.drawImage(img, 0, 0, 400, 260, 300, height-260, 400, 260);
-
+        ctx.drawImage(img, 0, 0, 400, 260, 300, height-240, 400, 260);
 
         if (callback) callback();
     };

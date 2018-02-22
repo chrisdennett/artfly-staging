@@ -93,7 +93,7 @@
 
 @media (max-width: 600px) {
     .butt {
-        padding: 5px;
+        /*padding: 5px;*/
         margin: 10px;
         font-size: 1rem;
     }

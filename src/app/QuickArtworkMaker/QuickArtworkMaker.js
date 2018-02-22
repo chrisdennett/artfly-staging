@@ -64,7 +64,7 @@ class QuickArtworkMaker extends Component {
                     masterCanvas,
                     widthToHeightRatio,
                     heightToWidthRatio,
-                    currentTool: 'view'
+                    currentTool: 'share'
                 });
             })
     }

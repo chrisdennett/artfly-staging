@@ -90,7 +90,7 @@ const presets = [
     },
     {
         icon: <FontAwesomeIcon icon={faDesktop}/>,
-        label: '1920 x 1080',
+        label: 'Desktop wallpaper',
         width: 1920,
         height: 1080
     }
@@ -107,7 +107,7 @@ class QuickShare extends Component {
         this.onPresetWidthInputChange = this.onPresetWidthInputChange.bind(this);
         this.onPresetHeightInputChange = this.onPresetHeightInputChange.bind(this);
 
-        this.state = { downloadUrl: '', presetWidth: 1200, presetHeight: 630 };
+        this.state = { downloadUrl: '', presetWidth: 1200, presetHeight: 630, presetName:'Facebook' };
     }
 
     onCanvasSetUp(canvas) {
@@ -118,8 +118,8 @@ class QuickShare extends Component {
         this.setState({ downloadUrl: this.canvas.toDataURL() })
     }
 
-    onPresetSelected(presetWidth, presetHeight) {
-        this.setState({ presetWidth, presetHeight });
+    onPresetSelected(presetWidth, presetHeight, presetName) {
+        this.setState({ presetWidth, presetHeight, presetName });
     }
 
     onPresetWidthInputChange(e) {
@@ -130,7 +130,7 @@ class QuickShare extends Component {
             proposedWidth = maxWidth
         }
 
-        this.setState({ presetWidth: proposedWidth })
+        this.setState({ presetWidth: proposedWidth, presetName:'Custom size' })
     }
 
     onPresetHeightInputChange(e) {
@@ -141,11 +141,11 @@ class QuickShare extends Component {
             proposedHeight = maxHeight;
         }
 
-        this.setState({ presetHeight: proposedHeight })
+        this.setState({ presetHeight: proposedHeight, presetName:'Custom size' })
     }
 
     render() {
-        const { downloadUrl, presetWidth, presetHeight } = this.state;
+        const { downloadUrl, presetWidth, presetHeight, presetName  } = this.state;
         const { cropData, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.props;
 
         return (
@@ -159,12 +159,9 @@ class QuickShare extends Component {
                     <p>Now your artwork is framed and looking divine, you'll want to download it for backgrounds, mugs,
                         t-shirts, tattoos and to share with the world.</p>
                     <p>Pick your own size or use one of the presets.</p>
-                    {/*<p>You can right-click (click and hold on Mac, press and hold on mobile) on the artwork to save it.</p>*/}
                 </div>
 
-
                 <div className={'quickShare--controls'}>
-
                     <div className={'quickShare--presets'}>
                         {
                             presets.map((preset) => {
@@ -173,17 +170,15 @@ class QuickShare extends Component {
                                                      onSelect={this.onPresetSelected}
                                                      width={preset.width}
                                                      height={preset.height}
-                                                     label={preset.label}/>
+                                                     presetName={preset.label}/>
                             })
 
                         }
                     </div>
 
                     <div className={'quickShare--controls--dimensions'}>
-
                         Dimensions:
                         <div className={'quickShare--controls--dimensions--inputs'}>
-
                             <input onChange={this.onPresetWidthInputChange}
                                    className={'quickShare--controls--dimensions--input'}
                                    type="text"
@@ -196,13 +191,11 @@ class QuickShare extends Component {
                                    type="text"
                                    value={presetHeight}/>
                         </div>
-
                     </div>
-
                 </div>
 
-
                 <div className={'quickShare--imagePreview'}>
+                    <div className={'quickShare--imagePreview--label'}>{presetName}: {presetWidth}x{presetHeight}</div>
                     <div className={'quickShare--quickArtworkHolder'}>
                         <QuickArtwork width={presetWidth}
                                       height={presetHeight}
@@ -212,8 +205,6 @@ class QuickShare extends Component {
                                       widthToHeightRatio={widthToHeightRatio}
                                       heightToWidthRatio={heightToWidthRatio}/>
                     </div>
-
-                    {/*<p className={'quickShare--quickArtworkHolder--label'}>Dimensions: {presetWidth} x {presetHeight}</p>*/}
                 </div>
 
                 <div className={'quickShare--downloadSection'}>
@@ -222,8 +213,11 @@ class QuickShare extends Component {
                           href={downloadUrl}
                           download={`artfly_${presetWidth}x${presetHeight}`}
                           onClick={this.saveImage}>
-                        Download image
+                        Download image*
                     </Butt>
+
+                    <div className={'quickShare--downloadSection--footnote'}>* If the download doesn't work you can click on the image to save it: Use right-click on Windows or click and hold on Mac/mobile.</div>
+
                 </div>
             </div>
         );
