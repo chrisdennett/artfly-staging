@@ -13,6 +13,12 @@
 .controlPanelButt--selected {
     color: rgba(255, 255, 255, 1);
     background-color: rgba(0, 0, 0, 0.5);
+    cursor: default;
+}
+
+.controlPanelButt--disabled {
+    color: rgba(0, 0, 0, 0.2);
+    cursor: default;
 }
 
 .controlPanelButt--icon {

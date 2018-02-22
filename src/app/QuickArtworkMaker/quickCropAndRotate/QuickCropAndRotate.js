@@ -118,6 +118,7 @@ class QuickCropAndRotate extends Component {
     render() {
         const { width, height } = this.props;
         const { cropData } = this.state;
+        const buttStyle = {color:'rgba(255,255,255,0.7)', marginRight:10};
 
         return (
 
@@ -132,19 +133,19 @@ class QuickCropAndRotate extends Component {
 
                 <div className='quickCropAndRotate--controls'>
                     <ControlPanelButt icon={faRedo}
-                                      isSelected={true}
+                                      style={buttStyle}
                                       key={'cropRotate'}
                                       label={'ROTATE'}
                                       onClick={this.onRotateClockwiseClick}/>
 
                     <ControlPanelButt icon={faCheck}
-                                      isSelected={true}
+                                      style={buttStyle}
                                       key={'cropDone'}
                                       label={'DONE'}
                                       onClick={this.onDoneClick}/>
 
                     <ControlPanelButt icon={faTimes}
-                                      isSelected={true}
+                                      style={buttStyle}
                                       key={'cropCancel'}
                                       label={'CANCEL'}
                                       onClick={this.onCancelClick}/>

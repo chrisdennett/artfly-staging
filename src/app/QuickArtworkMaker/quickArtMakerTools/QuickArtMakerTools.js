@@ -26,7 +26,7 @@ class QuickArtMakerTools extends Component {
     onShareClick() { this.props.onToolSelect('share') }
 
     render() {
-        const {currentTool} = this.props;
+        const {currentTool, disableEditing} = this.props;
 
         return (
             <div className={'quickArtMakerTools'}>
@@ -42,18 +42,21 @@ class QuickArtMakerTools extends Component {
 
                 <ControlPanelButt
                     isSelected={currentTool === 'crop'}
+                    disabled={disableEditing}
                     icon={faObjectGroup}
                     onClick={this.onCropClick}
                     label={'CROP & ROTATE'}/>
 
                 <ControlPanelButt
                     isSelected={currentTool === 'view'}
+                    disabled={disableEditing}
                     icon={faObjectGroup}
                     onClick={this.onViewClick}
                     label={'VIEW'}/>
 
                 <ControlPanelButt
                     isSelected={currentTool === 'share'}
+                    disabled={disableEditing}
                     icon={faShare}
                     onClick={this.onShareClick}
                     label={'SAVE & SHARE'}/>

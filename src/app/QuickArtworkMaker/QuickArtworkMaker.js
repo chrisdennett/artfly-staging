@@ -83,6 +83,7 @@ class QuickArtworkMaker extends Component {
         const { height, width } = this.props.size;
         const sidebarWidth = 60;
         const contentWidth = width - sidebarWidth;
+        const disableEditing = !this.sourceImg;
 
         let classesForMain = 'quickArtworkMaker--mainFixed';
 
@@ -95,6 +96,7 @@ class QuickArtworkMaker extends Component {
 
                 <div className={'quickArtworkMaker--sideBar'} style={{ width: sidebarWidth }}>
                     <QuickArtMakerTools onToolSelect={this.onToolSelect}
+                                        disableEditing={disableEditing}
                                         currentTool={currentTool}/>
                 </div>
 

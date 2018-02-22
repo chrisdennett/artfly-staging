@@ -6,14 +6,24 @@ import './controlPanelButtStyles.css';
 // components
 import history from '../history';
 
-const ControlPanelButt = function ({ icon, linkTo, onClick, label, isSelected, style }) {
+const ControlPanelButt = function ({ icon, linkTo, onClick, label, isSelected, disabled, style={} }) {
 
     const selectedClass = isSelected ? 'controlPanelButt--selected' : '';
+    const disabledClass = disabled ? 'controlPanelButt--disabled' : '';
 
-    const onClickFunction = linkTo ? () => history.push(linkTo) : onClick;
+    let onClickFunction;
+    if(disabled){
+        onClickFunction = null;
+    }
+    else if(linkTo){
+        onClickFunction = () => history.push(linkTo);
+    }
+    else {
+        onClickFunction = onClick;
+    }
 
     return (
-        <div className={`controlPanelButt ${selectedClass}`}
+        <div className={`controlPanelButt ${selectedClass} ${disabledClass}`}
              style={style}
              onClick={onClickFunction}>
 
