@@ -11,7 +11,7 @@ import QuickCropAndRotate from "./quickCropAndRotate/QuickCropAndRotate";
 import QuickArtMakerToolBar from "./quickArtMakerToolBar/QuickArtMakerToolBar";
 import QuickShare from "./quickShare/QuickShare";
 // DEV ONLY
-// import {TEST_SOURCE_IMG} from './DEV_TEST_SOURCE_IMG';
+import {TEST_SOURCE_IMG} from './DEV_TEST_SOURCE_IMG';
 
 class QuickArtworkMaker extends Component {
 
@@ -34,8 +34,8 @@ class QuickArtworkMaker extends Component {
     componentDidMount() {
         //const cropData = {leftPercent:0, rightPercent:1, topPercent:0, bottomPercent:1};
         // this.setState({ currentTool: 'view', cropData })
-        // this.sourceImg = TEST_SOURCE_IMG;
-        // this.updateMasterCanvas(this.sourceImg, 1);
+        this.sourceImg = TEST_SOURCE_IMG;
+        this.updateMasterCanvas(this.sourceImg, 1);
     }
 
     // Left nav tool selection
@@ -64,7 +64,7 @@ class QuickArtworkMaker extends Component {
                     masterCanvas,
                     widthToHeightRatio,
                     heightToWidthRatio,
-                    currentTool: 'crop'
+                    currentTool: 'view'
                 });
             })
     }

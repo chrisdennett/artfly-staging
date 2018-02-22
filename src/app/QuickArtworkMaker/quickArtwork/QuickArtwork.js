@@ -14,17 +14,38 @@ class QuickArtwork extends Component {
 
         this.setupCanvas = this.setupCanvas.bind(this);
         this.onCanvasInit = this.onCanvasInit.bind(this);
+        this.loadImageTiles = this.loadImageTiles.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
+
+        console.log("componentWillReceiveProps");
+
         this.setupCanvas(nextProps);
     }
 
     onCanvasInit(canvas) {
         this.canvas = canvas;
         this.setupCanvas(this.props);
+        console.log("onCanvasInit");
 
         if (this.props.onCanvasSetUp) this.props.onCanvasSetUp(canvas)
+    }
+
+    loadImageTiles() {
+        let img = new Image();
+        img.setAttribute('crossOrigin', 'anonymous'); //
+        img.src = WallTile;
+        img.onload = () => {
+            this.wallTile = img;
+            let img2 = new Image();
+            img2.setAttribute('crossOrigin', 'anonymous'); //
+            img2.src = FloorboardsTile;
+            img2.onload = () => {
+                this.floorTile = img2;
+                this.setupCanvas(this.props);
+            }
+        };
     }
 
     setupCanvas(props) {
@@ -34,7 +55,11 @@ class QuickArtwork extends Component {
         if (!this.canvas || width < 1 || height < 1 || !masterCanvas) {
             return null;
         }
-        ;
+
+        if (!this.wallTile || !this.floorTile) {
+            this.loadImageTiles();
+            return null;
+        }
 
         if (cropData) {
             const { leftPercent, rightPercent, topPercent, bottomPercent } = cropData;
@@ -68,32 +93,30 @@ class QuickArtwork extends Component {
         const wallHeight = height - floorHeight;
 
         const ctx = this.canvas.getContext('2d');
+        ctx.clearRect(0, 0, width, height);
 
-        drawWall(ctx, 0, 0, width, height, () => {
-            // add the floor
-            drawFloor(ctx, 0, floorY, width, floorHeight, () => {
 
-                drawRadialGradientOverlay(ctx, width, wallHeight);
+        drawWall(ctx, this.wallTile, 0, 0, width, height);
+        // add the floor
+        drawFloor(ctx, this.floorTile, 0, floorY, width, floorHeight);
 
-                drawFrameShadow(ctx, frameX, frameY, frameWidth, frameHeight);
+        drawRadialGradientOverlay(ctx, width, wallHeight);
 
-                drawFrame(ctx, frameX, frameY, frameWidth, frameHeight, frameThickness);
+        drawFrameShadow(ctx, frameX, frameY, frameWidth, frameHeight);
 
-                drawMount(ctx, mountX, mountY, mountWidth, mountHeight, mountThickness);
+        drawFrame(ctx, frameX, frameY, frameWidth, frameHeight, frameThickness);
 
-                // add artwork
-                drawArtworkImage(ctx, masterCanvas, this.canvas, imgX, imgY, imgWidth, imgHeight, cropData, rotation);
+        drawMount(ctx, mountX, mountY, mountWidth, mountHeight, mountThickness);
 
-                // add skirting board
-                drawSkirtingBoard(ctx, 0, skirtingY, width, skirtingHeight);
+        // add artwork
+        drawArtworkImage(ctx, masterCanvas, this.canvas, imgX, imgY, imgWidth, imgHeight, cropData, rotation);
 
-                // add people
-                // drawPeople(ctx, width, height);
+        // add skirting board
+        drawSkirtingBoard(ctx, 0, skirtingY, width, skirtingHeight);
 
-            });
-        });
+        // add people
+        // drawPeople(ctx, width, height);
     }
-
 
 
     render() {
@@ -289,6 +312,25 @@ const drawSkirtingBoard = (ctx, startX, startY, width, height) => {
     ctx.fillRect(0, startY, width, height);
 };
 
+const drawFloor = (ctx, floorTile, startX, startY, width, height) => {
+    const pat = ctx.createPattern(floorTile, "repeat");
+    ctx.beginPath();
+    ctx.rect(startX, startY, width, height);
+    ctx.fillStyle = pat;
+    ctx.fill();
+    ctx.closePath();
+};
+
+const drawWall = (ctx, wallTile, startX, startY, width, height) => {
+    const pat = ctx.createPattern(wallTile, "repeat");
+    ctx.beginPath();
+    ctx.rect(startX, startY, width, height);
+    ctx.fillStyle = pat;
+    ctx.fill();
+    ctx.closePath();
+};
+
+/*
 const drawFloor = (ctx, startX, startY, width, height, callback) => {
     let img = new Image();
     img.setAttribute('crossOrigin', 'anonymous'); //
@@ -320,10 +362,19 @@ const drawWall = (ctx, startX, startY, width, height, callback) => {
         if (callback) callback();
     };
 };
+*/
 
 const drawRadialGradientOverlay = (ctx, width, height) => {
-    let gradient = ctx.createRadialGradient(width / 2, height / 2, width / 2, width / 2, height / 2, width / 5);
-    gradient.addColorStop(0, 'rgba(0,0,0,0.17)');
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const radiusOfStartCircle = Math.max(width / 2, height / 2); // outer shadow circle
+    const radiusOfEndCircle = Math.max(width / 5, height / 5); // inner shadow circle
+
+    console.log("radiusOfEndCircle: ", radiusOfEndCircle);
+
+    let gradient = ctx.createRadialGradient(centerX, centerY, radiusOfStartCircle, centerX, centerY, radiusOfEndCircle);
+    gradient.addColorStop(0, 'rgba(0,0,0,0.1)');
+    gradient.addColorStop(0.4, 'rgba(0,0,0,0)');
     gradient.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
