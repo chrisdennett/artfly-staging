@@ -1,6 +1,8 @@
 // externals
 import React, { Component } from "react";
-import { faRedo, faTimes, faCheck } from '@fortawesome/fontawesome-pro-solid';
+import faRedo from '@fortawesome/fontawesome-pro-solid/faRedo';
+import faTimes from '@fortawesome/fontawesome-pro-solid/faTimes';
+import faCheck from '@fortawesome/fontawesome-pro-solid/faCheck';
 // styles
 import './quickCropAndRotate_styles.css';
 // helpers

@@ -1,12 +1,10 @@
 // externals
 import React, { Component } from "react";
-import {
-    faEye,
-    faObjectGroup,
-    faTrashAlt,
-    faCheckCircle,
-    faChild
-} from '@fortawesome/fontawesome-pro-solid';
+import faEye from '@fortawesome/fontawesome-pro-solid/faEye';
+import faObjectGroup from '@fortawesome/fontawesome-pro-solid/faObjectGroup';
+import faTrashAlt from '@fortawesome/fontawesome-pro-solid/faTrashAlt';
+import faCheckCircle from '@fortawesome/fontawesome-pro-solid/faCheckCircle';
+import faChild from '@fortawesome/fontawesome-pro-solid/faChild';
 // styles
 import './pictureMakerControlsStyles.css';
 // components

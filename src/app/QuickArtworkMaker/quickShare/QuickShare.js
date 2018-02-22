@@ -1,10 +1,16 @@
 import React, { Component } from "react";
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { faDesktop, faDownload, faShare } from '@fortawesome/fontawesome-pro-solid';
-import { faFacebook, faInstagram, faPinterest, faTwitter, faGooglePlus } from '@fortawesome/fontawesome-free-brands';
+import faDesktop from '@fortawesome/fontawesome-pro-solid/faDesktop';
+import faDownload from '@fortawesome/fontawesome-pro-solid/faDownload';
+import faShare from '@fortawesome/fontawesome-pro-solid/faShare';
+import faFacebook from '@fortawesome/fontawesome-free-brands/faFacebook';
+import faInstagram from '@fortawesome/fontawesome-free-brands/faInstagram';
+import faPinterest from '@fortawesome/fontawesome-free-brands/faPinterest';
+import faTwitter from '@fortawesome/fontawesome-free-brands/faTwitter';
+import faGooglePlus from '@fortawesome/fontawesome-free-brands/faGooglePlus';
 // styles
 import './quickShare_styles.css';
-// images
+// comps
 import Butt from "../../global/Butt/Butt";
 import QuickArtwork from "../quickArtwork/QuickArtwork";
 import PresetButton from "./PresetButton";
@@ -175,9 +181,8 @@ class QuickShare extends Component {
 
                     <div className={'quickShare--controls--dimensions'}>
 
+                        Dimensions:
                         <div className={'quickShare--controls--dimensions--inputs'}>
-
-                            Dimensions:
 
                             <input onChange={this.onPresetWidthInputChange}
                                    className={'quickShare--controls--dimensions--input'}

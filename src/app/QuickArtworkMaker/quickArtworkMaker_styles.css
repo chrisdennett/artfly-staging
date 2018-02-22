@@ -14,7 +14,20 @@
     top:0;
     left: 0;
     bottom: 0;
+    overflow-x:hidden;
+    overflow-y:auto;
 }
+
+/*.quickArtworkMaker--sideBar::-webkit-scrollbar
+{
+    width: 10px;
+    background-color: rgba(245, 245, 245, 0.11);
+}
+
+.quickArtworkMaker--sideBar::-webkit-scrollbar-thumb
+{
+    background-color: rgba(0, 0, 0, 0.34);
+}*/
 
 .quickArtworkMaker--mainScrollable {
     margin-left: 60px;

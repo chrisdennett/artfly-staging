@@ -9,7 +9,8 @@ import { getUserArtistChanges, updateArtworkArtist } from '../../../../../action
 // components
 import ArtistSelectorOption from "./ArtistSelectorOption";
 import ArtworkCard from "../ArtworkCard/ArtworkCard";
-import { faCheck, faTimes } from "@fortawesome/fontawesome-pro-solid";
+import faCheck from "@fortawesome/fontawesome-pro-solid/faCheck";
+import faTimes from "@fortawesome/fontawesome-pro-solid/faTimes";
 import ControlPanelButt from "../../../../global/Butt/ControlPanelButt";
 
 class ArtistSelector extends Component {

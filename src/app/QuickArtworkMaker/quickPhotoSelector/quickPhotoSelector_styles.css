@@ -28,7 +28,7 @@
     cursor: pointer;
     max-width: 600px;
     padding: 60px;
-    margin: 30px;
+    margin-top: 30px;
     outline: none;
     text-align: center;
     border: rgba(0, 0, 0, 0.4) 10px dashed;
@@ -51,8 +51,9 @@
     line-height: 2rem;
 }
 
-.quickPhotoSelector--label{
-    /*color: rgba(0, 0, 0, 0.8);
-    font-weight: bold;
-    margin: 0;*/
+@media screen and (max-height: 480px) {
+    .quickPhotoSelector--customInputButton {
+        padding: 20px 60px;
+        margin-top: 10px;
+    }
 }

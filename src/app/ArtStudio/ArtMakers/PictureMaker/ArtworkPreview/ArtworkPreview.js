@@ -5,7 +5,7 @@ import './artworkPreviewStyles.css';
 import { calculateArtworkSizes } from "../../../../Artwork/assets/ArtworkCalculations";
 // comps
 import Artwork from "../../../../Artwork/Artwork";
-import { faCheck } from "@fortawesome/fontawesome-pro-solid";
+import faCheck from "@fortawesome/fontawesome-pro-solid/faCheck";
 import ControlPanelButt from "../../../../global/Butt/ControlPanelButt";
 
 class ArtworkPreview extends Component{

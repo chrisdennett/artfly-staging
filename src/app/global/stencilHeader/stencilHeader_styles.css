@@ -14,11 +14,16 @@
     color: rgba(0, 0, 0, 0.7);
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 800px) {
+
+    .quickPhotoSelector--customInputButton svg{
+        width: 70px;
+    }
+
     .stencilHeader {
         font-size: 2rem;
         line-height: 2rem;
-        margin: 1rem 1rem 1.5rem 1rem;
+        margin: 1rem 1rem 0.5rem 1rem;
     }
 }
 

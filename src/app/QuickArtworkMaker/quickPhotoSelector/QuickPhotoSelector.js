@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import './quickPhotoSelector_styles.css';
 // comps
 import Flooring from "../../global/flooring/Flooring";
+import StencilHeader from "../../global/stencilHeader/StencilHeader";
 
 class PhotoSelector extends Component {
 
@@ -31,7 +32,9 @@ class PhotoSelector extends Component {
     }
 
     render() {
-        const { id = '123' } = this.props;
+        const { id = '123', height } = this.props;
+        const showFloor = height > 500;
+        const stencilHeaderStyle = { color: 'rgba(0, 0, 0, 0.4)', fontWeight: 'bold' };
 
         return (
             <div className={'quickPhotoSelectorPage'}>
@@ -45,12 +48,17 @@ class PhotoSelector extends Component {
                            name={id}
                            id={id}/>
 
-                    <h2 className={'quickPhotoSelector--text'}>Add an Artwork to this dull, blank wall...</h2>
+                    <StencilHeader wording={"Add an Artwork to this dull, blank wall..."}
+                                   style={stencilHeaderStyle}/>
+
+                    {/*<h2 className={'quickPhotoSelector--text'}>
+                        Add an Artwork to this dull, blank wall...
+                    </h2>*/}
 
                     <label htmlFor={id}>
                         <div className={'quickPhotoSelector--customInputButton'}>
                             <div>
-                                <svg height="93.06" width="93.06" viewBox="0 0 93.062921 93.062921">
+                                <svg height="93" width="93" viewBox="0 0 93 93">
                                     <circle className={'quickPhotoSelector--iconBg'} cy="46.53" cx="46.53" r="46.53"/>
                                     <g className={'quickPhotoSelector--icon'}>
                                         <path
@@ -65,7 +73,10 @@ class PhotoSelector extends Component {
                     </label>
                 </div>
 
+                {showFloor &&
                 <Flooring/>
+                }
+
             </div>
         )
     }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { faPlusSquare } from '@fortawesome/fontawesome-pro-solid';
+import faPlusSquare from '@fortawesome/fontawesome-pro-solid/faPlusSquare';
 // comps
 import Butt from "../global/Butt/Butt";
 import ArtistEditorContainer from "../ArtistEditor/ArtistEditorContainer";
