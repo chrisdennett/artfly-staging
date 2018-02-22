@@ -51,10 +51,6 @@ class PhotoSelector extends Component {
                     <StencilHeader wording={"Add an Artwork to this dull, blank wall..."}
                                    style={stencilHeaderStyle}/>
 
-                    {/*<h2 className={'quickPhotoSelector--text'}>
-                        Add an Artwork to this dull, blank wall...
-                    </h2>*/}
-
                     <label htmlFor={id}>
                         <div className={'quickPhotoSelector--customInputButton'}>
                             <div>

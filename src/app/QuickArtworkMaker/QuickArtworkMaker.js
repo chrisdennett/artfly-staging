@@ -8,7 +8,7 @@ import * as ImageHelper from "../ArtStudio/ImageHelper";
 import QuickPhotoSelector from "./quickPhotoSelector/QuickPhotoSelector";
 import QuickArtwork from "./quickArtwork/QuickArtwork";
 import QuickCropAndRotate from "./quickCropAndRotate/QuickCropAndRotate";
-import QuickArtMakerTools from "./quickArtMakerTools/QuickArtMakerTools";
+import QuickArtMakerToolBar from "./quickArtMakerToolBar/QuickArtMakerToolBar";
 import QuickShare from "./quickShare/QuickShare";
 // DEV ONLY
 // import {TEST_SOURCE_IMG} from './DEV_TEST_SOURCE_IMG';
@@ -97,9 +97,9 @@ class QuickArtworkMaker extends Component {
             <div className={'quickArtworkMaker'}>
 
                 <div className={'quickArtworkMaker--sideBar'} style={{ width: sidebarWidth }}>
-                    <QuickArtMakerTools onToolSelect={this.onToolSelect}
-                                        disableEditing={disableEditing}
-                                        currentTool={currentTool}/>
+                    <QuickArtMakerToolBar onToolSelect={this.onToolSelect}
+                                          disableEditing={disableEditing}
+                                          currentTool={currentTool}/>
                 </div>
 
                 <div className={classesForMain}>

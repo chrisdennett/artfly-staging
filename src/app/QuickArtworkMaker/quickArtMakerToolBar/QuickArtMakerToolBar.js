@@ -7,8 +7,9 @@ import './quickArtMakerTools_styles.css';
 // comps
 import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 import IconLogo from "../../global/icon/icons/IconLogo";
+import Link from "../../global/Butt/Link";
 
-class QuickArtMakerTools extends Component {
+class QuickArtMakerToolBar extends Component {
 
     constructor(props) {
         super(props);
@@ -28,12 +29,15 @@ class QuickArtMakerTools extends Component {
     onShareClick() { this.props.onToolSelect('share') }
 
     render() {
-        const {currentTool, disableEditing} = this.props;
+        const { currentTool, disableEditing } = this.props;
 
         return (
             <div className={'quickArtMakerTools'}>
                 <div className={'quickArtMakerTools--logoHolder'}>
-                    <IconLogo/>
+                    <Link linkTo={'/'}>
+                        <IconLogo/>
+                    </Link>
+
                 </div>
 
                 <ControlPanelButt
@@ -67,4 +71,4 @@ class QuickArtMakerTools extends Component {
     }
 }
 
-export default QuickArtMakerTools;
+export default QuickArtMakerToolBar;

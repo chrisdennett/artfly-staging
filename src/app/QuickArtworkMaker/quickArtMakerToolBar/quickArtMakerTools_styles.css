@@ -9,4 +9,5 @@
 .quickArtMakerTools--logoHolder{
     padding-bottom: 5px;
     border-bottom: rgba(0, 0, 0, 0.3) 2px solid;
+    cursor: pointer;
 }
