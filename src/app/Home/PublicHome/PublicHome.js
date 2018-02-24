@@ -1,5 +1,9 @@
 // externals
 import React from 'react';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import faBug from '@fortawesome/fontawesome-pro-solid/faBug';
+import faFlask from '@fortawesome/fontawesome-pro-solid/faFlask';
+import YouTube from 'react-youtube';
 // styles
 import './publicHomeStyles.css';
 import GallerySign from "../../global/gallerySign/GallerySign";
@@ -14,28 +18,31 @@ import LinkButt from "../../global/Butt/LinkButt";
 
 const PublicHome = function () {
 
+    const opts = {
+        height: '390',
+        width: '100%',
+    };
+
     return (
         <div>
-
-            <div className={'app--section'}>
-                Try out a test version.
-                <LinkButt linkTo={'/quickArtworkMaker'}>TRY IT OUT</LinkButt>
-            </div>
-
             <div className={'app--section app--section--dark'}>
                 <GallerySign>
-                    <p>ArtFly is currently in private beta.</p>
-                    <svg height="40" width="40" viewBox="0 0 100 94">
-                        <path
-                            d="M97.06 50H85.3V27.69l6.491-6.491a2.94 2.94 0 1 0-4.159-4.159l-6.491 6.491h-7.422c-.01-13-10.53-23.53-23.54-23.53-13 0-23.53 10.52-23.53 23.53H18.86l-7.962-7.962a2.941 2.941 0 1 0-4.16 4.159L14.7 27.69V50H2.94a2.941 2.941 0 0 0-.001 5.881h11.76v4.412c0 6.734 2.069 12.99 5.604 18.18l-10.62 10.63a2.94 2.94 0 1 0 4.159 4.159l10.22-10.22c5.868 5.933 14.01 9.615 22.99 9.615h5.882c8.984 0 17.12-3.682 22.99-9.614l10.22 10.22a2.94 2.94 0 1 0 4.159-4.159l-10.61-10.64a32.164 32.164 0 0 0 5.603-18.18v-4.412h11.76a2.941 2.941 0 0 0 0-5.882zM50.18 5.88c9.746 0 17.65 7.901 17.65 17.65H32.54c0-9.746 7.901-17.65 17.65-17.65zm2.757 80.88V43.38a2.206 2.206 0 0 0-2.206-2.206H49.26a2.206 2.206 0 0 0-2.206 2.206v43.38c-14.6 0-26.47-11.87-26.47-26.47V29.41h58.82v30.88c0 14.6-11.87 26.47-26.47 26.47z"/>
-                    </svg>
+                    <h2><FontAwesomeIcon icon={faFlask}/> ArtFly is currently in public beta.</h2>
+                    <p>That's a fancy way of saying <i>"I'm still making it, but please try it out and let me know what you think and if you spot any bugs <FontAwesomeIcon icon={faBug}/>"</i></p>
 
-                    <p>When it's ready I want Artfly to encourage and celebrate every
-                        artwork, big or small.</p>
+                    <YouTube
+                        videoId="y2WDSVXmTBc"
+                        opts={opts}
+                    />
+
+                    <LinkButt style={{backgroundColor:'#abc837'}} linkTo={'/quickArtworkMaker'}>TRY OUT THE LATEST VERSION: v0.1</LinkButt>
+                    {/*<p>Check out what I planning for ArtFly here.</p>*/}
+
+                    <p>If you'd like to hear about updates by email, sign up below, or look out for updates on facebook.</p>
 
                     <div className={'publicHome--signUpSection'}>
                         <p>
-                            Sign up to hear when it's ready.
+                            Sign up for ArtFly updates
                         </p>
 
                         <SignUpForm/>

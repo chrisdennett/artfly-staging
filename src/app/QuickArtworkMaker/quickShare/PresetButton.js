@@ -15,7 +15,7 @@ const PresetButton = function ({ icon, presetName, width, height, onSelect }) {
                 {icon}
             </div>
 
-            <div className={'presetButt--label'}>}
+            <div className={'presetButt--label'}>
                 {width}×{height}
             </div>
 
