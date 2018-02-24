@@ -3,9 +3,11 @@ import React from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faBug from '@fortawesome/fontawesome-pro-solid/faBug';
 import faFlask from '@fortawesome/fontawesome-pro-solid/faFlask';
-import YouTube from 'react-youtube';
+// import YouTube from 'react-youtube';
+// import YoutubeEmbedVideo from "youtube-embed-video";
 // styles
 import './publicHomeStyles.css';
+// comps
 import GallerySign from "../../global/gallerySign/GallerySign";
 import StencilHeader from "../../global/stencilHeader/StencilHeader";
 import HoverLogo from "../animatedIcons/HoverLogo";
@@ -18,27 +20,32 @@ import LinkButt from "../../global/Butt/LinkButt";
 
 const PublicHome = function () {
 
-    const opts = {
-        height: '390',
-        width: '100%',
-    };
 
     return (
         <div>
             <div className={'app--section app--section--dark'}>
                 <GallerySign>
                     <h2><FontAwesomeIcon icon={faFlask}/> ArtFly is currently in public beta.</h2>
-                    <p>That's a fancy way of saying <i>"I'm still making it, but please try it out and let me know what you think and if you spot any bugs <FontAwesomeIcon icon={faBug}/>"</i></p>
+                    <p>That's a fancy way of saying <i>"I'm still making it, but please try it out and let me know what
+                        you think and if you spot any bugs <FontAwesomeIcon icon={faBug}/>"</i></p>
 
-                    <YouTube
-                        videoId="y2WDSVXmTBc"
-                        opts={opts}
-                    />
+                    <div className={'embed-container'}>
+                        <iframe title={'beta testing version 0.1'}
+                                width="100%"
+                                height="100%"
+                                src="https://www.youtube.com/embed/y2WDSVXmTBc?rel=0"
+                                frameBorder="0"
+                                allowFullScreen>
+                        </iframe>
+                    </div>
 
-                    <LinkButt style={{backgroundColor:'#abc837'}} linkTo={'/quickArtworkMaker'}>TRY OUT THE LATEST VERSION: v0.1</LinkButt>
+
+                    <LinkButt style={{ backgroundColor: '#abc837' }} linkTo={'/quickArtworkMaker'}>TRY OUT THE LATEST
+                        VERSION: v0.1</LinkButt>
                     {/*<p>Check out what I planning for ArtFly here.</p>*/}
 
-                    <p>If you'd like to hear about updates by email, sign up below, or look out for updates on facebook.</p>
+                    <p>If you'd like to hear about updates by email, sign up below, or look out for updates on
+                        facebook.</p>
 
                     <div className={'publicHome--signUpSection'}>
                         <p>

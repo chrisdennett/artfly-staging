@@ -1,11 +1,27 @@
-.pubicHome--featureSection--feature{
+.pubicHome--featureSection--feature {
     padding: 30px;
 }
 
-.publicHome--signUpSection{
+.publicHome--signUpSection {
     text-align: left;
     font-size: 0.9rem;
     color: rgba(0, 0, 0, 0.49);
     margin-top: 40px;
     border-top: rgba(0, 0, 0, 0.3) dashed 1px;
+}
+
+.embed-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.embed-container iframe, .embed-container object, .embed-container embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
