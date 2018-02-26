@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import faObjectGroup from "@fortawesome/fontawesome-pro-solid/faObjectGroup";
 import faShare from "@fortawesome/fontawesome-pro-solid/faShare";
 import faUpload from "@fortawesome/fontawesome-pro-solid/faUpload";
+import faListAlt from "@fortawesome/fontawesome-pro-solid/faListAlt";
 // styles
 import './quickArtMakerTools_styles.css';
 // comps
@@ -16,6 +17,7 @@ class QuickArtMakerToolBar extends Component {
 
         this.onAddPicClick = this.onAddPicClick.bind(this);
         this.onCropClick = this.onCropClick.bind(this);
+        this.onAddTitlesClick = this.onAddTitlesClick.bind(this);
         this.onViewClick = this.onViewClick.bind(this);
         this.onShareClick = this.onShareClick.bind(this);
     }
@@ -23,6 +25,8 @@ class QuickArtMakerToolBar extends Component {
     onAddPicClick() { this.props.onToolSelect('upload') }
 
     onCropClick() { this.props.onToolSelect('crop') }
+
+    onAddTitlesClick() { this.props.onToolSelect('add-titles') }
 
     onViewClick() { this.props.onToolSelect('view') }
 
@@ -52,6 +56,13 @@ class QuickArtMakerToolBar extends Component {
                     icon={faObjectGroup}
                     onClick={this.onCropClick}
                     label={'CROP & ROTATE'}/>
+
+                <ControlPanelButt
+                    isSelected={currentTool === 'add-titles'}
+                    disabled={disableEditing}
+                    icon={faListAlt}
+                    onClick={this.onAddTitlesClick}
+                    label={'ADD TITLES'}/>
 
                 <ControlPanelButt
                     isSelected={currentTool === 'view'}
