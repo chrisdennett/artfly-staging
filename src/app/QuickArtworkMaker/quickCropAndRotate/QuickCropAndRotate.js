@@ -33,7 +33,7 @@ class QuickCropAndRotate extends Component {
     componentWillMount() {
         // set crop data and rotation to default or values set be parents
         const {
-                  cropData = {
+                  cropData    = {
                       leftPercent: 0,
                       rightPercent: 1,
                       topPercent: 0,
@@ -120,18 +120,22 @@ class QuickCropAndRotate extends Component {
     render() {
         const { width, height } = this.props;
         const { cropData } = this.state;
-        const buttStyle = {color:'rgba(255,255,255,0.7)', marginRight:10};
+        const buttStyle = { color: 'rgba(255,255,255,0.7)', marginRight: 10 };
+
+        const showCuttingBoard = Math.max(width, height) > 800;
 
         return (
 
             <div className='quickCropAndRotate--holder'>
 
+                {showCuttingBoard &&
                 <div className='quickCropAndRotate--cuttingMatHolder'>
                     <QuickCuttingMat width={width}
                                      height={height}
                                      label={"Crop and Rotate"}
                     />
                 </div>
+                }
 
                 <div className='quickCropAndRotate--controls'>
                     <ControlPanelButt icon={faRedo}

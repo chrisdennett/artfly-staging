@@ -31,12 +31,10 @@ class QuickArtworkMaker extends Component {
     }
 
     // TEST ONLY
-    // componentDidMount() {
-        //const cropData = {leftPercent:0, rightPercent:1, topPercent:0, bottomPercent:1};
-        // this.setState({ currentTool: 'view', cropData })
-        // this.sourceImg = TEST_SOURCE_IMG;
-        // this.updateMasterCanvas(this.sourceImg, 1);
-    // }
+    /*componentDidMount() {
+        this.sourceImg = TEST_SOURCE_IMG;
+        this.updateMasterCanvas(this.sourceImg, 1);
+    }*/
 
     // Left nav tool selection
     onToolSelect(toolName) {

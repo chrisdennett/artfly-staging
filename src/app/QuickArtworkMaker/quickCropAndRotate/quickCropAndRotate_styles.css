@@ -7,9 +7,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: #12615a;
 }
 
-.quickCropAndRotate--controls{
+.quickCropAndRotate--controls {
     position: fixed;
     bottom: 10px;
     display: flex;
@@ -34,6 +35,6 @@
     justify-content: center;
 }
 
-.cropAndRotate--cuttingBoard{
+.cropAndRotate--cuttingBoard {
     position: relative;
 }
