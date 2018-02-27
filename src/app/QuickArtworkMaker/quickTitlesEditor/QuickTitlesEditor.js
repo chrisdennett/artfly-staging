@@ -16,6 +16,13 @@ class QuickTitlesEditor extends Component {
         this.onTitleChange = this.onTitleChange.bind(this);
         this.onArtistChange = this.onArtistChange.bind(this);
         this.onDoneClick = this.onDoneClick.bind(this);
+        this.onClearClick = this.onClearClick.bind(this);
+    }
+
+    componentWillMount(){
+        if(this.props.initialTitles){
+            this.setState({...this.props.initialTitles});
+        }
     }
 
     onTitleChange(e) {
@@ -31,7 +38,14 @@ class QuickTitlesEditor extends Component {
     }
 
     onDoneClick(){
-        console.log("this.state: ", this.state);
+        const { title, artist, description } = this.state;
+        const titlesPresent = title.length > 0 || artist.length > 0 || description.length > 0;
+        const titles = titlesPresent ? {title, artist, description} : null;
+        this.props.onDone(titles);
+    }
+
+    onClearClick(){
+        this.setState({title: '', artist: '', description: ''});
     }
 
     render() {
@@ -79,7 +93,7 @@ class QuickTitlesEditor extends Component {
 
                         <div>
                             <Butt label={'DONE'} onClick={this.onDoneClick}/>
-                            <Butt label={'CANCEL'}/>
+                            <Butt label={'CLEAR'} onClick={this.onClearClick}/>
                         </div>
                     </div>
                 </div>

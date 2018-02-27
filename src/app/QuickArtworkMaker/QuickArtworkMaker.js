@@ -24,8 +24,8 @@ class QuickArtworkMaker extends Component {
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
         this.onCropAndRotateCancel = this.onCropAndRotateCancel.bind(this);
         this.updateMasterCanvas = this.updateMasterCanvas.bind(this);
+        this.onTitlesEditorDone = this.onTitlesEditorDone.bind(this);
 
-        // const cropData = { leftPercent: 0.15, rightPercent: 1, topPercent: 0.1, bottomPercent: 0.78 };
         const cropData = { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 };
 
         this.state = { currentTool: 'upload', cropData, orientation: 1 };
@@ -34,6 +34,7 @@ class QuickArtworkMaker extends Component {
     // TEST ONLY
     componentDidMount() {
         this.sourceImg = TEST_SOURCE_IMG;
+        // this.toolToShowAfterUpdate = 'add-titles';
         this.updateMasterCanvas(this.sourceImg, 1);
     }
 
@@ -54,6 +55,7 @@ class QuickArtworkMaker extends Component {
     updateMasterCanvas(sourceImg, orientation) {
         const masterCanvas = document.createElement('canvas');
         this.sourceImg = sourceImg;
+        if(!this.toolToShowAfterUpdate) this.toolToShowAfterUpdate = 'view';
 
         ImageHelper.drawImageToCanvas({ sourceImg, outputCanvas: masterCanvas, orientation },
             (widthToHeightRatio, heightToWidthRatio) => {
@@ -63,7 +65,7 @@ class QuickArtworkMaker extends Component {
                     masterCanvas,
                     widthToHeightRatio,
                     heightToWidthRatio,
-                    currentTool: 'add-titles'
+                    currentTool: this.toolToShowAfterUpdate
                 });
             })
     }
@@ -79,8 +81,12 @@ class QuickArtworkMaker extends Component {
         this.setState({ currentTool: 'view' })
     }
 
+    onTitlesEditorDone(titles){
+        this.setState({ titles, currentTool: 'view' })
+    }
+
     render() {
-        const { currentTool, orientation, cropData, sourceImg, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.state;
+        const { currentTool, titles, orientation, cropData, sourceImg, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.state;
         const { height, width } = this.props.size;
         const sidebarWidth = 60;
         const contentWidth = width - sidebarWidth;
@@ -106,6 +112,7 @@ class QuickArtworkMaker extends Component {
                     {currentTool === 'view' &&
                     <QuickArtwork height={height}
                                   width={contentWidth}
+                                  titles={titles}
                                   isFixed={true}
                                   cropData={cropData}
                                   masterCanvas={masterCanvas}
@@ -129,8 +136,10 @@ class QuickArtworkMaker extends Component {
                     {currentTool === 'add-titles' &&
                     <QuickTitlesEditor height={height}
                                        width={contentWidth}
+                                       initialTitles={titles}
                                        cropData={cropData}
                                        masterCanvas={masterCanvas}
+                                       onDone={this.onTitlesEditorDone}
                                        widthToHeightRatio={widthToHeightRatio}
                                        heightToWidthRatio={heightToWidthRatio}/>
                     }
@@ -138,6 +147,7 @@ class QuickArtworkMaker extends Component {
 
                     {currentTool === 'share' &&
                     <QuickShare cropData={cropData}
+                                titles={titles}
                                 masterCanvas={masterCanvas}
                                 widthToHeightRatio={widthToHeightRatio}
                                 heightToWidthRatio={heightToWidthRatio}
