@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import sizeMe from 'react-sizeme';
+import { connect } from 'react-redux';
 // styles
 import './quickArtworkMaker_styles.css';
 // helpers
@@ -12,7 +12,7 @@ import QuickArtMakerToolBar from "./quickArtMakerToolBar/QuickArtMakerToolBar";
 import QuickShare from "./quickShare/QuickShare";
 import QuickTitlesEditor from "./quickTitlesEditor/QuickTitlesEditor";
 // DEV ONLY
-import {TEST_SOURCE_IMG} from './DEV_TEST_SOURCE_IMG';
+import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
 
 class QuickArtworkMaker extends Component {
 
@@ -35,8 +35,8 @@ class QuickArtworkMaker extends Component {
         this.sourceImg = TEST_SOURCE_IMG;
         // this.toolToShowAfterUpdate = 'add-titles';
         const description = "This work encapsulates the juxtaposition of disparate strands of pain and desire.  Reflecting on the strain between perfection and hopelessness, Chris draws us into the literal and metaphorical depths of the piece.";
-        const titles = {title:'Nauti by Nature', artist:'Christophe Dennett', description, date:'APRIL 2009'};
-        this.setState({titles});
+        const titles = { title: 'Nauti by Nature', artist: 'Christophe Dennett', description, date: 'APRIL 2009' };
+        this.setState({ titles });
         this.updateMasterCanvas(this.sourceImg, 1);
     }
 
@@ -57,7 +57,7 @@ class QuickArtworkMaker extends Component {
     updateMasterCanvas(sourceImg, orientation) {
         const masterCanvas = document.createElement('canvas');
         this.sourceImg = sourceImg;
-        if(!this.toolToShowAfterUpdate) this.toolToShowAfterUpdate = 'view';
+        if (!this.toolToShowAfterUpdate) this.toolToShowAfterUpdate = 'view';
 
         ImageHelper.drawImageToCanvas({ sourceImg, outputCanvas: masterCanvas, orientation },
             (widthToHeightRatio, heightToWidthRatio) => {
@@ -83,20 +83,21 @@ class QuickArtworkMaker extends Component {
         this.setState({ currentTool: 'view' })
     }
 
-    onTitlesEditorDone(titles){
+    onTitlesEditorDone(titles) {
         this.setState({ titles, currentTool: 'view' })
     }
 
+
     render() {
         const { currentTool, titles, orientation, cropData, sourceImg, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.state;
-        const { height, width } = this.props.size;
+        const { height, width } = this.props;
         const sidebarWidth = 60;
         const contentWidth = width - sidebarWidth;
         const disableEditing = !this.sourceImg;
 
         let classesForMain = 'quickArtworkMaker--mainFixed';
 
-        if(currentTool === 'share'){
+        if (currentTool === 'share') {
             classesForMain = 'quickArtworkMaker--mainScrollable';
         }
 
@@ -168,4 +169,14 @@ class QuickArtworkMaker extends Component {
     }
 }
 
-export default sizeMe({ monitorHeight: true })(QuickArtworkMaker);
+const mapStateToProps = (state) => {
+    let width = 100, height = 100;
+    if(state.ui.windowSize){
+        width = state.ui.windowSize.windowWidth;
+        height = state.ui.windowSize.windowHeight;
+    }
+
+    return { width, height }
+};
+
+export default connect(mapStateToProps)(QuickArtworkMaker);

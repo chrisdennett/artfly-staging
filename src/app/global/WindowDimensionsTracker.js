@@ -6,37 +6,35 @@ import { setWindowSize } from "../../actions/UiActions";
 
 class WindowDimensionsTracker extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.updateDimensions = this.updateDimensions.bind(this);
     }
 
     componentDidMount() {
         this.updateDimensions();
-        window.onresize = () => {
+        window.addEventListener("resize", this.updateDimensions);
+
+        /*window.onresize = () => {
             this.updateDimensions();
-        }
+        }*/
     }
 
-    componentWillUpdate(nextProps) {
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateDimensions);
+    }
+
+    /*componentWillUpdate(nextProps) {
         if (nextProps.leftMargin !== this.props.leftMargin) {
             this.updateDimensions(nextProps.leftMargin);
         }
-    }
+    }*/
 
-    // updateDimensions(inEditMode=this.props.inEditMode) {
-    updateDimensions(leftMargin=this.props.leftMargin) {
+    updateDimensions() {
+        const pageWidth = Math.max(window.innerWidth, document.documentElement.clientWidth);
+        const pageHeight = Math.max(window.innerHeight, document.documentElement.clientHeight);
 
-        const pageWidth = window.innerWidth;
-        const pageHeight = window.innerHeight;
-
-        // TODO: Fix this had that reduces size if in editing mode so have room
-        // for the control panel and margin.
-        // const contentWidth = leftMargin ? pageWidth - (leftMargin + 10) : pageWidth;
-        // const contentHeight = leftMargin ? pageHeight - 20 : pageWidth;
-
-        // this.props.setWindowSize(contentWidth, contentHeight);
         this.props.setWindowSize(pageWidth, pageHeight);
     };
 
