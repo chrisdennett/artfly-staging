@@ -12,6 +12,7 @@ import QuickArtMakerToolBar from "./quickArtMakerToolBar/QuickArtMakerToolBar";
 import QuickShare from "./quickShare/QuickShare";
 // DEV ONLY
 import {TEST_SOURCE_IMG} from './DEV_TEST_SOURCE_IMG';
+import QuickTitlesEditor from "./quickTitlesEditor/QuickTitlesEditor";
 
 class QuickArtworkMaker extends Component {
 
@@ -62,7 +63,7 @@ class QuickArtworkMaker extends Component {
                     masterCanvas,
                     widthToHeightRatio,
                     heightToWidthRatio,
-                    currentTool: 'view'
+                    currentTool: 'add-titles'
                 });
             })
     }
@@ -124,6 +125,16 @@ class QuickArtworkMaker extends Component {
                                         width={contentWidth}
                                         height={height}/>
                     }
+
+                    {currentTool === 'add-titles' &&
+                    <QuickTitlesEditor height={height}
+                                       width={contentWidth}
+                                       cropData={cropData}
+                                       masterCanvas={masterCanvas}
+                                       widthToHeightRatio={widthToHeightRatio}
+                                       heightToWidthRatio={heightToWidthRatio}/>
+                    }
+
 
                     {currentTool === 'share' &&
                     <QuickShare cropData={cropData}

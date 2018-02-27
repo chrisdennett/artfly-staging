@@ -1,0 +1,27 @@
+.quickTitles{
+
+}
+
+.quickTitles--controls--holder{
+    background-image: url("../../images/lined_paper.png");
+    padding: 20px;
+    position: fixed;
+    width: 40%;
+    top: 10px;
+    bottom: 10px;
+    left: 70px;
+    overflow-y: auto;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.52);
+}
+
+.quickTitles--controls{
+    display: flex;
+    flex-direction: column;
+}
+
+.quickTitles--controls input, .quickTitles--controls textarea{
+    font-size: 16px;
+    padding: 5px;
+    font-family: 'Source Code Pro', monospace;
+    margin-bottom: 15px;
+}
