@@ -10,9 +10,9 @@ import QuickArtwork from "./quickArtwork/QuickArtwork";
 import QuickCropAndRotate from "./quickCropAndRotate/QuickCropAndRotate";
 import QuickArtMakerToolBar from "./quickArtMakerToolBar/QuickArtMakerToolBar";
 import QuickShare from "./quickShare/QuickShare";
+import QuickTitlesEditor from "./quickTitlesEditor/QuickTitlesEditor";
 // DEV ONLY
 import {TEST_SOURCE_IMG} from './DEV_TEST_SOURCE_IMG';
-import QuickTitlesEditor from "./quickTitlesEditor/QuickTitlesEditor";
 
 class QuickArtworkMaker extends Component {
 
@@ -27,7 +27,6 @@ class QuickArtworkMaker extends Component {
         this.onTitlesEditorDone = this.onTitlesEditorDone.bind(this);
 
         const cropData = { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 };
-
         this.state = { currentTool: 'upload', cropData, orientation: 1 };
     }
 
@@ -35,6 +34,8 @@ class QuickArtworkMaker extends Component {
     componentDidMount() {
         this.sourceImg = TEST_SOURCE_IMG;
         // this.toolToShowAfterUpdate = 'add-titles';
+        const titles = {title:'My Nautilus', artist:'Christopher Dennett', description:'The amazing work of a genius. Or could it be the beginning of the end.'};
+        this.setState({titles});
         this.updateMasterCanvas(this.sourceImg, 1);
     }
 

@@ -117,7 +117,7 @@ class QuickArtwork extends Component {
         if (titles) {
             const textX = frameX + frameWidth;
             const textY = frameY;
-            addTitles(ctx, textWidth, textX, textY, titles);
+            addTitles(ctx, textWidth, frameHeight, textX, textY, titles);
         }
 
         // add people
@@ -136,58 +136,93 @@ class QuickArtwork extends Component {
 
 export default QuickArtwork;
 
-const addWrappedText = (ctx, text, x, y, lineHeight, maxWidth) => {
+const generateWrappedText = (ctx, text, maxWidth) => {
     const words = text.split(' ');
     let line = '';
+    let lines = [];
 
     for (let n = 0; n < words.length; n++) {
         const testLine = line + words[n] + ' ';
         const metrics = ctx.measureText(testLine);
         const testWidth = metrics.width;
         if (testWidth > maxWidth && n > 0) {
-            ctx.fillText(line, x, y);
+            lines.push(line);
             line = words[n] + ' ';
-            y += lineHeight;
         }
         else {
             line = testLine;
         }
     }
-    ctx.fillText(line, x, y);
+    lines.push(line);
 
-    return y + lineHeight;
+    return lines;
 };
 
-const addTitles = (ctx, width, x, y, titles) => {
+const addWrappedText = (ctx, lines, x, startY, lineHeight) => {
+
+    let y = startY;
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        ctx.fillText(line, x, y);
+        y += lineHeight;
+    }
+};
+
+const addTitles = (ctx, width, maxHeight, x, y, titles) => {
     const { title, artist, description } = titles;
 
-    const paddingLeft = 40;
-    const paddingTop = 40;
-    const textPadding = 20;
+    const titlePercent = 0.15;
+    const artistPercent = 0.1;
+    const descriptionPercent = 0.08;
+    const paddingLeftPercent = 0.2;
+    const paddingTextPercent = 0.08;
 
-    const titleFontSize = 50;
-    const artistFontTitleSize = 24;
-    const descriptionFontSize = 20;
+    const paddingLeft = Math.min(width * paddingLeftPercent, 30);
+    const textPadding = Math.min(width * paddingTextPercent, 20);
+
+    const titleFontSize = Math.min(width * titlePercent, 50);
+    const artistFontTitleSize = Math.min(width * artistPercent, 20);
+    const descriptionFontSize = Math.min(width * descriptionPercent, 20);
+
+    ctx.font = `${descriptionFontSize}px 'Stardos Stencil'`;
+    const lines = generateWrappedText(ctx, description, width);
+    const descriptionHeight = lines.length * (descriptionFontSize + textPadding);
+
+    const totalTitlesHeight = descriptionHeight + titleFontSize + artistFontTitleSize + (2 * textPadding);
 
     const textX = x + paddingLeft;
-    const titleTextY = y + paddingTop;
+    const titleTextY = y + (maxHeight - totalTitlesHeight) / 2;
     const artistTextY = titleTextY + titleFontSize + textPadding;
     const descriptionTextY = artistTextY + descriptionFontSize + textPadding;
 
     // Title
-    ctx.font = `${titleFontSize}px 'Stardos Stencil'`;
     ctx.textBaseline = 'top';
     ctx.fillStyle = "rgba(0,0,0,0.7)";
+    ctx.font = `${titleFontSize}px 'Stardos Stencil'`;
     ctx.fillText(title, textX, titleTextY);
+
+
+    // Artist
+    ctx.fillStyle = 'rgba(255,250,3,0.55)';
+    drawPolygon(ctx,
+        textX - 5,      artistTextY - 5,
+        textX + width - 20,  artistTextY - 5,
+        textX  + width,      artistTextY + artistFontTitleSize + 10,
+        textX - 5,     artistTextY + artistFontTitleSize + 10
+    );
+    ctx.fill();
+
+    ctx.fillStyle = "rgba(0,0,0,0.7)";
+    ctx.font = `${artistFontTitleSize}px 'Stardos Stencil'`;
+    ctx.fillText(`By ${artist}`, textX + 5, artistTextY);
+
 
     // Description
     // const description = "All the world is a stage, and all the men and women merely players.  They have their exits and their entrances: And one man in his time plays many parts.";
     ctx.font = `${descriptionFontSize}px 'Stardos Stencil'`;
-    addWrappedText(ctx, description, textX, descriptionTextY, descriptionFontSize + 5, width);
+    addWrappedText(ctx, lines, textX, descriptionTextY, descriptionFontSize + 5);
 
-    // Artist
-    ctx.font = `${artistFontTitleSize}px 'Stardos Stencil'`;
-    ctx.fillText(`By ${artist}`, textX, artistTextY);
 };
 
 const drawArtworkImage = (ctx, sourceImg, outputCanvas, imgX, imgY, imgWidth, imgHeight, cropData, rotation) => {
