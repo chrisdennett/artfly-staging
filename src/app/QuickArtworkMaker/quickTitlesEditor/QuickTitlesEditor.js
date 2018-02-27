@@ -37,12 +37,15 @@ class QuickTitlesEditor extends Component {
     render() {
         const { height, width, cropData, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.props;
         const { title, artist, description } = this.state;
+        const titlesPresent = title.length > 0 || artist.length > 0 || description.length > 0;
+        const titles = titlesPresent ? {title, artist, description} : null;
 
         return (
             <div className={'quickTitles'}>
                 <QuickArtwork height={height}
                               width={width}
                               isFixed={true}
+                              titles={titles}
                               cropData={cropData}
                               masterCanvas={masterCanvas}
                               widthToHeightRatio={widthToHeightRatio}

@@ -44,7 +44,7 @@ class QuickArtwork extends Component {
     }
 
     setupCanvas(props) {
-        let { width, height, cropData, rotation, masterCanvas, widthToHeightRatio, heightToWidthRatio } = props;
+        let { width, height, titles, cropData, rotation, masterCanvas, widthToHeightRatio, heightToWidthRatio } = props;
 
         // prevent errors by stopping if critical elements not available
         if (!this.canvas || width < 1 || height < 1 || !masterCanvas) {
@@ -76,10 +76,9 @@ class QuickArtwork extends Component {
 
         const textWidthPercent = 0.3;
         const textWidth = width * textWidthPercent;
-        const pictureWidth = width - textWidth;
+        const pictureWidth = titles ? width - textWidth : width;
+
         const artworkSizes = calculateCanvasArtworkSizes(pictureWidth, height, widthToHeightRatio, heightToWidthRatio);
-        const textX = artworkSizes.frameX + artworkSizes.frameWidth;
-        const textY = artworkSizes.frameY;
 
         let {
                 imgX, imgY, imgWidth, imgHeight,
@@ -115,7 +114,11 @@ class QuickArtwork extends Component {
         drawSkirtingBoard(ctx, 0, skirtingY, width, skirtingHeight);
 
         // add titles text
-        addTitles(ctx, textWidth, textX, textY);
+        if (titles) {
+            const textX = frameX + frameWidth;
+            const textY = frameY;
+            addTitles(ctx, textWidth, textX, textY, titles);
+        }
 
         // add people
         // drawPeople(ctx, width, height);
@@ -137,7 +140,7 @@ const addWrappedText = (ctx, text, x, y, lineHeight, maxWidth) => {
     const words = text.split(' ');
     let line = '';
 
-    for(let n = 0; n < words.length; n++) {
+    for (let n = 0; n < words.length; n++) {
         const testLine = line + words[n] + ' ';
         const metrics = ctx.measureText(testLine);
         const testWidth = metrics.width;
@@ -152,10 +155,12 @@ const addWrappedText = (ctx, text, x, y, lineHeight, maxWidth) => {
     }
     ctx.fillText(line, x, y);
 
-    return y+lineHeight;
+    return y + lineHeight;
 };
 
-const addTitles = (ctx, width, x, y) => {
+const addTitles = (ctx, width, x, y, titles) => {
+    const { title, artist, description } = titles;
+
     const paddingLeft = 40;
     const paddingTop = 40;
     const textPadding = 20;
@@ -173,17 +178,16 @@ const addTitles = (ctx, width, x, y) => {
     ctx.font = `${titleFontSize}px 'Stardos Stencil'`;
     ctx.textBaseline = 'top';
     ctx.fillStyle = "rgba(0,0,0,0.7)";
-    ctx.fillText("Nautilus", textX, titleTextY);
+    ctx.fillText(title, textX, titleTextY);
 
     // Description
-    const description = "An outrageous piece churned from the fiery pits of hell";
     // const description = "All the world is a stage, and all the men and women merely players.  They have their exits and their entrances: And one man in his time plays many parts.";
     ctx.font = `${descriptionFontSize}px 'Stardos Stencil'`;
-    addWrappedText(ctx, description, textX, descriptionTextY, descriptionFontSize+5, width);
+    addWrappedText(ctx, description, textX, descriptionTextY, descriptionFontSize + 5, width);
 
     // Artist
     ctx.font = `${artistFontTitleSize}px 'Stardos Stencil'`;
-    ctx.fillText("By Chris Dennett", textX, artistTextY);
+    ctx.fillText(`By ${artist}`, textX, artistTextY);
 };
 
 const drawArtworkImage = (ctx, sourceImg, outputCanvas, imgX, imgY, imgWidth, imgHeight, cropData, rotation) => {
