@@ -10,11 +10,12 @@ class QuickTitlesEditor extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { title: '', artist: '', description: '' };
+        this.state = { title: '', artist: '', description: '', date:'' };
 
         this.onDescriptionChange = this.onDescriptionChange.bind(this);
         this.onTitleChange = this.onTitleChange.bind(this);
         this.onArtistChange = this.onArtistChange.bind(this);
+        this.onDateChange = this.onDateChange.bind(this);
         this.onDoneClick = this.onDoneClick.bind(this);
         this.onClearClick = this.onClearClick.bind(this);
     }
@@ -37,22 +38,26 @@ class QuickTitlesEditor extends Component {
         this.setState({ description: e.target.value });
     }
 
+    onDateChange(e){
+        this.setState({ date: e.target.value });
+    }
+
     onDoneClick(){
-        const { title, artist, description } = this.state;
+        const { title, artist, description, date } = this.state;
         const titlesPresent = title.length > 0 || artist.length > 0 || description.length > 0;
-        const titles = titlesPresent ? {title, artist, description} : null;
+        const titles = titlesPresent ? {title, artist, description, date} : null;
         this.props.onDone(titles);
     }
 
     onClearClick(){
-        this.setState({title: '', artist: '', description: ''});
+        this.setState({title: '', artist: '', description: '', date:''});
     }
 
     render() {
         const { height, width, cropData, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.props;
-        const { title, artist, description } = this.state;
+        const { title, artist, description, date } = this.state;
         const titlesPresent = title.length > 0 || artist.length > 0 || description.length > 0;
-        const titles = titlesPresent ? {title, artist, description} : null;
+        const titles = titlesPresent ? {title, artist, description, date} : null;
 
         return (
             <div className={'quickTitles'}>
@@ -82,6 +87,13 @@ class QuickTitlesEditor extends Component {
                         <input type="text"
                                onChange={this.onArtistChange}
                                value={artist}/>
+
+                        <div>
+                            Date:
+                        </div>
+                        <input type="text"
+                               onChange={this.onDateChange}
+                               value={date}/>
 
                         <div>
                             Description:

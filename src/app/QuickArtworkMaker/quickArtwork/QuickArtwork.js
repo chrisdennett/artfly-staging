@@ -116,8 +116,7 @@ class QuickArtwork extends Component {
         // add titles text
         if (titles) {
             const textX = frameX + frameWidth;
-            const textY = frameY;
-            addTitles(ctx, textWidth, frameHeight, textX, textY, titles);
+            addTitles(ctx, textWidth, frameHeight, textX, frameY, titles);
         }
 
         // add people
@@ -159,7 +158,6 @@ const generateWrappedText = (ctx, text, maxWidth) => {
 };
 
 const addWrappedText = (ctx, lines, x, startY, lineHeight) => {
-
     let y = startY;
 
     for (let i = 0; i < lines.length; i++) {
@@ -170,7 +168,7 @@ const addWrappedText = (ctx, lines, x, startY, lineHeight) => {
 };
 
 const addTitles = (ctx, width, maxHeight, x, y, titles) => {
-    const { title, artist, description } = titles;
+    const { title, artist, description, date } = titles;
 
     const titlePercent = 0.15;
     const artistPercent = 0.1;
@@ -187,7 +185,8 @@ const addTitles = (ctx, width, maxHeight, x, y, titles) => {
 
     ctx.font = `${descriptionFontSize}px 'Stardos Stencil'`;
     const lines = generateWrappedText(ctx, description, width);
-    const descriptionHeight = lines.length * (descriptionFontSize + textPadding);
+    const descriptionLineHeight = descriptionFontSize * 1.3;
+    const descriptionHeight = lines.length * descriptionLineHeight;
 
     const totalTitlesHeight = descriptionHeight + titleFontSize + artistFontTitleSize + (2 * textPadding);
 
@@ -202,7 +201,6 @@ const addTitles = (ctx, width, maxHeight, x, y, titles) => {
     ctx.font = `${titleFontSize}px 'Stardos Stencil'`;
     ctx.fillText(title, textX, titleTextY);
 
-
     // Artist
     ctx.fillStyle = 'rgba(255,250,3,0.55)';
     drawPolygon(ctx,
@@ -212,7 +210,6 @@ const addTitles = (ctx, width, maxHeight, x, y, titles) => {
         textX - 5,     artistTextY + artistFontTitleSize + 10
     );
     ctx.fill();
-
     ctx.fillStyle = "rgba(0,0,0,0.7)";
     ctx.font = `${artistFontTitleSize}px 'Stardos Stencil'`;
     ctx.fillText(`By ${artist}`, textX + 5, artistTextY);
@@ -221,7 +218,11 @@ const addTitles = (ctx, width, maxHeight, x, y, titles) => {
     // Description
     // const description = "All the world is a stage, and all the men and women merely players.  They have their exits and their entrances: And one man in his time plays many parts.";
     ctx.font = `${descriptionFontSize}px 'Stardos Stencil'`;
-    addWrappedText(ctx, lines, textX, descriptionTextY, descriptionFontSize + 5);
+    // const lineHeight =
+    addWrappedText(ctx, lines, textX, descriptionTextY, descriptionLineHeight);
+
+    ctx.fillStyle = "rgba(0,0,0,0.4)";
+    ctx.fillText(date, textX, descriptionTextY + descriptionHeight + textPadding);
 
 };
 

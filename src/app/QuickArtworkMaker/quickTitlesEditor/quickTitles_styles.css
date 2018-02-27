@@ -3,7 +3,8 @@
 }
 
 .quickTitles--controls--holder{
-    background-image: url("../../images/lined_paper.png");
+    /*background-image: url("../../images/lined_paper.png");*/
+    background-color: #ffee82;
     padding: 20px;
     position: fixed;
     width: 40%;
