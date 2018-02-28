@@ -11,7 +11,12 @@ class QuickTitlesEditor extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { title: '', artist: '', description: '', date: '' };
+        const maxTitleLength = 24;
+        const maxArtistLength = 24;
+        const maxDescriptionLength = 150;
+        const maxDateLength = 24;
+
+        this.state = { title: '', artist: '', description: '', date: '', maxTitleLength, maxArtistLength, maxDescriptionLength, maxDateLength };
 
         this.onDescriptionChange = this.onDescriptionChange.bind(this);
         this.onTitleChange = this.onTitleChange.bind(this);
@@ -27,20 +32,20 @@ class QuickTitlesEditor extends Component {
         }
     }
 
-    onTitleChange(e) {
-        this.setState({ title: e.target.value });
+    onTitleChange(value) {
+        this.setState({ title: value});
     }
 
-    onArtistChange(e) {
-        this.setState({ artist: e.target.value });
+    onArtistChange(value) {
+        this.setState({ artist: value });
     }
 
-    onDescriptionChange(e) {
-        this.setState({ description: e.target.value });
+    onDescriptionChange(value) {
+        this.setState({ description: value });
     }
 
-    onDateChange(e) {
-        this.setState({ date: e.target.value });
+    onDateChange(value) {
+        this.setState({ date: value });
     }
 
     onDoneClick() {
@@ -56,12 +61,20 @@ class QuickTitlesEditor extends Component {
 
     render() {
         const { height, width, cropData, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.props;
-        const { title, artist, description, date } = this.state;
+        const { title, artist, description, date, maxTitleLength, maxArtistLength, maxDescriptionLength } = this.state;
         const titlesPresent = title.length > 0 || artist.length > 0 || description.length > 0;
         const titles = titlesPresent ? { title, artist, description, date } : null;
 
+        const showArtwork = width > 800;
+        let controlsClass = 'quickTitles--controls--holder--partView';
+        if(!showArtwork){
+            controlsClass = 'quickTitles--controls--holder--fullView'
+        }
+
         return (
             <div className={'quickTitles'}>
+
+                {showArtwork &&
                 <QuickArtwork height={height}
                               width={width}
                               isFixed={true}
@@ -71,18 +84,19 @@ class QuickTitlesEditor extends Component {
                               widthToHeightRatio={widthToHeightRatio}
                               heightToWidthRatio={heightToWidthRatio}
                 />
+                }
 
-                <div className={'quickTitles--controls--holder'}>
+                <div className={`quickTitles--controls--holder ${controlsClass}`}>
                     <div className={'quickTitles--controls'}>
                         <h2>Artwork Details:</h2>
 
                         <WordCountInput label={'Title'}
-                                        max={24}
+                                        max={maxTitleLength}
                                         onChange={this.onTitleChange}
                                         value={title}/>
 
                         <WordCountInput label={'Artist'}
-                                        max={24}
+                                        max={maxArtistLength}
                                         onChange={this.onArtistChange}
                                         value={artist}/>
 
@@ -92,14 +106,14 @@ class QuickTitlesEditor extends Component {
                                         value={date}/>
 
                         <WordCountInput label={'Description'}
-                                        max={144}
+                                        max={maxDescriptionLength}
                                         isMultiline={true}
                                         onChange={this.onDescriptionChange}
                                         value={description}/>
 
                         <div className={'quickTitles--controls--butts'}>
                             <Butt fullWidth={true} label={'DONE'} green onClick={this.onDoneClick}/>
-                            <Butt fullWidth={true} label={'CLEAR'} onClick={this.onClearClick}/>
+                            <Butt fullWidth={true} label={'CLEAR ALL'} onClick={this.onClearClick}/>
                         </div>
                     </div>
                 </div>

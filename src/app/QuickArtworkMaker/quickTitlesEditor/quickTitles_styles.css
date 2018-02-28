@@ -4,15 +4,29 @@
 
 .quickTitles--controls--holder{
     /*background-image: url("../../images/lined_paper.png");*/
-    background-color: #ffee82;
     padding: 20px;
     position: fixed;
-    width: 40%;
-    top: 10px;
-    bottom: 10px;
-    left: 70px;
+    left: 60px;
     overflow-y: auto;
+
+}
+
+.quickTitles--controls--holder--partView{
+    top: 0;
+    bottom: 0;
+    width: 40%;
+    background: url("../../images/square.png") #e9eaea;
+
+    /*background-color: #ffee82;*/
     box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.52);
+}
+
+.quickTitles--controls--holder--fullView{
+    top: 0;
+    bottom: 0;
+    right: 0;
+    /*background: none;*/
+    /*background: rgba(255,255,255,1);*/
 }
 
 .quickTitles--controls{

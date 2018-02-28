@@ -195,7 +195,6 @@ const addTitles = (ctx, width, maxHeight, x, y, titles) => {
     const textX = x + paddingLeft;
     const titleTextY = y + (maxHeight - totalTitlesHeight) / 2;
     const artistTextY = titleTextY + titleFontSize + textPadding;
-    const descriptionTextY = artistTextY + descriptionFontSize + textPadding;
 
     // Title
     ctx.textBaseline = 'top';
@@ -204,27 +203,30 @@ const addTitles = (ctx, width, maxHeight, x, y, titles) => {
     ctx.fillText(title, textX, titleTextY);
 
     // Artist
-    ctx.fillStyle = 'rgba(255,250,3,0.55)';
-    drawPolygon(ctx,
-        textX - 5,      artistTextY - 5,
-        textX + width - 20,  artistTextY - 5,
-        textX  + width,      artistTextY + artistFontTitleSize + 10,
-        textX - 5,     artistTextY + artistFontTitleSize + 10
-    );
-    ctx.fill();
-    ctx.fillStyle = "rgba(0,0,0,0.7)";
-    ctx.font = `${artistFontTitleSize}px 'Stardos Stencil'`;
-    ctx.fillText(`By ${artist}`, textX + 5, artistTextY);
-
+    if (artist.length > 0) {
+        ctx.fillStyle = 'rgba(255,250,3,0.55)';
+        drawPolygon(ctx,
+            textX - 5, artistTextY - 5,
+            textX + width - 20, artistTextY - 5,
+            textX + width, artistTextY + artistFontTitleSize + 10,
+            textX - 5, artistTextY + artistFontTitleSize + 10
+        );
+        ctx.fill();
+        ctx.fillStyle = "rgba(0,0,0,0.7)";
+        ctx.font = `${artistFontTitleSize}px 'Stardos Stencil'`;
+        ctx.fillText(`By ${artist}`, textX + 5, artistTextY);
+    }
 
     // Description
+    const descriptionTextY = artist.length > 0 ? artistTextY + descriptionFontSize + textPadding : artistTextY;
     // const description = "All the world is a stage, and all the men and women merely players.  They have their exits and their entrances: And one man in his time plays many parts.";
     ctx.font = `${descriptionFontSize}px 'Stardos Stencil'`;
     // const lineHeight =
     addWrappedText(ctx, lines, textX, descriptionTextY, descriptionLineHeight);
 
+    const dateY = description.length > 0 ? descriptionTextY + descriptionHeight + textPadding : descriptionTextY;
     ctx.fillStyle = "rgba(0,0,0,0.4)";
-    ctx.fillText(date, textX, descriptionTextY + descriptionHeight + textPadding);
+    ctx.fillText(date, textX, dateY);
 
 };
 
