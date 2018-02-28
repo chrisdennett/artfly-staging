@@ -75,8 +75,10 @@ class QuickArtwork extends Component {
         }
 
         const textWidthPercent = 0.3;
+        const textPaddingPercent = 0.03;
         const textWidth = width * textWidthPercent;
-        const pictureWidth = titles ? width - textWidth : width;
+        const paddingWidth = width * textPaddingPercent;
+        const pictureWidth = titles ? width - (textWidth + paddingWidth) : width;
 
         const artworkSizes = calculateCanvasArtworkSizes(pictureWidth, height, widthToHeightRatio, heightToWidthRatio);
 
@@ -173,7 +175,7 @@ const addTitles = (ctx, width, maxHeight, x, y, titles) => {
     const titlePercent = 0.15;
     const artistPercent = 0.1;
     const descriptionPercent = 0.08;
-    const paddingLeftPercent = 0.2;
+    const paddingLeftPercent = 0.1;
     const paddingTextPercent = 0.08;
 
     const paddingLeft = Math.min(width * paddingLeftPercent, 30);
@@ -462,7 +464,7 @@ const drawFrameShadow = (ctx, x, y, width, height) => {
     };
 };*/
 
-const calculateCanvasArtworkSizes = (width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 30, minPaddingSides = 50) => {
+const calculateCanvasArtworkSizes = (width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 30, minPaddingSides = 20) => {
     const frameThicknessPercent = 0.04;
     const mountThicknessPercent = 0.06;
     const spaceBelowPicturePercent = 0.15;

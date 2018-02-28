@@ -4,13 +4,14 @@ import './quickTitles_styles.css';
 // comps
 import QuickArtwork from "../quickArtwork/QuickArtwork";
 import Butt from "../../global/Butt/Butt";
+import WordCountInput from "./wordCountInput/WordCountInput";
 
 class QuickTitlesEditor extends Component {
 
     constructor(props) {
         super(props);
 
-        this.state = { title: '', artist: '', description: '', date:'' };
+        this.state = { title: '', artist: '', description: '', date: '' };
 
         this.onDescriptionChange = this.onDescriptionChange.bind(this);
         this.onTitleChange = this.onTitleChange.bind(this);
@@ -20,9 +21,9 @@ class QuickTitlesEditor extends Component {
         this.onClearClick = this.onClearClick.bind(this);
     }
 
-    componentWillMount(){
-        if(this.props.initialTitles){
-            this.setState({...this.props.initialTitles});
+    componentWillMount() {
+        if (this.props.initialTitles) {
+            this.setState({ ...this.props.initialTitles });
         }
     }
 
@@ -38,26 +39,26 @@ class QuickTitlesEditor extends Component {
         this.setState({ description: e.target.value });
     }
 
-    onDateChange(e){
+    onDateChange(e) {
         this.setState({ date: e.target.value });
     }
 
-    onDoneClick(){
+    onDoneClick() {
         const { title, artist, description, date } = this.state;
         const titlesPresent = title.length > 0 || artist.length > 0 || description.length > 0;
-        const titles = titlesPresent ? {title, artist, description, date} : null;
+        const titles = titlesPresent ? { title, artist, description, date } : null;
         this.props.onDone(titles);
     }
 
-    onClearClick(){
-        this.setState({title: '', artist: '', description: '', date:''});
+    onClearClick() {
+        this.setState({ title: '', artist: '', description: '', date: '' });
     }
 
     render() {
         const { height, width, cropData, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.props;
         const { title, artist, description, date } = this.state;
         const titlesPresent = title.length > 0 || artist.length > 0 || description.length > 0;
-        const titles = titlesPresent ? {title, artist, description, date} : null;
+        const titles = titlesPresent ? { title, artist, description, date } : null;
 
         return (
             <div className={'quickTitles'}>
@@ -74,38 +75,31 @@ class QuickTitlesEditor extends Component {
                 <div className={'quickTitles--controls--holder'}>
                     <div className={'quickTitles--controls'}>
                         <h2>Artwork Details:</h2>
-                        <div>
-                            Title:
-                        </div>
-                        <input type="text"
-                               onChange={this.onTitleChange}
-                               value={title}/>
 
-                        <div>
-                            Artist:
-                        </div>
-                        <input type="text"
-                               onChange={this.onArtistChange}
-                               value={artist}/>
+                        <WordCountInput label={'Title'}
+                                        max={24}
+                                        onChange={this.onTitleChange}
+                                        value={title}/>
 
-                        <div>
-                            Date:
-                        </div>
-                        <input type="text"
-                               onChange={this.onDateChange}
-                               value={date}/>
+                        <WordCountInput label={'Artist'}
+                                        max={24}
+                                        onChange={this.onArtistChange}
+                                        value={artist}/>
 
-                        <div>
-                            Description:
-                        </div>
-                        <textarea rows="6"
-                                  cols="50"
-                                  onChange={this.onDescriptionChange}
-                                  value={description}/>
+                        <WordCountInput label={'Date'}
+                                        max={24}
+                                        onChange={this.onDateChange}
+                                        value={date}/>
 
-                        <div>
-                            <Butt label={'DONE'} onClick={this.onDoneClick}/>
-                            <Butt label={'CLEAR'} onClick={this.onClearClick}/>
+                        <WordCountInput label={'Description'}
+                                        max={144}
+                                        isMultiline={true}
+                                        onChange={this.onDescriptionChange}
+                                        value={description}/>
+
+                        <div className={'quickTitles--controls--butts'}>
+                            <Butt fullWidth={true} label={'DONE'} green onClick={this.onDoneClick}/>
+                            <Butt fullWidth={true} label={'CLEAR'} onClick={this.onClearClick}/>
                         </div>
                     </div>
                 </div>

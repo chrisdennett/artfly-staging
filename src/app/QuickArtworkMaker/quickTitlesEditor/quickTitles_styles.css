@@ -20,9 +20,6 @@
     flex-direction: column;
 }
 
-.quickTitles--controls input, .quickTitles--controls textarea{
-    font-size: 16px;
-    padding: 5px;
-    font-family: 'Source Code Pro', monospace;
-    margin-bottom: 15px;
+.quickTitles--controls--butts{
+    display: flex;
 }

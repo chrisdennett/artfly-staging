@@ -25,6 +25,7 @@ class Butt extends Component {
         const { label, useATag = false, onClick, alignLeft, size, svgIcon, showAsLink, fullWidth, ...rest } = this.props;
 
         let buttonStyle = {display:'inline-flex'};
+        const wordingStyle = { width:'100%'};
 
         if (alignLeft) {
             buttonStyle.justifyContent = 'left';
@@ -88,7 +89,7 @@ class Butt extends Component {
                     <div className={'butt--iconHolder'} style={iconHolderStyles}>{svgIcon}</div>
                     }
 
-                    <div>{wording}</div>
+                    <div style={wordingStyle}>{wording}</div>
 
                 </a>
             )
@@ -105,7 +106,7 @@ class Butt extends Component {
                 <div className={'butt--iconHolder'} style={iconHolderStyles}>{svgIcon}</div>
                 }
 
-                <div>{wording}</div>
+                <div style={wordingStyle}>{wording}</div>
             </button>
         )
     }
