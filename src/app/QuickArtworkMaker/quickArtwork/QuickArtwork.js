@@ -181,8 +181,8 @@ const addTitles = (ctx, width, maxHeight, x, y, titles) => {
     const paddingLeft = Math.min(width * paddingLeftPercent, 30);
     const textPadding = Math.min(width * paddingTextPercent, 20);
 
-    const titleFontSize = Math.min(width * titlePercent, 50);
-    const artistFontTitleSize = Math.min(width * artistPercent, 20);
+    let titleFontSize = Math.min(width * titlePercent, 50);
+    let artistFontTitleSize = Math.min(width * artistPercent, 20);
     const descriptionFontSize = Math.min(width * descriptionPercent, 20);
 
     ctx.font = `${descriptionFontSize}px 'Stardos Stencil'`;
@@ -199,7 +199,15 @@ const addTitles = (ctx, width, maxHeight, x, y, titles) => {
     // Title
     ctx.textBaseline = 'top';
     ctx.fillStyle = "rgba(0,0,0,0.7)";
+
     ctx.font = `${titleFontSize}px 'Stardos Stencil'`;
+    let titleWidth = ctx.measureText(title).width;
+    while(titleWidth > width){
+        titleFontSize -= 1;
+        ctx.font = `${titleFontSize}px 'Stardos Stencil'`;
+        titleWidth = ctx.measureText(title).width;
+    }
+
     ctx.fillText(title, textX, titleTextY);
 
     // Artist
@@ -213,7 +221,15 @@ const addTitles = (ctx, width, maxHeight, x, y, titles) => {
         );
         ctx.fill();
         ctx.fillStyle = "rgba(0,0,0,0.7)";
+
         ctx.font = `${artistFontTitleSize}px 'Stardos Stencil'`;
+        let artistWidth = ctx.measureText(artist).width;
+        while(artistWidth > width-40){
+            artistFontTitleSize -= 1;
+            ctx.font = `${artistFontTitleSize}px 'Stardos Stencil'`;
+            artistWidth = ctx.measureText(artist).width;
+        }
+
         ctx.fillText(`By ${artist}`, textX + 5, artistTextY);
     }
 
