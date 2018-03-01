@@ -12,7 +12,7 @@ import QuickArtMakerToolBar from "./quickArtMakerToolBar/QuickArtMakerToolBar";
 import QuickShare from "./quickShare/QuickShare";
 import QuickTitlesEditor from "./quickTitlesEditor/QuickTitlesEditor";
 // DEV ONLY
-import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
+// import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
 
 class QuickArtworkMaker extends Component {
 
@@ -25,21 +25,21 @@ class QuickArtworkMaker extends Component {
         this.onCropAndRotateCancel = this.onCropAndRotateCancel.bind(this);
         this.updateMasterCanvas = this.updateMasterCanvas.bind(this);
         this.onTitlesEditorDone = this.onTitlesEditorDone.bind(this);
+        this.onTitlesEditorCancel = this.onTitlesEditorCancel.bind(this);
 
         const cropData = { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 };
         this.state = { currentTool: 'upload', cropData, orientation: 1 };
     }
 
     // TEST ONLY
-    componentDidMount() {
+    /*componentDidMount() {
         this.sourceImg = TEST_SOURCE_IMG;
         this.toolToShowAfterUpdate = 'add-titles';
-        const description = "This work encapsulates the juxtaposition of particles, reflecting on the strain between perfection and hope, Chris draws us into the literal depths.";
-        // const description = "This work encapsulates the juxtaposition of disparate strands of pain and desire.  Reflecting on the strain between perfection and hopelessness, Chris draws us into the literal and metaphorical depths of the piece.";
+        const description = "This work encapsulates the juxtaposition of disparate strands of pain and desire.  Reflecting on the strain between perfection and hopelessness, Chris draws us into the literal and metaphorical depths of the piece.";
         const titles = { title: 'Nauti by Nature', artist: 'Christophe Dennett', description, date: 'APRIL 2009' };
         this.setState({ titles });
         this.updateMasterCanvas(this.sourceImg, 1);
-    }
+    }*/
 
     // Left nav tool selection
     onToolSelect(toolName) {
@@ -86,6 +86,10 @@ class QuickArtworkMaker extends Component {
 
     onTitlesEditorDone(titles) {
         this.setState({ titles, currentTool: 'view' })
+    }
+
+    onTitlesEditorCancel() {
+        this.setState({ currentTool: 'view' })
     }
 
 
@@ -144,6 +148,7 @@ class QuickArtworkMaker extends Component {
                                        cropData={cropData}
                                        masterCanvas={masterCanvas}
                                        onDone={this.onTitlesEditorDone}
+                                       onCancel={this.onTitlesEditorCancel}
                                        widthToHeightRatio={widthToHeightRatio}
                                        heightToWidthRatio={heightToWidthRatio}/>
                     }

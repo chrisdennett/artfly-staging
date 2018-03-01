@@ -10,6 +10,13 @@ import { IN_STAGING } from "./global/GLOBAL_CONSTANTS";
 
 class App extends Component {
 
+    componentDidMount(){
+        setTimeout(function(){
+            // Hide the address bar!
+            window.scrollTo(0, 1);
+        }, 0);
+    }
+
     render() {
         // const { params, children, page, user } = this.props;
         const { params, children } = this.props;

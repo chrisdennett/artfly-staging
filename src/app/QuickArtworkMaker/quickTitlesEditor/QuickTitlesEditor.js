@@ -24,11 +24,27 @@ class QuickTitlesEditor extends Component {
         this.onDateChange = this.onDateChange.bind(this);
         this.onDoneClick = this.onDoneClick.bind(this);
         this.onClearClick = this.onClearClick.bind(this);
+        this.onCancelClick = this.onCancelClick.bind(this);
     }
 
     componentWillMount() {
         if (this.props.initialTitles) {
             this.setState({ ...this.props.initialTitles });
+        }
+        else{
+            // add some default values
+            const title = 'Utopia';
+            const artist = "Anon";
+            const description = "A seminal work of pivotal importance to humanity. A true masterpiece.";
+            const now = new Date();
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+            const month = monthNames[now.getMonth()].toUpperCase();
+            const year = now.getFullYear();
+
+            const date = month + " " + year;
+            this.setState({title, artist, description, date});
         }
     }
 
@@ -57,6 +73,10 @@ class QuickTitlesEditor extends Component {
 
     onClearClick() {
         this.setState({ title: '', artist: '', description: '', date: '' });
+    }
+
+    onCancelClick(){
+        this.props.onCancel();
     }
 
     render() {
@@ -114,6 +134,7 @@ class QuickTitlesEditor extends Component {
                         <div className={'quickTitles--controls--butts'}>
                             <Butt fullWidth={true} label={'DONE'} green onClick={this.onDoneClick}/>
                             <Butt fullWidth={true} label={'CLEAR ALL'} onClick={this.onClearClick}/>
+                            <Butt fullWidth={true} label={'CANCEL'} red onClick={this.onCancelClick}/>
                         </div>
                     </div>
                 </div>
