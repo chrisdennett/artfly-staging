@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { saveAs } from 'file-saver';
+import toBlob from 'canvas-to-blob';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faDesktop from '@fortawesome/fontawesome-pro-solid/faDesktop';
 import faDownload from '@fortawesome/fontawesome-pro-solid/faDownload';
@@ -107,7 +109,9 @@ class QuickShare extends Component {
         this.onPresetWidthInputChange = this.onPresetWidthInputChange.bind(this);
         this.onPresetHeightInputChange = this.onPresetHeightInputChange.bind(this);
 
-        this.state = { downloadUrl: '', presetWidth: 1200, presetHeight: 630, presetName:'Facebook' };
+        toBlob.init();
+
+        this.state = { presetWidth: 1200, presetHeight: 630, presetName: 'Facebook' };
     }
 
     onCanvasSetUp(canvas) {
@@ -115,7 +119,20 @@ class QuickShare extends Component {
     }
 
     saveImage() {
-        this.setState({ downloadUrl: this.canvas.toDataURL() })
+        const { presetWidth, presetHeight, presetName } = this.state;
+        const downloadName = `artfly_${presetName}_${presetWidth}x${presetHeight}.png`;
+
+        this.canvas.toBlob((blob) => {
+            saveAs(blob, downloadName);
+        });
+
+        // previous attempts to save the canvas - didn't work in all browsers.
+        /*try {
+            window.navigator.msSaveBlob(this.canvas.msToBlob(), 'filename.png'); // pops up download prompt
+        }
+        catch (e) {
+            this.setState({ downloadUrl: this.canvas.toDataURL() });
+        }*/
     }
 
     onPresetSelected(presetWidth, presetHeight, presetName) {
@@ -130,7 +147,7 @@ class QuickShare extends Component {
             proposedWidth = maxWidth
         }
 
-        this.setState({ presetWidth: proposedWidth, presetName:'Custom size' })
+        this.setState({ presetWidth: proposedWidth, presetName: 'Custom size' })
     }
 
     onPresetHeightInputChange(e) {
@@ -141,11 +158,11 @@ class QuickShare extends Component {
             proposedHeight = maxHeight;
         }
 
-        this.setState({ presetHeight: proposedHeight, presetName:'Custom size' })
+        this.setState({ presetHeight: proposedHeight, presetName: 'Custom size' })
     }
 
     render() {
-        const { downloadUrl, presetWidth, presetHeight, presetName  } = this.state;
+        const { presetWidth, presetHeight, presetName } = this.state;
         const { titles, cropData, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.props;
 
         return (
@@ -211,13 +228,15 @@ class QuickShare extends Component {
                 <div className={'quickShare--downloadSection'}>
                     <Butt green useATag={true}
                           svgIcon={<FontAwesomeIcon icon={faDownload}/>}
-                          href={downloadUrl}
-                          download={`artfly_${presetWidth}x${presetHeight}`}
                           onClick={this.saveImage}>
                         Download image*
                     </Butt>
 
-                    <div className={'quickShare--downloadSection--footnote'}>* If the download doesn't work you can click/press the image to save it: Use right-click on Windows; click and hold on Mac: press and hold mobile.</div>
+                    <div className={'quickShare--downloadSection--footnote'}>* If the download doesn't work some
+                        browsers allow you to
+                        click/press the image to save it: Use right-click on Windows; click and hold on Mac: press and
+                        hold mobile.
+                    </div>
 
                 </div>
             </div>
