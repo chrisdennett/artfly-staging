@@ -217,7 +217,7 @@ class QuickShare extends Component {
                         Download image*
                     </Butt>
 
-                    <div className={'quickShare--downloadSection--footnote'}>* If the download doesn't work you can click on the image to save it: Use right-click on Windows or click and hold on Mac/mobile.</div>
+                    <div className={'quickShare--downloadSection--footnote'}>* If the download doesn't work you can click/press the image to save it: Use right-click on Windows; click and hold on Mac: press and hold mobile.</div>
 
                 </div>
             </div>

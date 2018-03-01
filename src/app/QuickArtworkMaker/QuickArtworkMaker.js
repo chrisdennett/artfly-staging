@@ -58,7 +58,7 @@ class QuickArtworkMaker extends Component {
     updateMasterCanvas(sourceImg, orientation) {
         const masterCanvas = document.createElement('canvas');
         this.sourceImg = sourceImg;
-        if (!this.toolToShowAfterUpdate) this.toolToShowAfterUpdate = 'add-titles';
+        if (!this.toolToShowAfterUpdate) this.toolToShowAfterUpdate = 'crop';
 
         ImageHelper.drawImageToCanvas({ sourceImg, outputCanvas: masterCanvas, orientation },
             (widthToHeightRatio, heightToWidthRatio) => {
@@ -76,7 +76,7 @@ class QuickArtworkMaker extends Component {
     onCropAndRotateDone(orientation, cropData) {
         ImageHelper.drawImageToCanvas({ sourceImg: this.sourceImg, outputCanvas: this.state.masterCanvas, orientation },
             () => {
-                this.setState({ orientation, cropData, currentTool: 'view' });
+                this.setState({ orientation, cropData, currentTool: 'add-titles' });
             });
     }
 

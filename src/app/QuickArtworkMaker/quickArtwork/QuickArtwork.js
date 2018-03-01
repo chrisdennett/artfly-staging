@@ -125,6 +125,13 @@ class QuickArtwork extends Component {
 
         // add people
         // drawPeople(ctx, width, height);
+
+        // add artfly.io bit to the bottom right;
+        const branding = "ArtFly.io";
+        ctx.font = `${20}px 'Stardos Stencil'`;
+        const brandingLength = ctx.measureText(branding).width+10;
+        ctx.fillStyle = "rgba(0,0,0,0.3)";
+        ctx.fillText(branding, width-brandingLength, height - 30);
     }
 
     render() {
@@ -250,7 +257,6 @@ const addTitles = (ctx, width, maxHeight, x, y, titles) => {
     const dateY = description.length > 0 ? descriptionTextY + descriptionHeight + textPadding : descriptionTextY;
     ctx.fillStyle = "rgba(0,0,0,0.4)";
     ctx.fillText(date, textX, dateY);
-
 };
 
 const drawArtworkImage = (ctx, sourceImg, outputCanvas, imgX, imgY, imgWidth, imgHeight, cropData, rotation) => {
