@@ -34,7 +34,7 @@ class QuickArtworkMaker extends Component {
     // TEST ONLY
     /*componentDidMount() {
         this.sourceImg = TEST_SOURCE_IMG;
-        this.toolToShowAfterUpdate = 'add-titles';
+        this.toolToShowAfterUpdate = 'view';
         const description = "This work encapsulates the juxtaposition of disparate strands of pain and desire.  Reflecting on the strain between perfection and hopelessness, Chris draws us into the literal and metaphorical depths of the piece.";
         const titles = { title: 'Nauti by Nature', artist: 'Christophe Dennett', description, date: 'APRIL 2009' };
         this.setState({ titles });
@@ -58,7 +58,7 @@ class QuickArtworkMaker extends Component {
     updateMasterCanvas(sourceImg, orientation) {
         const masterCanvas = document.createElement('canvas');
         this.sourceImg = sourceImg;
-        if (!this.toolToShowAfterUpdate) this.toolToShowAfterUpdate = 'view';
+        if (!this.toolToShowAfterUpdate) this.toolToShowAfterUpdate = 'add-titles';
 
         ImageHelper.drawImageToCanvas({ sourceImg, outputCanvas: masterCanvas, orientation },
             (widthToHeightRatio, heightToWidthRatio) => {

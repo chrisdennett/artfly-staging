@@ -76,7 +76,9 @@ class QuickArtwork extends Component {
 
         const textWidthPercent = 0.3;
         const textPaddingPercent = 0.03;
-        const textWidth = width * textWidthPercent;
+        const maxTextWidth = 400;
+        const textWidth = width * textWidthPercent < maxTextWidth ? width * textWidthPercent: maxTextWidth;
+
         const paddingWidth = width * textPaddingPercent;
         const pictureWidth = titles ? width - (textWidth + paddingWidth) : width;
 
@@ -212,15 +214,6 @@ const addTitles = (ctx, width, maxHeight, x, y, titles) => {
 
     // Artist
     if (artist.length > 0) {
-        ctx.fillStyle = 'rgba(255,250,3,0.55)';
-        drawPolygon(ctx,
-            textX - 5, artistTextY - 5,
-            textX + width - 20, artistTextY - 5,
-            textX + width, artistTextY + artistFontTitleSize + 10,
-            textX - 5, artistTextY + artistFontTitleSize + 10
-        );
-        ctx.fill();
-        ctx.fillStyle = "rgba(0,0,0,0.7)";
 
         ctx.font = `${artistFontTitleSize}px 'Stardos Stencil'`;
         let artistWidth = ctx.measureText(artist).width;
@@ -229,6 +222,20 @@ const addTitles = (ctx, width, maxHeight, x, y, titles) => {
             ctx.font = `${artistFontTitleSize}px 'Stardos Stencil'`;
             artistWidth = ctx.measureText(artist).width;
         }
+
+        ctx.fillStyle = 'rgba(255,250,3,0.55)';
+        const polygonPadding = 0.3 * artistFontTitleSize;
+        const polygonTop = artistTextY - polygonPadding;
+        const polygonBottom = artistTextY + artistFontTitleSize + (polygonPadding*1.5);
+        const aSymmetricalJag = 0.4 * artistFontTitleSize;
+        drawPolygon(ctx,
+            textX - 5,                          polygonTop,
+            textX + width - aSymmetricalJag,    polygonTop,
+            textX + width,                      polygonBottom,
+            textX - 5,                          polygonBottom
+        );
+        ctx.fill();
+        ctx.fillStyle = "rgba(0,0,0,0.7)";
 
         ctx.fillText(`By ${artist}`, textX + 5, artistTextY);
     }
