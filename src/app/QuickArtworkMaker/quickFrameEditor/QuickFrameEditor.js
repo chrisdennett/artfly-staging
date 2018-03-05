@@ -26,10 +26,9 @@ class QuickFrameEditor extends Component {
 
     onFrameWidthChange(e) {
         const frameWidthPercentage = e.target.value;
-        const frameWidthDecimal = frameWidthPercentage/100;
+        const frameWidthDecimal = frameWidthPercentage/1000;
         this.setState({ frameThicknessDecimal: frameWidthDecimal});
     }
-
 
     onDoneClick() {
         const { frameThicknessDecimal } = this.state;
@@ -49,7 +48,7 @@ class QuickFrameEditor extends Component {
     render() {
         const { titles, height, width, cropData, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.props;
         const { frameThicknessDecimal } = this.state;
-        const frameThicknessPercentage = frameThicknessDecimal * 100;
+        const frameThicknessPercentage = frameThicknessDecimal * 1000;
 
         const showArtwork = width > 800;
         let controlsClass = 'quickTitles--controls--holder--partView';
@@ -80,8 +79,8 @@ class QuickFrameEditor extends Component {
                         <div className="quickFrameEditor--sliderHolder">
                             <input type="range"
                                    className="quickFrameEditor--slider"
-                                   min="1"
-                                   max="10"
+                                   min="10"
+                                   max="100"
                                    value={frameThicknessPercentage}
                                    onChange={this.onFrameWidthChange}
                                    id="frameThicknessRange"/>
