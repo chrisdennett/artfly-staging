@@ -3,7 +3,7 @@ import React from "react";
 // styles
 import './homeStyles.css';
 // components
-import {IN_BETA_TESTING} from '../global/GLOBAL_CONSTANTS';
+import { IN_BETA_TESTING } from '../global/GLOBAL_CONSTANTS';
 import Title from "./Title";
 import SignInOut from '../SignInOut/SignInOut';
 import PublicHome from "./PublicHome/PublicHome";
@@ -15,6 +15,12 @@ const Home = ({ user }) => {
 
     return (
         <div>
+            <div className={'home--topBar'}>
+                <a href='https://www.facebook.com/artfly.io/'
+                   target="_blank"
+                   rel="noopener noreferrer">Facebook</a>
+            </div>
+
             <div className='home--heading'>
                 <div>
                     <Title/>

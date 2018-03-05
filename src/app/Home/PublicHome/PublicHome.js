@@ -30,22 +30,31 @@ const PublicHome = function () {
                         you think and if you spot any bugs <FontAwesomeIcon icon={faBug}/>"</i></p>
 
                     <div className={'embed-container'}>
-                        <iframe title={'beta testing version 0.1'}
+
+                        <iframe title={'beta testing version 0.2'}
                                 width="100%"
                                 height="100%"
-                                src="https://www.youtube.com/embed/y2WDSVXmTBc?rel=0"
+                                src="https://www.youtube.com/embed/c9ZUVrsDPPc?rel=0"
                                 frameBorder="0"
                                 allowFullScreen>
                         </iframe>
                     </div>
 
 
-                    <LinkButt style={{ backgroundColor: '#abc837' }} linkTo={'/quickArtworkMaker'}>TRY OUT THE LATEST
-                        VERSION: v0.1</LinkButt>
-                    {/*<p>Check out what I planning for ArtFly here.</p>*/}
+                    <LinkButt style={{ backgroundColor: '#abc837', margin: '30px 0' }} linkTo={'/quickArtworkMaker'}>TRY
+                        OUT THE LATEST
+                        VERSION: v0.2</LinkButt>
 
-                    <p>If you'd like to hear about updates by email, sign up below, or look out for updates on
-                        facebook.</p>
+                    <div>
+                        Here's the <a href={'https://blog.artfly.io/artfly-roadmap'}
+                                      target="_blank" rel="noopener noreferrer">
+                        ArtFly Roadmap</a> if you want to know what I'm planning.
+                    </div>
+
+                    <p>
+                        If you'd like to hear about updates by email, sign up below, or look out for updates on <a
+                        href={'https://www.facebook.com/artfly.io/'}
+                        target="_blank" rel="noopener noreferrer">facebook</a>.</p>
 
                     <div className={'publicHome--signUpSection'}>
                         <p>

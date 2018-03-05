@@ -13,7 +13,7 @@ class QuickTitlesEditor extends Component {
 
         const maxTitleLength = 24;
         const maxArtistLength = 24;
-        const maxDescriptionLength = 150;
+        const maxDescriptionLength = 170;
         const maxDateLength = 24;
 
         this.state = { title: '', artist: '', description: '', date: '', maxTitleLength, maxArtistLength, maxDescriptionLength, maxDateLength };
@@ -130,6 +130,14 @@ class QuickTitlesEditor extends Component {
                                         isMultiline={true}
                                         onChange={this.onDescriptionChange}
                                         value={description}/>
+
+                        <div className={'quickTitles--controls--helpText'}>
+                            If you'd like a bit of help coming up with a fancy description, I've made the <a href={'https://lab.artfly.io/art-pifflator/'}
+                               target='_blank'
+                               rel="noopener noreferrer">
+                                Art Pifflator
+                            </a> to help.  Use it to generate some text, then come back and paste it in.
+                        </div>
 
                         <div className={'quickTitles--controls--butts'}>
                             <Butt fullWidth={true} label={'DONE'} green onClick={this.onDoneClick}/>

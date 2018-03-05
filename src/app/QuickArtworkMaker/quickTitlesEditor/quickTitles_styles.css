@@ -37,3 +37,7 @@
 .quickTitles--controls--butts{
     display: flex;
 }
+
+.quickTitles--controls--helpText{
+    margin-bottom: 20px;
+}
