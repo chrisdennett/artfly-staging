@@ -122,6 +122,7 @@ class QuickArtwork extends Component {
         drawSkirtingBoard(ctx, 0, skirtingY, width, skirtingHeight);
 
         // add titles text
+        // FIX BUG
         if (titles) {
             const textX = frameX + frameWidth;
             addTitles(ctx, textWidth, frameHeight, textX, frameY, titles);
@@ -215,23 +216,30 @@ const addTitles = (ctx, width, maxHeight, x, y, titles) => {
 
     ctx.font = `${titleFontSize}px 'Stardos Stencil'`;
     let titleWidth = ctx.measureText(title).width;
+    let safetyCounter = 0;
     while(titleWidth > width){
         titleFontSize -= 1;
         ctx.font = `${titleFontSize}px 'Stardos Stencil'`;
         titleWidth = ctx.measureText(title).width;
+
+        safetyCounter ++;
+        if(safetyCounter > 100) break;
     }
 
     ctx.fillText(title, textX, titleTextY);
 
     // Artist
     if (artist.length > 0) {
-
         ctx.font = `${artistFontTitleSize}px 'Stardos Stencil'`;
         let artistWidth = ctx.measureText(artist).width;
-        while(artistWidth > width-40){
+        safetyCounter = 0;
+        while(artistWidth > width){
             artistFontTitleSize -= 1;
             ctx.font = `${artistFontTitleSize}px 'Stardos Stencil'`;
             artistWidth = ctx.measureText(artist).width;
+
+            safetyCounter ++;
+            if(safetyCounter > 100) break;
         }
 
         ctx.fillStyle = 'rgba(255,250,3,0.55)';
