@@ -1,0 +1,43 @@
+.quickTitles{
+
+}
+
+.quickTitles--controls--holder{
+    /*background-image: url("../../images/lined_paper.png");*/
+    padding: 20px;
+    position: fixed;
+    left: 60px;
+    overflow-y: auto;
+
+}
+
+.quickTitles--controls--holder--partView{
+    top: 0;
+    bottom: 0;
+    width: 40%;
+    background: url("../../images/square.png") #e9eaea;
+
+    /*background-color: #ffee82;*/
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.52);
+}
+
+.quickTitles--controls--holder--fullView{
+    top: 0;
+    bottom: 0;
+    right: 0;
+    /*background: none;*/
+    /*background: rgba(255,255,255,1);*/
+}
+
+.quickTitles--controls{
+    display: flex;
+    flex-direction: column;
+}
+
+.quickTitles--controls--butts{
+    display: flex;
+}
+
+.quickTitles--controls--helpText{
+    margin-bottom: 20px;
+}

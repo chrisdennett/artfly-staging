@@ -1,8 +1,42 @@
-.quickTitles{
+.quickFrameEditor--sliderHolder {
 
 }
 
-.quickTitles--controls--holder{
+.quickFrameEditor--slider {
+
+}
+
+.quickFrameEditor--slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.quickFrameEditor--slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+.quickFrameEditor--slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+.quickTitles--controls--holder {
     /*background-image: url("../../images/lined_paper.png");*/
     padding: 20px;
     position: fixed;
@@ -11,7 +45,7 @@
 
 }
 
-.quickTitles--controls--holder--partView{
+.quickTitles--controls--holder--partView {
     top: 0;
     bottom: 0;
     width: 40%;
@@ -21,7 +55,7 @@
     box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.52);
 }
 
-.quickTitles--controls--holder--fullView{
+.quickTitles--controls--holder--fullView {
     top: 0;
     bottom: 0;
     right: 0;
@@ -29,15 +63,15 @@
     /*background: rgba(255,255,255,1);*/
 }
 
-.quickTitles--controls{
+.quickTitles--controls {
     display: flex;
     flex-direction: column;
 }
 
-.quickTitles--controls--butts{
+.quickTitles--controls--butts {
     display: flex;
 }
 
-.quickTitles--controls--helpText{
+.quickTitles--controls--helpText {
     margin-bottom: 20px;
 }

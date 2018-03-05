@@ -27,6 +27,7 @@ class QuickArtwork extends Component {
         if (this.props.onCanvasSetUp) this.props.onCanvasSetUp(canvas)
     }
 
+    // TODO: Could be split out into helper function
     loadImageTiles() {
         let img = new Image();
         img.setAttribute('crossOrigin', 'anonymous'); //
@@ -44,7 +45,7 @@ class QuickArtwork extends Component {
     }
 
     setupCanvas(props) {
-        let { width, height, titles, cropData, rotation, masterCanvas, widthToHeightRatio, heightToWidthRatio } = props;
+        let { frameThicknessDecimal, width, height, titles, cropData, rotation, masterCanvas, widthToHeightRatio, heightToWidthRatio } = props;
 
         // prevent errors by stopping if critical elements not available
         if (!this.canvas || width < 1 || height < 1 || !masterCanvas) {
@@ -82,7 +83,7 @@ class QuickArtwork extends Component {
         const paddingWidth = width * textPaddingPercent;
         const pictureWidth = titles ? width - (textWidth + paddingWidth) : width;
 
-        const artworkSizes = calculateCanvasArtworkSizes(pictureWidth, height, widthToHeightRatio, heightToWidthRatio);
+        const artworkSizes = calculateCanvasArtworkSizes({frameThicknessDecimal, width:pictureWidth, height, widthToHeightRatio, heightToWidthRatio});
 
         let {
                 imgX, imgY, imgWidth, imgHeight,
@@ -495,8 +496,7 @@ const drawFrameShadow = (ctx, x, y, width, height) => {
     };
 };*/
 
-const calculateCanvasArtworkSizes = (width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 30, minPaddingSides = 20) => {
-    const frameThicknessPercent = 0.04;
+const calculateCanvasArtworkSizes = ({frameThicknessDecimal = 0.04, width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 30, minPaddingSides = 20}) => {
     const mountThicknessPercent = 0.06;
     const spaceBelowPicturePercent = 0.15;
     const maxPercentageTakenUpBySkirting = 0.3;
@@ -513,7 +513,7 @@ const calculateCanvasArtworkSizes = (width, height, widthToHeightRatio, heightTo
     const maxHeight = height - (minPaddingTop + minPaddingBottom);
 
     // calculate to maximise width
-    let frameThickness = Math.round(maxWidth * frameThicknessPercent);
+    let frameThickness = Math.round(maxWidth * frameThicknessDecimal);
     let mountThickness = Math.round(maxWidth * mountThicknessPercent);
     let totalFrameAndMountThickness = (frameThickness * 2) + (mountThickness * 2);
     let imgWidth = maxWidth - totalFrameAndMountThickness;
@@ -522,7 +522,7 @@ const calculateCanvasArtworkSizes = (width, height, widthToHeightRatio, heightTo
 
     // if it doesn't fit the height, calculate to maximise height
     if (frameHeight > maxHeight) {
-        frameThickness = Math.round(maxHeight * frameThicknessPercent);
+        frameThickness = Math.round(maxHeight * frameThicknessDecimal);
         mountThickness = Math.round(maxHeight * mountThicknessPercent);
         totalFrameAndMountThickness = (frameThickness * 2) + (mountThickness * 2);
         imgHeight = maxHeight - totalFrameAndMountThickness;

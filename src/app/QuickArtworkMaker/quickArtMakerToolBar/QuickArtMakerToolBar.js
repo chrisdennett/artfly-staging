@@ -3,6 +3,7 @@ import faObjectGroup from "@fortawesome/fontawesome-pro-solid/faObjectGroup";
 import faShare from "@fortawesome/fontawesome-pro-solid/faShare";
 import faUpload from "@fortawesome/fontawesome-pro-solid/faUpload";
 import faListAlt from "@fortawesome/fontawesome-pro-solid/faListAlt";
+import faImage from "@fortawesome/fontawesome-pro-solid/faImage";
 // styles
 import './quickArtMakerTools_styles.css';
 // comps
@@ -18,6 +19,7 @@ class QuickArtMakerToolBar extends Component {
         this.onAddPicClick = this.onAddPicClick.bind(this);
         this.onCropClick = this.onCropClick.bind(this);
         this.onAddTitlesClick = this.onAddTitlesClick.bind(this);
+        this.onFrameClick = this.onFrameClick.bind(this);
         this.onViewClick = this.onViewClick.bind(this);
         this.onShareClick = this.onShareClick.bind(this);
     }
@@ -26,7 +28,9 @@ class QuickArtMakerToolBar extends Component {
 
     onCropClick() { this.props.onToolSelect('crop') }
 
-    onAddTitlesClick() { this.props.onToolSelect('add-titles') }
+    onAddTitlesClick() { this.props.onToolSelect('titles') }
+
+    onFrameClick() { this.props.onToolSelect('frame') }
 
     onViewClick() { this.props.onToolSelect('view') }
 
@@ -58,11 +62,18 @@ class QuickArtMakerToolBar extends Component {
                     label={'CROP & ROTATE'}/>
 
                 <ControlPanelButt
-                    isSelected={currentTool === 'add-titles'}
+                    isSelected={currentTool === 'titles'}
                     disabled={disableEditing}
                     icon={faListAlt}
                     onClick={this.onAddTitlesClick}
                     label={'ADD TITLES'}/>
+
+                <ControlPanelButt
+                    isSelected={currentTool === 'frame'}
+                    disabled={disableEditing}
+                    icon={faImage}
+                    onClick={this.onFrameClick}
+                    label={'FRAME & MOUNT'}/>
 
                 <ControlPanelButt
                     isSelected={currentTool === 'view'}

@@ -108,7 +108,7 @@ class QuickTitlesEditor extends Component {
 
                 <div className={`quickTitles--controls--holder ${controlsClass}`}>
                     <div className={'quickTitles--controls'}>
-                        <h2>Artwork Details:</h2>
+                        <h2>Artwork Titles:</h2>
 
                         <WordCountInput label={'Title'}
                                         max={maxTitleLength}

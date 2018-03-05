@@ -12,7 +12,8 @@ import QuickArtMakerToolBar from "./quickArtMakerToolBar/QuickArtMakerToolBar";
 import QuickShare from "./quickShare/QuickShare";
 import QuickTitlesEditor from "./quickTitlesEditor/QuickTitlesEditor";
 // DEV ONLY
-// import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
+import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
+import QuickFrameEditor from "./quickFrameEditor/QuickFrameEditor";
 
 class QuickArtworkMaker extends Component {
 
@@ -32,14 +33,14 @@ class QuickArtworkMaker extends Component {
     }
 
     // TEST ONLY
-    /*componentDidMount() {
+    componentDidMount() {
         this.sourceImg = TEST_SOURCE_IMG;
-        this.toolToShowAfterUpdate = 'view';
+        this.toolToShowAfterUpdate = 'frame';
         const description = "This work encapsulates the juxtaposition of disparate strands of pain and desire.  Reflecting on the strain between perfection and hopelessness, Chris draws us into the literal and metaphorical depths of the piece.";
         const titles = { title: 'Nauti by Nature', artist: 'Christophe Dennett', description, date: 'APRIL 2009' };
         this.setState({ titles });
         this.updateMasterCanvas(this.sourceImg, 1);
-    }*/
+    }
 
     // Left nav tool selection
     onToolSelect(toolName) {
@@ -76,7 +77,7 @@ class QuickArtworkMaker extends Component {
     onCropAndRotateDone(orientation, cropData) {
         ImageHelper.drawImageToCanvas({ sourceImg: this.sourceImg, outputCanvas: this.state.masterCanvas, orientation },
             () => {
-                this.setState({ orientation, cropData, currentTool: 'add-titles' });
+                this.setState({ orientation, cropData, currentTool: 'titles' });
             });
     }
 
@@ -141,7 +142,7 @@ class QuickArtworkMaker extends Component {
                                         height={height}/>
                     }
 
-                    {currentTool === 'add-titles' &&
+                    {currentTool === 'titles' &&
                     <QuickTitlesEditor height={height}
                                        width={contentWidth}
                                        initialTitles={titles}
@@ -151,6 +152,18 @@ class QuickArtworkMaker extends Component {
                                        onCancel={this.onTitlesEditorCancel}
                                        widthToHeightRatio={widthToHeightRatio}
                                        heightToWidthRatio={heightToWidthRatio}/>
+                    }
+
+                    {currentTool === 'frame' &&
+                    <QuickFrameEditor height={height}
+                                      width={contentWidth}
+                                      titles={titles}
+                                      cropData={cropData}
+                                      masterCanvas={masterCanvas}
+                                      onDone={this.onTitlesEditorDone}
+                                      onCancel={this.onTitlesEditorCancel}
+                                      widthToHeightRatio={widthToHeightRatio}
+                                      heightToWidthRatio={heightToWidthRatio}/>
                     }
 
 
@@ -177,7 +190,7 @@ class QuickArtworkMaker extends Component {
 
 const mapStateToProps = (state) => {
     let width = 100, height = 100;
-    if(state.ui.windowSize){
+    if (state.ui.windowSize) {
         width = state.ui.windowSize.windowWidth;
         height = state.ui.windowSize.windowHeight;
     }
