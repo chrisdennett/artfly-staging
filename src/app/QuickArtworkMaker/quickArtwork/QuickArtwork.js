@@ -45,7 +45,7 @@ class QuickArtwork extends Component {
     }
 
     setupCanvas(props) {
-        let { frameThicknessDecimal, width, height, titles, cropData, rotation, masterCanvas, widthToHeightRatio, heightToWidthRatio } = props;
+        let { frameData, width, height, titles, cropData, rotation, masterCanvas, widthToHeightRatio, heightToWidthRatio } = props;
 
         // prevent errors by stopping if critical elements not available
         if (!this.canvas || width < 1 || height < 1 || !masterCanvas) {
@@ -74,6 +74,9 @@ class QuickArtwork extends Component {
             widthToHeightRatio = croppedHeight / croppedWidth;
             heightToWidthRatio = croppedWidth / croppedHeight;
         }
+
+        // use default if not set
+        const {frameThicknessDecimal} = frameData ? frameData : {frameThicknessDecimal:0.04};
 
         const textWidthPercent = 0.3;
         const textPaddingPercent = 0.03;

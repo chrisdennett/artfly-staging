@@ -80,7 +80,7 @@ class QuickTitlesEditor extends Component {
     }
 
     render() {
-        const { height, width, cropData, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.props;
+        const { height, width, cropData, frameData, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.props;
         const { title, artist, description, date, maxTitleLength, maxArtistLength, maxDescriptionLength } = this.state;
         const titlesPresent = title.length > 0 || artist.length > 0 || description.length > 0;
         const titles = titlesPresent ? { title, artist, description, date } : null;
@@ -100,6 +100,7 @@ class QuickTitlesEditor extends Component {
                               isFixed={true}
                               titles={titles}
                               cropData={cropData}
+                              frameData={frameData}
                               masterCanvas={masterCanvas}
                               widthToHeightRatio={widthToHeightRatio}
                               heightToWidthRatio={heightToWidthRatio}

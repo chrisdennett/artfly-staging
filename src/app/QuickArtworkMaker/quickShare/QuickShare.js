@@ -163,7 +163,7 @@ class QuickShare extends Component {
 
     render() {
         const { presetWidth, presetHeight, presetName } = this.state;
-        const { titles, cropData, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.props;
+        const { titles, frameData, cropData, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.props;
 
         return (
 
@@ -217,6 +217,7 @@ class QuickShare extends Component {
                         <QuickArtwork width={presetWidth}
                                       height={presetHeight}
                                       titles={titles}
+                                      frameData={frameData}
                                       onCanvasSetUp={this.onCanvasSetUp}
                                       cropData={cropData}
                                       masterCanvas={masterCanvas}

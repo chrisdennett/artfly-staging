@@ -27,6 +27,8 @@ class QuickArtworkMaker extends Component {
         this.updateMasterCanvas = this.updateMasterCanvas.bind(this);
         this.onTitlesEditorDone = this.onTitlesEditorDone.bind(this);
         this.onTitlesEditorCancel = this.onTitlesEditorCancel.bind(this);
+        this.onFrameDone = this.onFrameDone.bind(this);
+        this.onFrameCancel = this.onFrameCancel.bind(this);
 
         const cropData = { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 };
         this.state = { currentTool: 'upload', cropData, orientation: 1 };
@@ -93,9 +95,18 @@ class QuickArtworkMaker extends Component {
         this.setState({ currentTool: 'view' })
     }
 
+    onFrameDone(frameData) {
+        console.log("frameData: ", frameData);
+        this.setState({ frameData, currentTool: 'view' })
+    }
+
+    onFrameCancel() {
+        this.setState({ currentTool: 'view' })
+    }
+
 
     render() {
-        const { currentTool, titles, orientation, cropData, sourceImg, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.state;
+        const { currentTool, titles, frameData, orientation, cropData, sourceImg, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.state;
         const { height, width } = this.props;
         const sidebarWidth = 60;
         const contentWidth = width - sidebarWidth;
@@ -122,6 +133,7 @@ class QuickArtworkMaker extends Component {
                     <QuickArtwork height={height}
                                   width={contentWidth}
                                   titles={titles}
+                                  frameData={frameData}
                                   isFixed={true}
                                   cropData={cropData}
                                   masterCanvas={masterCanvas}
@@ -147,6 +159,7 @@ class QuickArtworkMaker extends Component {
                                        width={contentWidth}
                                        initialTitles={titles}
                                        cropData={cropData}
+                                       frameData={frameData}
                                        masterCanvas={masterCanvas}
                                        onDone={this.onTitlesEditorDone}
                                        onCancel={this.onTitlesEditorCancel}
@@ -158,10 +171,11 @@ class QuickArtworkMaker extends Component {
                     <QuickFrameEditor height={height}
                                       width={contentWidth}
                                       titles={titles}
+                                      frameData={frameData}
                                       cropData={cropData}
                                       masterCanvas={masterCanvas}
-                                      onDone={this.onTitlesEditorDone}
-                                      onCancel={this.onTitlesEditorCancel}
+                                      onDone={this.onFrameDone}
+                                      onCancel={this.onFrameCancel}
                                       widthToHeightRatio={widthToHeightRatio}
                                       heightToWidthRatio={heightToWidthRatio}/>
                     }
@@ -170,6 +184,7 @@ class QuickArtworkMaker extends Component {
                     {currentTool === 'share' &&
                     <QuickShare cropData={cropData}
                                 titles={titles}
+                                frameData={frameData}
                                 masterCanvas={masterCanvas}
                                 widthToHeightRatio={widthToHeightRatio}
                                 heightToWidthRatio={heightToWidthRatio}

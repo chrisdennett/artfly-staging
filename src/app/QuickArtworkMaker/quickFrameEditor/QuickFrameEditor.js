@@ -5,12 +5,14 @@ import './quickFrame_styles.css';
 import QuickArtwork from "../quickArtwork/QuickArtwork";
 import Butt from "../../global/Butt/Butt";
 
+const defaultFrameThickness = 0.04;
+
 class QuickFrameEditor extends Component {
 
     constructor(props) {
         super(props);
         
-        this.state = { frameThicknessDecimal:0.02 };
+        this.state = { frameThicknessDecimal:defaultFrameThickness };
 
         this.onFrameWidthChange = this.onFrameWidthChange.bind(this);
         this.onDoneClick = this.onDoneClick.bind(this);
@@ -32,13 +34,13 @@ class QuickFrameEditor extends Component {
 
     onDoneClick() {
         const { frameThicknessDecimal } = this.state;
-        const frameData = {frameWidthDecimal: frameThicknessDecimal};
+        const frameData = {frameThicknessDecimal};
 
         this.props.onDone(frameData);
     }
 
     onClearClick() {
-        this.setState({ frameThicknessDecimal:0.02 });
+        this.setState({ frameThicknessDecimal:defaultFrameThickness });
     }
 
     onCancelClick(){
@@ -49,6 +51,7 @@ class QuickFrameEditor extends Component {
         const { titles, height, width, cropData, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.props;
         const { frameThicknessDecimal } = this.state;
         const frameThicknessPercentage = frameThicknessDecimal * 1000;
+        const frameData = {frameThicknessDecimal};
 
         const showArtwork = width > 800;
         let controlsClass = 'quickTitles--controls--holder--partView';
@@ -62,7 +65,7 @@ class QuickFrameEditor extends Component {
                 {showArtwork &&
                 <QuickArtwork height={height}
                               width={width}
-                              frameThicknessDecimal={frameThicknessDecimal}
+                              frameData={frameData}
                               isFixed={true}
                               titles={titles}
                               cropData={cropData}
