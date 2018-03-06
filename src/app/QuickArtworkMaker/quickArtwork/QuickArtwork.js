@@ -78,7 +78,7 @@ class QuickArtwork extends Component {
         }
 
         // use default if not set
-        const {frameThicknessDecimal} = frameData ? frameData : {frameThicknessDecimal:0.04};
+        const {frameThicknessDecimal, frameColour} = frameData;
 
         const textWidthPercent = 0.3;
         const textPaddingPercent = 0.03;
@@ -113,7 +113,7 @@ class QuickArtwork extends Component {
 
         drawFrameShadow(ctx, frameX, frameY, frameWidth, frameHeight);
 
-        drawFrame(ctx, frameX, frameY, frameWidth, frameHeight, frameThickness);
+        drawFrame(ctx, frameX, frameY, frameWidth, frameHeight, frameThickness, frameColour);
 
         drawMount(ctx, mountX, mountY, mountWidth, mountHeight, mountThickness);
 
@@ -288,14 +288,18 @@ const drawArtworkImage = (ctx, sourceImg, outputCanvas, imgX, imgY, imgWidth, im
     ctx.drawImage(sourceImg, srcLeft, srcTop, croppedW, croppedH, imgX, imgY, imgWidth, imgHeight);
 };
 
-const drawFrame = (ctx, startX, startY, width, height, thickness) => {
+const drawFrame = (ctx, startX, startY, width, height, thickness, frameColour) => {
+
+    console.log("frameColour: ", frameColour);
+    const {hue, saturation, lightness} = frameColour;
 
     // if you don't draw a rectangle behind you get seams see:https://stackoverflow.com/questions/19319963/how-to-avoid-seams-between-filled-areas-in-canvas
-    ctx.fillStyle = '#4c4c4c';
+    // ctx.fillStyle = '#4c4c4c';
+    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, 1)`;
     ctx.fillRect(startX, startY, width, height);
 
     // top frame section
-    ctx.fillStyle = '#4c4c4c';
+    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, 1)`;
     drawPolygon(ctx,
         startX, startY,
         startX + width, startY,
@@ -304,7 +308,8 @@ const drawFrame = (ctx, startX, startY, width, height, thickness) => {
     ctx.fill();
 
     // right frame section
-    ctx.fillStyle = '#3b3b3b';
+    // ctx.fillStyle = '#3b3b3b';
+    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness-5}%, 1)`;
     drawPolygon(ctx,
         startX + width - thickness, startY + thickness,
         startX + width, startY,
@@ -313,7 +318,7 @@ const drawFrame = (ctx, startX, startY, width, height, thickness) => {
     ctx.fill();
 
     // bottom frame section
-    ctx.fillStyle = '#2a2a2a';
+    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness-10}%, 1)`;
     drawPolygon(ctx,
         startX + thickness, startY + height - thickness,
         startX + width - thickness, startY + height - thickness,
@@ -322,7 +327,8 @@ const drawFrame = (ctx, startX, startY, width, height, thickness) => {
     ctx.fill();
 
     // left frame section
-    ctx.fillStyle = '#3b3b3b';
+    // ctx.fillStyle = '#3b3b3b';
+    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness-5}%, 1)`;
     drawPolygon(ctx,
         startX, startY,
         startX + thickness, startY + thickness,

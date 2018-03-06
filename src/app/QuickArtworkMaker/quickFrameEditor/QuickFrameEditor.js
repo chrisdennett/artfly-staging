@@ -14,13 +14,17 @@ import Slider from "./slider/Slider";
 import FontAwesomeButt from "../../global/Butt/FontAwesomeButt";
 
 const defaultFrameThickness = 0.04;
+const defaultFrameColour = {hue:96, saturation:0, lightness:29};
 
 class QuickFrameEditor extends Component {
 
     constructor(props) {
         super(props);
 
-        this.state = { frameThicknessDecimal: defaultFrameThickness, currentTool: 'frameAndMountSize' };
+        this.state = {
+            frameThicknessDecimal: defaultFrameThickness,
+            frameColour: defaultFrameColour,
+            currentTool: 'frameColour' };
 
         this.onFrameWidthChange = this.onFrameWidthChange.bind(this);
         this.onDoneClick = this.onDoneClick.bind(this);
@@ -29,12 +33,17 @@ class QuickFrameEditor extends Component {
         this.onFrameSizeSelected = this.onFrameSizeSelected.bind(this);
         this.onFrameColourSelected = this.onFrameColourSelected.bind(this);
         this.onMountColourSelected = this.onMountColourSelected.bind(this);
+        this.onFrameColourChange = this.onFrameColourChange.bind(this);
     }
 
     componentWillMount() {
         if (this.props.frameData) {
             this.setState({ ...this.props.frameData });
         }
+    }
+
+    onFrameColourChange(frameColour){
+        this.setState({frameColour})
     }
 
     onFrameSizeSelected() {
@@ -50,14 +59,12 @@ class QuickFrameEditor extends Component {
     }
 
     onFrameWidthChange(e) {
-        const frameWidthPercentage = e.target.value;
-        const frameWidthDecimal = frameWidthPercentage / 1000;
-        this.setState({ frameThicknessDecimal: frameWidthDecimal });
+        this.setState({ frameThicknessDecimal: e.target.value });
     }
 
     onDoneClick() {
-        const { frameThicknessDecimal } = this.state;
-        const frameData = { frameThicknessDecimal };
+        const { frameThicknessDecimal, frameColour } = this.state;
+        const frameData = { frameThicknessDecimal, frameColour};
 
         this.props.onDone(frameData);
     }
@@ -72,9 +79,11 @@ class QuickFrameEditor extends Component {
 
     render() {
         const { height, width, artworkData, masterCanvas } = this.props;
-        const { frameThicknessDecimal, currentTool } = this.state;
-        const frameThicknessPercentage = frameThicknessDecimal * 1000;
-        const frameData = { frameThicknessDecimal };
+        const { frameThicknessDecimal, currentTool, frameColour } = this.state;
+
+        console.log("frameColour: ", frameColour);
+
+        const frameData = { frameThicknessDecimal, frameColour };
         const unsavedArtworkData = { ...artworkData, frameData, titles: null };
 
         return (
@@ -85,20 +94,22 @@ class QuickFrameEditor extends Component {
                     {currentTool === 'frameAndMountSize' &&
                     <div>
                         <Slider label={'FRAME'}
-                                min={10} max={100}
-                                value={frameThicknessPercentage}
+                                min={0.01} max={0.1} step={0.001}
+                                value={frameThicknessDecimal}
                                 onChange={this.onFrameWidthChange}/>
 
 
-                        < Slider label={'MOUNT'}
+                        {/*<Slider label={'MOUNT'}
                                  min={10} max={100}
-                                 value={frameThicknessPercentage}
-                                 onChange={this.onFrameWidthChange}/>
+                                 value={frameThicknessDecimal}
+                                 onChange={this.onFrameWidthChange}/>*/}
                     </div>
                     }
 
                     {currentTool === 'frameColour' &&
-                    <ColourPicker title={'FRAME COLOUR'}/>
+                    <ColourPicker title={'FRAME COLOUR'}
+                                  frameColour={frameColour}
+                                  onColourChange={this.onFrameColourChange}/>
                     }
 
                     {currentTool === 'mountColour' &&
@@ -116,8 +127,8 @@ class QuickFrameEditor extends Component {
 
                 <div className={`quickFrame--controls--holder`}>
                     <div className={'quickFrame--controls'}>
-                        <h3>{'FRAMING'}</h3>
-                        <h4>{'< back'}</h4>
+                        {/*<h3>{'FRAMING'}</h3>*/}
+                        {/*<p>{'< back'}</p>*/}
 
                         <ControlPanelButt onClick={this.onFrameSizeSelected}
                                           isSelected={currentTool === 'frameAndMountSize'}

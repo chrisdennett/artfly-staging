@@ -1,42 +1,54 @@
 import React, { Component } from 'react';
+// comps
 import Slider from "../slider/Slider";
 
 class ColourPicker extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             hue: 110,
             saturation: 40,
-            lightness: 42,
-            alpha: 1
+            lightness: 42
         };
 
         this.onHueRangeChange = this.onHueRangeChange.bind(this);
         this.onSaturationRangeChange = this.onSaturationRangeChange.bind(this);
         this.onLightnessRangeChange = this.onLightnessRangeChange.bind(this);
-        this.onAlphaRangeChange = this.onAlphaRangeChange.bind(this);
+        this.callUpdate = this.callUpdate.bind(this);
+    }
+
+    componentWillMount() {
+        if (this.props.frameColour) {
+            const { hue, saturation, brightness } = this.props.frameColour;
+            this.setState({ hue, saturation, brightness });
+        }
     }
 
     onHueRangeChange(e) {
-        this.setState({ hue: e.target.value });
+        this.setState({ hue: e.target.value }, this.callUpdate);
     }
 
     onSaturationRangeChange(e) {
-        this.setState({ saturation: e.target.value });
+        this.setState({ saturation: e.target.value }, this.callUpdate);
     }
 
     onLightnessRangeChange(e) {
-        this.setState({ lightness: e.target.value });
+        this.setState({ lightness: e.target.value }, this.callUpdate);
     }
 
-    onAlphaRangeChange(e) {
-        this.setState({ alpha: e.target.value });
+    callUpdate() {
+        if (this.props.onColourChange) {
+            const { hue, saturation, lightness } = this.state;
+            // const selectedColour = `hsla(${hue}, ${saturation}%, ${lightness}%, 1`;
+            this.props.onColourChange({ hue, saturation, lightness })
+        }
     }
 
     render() {
-        const {title} = this.props;
-        const { hue, saturation, lightness, alpha } = this.state;
-        const selectedColour = `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
+        const { title } = this.props;
+        const { hue, saturation, lightness } = this.state;
+        const selectedColour = `hsla(${hue}, ${saturation}%, ${lightness}%, 1`;
         // const hslStyle = { backgroundColor: selectedColour };
 
         return (
