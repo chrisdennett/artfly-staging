@@ -20,7 +20,7 @@ class QuickFrameEditor extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { frameThicknessDecimal: defaultFrameThickness };
+        this.state = { frameThicknessDecimal: defaultFrameThickness, currentTool: 'frameAndMountSize' };
 
         this.onFrameWidthChange = this.onFrameWidthChange.bind(this);
         this.onDoneClick = this.onDoneClick.bind(this);
@@ -102,44 +102,49 @@ class QuickFrameEditor extends Component {
                     }
 
                     {currentTool === 'mountColour' &&
-                        <ColourPicker title={'MOUNT COLOUR'}/>
+                    <ColourPicker title={'MOUNT COLOUR'}/>
                     }
 
-                        </div>
+                </div>
 
-                        <QuickArtwork height={height}
-                        width={width}
-                        artworkData={unsavedArtworkData}
-                        isFixed={true}
-                        masterCanvas={masterCanvas}
-                        />
+                <QuickArtwork height={height}
+                              width={width}
+                              artworkData={unsavedArtworkData}
+                              isFixed={true}
+                              masterCanvas={masterCanvas}
+                />
 
-                        <div className={`quickFrame--controls--holder`}>
-                        <div className={'quickFrame--controls'}>
+                <div className={`quickFrame--controls--holder`}>
+                    <div className={'quickFrame--controls'}>
                         <h3>{'FRAMING'}</h3>
                         <h4>{'< back'}</h4>
 
                         <ControlPanelButt onClick={this.onFrameSizeSelected}
-                        icon={faSlidersHSquare}
-                        label={'FAME & MOUNT SIZE'}/>
+                                          isSelected={currentTool === 'frameAndMountSize'}
+                                          icon={faSlidersHSquare}
+                                          label={'FAME & MOUNT SIZE'}/>
 
                         <ControlPanelButt onClick={this.onFrameColourSelected}
-                        icon={faPenSquareReg}
-                        label={'FAME COLOUR'}/>
+                                          isSelected={currentTool === 'frameColour'}
+                                          icon={faPenSquareReg}
+                                          label={'FAME COLOUR'}/>
 
                         <ControlPanelButt onClick={this.onMountColourSelected}
-                        icon={faPenSquare}
-                        label={'MOUNT COLOUR'}/>
+                                          isSelected={currentTool === 'mountColour'}
+                                          icon={faPenSquare}
+                                          label={'MOUNT COLOUR'}/>
 
                         <div className={'quickFrame--controls--butts'}>
-                        <FontAwesomeButt style={{ backgroundColor: '#abc843' }} onClick={this.onDoneClick} icon={faCheck}/>
-                        <FontAwesomeButt style={{ backgroundColor: '#ce373e' }} onClick={this.onCancelClick} icon={faTimes}/>
+                            <FontAwesomeButt style={{ backgroundColor: '#abc843' }} onClick={this.onDoneClick}
+                                             icon={faCheck}/>
+                            <FontAwesomeButt style={{ backgroundColor: '#ce373e' }} onClick={this.onCancelClick}
+                                             icon={faTimes}/>
                         </div>
-                        </div>
-                        </div>
-                        </div>
-                        );
-                        }
-                    }
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
 
-                    export default QuickFrameEditor;
+export default QuickFrameEditor;
