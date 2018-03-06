@@ -26,12 +26,27 @@ class QuickFrameEditor extends Component {
         this.onDoneClick = this.onDoneClick.bind(this);
         this.onClearClick = this.onClearClick.bind(this);
         this.onCancelClick = this.onCancelClick.bind(this);
+        this.onFrameSizeSelected = this.onFrameSizeSelected.bind(this);
+        this.onFrameColourSelected = this.onFrameColourSelected.bind(this);
+        this.onMountColourSelected = this.onMountColourSelected.bind(this);
     }
 
     componentWillMount() {
         if (this.props.frameData) {
             this.setState({ ...this.props.frameData });
         }
+    }
+
+    onFrameSizeSelected() {
+        this.setState({ currentTool: 'frameAndMountSize' });
+    }
+
+    onFrameColourSelected() {
+        this.setState({ currentTool: 'frameColour' });
+    }
+
+    onMountColourSelected() {
+        this.setState({ currentTool: 'mountColour' });
     }
 
     onFrameWidthChange(e) {
@@ -57,58 +72,74 @@ class QuickFrameEditor extends Component {
 
     render() {
         const { height, width, artworkData, masterCanvas } = this.props;
-        const { frameThicknessDecimal } = this.state;
+        const { frameThicknessDecimal, currentTool } = this.state;
         const frameThicknessPercentage = frameThicknessDecimal * 1000;
         const frameData = { frameThicknessDecimal };
-        const unsavedArtworkData = {...artworkData, frameData, titles:null};
+        const unsavedArtworkData = { ...artworkData, frameData, titles: null };
 
         return (
             <div className={'quickFrameEditor'}>
 
                 <div className={'quickFrameEditor--toolHolder'}>
 
-                    <Slider label={'FRAME'}
-                            min={10} max={100}
-                            value={frameThicknessPercentage}
-                            onChange={this.onFrameWidthChange}/>
+                    {currentTool === 'frameAndMountSize' &&
+                    <div>
+                        <Slider label={'FRAME'}
+                                min={10} max={100}
+                                value={frameThicknessPercentage}
+                                onChange={this.onFrameWidthChange}/>
 
-                    <Slider label={'MOUNT'}
-                            min={10} max={100}
-                            value={frameThicknessPercentage}
-                            onChange={this.onFrameWidthChange}/>
 
+                        < Slider label={'MOUNT'}
+                                 min={10} max={100}
+                                 value={frameThicknessPercentage}
+                                 onChange={this.onFrameWidthChange}/>
+                    </div>
+                    }
+
+                    {currentTool === 'frameColour' &&
                     <ColourPicker title={'FRAME COLOUR'}/>
+                    }
 
-                    <ColourPicker title={'MOUNT COLOUR'}/>
+                    {currentTool === 'mountColour' &&
+                        <ColourPicker title={'MOUNT COLOUR'}/>
+                    }
 
-                </div>
+                        </div>
 
-                <QuickArtwork height={height}
-                              width={width}
-                              artworkData={unsavedArtworkData}
-                              isFixed={true}
-                              masterCanvas={masterCanvas}
-                />
+                        <QuickArtwork height={height}
+                        width={width}
+                        artworkData={unsavedArtworkData}
+                        isFixed={true}
+                        masterCanvas={masterCanvas}
+                        />
 
-                <div className={`quickFrame--controls--holder`}>
-                    <div className={'quickFrame--controls'}>
+                        <div className={`quickFrame--controls--holder`}>
+                        <div className={'quickFrame--controls'}>
                         <h3>{'FRAMING'}</h3>
                         <h4>{'< back'}</h4>
 
-                        <ControlPanelButt icon={faSlidersHSquare} label={'FAME & MOUNT SIZE'}/>
-                        <ControlPanelButt icon={faPenSquareReg} label={'FAME COLOUR'}/>
-                        <ControlPanelButt icon={faPenSquare} label={'MOUNT COLOUR'}/>
+                        <ControlPanelButt onClick={this.onFrameSizeSelected}
+                        icon={faSlidersHSquare}
+                        label={'FAME & MOUNT SIZE'}/>
 
+                        <ControlPanelButt onClick={this.onFrameColourSelected}
+                        icon={faPenSquareReg}
+                        label={'FAME COLOUR'}/>
+
+                        <ControlPanelButt onClick={this.onMountColourSelected}
+                        icon={faPenSquare}
+                        label={'MOUNT COLOUR'}/>
 
                         <div className={'quickFrame--controls--butts'}>
-                            <FontAwesomeButt style={{backgroundColor: '#abc843'}} onClick={this.onDoneClick} icon={faCheck}/>
-                            <FontAwesomeButt style={{backgroundColor: '#ce373e'}} onClick={this.onCancelClick} icon={faTimes}/>
+                        <FontAwesomeButt style={{ backgroundColor: '#abc843' }} onClick={this.onDoneClick} icon={faCheck}/>
+                        <FontAwesomeButt style={{ backgroundColor: '#ce373e' }} onClick={this.onCancelClick} icon={faTimes}/>
                         </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-}
+                        </div>
+                        </div>
+                        </div>
+                        );
+                        }
+                    }
 
-export default QuickFrameEditor;
+                    export default QuickFrameEditor;
