@@ -96,7 +96,6 @@ class QuickArtworkMaker extends Component {
     }
 
     onFrameDone(frameData) {
-        console.log("frameData: ", frameData);
         this.setState({ frameData, currentTool: 'view' })
     }
 

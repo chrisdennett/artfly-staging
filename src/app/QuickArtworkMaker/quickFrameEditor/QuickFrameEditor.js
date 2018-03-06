@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import faSlidersHSquare from "@fortawesome/fontawesome-pro-solid/faSlidersHSquare";
 import faPenSquare from "@fortawesome/fontawesome-pro-solid/faPenSquare";
 import faPenSquareReg from "@fortawesome/fontawesome-pro-regular/faPenSquare"
-// import faCheck from "@fortawesome/fontawesome-pro-solid/faCheck";
+import faCheck from "@fortawesome/fontawesome-pro-solid/faCheck";
+import faTimes from "@fortawesome/fontawesome-pro-solid/faTimes";
 // styles
 import './quickFrame_styles.css';
 // comps
@@ -11,6 +12,7 @@ import Butt from "../../global/Butt/Butt";
 import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 import ColourPicker from "./colourPicker/ColourPicker";
 import Slider from "./slider/Slider";
+import FontAwesomeButt from "../../global/Butt/FontAwesomeButt";
 
 const defaultFrameThickness = 0.04;
 
@@ -79,27 +81,6 @@ class QuickFrameEditor extends Component {
 
                     <ColourPicker title={'MOUNT COLOUR'}/>
 
-                    {/*<div className="quickFrameEditor--sliderHolder">
-                        <div className={'quickFrameEditor--slider--label'}>FRAME: </div>
-                        <input type="range"
-                               className="quickFrameEditor--slider"
-                               min="10"
-                               max="100"
-                               value={frameThicknessPercentage}
-                               onChange={this.onFrameWidthChange}
-                               id="frameThicknessRange"/>
-                    </div>
-
-                    <div className="quickFrameEditor--sliderHolder">
-                        <div className={'quickFrameEditor--slider--label'}>MOUNT: </div>
-                        <input type="range"
-                               className="quickFrameEditor--slider"
-                               min="10"
-                               max="100"
-                               value={frameThicknessPercentage}
-                               onChange={this.onFrameWidthChange}
-                               id="frameThicknessRange"/>
-                    </div>*/}
                 </div>
 
                 <QuickArtwork height={height}
@@ -123,8 +104,8 @@ class QuickFrameEditor extends Component {
 
 
                         <div className={'quickFrame--controls--butts'}>
-                            <Butt fullWidth={true} label={'DONE'} green onClick={this.onDoneClick}/>
-                            <Butt fullWidth={true} label={'CANCEL'} red onClick={this.onCancelClick}/>
+                            <FontAwesomeButt style={{backgroundColor: '#abc843'}} onClick={this.onDoneClick} icon={faCheck}/>
+                            <FontAwesomeButt style={{backgroundColor: '#ce373e'}} onClick={this.onCancelClick} icon={faTimes}/>
                         </div>
                     </div>
                 </div>

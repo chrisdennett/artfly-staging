@@ -1,0 +1,16 @@
+.fontAwesomeButt{
+    cursor: pointer;
+    font-size: 1.5rem;
+    border-radius: 5px;
+    width: 45px;
+    height: 45px;
+    border: 3px solid rgba(0, 0, 0, 0.52);
+    margin: 15px auto 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fontAwesomeButt svg{
+    /*vertical-align: middle;*/
+}
