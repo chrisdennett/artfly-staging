@@ -1,43 +1,45 @@
-.quickTitles{
-
+.control--blob {
+    width: 50px;
+    height: 50px;
+    background-color: #ff6600;
+    cursor: pointer;
 }
 
-.quickTitles--controls--holder{
-    /*background-image: url("../../images/lined_paper.png");*/
-    padding: 20px;
+.quickFrameEditor--toolHolder {
     position: fixed;
-    left: 60px;
-    overflow-y: auto;
-
-}
-
-.quickTitles--controls--holder--partView{
-    top: 0;
     bottom: 0;
-    width: 40%;
-    background: url("../../images/square.png") #e9eaea;
-
-    /*background-color: #ffee82;*/
-    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.52);
-}
-
-.quickTitles--controls--holder--fullView{
-    top: 0;
-    bottom: 0;
+    left: 70px;
     right: 0;
-    /*background: none;*/
-    /*background: rgba(255,255,255,1);*/
+    padding: 0;
+    background-color: rgba(255, 102, 0, 0.7);
 }
 
-.quickTitles--controls{
+.quickFrame--controls--holder {
+    padding: 5px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    width: 70px;
+    right: 0;
+    overflow-y: auto;
+    background-color: #777;
+}
+
+.quickFrame--controls {
     display: flex;
     flex-direction: column;
 }
 
-.quickTitles--controls--butts{
-    display: flex;
+.quickFrame--controls h3, h4 {
+    margin: 0;
 }
 
-.quickTitles--controls--helpText{
+.quickFrame--controls--butts {
+    display: flex;
+    flex-direction: column;
+}
+
+.quickFrame--controls--helpText {
     margin-bottom: 20px;
 }

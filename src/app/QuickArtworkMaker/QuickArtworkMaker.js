@@ -37,7 +37,7 @@ class QuickArtworkMaker extends Component {
     // TEST ONLY
     componentDidMount() {
         this.sourceImg = TEST_SOURCE_IMG;
-        this.toolToShowAfterUpdate = 'share';
+        this.toolToShowAfterUpdate = 'frame';
         const description = "This work encapsulates the juxtaposition of disparate strands of pain and desire.  Reflecting on the strain between perfection and hopelessness, Chris draws us into the literal and metaphorical depths of the piece.";
         const titles = { title: 'Nauti by Nature', artist: 'Christophe Dennett', description, date: 'APRIL 2009' };
         this.setState({ titles });
@@ -112,6 +112,8 @@ class QuickArtworkMaker extends Component {
         const contentWidth = width - sidebarWidth;
         const disableEditing = !this.sourceImg;
 
+        const showSideControls = currentTool === 'view';
+
         let classesForMain = 'quickArtworkMaker--mainFixed';
 
         if (currentTool === 'share') {
@@ -121,11 +123,13 @@ class QuickArtworkMaker extends Component {
         return (
             <div className={'quickArtworkMaker'}>
 
+                {showSideControls &&
                 <div className={'quickArtworkMaker--sideBar'} style={{ width: sidebarWidth }}>
                     <QuickArtMakerToolBar onToolSelect={this.onToolSelect}
                                           disableEditing={disableEditing}
                                           currentTool={currentTool}/>
                 </div>
+                }
 
                 <div className={classesForMain}>
 

@@ -73,7 +73,7 @@ class QuickArtMakerToolBar extends Component {
                     disabled={disableEditing}
                     icon={faImage}
                     onClick={this.onFrameClick}
-                    label={'FRAME & MOUNT'}/>
+                    label={'FRAMING'}/>
 
                 <ControlPanelButt
                     isSelected={currentTool === 'view'}

@@ -140,9 +140,7 @@ class QuickShare extends Component {
     }
 
     onPresetWidthInputChange(e) {
-
         let proposedWidth = e.target.value;
-        console.log("proposedWidth: ", proposedWidth);
         const maxWidth = 3000;
 
         if (proposedWidth > maxWidth) {
@@ -153,9 +151,7 @@ class QuickShare extends Component {
     }
 
     onPresetHeightInputChange(e) {
-        // e.preventDefault();
         let proposedHeight = e.target.value;
-        console.log("proposedHeight: ", proposedHeight);
         const maxHeight = 3000;
 
         if (proposedHeight > maxHeight) {
