@@ -40,7 +40,6 @@ class ColourPicker extends Component {
     callUpdate() {
         if (this.props.onColourChange) {
             const { hue, saturation, lightness } = this.state;
-            // const selectedColour = `hsla(${hue}, ${saturation}%, ${lightness}%, 1`;
             this.props.onColourChange({ hue, saturation, lightness })
         }
     }
@@ -49,7 +48,6 @@ class ColourPicker extends Component {
         const { title } = this.props;
         const { hue, saturation, lightness } = this.state;
         const selectedColour = `hsla(${hue}, ${saturation}%, ${lightness}%, 1`;
-        // const hslStyle = { backgroundColor: selectedColour };
 
         return (
             <div>

@@ -37,8 +37,9 @@ class QuickFrameEditor extends Component {
     }
 
     componentWillMount() {
-        if (this.props.frameData) {
-            this.setState({ ...this.props.frameData });
+        const {artworkData} = this.props;
+        if (artworkData) {
+            this.setState({ ...artworkData.frameData });
         }
     }
 
