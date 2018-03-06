@@ -8,7 +8,6 @@ import faTimes from "@fortawesome/fontawesome-pro-solid/faTimes";
 import './quickFrame_styles.css';
 // comps
 import QuickArtwork from "../quickArtwork/QuickArtwork";
-import Butt from "../../global/Butt/Butt";
 import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 import ColourPicker from "./colourPicker/ColourPicker";
 import Slider from "./slider/Slider";
@@ -57,10 +56,11 @@ class QuickFrameEditor extends Component {
     }
 
     render() {
-        const { height, width, cropData, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.props;
+        const { height, width, artworkData, masterCanvas } = this.props;
         const { frameThicknessDecimal } = this.state;
         const frameThicknessPercentage = frameThicknessDecimal * 1000;
         const frameData = { frameThicknessDecimal };
+        const unsavedArtworkData = {...artworkData, frameData, titles:null};
 
         return (
             <div className={'quickFrameEditor'}>
@@ -85,12 +85,9 @@ class QuickFrameEditor extends Component {
 
                 <QuickArtwork height={height}
                               width={width}
-                              frameData={frameData}
+                              artworkData={unsavedArtworkData}
                               isFixed={true}
-                              cropData={cropData}
                               masterCanvas={masterCanvas}
-                              widthToHeightRatio={widthToHeightRatio}
-                              heightToWidthRatio={heightToWidthRatio}
                 />
 
                 <div className={`quickFrame--controls--holder`}>

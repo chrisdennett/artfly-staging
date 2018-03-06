@@ -45,7 +45,9 @@ class QuickArtwork extends Component {
     }
 
     setupCanvas(props) {
-        let { frameData, width, height, titles, cropData, rotation, masterCanvas, widthToHeightRatio, heightToWidthRatio } = props;
+        const { width, height, artworkData, masterCanvas } = props;
+
+        let {cropData, frameData, titles, widthToHeightRatio, heightToWidthRatio} = artworkData;
 
         // prevent errors by stopping if critical elements not available
         if (!this.canvas || width < 1 || height < 1 || !masterCanvas) {
@@ -116,7 +118,7 @@ class QuickArtwork extends Component {
         drawMount(ctx, mountX, mountY, mountWidth, mountHeight, mountThickness);
 
         // add artwork
-        drawArtworkImage(ctx, masterCanvas, this.canvas, imgX, imgY, imgWidth, imgHeight, cropData, rotation);
+        drawArtworkImage(ctx, masterCanvas, this.canvas, imgX, imgY, imgWidth, imgHeight, cropData);
 
         // add skirting board
         drawSkirtingBoard(ctx, 0, skirtingY, width, skirtingHeight);
@@ -271,7 +273,7 @@ const addTitles = (ctx, width, maxHeight, x, y, titles) => {
     ctx.fillText(date, textX, dateY);
 };
 
-const drawArtworkImage = (ctx, sourceImg, outputCanvas, imgX, imgY, imgWidth, imgHeight, cropData, rotation) => {
+const drawArtworkImage = (ctx, sourceImg, outputCanvas, imgX, imgY, imgWidth, imgHeight, cropData) => {
 
     const srcW = sourceImg.width;
     const srcH = sourceImg.height;

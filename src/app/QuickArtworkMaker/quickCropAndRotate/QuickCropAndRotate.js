@@ -32,6 +32,7 @@ class QuickCropAndRotate extends Component {
 
     componentWillMount() {
         // set crop data and rotation to default or values set be parents
+        const {artworkData} = this.props;
         const {
                   cropData    = {
                       leftPercent: 0,
@@ -40,7 +41,7 @@ class QuickCropAndRotate extends Component {
                       bottomPercent: 1
                   },
                   orientation = 1
-              } = this.props;
+              } = artworkData;
 
 
         this.setState({ cropData, orientation })

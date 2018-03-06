@@ -28,8 +28,10 @@ class QuickTitlesEditor extends Component {
     }
 
     componentWillMount() {
-        if (this.props.initialTitles) {
-            this.setState({ ...this.props.initialTitles });
+        const {artworkData} = this.props;
+
+        if (artworkData.titles) {
+            this.setState({ ...artworkData.titles });
         }
         else{
             // add some default values
@@ -80,10 +82,11 @@ class QuickTitlesEditor extends Component {
     }
 
     render() {
-        const { height, width, cropData, frameData, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.props;
+        const { height, width, artworkData, masterCanvas } = this.props;
         const { title, artist, description, date, maxTitleLength, maxArtistLength, maxDescriptionLength } = this.state;
         const titlesPresent = title.length > 0 || artist.length > 0 || description.length > 0;
         const titles = titlesPresent ? { title, artist, description, date } : null;
+        const modifiedArtworkData = {...artworkData, titles};
 
         const showArtwork = width > 800;
         let controlsClass = 'quickTitles--controls--holder--partView';
@@ -98,12 +101,8 @@ class QuickTitlesEditor extends Component {
                 <QuickArtwork height={height}
                               width={width}
                               isFixed={true}
-                              titles={titles}
-                              cropData={cropData}
-                              frameData={frameData}
+                              artworkData={modifiedArtworkData}
                               masterCanvas={masterCanvas}
-                              widthToHeightRatio={widthToHeightRatio}
-                              heightToWidthRatio={heightToWidthRatio}
                 />
                 }
 

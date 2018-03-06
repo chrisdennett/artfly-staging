@@ -11,9 +11,9 @@ import QuickCropAndRotate from "./quickCropAndRotate/QuickCropAndRotate";
 import QuickArtMakerToolBar from "./quickArtMakerToolBar/QuickArtMakerToolBar";
 import QuickShare from "./quickShare/QuickShare";
 import QuickTitlesEditor from "./quickTitlesEditor/QuickTitlesEditor";
+import QuickFrameEditor from "./quickFrameEditor/QuickFrameEditor";
 // DEV ONLY
 import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
-import QuickFrameEditor from "./quickFrameEditor/QuickFrameEditor";
 
 class QuickArtworkMaker extends Component {
 
@@ -31,16 +31,22 @@ class QuickArtworkMaker extends Component {
         this.onFrameCancel = this.onFrameCancel.bind(this);
 
         const cropData = { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 };
-        this.state = { currentTool: 'upload', cropData, orientation: 1 };
+        const artworkData = { cropData, orientation: 1 };
+        this.state = { currentTool: 'upload', artworkData };
     }
 
     // TEST ONLY
     componentDidMount() {
         this.sourceImg = TEST_SOURCE_IMG;
-        this.toolToShowAfterUpdate = 'frame';
+        this.toolToShowAfterUpdate = 'titles';
         const description = "This work encapsulates the juxtaposition of disparate strands of pain and desire.  Reflecting on the strain between perfection and hopelessness, Chris draws us into the literal and metaphorical depths of the piece.";
         const titles = { title: 'Nauti by Nature', artist: 'Christophe Dennett', description, date: 'APRIL 2009' };
-        this.setState({ titles });
+
+        this.setState((state) => {
+            return {
+                artworkData: { ...state.artworkData, titles }
+            }
+        });
         this.updateMasterCanvas(this.sourceImg, 1);
     }
 
@@ -66,12 +72,13 @@ class QuickArtworkMaker extends Component {
         ImageHelper.drawImageToCanvas({ sourceImg, outputCanvas: masterCanvas, orientation },
             (widthToHeightRatio, heightToWidthRatio) => {
 
-                this.setState({
-                    sourceImg,
-                    masterCanvas,
-                    widthToHeightRatio,
-                    heightToWidthRatio,
-                    currentTool: this.toolToShowAfterUpdate
+                this.setState((state) => {
+                    return {
+                        sourceImg,
+                        masterCanvas,
+                        artworkData: { ...state.artworkData, widthToHeightRatio, heightToWidthRatio },
+                        currentTool: this.toolToShowAfterUpdate
+                    }
                 });
             })
     }
@@ -79,7 +86,12 @@ class QuickArtworkMaker extends Component {
     onCropAndRotateDone(orientation, cropData) {
         ImageHelper.drawImageToCanvas({ sourceImg: this.sourceImg, outputCanvas: this.state.masterCanvas, orientation },
             () => {
-                this.setState({ orientation, cropData, currentTool: 'titles' });
+                this.setState((state) => {
+                    return {
+                        artworkData: { ...state.artworkData, orientation, cropData },
+                        currentTool: 'titles'
+                    }
+                });
             });
     }
 
@@ -88,7 +100,12 @@ class QuickArtworkMaker extends Component {
     }
 
     onTitlesEditorDone(titles) {
-        this.setState({ titles, currentTool: 'view' })
+        this.setState((state) => {
+            return {
+                artworkData: { ...state.artworkData, titles },
+                currentTool: 'view'
+            }
+        })
     }
 
     onTitlesEditorCancel() {
@@ -96,7 +113,12 @@ class QuickArtworkMaker extends Component {
     }
 
     onFrameDone(frameData) {
-        this.setState({ frameData, currentTool: 'view' })
+        this.setState((state) => {
+            return {
+                artworkData: { ...state.artworkData, frameData },
+                currentTool: 'view'
+            }
+        })
     }
 
     onFrameCancel() {
@@ -105,7 +127,7 @@ class QuickArtworkMaker extends Component {
 
 
     render() {
-        const { currentTool, titles, frameData, orientation, cropData, sourceImg, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.state;
+        const { currentTool, artworkData, sourceImg, masterCanvas } = this.state;
         const { height, width } = this.props;
         const sidebarWidth = 60;
         const contentWidth = width - sidebarWidth;
@@ -135,22 +157,15 @@ class QuickArtworkMaker extends Component {
                     {currentTool === 'view' &&
                     <QuickArtwork height={height}
                                   width={contentWidth}
-                                  titles={titles}
-                                  frameData={frameData}
                                   isFixed={true}
-                                  cropData={cropData}
+                                  artworkData={artworkData}
                                   masterCanvas={masterCanvas}
-                                  widthToHeightRatio={widthToHeightRatio}
-                                  heightToWidthRatio={heightToWidthRatio}
                     />
                     }
 
                     {currentTool === 'crop' &&
-                    <QuickCropAndRotate cropData={cropData}
-                                        orientation={orientation}
-                                        sourceImg={sourceImg}
-                                        widthToHeightRatio={widthToHeightRatio}
-                                        heightToWidthRatio={heightToWidthRatio}
+                    <QuickCropAndRotate sourceImg={sourceImg}
+                                        artworkData={artworkData}
                                         onCancel={this.onCropAndRotateCancel}
                                         onDone={this.onCropAndRotateDone}
                                         width={contentWidth}
@@ -160,37 +175,25 @@ class QuickArtworkMaker extends Component {
                     {currentTool === 'titles' &&
                     <QuickTitlesEditor height={height}
                                        width={contentWidth}
-                                       initialTitles={titles}
-                                       cropData={cropData}
-                                       frameData={frameData}
+                                       artworkData={artworkData}
                                        masterCanvas={masterCanvas}
                                        onDone={this.onTitlesEditorDone}
                                        onCancel={this.onTitlesEditorCancel}
-                                       widthToHeightRatio={widthToHeightRatio}
-                                       heightToWidthRatio={heightToWidthRatio}/>
+                    />
                     }
 
                     {currentTool === 'frame' &&
                     <QuickFrameEditor height={height}
                                       width={contentWidth}
-                                      titles={titles}
-                                      frameData={frameData}
-                                      cropData={cropData}
+                                      artworkData={artworkData}
                                       masterCanvas={masterCanvas}
                                       onDone={this.onFrameDone}
-                                      onCancel={this.onFrameCancel}
-                                      widthToHeightRatio={widthToHeightRatio}
-                                      heightToWidthRatio={heightToWidthRatio}/>
+                                      onCancel={this.onFrameCancel}/>
                     }
 
-
                     {currentTool === 'share' &&
-                    <QuickShare cropData={cropData}
-                                titles={titles}
-                                frameData={frameData}
-                                masterCanvas={masterCanvas}
-                                widthToHeightRatio={widthToHeightRatio}
-                                heightToWidthRatio={heightToWidthRatio}
+                    <QuickShare masterCanvas={masterCanvas}
+                                artworkData={artworkData}
                                 width={contentWidth}
                                 height={height}/>
                     }

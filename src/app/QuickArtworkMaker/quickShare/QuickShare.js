@@ -163,7 +163,7 @@ class QuickShare extends Component {
 
     render() {
         const { presetWidth, presetHeight, presetName } = this.state;
-        const { titles, frameData, cropData, masterCanvas, widthToHeightRatio, heightToWidthRatio } = this.props;
+        const { artworkData, masterCanvas} = this.props;
 
         return (
 
@@ -216,13 +216,10 @@ class QuickShare extends Component {
                     <div className={'quickShare--quickArtworkHolder'}>
                         <QuickArtwork width={presetWidth}
                                       height={presetHeight}
-                                      titles={titles}
-                                      frameData={frameData}
+                                      artworkData={artworkData}
                                       onCanvasSetUp={this.onCanvasSetUp}
-                                      cropData={cropData}
                                       masterCanvas={masterCanvas}
-                                      widthToHeightRatio={widthToHeightRatio}
-                                      heightToWidthRatio={heightToWidthRatio}/>
+                        />
                     </div>
                 </div>
 
