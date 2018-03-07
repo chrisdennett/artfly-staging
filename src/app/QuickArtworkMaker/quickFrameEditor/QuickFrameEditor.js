@@ -1,16 +1,15 @@
 import React, { Component } from "react";
-import faPenSquare from "@fortawesome/fontawesome-pro-solid/faPenSquare";
-import faPenSquareReg from "@fortawesome/fontawesome-pro-regular/faPenSquare"
-import faCheck from "@fortawesome/fontawesome-pro-solid/faCheck";
-import faTimes from "@fortawesome/fontawesome-pro-solid/faTimes";
+import faThReg from "@fortawesome/fontawesome-pro-regular/faTh";
+import faSquareReg from "@fortawesome/fontawesome-pro-regular/faSquare";
+import faSquare from "@fortawesome/fontawesome-pro-solid/faSquare";
+import faCheckSquare from "@fortawesome/fontawesome-pro-solid/faCheckSquare";
 // styles
 import './quickFrame_styles.css';
 // comps
 import QuickArtwork from "../quickArtwork/QuickArtwork";
 import ControlPanelButt from "../../global/Butt/ControlPanelButt";
-import FontAwesomeButt from "../../global/Butt/FontAwesomeButt";
 import ColourAndSizeControl from "./colourAndSizeControl/ColourAndSizeControl";
-import Butt from "../../global/Butt/Butt";
+import PresetsControl from "./colourAndSizeControl/PresetsControl";
 
 const defaultFrameThickness = 0.04;
 const defaultMountThickness = 0.06;
@@ -34,6 +33,7 @@ class QuickFrameEditor extends Component {
         this.onClearClick = this.onClearClick.bind(this);
         this.onCancelClick = this.onCancelClick.bind(this);
 
+        this.onPresetsSelected = this.onPresetsSelected.bind(this);
         this.onFrameEditSelected = this.onFrameEditSelected.bind(this);
         this.onMountEditSelected = this.onMountEditSelected.bind(this);
 
@@ -52,6 +52,10 @@ class QuickFrameEditor extends Component {
     }
 
     // Tool selector events
+    onPresetsSelected() {
+        this.setState({ currentTool: 'presets' });
+    }
+
     onFrameEditSelected() {
         this.setState({ currentTool: 'frame' });
     }
@@ -105,6 +109,15 @@ class QuickFrameEditor extends Component {
 
                 <div className={'quickFrameEditor--toolHolder'}>
                     <div className={'quickFrameEditor--toolHolder--controls'}>
+
+                        {currentTool === 'presets' &&
+                        <PresetsControl frameSize={frameThicknessDecimal}
+                                        mountSize={mountThicknessDecimal}
+                                        onFrameSizeChange={this.onFrameThicknessChange}
+                                        onMountSizeChange={this.onMountThicknessChange}
+                        />
+                        }
+
                         {currentTool === 'frame' &&
                         <ColourAndSizeControl title={'Frame'}
                                               id={'frame'}
@@ -127,26 +140,39 @@ class QuickFrameEditor extends Component {
                     </div>
 
                     <div className={'quickFrameEditor--toolHolder--selectors'}>
-                        <div className={'quickFrameEditor--toolHolder--selectors--options'}>
+                        {/*<div className={'quickFrameEditor--toolHolder--selectors--options'}>*/}
 
-                            <ControlPanelButt onClick={this.onFrameEditSelected}
-                                              isSelected={currentTool === 'frame'}
-                                              icon={faPenSquareReg}
-                                              label={'FAME'}/>
-                            <ControlPanelButt onClick={this.onMountEditSelected}
-                                              isSelected={currentTool === 'mount'}
-                                              icon={faPenSquare}
-                                              label={'MOUNT'}/>
-                        </div>
-                        {/* <FontAwesomeButt style={{ backgroundColor: '#abc843' }} onClick={this.onDoneClick}
-                                         icon={faCheck}/>
-                        <FontAwesomeButt style={{ backgroundColor: '#ce373e' }} onClick={this.onCancelClick}
-                                         icon={faTimes}/>*/}
+                        <ControlPanelButt onClick={this.onPresetsSelected}
+                                          isSelected={currentTool === 'presets'}
+                                          icon={faThReg}
+                                          style={{ margin: 0 }}
+                                          label={'PRESETS'}/>
+
+                        <ControlPanelButt onClick={this.onFrameEditSelected}
+                                          isSelected={currentTool === 'frame'}
+                                          icon={faSquareReg}
+                                          style={{ margin: 0 }}
+                                          label={'FRAME'}/>
+
+                        <ControlPanelButt onClick={this.onMountEditSelected}
+                                          isSelected={currentTool === 'mount'}
+                                          icon={faSquare}
+                                          style={{ margin: 0 }}
+                                          label={'MOUNT'}/>
 
                         <div className={'quickFrameEditor--toolHolder--selectors--globalButts'}>
-                            <Butt fullWidth={true} label={'DONE'} green onClick={this.onDoneClick}/>
-                            <Butt fullWidth={true} label={'CANCEL'} red onClick={this.onCancelClick}/>
+
+                            <ControlPanelButt onClick={this.onDoneClick}
+                                              icon={faCheckSquare}
+                                              style={{ margin: 0, color: '#8ca630' }}
+                                              label={'SAVE'}/>
+
+                            <ControlPanelButt onClick={this.onCancelClick}
+                                              icon={faCheckSquare}
+                                              style={{ margin: 0, color: '#ce373e' }}
+                                              label={'CANCEL'}/>
                         </div>
+
                     </div>
 
 
