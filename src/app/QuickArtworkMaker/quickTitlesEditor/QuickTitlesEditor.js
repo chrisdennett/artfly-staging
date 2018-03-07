@@ -30,23 +30,8 @@ class QuickTitlesEditor extends Component {
     componentWillMount() {
         const {artworkData} = this.props;
 
-        if (artworkData.titles) {
-            this.setState({ ...artworkData.titles });
-        }
-        else{
-            // add some default values
-            const title = 'Utopia';
-            const artist = "Anon";
-            const description = "A seminal work of pivotal importance to humanity. A true masterpiece.";
-            const now = new Date();
-            const monthNames = ["January", "February", "March", "April", "May", "June",
-                "July", "August", "September", "October", "November", "December"
-            ];
-            const month = monthNames[now.getMonth()].toUpperCase();
-            const year = now.getFullYear();
-
-            const date = month + " " + year;
-            this.setState({title, artist, description, date});
+        if (artworkData.titlesData) {
+            this.setState({ ...artworkData.titlesData });
         }
     }
 
@@ -69,8 +54,8 @@ class QuickTitlesEditor extends Component {
     onDoneClick() {
         const { title, artist, description, date } = this.state;
         const titlesPresent = title.length > 0 || artist.length > 0 || description.length > 0;
-        const titles = titlesPresent ? { title, artist, description, date } : null;
-        this.props.onDone(titles);
+        const titlesData = titlesPresent ? { title, artist, description, date } : null;
+        this.props.onDone(titlesData);
     }
 
     onClearClick() {
@@ -85,8 +70,8 @@ class QuickTitlesEditor extends Component {
         const { height, width, artworkData, masterCanvas } = this.props;
         const { title, artist, description, date, maxTitleLength, maxArtistLength, maxDescriptionLength } = this.state;
         const titlesPresent = title.length > 0 || artist.length > 0 || description.length > 0;
-        const titles = titlesPresent ? { title, artist, description, date } : null;
-        const modifiedArtworkData = {...artworkData, titles};
+        const titlesData = titlesPresent ? { title, artist, description, date } : null;
+        const modifiedArtworkData = {...artworkData, titlesData};
 
         const showArtwork = width > 800;
         let controlsClass = 'quickTitles--controls--holder--partView';

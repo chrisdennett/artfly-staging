@@ -1,19 +1,21 @@
 .sliderHolder {
     display: flex;
     align-items: center;
-    margin: 20px 10px;
+    margin: 15px 10px 15px 0;
 }
 
 .slider--label{
     width: 150px;
+    background: white;
+    padding: 2px 10px;
 }
 
 .slider {
     -webkit-appearance: none;
     width: 100%;
-    height: 15px;
+    height: 5px;
     border-radius: 5px;
-    background: #d3d3d3;
+    background: rgba(0, 0, 0, 0.54);
     outline: none;
     opacity: 0.7;
     -webkit-transition: .2s;
@@ -26,14 +28,17 @@
     width: 35px;
     height: 35px;
     border-radius: 50%;
-    background: #4CAF50;
     cursor: pointer;
+    background: rgba(255, 255, 255, 0.58);
+    border: 2px solid rgba(120, 0, 255, 0.68);
 }
 
 .slider::-moz-range-thumb {
+    appearance: none;
     width: 35px;
     height: 35px;
     border-radius: 50%;
-    background: #4CAF50;
     cursor: pointer;
+    background: rgba(255, 255, 255, 0.58);
+    border: 2px solid rgba(120, 0, 255, 0.9);
 }

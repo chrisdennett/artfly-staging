@@ -15,6 +15,38 @@ import QuickFrameEditor from "./quickFrameEditor/QuickFrameEditor";
 // DEV ONLY
 import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
 
+const defaultCropData = { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 };
+const defaultFrameThickness = 0.04;
+const defaultMountThickness = 0.06;
+const defaultFrameColour = { hue: 96, saturation: 0, lightness: 29 };
+const defaultMountColour = { hue: 96, saturation: 0, lightness: 100 };
+const defaultFrameData = {
+    frameThicknessDecimal:defaultFrameThickness,
+    mountThicknessDecimal:defaultMountThickness,
+    frameColour:defaultFrameColour,
+    mountColour:defaultMountColour
+};
+const title = 'Utopia';
+const artist = "Anon";
+const description = "A seminal work of pivotal importance to humanity. A true masterpiece.";
+const now = new Date();
+const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+];
+const month = monthNames[now.getMonth()].toUpperCase();
+const year = now.getFullYear();
+
+const date = month + " " + year;
+const defaultTitlesData = {title, artist, description, date}
+
+
+const defaultArtworkData = {
+    cropData:defaultCropData,
+    frameData:defaultFrameData,
+    orientation: 1,
+    titlesData: defaultTitlesData
+};
+
 class QuickArtworkMaker extends Component {
 
     constructor(props) {
@@ -30,23 +62,13 @@ class QuickArtworkMaker extends Component {
         this.onFrameDone = this.onFrameDone.bind(this);
         this.onFrameCancel = this.onFrameCancel.bind(this);
 
-        const cropData = { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 };
-        const artworkData = { cropData, orientation: 1 };
-        this.state = { currentTool: 'upload', artworkData };
+        this.state = { currentTool: 'upload', artworkData:defaultArtworkData };
     }
 
     // TEST ONLY
     componentDidMount() {
         this.sourceImg = TEST_SOURCE_IMG;
         this.toolToShowAfterUpdate = 'frame';
-        const description = "This work encapsulates the juxtaposition of disparate strands of pain and desire.  Reflecting on the strain between perfection and hopelessness, Chris draws us into the literal and metaphorical depths of the piece.";
-        const titles = { title: 'Nauti by Nature', artist: 'Christophe Dennett', description, date: 'APRIL 2009' };
-
-        this.setState((state) => {
-            return {
-                artworkData: { ...state.artworkData, titles }
-            }
-        });
         this.updateMasterCanvas(this.sourceImg, 1);
     }
 
@@ -99,10 +121,10 @@ class QuickArtworkMaker extends Component {
         this.setState({ currentTool: 'view' })
     }
 
-    onTitlesEditorDone(titles) {
+    onTitlesEditorDone(titlesData) {
         this.setState((state) => {
             return {
-                artworkData: { ...state.artworkData, titles },
+                artworkData: { ...state.artworkData, titlesData },
                 currentTool: 'view'
             }
         })
@@ -132,7 +154,7 @@ class QuickArtworkMaker extends Component {
         const sidebarWidth = 60;
         const disableEditing = !this.sourceImg;
 
-        const showSideControls = currentTool !== 'frame';
+        const showSideControls = true; //currentTool !== 'frame';
         const contentWidth = showSideControls ? width - sidebarWidth : width;
 
         let classesForMain = 'quickArtworkMaker--mainFixed';

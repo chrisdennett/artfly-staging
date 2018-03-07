@@ -47,7 +47,7 @@ class QuickArtwork extends Component {
     setupCanvas(props) {
         const { width, height, artworkData, masterCanvas } = props;
 
-        let {cropData, frameData, titles, widthToHeightRatio, heightToWidthRatio} = artworkData;
+        let {cropData, frameData, titlesData, widthToHeightRatio, heightToWidthRatio} = artworkData;
 
         // prevent errors by stopping if critical elements not available
         if (!this.canvas || width < 1 || height < 1 || !masterCanvas) {
@@ -86,7 +86,7 @@ class QuickArtwork extends Component {
         const textWidth = width * textWidthPercent < maxTextWidth ? width * textWidthPercent: maxTextWidth;
 
         const paddingWidth = width * textPaddingPercent;
-        const pictureWidth = titles ? width - (textWidth + paddingWidth) : width;
+        const pictureWidth = titlesData ? width - (textWidth + paddingWidth) : width;
 
         const artworkSizes = calculateCanvasArtworkSizes({frameThicknessDecimal, mountThicknessDecimal, width:pictureWidth, height, widthToHeightRatio, heightToWidthRatio});
 
@@ -123,11 +123,11 @@ class QuickArtwork extends Component {
         // add skirting board
         drawSkirtingBoard(ctx, 0, skirtingY, width, skirtingHeight);
 
-        // add titles text
+        // add titlesData text
         // FIX BUG
-        if (titles) {
+        if (titlesData) {
             const textX = frameX + frameWidth;
-            addTitles(ctx, textWidth, frameHeight, textX, frameY, titles);
+            addTitles(ctx, textWidth, frameHeight, textX, frameY, titlesData);
         }
 
         // add people
@@ -185,8 +185,8 @@ const addWrappedText = (ctx, lines, x, startY, lineHeight) => {
     }
 };
 
-const addTitles = (ctx, width, maxHeight, x, y, titles) => {
-    const { title, artist, description, date } = titles;
+const addTitles = (ctx, width, maxHeight, x, y, titlesData) => {
+    const { title, artist, description, date } = titlesData;
 
     const titlePercent = 0.15;
     const artistPercent = 0.1;
@@ -379,7 +379,7 @@ const drawMount = (ctx, startX, startY, width, height, thickness, mountColour) =
     ctx.fillRect(startX, startY, width, height);
 
     // draw mount edges
-    const edgeThickness = 2;
+    const edgeThickness = 3;
 
     const innerTop = startY + thickness;
     const innerBottom = startY + height - thickness;
@@ -399,7 +399,7 @@ const drawMount = (ctx, startX, startY, width, height, thickness, mountColour) =
 
     // right edge
     // ctx.fillStyle = '#cccccc';
-    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness-20}%, 1)`;
+    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness-12}%, 1)`;
     drawPolygon(ctx, outerRight, outerTop, innerRight, innerTop, innerRight, innerBottom, outerRight, outerBottom);
     ctx.fill();
 
@@ -411,7 +411,7 @@ const drawMount = (ctx, startX, startY, width, height, thickness, mountColour) =
 
     // left edge
     // ctx.fillStyle = '#cccccc';
-    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness-20}%, 1)`;
+    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness-12}%, 1)`;
     drawPolygon(ctx, outerLeft, outerTop, innerLeft, innerTop, innerLeft, innerBottom, outerLeft, outerBottom);
     ctx.fill();
 };

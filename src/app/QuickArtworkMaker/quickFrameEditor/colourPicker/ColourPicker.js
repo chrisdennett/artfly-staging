@@ -35,20 +35,20 @@ class ColourPicker extends Component {
 
         return (
             <div>
-                <Slider label={'HUE'}
+                <Slider label={'colour'}
                         id={`${id}-hue`}
                         min={0} max={360}
                         value={hue}
                         onChange={this.onHueRangeChange}/>
 
-                <Slider label={'SATURATION'}
+                <Slider label={'vibrancy'}
                         id={`${id}-saturation`}
                         min={0} max={100}
                         value={saturation}
                         onChange={this.onSaturationRangeChange}/>
 
-                <Slider label={'LIGHTNESS'}
-                        id={`${id}-lightness`}
+                <Slider label={'brightness'}
+                        id={`${id}-brightness`}
                         min={0} max={100}
                         value={lightness}
                         onChange={this.onLightnessRangeChange}/>

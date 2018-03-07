@@ -10,6 +10,7 @@ import QuickArtwork from "../quickArtwork/QuickArtwork";
 import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 import FontAwesomeButt from "../../global/Butt/FontAwesomeButt";
 import ColourAndSizeControl from "./colourAndSizeControl/ColourAndSizeControl";
+import Butt from "../../global/Butt/Butt";
 
 const defaultFrameThickness = 0.04;
 const defaultMountThickness = 0.06;
@@ -54,6 +55,7 @@ class QuickFrameEditor extends Component {
     onFrameEditSelected() {
         this.setState({ currentTool: 'frame' });
     }
+
     onMountEditSelected() {
         this.setState({ currentTool: 'mount' });
     }
@@ -62,12 +64,15 @@ class QuickFrameEditor extends Component {
     onFrameColourChange(frameColour) {
         this.setState({ frameColour })
     }
+
     onMountColourChange(mountColour) {
         this.setState({ mountColour })
     }
+
     onFrameThicknessChange(e) {
         this.setState({ frameThicknessDecimal: e.target.value });
     }
+
     onMountThicknessChange(e) {
         this.setState({ mountThicknessDecimal: e.target.value });
     }
@@ -79,9 +84,11 @@ class QuickFrameEditor extends Component {
 
         this.props.onDone(frameData);
     }
+
     onClearClick() {
         this.setState({ frameThicknessDecimal: defaultFrameThickness });
     }
+
     onCancelClick() {
         this.props.onCancel();
     }
@@ -91,32 +98,57 @@ class QuickFrameEditor extends Component {
         const { currentTool, frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour } = this.state;
 
         const frameData = { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour };
-        const unsavedArtworkData = { ...artworkData, frameData, titles: null };
+        const unsavedArtworkData = { ...artworkData, frameData, titlesData: null };
 
         return (
             <div className={'quickFrameEditor'}>
 
                 <div className={'quickFrameEditor--toolHolder'}>
+                    <div className={'quickFrameEditor--toolHolder--controls'}>
+                        {currentTool === 'frame' &&
+                        <ColourAndSizeControl title={'Frame'}
+                                              id={'frame'}
+                                              size={frameThicknessDecimal}
+                                              colour={frameColour}
+                                              onSizeChange={this.onFrameThicknessChange}
+                                              onColourChange={this.onFrameColourChange}
+                        />
+                        }
 
-                    {currentTool === 'frame' &&
-                    <ColourAndSizeControl title={'Frame'}
-                                          id={'frame'}
-                                          size={frameThicknessDecimal}
-                                          colour={frameColour}
-                                          onSizeChange={this.onFrameThicknessChange}
-                                          onColourChange={this.onFrameColourChange}
-                    />
-                    }
+                        {currentTool === 'mount' &&
+                        <ColourAndSizeControl title={'Mount'}
+                                              id={'mount'}
+                                              size={mountThicknessDecimal}
+                                              colour={mountColour}
+                                              onSizeChange={this.onMountThicknessChange}
+                                              onColourChange={this.onMountColourChange}
+                        />
+                        }
+                    </div>
 
-                    {currentTool === 'mount' &&
-                    <ColourAndSizeControl title={'Mount'}
-                                          id={'mount'}
-                                          size={mountThicknessDecimal}
-                                          colour={mountColour}
-                                          onSizeChange={this.onMountThicknessChange}
-                                          onColourChange={this.onMountColourChange}
-                    />
-                    }
+                    <div className={'quickFrameEditor--toolHolder--selectors'}>
+                        <div className={'quickFrameEditor--toolHolder--selectors--options'}>
+
+                            <ControlPanelButt onClick={this.onFrameEditSelected}
+                                              isSelected={currentTool === 'frame'}
+                                              icon={faPenSquareReg}
+                                              label={'FAME'}/>
+                            <ControlPanelButt onClick={this.onMountEditSelected}
+                                              isSelected={currentTool === 'mount'}
+                                              icon={faPenSquare}
+                                              label={'MOUNT'}/>
+                        </div>
+                        {/* <FontAwesomeButt style={{ backgroundColor: '#abc843' }} onClick={this.onDoneClick}
+                                         icon={faCheck}/>
+                        <FontAwesomeButt style={{ backgroundColor: '#ce373e' }} onClick={this.onCancelClick}
+                                         icon={faTimes}/>*/}
+
+                        <div className={'quickFrameEditor--toolHolder--selectors--globalButts'}>
+                            <Butt fullWidth={true} label={'DONE'} green onClick={this.onDoneClick}/>
+                            <Butt fullWidth={true} label={'CANCEL'} red onClick={this.onCancelClick}/>
+                        </div>
+                    </div>
+
 
                 </div>
 
@@ -127,7 +159,7 @@ class QuickFrameEditor extends Component {
                               masterCanvas={masterCanvas}
                 />
 
-                <div className={`quickFrame--controls--holder`}>
+                {/*<div className={`quickFrame--controls--holder`}>
                     <div className={'quickFrame--controls'}>
 
                         <ControlPanelButt onClick={this.onFrameEditSelected}
@@ -147,7 +179,7 @@ class QuickFrameEditor extends Component {
                                              icon={faTimes}/>
                         </div>
                     </div>
-                </div>
+                </div>*/}
             </div>
         );
     }
