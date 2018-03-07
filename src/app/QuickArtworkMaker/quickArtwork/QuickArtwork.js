@@ -78,7 +78,7 @@ class QuickArtwork extends Component {
         }
 
         // use default if not set
-        const {frameThicknessDecimal, frameColour} = frameData;
+        const {frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour} = frameData;
 
         const textWidthPercent = 0.3;
         const textPaddingPercent = 0.03;
@@ -88,7 +88,7 @@ class QuickArtwork extends Component {
         const paddingWidth = width * textPaddingPercent;
         const pictureWidth = titles ? width - (textWidth + paddingWidth) : width;
 
-        const artworkSizes = calculateCanvasArtworkSizes({frameThicknessDecimal, width:pictureWidth, height, widthToHeightRatio, heightToWidthRatio});
+        const artworkSizes = calculateCanvasArtworkSizes({frameThicknessDecimal, mountThicknessDecimal, width:pictureWidth, height, widthToHeightRatio, heightToWidthRatio});
 
         let {
                 imgX, imgY, imgWidth, imgHeight,
@@ -115,7 +115,7 @@ class QuickArtwork extends Component {
 
         drawFrame(ctx, frameX, frameY, frameWidth, frameHeight, frameThickness, frameColour);
 
-        drawMount(ctx, mountX, mountY, mountWidth, mountHeight, mountThickness);
+        drawMount(ctx, mountX, mountY, mountWidth, mountHeight, mountThickness, mountColour);
 
         // add artwork
         drawArtworkImage(ctx, masterCanvas, this.canvas, imgX, imgY, imgWidth, imgHeight, cropData);
@@ -290,7 +290,6 @@ const drawArtworkImage = (ctx, sourceImg, outputCanvas, imgX, imgY, imgWidth, im
 
 const drawFrame = (ctx, startX, startY, width, height, thickness, frameColour) => {
 
-    console.log("frameColour: ", frameColour);
     const {hue, saturation, lightness} = frameColour;
 
     // if you don't draw a rectangle behind you get seams see:https://stackoverflow.com/questions/19319963/how-to-avoid-seams-between-filled-areas-in-canvas
@@ -337,7 +336,7 @@ const drawFrame = (ctx, startX, startY, width, height, thickness, frameColour) =
     ctx.fill();
 
 
-    // draw mount edges
+    // draw frame edges
     const edgeThickness = 3;
 
     const innerTop = startY + thickness;
@@ -371,11 +370,12 @@ const drawFrame = (ctx, startX, startY, width, height, thickness, frameColour) =
     ctx.fill();
 };
 
-const drawMount = (ctx, startX, startY, width, height, thickness) => {
+const drawMount = (ctx, startX, startY, width, height, thickness, mountColour) => {
+    const {hue, saturation, lightness} = mountColour;
 
     // draw basic mount rect
     ctx.beginPath();
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, 1)`;
     ctx.fillRect(startX, startY, width, height);
 
     // draw mount edges
@@ -392,22 +392,26 @@ const drawMount = (ctx, startX, startY, width, height, thickness) => {
     const outerRight = innerRight + edgeThickness;
 
     // top edge
-    ctx.fillStyle = '#f1f1f1';
+    // ctx.fillStyle = '#f1f1f1';
+    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness-6}%, 1)`;
     drawPolygon(ctx, outerLeft, outerTop, outerRight, outerTop, innerRight, innerTop, innerLeft, innerTop);
     ctx.fill();
 
     // right edge
-    ctx.fillStyle = '#cccccc';
+    // ctx.fillStyle = '#cccccc';
+    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness-20}%, 1)`;
     drawPolygon(ctx, outerRight, outerTop, innerRight, innerTop, innerRight, innerBottom, outerRight, outerBottom);
     ctx.fill();
 
     // bottom edge
     ctx.fillStyle = '#f1f1f1';
+    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness-6}%, 1)`;
     drawPolygon(ctx, innerLeft, innerBottom, innerRight, innerBottom, outerRight, outerBottom, outerLeft, outerBottom);
     ctx.fill();
 
     // left edge
-    ctx.fillStyle = '#cccccc';
+    // ctx.fillStyle = '#cccccc';
+    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness-20}%, 1)`;
     drawPolygon(ctx, outerLeft, outerTop, innerLeft, innerTop, innerLeft, innerBottom, outerLeft, outerBottom);
     ctx.fill();
 };
@@ -515,8 +519,8 @@ const drawFrameShadow = (ctx, x, y, width, height) => {
     };
 };*/
 
-const calculateCanvasArtworkSizes = ({frameThicknessDecimal = 0.04, width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 30, minPaddingSides = 20}) => {
-    const mountThicknessPercent = 0.06;
+const calculateCanvasArtworkSizes = ({frameThicknessDecimal = 0.04, mountThicknessDecimal = 0.06, width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 30, minPaddingSides = 20}) => {
+    // const mountThicknessPercent = 0.06;
     const spaceBelowPicturePercent = 0.15;
     const maxPercentageTakenUpBySkirting = 0.3;
     const maxSkirtingHeight = 34;
@@ -533,7 +537,7 @@ const calculateCanvasArtworkSizes = ({frameThicknessDecimal = 0.04, width, heigh
 
     // calculate to maximise width
     let frameThickness = Math.round(maxWidth * frameThicknessDecimal);
-    let mountThickness = Math.round(maxWidth * mountThicknessPercent);
+    let mountThickness = Math.round(maxWidth * mountThicknessDecimal);
     let totalFrameAndMountThickness = (frameThickness * 2) + (mountThickness * 2);
     let imgWidth = maxWidth - totalFrameAndMountThickness;
     let imgHeight = imgWidth * widthToHeightRatio;
@@ -542,7 +546,7 @@ const calculateCanvasArtworkSizes = ({frameThicknessDecimal = 0.04, width, heigh
     // if it doesn't fit the height, calculate to maximise height
     if (frameHeight > maxHeight) {
         frameThickness = Math.round(maxHeight * frameThicknessDecimal);
-        mountThickness = Math.round(maxHeight * mountThicknessPercent);
+        mountThickness = Math.round(maxHeight * mountThicknessDecimal);
         totalFrameAndMountThickness = (frameThickness * 2) + (mountThickness * 2);
         imgHeight = maxHeight - totalFrameAndMountThickness;
         imgWidth = imgHeight * heightToWidthRatio;

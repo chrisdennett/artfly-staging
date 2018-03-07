@@ -6,63 +6,49 @@ class ColourPicker extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            hue: 110,
-            saturation: 40,
-            lightness: 42
-        };
-
         this.onHueRangeChange = this.onHueRangeChange.bind(this);
         this.onSaturationRangeChange = this.onSaturationRangeChange.bind(this);
         this.onLightnessRangeChange = this.onLightnessRangeChange.bind(this);
-        this.callUpdate = this.callUpdate.bind(this);
-    }
-
-    componentWillMount() {
-        if (this.props.frameColour) {
-            const { hue, saturation, brightness } = this.props.frameColour;
-            this.setState({ hue, saturation, brightness });
-        }
     }
 
     onHueRangeChange(e) {
-        this.setState({ hue: e.target.value }, this.callUpdate);
+        const hue = e.target.value;
+        const {saturation, lightness} = this.props.colour;
+        this.props.onColourChange({hue, saturation, lightness});
     }
 
     onSaturationRangeChange(e) {
-        this.setState({ saturation: e.target.value }, this.callUpdate);
+        const saturation = e.target.value;
+        const {hue, lightness} = this.props.colour;
+        this.props.onColourChange({hue, saturation, lightness});
     }
 
     onLightnessRangeChange(e) {
-        this.setState({ lightness: e.target.value }, this.callUpdate);
-    }
-
-    callUpdate() {
-        if (this.props.onColourChange) {
-            const { hue, saturation, lightness } = this.state;
-            this.props.onColourChange({ hue, saturation, lightness })
-        }
+        const lightness = e.target.value;
+        const {hue, saturation} = this.props.colour;
+        this.props.onColourChange({hue, saturation, lightness});
     }
 
     render() {
-        const { title } = this.props;
-        const { hue, saturation, lightness } = this.state;
-        const selectedColour = `hsla(${hue}, ${saturation}%, ${lightness}%, 1`;
+        const {id, colour} = this.props;
+        const { hue, saturation, lightness, } = colour;
 
         return (
             <div>
-                <div>{title}: {selectedColour}</div>
                 <Slider label={'HUE'}
+                        id={`${id}-hue`}
                         min={0} max={360}
                         value={hue}
                         onChange={this.onHueRangeChange}/>
 
                 <Slider label={'SATURATION'}
+                        id={`${id}-saturation`}
                         min={0} max={100}
                         value={saturation}
                         onChange={this.onSaturationRangeChange}/>
 
                 <Slider label={'LIGHTNESS'}
+                        id={`${id}-lightness`}
                         min={0} max={100}
                         value={lightness}
                         onChange={this.onLightnessRangeChange}/>
