@@ -23,26 +23,12 @@ class QuickCropAndRotate extends Component {
         this.onCancelClick = this.onCancelClick.bind(this);
         this.drawCuttingBoardCanvas = this.drawCuttingBoardCanvas.bind(this);
 
-        this.state = {
-            canvas: null,
-            orientation: null,
-            cropData: null
-        };
     }
 
     componentWillMount() {
         // set crop data and rotation to default or values set be parents
         const {artworkData} = this.props;
-        const {
-                  cropData    = {
-                      leftPercent: 0,
-                      rightPercent: 1,
-                      topPercent: 0,
-                      bottomPercent: 1
-                  },
-                  orientation = 1
-              } = artworkData;
-
+        const {cropData, orientation } = artworkData;
 
         this.setState({ cropData, orientation })
     }
@@ -159,7 +145,6 @@ class QuickCropAndRotate extends Component {
                 </div>
 
                 <div className='quickCropAndRotate--cuttingBoardHolder'>
-
                     <QuickCuttingBoard
                         onCropUpdate={this.onCropUpdate}
                         onCanvasSetup={this.onCanvasSetup}

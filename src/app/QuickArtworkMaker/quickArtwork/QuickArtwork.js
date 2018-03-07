@@ -47,7 +47,11 @@ class QuickArtwork extends Component {
     setupCanvas(props) {
         const { width, height, artworkData, masterCanvas } = props;
 
-        let {cropData, frameData, titlesData, widthToHeightRatio, heightToWidthRatio} = artworkData;
+        let { cropData, frameData, titlesData, widthToHeightRatio, heightToWidthRatio } = artworkData;
+        // CROP DATA
+        const { leftPercent, rightPercent, topPercent, bottomPercent } = cropData;
+        // FRAME DATA
+        const { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour } = frameData;
 
         // prevent errors by stopping if critical elements not available
         if (!this.canvas || width < 1 || height < 1 || !masterCanvas) {
@@ -59,36 +63,30 @@ class QuickArtwork extends Component {
             return null;
         }
 
-        if (cropData) {
-            const { leftPercent, rightPercent, topPercent, bottomPercent } = cropData;
 
-            const srcWidth = masterCanvas.width;
-            const srcHeight = masterCanvas.height;
+        const srcWidth = masterCanvas.width;
+        const srcHeight = masterCanvas.height;
 
-            const cropWidthPercent = leftPercent + (1 - rightPercent);
-            const widthToCrop = srcWidth * cropWidthPercent;
-            const croppedWidth = srcWidth - widthToCrop;
+        const cropWidthPercent = leftPercent + (1 - rightPercent);
+        const widthToCrop = srcWidth * cropWidthPercent;
+        const croppedWidth = srcWidth - widthToCrop;
 
-            const cropHeightPercent = topPercent + (1 - bottomPercent);
-            const heightToCrop = srcHeight * cropHeightPercent;
-            const croppedHeight = srcHeight - heightToCrop;
+        const cropHeightPercent = topPercent + (1 - bottomPercent);
+        const heightToCrop = srcHeight * cropHeightPercent;
+        const croppedHeight = srcHeight - heightToCrop;
 
-            widthToHeightRatio = croppedHeight / croppedWidth;
-            heightToWidthRatio = croppedWidth / croppedHeight;
-        }
-
-        // use default if not set
-        const {frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour} = frameData;
+        widthToHeightRatio = croppedHeight / croppedWidth;
+        heightToWidthRatio = croppedWidth / croppedHeight;
 
         const textWidthPercent = 0.3;
         const textPaddingPercent = 0.03;
         const maxTextWidth = 400;
-        const textWidth = width * textWidthPercent < maxTextWidth ? width * textWidthPercent: maxTextWidth;
+        const textWidth = width * textWidthPercent < maxTextWidth ? width * textWidthPercent : maxTextWidth;
 
         const paddingWidth = width * textPaddingPercent;
         const pictureWidth = titlesData ? width - (textWidth + paddingWidth) : width;
 
-        const artworkSizes = calculateCanvasArtworkSizes({frameThicknessDecimal, mountThicknessDecimal, width:pictureWidth, height, widthToHeightRatio, heightToWidthRatio});
+        const artworkSizes = calculateCanvasArtworkSizes({ frameThicknessDecimal, mountThicknessDecimal, width: pictureWidth, height, widthToHeightRatio, heightToWidthRatio });
 
         let {
                 imgX, imgY, imgWidth, imgHeight,
@@ -136,9 +134,9 @@ class QuickArtwork extends Component {
         // add artfly.io bit to the bottom right;
         const branding = "ArtFly.io";
         ctx.font = `${20}px 'Stardos Stencil'`;
-        const brandingLength = ctx.measureText(branding).width+10;
+        const brandingLength = ctx.measureText(branding).width + 10;
         ctx.fillStyle = "rgba(0,0,0,0.3)";
-        ctx.fillText(branding, width-brandingLength, height - 30);
+        ctx.fillText(branding, width - brandingLength, height - 30);
     }
 
     render() {
@@ -219,13 +217,13 @@ const addTitles = (ctx, width, maxHeight, x, y, titlesData) => {
     ctx.font = `${titleFontSize}px 'Stardos Stencil'`;
     let titleWidth = ctx.measureText(title).width;
     let safetyCounter = 0;
-    while(titleWidth > width){
+    while (titleWidth > width) {
         titleFontSize -= 1;
         ctx.font = `${titleFontSize}px 'Stardos Stencil'`;
         titleWidth = ctx.measureText(title).width;
 
-        safetyCounter ++;
-        if(safetyCounter > 100) break;
+        safetyCounter++;
+        if (safetyCounter > 100) break;
     }
 
     ctx.fillText(title, textX, titleTextY);
@@ -235,25 +233,25 @@ const addTitles = (ctx, width, maxHeight, x, y, titlesData) => {
         ctx.font = `${artistFontTitleSize}px 'Stardos Stencil'`;
         let artistWidth = ctx.measureText(artist).width;
         safetyCounter = 0;
-        while(artistWidth > width){
+        while (artistWidth > width) {
             artistFontTitleSize -= 1;
             ctx.font = `${artistFontTitleSize}px 'Stardos Stencil'`;
             artistWidth = ctx.measureText(artist).width;
 
-            safetyCounter ++;
-            if(safetyCounter > 100) break;
+            safetyCounter++;
+            if (safetyCounter > 100) break;
         }
 
         ctx.fillStyle = 'rgba(255,250,3,0.55)';
         const polygonPadding = 0.3 * artistFontTitleSize;
         const polygonTop = artistTextY - polygonPadding;
-        const polygonBottom = artistTextY + artistFontTitleSize + (polygonPadding*1.5);
+        const polygonBottom = artistTextY + artistFontTitleSize + (polygonPadding * 1.5);
         const aSymmetricalJag = 0.4 * artistFontTitleSize;
         drawPolygon(ctx,
-            textX - 5,                          polygonTop,
-            textX + width - aSymmetricalJag,    polygonTop,
-            textX + width,                      polygonBottom,
-            textX - 5,                          polygonBottom
+            textX - 5, polygonTop,
+            textX + width - aSymmetricalJag, polygonTop,
+            textX + width, polygonBottom,
+            textX - 5, polygonBottom
         );
         ctx.fill();
         ctx.fillStyle = "rgba(0,0,0,0.7)";
@@ -290,7 +288,7 @@ const drawArtworkImage = (ctx, sourceImg, outputCanvas, imgX, imgY, imgWidth, im
 
 const drawFrame = (ctx, startX, startY, width, height, thickness, frameColour) => {
 
-    const {hue, saturation, lightness} = frameColour;
+    const { hue, saturation, lightness } = frameColour;
 
     // if you don't draw a rectangle behind you get seams see:https://stackoverflow.com/questions/19319963/how-to-avoid-seams-between-filled-areas-in-canvas
     // ctx.fillStyle = '#4c4c4c';
@@ -308,7 +306,7 @@ const drawFrame = (ctx, startX, startY, width, height, thickness, frameColour) =
 
     // right frame section
     // ctx.fillStyle = '#3b3b3b';
-    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness-5}%, 1)`;
+    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 5}%, 1)`;
     drawPolygon(ctx,
         startX + width - thickness, startY + thickness,
         startX + width, startY,
@@ -317,7 +315,7 @@ const drawFrame = (ctx, startX, startY, width, height, thickness, frameColour) =
     ctx.fill();
 
     // bottom frame section
-    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness-10}%, 1)`;
+    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 10}%, 1)`;
     drawPolygon(ctx,
         startX + thickness, startY + height - thickness,
         startX + width - thickness, startY + height - thickness,
@@ -327,7 +325,7 @@ const drawFrame = (ctx, startX, startY, width, height, thickness, frameColour) =
 
     // left frame section
     // ctx.fillStyle = '#3b3b3b';
-    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness-5}%, 1)`;
+    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 5}%, 1)`;
     drawPolygon(ctx,
         startX, startY,
         startX + thickness, startY + thickness,
@@ -371,7 +369,7 @@ const drawFrame = (ctx, startX, startY, width, height, thickness, frameColour) =
 };
 
 const drawMount = (ctx, startX, startY, width, height, thickness, mountColour) => {
-    const {hue, saturation, lightness} = mountColour;
+    const { hue, saturation, lightness } = mountColour;
 
     // draw basic mount rect
     ctx.beginPath();
@@ -393,25 +391,25 @@ const drawMount = (ctx, startX, startY, width, height, thickness, mountColour) =
 
     // top edge
     // ctx.fillStyle = '#f1f1f1';
-    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness-6}%, 1)`;
+    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 6}%, 1)`;
     drawPolygon(ctx, outerLeft, outerTop, outerRight, outerTop, innerRight, innerTop, innerLeft, innerTop);
     ctx.fill();
 
     // right edge
     // ctx.fillStyle = '#cccccc';
-    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness-12}%, 1)`;
+    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 12}%, 1)`;
     drawPolygon(ctx, outerRight, outerTop, innerRight, innerTop, innerRight, innerBottom, outerRight, outerBottom);
     ctx.fill();
 
     // bottom edge
     ctx.fillStyle = '#f1f1f1';
-    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness-6}%, 1)`;
+    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 6}%, 1)`;
     drawPolygon(ctx, innerLeft, innerBottom, innerRight, innerBottom, outerRight, outerBottom, outerLeft, outerBottom);
     ctx.fill();
 
     // left edge
     // ctx.fillStyle = '#cccccc';
-    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness-12}%, 1)`;
+    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 12}%, 1)`;
     drawPolygon(ctx, outerLeft, outerTop, innerLeft, innerTop, innerLeft, innerBottom, outerLeft, outerBottom);
     ctx.fill();
 };
@@ -519,7 +517,7 @@ const drawFrameShadow = (ctx, x, y, width, height) => {
     };
 };*/
 
-const calculateCanvasArtworkSizes = ({frameThicknessDecimal = 0.04, mountThicknessDecimal = 0.06, width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 30, minPaddingSides = 20}) => {
+const calculateCanvasArtworkSizes = ({ frameThicknessDecimal = 0.04, mountThicknessDecimal = 0.06, width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 30, minPaddingSides = 20 }) => {
     // const mountThicknessPercent = 0.06;
     const spaceBelowPicturePercent = 0.15;
     const maxPercentageTakenUpBySkirting = 0.3;
