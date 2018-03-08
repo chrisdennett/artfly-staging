@@ -9,28 +9,17 @@ import './quickFrame_styles.css';
 import QuickArtwork from "../quickArtwork/QuickArtwork";
 import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 import ColourAndSizeControl from "./colourAndSizeControl/ColourAndSizeControl";
-import PresetsControl from "./colourAndSizeControl/PresetsControl";
+import PresetsControl from "./presets/PresetsControl";
 
-const defaultFrameThickness = 0.04;
-const defaultMountThickness = 0.06;
-const defaultFrameColour = { hue: 96, saturation: 0, lightness: 29 };
-const defaultMountColour = { hue: 96, saturation: 0, lightness: 100 };
 
 class QuickFrameEditor extends Component {
 
     constructor(props) {
         super(props);
 
-        this.state = {
-            frameThicknessDecimal: defaultFrameThickness,
-            frameColour: defaultFrameColour,
-            mountThicknessDecimal: defaultMountThickness,
-            mountColour: defaultMountColour,
-            currentTool: 'frame'
-        };
+        this.state = { currentTool: 'presets' };
 
         this.onDoneClick = this.onDoneClick.bind(this);
-        this.onClearClick = this.onClearClick.bind(this);
         this.onCancelClick = this.onCancelClick.bind(this);
 
         this.onPresetsSelected = this.onPresetsSelected.bind(this);
@@ -39,9 +28,9 @@ class QuickFrameEditor extends Component {
 
         this.onFrameThicknessChange = this.onFrameThicknessChange.bind(this);
         this.onFrameColourChange = this.onFrameColourChange.bind(this);
-
         this.onMountThicknessChange = this.onMountThicknessChange.bind(this);
         this.onMountColourChange = this.onMountColourChange.bind(this);
+        this.onPresetOptionSelected = this.onPresetOptionSelected.bind(this);
     }
 
     componentWillMount() {
@@ -81,16 +70,18 @@ class QuickFrameEditor extends Component {
         this.setState({ mountThicknessDecimal: e.target.value });
     }
 
+    onPresetOptionSelected(presetData){
+        // const { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour } = presetData;
+        // console.log("{frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour}: ", {frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour});
+        this.setState({...presetData});
+    }
+
     // Global control events
     onDoneClick() {
         const { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour } = this.state;
         const frameData = { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour };
 
         this.props.onDone(frameData);
-    }
-
-    onClearClick() {
-        this.setState({ frameThicknessDecimal: defaultFrameThickness });
     }
 
     onCancelClick() {
@@ -115,6 +106,7 @@ class QuickFrameEditor extends Component {
                                         mountSize={mountThicknessDecimal}
                                         onFrameSizeChange={this.onFrameThicknessChange}
                                         onMountSizeChange={this.onMountThicknessChange}
+                                        onPresetSelect={this.onPresetOptionSelected}
                         />
                         }
 

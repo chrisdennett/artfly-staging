@@ -4,6 +4,7 @@ import faShare from "@fortawesome/fontawesome-pro-solid/faShare";
 import faUpload from "@fortawesome/fontawesome-pro-solid/faUpload";
 import faListAlt from "@fortawesome/fontawesome-pro-solid/faListAlt";
 import faImage from "@fortawesome/fontawesome-pro-solid/faImage";
+import faEye from "@fortawesome/fontawesome-pro-solid/faEye";
 // styles
 import './quickArtMakerTools_styles.css';
 // comps
@@ -78,7 +79,7 @@ class QuickArtMakerToolBar extends Component {
                 <ControlPanelButt
                     isSelected={currentTool === 'view'}
                     disabled={disableEditing}
-                    icon={faObjectGroup}
+                    icon={faEye}
                     onClick={this.onViewClick}
                     label={'VIEW'}/>
 

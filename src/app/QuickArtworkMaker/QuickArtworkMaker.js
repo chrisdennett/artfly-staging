@@ -34,7 +34,7 @@ class QuickArtworkMaker extends Component {
         this.onFrameDone = this.onFrameDone.bind(this);
         this.onFrameCancel = this.onFrameCancel.bind(this);
 
-        this.state = { currentTool: 'upload', artworkData:defaultArtworkData };
+        this.state = { currentTool: 'upload', artworkData: defaultArtworkData };
     }
 
     // TEST ONLY

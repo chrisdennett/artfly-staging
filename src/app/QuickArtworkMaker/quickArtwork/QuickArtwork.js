@@ -111,9 +111,13 @@ class QuickArtwork extends Component {
 
         drawFrameShadow(ctx, frameX, frameY, frameWidth, frameHeight);
 
-        drawFrame(ctx, frameX, frameY, frameWidth, frameHeight, frameThickness, frameColour);
+        if (frameThickness > 0) {
+            drawFrame(ctx, frameX, frameY, frameWidth, frameHeight, frameThickness, frameColour);
+        }
 
-        drawMount(ctx, mountX, mountY, mountWidth, mountHeight, mountThickness, mountColour);
+        if (mountThickness > 0) {
+            drawMount(ctx, mountX, mountY, mountWidth, mountHeight, mountThickness, mountColour);
+        }
 
         // add artwork
         drawArtworkImage(ctx, masterCanvas, this.canvas, imgX, imgY, imgWidth, imgHeight, cropData);
