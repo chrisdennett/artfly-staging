@@ -2,7 +2,7 @@ import React from 'react';
 // styles
 import './framePresetOption_styles.css';
 
-const FramePresetOption = function ({ frameColour, mountColour, frameThicknessDecimal, mountThicknessDecimal, onClick }) {
+const FrameColourOptionTile = function ({ frameColour, mountColour, frameThicknessDecimal, mountThicknessDecimal, onClick }) {
 
     const { hue:frameHue, saturation:frameSaturation, lightness:frameLightness } = frameColour;
     const { hue:mountHue, saturation:mountSaturation, lightness:mountLightness } = mountColour;
@@ -27,4 +27,4 @@ const FramePresetOption = function ({ frameColour, mountColour, frameThicknessDe
     )
 };
 
-export default FramePresetOption;
+export default FrameColourOptionTile;

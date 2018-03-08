@@ -1,0 +1,7 @@
+.presetsControl--typeOptions{
+    display: flex;
+}
+
+.presetsControl--typeOptions--label{
+    margin-right: 10px;
+}
