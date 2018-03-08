@@ -71,8 +71,6 @@ class QuickFrameEditor extends Component {
     }
 
     onPresetOptionSelected(presetData) {
-        // const { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour } = presetData;
-        // console.log("{frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour}: ", {frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour});
         this.setState({ ...presetData });
     }
 
@@ -101,18 +99,19 @@ class QuickFrameEditor extends Component {
                 <div className={'quickFrameEditor--toolHolder'}>
                     <div className={'quickFrameEditor--toolHolder--controls'}>
 
-                        <div style={{ backgroundColor: '#fff', padding: 10 }}>
+                        {/*<div style={{ backgroundColor: '#fff', padding: 10 }}>
                             {`
                                 frameColour: { hue:${frameColour.hue},saturation:${frameColour.saturation},lightness:${frameColour.lightness}},
                                 mountColour: {hue:${mountColour.hue},saturation:${mountColour.saturation},lightness:${mountColour.lightness}},
                                 frameThicknessDecimal: ${frameThicknessDecimal},
                                 mountThicknessDecimal: ${mountThicknessDecimal}
                             `}
-                        </div>
+                        </div>*/}
 
                         {currentTool === 'presets' &&
                         <PresetsControl frameSize={frameThicknessDecimal}
                                         mountSize={mountThicknessDecimal}
+                                        frameData={frameData}
                                         onFrameSizeChange={this.onFrameThicknessChange}
                                         onMountSizeChange={this.onMountThicknessChange}
                                         onPresetSelect={this.onPresetOptionSelected}

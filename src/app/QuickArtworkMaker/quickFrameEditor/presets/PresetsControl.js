@@ -61,7 +61,10 @@ class PresetsControl extends Component {
     }
 
     componentWillMount() {
-        this.update(presets[0]);
+        // const {frameData} = this.props;
+        let preset = presets[0];
+
+        this.update(preset, null, true);
     }
 
     update(preset, newFrameHue, setToBlack = false, setToWhite = false) {
@@ -85,7 +88,7 @@ class PresetsControl extends Component {
         let mountSaturation = mountColour.saturation;
         let mountLightness = mountColour.lightness;
 
-        if(preset.name === 'monochrome'){
+        if (preset.name === 'monochrome') {
             if (setToBlack) {
                 mountSaturation = 0;
                 mountLightness = 20;
@@ -94,18 +97,17 @@ class PresetsControl extends Component {
                 mountSaturation = 0;
                 mountLightness = 99;
             }
-            else{
+            else {
                 mountHue = frameHue;
             }
         }
 
-
-        this.setState({ selectedPreset: preset, frameHue });
+        this.setState({ selectedPreset: preset, frameHue, isBlack:setToBlack, isWhite:setToWhite });
 
         const currentValues = {
             ...preset,
             frameColour: { ...frameColour, hue: frameHue, saturation: frameSaturation, lightness: frameLightness },
-            mountColour: { ...mountColour, hue: mountHue, saturation:mountSaturation, lightness:mountLightness }
+            mountColour: { ...mountColour, hue: mountHue, saturation: mountSaturation, lightness: mountLightness }
         };
         this.props.onPresetSelect(currentValues);
     }
@@ -113,13 +115,15 @@ class PresetsControl extends Component {
     onFrameTypeOptionSelected(index) {
         const selectedPreset = presets[index];
         const frameHue = this.state.frameHue ? this.state.frameHue : selectedPreset.frameColour.hue;
-        this.update(selectedPreset, frameHue);
+        const {isBlack, isWhite} = this.state;
+
+        this.update(selectedPreset, frameHue, isBlack, isWhite);
     }
 
     onFrameHueSliderChange(e) {
         const { selectedPreset } = this.state;
         const hue = e.target.value;
-        this.update(selectedPreset, hue);
+        this.update(selectedPreset, hue, false, false);
     }
 
     onSelectBlack() {
@@ -138,13 +142,11 @@ class PresetsControl extends Component {
         const { selectedPreset, frameHue } = this.state;
 
         const swatches = (
-            <div>
-                <div className={'presetsControl--black-block'} onClick={this.onSelectBlack}>
-                    hee
-                </div>
-                <div className={'presetsControl--white-block'} onClick={this.onSelectWhite}>
-                    hee
-                </div>
+            <div className={'presetsControl--blocks'}>
+                <div className={'presetsControl--block presetsControl--block--black'}
+                     onClick={this.onSelectBlack}/>
+                <div className={'presetsControl--block presetsControl--block--white'}
+                     onClick={this.onSelectWhite}/>
             </div>
         );
 
@@ -165,7 +167,7 @@ class PresetsControl extends Component {
                     }
                 </div>
 
-                <Slider label={'Change colour'}
+                <Slider label={'Colour'}
                         id={`preset-frame-hue`}
                         min={0}
                         max={360}

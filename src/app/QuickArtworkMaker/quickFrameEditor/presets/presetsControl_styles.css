@@ -5,3 +5,26 @@
 .presetsControl--typeOptions--label{
     margin-right: 10px;
 }
+
+.presetsControl--blocks{
+    display: flex;
+    margin: 0 5px;
+}
+
+.presetsControl--block{
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.presetsControl--block--black{
+    background-color: black;
+    color: white;
+
+}
+
+.presetsControl--block--white{
+    background-color: white;;
+}
