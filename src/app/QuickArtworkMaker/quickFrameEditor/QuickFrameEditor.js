@@ -17,8 +17,6 @@ class QuickFrameEditor extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { currentTool: 'presets' };
-
         this.onDoneClick = this.onDoneClick.bind(this);
         this.onCancelClick = this.onCancelClick.bind(this);
 
@@ -35,8 +33,10 @@ class QuickFrameEditor extends Component {
 
     componentWillMount() {
         const { artworkData } = this.props;
+        const currentTool = artworkData.frameData.presetName === 'custom' ? 'frame' : 'presets';
+
         if (artworkData) {
-            this.setState({ ...artworkData.frameData });
+            this.setState({ ...artworkData.frameData, currentTool });
         }
     }
 
@@ -53,31 +53,32 @@ class QuickFrameEditor extends Component {
         this.setState({ currentTool: 'mount' });
     }
 
-    // Tool events
+    // CUSTOM FRAME EDITING EVENTS
     onFrameColourChange(frameColour) {
-        this.setState({ frameColour })
+        this.setState({ frameColour, presetName:'custom' })
     }
 
     onMountColourChange(mountColour) {
-        this.setState({ mountColour })
+        this.setState({ mountColour, presetName:'custom' })
     }
 
     onFrameThicknessChange(e) {
-        this.setState({ frameThicknessDecimal: e.target.value });
+        this.setState({ frameThicknessDecimal: e.target.value, presetName:'custom' });
     }
 
     onMountThicknessChange(e) {
-        this.setState({ mountThicknessDecimal: e.target.value });
+        this.setState({ mountThicknessDecimal: e.target.value, presetName:'custom' });
     }
 
+    // PRESET FRAME EVENT
     onPresetOptionSelected(presetData) {
         this.setState({ ...presetData });
     }
 
-    // Global control events
+    // Global events
     onDoneClick() {
-        const { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour } = this.state;
-        const frameData = { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour };
+        const { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour, presetName } = this.state;
+        const frameData = { presetName, frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour };
 
         this.props.onDone(frameData);
     }
@@ -88,7 +89,7 @@ class QuickFrameEditor extends Component {
 
     render() {
         const { height, width, artworkData, masterCanvas } = this.props;
-        const { currentTool, frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour } = this.state;
+        const { currentTool, frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour, presetName } = this.state;
 
         const frameData = { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour };
         const unsavedArtworkData = { ...artworkData, frameData, titlesData: null };
@@ -109,11 +110,8 @@ class QuickFrameEditor extends Component {
                         </div>*/}
 
                         {currentTool === 'presets' &&
-                        <PresetsControl frameSize={frameThicknessDecimal}
-                                        mountSize={mountThicknessDecimal}
-                                        frameData={frameData}
-                                        onFrameSizeChange={this.onFrameThicknessChange}
-                                        onMountSizeChange={this.onMountThicknessChange}
+                        <PresetsControl frameData={frameData}
+                                        initialPresetName={presetName}
                                         onPresetSelect={this.onPresetOptionSelected}
                         />
                         }

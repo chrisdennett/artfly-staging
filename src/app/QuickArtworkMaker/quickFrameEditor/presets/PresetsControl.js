@@ -7,32 +7,32 @@ import Slider from "../slider/Slider";
 
 const presets = [
     {
-        name: 'classic',
+        presetName: 'classic',
         frameColour: { hue: 0, saturation: 53, lightness: 44 },
         mountColour: { hue: 0, saturation: 0, lightness: 100 },
         frameThicknessDecimal: 0.03, mountThicknessDecimal: 0.06
     },
     {
-        name: 'thin frame',
+        presetName: 'thin frame',
         frameColour: { hue: 0, saturation: 53, lightness: 44 },
         mountColour: { hue: 0, saturation: 0, lightness: 100 },
         frameThicknessDecimal: 0.009, mountThicknessDecimal: 0.09
     },
     {
-        name: 'monochrome',
+        presetName: 'monochrome',
         frameColour: { hue: 0, saturation: 44, lightness: 39 },
         mountColour: { hue: 0, saturation: 43, lightness: 44 },
         frameThicknessDecimal: 0.031, mountThicknessDecimal: 0.043
     },
     {
-        name: 'no mount',
+        presetName: 'no mount',
         frameColour: { hue: 0, saturation: 53, lightness: 44 },
         mountColour: { hue: 0, saturation: 0, lightness: 0 },
         frameThicknessDecimal: 0.018,
         mountThicknessDecimal: 0
     },
     {
-        name: 'unframed',
+        presetName: 'unframed',
         frameColour: { hue: 0, saturation: 0, lightness: 0 },
         mountColour: { hue: 0, saturation: 0, lightness: 0 },
         frameThicknessDecimal: 0,
@@ -57,9 +57,16 @@ class PresetsControl extends Component {
     }
 
     componentWillMount() {
-        let preset = presets[0];
+        // Sets up to show previously used preset.
+        const {initialPresetName='classic', frameData} = this.props;
+        let selectedPreset = presets.find(preset => preset.presetName === initialPresetName);
+        if(!selectedPreset) selectedPreset = presets[0];
 
-        this.update(preset, null, true);
+        const {frameColour} = frameData;
+        const isBlack = frameColour.saturation === 0 && frameColour.lightness < 30;
+        const isWhite = frameColour.saturation === 0 && frameColour.lightness > 90;
+
+        this.update(selectedPreset, frameColour.hue, isBlack, isWhite);
     }
 
     update(preset, newFrameHue, setToBlack = false, setToWhite = false) {
@@ -83,7 +90,7 @@ class PresetsControl extends Component {
         let mountSaturation = mountColour.saturation;
         let mountLightness = mountColour.lightness;
 
-        if (preset.name === 'monochrome') {
+        if (preset.presetName === 'monochrome') {
             if (setToBlack) {
                 mountSaturation = 0;
                 mountLightness = 20;
@@ -108,7 +115,7 @@ class PresetsControl extends Component {
     }
 
     onFrameTypeOptionSelected(label) {
-        const selectedPreset = presets.find(preset => preset.name === label);
+        const selectedPreset = presets.find(preset => preset.presetName === label);
         const frameHue = this.state.frameHue ? this.state.frameHue : selectedPreset.frameColour.hue;
         const { isBlack, isWhite } = this.state;
 
@@ -154,12 +161,12 @@ class PresetsControl extends Component {
 
                     {pageWidth < 600 &&
                     <select onChange={e => this.onFrameTypeOptionSelected(e.target.value)}
-                            value={selectedPreset.name}>
+                            value={selectedPreset.presetName}>
                         {
                             presets.map((preset) => {
-                                return <option key={preset.name}
-                                               value={preset.name}>
-                                    {preset.name}
+                                return <option key={preset.presetName}
+                                               value={preset.presetName}>
+                                    {preset.presetName}
                                 </option>
                             })
                         })
@@ -168,9 +175,9 @@ class PresetsControl extends Component {
 
                     {pageWidth > 600 &&
                     presets.map((preset) => {
-                        return <FrameTypeOptionTile key={preset.name}
+                        return <FrameTypeOptionTile key={preset.presetName}
                                                     isSelected={preset === selectedPreset}
-                                                    label={preset.name}
+                                                    label={preset.presetName}
                                                     onClick={this.onFrameTypeOptionSelected}
                         />
                     })
