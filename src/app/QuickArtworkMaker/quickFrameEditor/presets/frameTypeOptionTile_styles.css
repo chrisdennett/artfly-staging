@@ -1,4 +1,8 @@
 .frameTypeOptionTile{
     cursor: pointer;
     flex: 1;
+    text-align: center;
+    padding: 5px;
+    margin: 0 3px;
+    border: black 1px solid;
 }

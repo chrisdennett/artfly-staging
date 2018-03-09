@@ -4,7 +4,7 @@ import './frameTypeOptionTile_styles.css';
 
 const FrameTypeOptionTile = function ({label, index, onClick, isSelected}) {
 
-    const tileStyle = isSelected ? {backgroundColor:'red'} : {backgroundColor:'white'};
+    const tileStyle = isSelected ? {backgroundColor:'black', color:'white'} : {backgroundColor:'white'};
 
     return (
         <div className={'frameTypeOptionTile'} style={tileStyle} onClick={() => onClick(index)}>
