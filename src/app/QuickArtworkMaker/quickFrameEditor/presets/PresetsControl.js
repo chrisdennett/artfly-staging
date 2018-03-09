@@ -40,10 +40,6 @@ const presets = [
     }
 ];
 
-/*const principleHueOptions = [
-    21,
-];*/
-
 class PresetsControl extends Component {
 
     constructor(props) {
@@ -61,7 +57,6 @@ class PresetsControl extends Component {
     }
 
     componentWillMount() {
-        // const {frameData} = this.props;
         let preset = presets[0];
 
         this.update(preset, null, true);
@@ -102,7 +97,7 @@ class PresetsControl extends Component {
             }
         }
 
-        this.setState({ selectedPreset: preset, frameHue, isBlack:setToBlack, isWhite:setToWhite });
+        this.setState({ selectedPreset: preset, frameHue, isBlack: setToBlack, isWhite: setToWhite });
 
         const currentValues = {
             ...preset,
@@ -112,10 +107,10 @@ class PresetsControl extends Component {
         this.props.onPresetSelect(currentValues);
     }
 
-    onFrameTypeOptionSelected(index) {
-        const selectedPreset = presets[index];
+    onFrameTypeOptionSelected(label) {
+        const selectedPreset = presets.find(preset => preset.name === label);
         const frameHue = this.state.frameHue ? this.state.frameHue : selectedPreset.frameColour.hue;
-        const {isBlack, isWhite} = this.state;
+        const { isBlack, isWhite } = this.state;
 
         this.update(selectedPreset, frameHue, isBlack, isWhite);
     }
@@ -140,6 +135,7 @@ class PresetsControl extends Component {
 
     render() {
         const { selectedPreset, frameHue } = this.state;
+        const pageWidth = Math.max(window.innerWidth, document.documentElement.clientWidth);
 
         const swatches = (
             <div className={'presetsControl--blocks'}>
@@ -155,15 +151,29 @@ class PresetsControl extends Component {
 
                 <div className={'presetsControl--typeOptions'}>
                     <div className={'presetsControl--typeOptions--label'}>Style:</div>
-                    {
-                        presets.map((preset, index) => {
-                            return <FrameTypeOptionTile key={preset.name}
-                                                        isSelected={preset === selectedPreset}
-                                                        index={index}
-                                                        label={preset.name}
-                                                        onClick={this.onFrameTypeOptionSelected}
-                            />
+
+                    {pageWidth < 600 &&
+                    <select onChange={e => this.onFrameTypeOptionSelected(e.target.value)}
+                            value={selectedPreset.name}>
+                        {
+                            presets.map((preset) => {
+                                return <option key={preset.name}
+                                               value={preset.name}>
+                                    {preset.name}
+                                </option>
+                            })
                         })
+                    </select>
+                    }
+
+                    {pageWidth > 600 &&
+                    presets.map((preset) => {
+                        return <FrameTypeOptionTile key={preset.name}
+                                                    isSelected={preset === selectedPreset}
+                                                    label={preset.name}
+                                                    onClick={this.onFrameTypeOptionSelected}
+                        />
+                    })
                     }
                 </div>
 
