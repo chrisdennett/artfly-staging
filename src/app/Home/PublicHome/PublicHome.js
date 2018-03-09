@@ -30,11 +30,11 @@ const PublicHome = function () {
                         you think and if you spot any bugs <FontAwesomeIcon icon={faBug}/>"</i></p>
 
                     <div className={'embed-container'}>
-
+                        
                         <iframe title={'beta testing version 0.2'}
                                 width="100%"
                                 height="100%"
-                                src="https://www.youtube.com/embed/c9ZUVrsDPPc?rel=0"
+                                src="https://www.youtube.com/embed/3XUpQ6juO1k?rel=0"
                                 frameBorder="0"
                                 allowFullScreen>
                         </iframe>
@@ -43,7 +43,7 @@ const PublicHome = function () {
 
                     <LinkButt style={{ backgroundColor: '#abc837', margin: '30px 0' }} linkTo={'/quickArtworkMaker'}>TRY
                         OUT THE LATEST
-                        VERSION: v0.2</LinkButt>
+                        VERSION: v0.3</LinkButt>
 
                     <div>
                         Here's the <a href={'https://blog.artfly.io/artfly-roadmap'}
