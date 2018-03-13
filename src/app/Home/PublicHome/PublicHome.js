@@ -3,8 +3,6 @@ import React from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faBug from '@fortawesome/fontawesome-pro-solid/faBug';
 import faFlask from '@fortawesome/fontawesome-pro-solid/faFlask';
-// import YouTube from 'react-youtube';
-// import YoutubeEmbedVideo from "youtube-embed-video";
 // styles
 import './publicHomeStyles.css';
 // comps

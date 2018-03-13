@@ -4,15 +4,14 @@ import faSquareReg from "@fortawesome/fontawesome-pro-regular/faSquare";
 import faSquare from "@fortawesome/fontawesome-pro-solid/faSquare";
 import faCheckSquare from "@fortawesome/fontawesome-pro-solid/faCheckSquare";
 // styles
-import './quickFrame_styles.css';
+import './quickRoom_styles.css';
 // comps
 import QuickArtwork from "../quickArtwork/QuickArtwork";
 import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 import ColourAndSizeControl from "./colourAndSizeControl/ColourAndSizeControl";
-import PresetsControl from "./presets/PresetsControl";
+import RoomPresets from "./presets/RoomPresets";
 
-
-class QuickFrameEditor extends Component {
+class QuickRoomEditor extends Component {
 
     constructor(props) {
         super(props);
@@ -21,8 +20,8 @@ class QuickFrameEditor extends Component {
         this.onCancelClick = this.onCancelClick.bind(this);
 
         this.onPresetsSelected = this.onPresetsSelected.bind(this);
-        this.onFrameEditSelected = this.onFrameEditSelected.bind(this);
-        this.onMountEditSelected = this.onMountEditSelected.bind(this);
+        this.onWallEditSelected = this.onWallEditSelected.bind(this);
+        this.onFloorEditSelected = this.onFloorEditSelected.bind(this);
 
         this.onFrameThicknessChange = this.onFrameThicknessChange.bind(this);
         this.onFrameColourChange = this.onFrameColourChange.bind(this);
@@ -45,12 +44,12 @@ class QuickFrameEditor extends Component {
         this.setState({ currentTool: 'presets' });
     }
 
-    onFrameEditSelected() {
-        this.setState({ currentTool: 'frame' });
+    onWallEditSelected() {
+        this.setState({ currentTool: 'wall' });
     }
 
-    onMountEditSelected() {
-        this.setState({ currentTool: 'mount' });
+    onFloorEditSelected() {
+        this.setState({ currentTool: 'floor' });
     }
 
     // CUSTOM FRAME EDITING EVENTS
@@ -95,10 +94,10 @@ class QuickFrameEditor extends Component {
         const unsavedArtworkData = { ...artworkData, frameData, titlesData: null };
 
         return (
-            <div className={'quickFrameEditor'}>
+            <div className={'quickRoomEditor'}>
 
-                <div className={'quickFrameEditor--toolHolder'}>
-                    <div className={'quickFrameEditor--toolHolder--controls'}>
+                <div className={'quickRoomEditor--toolHolder'}>
+                    <div className={'quickRoomEditor--toolHolder--controls'}>
 
                         {/*<div style={{ backgroundColor: '#fff', padding: 10 }}>
                             {`
@@ -110,15 +109,15 @@ class QuickFrameEditor extends Component {
                         </div>*/}
 
                         {currentTool === 'presets' &&
-                        <PresetsControl frameData={frameData}
+                        <RoomPresets frameData={frameData}
                                         initialPresetName={presetName}
                                         onPresetSelect={this.onPresetOptionSelected}
                         />
                         }
 
-                        {currentTool === 'frame' &&
-                        <ColourAndSizeControl title={'Frame'}
-                                              id={'frame'}
+                        {currentTool === 'wall' &&
+                        <ColourAndSizeControl title={'Wall'}
+                                              id={'wall'}
                                               size={frameThicknessDecimal}
                                               colour={frameColour}
                                               onSizeChange={this.onFrameThicknessChange}
@@ -126,7 +125,7 @@ class QuickFrameEditor extends Component {
                         />
                         }
 
-                        {currentTool === 'mount' &&
+                        {currentTool === 'floor' &&
                         <ColourAndSizeControl title={'Mount'}
                                               id={'mount'}
                                               size={mountThicknessDecimal}
@@ -137,7 +136,7 @@ class QuickFrameEditor extends Component {
                         }
                     </div>
 
-                    <div className={'quickFrameEditor--toolHolder--selectors'}>
+                    <div className={'quickRoomEditor--toolHolder--selectors'}>
 
                         <ControlPanelButt onClick={this.onPresetsSelected}
                                           isSelected={currentTool === 'presets'}
@@ -145,19 +144,19 @@ class QuickFrameEditor extends Component {
                                           style={{ margin: 0 }}
                                           label={'PRESETS'}/>
 
-                        <ControlPanelButt onClick={this.onFrameEditSelected}
+                        <ControlPanelButt onClick={this.onWallEditSelected}
                                           isSelected={currentTool === 'frame'}
                                           icon={faSquareReg}
                                           style={{ margin: 0 }}
-                                          label={'FRAME'}/>
+                                          label={'WALL'}/>
 
-                        <ControlPanelButt onClick={this.onMountEditSelected}
+                        <ControlPanelButt onClick={this.onFloorEditSelected}
                                           isSelected={currentTool === 'mount'}
                                           icon={faSquare}
                                           style={{ margin: 0 }}
-                                          label={'MOUNT'}/>
+                                          label={'FLOOR'}/>
 
-                        <div className={'quickFrameEditor--toolHolder--selectors--globalButts'}>
+                        <div className={'quickRoomEditor--toolHolder--selectors--globalButts'}>
 
                             <ControlPanelButt onClick={this.onDoneClick}
                                               icon={faCheckSquare}
@@ -187,4 +186,4 @@ class QuickFrameEditor extends Component {
     }
 }
 
-export default QuickFrameEditor;
+export default QuickRoomEditor;

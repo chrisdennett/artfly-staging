@@ -5,6 +5,8 @@ import faUpload from "@fortawesome/fontawesome-pro-solid/faUpload";
 import faListAlt from "@fortawesome/fontawesome-pro-solid/faListAlt";
 import faImage from "@fortawesome/fontawesome-pro-solid/faImage";
 import faEye from "@fortawesome/fontawesome-pro-solid/faEye";
+import faPalletAlt from "@fortawesome/fontawesome-pro-solid/faPalletAlt";
+// import faUsers from "@fortawesome/fontawesome-pro-solid/faUsers";
 // styles
 import './quickArtMakerTools_styles.css';
 // comps
@@ -21,6 +23,7 @@ class QuickArtMakerToolBar extends Component {
         this.onCropClick = this.onCropClick.bind(this);
         this.onAddTitlesClick = this.onAddTitlesClick.bind(this);
         this.onFrameClick = this.onFrameClick.bind(this);
+        this.onRoomClick = this.onRoomClick.bind(this);
         this.onViewClick = this.onViewClick.bind(this);
         this.onShareClick = this.onShareClick.bind(this);
     }
@@ -32,6 +35,8 @@ class QuickArtMakerToolBar extends Component {
     onAddTitlesClick() { this.props.onToolSelect('titles') }
 
     onFrameClick() { this.props.onToolSelect('frame') }
+
+    onRoomClick() { this.props.onToolSelect('room') }
 
     onViewClick() { this.props.onToolSelect('view') }
 
@@ -67,14 +72,28 @@ class QuickArtMakerToolBar extends Component {
                     disabled={disableEditing}
                     icon={faListAlt}
                     onClick={this.onAddTitlesClick}
-                    label={'ADD TITLES'}/>
+                    label={'TITLES'}/>
 
                 <ControlPanelButt
                     isSelected={currentTool === 'frame'}
                     disabled={disableEditing}
                     icon={faImage}
                     onClick={this.onFrameClick}
-                    label={'FRAMING'}/>
+                    label={'FRAME'}/>
+
+                <ControlPanelButt
+                    isSelected={currentTool === 'room'}
+                    disabled={disableEditing}
+                    icon={faPalletAlt}
+                    onClick={this.onRoomClick}
+                    label={'ROOM'}/>
+
+                {/*<ControlPanelButt
+                    isSelected={currentTool === 'people'}
+                    disabled={disableEditing}
+                    icon={faUsers}
+                    onClick={this.onFrameClick}
+                    label={'PEOPLE'}/>*/}
 
                 <ControlPanelButt
                     isSelected={currentTool === 'view'}

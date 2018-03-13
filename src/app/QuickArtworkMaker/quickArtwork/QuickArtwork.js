@@ -2,7 +2,8 @@ import React, { Component } from "react";
 // styles
 import './quickArtwork_styles.css';
 // images
-import WallTile from './../../images/brickwall.png';
+// import WallTile from './../../images/brickwall.png';
+import WallTile from './../../images/Concrete-8.jpg';
 import FloorboardsTile from './../../images/floor-boards.png';
 // import People from './../../images/bench-girls-sillhouette-400-260.png';
 // import People from './../../images/business-2089532_640.png';

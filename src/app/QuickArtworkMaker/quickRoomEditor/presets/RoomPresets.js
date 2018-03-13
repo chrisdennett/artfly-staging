@@ -7,40 +7,26 @@ import Slider from "../../../global/slider/Slider";
 
 const presets = [
     {
-        presetName: 'classic',
+        presetName: 'blank wall',
         frameColour: { hue: 0, saturation: 53, lightness: 44 },
         mountColour: { hue: 0, saturation: 0, lightness: 100 },
         frameThicknessDecimal: 0.03, mountThicknessDecimal: 0.06
     },
     {
-        presetName: 'thin frame',
+        presetName: 'painted brick',
         frameColour: { hue: 0, saturation: 53, lightness: 44 },
         mountColour: { hue: 0, saturation: 0, lightness: 100 },
         frameThicknessDecimal: 0.009, mountThicknessDecimal: 0.09
     },
     {
-        presetName: 'monochrome',
-        frameColour: { hue: 0, saturation: 44, lightness: 39 },
-        mountColour: { hue: 0, saturation: 43, lightness: 44 },
-        frameThicknessDecimal: 0.031, mountThicknessDecimal: 0.043
-    },
-    {
-        presetName: 'no mount',
+        presetName: 'exposed brick',
         frameColour: { hue: 0, saturation: 53, lightness: 44 },
-        mountColour: { hue: 0, saturation: 0, lightness: 0 },
-        frameThicknessDecimal: 0.018,
-        mountThicknessDecimal: 0
-    },
-    {
-        presetName: 'unframed',
-        frameColour: { hue: 0, saturation: 0, lightness: 0 },
-        mountColour: { hue: 0, saturation: 0, lightness: 0 },
-        frameThicknessDecimal: 0,
-        mountThicknessDecimal: 0
+        mountColour: { hue: 0, saturation: 0, lightness: 100 },
+        frameThicknessDecimal: 0.009, mountThicknessDecimal: 0.09
     }
 ];
 
-class PresetsControl extends Component {
+class RoomPresets extends Component {
 
     constructor(props) {
         super(props);
@@ -199,4 +185,4 @@ class PresetsControl extends Component {
     };
 }
 
-export default PresetsControl;
+export default RoomPresets;

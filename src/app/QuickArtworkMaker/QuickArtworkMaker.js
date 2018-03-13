@@ -14,7 +14,8 @@ import QuickShare from "./quickShare/QuickShare";
 import QuickTitlesEditor from "./quickTitlesEditor/QuickTitlesEditor";
 import QuickFrameEditor from "./quickFrameEditor/QuickFrameEditor";
 // DEV ONLY
-// import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
+import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
+import QuickRoomEditor from "./quickRoomEditor/QuickRoomEditor";
 
 // Constants
 const defaultArtworkData = DefaultArtworkDataGenerator();
@@ -38,11 +39,11 @@ class QuickArtworkMaker extends Component {
     }
 
     // TEST ONLY
-    /*componentDidMount() {
+    componentDidMount() {
         this.sourceImg = TEST_SOURCE_IMG;
-        this.toolToShowAfterUpdate = 'frame';
+        this.toolToShowAfterUpdate = 'room';
         this.updateMasterCanvas(this.sourceImg, 1);
-    }*/
+    }
 
     // Left nav tool selection
     onToolSelect(toolName) {
@@ -178,6 +179,15 @@ class QuickArtworkMaker extends Component {
 
                     {currentTool === 'frame' &&
                     <QuickFrameEditor height={height}
+                                      width={contentWidth}
+                                      artworkData={artworkData}
+                                      masterCanvas={masterCanvas}
+                                      onDone={this.onFrameDone}
+                                      onCancel={this.onFrameCancel}/>
+                    }
+
+                    {currentTool === 'room' &&
+                    <QuickRoomEditor height={height}
                                       width={contentWidth}
                                       artworkData={artworkData}
                                       masterCanvas={masterCanvas}
