@@ -1,5 +1,6 @@
 export default function(){
 
+    // CROP DATA
     const defaultCropData = { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 };
     const defaultFrameThickness = 0.04;
     const defaultMountThickness = 0.06;
@@ -11,6 +12,8 @@ export default function(){
         frameColour:defaultFrameColour,
         mountColour:defaultMountColour
     };
+
+    // TITLES
     const title = 'Utopia';
     const artist = "Anon";
     const description = "A seminal work of pivotal importance to humanity. A true masterpiece.";
@@ -22,12 +25,18 @@ export default function(){
     const year = now.getFullYear();
 
     const date = month + " " + year;
-    const defaultTitlesData = {title, artist, description, date}
+    const defaultTitlesData = {title, artist, description, date};
+
+    // ROOM
+    const wallTileUrl = '/images/tiles-wall/Brick-4.jpg';
+    const floorTileUrl = '/images/tiles-floor/floor-boards.png';
+    const defaultRoomData = {wallTileUrl, floorTileUrl, includeSkirting:true};
 
     return {
         cropData:defaultCropData,
         frameData:defaultFrameData,
         orientation: 1,
-        titlesData: defaultTitlesData
+        titlesData: defaultTitlesData,
+        roomData: defaultRoomData
     };
 };

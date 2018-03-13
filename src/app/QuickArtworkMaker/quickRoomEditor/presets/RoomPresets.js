@@ -49,6 +49,10 @@ class RoomPresets extends Component {
         this.props.onFloorSwatchSelected(tileUrl);
     }
 
+    onIncludeSkirtingChange(value){
+        this.props.onIncludeSkirtingChange(value)
+    }
+
     render() {
         const wallTileKeys = Object.keys(wallPresets.tiles);
         const floorPresetKeys = Object.keys(floorPresets.tiles);
@@ -71,6 +75,18 @@ class RoomPresets extends Component {
                     })
                     }
                 </div>
+
+                <div>
+                    <label>
+                        Include Skirting:
+                        <input
+                            name="isGoing"
+                            type="checkbox"
+                            checked={this.props.includeSkirting}
+                            onChange={(e) => this.onIncludeSkirtingChange(e.target.checked)}/>
+                    </label>
+                </div>
+
                 <h2>Floor:</h2>
                 <div className={'wallPresets'}>
                     {floorPresetKeys.map((key) => {

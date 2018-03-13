@@ -59,13 +59,13 @@ class QuickArtwork extends Component {
         // FRAME DATA
         const { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour } = frameData;
         // ROOM DATA
-        const wallTileUrl = roomData && roomData.wallTileUrl ? roomData.wallTileUrl : '/images/tiles-wall/Brick-3.jpg';
-        const floorTileUrl = roomData && roomData.floorTileUrl ? roomData.floorTileUrl : '/images/tiles-floor/floor-boards.png';
+        const { wallTileUrl, floorTileUrl, includeSkirting } = roomData;
 
         // prevent errors by stopping if critical elements not available
         if (!this.canvas || width < 1 || height < 1 || !masterCanvas) {
             return null;
         }
+
 
         if (!this.wallTile || !this.floorTile || wallTileUrl !== this.state.wallTileUrl || floorTileUrl !== this.state.floorTileUrl) {
             this.loadImageTiles(wallTileUrl, floorTileUrl);
@@ -131,7 +131,9 @@ class QuickArtwork extends Component {
         drawArtworkImage(ctx, masterCanvas, this.canvas, imgX, imgY, imgWidth, imgHeight, cropData);
 
         // add skirting board
-        drawSkirtingBoard(ctx, 0, skirtingY, width, skirtingHeight);
+        if (includeSkirting) {
+            drawSkirtingBoard(ctx, 0, skirtingY, width, skirtingHeight);
+        }
 
         // add titlesData text
         // FIX BUG

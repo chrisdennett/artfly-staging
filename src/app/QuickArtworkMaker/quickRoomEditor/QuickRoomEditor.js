@@ -26,6 +26,7 @@ class QuickRoomEditor extends Component {
 
         this.onWallSwatchSelected = this.onWallSwatchSelected.bind(this);
         this.onFloorSwatchSelected = this.onFloorSwatchSelected.bind(this);
+        this.onIncludeSkirtingChange = this.onIncludeSkirtingChange.bind(this);
     }
 
     componentWillMount() {
@@ -67,15 +68,18 @@ class QuickRoomEditor extends Component {
     }
 
     onFloorSwatchSelected(floorTileUrl) {
-        console.log("floorTileUrl: ", floorTileUrl);
         this.setState({ floorTileUrl });
+    }
+
+    onIncludeSkirtingChange(includeSkirting) {
+        this.setState({ includeSkirting });
     }
 
     render() {
         const { height, width, artworkData, masterCanvas } = this.props;
-        const { currentTool, wallTileUrl, floorTileUrl } = this.state;
+        const { currentTool, wallTileUrl, floorTileUrl, includeSkirting } = this.state;
 
-        const roomData = { wallTileUrl, floorTileUrl };
+        const roomData = { wallTileUrl, floorTileUrl, includeSkirting };
 
         const unsavedArtworkData = { ...artworkData, titlesData: null, roomData };
 
@@ -110,6 +114,8 @@ class QuickRoomEditor extends Component {
                             <RoomPresets
                                 onWallSwatchSelected={this.onWallSwatchSelected}
                                 onFloorSwatchSelected={this.onFloorSwatchSelected}
+                                onIncludeSkirtingChange={this.onIncludeSkirtingChange}
+                                includeSkirting={includeSkirting}
                             />
                             }
                         </div>
