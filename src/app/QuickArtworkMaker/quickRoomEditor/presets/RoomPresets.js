@@ -8,13 +8,19 @@ const wallPresets = {
     tiles: {
         brick1: {
             presetName: 'brick-1',
-            fileName: 'Brick-1.jpg',
-            isTintable: true
+            fileName: 'Brick-1.jpg'
         },
         brick2: {
             presetName: 'brick-2',
-            fileName: 'Brick-2.jpg',
-            isTintable: true
+            fileName: 'Brick-2.jpg'
+        },
+        brick3: {
+            presetName: 'brick-3',
+            fileName: 'Brick-3.jpg'
+        },
+        brick4: {
+            presetName: 'brick-4',
+            fileName: 'Brick-4.jpg'
         }
     }
 };
@@ -31,8 +37,7 @@ class RoomPresets extends Component {
 
     }
 
-    onWallSwatchClick(presetKey, tileUrl){
-        console.log("preset selected: ", presetKey);
+    onWallSwatchClick(presetKey, tileUrl) {
         this.props.onWallSwatchSelected(tileUrl);
     }
 
@@ -41,26 +46,20 @@ class RoomPresets extends Component {
         const wallPresetKeys = Object.keys(wallPresets.tiles);
 
         return (
-            <div className={'toolControlPanel'}>
+            <div className={'wallPresets'}>
+                {wallPresetKeys.map((key) => {
 
-                <div className={'toolControlPanel--content'}>
+                    const preset = wallPresets.tiles[key];
+                    const tileUrl = wallPresets.baseUrl + preset.fileName;
 
-                    {wallPresetKeys.map((key) => {
-
-                        const preset = wallPresets.tiles[key];
-                        const tileUrl = wallPresets.baseUrl + preset.fileName;
-
-                        return (
-                            <div key={key} className={'imageSwatch'}
-                                 onClick={() => this.onWallSwatchClick(key, tileUrl)}>
-                                <img src={tileUrl} alt={preset.name} />
-                            </div>
-                        )
-                    })
-                    }
-
-
-                </div>
+                    return (
+                        <div key={key} className={'imageSwatch'}
+                             onClick={() => this.onWallSwatchClick(key, tileUrl)}>
+                            <img src={tileUrl} alt={preset.name}/>
+                        </div>
+                    )
+                })
+                }
             </div>
         )
     };

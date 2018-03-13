@@ -15,7 +15,7 @@ class QuickRoomEditor extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {currentTool: 'presets'};
+        this.state = { currentTool: 'presets' };
 
         this.onDoneClick = this.onDoneClick.bind(this);
         this.onCancelClick = this.onCancelClick.bind(this);
@@ -28,7 +28,11 @@ class QuickRoomEditor extends Component {
     }
 
     componentWillMount() {
+        const { artworkData } = this.props;
 
+        if (artworkData) {
+            this.setState({ ...artworkData.roomData });
+        }
     }
 
     // Tool selector events
@@ -46,10 +50,10 @@ class QuickRoomEditor extends Component {
 
     // Global events
     onDoneClick() {
-        /*const { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour, presetName } = this.state;
-        const frameData = { presetName, frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour };
+        const { wallTileUrl } = this.state;
+        const roomData = { wallTileUrl,  };
 
-        this.props.onDone(frameData);*/
+        this.props.onDone(roomData);
     }
 
     onCancelClick() {
@@ -58,71 +62,52 @@ class QuickRoomEditor extends Component {
 
     // preset selections
     onWallSwatchSelected(wallTileUrl) {
-        this.setState({wallTileUrl});
+        this.setState({ wallTileUrl });
     }
 
     render() {
         const { height, width, artworkData, masterCanvas } = this.props;
         const { currentTool, wallTileUrl } = this.state;
 
-        const roomData = {wallTileUrl};
+        const roomData = { wallTileUrl };
 
         const unsavedArtworkData = { ...artworkData, titlesData: null, roomData };
 
         return (
             <div className={'quickRoomEditor'}>
 
-                <div className={'quickRoomEditor--toolHolder'}>
-                    <div className={'quickRoomEditor--toolHolder--controls'}>
+                <div className={'toolControlPanel'}>
+                    <div className={'toolControlPanel--content'}>
 
-                        {currentTool === 'presets' &&
-                        <RoomPresets onWallSwatchSelected={this.onWallSwatchSelected}
-                        />
-                        }
+                        <div className={'toolControlPanel--options'}>
+                            <ControlPanelButt onClick={this.onPresetsSelected}
+                                              isSelected={currentTool === 'presets'}
+                                              icon={faThReg}
+                                              style={{ margin: 0 }}
+                                              label={'PRESETS'}/>
 
-                        {/*{currentTool === 'wall' &&
-                        <ColourAndSizeControl title={'Wall'}
-                                              id={'wall'}
-                                              size={frameThicknessDecimal}
-                                              colour={frameColour}
-                                              onSizeChange={this.onFrameThicknessChange}
-                                              onColourChange={this.onFrameColourChange}
-                        />
-                        }
+                            <ControlPanelButt onClick={this.onWallEditSelected}
+                                              isSelected={currentTool === 'frame'}
+                                              icon={faSquareReg}
+                                              style={{ margin: 0 }}
+                                              label={'WALL'}/>
 
-                        {currentTool === 'floor' &&
-                        <ColourAndSizeControl title={'Mount'}
-                                              id={'mount'}
-                                              size={mountThicknessDecimal}
-                                              colour={mountColour}
-                                              onSizeChange={this.onMountThicknessChange}
-                                              onColourChange={this.onMountColourChange}
-                        />
-                        }*/}
-                    </div>
+                            <ControlPanelButt onClick={this.onFloorEditSelected}
+                                              isSelected={currentTool === 'mount'}
+                                              icon={faSquare}
+                                              style={{ margin: 0 }}
+                                              label={'FLOOR'}/>
+                        </div>
 
-                    <div className={'quickRoomEditor--toolHolder--selectors'}>
+                        <div className={'toolControlPanel--currentOptionContent'}>
+                            {currentTool === 'presets' &&
+                            <RoomPresets
+                                onWallSwatchSelected={this.onWallSwatchSelected}
+                            />
+                            }
+                        </div>
 
-                        <ControlPanelButt onClick={this.onPresetsSelected}
-                                          isSelected={currentTool === 'presets'}
-                                          icon={faThReg}
-                                          style={{ margin: 0 }}
-                                          label={'PRESETS'}/>
-
-                        <ControlPanelButt onClick={this.onWallEditSelected}
-                                          isSelected={currentTool === 'frame'}
-                                          icon={faSquareReg}
-                                          style={{ margin: 0 }}
-                                          label={'WALL'}/>
-
-                        <ControlPanelButt onClick={this.onFloorEditSelected}
-                                          isSelected={currentTool === 'mount'}
-                                          icon={faSquare}
-                                          style={{ margin: 0 }}
-                                          label={'FLOOR'}/>
-
-                        <div className={'quickRoomEditor--toolHolder--selectors--globalButts'}>
-
+                        <div className={'toolControlPanel--globalButts'}>
                             <ControlPanelButt onClick={this.onDoneClick}
                                               icon={faCheckSquare}
                                               style={{ margin: 0, color: '#8ca630' }}
@@ -135,8 +120,6 @@ class QuickRoomEditor extends Component {
                         </div>
 
                     </div>
-
-
                 </div>
 
                 <QuickArtwork height={height}

@@ -58,9 +58,7 @@ class QuickArtwork extends Component {
         // FRAME DATA
         const { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour } = frameData;
         // ROOM DATA
-        const wallTileUrl = roomData.wallTileUrl ? roomData.wallTileUrl : '/images/tiles-wall/Brick-3.jpg';
-
-        console.log("roomData: ", roomData.wallTileUrl);
+        const wallTileUrl = roomData && roomData.wallTileUrl ? roomData.wallTileUrl : '/images/tiles-wall/Brick-3.jpg';
 
         // prevent errors by stopping if critical elements not available
         if (!this.canvas || width < 1 || height < 1 || !masterCanvas) {

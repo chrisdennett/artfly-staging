@@ -1,18 +1,55 @@
-.toolControlPanel{
+.toolControlPanel {
     position: fixed;
     right: 0;
-    top:0;
+    top: 0;
     bottom: 0;
     background: white;
     width: 40%;
-    padding: 20px;
+    padding: 10px;
+
+    overflow-y: auto;
+
+    box-shadow: -3px 0 3px rgba(0, 0, 0, 0.51);
 }
 
-.toolControlPanel--content{
+.toolControlPanel--content {
+    position: relative;
+}
+
+.toolControlPanel--options {
+    display: flex;
+    margin-bottom: 20px;
+    position: fixed;
+    background: white;
+    top: 0;
+    border-bottom: 1px solid black;
+    width: 50%;
+}
+
+.toolControlPanel--globalButts {
+    display: flex;
+    margin-top: 20px;
+    position: fixed;
+    background: white;
+    bottom: 0;
+}
+
+.toolControlPanel--currentOptionContent {
+    flex: 1;
+    margin-top: 55px;
+}
+
+.wallPresets {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.imageSwatch {
+    margin-right: 5px;
     cursor: pointer;
 }
 
-.imageSwatch img{
+.imageSwatch img {
     width: 50px;
     height: 50px;
 }

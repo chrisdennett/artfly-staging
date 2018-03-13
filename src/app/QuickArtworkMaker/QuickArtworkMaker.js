@@ -34,6 +34,8 @@ class QuickArtworkMaker extends Component {
         this.onTitlesEditorCancel = this.onTitlesEditorCancel.bind(this);
         this.onFrameDone = this.onFrameDone.bind(this);
         this.onFrameCancel = this.onFrameCancel.bind(this);
+        this.onRoomDone = this.onRoomDone.bind(this);
+        this.onRoomCancel = this.onRoomCancel.bind(this);
 
         this.state = { currentTool: 'upload', artworkData: defaultArtworkData };
     }
@@ -120,6 +122,18 @@ class QuickArtworkMaker extends Component {
         this.setState({ currentTool: 'view' })
     }
 
+    onRoomDone(roomData) {
+        this.setState((state) => {
+            return {
+                artworkData: { ...state.artworkData, roomData },
+                currentTool: 'view'
+            }
+        })
+    }
+
+    onRoomCancel() {
+        this.setState({ currentTool: 'view' })
+    }
 
     render() {
         const { currentTool, artworkData, sourceImg, masterCanvas } = this.state;
@@ -191,8 +205,8 @@ class QuickArtworkMaker extends Component {
                                       width={contentWidth}
                                       artworkData={artworkData}
                                       masterCanvas={masterCanvas}
-                                      onDone={this.onFrameDone}
-                                      onCancel={this.onFrameCancel}/>
+                                      onDone={this.onRoomDone}
+                                      onCancel={this.onRoomCancel}/>
                     }
 
                     {currentTool === 'share' &&
