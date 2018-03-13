@@ -25,6 +25,7 @@ class QuickRoomEditor extends Component {
         this.onFloorEditSelected = this.onFloorEditSelected.bind(this);
 
         this.onWallSwatchSelected = this.onWallSwatchSelected.bind(this);
+        this.onFloorSwatchSelected = this.onFloorSwatchSelected.bind(this);
     }
 
     componentWillMount() {
@@ -50,8 +51,8 @@ class QuickRoomEditor extends Component {
 
     // Global events
     onDoneClick() {
-        const { wallTileUrl } = this.state;
-        const roomData = { wallTileUrl,  };
+        const { wallTileUrl, floorTileUrl } = this.state;
+        const roomData = { wallTileUrl, floorTileUrl };
 
         this.props.onDone(roomData);
     }
@@ -65,11 +66,16 @@ class QuickRoomEditor extends Component {
         this.setState({ wallTileUrl });
     }
 
+    onFloorSwatchSelected(floorTileUrl) {
+        console.log("floorTileUrl: ", floorTileUrl);
+        this.setState({ floorTileUrl });
+    }
+
     render() {
         const { height, width, artworkData, masterCanvas } = this.props;
-        const { currentTool, wallTileUrl } = this.state;
+        const { currentTool, wallTileUrl, floorTileUrl } = this.state;
 
-        const roomData = { wallTileUrl };
+        const roomData = { wallTileUrl, floorTileUrl };
 
         const unsavedArtworkData = { ...artworkData, titlesData: null, roomData };
 
@@ -103,6 +109,7 @@ class QuickRoomEditor extends Component {
                             {currentTool === 'presets' &&
                             <RoomPresets
                                 onWallSwatchSelected={this.onWallSwatchSelected}
+                                onFloorSwatchSelected={this.onFloorSwatchSelected}
                             />
                             }
                         </div>

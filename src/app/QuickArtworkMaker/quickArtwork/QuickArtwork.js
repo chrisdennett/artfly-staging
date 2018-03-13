@@ -4,7 +4,7 @@ import './quickArtwork_styles.css';
 // images
 // import WallTile from './../../images/brickwall.png';
 // import WallTile from './../../images/Concrete-8.jpg';
-import FloorboardsTile from './../../images/floor-boards.png';
+// import FloorboardsTile from './../../images/floor-boards.png';
 // import People from './../../images/bench-girls-sillhouette-400-260.png';
 // import People from './../../images/business-2089532_640.png';
 
@@ -29,8 +29,8 @@ class QuickArtwork extends Component {
     }
 
     // TODO: Could be split out into helper function
-    loadImageTiles(wallTileUrl) {
-        this.setState({ wallTileUrl }, () => {
+    loadImageTiles(wallTileUrl, floorTileUrl) {
+        this.setState({ wallTileUrl, floorTileUrl }, () => {
             let img = new Image();
             img.setAttribute('crossOrigin', 'anonymous'); //
             // img.src = WallTile;
@@ -39,7 +39,8 @@ class QuickArtwork extends Component {
                 this.wallTile = img;
                 let img2 = new Image();
                 img2.setAttribute('crossOrigin', 'anonymous'); //
-                img2.src = FloorboardsTile;
+                // img2.src = FloorboardsTile;
+                img2.src = floorTileUrl;
                 img2.onload = () => {
                     this.floorTile = img2;
                     this.setupCanvas(this.props);
@@ -59,14 +60,15 @@ class QuickArtwork extends Component {
         const { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour } = frameData;
         // ROOM DATA
         const wallTileUrl = roomData && roomData.wallTileUrl ? roomData.wallTileUrl : '/images/tiles-wall/Brick-3.jpg';
+        const floorTileUrl = roomData && roomData.floorTileUrl ? roomData.floorTileUrl : '/images/tiles-floor/floor-boards.png';
 
         // prevent errors by stopping if critical elements not available
         if (!this.canvas || width < 1 || height < 1 || !masterCanvas) {
             return null;
         }
 
-        if (!this.wallTile || !this.floorTile || wallTileUrl !== this.state.wallTileUrl) {
-            this.loadImageTiles(wallTileUrl);
+        if (!this.wallTile || !this.floorTile || wallTileUrl !== this.state.wallTileUrl || floorTileUrl !== this.state.floorTileUrl) {
+            this.loadImageTiles(wallTileUrl, floorTileUrl);
             return null;
         }
 

@@ -5,7 +5,6 @@
     bottom: 0;
     background: white;
     width: 40%;
-    padding: 10px;
 
     overflow-y: auto;
 
@@ -18,9 +17,9 @@
 
 .toolControlPanel--options {
     display: flex;
-    margin-bottom: 20px;
     position: fixed;
     background: white;
+    margin-bottom: 20px;
     top: 0;
     border-bottom: 1px solid black;
     width: 50%;
@@ -37,6 +36,7 @@
 .toolControlPanel--currentOptionContent {
     flex: 1;
     margin-top: 55px;
+    padding: 10px;
 }
 
 .wallPresets {
