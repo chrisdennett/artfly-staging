@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 // styles
 import './presetsControl_styles.css'
+import CheckBox from "../../../global/CheckBox/CheckBox";
 // comps
 
 const wallPresets = {
     baseUrl: '/images/tiles-wall/',
     tiles: {
+        brick0: {
+            presetName: 'brick-0',
+            fileName: 'brickwall.png'
+        },
         brick1: {
             presetName: 'brick-1',
             fileName: 'Brick-1.jpg'
@@ -21,7 +26,96 @@ const wallPresets = {
         brick4: {
             presetName: 'brick-4',
             fileName: 'Brick-4.jpg'
+        },
+        brick5: {
+            presetName: 'brick-5',
+            fileName: 'Brick-5.jpg'
+        },
+        brick6: {
+            presetName: 'brick-6',
+            fileName: 'Brick-6.jpg'
+        },
+        brick7: {
+            presetName: 'brick-7',
+            fileName: 'Brick-7.jpg'
+        },
+        brick8: {
+            presetName: 'brick-8',
+            fileName: 'Brick-8.jpg'
+        },
+        brick9: {
+            presetName: 'brick-9',
+            fileName: 'Brick-9.jpg'
+        },
+        brick10: {
+            presetName: 'brick-10',
+            fileName: 'Brick-10.jpg'
+        },
+        brick11: {
+            presetName: 'brick-11',
+            fileName: 'Brick-11.jpg'
+        },
+        brick12: {
+            presetName: 'brick-12',
+            fileName: 'Brick-12.jpg'
+        },
+        brick13: {
+            presetName: 'brick-13',
+            fileName: 'Brick-13.jpg'
+        },
+        brick14: {
+            presetName: 'brick-14',
+            fileName: 'Brick-14.jpg'
+        },
+        brick15: {
+            presetName: 'brick-15',
+            fileName: 'Brick-15.jpg'
+        },
+        brick16: {
+            presetName: 'brick-16',
+            fileName: 'Brick-16.jpg'
+        },
+        brick17: {
+            presetName: 'brick-17',
+            fileName: 'Brick-17.jpg'
+        },
+        brick18: {
+            presetName: 'brick-18',
+            fileName: 'Brick-18.jpg'
+        },
+        concrete1: {
+            presetName: 'Concrete-1',
+            fileName: 'Concrete-1.jpg'
+        },
+        concrete2: {
+            presetName: 'Concrete-2',
+            fileName: 'Concrete-2.jpg'
+        },
+        concrete3: {
+            presetName: 'Concrete-3',
+            fileName: 'Concrete-3.jpg'
+        },
+        concrete4: {
+            presetName: 'Concrete-4',
+            fileName: 'Concrete-4.jpg'
+        },
+        concrete5: {
+            presetName: 'Concrete-5',
+            fileName: 'Concrete-5.jpg'
+        },
+        concrete6: {
+            presetName: 'Concrete-6',
+            fileName: 'Concrete-6.jpg'
+        },
+        concrete7: {
+            presetName: 'Concrete-7',
+            fileName: 'Concrete-7.jpg'
+        },
+        concrete8: {
+            presetName: 'Concrete-8',
+            fileName: 'Concrete-8.jpg'
         }
+
     }
 };
 
@@ -49,7 +143,7 @@ class RoomPresets extends Component {
         this.props.onFloorSwatchSelected(tileUrl);
     }
 
-    onIncludeSkirtingChange(value){
+    onIncludeSkirtingChange(value) {
         this.props.onIncludeSkirtingChange(value)
     }
 
@@ -58,7 +152,7 @@ class RoomPresets extends Component {
         const floorPresetKeys = Object.keys(floorPresets.tiles);
 
         return (
-            <div>
+            <div className={'roomPresets'}>
                 <h2>Wall:</h2>
                 <div className={'wallPresets'}>
                     {wallTileKeys.map((key) => {
@@ -76,15 +170,12 @@ class RoomPresets extends Component {
                     }
                 </div>
 
-                <div>
-                    <label>
-                        Include Skirting:
-                        <input
-                            name="isGoing"
-                            type="checkbox"
-                            checked={this.props.includeSkirting}
-                            onChange={(e) => this.onIncludeSkirtingChange(e.target.checked)}/>
-                    </label>
+                <div className={'skirtingControlHolder'}>
+                    <CheckBox label={'Include Skirting'}
+                              id={'include-skirting'}
+                              value={this.props.includeSkirting}
+                              onChange={(e) => this.onIncludeSkirtingChange(e.target.checked)}
+                    />
                 </div>
 
                 <h2>Floor:</h2>

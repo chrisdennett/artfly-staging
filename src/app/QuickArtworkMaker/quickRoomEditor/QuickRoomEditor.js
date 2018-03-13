@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import faThReg from "@fortawesome/fontawesome-pro-regular/faTh";
 import faSquareReg from "@fortawesome/fontawesome-pro-regular/faSquare";
 import faSquare from "@fortawesome/fontawesome-pro-solid/faSquare";
-import faCheckSquare from "@fortawesome/fontawesome-pro-solid/faCheckSquare";
 // styles
 import './quickRoom_styles.css';
 // comps
 import QuickArtwork from "../quickArtwork/QuickArtwork";
 import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 import RoomPresets from "./presets/RoomPresets";
+import Butt from "../../global/Butt/Butt";
 
 class QuickRoomEditor extends Component {
 
@@ -52,8 +52,8 @@ class QuickRoomEditor extends Component {
 
     // Global events
     onDoneClick() {
-        const { wallTileUrl, floorTileUrl } = this.state;
-        const roomData = { wallTileUrl, floorTileUrl };
+        const { wallTileUrl, floorTileUrl, includeSkirting } = this.state;
+        const roomData = { wallTileUrl, floorTileUrl, includeSkirting };
 
         this.props.onDone(roomData);
     }
@@ -121,15 +121,10 @@ class QuickRoomEditor extends Component {
                         </div>
 
                         <div className={'toolControlPanel--globalButts'}>
-                            <ControlPanelButt onClick={this.onDoneClick}
-                                              icon={faCheckSquare}
-                                              style={{ margin: 0, color: '#8ca630' }}
-                                              label={'SAVE'}/>
-
-                            <ControlPanelButt onClick={this.onCancelClick}
-                                              icon={faCheckSquare}
-                                              style={{ margin: 0, color: '#ce373e' }}
-                                              label={'CANCEL'}/>
+                            <Butt fullWidth={true} style={{ fontSize: '1rem' }} label={'DONE'} green
+                                  onClick={this.onDoneClick}/>
+                            <Butt fullWidth={true} style={{ fontSize: '1rem' }} label={'CANCEL'} red
+                                  onClick={this.onCancelClick}/>
                         </div>
 
                     </div>
