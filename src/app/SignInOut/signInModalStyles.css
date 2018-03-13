@@ -1,5 +1,5 @@
 .signInModal{
-    background: url("./../images/brickwall.png");
+    background: url("../../app/images/brickwall.png");
     position: fixed;
     display: flex;
     top: 0;

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import './quickArtwork_styles.css';
 // images
 // import WallTile from './../../images/brickwall.png';
-import WallTile from './../../images/Concrete-8.jpg';
+// import WallTile from './../../images/Concrete-8.jpg';
 import FloorboardsTile from './../../images/floor-boards.png';
 // import People from './../../images/bench-girls-sillhouette-400-260.png';
 // import People from './../../images/business-2089532_640.png';
@@ -29,41 +29,48 @@ class QuickArtwork extends Component {
     }
 
     // TODO: Could be split out into helper function
-    loadImageTiles() {
-        let img = new Image();
-        img.setAttribute('crossOrigin', 'anonymous'); //
-        img.src = WallTile;
-        img.onload = () => {
-            this.wallTile = img;
-            let img2 = new Image();
-            img2.setAttribute('crossOrigin', 'anonymous'); //
-            img2.src = FloorboardsTile;
-            img2.onload = () => {
-                this.floorTile = img2;
-                this.setupCanvas(this.props);
-            }
-        };
+    loadImageTiles(wallTileUrl) {
+        this.setState({ wallTileUrl }, () => {
+            let img = new Image();
+            img.setAttribute('crossOrigin', 'anonymous'); //
+            // img.src = WallTile;
+            img.src = wallTileUrl;
+            img.onload = () => {
+                this.wallTile = img;
+                let img2 = new Image();
+                img2.setAttribute('crossOrigin', 'anonymous'); //
+                img2.src = FloorboardsTile;
+                img2.onload = () => {
+                    this.floorTile = img2;
+                    this.setupCanvas(this.props);
+                }
+            };
+        })
+
     }
 
     setupCanvas(props) {
         const { width, height, artworkData, masterCanvas } = props;
 
-        let { cropData, frameData, titlesData, widthToHeightRatio, heightToWidthRatio } = artworkData;
+        let { cropData, frameData, titlesData, roomData, widthToHeightRatio, heightToWidthRatio } = artworkData;
         // CROP DATA
         const { leftPercent, rightPercent, topPercent, bottomPercent } = cropData;
         // FRAME DATA
         const { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour } = frameData;
+        // ROOM DATA
+        const wallTileUrl = roomData.wallTileUrl ? roomData.wallTileUrl : '/images/tiles-wall/Brick-3.jpg';
+
+        console.log("roomData: ", roomData.wallTileUrl);
 
         // prevent errors by stopping if critical elements not available
         if (!this.canvas || width < 1 || height < 1 || !masterCanvas) {
             return null;
         }
 
-        if (!this.wallTile || !this.floorTile) {
-            this.loadImageTiles();
+        if (!this.wallTile || !this.floorTile || wallTileUrl !== this.state.wallTileUrl) {
+            this.loadImageTiles(wallTileUrl);
             return null;
         }
-
 
         const srcWidth = masterCanvas.width;
         const srcHeight = masterCanvas.height;

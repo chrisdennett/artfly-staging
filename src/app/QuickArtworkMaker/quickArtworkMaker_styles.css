@@ -2,7 +2,7 @@
     overflow: hidden;
     min-width:100vw;
     min-height:100vh;
-    background: url("./../images/brickwall.png");
+    background: url("../../app/images/brickwall.png");
     /*background: url("./../images/retina_wood.png");*/
 }
 
