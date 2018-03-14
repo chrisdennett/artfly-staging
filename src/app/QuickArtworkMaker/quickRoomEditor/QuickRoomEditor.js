@@ -89,7 +89,7 @@ class QuickRoomEditor extends Component {
                 <div className={'toolControlPanel'}>
                     <div className={'toolControlPanel--content'}>
 
-                        <div className={'toolControlPanel--options'}>
+                       {/* <div className={'toolControlPanel--options'}>
                             <ControlPanelButt onClick={this.onPresetsSelected}
                                               isSelected={currentTool === 'presets'}
                                               icon={faThReg}
@@ -107,7 +107,7 @@ class QuickRoomEditor extends Component {
                                               icon={faSquare}
                                               style={{ margin: 0 }}
                                               label={'FLOOR'}/>
-                        </div>
+                        </div>*/}
 
                         <div className={'toolControlPanel--currentOptionContent'}>
                             {currentTool === 'presets' &&

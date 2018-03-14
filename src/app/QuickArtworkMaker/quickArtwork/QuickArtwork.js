@@ -478,15 +478,25 @@ const drawSkirtingBoard = (ctx, startX, startY, width, height) => {
 
 const drawFloor = (ctx, floorTile, startX, startY, width, height) => {
     const pat = ctx.createPattern(floorTile, "repeat");
+
+    /*ctx.beginPath();
+    ctx.rect(startX, startY, width, height);
+    ctx.fillStyle = '#5c7bd9';
+    ctx.fill();
+    ctx.closePath();*/
+
+    ctx.save();
     ctx.beginPath();
     ctx.rect(startX, startY, width, height);
     ctx.fillStyle = pat;
     ctx.fill();
     ctx.closePath();
+    ctx.restore();
 };
 
 const drawWall = (ctx, wallTile, startX, startY, width, height) => {
     const pat = ctx.createPattern(wallTile, "repeat");
+
     ctx.beginPath();
     ctx.rect(startX, startY, width, height);
     ctx.fillStyle = pat;

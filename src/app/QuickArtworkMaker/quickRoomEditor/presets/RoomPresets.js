@@ -11,10 +11,6 @@ const wallPresets = {
             presetName: 'brick-0',
             fileName: 'brickwall.png'
         },
-        brick1: {
-            presetName: 'brick-1',
-            fileName: 'Brick-1.jpg'
-        },
         brick2: {
             presetName: 'brick-2',
             fileName: 'Brick-2.jpg'
@@ -31,10 +27,6 @@ const wallPresets = {
             presetName: 'brick-5',
             fileName: 'Brick-5.jpg'
         },
-        brick6: {
-            presetName: 'brick-6',
-            fileName: 'Brick-6.jpg'
-        },
         brick7: {
             presetName: 'brick-7',
             fileName: 'Brick-7.jpg'
@@ -47,17 +39,9 @@ const wallPresets = {
             presetName: 'brick-9',
             fileName: 'Brick-9.jpg'
         },
-        brick10: {
-            presetName: 'brick-10',
-            fileName: 'Brick-10.jpg'
-        },
         brick11: {
             presetName: 'brick-11',
             fileName: 'Brick-11.jpg'
-        },
-        brick12: {
-            presetName: 'brick-12',
-            fileName: 'Brick-12.jpg'
         },
         brick13: {
             presetName: 'brick-13',
@@ -79,10 +63,6 @@ const wallPresets = {
             presetName: 'brick-17',
             fileName: 'Brick-17.jpg'
         },
-        brick18: {
-            presetName: 'brick-18',
-            fileName: 'Brick-18.jpg'
-        },
         concrete1: {
             presetName: 'Concrete-1',
             fileName: 'Concrete-1.jpg'
@@ -94,18 +74,6 @@ const wallPresets = {
         concrete3: {
             presetName: 'Concrete-3',
             fileName: 'Concrete-3.jpg'
-        },
-        concrete4: {
-            presetName: 'Concrete-4',
-            fileName: 'Concrete-4.jpg'
-        },
-        concrete5: {
-            presetName: 'Concrete-5',
-            fileName: 'Concrete-5.jpg'
-        },
-        concrete6: {
-            presetName: 'Concrete-6',
-            fileName: 'Concrete-6.jpg'
         },
         concrete7: {
             presetName: 'Concrete-7',
@@ -126,20 +94,22 @@ const floorPresets = {
             presetName: 'wood-1',
             fileName: 'floor-boards.png'
         },
-        wood2: {
-            presetName: 'wood-2',
-            fileName: 'dark_wood.png'
-        }
+        wood3: {
+            presetName: 'wood-3',
+            fileName: 'Wood-6.jpg'
+        },
     }
 };
 
 class RoomPresets extends Component {
 
     onWallSwatchClick(presetKey, tileUrl) {
+        // console.log("WALL: ", presetKey);
         this.props.onWallSwatchSelected(tileUrl);
     }
 
     onFloorSwatchClick(presetKey, tileUrl) {
+        // console.log("FLOOR: ", presetKey);
         this.props.onFloorSwatchSelected(tileUrl);
     }
 
@@ -170,13 +140,6 @@ class RoomPresets extends Component {
                     }
                 </div>
 
-                <div className={'skirtingControlHolder'}>
-                    <CheckBox label={'Include Skirting'}
-                              id={'include-skirting'}
-                              value={this.props.includeSkirting}
-                              onChange={(e) => this.onIncludeSkirtingChange(e.target.checked)}
-                    />
-                </div>
 
                 <h2>Floor:</h2>
                 <div className={'wallPresets'}>
@@ -192,6 +155,13 @@ class RoomPresets extends Component {
                         )
                     })
                     }
+                </div>
+                <div className={'skirtingControlHolder'}>
+                    <CheckBox label={'Skirting'}
+                              id={'include-skirting'}
+                              value={this.props.includeSkirting}
+                              onChange={(e) => this.onIncludeSkirtingChange(e.target.checked)}
+                    />
                 </div>
             </div>
         )
