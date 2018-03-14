@@ -117,6 +117,10 @@ class RoomPresets extends Component {
         this.props.onIncludeSkirtingChange(value)
     }
 
+    onIncludeGuardRailChange(value) {
+        this.props.onIncludeGuardRailChange(value)
+    }
+
     render() {
         const wallTileKeys = Object.keys(wallPresets.tiles);
         const floorPresetKeys = Object.keys(floorPresets.tiles);
@@ -161,6 +165,14 @@ class RoomPresets extends Component {
                               id={'include-skirting'}
                               value={this.props.includeSkirting}
                               onChange={(e) => this.onIncludeSkirtingChange(e.target.checked)}
+                    />
+                </div>
+
+                <div className={'skirtingControlHolder'}>
+                    <CheckBox label={'Guard rail'}
+                              id={'include-guard-rail'}
+                              value={this.props.includeGuardRail}
+                              onChange={(e) => this.onIncludeGuardRailChange(e.target.checked)}
                     />
                 </div>
             </div>

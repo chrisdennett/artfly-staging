@@ -30,7 +30,7 @@ export default function(){
     // ROOM
     const wallTileUrl = '/images/tiles-wall/brickwall.png';
     const floorTileUrl = '/images/tiles-floor/floor-boards.png';
-    const defaultRoomData = {wallTileUrl, floorTileUrl, includeSkirting:true};
+    const defaultRoomData = {wallTileUrl, floorTileUrl, includeSkirting:true, includeGuardRail:true};
 
     return {
         cropData:defaultCropData,

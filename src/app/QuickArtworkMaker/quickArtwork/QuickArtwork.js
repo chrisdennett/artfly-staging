@@ -2,6 +2,8 @@ import React, { Component } from "react";
 // styles
 import './quickArtwork_styles.css';
 // images
+
+import GuardRailTile from './../../images/guard-rail.png';
 // import WallTile from './../../images/brickwall.png';
 // import WallTile from './../../images/Concrete-8.jpg';
 // import FloorboardsTile from './../../images/floor-boards.png';
@@ -35,6 +37,7 @@ class QuickArtwork extends Component {
             img.setAttribute('crossOrigin', 'anonymous'); //
             // img.src = WallTile;
             img.src = wallTileUrl;
+
             img.onload = () => {
                 this.wallTile = img;
                 let img2 = new Image();
@@ -42,10 +45,19 @@ class QuickArtwork extends Component {
                 // img2.src = FloorboardsTile;
                 img2.src = floorTileUrl;
                 img2.onload = () => {
+
                     this.floorTile = img2;
-                    this.setupCanvas(this.props);
+
+                    let img3 = new Image();
+                    img3.setAttribute('crossOrigin', 'anonymous'); //
+                    img3.src = GuardRailTile;
+                    img3.onload = () => {
+                        this.guardTile = img3;
+                        this.setupCanvas(this.props);
+                    };
                 }
             };
+
         })
 
     }
@@ -59,15 +71,14 @@ class QuickArtwork extends Component {
         // FRAME DATA
         const { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour } = frameData;
         // ROOM DATA
-        const { wallTileUrl, floorTileUrl, includeSkirting } = roomData;
+        const { wallTileUrl, floorTileUrl, includeSkirting, includeGuardRail } = roomData;
 
         // prevent errors by stopping if critical elements not available
         if (!this.canvas || width < 1 || height < 1 || !masterCanvas) {
             return null;
         }
 
-
-        if (!this.wallTile || !this.floorTile || wallTileUrl !== this.state.wallTileUrl || floorTileUrl !== this.state.floorTileUrl) {
+        if (!this.wallTile || !this.floorTile || !this.guardTile || wallTileUrl !== this.state.wallTileUrl || floorTileUrl !== this.state.floorTileUrl) {
             this.loadImageTiles(wallTileUrl, floorTileUrl);
             return null;
         }
@@ -135,8 +146,11 @@ class QuickArtwork extends Component {
             drawSkirtingBoard(ctx, 0, skirtingY, width, skirtingHeight);
         }
 
+        if (includeGuardRail) {
+            drawGuardRail(ctx, this.guardTile, 0, floorY - 20, width, 64);
+        }
+
         // add titlesData text
-        // FIX BUG
         if (titlesData) {
             const textX = frameX + frameWidth;
             addTitles(ctx, textWidth, frameHeight, textX, frameY, titlesData);
@@ -476,15 +490,21 @@ const drawSkirtingBoard = (ctx, startX, startY, width, height) => {
     ctx.fillRect(0, startY, width, height);
 };
 
+const drawGuardRail = (ctx, guardRailTile, startX, startY, width, height) => {
+    const pat = ctx.createPattern(guardRailTile, "repeat-x");
+
+    ctx.beginPath();
+    ctx.save();
+    ctx.translate(0, startY);
+    ctx.rect(startX, 0, width, height);
+    ctx.fillStyle = pat;
+    ctx.fill();
+    ctx.restore();
+    ctx.closePath();
+};
+
 const drawFloor = (ctx, floorTile, startX, startY, width, height) => {
     const pat = ctx.createPattern(floorTile, "repeat");
-
-    /*ctx.beginPath();
-    ctx.rect(startX, startY, width, height);
-    ctx.fillStyle = '#5c7bd9';
-    ctx.fill();
-    ctx.closePath();*/
-
     ctx.save();
     ctx.beginPath();
     ctx.rect(startX, startY, width, height);

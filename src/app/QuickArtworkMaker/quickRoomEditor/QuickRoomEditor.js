@@ -1,12 +1,8 @@
 import React, { Component } from "react";
-import faThReg from "@fortawesome/fontawesome-pro-regular/faTh";
-import faSquareReg from "@fortawesome/fontawesome-pro-regular/faSquare";
-import faSquare from "@fortawesome/fontawesome-pro-solid/faSquare";
 // styles
 import './quickRoom_styles.css';
 // comps
 import QuickArtwork from "../quickArtwork/QuickArtwork";
-import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 import RoomPresets from "./presets/RoomPresets";
 import Butt from "../../global/Butt/Butt";
 
@@ -27,6 +23,7 @@ class QuickRoomEditor extends Component {
         this.onWallSwatchSelected = this.onWallSwatchSelected.bind(this);
         this.onFloorSwatchSelected = this.onFloorSwatchSelected.bind(this);
         this.onIncludeSkirtingChange = this.onIncludeSkirtingChange.bind(this);
+        this.onIncludeGuardRailChange = this.onIncludeGuardRailChange.bind(this);
     }
 
     componentWillMount() {
@@ -52,8 +49,8 @@ class QuickRoomEditor extends Component {
 
     // Global events
     onDoneClick() {
-        const { wallTileUrl, floorTileUrl, includeSkirting } = this.state;
-        const roomData = { wallTileUrl, floorTileUrl, includeSkirting };
+        const { wallTileUrl, floorTileUrl, includeSkirting, includeGuardRail } = this.state;
+        const roomData = { wallTileUrl, floorTileUrl, includeSkirting, includeGuardRail };
 
         this.props.onDone(roomData);
     }
@@ -74,12 +71,15 @@ class QuickRoomEditor extends Component {
     onIncludeSkirtingChange(includeSkirting) {
         this.setState({ includeSkirting });
     }
+    onIncludeGuardRailChange(includeGuardRail) {
+        this.setState({ includeGuardRail });
+    }
 
     render() {
         const { height, width, artworkData, masterCanvas } = this.props;
-        const { currentTool, wallTileUrl, floorTileUrl, includeSkirting } = this.state;
+        const { currentTool, wallTileUrl, floorTileUrl, includeSkirting, includeGuardRail } = this.state;
 
-        const roomData = { wallTileUrl, floorTileUrl, includeSkirting };
+        const roomData = { wallTileUrl, floorTileUrl, includeSkirting, includeGuardRail };
 
         const unsavedArtworkData = { ...artworkData, titlesData: null, roomData };
 
@@ -114,7 +114,9 @@ class QuickRoomEditor extends Component {
                             <RoomPresets
                                 onWallSwatchSelected={this.onWallSwatchSelected}
                                 onFloorSwatchSelected={this.onFloorSwatchSelected}
+                                onIncludeGuardRailChange={this.onIncludeGuardRailChange}
                                 onIncludeSkirtingChange={this.onIncludeSkirtingChange}
+                                includeGuardRail={includeGuardRail}
                                 includeSkirting={includeSkirting}
                             />
                             }
