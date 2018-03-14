@@ -1,50 +1,5 @@
-.toolControlPanel {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background: white;
-    max-width: 50%;
-    overflow-y: auto;
-    box-shadow: -3px 0 3px rgba(0, 0, 0, 0.51);
-}
-
-.toolControlPanel--content{
-
-}
-
-.toolControlPanel--options {
-    display: flex;
-    position: fixed;
-    background: white;
-    margin-bottom: 20px;
-    top: 0;
-    border-bottom: 1px solid black;
-    width:inherit;
-    max-width: 50%;
-}
-
-.toolControlPanel--globalButts {
-    border-top: 1px solid black;
-    display: flex;
-    margin-top: 20px;
-    position: fixed;
-    background: white;
-    bottom: 0;
-    flex-wrap: wrap;
-    max-width: 50%;
-    width:inherit;
-}
-
-.toolControlPanel--currentOptionContent {
-    flex: 1;
-    margin: 0 0 100px 0;
+.roomPresets{
     padding: 0 10px 10px 10px;
-}
-
-.toolControlPanel--currentOptionContent h2{
-    margin: 15px 0 5px 0;
-    font-size: 1.2rem;
 }
 
 .wallPresets {
@@ -70,5 +25,5 @@
 }
 
 .roomPresets{
-    width: 170px;
+    /*width: 170px;*/
 }

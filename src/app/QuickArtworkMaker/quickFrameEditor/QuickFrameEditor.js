@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import faThReg from "@fortawesome/fontawesome-pro-regular/faTh";
 import faSquareReg from "@fortawesome/fontawesome-pro-regular/faSquare";
 import faSquare from "@fortawesome/fontawesome-pro-solid/faSquare";
-import faCheckSquare from "@fortawesome/fontawesome-pro-solid/faCheckSquare";
 // styles
 import './quickFrame_styles.css';
 // comps
@@ -10,6 +9,8 @@ import QuickArtwork from "../quickArtwork/QuickArtwork";
 import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 import ColourAndSizeControl from "./colourAndSizeControl/ColourAndSizeControl";
 import PresetsControl from "./presets/PresetsControl";
+import Butt from "../../global/Butt/Butt";
+import ToolControlPanel from "../../global/toolControlPanel/ToolControlPanel";
 
 
 class QuickFrameEditor extends Component {
@@ -55,19 +56,19 @@ class QuickFrameEditor extends Component {
 
     // CUSTOM FRAME EDITING EVENTS
     onFrameColourChange(frameColour) {
-        this.setState({ frameColour, presetName:'custom' })
+        this.setState({ frameColour, presetName: 'custom' })
     }
 
     onMountColourChange(mountColour) {
-        this.setState({ mountColour, presetName:'custom' })
+        this.setState({ mountColour, presetName: 'custom' })
     }
 
     onFrameThicknessChange(value) {
-        this.setState({ frameThicknessDecimal: value, presetName:'custom' });
+        this.setState({ frameThicknessDecimal: value, presetName: 'custom' });
     }
 
     onMountThicknessChange(value) {
-        this.setState({ mountThicknessDecimal: value, presetName:'custom' });
+        this.setState({ mountThicknessDecimal: value, presetName: 'custom' });
     }
 
     // PRESET FRAME EVENT
@@ -94,20 +95,79 @@ class QuickFrameEditor extends Component {
         const frameData = { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour };
         const unsavedArtworkData = { ...artworkData, frameData, titlesData: null };
 
-        return (
-            <div className={'quickFrameEditor'}>
-
-                <div className={'quickFrameEditor--toolHolder'}>
-                    <div className={'quickFrameEditor--toolHolder--controls'}>
-
-                        {/*<div style={{ backgroundColor: '#fff', padding: 10 }}>
+        /*<div style={{ backgroundColor: '#fff', padding: 10 }}>
                             {`
                                 frameColour: { hue:${frameColour.hue},saturation:${frameColour.saturation},lightness:${frameColour.lightness}},
                                 mountColour: {hue:${mountColour.hue},saturation:${mountColour.saturation},lightness:${mountColour.lightness}},
                                 frameThicknessDecimal: ${frameThicknessDecimal},
                                 mountThicknessDecimal: ${mountThicknessDecimal}
                             `}
-                        </div>*/}
+                        </div>*/
+
+        const globalButts = [
+            <Butt key="done" fullWidth={true} style={{ fontSize: '1rem' }} label={'DONE'} green
+                  onClick={this.onDoneClick}/>,
+            <Butt key="cancel" fullWidth={true} style={{ fontSize: '1rem' }} label={'CANCEL'} red
+                  onClick={this.onCancelClick}/>
+        ];
+
+        const optionButts = [
+            <ControlPanelButt onClick={this.onPresetsSelected}
+                              key="presets"
+                              isSelected={currentTool === 'presets'}
+                              icon={faThReg}
+                              style={{ margin: 0 }}
+                              label={'PRESETS'}/>,
+
+            <ControlPanelButt onClick={this.onFrameEditSelected}
+                              key="frame"
+                              isSelected={currentTool === 'frame'}
+                              icon={faSquareReg}
+                              style={{ margin: 0 }}
+                              label={'FRAME'}/>,
+
+            <ControlPanelButt onClick={this.onMountEditSelected}
+                              key="mount"
+                              isSelected={currentTool === 'mount'}
+                              icon={faSquare}
+                              style={{ margin: 0 }}
+                              label={'MOUNT'}/>
+        ];
+
+        return (
+            <div className={'quickFrameEditor'}>
+
+                <ToolControlPanel globalButts={globalButts} optionButts={optionButts}>
+                    {currentTool === 'presets' &&
+                    <PresetsControl frameData={frameData}
+                                    initialPresetName={presetName}
+                                    onPresetSelect={this.onPresetOptionSelected}
+                    />
+                    }
+
+                    {currentTool === 'frame' &&
+                    <ColourAndSizeControl title={'Frame'}
+                                          id={'frame'}
+                                          size={frameThicknessDecimal}
+                                          colour={frameColour}
+                                          onSizeChange={this.onFrameThicknessChange}
+                                          onColourChange={this.onFrameColourChange}
+                    />
+                    }
+
+                    {currentTool === 'mount' &&
+                    <ColourAndSizeControl title={'Mount'}
+                                          id={'mount'}
+                                          size={mountThicknessDecimal}
+                                          colour={mountColour}
+                                          onSizeChange={this.onMountThicknessChange}
+                                          onColourChange={this.onMountColourChange}
+                    />
+                    }
+                </ToolControlPanel>
+
+                {/*<div className={'quickFrameEditor--toolHolder'}>
+                    <div className={'quickFrameEditor--toolHolder--controls'}>
 
                         {currentTool === 'presets' &&
                         <PresetsControl frameData={frameData}
@@ -173,7 +233,7 @@ class QuickFrameEditor extends Component {
                     </div>
 
 
-                </div>
+                </div>*/}
 
                 <QuickArtwork height={height}
                               width={width}

@@ -147,7 +147,12 @@ class QuickArtwork extends Component {
         }
 
         if (includeGuardRail) {
-            drawGuardRail(ctx, this.guardTile, 0, floorY - 20, width, 64);
+            let guardRailY = floorY - 20;
+            const railHeight = 64;
+            if(guardRailY + railHeight > height){
+                guardRailY -= railHeight/3;
+            }
+            drawGuardRail(ctx, this.guardTile, 0, guardRailY, width, railHeight);
         }
 
         // add titlesData text

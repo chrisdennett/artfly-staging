@@ -58,11 +58,11 @@ class PresetsControl extends Component {
 
     componentWillMount() {
         // Sets up to show previously used preset.
-        const {initialPresetName='classic', frameData} = this.props;
+        const { initialPresetName = 'classic', frameData } = this.props;
         let selectedPreset = presets.find(preset => preset.presetName === initialPresetName);
-        if(!selectedPreset) selectedPreset = presets[0];
+        if (!selectedPreset) selectedPreset = presets[0];
 
-        const {frameColour} = frameData;
+        const { frameColour } = frameData;
         const isBlack = frameColour.saturation === 0 && frameColour.lightness < 30;
         const isWhite = frameColour.saturation === 0 && frameColour.lightness > 90;
 
@@ -156,42 +156,44 @@ class PresetsControl extends Component {
         return (
             <div className={'presetsControl'}>
 
-                <div className={'presetsControl--typeOptions'}>
-                    <div className={'presetsControl--typeOptions--label'}>Style:</div>
+                <div className={'presetsControl--typeOptions--label'}>Style:</div>
 
-                    {pageWidth < 600 &&
-                    <select onChange={e => this.onFrameTypeOptionSelected(e.target.value)}
-                            value={selectedPreset.presetName}>
-                        {
-                            presets.map((preset) => {
-                                return <option key={preset.presetName}
-                                               value={preset.presetName}>
-                                    {preset.presetName}
-                                </option>
-                            })
+                {pageWidth < 600 &&
+                <select onChange={e => this.onFrameTypeOptionSelected(e.target.value)}
+                        value={selectedPreset.presetName}>
+                    {
+                        presets.map((preset) => {
+                            return <option key={preset.presetName}
+                                           value={preset.presetName}>
+                                {preset.presetName}
+                            </option>
                         })
-                    </select>
-                    }
-
-                    {pageWidth > 600 &&
-                    presets.map((preset) => {
-                        return <Swatch key={preset.presetName}
-                                                    isSelected={preset === selectedPreset}
-                                                    label={preset.presetName}
-                                                    onClick={this.onFrameTypeOptionSelected}
-                        />
                     })
-                    }
-                </div>
+                </select>
+                }
 
-                <Slider label={'Colour'}
-                        id={`preset-frame-hue`}
+                {pageWidth > 600 &&
+                presets.map((preset) => {
+                    return <Swatch key={preset.presetName}
+                                   isSelected={preset === selectedPreset}
+                                   label={preset.presetName}
+                                   onClick={this.onFrameTypeOptionSelected}
+                    />
+                })
+                }
+
+                <div className={'presetsControl--typeOptions--label'}>Colour:</div>
+
+                {swatches &&
+                swatches
+                }
+
+                <Slider id={`preset-frame-hue`}
                         min={0}
                         max={360}
                         colour={`hsla(312, 65%, 63%, 0.57)`}
                         value={frameHue}
                         onChange={this.onFrameHueSliderChange}
-                        swatches={swatches}
                 />
 
             </div>

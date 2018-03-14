@@ -8,8 +8,9 @@ const ColourAndSizeControl = function ({size, colour, title, id, onSizeChange, o
 
     return (
         <div>
-            <Slider label={`${title} size`}
-                    id={`${id}-size`}
+            <h2>{`${title} size:`}</h2>
+
+            <Slider id={`${id}-size`}
                     min={0} max={0.2} step={0.001}
                     value={size}
                     colour={colour}

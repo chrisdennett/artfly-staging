@@ -1,0 +1,40 @@
+.toolControlPanel {
+    position: absolute;
+    right: 0;
+    background: white;
+    max-width: 50%;
+    box-shadow: -3px 0 3px rgba(0, 0, 0, 0.51);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.toolControlPanel--options {
+    display: flex;
+    background: white;
+    border-bottom: 1px solid black;
+    width: inherit;
+}
+
+.toolControlPanel--globalButts {
+    border-top: 1px solid black;
+    display: flex;
+    background: white;
+    flex-wrap: wrap;
+}
+
+.toolControlPanel--content {
+    flex: 1;
+    overflow-y: auto;
+    position: relative;
+}
+
+.toolControlPanel--currentOptionContent {
+    position: absolute;
+    width: 100%;
+}
+
+.toolControlPanel--currentOptionContent h2 {
+    margin: 15px 0 5px 0;
+    font-size: 1.2rem;
+}

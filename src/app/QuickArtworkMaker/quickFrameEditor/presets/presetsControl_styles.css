@@ -2,14 +2,13 @@
     display: flex;
 }
 
-.presetsControl--typeOptions select{
+select{
     font-size: 1rem;
+    width: 100%;
     padding: 3px;
 }
 
 .presetsControl--typeOptions--label{
-    margin-right: 10px;
-    width: 125px;
     background: white;
     padding: 2px 10px;
 }
@@ -25,12 +24,12 @@
     border-radius: 10px;
     margin: 0 5px;
     cursor: pointer;
+    border: rgba(0, 0, 0, 0.53) 2px solid;
 }
 
 .presetsControl--block--black{
     background-color: black;
     color: white;
-
 }
 
 .presetsControl--block--white{
