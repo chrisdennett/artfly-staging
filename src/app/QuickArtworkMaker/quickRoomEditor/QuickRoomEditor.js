@@ -5,6 +5,7 @@ import './quickRoom_styles.css';
 import QuickArtwork from "../quickArtwork/QuickArtwork";
 import RoomPresets from "./presets/RoomPresets";
 import Butt from "../../global/Butt/Butt";
+import ToolControlPanel from "../../global/toolControlPanel/ToolControlPanel";
 
 class QuickRoomEditor extends Component {
 
@@ -71,66 +72,39 @@ class QuickRoomEditor extends Component {
     onIncludeSkirtingChange(includeSkirting) {
         this.setState({ includeSkirting });
     }
+
     onIncludeGuardRailChange(includeGuardRail) {
         this.setState({ includeGuardRail });
     }
 
     render() {
         const { height, width, artworkData, masterCanvas } = this.props;
-        const { currentTool, wallTileUrl, floorTileUrl, includeSkirting, includeGuardRail } = this.state;
+        const { wallTileUrl, floorTileUrl, includeSkirting, includeGuardRail } = this.state;
 
         const roomData = { wallTileUrl, floorTileUrl, includeSkirting, includeGuardRail };
 
         const unsavedArtworkData = { ...artworkData, titlesData: null, roomData };
 
+        const globalButts = [
+            <Butt key="done" fullWidth={true} style={{ fontSize: '1rem' }} label={'DONE'} green
+                  onClick={this.onDoneClick}/>,
+            <Butt key="cancel" fullWidth={true} style={{ fontSize: '1rem' }} label={'CANCEL'} red
+                  onClick={this.onCancelClick}/>
+        ];
+
         return (
             <div className={'quickRoomEditor'}>
 
-                <div className={'toolControlPanel'}>
-                    <div className={'toolControlPanel--content'}>
-
-                       {/* <div className={'toolControlPanel--options'}>
-                            <ControlPanelButt onClick={this.onPresetsSelected}
-                                              isSelected={currentTool === 'presets'}
-                                              icon={faThReg}
-                                              style={{ margin: 0 }}
-                                              label={'PRESETS'}/>
-
-                            <ControlPanelButt onClick={this.onWallEditSelected}
-                                              isSelected={currentTool === 'frame'}
-                                              icon={faSquareReg}
-                                              style={{ margin: 0 }}
-                                              label={'WALL'}/>
-
-                            <ControlPanelButt onClick={this.onFloorEditSelected}
-                                              isSelected={currentTool === 'mount'}
-                                              icon={faSquare}
-                                              style={{ margin: 0 }}
-                                              label={'FLOOR'}/>
-                        </div>*/}
-
-                        <div className={'toolControlPanel--currentOptionContent'}>
-                            {currentTool === 'presets' &&
-                            <RoomPresets
-                                onWallSwatchSelected={this.onWallSwatchSelected}
-                                onFloorSwatchSelected={this.onFloorSwatchSelected}
-                                onIncludeGuardRailChange={this.onIncludeGuardRailChange}
-                                onIncludeSkirtingChange={this.onIncludeSkirtingChange}
-                                includeGuardRail={includeGuardRail}
-                                includeSkirting={includeSkirting}
-                            />
-                            }
-                        </div>
-
-                        <div className={'toolControlPanel--globalButts'}>
-                            <Butt fullWidth={true} style={{ fontSize: '1rem' }} label={'DONE'} green
-                                  onClick={this.onDoneClick}/>
-                            <Butt fullWidth={true} style={{ fontSize: '1rem' }} label={'CANCEL'} red
-                                  onClick={this.onCancelClick}/>
-                        </div>
-
-                    </div>
-                </div>
+                <ToolControlPanel globalButts={globalButts}>
+                    <RoomPresets
+                        onWallSwatchSelected={this.onWallSwatchSelected}
+                        onFloorSwatchSelected={this.onFloorSwatchSelected}
+                        onIncludeGuardRailChange={this.onIncludeGuardRailChange}
+                        onIncludeSkirtingChange={this.onIncludeSkirtingChange}
+                        includeGuardRail={includeGuardRail}
+                        includeSkirting={includeSkirting}
+                    />
+                </ToolControlPanel>
 
                 <QuickArtwork height={height}
                               width={width}
