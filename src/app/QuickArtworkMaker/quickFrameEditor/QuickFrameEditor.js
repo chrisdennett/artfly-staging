@@ -144,6 +144,7 @@ class QuickFrameEditor extends Component {
             <div className={'quickFrameEditor'}>
 
                 <ToolControlPanel title={'FRAME'}
+                                  minWidth={225}
                                   titleIcon={faImage}
                                   globalButts={globalButts}
                                   toolOptions={toolOptions}>

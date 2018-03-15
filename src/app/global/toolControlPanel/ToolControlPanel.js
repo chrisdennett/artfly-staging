@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-//
+// styles
 import './toolControlPanel_styles.css';
+// comps
 import ToolOptionButton from "./ToolOptionButton";
 
 class ToolControlPanel extends Component {
@@ -19,7 +20,7 @@ class ToolControlPanel extends Component {
     }
 
     render() {
-        const { toolOptions, globalButts, title, titleIcon } = this.props;
+        const { toolOptions, globalButts, title, titleIcon, minWidth=220 } = this.props;
 
         // prevent errors to help dev
         if(!toolOptions || toolOptions.length < 1) return null;
@@ -45,9 +46,10 @@ class ToolControlPanel extends Component {
             return option.label === currentTool;
         });
         const content = currentOption.content;
+        const maxWidth = Math.max(200, minWidth);
 
         return (
-            <div className={'toolControlPanel'}>
+            <div className={'toolControlPanel'} style={{maxWidth}}>
 
                 {title &&
                 <h1>

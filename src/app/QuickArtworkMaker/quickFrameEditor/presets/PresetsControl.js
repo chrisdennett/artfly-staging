@@ -190,7 +190,7 @@ class PresetsControl extends Component {
                     }
 
                 </ToolControlPanelSection>
-                <ToolControlPanelSection title={'Custom colour:'}>
+                <ToolControlPanelSection title={'Custom Frame colour:'}>
                     <Slider id={`preset-frame-hue`}
                             min={0}
                             max={360}

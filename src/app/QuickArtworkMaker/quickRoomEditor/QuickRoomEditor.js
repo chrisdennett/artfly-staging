@@ -112,6 +112,7 @@ class QuickRoomEditor extends Component {
             <div className={'quickRoomEditor'}>
 
                 <ToolControlPanel globalButts={globalButts}
+                                  width={width}
                                   title={'ROOM'}
                                   titleIcon={faPalletAlt}
                                   toolOptions={toolOptions}/>

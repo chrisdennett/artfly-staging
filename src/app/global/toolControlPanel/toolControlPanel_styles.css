@@ -2,7 +2,9 @@
     position: absolute;
     right: 0;
     background: white;
-    max-width: 50%;
+    /*width: 20%;*/
+    min-width: 200px;
+    /*max-width: 50%;*/
     box-shadow: -3px 0 3px rgba(0, 0, 0, 0.51);
     display: flex;
     flex-direction: column;
@@ -31,7 +33,6 @@
     font-weight: 700;
     padding: 15px 5px;
     text-align: center;
-    /*border: white 1px solid;*/
     flex: 1;
     font-size: 12px;
     line-height: 1em;
@@ -59,12 +60,13 @@
 .toolControlPanel--contentScroller {
     flex: 1;
     overflow-y: auto;
-    position: relative;
+    overflow-x: hidden;
+    height: 100px;
 }
 
 .toolControlPanel--contentScroller--content {
-    position: absolute;
-    width: 100%;
+    /*position: absolute;*/
+    /*width: 100%;*/
 }
 
 /*SECTION*/
