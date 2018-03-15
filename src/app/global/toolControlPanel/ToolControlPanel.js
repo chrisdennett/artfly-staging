@@ -2,13 +2,17 @@ import React from "react";
 //
 import './toolControlPanel_styles.css';
 
-const ToolControlPanel = ({ children, optionButts, globalButts }) => {
+const ToolControlPanel = ({ children, optionButts, globalButts, title }) => {
 
     /*let contentStyle = {};
     if(optionButts) contentStyle.marginTop = 90;*/
 
     return (
         <div className={'toolControlPanel'}>
+
+            {title &&
+            title
+            }
 
             {optionButts &&
             <div className={'toolControlPanel--options'}>

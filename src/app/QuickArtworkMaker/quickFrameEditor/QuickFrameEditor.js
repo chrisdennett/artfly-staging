@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import faThReg from "@fortawesome/fontawesome-pro-regular/faTh";
 import faSquareReg from "@fortawesome/fontawesome-pro-regular/faSquare";
 import faSquare from "@fortawesome/fontawesome-pro-solid/faSquare";
+import faImage from "@fortawesome/fontawesome-pro-solid/faImage";
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 // styles
 import './quickFrame_styles.css';
 // comps
 import QuickArtwork from "../quickArtwork/QuickArtwork";
 import ControlPanelButt from "../../global/Butt/ControlPanelButt";
-import ColourAndSizeControl from "./colourAndSizeControl/ColourAndSizeControl";
+import ColourAndSizeControl from "../../global/colourAndSizeControl/ColourAndSizeControl";
 import PresetsControl from "./presets/PresetsControl";
 import Butt from "../../global/Butt/Butt";
 import ToolControlPanel from "../../global/toolControlPanel/ToolControlPanel";
@@ -134,10 +136,15 @@ class QuickFrameEditor extends Component {
                               label={'MOUNT'}/>
         ];
 
+        const title = <h1><FontAwesomeIcon icon={faImage}/> FRAME</h1>;
+
         return (
             <div className={'quickFrameEditor'}>
 
-                <ToolControlPanel globalButts={globalButts} optionButts={optionButts}>
+                <ToolControlPanel title={title}
+                                  globalButts={globalButts}
+                                  optionButts={optionButts}>
+
                     {currentTool === 'presets' &&
                     <PresetsControl frameData={frameData}
                                     initialPresetName={presetName}

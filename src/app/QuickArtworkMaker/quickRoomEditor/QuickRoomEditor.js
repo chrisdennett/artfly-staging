@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import faPalletAlt from "@fortawesome/fontawesome-pro-solid/faPalletAlt";
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 // styles
 import './quickRoom_styles.css';
 // comps
@@ -92,10 +94,12 @@ class QuickRoomEditor extends Component {
                   onClick={this.onCancelClick}/>
         ];
 
+        const title = <h1><FontAwesomeIcon icon={faPalletAlt}/> ROOM</h1>;
+
         return (
             <div className={'quickRoomEditor'}>
 
-                <ToolControlPanel globalButts={globalButts}>
+                <ToolControlPanel globalButts={globalButts} title={title}>
                     <RoomPresets
                         onWallSwatchSelected={this.onWallSwatchSelected}
                         onFloorSwatchSelected={this.onFloorSwatchSelected}

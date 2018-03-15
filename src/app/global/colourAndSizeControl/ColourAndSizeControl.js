@@ -1,13 +1,15 @@
 import React from 'react';
+// style
+import './colourAndSizeControl_styles.css'
 // comps
-import Slider from "../../../global/slider/Slider";
+import Slider from "../slider/Slider";
 
-import ColourPicker from "../../../global/colourPicker/ColourPicker";
+import ColourPicker from "../colourPicker/ColourPicker";
 
 const ColourAndSizeControl = function ({size, colour, title, id, onSizeChange, onColourChange}) {
 
     return (
-        <div>
+        <div className={'colourAndSizeControls'}>
             <h2>{`${title} size:`}</h2>
 
             <Slider id={`${id}-size`}
