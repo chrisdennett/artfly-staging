@@ -64,8 +64,8 @@ class ToolControlPanel extends Component {
                 </div>
                 }
 
-                <div className={'toolControlPanel--content'}>
-                    <div className={'toolControlPanel--currentOptionContent'}>
+                <div className={'toolControlPanel--contentScroller'}>
+                    <div className={'toolControlPanel--contentScroller--content'}>
                         {content}
                     </div>
                 </div>

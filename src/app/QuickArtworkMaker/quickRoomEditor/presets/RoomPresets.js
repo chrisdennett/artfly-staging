@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 // styles
 import './presetsControl_styles.css'
 import CheckBox from "../../../global/CheckBox/CheckBox";
+import ToolControlPanelContent from "../../../global/toolControlPanel/ToolControlPanelContent";
+import ToolControlPanelSection from "../../../global/toolControlPanel/ToolControlPanelSection";
 // comps
 
 const wallPresets = {
@@ -97,7 +99,7 @@ const floorPresets = {
         wood3: {
             presetName: 'wood-3',
             fileName: 'Wood-6.jpg'
-        },
+        }
     }
 };
 
@@ -126,27 +128,26 @@ class RoomPresets extends Component {
         const floorPresetKeys = Object.keys(floorPresets.tiles);
 
         return (
-            <div className={'roomPresets'}>
-                <h2>Wall:</h2>
-                <div className={'wallPresets'}>
-                    {wallTileKeys.map((key) => {
+            <ToolControlPanelContent>
+                <ToolControlPanelSection title={'Wall:'}>
+                    <div className={'wallPresets'}>
+                        {wallTileKeys.map((key) => {
 
-                        const preset = wallPresets.tiles[key];
-                        const tileUrl = wallPresets.baseUrl + preset.fileName;
+                            const preset = wallPresets.tiles[key];
+                            const tileUrl = wallPresets.baseUrl + preset.fileName;
 
-                        return (
-                            <div key={key} className={'imageSwatch'}
-                                 onClick={() => this.onWallSwatchClick(key, tileUrl)}>
-                                <img src={tileUrl} alt={preset.name}/>
-                            </div>
-                        )
-                    })
-                    }
-                </div>
+                            return (
+                                <div key={key} className={'imageSwatch'}
+                                     onClick={() => this.onWallSwatchClick(key, tileUrl)}>
+                                    <img src={tileUrl} alt={preset.name}/>
+                                </div>
+                            )
+                        })
+                        }
+                    </div>
+                </ToolControlPanelSection>
 
-
-                <h2>Floor:</h2>
-                <div className={'wallPresets'}>
+                <ToolControlPanelSection title={'Floor:'}>
                     {floorPresetKeys.map((key) => {
                         const preset = floorPresets.tiles[key];
                         const tileUrl = floorPresets.baseUrl + preset.fileName;
@@ -159,23 +160,26 @@ class RoomPresets extends Component {
                         )
                     })
                     }
-                </div>
-                <div className={'skirtingControlHolder'}>
-                    <CheckBox label={'Skirting'}
-                              id={'include-skirting'}
-                              value={this.props.includeSkirting}
-                              onChange={(e) => this.onIncludeSkirtingChange(e.target.checked)}
-                    />
-                </div>
+                </ToolControlPanelSection>
 
-                <div className={'skirtingControlHolder'}>
-                    <CheckBox label={'Guard rail'}
-                              id={'include-guard-rail'}
-                              value={this.props.includeGuardRail}
-                              onChange={(e) => this.onIncludeGuardRailChange(e.target.checked)}
-                    />
-                </div>
-            </div>
+                <ToolControlPanelSection>
+                    <div className={'skirtingControlHolder'}>
+                        <CheckBox label={'Skirting'}
+                                  id={'include-skirting'}
+                                  value={this.props.includeSkirting}
+                                  onChange={(e) => this.onIncludeSkirtingChange(e.target.checked)}
+                        />
+                    </div>
+
+                    <div className={'skirtingControlHolder'}>
+                        <CheckBox label={'Guard rail'}
+                                  id={'include-guard-rail'}
+                                  value={this.props.includeGuardRail}
+                                  onChange={(e) => this.onIncludeGuardRailChange(e.target.checked)}
+                        />
+                    </div>
+                </ToolControlPanelSection>
+            </ToolControlPanelContent>
         )
     };
 }

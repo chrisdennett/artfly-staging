@@ -4,6 +4,8 @@ import './presetsControl_styles.css'
 // comps
 import Swatch from "../../../global/pallete/Swatch";
 import Slider from "../../../global/slider/Slider";
+import ToolControlPanelContent from "../../../global/toolControlPanel/ToolControlPanelContent";
+import ToolControlPanelSection from "../../../global/toolControlPanel/ToolControlPanelSection";
 
 const presets = [
     {
@@ -154,49 +156,51 @@ class PresetsControl extends Component {
         );
 
         return (
-            <div className={'presetsControl'}>
+            <ToolControlPanelContent>
+                <ToolControlPanelSection title={'Frame style:'}>
 
-                <div className={'presetsControl--typeOptions--label'}>Style:</div>
-
-                {pageWidth < 600 &&
-                <select onChange={e => this.onFrameTypeOptionSelected(e.target.value)}
-                        value={selectedPreset.presetName}>
-                    {
-                        presets.map((preset) => {
-                            return <option key={preset.presetName}
-                                           value={preset.presetName}>
-                                {preset.presetName}
-                            </option>
+                    {pageWidth < 600 &&
+                    <select onChange={e => this.onFrameTypeOptionSelected(e.target.value)}
+                            value={selectedPreset.presetName}>
+                        {
+                            presets.map((preset) => {
+                                return <option key={preset.presetName}
+                                               value={preset.presetName}>
+                                    {preset.presetName}
+                                </option>
+                            })
                         })
+                    </select>
+                    }
+
+                    {pageWidth > 600 &&
+                    presets.map((preset) => {
+                        return <Swatch key={preset.presetName}
+                                       isSelected={preset === selectedPreset}
+                                       label={preset.presetName}
+                                       onClick={this.onFrameTypeOptionSelected}
+                        />
                     })
-                </select>
-                }
+                    }
+                </ToolControlPanelSection>
+                <ToolControlPanelSection title={'Colour:'}>
 
-                {pageWidth > 600 &&
-                presets.map((preset) => {
-                    return <Swatch key={preset.presetName}
-                                   isSelected={preset === selectedPreset}
-                                   label={preset.presetName}
-                                   onClick={this.onFrameTypeOptionSelected}
+                    {swatches &&
+                    swatches
+                    }
+
+                </ToolControlPanelSection>
+                <ToolControlPanelSection title={'Custom colour:'}>
+                    <Slider id={`preset-frame-hue`}
+                            min={0}
+                            max={360}
+                            colour={`hsla(312, 65%, 63%, 0.57)`}
+                            value={frameHue}
+                            onChange={this.onFrameHueSliderChange}
                     />
-                })
-                }
 
-                <div className={'presetsControl--typeOptions--label'}>Colour:</div>
-
-                {swatches &&
-                swatches
-                }
-
-                <Slider id={`preset-frame-hue`}
-                        min={0}
-                        max={360}
-                        colour={`hsla(312, 65%, 63%, 0.57)`}
-                        value={frameHue}
-                        onChange={this.onFrameHueSliderChange}
-                />
-
-            </div>
+                </ToolControlPanelSection>
+            </ToolControlPanelContent>
         )
     };
 }

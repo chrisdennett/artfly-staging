@@ -55,19 +55,25 @@
     background: white;
     flex-wrap: wrap;
 }
-
-.toolControlPanel--content {
+ /**/
+.toolControlPanel--contentScroller {
     flex: 1;
     overflow-y: auto;
     position: relative;
 }
 
-.toolControlPanel--currentOptionContent {
+.toolControlPanel--contentScroller--content {
     position: absolute;
     width: 100%;
 }
 
-.toolControlPanel--currentOptionContent h2 {
-    margin: 25px 0 5px 20px;
+/*SECTION*/
+.toolControlPanelSection{
+    padding: 0 10px;
+    margin-bottom: 1rem;
+}
+
+.toolControlPanelSection--title{
     font-size: 1rem;
+    margin: 0.5rem 0 0.2rem 0;
 }
