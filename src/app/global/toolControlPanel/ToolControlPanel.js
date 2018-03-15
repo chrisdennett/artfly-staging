@@ -1,39 +1,84 @@
-import React from "react";
+import React, { Component } from "react";
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 //
 import './toolControlPanel_styles.css';
+import ToolOptionButton from "./ToolOptionButton";
 
-const ToolControlPanel = ({ children, optionButts, globalButts, title }) => {
+class ToolControlPanel extends Component {
 
-    /*let contentStyle = {};
-    if(optionButts) contentStyle.marginTop = 90;*/
+    constructor(props) {
+        super(props);
 
-    return (
-        <div className={'toolControlPanel'}>
+        // this.state = { currentTool: 'FRAME' };
 
-            {title &&
-            title
-            }
+        this.onSelectToolOption = this.onSelectToolOption.bind(this);
+    }
 
-            {optionButts &&
-            <div className={'toolControlPanel--options'}>
-                {optionButts}
-            </div>
-            }
+    onSelectToolOption(label) {
+        this.setState({ currentTool: label })
+    }
 
-            <div className={'toolControlPanel--content'}>
-                <div className={'toolControlPanel--currentOptionContent'}>
-                    {children}
+    render() {
+        const { toolOptions, globalButts, title, titleIcon } = this.props;
+
+        // prevent errors to help dev
+        if(!toolOptions || toolOptions.length < 1) return null;
+
+        // find or set current tool
+        const currentTool = this.state && this.state.currentTool ? this.state.currentTool : toolOptions[0].label;
+
+        // create option buttons if needed
+        const useOptionButts = toolOptions.length > 1;
+        let optionButts = [];
+        for (let option of toolOptions) {
+            const isSelected = option.label === currentTool;
+            optionButts.push(
+                <ToolOptionButton onClick={() => this.onSelectToolOption(option.label)}
+                                  key={option.label}
+                                  isSelected={isSelected}
+                                  label={option.label}/>
+            )
+        }
+
+        // find the currently selected content
+        const currentOption = toolOptions.find(option => {
+            return option.label === currentTool;
+        });
+        const content = currentOption.content;
+
+        return (
+            <div className={'toolControlPanel'}>
+
+                {title &&
+                <h1>
+                    {titleIcon &&
+                    <FontAwesomeIcon icon={titleIcon}/>
+                    }
+                    <span> {title}</span>
+                </h1>
+                }
+
+                {useOptionButts &&
+                <div className={'toolControlPanel--options'}>
+                    {optionButts}
                 </div>
-            </div>
+                }
 
-            {globalButts &&
-            <div className={'toolControlPanel--globalButts'}>
-                {globalButts}
-            </div>
-            }
+                <div className={'toolControlPanel--content'}>
+                    <div className={'toolControlPanel--currentOptionContent'}>
+                        {content}
+                    </div>
+                </div>
 
-        </div>
-    );
-};
+                {globalButts &&
+                <div className={'toolControlPanel--globalButts'}>
+                    {globalButts}
+                </div>
+                }
+
+            </div>
+        );
+    }
+}
 
 export default ToolControlPanel;

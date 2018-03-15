@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import faThReg from "@fortawesome/fontawesome-pro-regular/faTh";
-import faSquareReg from "@fortawesome/fontawesome-pro-regular/faSquare";
-import faSquare from "@fortawesome/fontawesome-pro-solid/faSquare";
+// import faThReg from "@fortawesome/fontawesome-pro-regular/faTh";
+// import faSquareReg from "@fortawesome/fontawesome-pro-regular/faSquare";
+// import faSquare from "@fortawesome/fontawesome-pro-solid/faSquare";
 import faImage from "@fortawesome/fontawesome-pro-solid/faImage";
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+// import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 // styles
 import './quickFrame_styles.css';
 // comps
 import QuickArtwork from "../quickArtwork/QuickArtwork";
-import ControlPanelButt from "../../global/Butt/ControlPanelButt";
+// import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 import ColourAndSizeControl from "../../global/colourAndSizeControl/ColourAndSizeControl";
 import PresetsControl from "./presets/PresetsControl";
 import Butt from "../../global/Butt/Butt";
@@ -113,37 +113,40 @@ class QuickFrameEditor extends Component {
                   onClick={this.onCancelClick}/>
         ];
 
-        const optionButts = [
-            <ControlPanelButt onClick={this.onPresetsSelected}
-                              key="presets"
-                              isSelected={currentTool === 'presets'}
-                              icon={faThReg}
-                              style={{ margin: 0 }}
-                              label={'PRESETS'}/>,
-
-            <ControlPanelButt onClick={this.onFrameEditSelected}
-                              key="frame"
-                              isSelected={currentTool === 'frame'}
-                              icon={faSquareReg}
-                              style={{ margin: 0 }}
-                              label={'FRAME'}/>,
-
-            <ControlPanelButt onClick={this.onMountEditSelected}
-                              key="mount"
-                              isSelected={currentTool === 'mount'}
-                              icon={faSquare}
-                              style={{ margin: 0 }}
-                              label={'MOUNT'}/>
+        const toolOptions = [
+            {
+                label: 'PRESETS',
+                content: <PresetsControl frameData={frameData}
+                                      initialPresetName={presetName}
+                                      onPresetSelect={this.onPresetOptionSelected}/>
+            },
+            {
+                label: 'FRAME',
+                content: <ColourAndSizeControl title={'Frame'}
+                                            id={'frame'}
+                                            size={frameThicknessDecimal}
+                                            colour={frameColour}
+                                            onSizeChange={this.onFrameThicknessChange}
+                                            onColourChange={this.onFrameColourChange}/>
+            },
+            {
+                label: 'MOUNT',
+                content: <ColourAndSizeControl title={'Mount'}
+                                            id={'mount'}
+                                            size={mountThicknessDecimal}
+                                            colour={mountColour}
+                                            onSizeChange={this.onMountThicknessChange}
+                                            onColourChange={this.onMountColourChange}/>
+            }
         ];
-
-        const title = <h1><FontAwesomeIcon icon={faImage}/> FRAME</h1>;
 
         return (
             <div className={'quickFrameEditor'}>
 
-                <ToolControlPanel title={title}
+                <ToolControlPanel title={'FRAME'}
+                                  titleIcon={faImage}
                                   globalButts={globalButts}
-                                  optionButts={optionButts}>
+                                  toolOptions={toolOptions}>
 
                     {currentTool === 'presets' &&
                     <PresetsControl frameData={frameData}

@@ -5,6 +5,7 @@ import './quickTitles_styles.css';
 import QuickArtwork from "../quickArtwork/QuickArtwork";
 import Butt from "../../global/Butt/Butt";
 import WordCountInput from "./wordCountInput/WordCountInput";
+import ToolControlPanel from "../../global/toolControlPanel/ToolControlPanel";
 
 class QuickTitlesEditor extends Component {
 
@@ -90,6 +91,10 @@ class QuickTitlesEditor extends Component {
                               masterCanvas={masterCanvas}
                 />
                 }
+
+                <ToolControlPanel>
+
+                </ToolControlPanel>
 
                 <div className={`quickTitles--controls--holder ${controlsClass}`}>
                     <div className={'quickTitles--controls'}>

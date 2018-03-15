@@ -9,6 +9,7 @@
     min-height: 100vh;
 }
 
+/*PANEL TITLE*/
 .toolControlPanel h1{
     background: #7f7f7f;
     color: white;
@@ -18,13 +19,36 @@
     border-bottom: white 1px solid;
 }
 
+/*TOOL OPTIONS*/
 .toolControlPanel--options {
     display: flex;
     background: white;
-    border-bottom: 1px solid black;
-    justify-content: space-between;
 }
 
+/*TOOL OPTION BUTTON*/
+.toolOptionButton {
+    cursor: pointer;
+    font-weight: 700;
+    padding: 15px 5px;
+    text-align: center;
+    /*border: white 1px solid;*/
+    flex: 1;
+    font-size: 12px;
+    line-height: 1em;
+    color: rgba(255, 255, 255, 1);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.toolOptionButton--selected {
+    color: rgba(0, 0, 0, 0.5);
+    cursor: default;
+    background-color: white;
+}
+.toolOptionButton--disabled {
+    color: rgba(0, 0, 0, 0.2);
+    cursor: default;
+}
+
+/*GLOBAL BUTTS*/
 .toolControlPanel--globalButts {
     border-top: 1px solid black;
     display: flex;
