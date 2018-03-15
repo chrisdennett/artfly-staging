@@ -49,7 +49,7 @@ class ToolControlPanel extends Component {
         const maxWidth = Math.max(200, minWidth);
 
         return (
-            <div className={'toolControlPanel'} style={{maxWidth}}>
+            <div className={'toolControlPanel'}>
 
                 {title &&
                 <h1>

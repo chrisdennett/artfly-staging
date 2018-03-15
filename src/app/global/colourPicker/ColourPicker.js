@@ -32,24 +32,25 @@ class ColourPicker extends Component {
     render() {
         const {id, colour} = this.props;
         const { hue, saturation, lightness, } = colour;
+        const labelStyle = {margin:0};
 
         return (
             <div>
-                <h2>colour</h2>
+                <h5 style={labelStyle}>colour</h5>
                 <Slider label={'colour'}
                         id={`${id}-hue`}
                         min={0} max={360}
                         value={hue}
                         onChange={this.onHueRangeChange}/>
 
-                <h2>vibrancy</h2>
+                <h5 style={labelStyle}>vibrancy</h5>
                 <Slider label={'vibrancy'}
                         id={`${id}-saturation`}
                         min={0} max={100}
                         value={saturation}
                         onChange={this.onSaturationRangeChange}/>
 
-                <h2>brightness</h2>
+                <h5 style={labelStyle}>brightness</h5>
                 <Slider label={'brightness'}
                         id={`${id}-brightness`}
                         min={0} max={100}
