@@ -149,8 +149,8 @@ class QuickArtwork extends Component {
         if (includeGuardRail) {
             let guardRailY = floorY - 20;
             const railHeight = 64;
-            if(guardRailY + railHeight > height){
-                guardRailY -= railHeight/3;
+            if (guardRailY + railHeight > height) {
+                guardRailY -= railHeight / 3;
             }
             drawGuardRail(ctx, this.guardTile, 0, guardRailY, width, railHeight);
         }
@@ -216,36 +216,73 @@ const addWrappedText = (ctx, lines, x, startY, lineHeight) => {
     }
 };
 
-const addTitles = (ctx, width, maxHeight, x, y, titlesData) => {
-    const { title, artist, description, date } = titlesData;
+const addTitles = (ctx, maxWidth, maxHeight, x, y, titlesData) => {
+    const { title, artist, description, date, background = true } = titlesData;
 
-    const titlePercent = 0.15;
-    const artistPercent = 0.1;
-    const descriptionPercent = 0.08;
-    const paddingLeftPercent = 0.1;
-    const paddingTextPercent = 0.08;
+    const width = background ? maxWidth - 40 : maxWidth;
+    const paddingLeftPercent = background ? 0.3 : 0.1;
 
-    const paddingLeft = Math.min(width * paddingLeftPercent, 30);
+    const titlePercent = 0.08;
+    const artistPercent = 0.08;
+    const descriptionPercent = 0.06;
+    const paddingTextPercent = 0.06;
+    const dateTextPercent = 0.04;
+
+    const paddingLeft = Math.min(width * paddingLeftPercent, 45);
     const textPadding = Math.min(width * paddingTextPercent, 20);
 
-    let titleFontSize = Math.min(width * titlePercent, 50);
+    let titleFontSize = Math.min(width * titlePercent, 40);
     let artistFontTitleSize = Math.min(width * artistPercent, 20);
     const descriptionFontSize = Math.min(width * descriptionPercent, 20);
+    const dateFontSize = Math.min(width * dateTextPercent, 16);
 
     ctx.font = `${descriptionFontSize}px 'Stardos Stencil'`;
     const lines = generateWrappedText(ctx, description, width);
     const descriptionLineHeight = descriptionFontSize * 1.3;
     const descriptionHeight = lines.length * descriptionLineHeight;
+    const dateHeight = dateFontSize + textPadding;
 
-    const totalTitlesHeight = descriptionHeight + titleFontSize + artistFontTitleSize + (2 * textPadding);
+    const totalTitlesHeight = descriptionHeight + titleFontSize + artistFontTitleSize + dateHeight + (2 * textPadding);
 
     const textX = x + paddingLeft;
     const titleTextY = y + (maxHeight - totalTitlesHeight) / 2;
     const artistTextY = titleTextY + titleFontSize + textPadding;
 
+    if (background) {
+        const paddingPercent = 0.1;
+        const padding = width * paddingPercent;
+        const titlesBoardX = textX - padding;
+        const titlesBoardY = titleTextY - padding;
+        const titlesBoardWidth = width + (padding*2);
+        const titlesBoardHeight = totalTitlesHeight + (padding*2);
+
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(255,255,255,1)";
+        ctx.rect(titlesBoardX, titlesBoardY, titlesBoardWidth, titlesBoardHeight);
+        ctx.fill();
+        ctx.closePath();
+
+        ctx.save();
+        ctx.shadowColor = 'rgba(0,0,0,0.4)';
+        ctx.shadowBlur = 2;
+        ctx.shadowOffsetX = 3;
+        ctx.shadowOffsetY = 3;
+        ctx.fillRect(titlesBoardX, titlesBoardY, titlesBoardWidth, titlesBoardHeight);
+
+        ctx.shadowColor = 'rgba(0,0,0,0.3)';
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+
+        ctx.fillRect(titlesBoardX, titlesBoardY, titlesBoardWidth, titlesBoardHeight);
+
+        ctx.restore(); // clear it or will be added to everything
+    }
+
     // Title
     ctx.textBaseline = 'top';
     ctx.fillStyle = "rgba(0,0,0,0.7)";
+    // ctx.fillStyle = "rgba(255,255,255,0.7)";
 
     ctx.font = `${titleFontSize}px 'Stardos Stencil'`;
     let titleWidth = ctx.measureText(title).width;
@@ -263,7 +300,7 @@ const addTitles = (ctx, width, maxHeight, x, y, titlesData) => {
 
     // Artist
     if (artist.length > 0) {
-        ctx.font = `${artistFontTitleSize}px 'Stardos Stencil'`;
+        ctx.font = `bold ${artistFontTitleSize}px 'Stardos Stencil'`;
         let artistWidth = ctx.measureText(artist).width;
         safetyCounter = 0;
         while (artistWidth > width) {
@@ -300,6 +337,7 @@ const addTitles = (ctx, width, maxHeight, x, y, titlesData) => {
     addWrappedText(ctx, lines, textX, descriptionTextY, descriptionLineHeight);
 
     const dateY = description.length > 0 ? descriptionTextY + descriptionHeight + textPadding : descriptionTextY;
+    ctx.font = `${dateFontSize}px 'Stardos Stencil'`;
     ctx.fillStyle = "rgba(0,0,0,0.4)";
     ctx.fillText(date, textX, dateY);
 };
@@ -545,10 +583,10 @@ const drawRadialGradientOverlay = (ctx, width, height) => {
 
 const drawFrameShadow = (ctx, x, y, width, height) => {
     ctx.save();
-    ctx.shadowColor = 'rgba(0,0,0,0.4)';
-    ctx.shadowBlur = 10;
+    ctx.shadowColor = 'rgba(0,0,0,0.5)';
+    ctx.shadowBlur = 5;
     ctx.shadowOffsetX = 5;
-    ctx.shadowOffsetY = 5;
+    ctx.shadowOffsetY = 8;
 
     ctx.fillStyle = 'white';
     ctx.fillRect(x, y, width, height);

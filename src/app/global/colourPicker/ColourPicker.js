@@ -32,7 +32,7 @@ class ColourPicker extends Component {
     render() {
         const {id, colour} = this.props;
         const { hue, saturation, lightness, } = colour;
-        const labelStyle = {margin:0};
+        const labelStyle = {margin:0, color:'rgba(0,0,0,0.5)'};
 
         return (
             <div>

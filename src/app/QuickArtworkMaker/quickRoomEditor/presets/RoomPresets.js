@@ -106,7 +106,7 @@ const floorPresets = {
 class RoomPresets extends Component {
 
     onWallSwatchClick(presetKey, tileUrl) {
-        // console.log("WALL: ", presetKey);
+        console.log("WALL: ", presetKey);
         this.props.onWallSwatchSelected(tileUrl);
     }
 

@@ -28,7 +28,7 @@ export default function(){
     const defaultTitlesData = {title, artist, description, date};
 
     // ROOM
-    const wallTileUrl = '/images/tiles-wall/brickwall.png';
+    const wallTileUrl = '/images/tiles-wall/Brick-13.jpg';
     const floorTileUrl = '/images/tiles-floor/floor-boards.png';
     const defaultRoomData = {wallTileUrl, floorTileUrl, includeSkirting:true, includeGuardRail:true};
 
