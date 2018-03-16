@@ -1,0 +1,13 @@
+.palette{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.palette--swatch{
+    flex: 1;
+    cursor: pointer;
+    min-width: 50px;
+    min-height: 50px;
+    margin: 5px;
+}

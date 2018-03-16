@@ -28,7 +28,8 @@ export default function(){
     const defaultTitlesData = {title, artist, description, date};
 
     // ROOM
-    const wallTileUrl = '/images/tiles-wall/Brick-13.jpg';
+    // const wallTileUrl = '/images/tiles-wall/Brick-13.jpg'; // tube station bricks
+    const wallTileUrl = '/images/tiles-wall/Concrete-8.jpg';
     const floorTileUrl = '/images/tiles-floor/floor-boards.png';
     const defaultRoomData = {wallTileUrl, floorTileUrl, includeSkirting:true, includeGuardRail:true};
 

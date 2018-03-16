@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 // styles
 import './presetsControl_styles.css'
 // comps
-import Swatch from "../../../global/pallete/Swatch";
 import Slider from "../../../global/slider/Slider";
 import ToolControlPanelContent from "../../../global/toolControlPanel/ToolControlPanelContent";
 import ToolControlPanelSection from "../../../global/toolControlPanel/ToolControlPanelSection";
@@ -175,11 +174,16 @@ class PresetsControl extends Component {
 
                     {pageWidth > 600 &&
                     presets.map((preset) => {
-                        return <Swatch key={preset.presetName}
-                                       isSelected={preset === selectedPreset}
-                                       label={preset.presetName}
-                                       onClick={this.onFrameTypeOptionSelected}
-                        />
+                        const tileStyle = preset === selectedPreset ? {backgroundColor:'black', color:'white'} : {backgroundColor:'white'};
+
+                        return (
+                            <div className={'presetsControl--frameOption'}
+                                 key={preset.presetName}
+                                 style={tileStyle}
+                                 onClick={() => this.onFrameTypeOptionSelected(preset.presetName)}>
+                                {preset.presetName}
+                            </div>
+                        )
                     })
                     }
                 </ToolControlPanelSection>

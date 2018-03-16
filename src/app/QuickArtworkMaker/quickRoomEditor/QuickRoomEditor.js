@@ -94,7 +94,6 @@ class QuickRoomEditor extends Component {
                   onClick={this.onCancelClick}/>
         ];
 
-
         const toolOptions = [
             {
                 label: 'Room options',
@@ -103,8 +102,8 @@ class QuickRoomEditor extends Component {
                     onFloorSwatchSelected={this.onFloorSwatchSelected}
                     onIncludeGuardRailChange={this.onIncludeGuardRailChange}
                     onIncludeSkirtingChange={this.onIncludeSkirtingChange}
-                    includeGuardRail={includeGuardRail}
-                    includeSkirting={includeSkirting}/>
+                    roomData={roomData}
+                />
             }
         ];
 

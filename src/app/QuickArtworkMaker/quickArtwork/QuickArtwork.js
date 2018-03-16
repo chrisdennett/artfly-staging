@@ -257,7 +257,7 @@ const addTitles = (ctx, maxWidth, maxHeight, x, y, titlesData) => {
         const titlesBoardHeight = totalTitlesHeight + (padding*2);
 
         ctx.beginPath();
-        ctx.fillStyle = "rgba(255,255,255,1)";
+        ctx.fillStyle = "rgb(250,250,250)";
         ctx.rect(titlesBoardX, titlesBoardY, titlesBoardWidth, titlesBoardHeight);
         ctx.fill();
         ctx.closePath();
