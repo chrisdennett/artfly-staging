@@ -9,5 +9,8 @@
     cursor: pointer;
     min-width: 50px;
     min-height: 50px;
-    margin: 5px;
+    border: #fff 3px solid;
+    /*border: #ffa115 2px solid;*/
+    margin: 2px;
+    border-radius: 10px;
 }

@@ -137,18 +137,20 @@ class RoomPresets extends Component {
 
     render() {
         const {roomData} = this.props;
-        const {includeSkirting, includeGuardRail} = roomData;
+        const {includeSkirting, includeGuardRail, wallTileUrl, floorTileUrl} = roomData;
 
         return (
             <ToolControlPanelContent>
                 <ToolControlPanelSection title={'Wall:'}>
                     <Palette swatchData={wallPresets}
+                             selectedUrl={wallTileUrl}
                              onSwatchSelected={this.onWallSwatchClick}
                     />
                 </ToolControlPanelSection>
 
                 <ToolControlPanelSection title={'Floor:'}>
                     <Palette swatchData={floorPresets}
+                             selectedUrl={floorTileUrl}
                              onSwatchSelected={this.onFloorSwatchClick}
                     />
                 </ToolControlPanelSection>

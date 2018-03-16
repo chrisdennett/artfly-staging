@@ -2,7 +2,7 @@ import React from 'react';
 // styles
 import './palette_styles.css';
 
-const Palette = function ({swatchData, onSwatchSelected}) {
+const Palette = function ({swatchData, onSwatchSelected, selectedUrl}) {
     const swatchKeys = Object.keys(swatchData.tiles);
 
     return (
@@ -14,6 +14,10 @@ const Palette = function ({swatchData, onSwatchSelected}) {
 
                     let swatchStyle = {backgroundColor: '#ffffff'};
                     swatchStyle.backgroundImage = `url(${tileUrl})`;
+
+                    if(selectedUrl && selectedUrl === tileUrl){
+                        swatchStyle.border = '#ffa115 3px dashed';
+                    }
 
                     return (
                         <div key={key}
