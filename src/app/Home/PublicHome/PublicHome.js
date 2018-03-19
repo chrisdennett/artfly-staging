@@ -32,7 +32,7 @@ const PublicHome = function () {
                         <iframe title={'beta testing version 0.2'}
                                 width="100%"
                                 height="100%"
-                                src="https://www.youtube.com/embed/3XUpQ6juO1k?rel=0"
+                                src="https://www.youtube.com/embed/JDVxWp1umx8?rel=0"
                                 frameBorder="0"
                                 allowFullScreen>
                         </iframe>
@@ -41,7 +41,7 @@ const PublicHome = function () {
 
                     <LinkButt style={{ backgroundColor: '#abc837', margin: '30px 0' }} linkTo={'/quickArtworkMaker'}>TRY
                         OUT THE LATEST
-                        VERSION: v0.3</LinkButt>
+                        VERSION: v0.4</LinkButt>
 
                     <div>
                         Here's the <a href={'https://blog.artfly.io/artfly-roadmap'}
