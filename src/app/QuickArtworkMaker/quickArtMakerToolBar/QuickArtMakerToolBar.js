@@ -6,7 +6,7 @@ import faListAlt from "@fortawesome/fontawesome-pro-solid/faListAlt";
 import faImage from "@fortawesome/fontawesome-pro-solid/faImage";
 import faEye from "@fortawesome/fontawesome-pro-solid/faEye";
 import faPalletAlt from "@fortawesome/fontawesome-pro-solid/faPalletAlt";
-// import faUsers from "@fortawesome/fontawesome-pro-solid/faUsers";
+import faUsers from "@fortawesome/fontawesome-pro-solid/faUsers";
 // styles
 import './quickArtMakerTools_styles.css';
 // comps
@@ -26,21 +26,17 @@ class QuickArtMakerToolBar extends Component {
         this.onRoomClick = this.onRoomClick.bind(this);
         this.onViewClick = this.onViewClick.bind(this);
         this.onShareClick = this.onShareClick.bind(this);
+        this.onPeopleClick = this.onPeopleClick.bind(this);
     }
 
     onAddPicClick() { this.props.onToolSelect('upload') }
-
     onCropClick() { this.props.onToolSelect('crop') }
-
     onAddTitlesClick() { this.props.onToolSelect('titles') }
-
     onFrameClick() { this.props.onToolSelect('frame') }
-
     onRoomClick() { this.props.onToolSelect('room') }
-
     onViewClick() { this.props.onToolSelect('view') }
-
     onShareClick() { this.props.onToolSelect('share') }
+    onPeopleClick() { this.props.onToolSelect('people') }
 
     render() {
         const { currentTool, disableEditing } = this.props;
@@ -88,12 +84,12 @@ class QuickArtMakerToolBar extends Component {
                     onClick={this.onRoomClick}
                     label={'ROOM'}/>
 
-                {/*<ControlPanelButt
+                <ControlPanelButt
                     isSelected={currentTool === 'people'}
                     disabled={disableEditing}
                     icon={faUsers}
-                    onClick={this.onFrameClick}
-                    label={'PEOPLE'}/>*/}
+                    onClick={this.onPeopleClick}
+                    label={'PEOPLE'}/>
 
                 <ControlPanelButt
                     isSelected={currentTool === 'view'}

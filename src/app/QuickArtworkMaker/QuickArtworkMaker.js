@@ -15,7 +15,8 @@ import QuickTitlesEditor from "./quickTitlesEditor/QuickTitlesEditor";
 import QuickFrameEditor from "./quickFrameEditor/QuickFrameEditor";
 import QuickRoomEditor from "./quickRoomEditor/QuickRoomEditor";
 // DEV ONLY
-// import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
+import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
+import QuickPeopleEditor from "./quickPeopleEditor/QuickPeopleEditor";
 
 // Constants
 const defaultArtworkData = DefaultArtworkDataGenerator();
@@ -36,16 +37,19 @@ class QuickArtworkMaker extends Component {
         this.onFrameCancel = this.onFrameCancel.bind(this);
         this.onRoomDone = this.onRoomDone.bind(this);
         this.onRoomCancel = this.onRoomCancel.bind(this);
+        this.onPeopleDone = this.onPeopleDone.bind(this);
+        this.onPeopleCancel = this.onPeopleCancel.bind(this);
+        this.onArtworkDataChange = this.onArtworkDataChange.bind(this);
 
         this.state = { currentTool: 'upload', artworkData: defaultArtworkData };
     }
 
     // TEST ONLY
-    /*componentDidMount() {
+    componentDidMount() {
         this.sourceImg = TEST_SOURCE_IMG;
-        this.toolToShowAfterUpdate = 'room';
+        this.toolToShowAfterUpdate = 'people';
         this.updateMasterCanvas(this.sourceImg, 1);
-    }*/
+    }
 
     // Left nav tool selection
     onToolSelect(toolName) {
@@ -135,6 +139,27 @@ class QuickArtworkMaker extends Component {
         this.setState({ currentTool: 'view' })
     }
 
+    onPeopleDone(roomData) {
+        this.setState((state) => {
+            return {
+                artworkData: { ...state.artworkData, roomData },
+                currentTool: 'view'
+            }
+        })
+    }
+
+    onPeopleCancel() {
+        this.setState({ currentTool: 'view' })
+    }
+
+    onArtworkDataChange(newPartialData){
+        this.setState((state) => {
+            return {
+                artworkData: { ...state.artworkData, ...newPartialData }
+            }
+        })
+    }
+
     render() {
         const { currentTool, artworkData, sourceImg, masterCanvas } = this.state;
         const { height, width } = this.props;
@@ -164,14 +189,14 @@ class QuickArtworkMaker extends Component {
 
                 <div className={classesForMain}>
 
-                    {currentTool === 'view' &&
+                    {/*{currentTool === 'view' &&*/}
                     <QuickArtwork height={height}
                                   width={contentWidth}
                                   isFixed={true}
                                   artworkData={artworkData}
                                   masterCanvas={masterCanvas}
                     />
-                    }
+                    {/*// */}
 
                     {currentTool === 'crop' &&
                     <QuickCropAndRotate sourceImg={sourceImg}
@@ -203,11 +228,19 @@ class QuickArtworkMaker extends Component {
 
                     {currentTool === 'room' &&
                     <QuickRoomEditor height={height}
-                                      width={contentWidth}
-                                      artworkData={artworkData}
-                                      masterCanvas={masterCanvas}
-                                      onDone={this.onRoomDone}
-                                      onCancel={this.onRoomCancel}/>
+                                     width={contentWidth}
+                                     artworkData={artworkData}
+                                     masterCanvas={masterCanvas}
+                                     onDone={this.onRoomDone}
+                                     onCancel={this.onRoomCancel}/>
+                    }
+
+                    {currentTool === 'people' &&
+                    <QuickPeopleEditor width={contentWidth}
+                                       roomData={artworkData.roomData}
+                                       onPeopleDataChange={this.onArtworkDataChange}
+                                       onDone={this.onPeopleDone}
+                                       onCancel={this.onPeopleCancel}/>
                     }
 
                     {currentTool === 'share' &&

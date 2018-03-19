@@ -31,7 +31,11 @@ export default function(){
     // const wallTileUrl = '/images/tiles-wall/Brick-13.jpg'; // tube station bricks
     const wallTileUrl = '/images/tiles-wall/Concrete-8.jpg';
     const floorTileUrl = '/images/tiles-floor/floor-boards.png';
-    const defaultRoomData = {wallTileUrl, floorTileUrl, includeSkirting:true, includeGuardRail:true};
+    const includeSkirting = true;
+    const includeGuardRail = true;
+    const includePeople = true;
+
+    const defaultRoomData = {wallTileUrl, floorTileUrl, includeSkirting, includeGuardRail, includePeople};
 
     return {
         cropData:defaultCropData,

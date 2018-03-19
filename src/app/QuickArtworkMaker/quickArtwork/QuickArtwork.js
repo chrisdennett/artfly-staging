@@ -7,7 +7,7 @@ import GuardRailTile from './../../images/guard-rail.png';
 // import WallTile from './../../images/brickwall.png';
 // import WallTile from './../../images/Concrete-8.jpg';
 // import FloorboardsTile from './../../images/floor-boards.png';
-// import People from './../../images/bench-girls-sillhouette-400-260.png';
+import People from './../../images/bench-girls-sillhouette-400-260.png';
 // import People from './../../images/business-2089532_640.png';
 
 class QuickArtwork extends Component {
@@ -71,7 +71,7 @@ class QuickArtwork extends Component {
         // FRAME DATA
         const { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour } = frameData;
         // ROOM DATA
-        const { wallTileUrl, floorTileUrl, includeSkirting, includeGuardRail } = roomData;
+        const { wallTileUrl, floorTileUrl, includeSkirting, includeGuardRail, includePeople } = roomData;
 
         // prevent errors by stopping if critical elements not available
         if (!this.canvas || width < 1 || height < 1 || !masterCanvas) {
@@ -162,7 +162,7 @@ class QuickArtwork extends Component {
         }
 
         // add people
-        // drawPeople(ctx, width, height);
+        if(includePeople) drawPeople(ctx, width, height);
 
         // add artfly.io bit to the bottom right;
         const branding = "ArtFly.io";
@@ -593,7 +593,7 @@ const drawFrameShadow = (ctx, x, y, width, height) => {
     ctx.restore(); // clear it or will be added to everything
 };
 
-/*const drawPeople = (ctx, width, height, callback) => {
+const drawPeople = (ctx, width, height, callback) => {
     let img = new Image();
     img.setAttribute('crossOrigin', 'anonymous'); //
     img.src = People;
@@ -602,7 +602,7 @@ const drawFrameShadow = (ctx, x, y, width, height) => {
 
         if (callback) callback();
     };
-};*/
+};
 
 const calculateCanvasArtworkSizes = ({ frameThicknessDecimal = 0.04, mountThicknessDecimal = 0.06, width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 30, minPaddingSides = 20 }) => {
     // const mountThicknessPercent = 0.06;
