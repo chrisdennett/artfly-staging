@@ -111,33 +111,39 @@ class RoomPresets extends Component {
 
         this.onWallSwatchClick = this.onWallSwatchClick.bind(this);
         this.onFloorSwatchClick = this.onFloorSwatchClick.bind(this);
+        this.onIncludeSkirtingChange = this.onIncludeSkirtingChange.bind(this);
+        this.onIncludeGuardRailChange = this.onIncludeGuardRailChange.bind(this);
+        this.onIncludePeopleChange = this.onIncludePeopleChange.bind(this);
     }
 
-    componentWillMount(){
-        console.log("this.props: ", this.props);
+    onWallSwatchClick(tileUrl) {
+        const newRoomData = { ...this.props.roomData, wallTileUrl: tileUrl };
+        this.props.onDataChange({ roomData: newRoomData });
     }
 
-    onWallSwatchClick(presetKey, tileUrl) {
-        // console.log("WALL: ", presetKey);
-        this.props.onWallSwatchSelected(tileUrl);
-    }
-
-    onFloorSwatchClick(presetKey, tileUrl) {
-        // console.log("FLOOR: ", presetKey);
-        this.props.onFloorSwatchSelected(tileUrl);
+    onFloorSwatchClick(tileUrl) {
+        const newRoomData = { ...this.props.roomData, floorTileUrl: tileUrl };
+        this.props.onDataChange({ roomData: newRoomData });
     }
 
     onIncludeSkirtingChange(value) {
-        this.props.onIncludeSkirtingChange(value)
+        const newRoomData = { ...this.props.roomData, includeSkirting: value };
+        this.props.onDataChange({ roomData: newRoomData });
     }
 
     onIncludeGuardRailChange(value) {
-        this.props.onIncludeGuardRailChange(value)
+        const newRoomData = { ...this.props.roomData, includeGuardRail: value };
+        this.props.onDataChange({ roomData: newRoomData });
+    }
+
+    onIncludePeopleChange(includePeople) {
+        const newRoomData = { ...this.props.roomData, includePeople };
+        this.props.onDataChange({ roomData: newRoomData });
     }
 
     render() {
-        const {roomData} = this.props;
-        const {includeSkirting, includeGuardRail, wallTileUrl, floorTileUrl} = roomData;
+        const { roomData } = this.props;
+        const { includeSkirting, includeGuardRail, wallTileUrl, floorTileUrl, includePeople } = roomData;
 
         return (
             <ToolControlPanelContent>
@@ -162,13 +168,17 @@ class RoomPresets extends Component {
                                   value={includeSkirting}
                                   onChange={(e) => this.onIncludeSkirtingChange(e.target.checked)}
                         />
-                    </div>
 
-                    <div className={'skirtingControlHolder'}>
                         <CheckBox label={'Guard rail'}
                                   id={'include-guard-rail'}
                                   value={includeGuardRail}
                                   onChange={(e) => this.onIncludeGuardRailChange(e.target.checked)}
+                        />
+
+                        <CheckBox label={'Include people'}
+                                  id={'include-people'}
+                                  value={includePeople}
+                                  onChange={(e) => this.onIncludePeopleChange(e.target.checked)}
                         />
                     </div>
                 </ToolControlPanelSection>

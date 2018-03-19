@@ -16,7 +16,6 @@ import QuickFrameEditor from "./quickFrameEditor/QuickFrameEditor";
 import QuickRoomEditor from "./quickRoomEditor/QuickRoomEditor";
 // DEV ONLY
 import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
-import QuickPeopleEditor from "./quickPeopleEditor/QuickPeopleEditor";
 
 // Constants
 const defaultArtworkData = DefaultArtworkDataGenerator();
@@ -37,8 +36,6 @@ class QuickArtworkMaker extends Component {
         this.onFrameCancel = this.onFrameCancel.bind(this);
         this.onRoomDone = this.onRoomDone.bind(this);
         this.onRoomCancel = this.onRoomCancel.bind(this);
-        this.onPeopleDone = this.onPeopleDone.bind(this);
-        this.onPeopleCancel = this.onPeopleCancel.bind(this);
         this.onArtworkDataChange = this.onArtworkDataChange.bind(this);
 
         this.state = { currentTool: 'upload', artworkData: defaultArtworkData };
@@ -47,7 +44,7 @@ class QuickArtworkMaker extends Component {
     // TEST ONLY
     componentDidMount() {
         this.sourceImg = TEST_SOURCE_IMG;
-        this.toolToShowAfterUpdate = 'people';
+        this.toolToShowAfterUpdate = 'room';
         this.updateMasterCanvas(this.sourceImg, 1);
     }
 
@@ -126,33 +123,15 @@ class QuickArtworkMaker extends Component {
         this.setState({ currentTool: 'view' })
     }
 
-    onRoomDone(roomData) {
-        this.setState((state) => {
-            return {
-                artworkData: { ...state.artworkData, roomData },
-                currentTool: 'view'
-            }
-        })
+    onRoomDone() {
+        this.setState({ currentTool: 'view' })
     }
 
     onRoomCancel() {
         this.setState({ currentTool: 'view' })
     }
 
-    onPeopleDone(roomData) {
-        this.setState((state) => {
-            return {
-                artworkData: { ...state.artworkData, roomData },
-                currentTool: 'view'
-            }
-        })
-    }
-
-    onPeopleCancel() {
-        this.setState({ currentTool: 'view' })
-    }
-
-    onArtworkDataChange(newPartialData){
+    onArtworkDataChange(newPartialData) {
         this.setState((state) => {
             return {
                 artworkData: { ...state.artworkData, ...newPartialData }
@@ -176,6 +155,8 @@ class QuickArtworkMaker extends Component {
             classesForMain = 'quickArtworkMaker--mainScrollable';
         }
 
+        const showArtwork = currentTool === 'room' || currentTool === 'view';
+
         return (
             <div className={'quickArtworkMaker'}>
 
@@ -189,14 +170,14 @@ class QuickArtworkMaker extends Component {
 
                 <div className={classesForMain}>
 
-                    {/*{currentTool === 'view' &&*/}
+                    {showArtwork &&
                     <QuickArtwork height={height}
                                   width={contentWidth}
                                   isFixed={true}
                                   artworkData={artworkData}
                                   masterCanvas={masterCanvas}
                     />
-                    {/*// */}
+                    }
 
                     {currentTool === 'crop' &&
                     <QuickCropAndRotate sourceImg={sourceImg}
@@ -229,18 +210,11 @@ class QuickArtworkMaker extends Component {
                     {currentTool === 'room' &&
                     <QuickRoomEditor height={height}
                                      width={contentWidth}
-                                     artworkData={artworkData}
+                                     roomData={artworkData.roomData}
                                      masterCanvas={masterCanvas}
+                                     onDataChange={this.onArtworkDataChange}
                                      onDone={this.onRoomDone}
                                      onCancel={this.onRoomCancel}/>
-                    }
-
-                    {currentTool === 'people' &&
-                    <QuickPeopleEditor width={contentWidth}
-                                       roomData={artworkData.roomData}
-                                       onPeopleDataChange={this.onArtworkDataChange}
-                                       onDone={this.onPeopleDone}
-                                       onCancel={this.onPeopleCancel}/>
                     }
 
                     {currentTool === 'share' &&

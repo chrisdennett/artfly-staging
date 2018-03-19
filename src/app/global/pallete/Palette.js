@@ -23,7 +23,7 @@ const Palette = function ({swatchData, onSwatchSelected, selectedUrl}) {
                         <div key={key}
                              className={'palette--swatch'}
                              style={swatchStyle}
-                             onClick={() => onSwatchSelected(key, tileUrl)} />
+                             onClick={() => onSwatchSelected(tileUrl, key)} />
                     )
                 })
             }
