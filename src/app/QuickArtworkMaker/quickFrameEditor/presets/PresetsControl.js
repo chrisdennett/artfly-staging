@@ -112,7 +112,11 @@ class PresetsControl extends Component {
             frameColour: { ...frameColour, hue: frameHue, saturation: frameSaturation, lightness: frameLightness },
             mountColour: { ...mountColour, hue: mountHue, saturation: mountSaturation, lightness: mountLightness }
         };
-        this.props.onPresetSelect(currentValues);
+
+        if (this.props.onDataChange) {
+            const newFrameData = { ...this.props.frameData, ...currentValues };
+            this.props.onDataChange({ frameData:newFrameData });
+        }
     }
 
     onFrameTypeOptionSelected(label) {
@@ -174,7 +178,7 @@ class PresetsControl extends Component {
 
                     {pageWidth > 600 &&
                     presets.map((preset) => {
-                        const tileStyle = preset === selectedPreset ? {backgroundColor:'black', color:'white'} : {backgroundColor:'white'};
+                        const tileStyle = preset === selectedPreset ? { backgroundColor: 'black', color: 'white' } : { backgroundColor: 'white' };
 
                         return (
                             <div className={'presetsControl--frameOption'}

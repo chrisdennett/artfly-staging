@@ -1,19 +1,12 @@
 import React, { Component } from "react";
-// import faThReg from "@fortawesome/fontawesome-pro-regular/faTh";
-// import faSquareReg from "@fortawesome/fontawesome-pro-regular/faSquare";
-// import faSquare from "@fortawesome/fontawesome-pro-solid/faSquare";
 import faImage from "@fortawesome/fontawesome-pro-solid/faImage";
-// import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 // styles
 import './quickFrame_styles.css';
 // comps
-import QuickArtwork from "../quickArtwork/QuickArtwork";
-// import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 import ColourAndSizeControl from "../../global/colourAndSizeControl/ColourAndSizeControl";
 import PresetsControl from "./presets/PresetsControl";
 import Butt from "../../global/Butt/Butt";
 import ToolControlPanel from "../../global/toolControlPanel/ToolControlPanel";
-
 
 class QuickFrameEditor extends Component {
 
@@ -21,7 +14,7 @@ class QuickFrameEditor extends Component {
         super(props);
 
         this.onDoneClick = this.onDoneClick.bind(this);
-        this.onCancelClick = this.onCancelClick.bind(this);
+        this.onResetClick = this.onResetClick.bind(this);
 
         this.onPresetsSelected = this.onPresetsSelected.bind(this);
         this.onFrameEditSelected = this.onFrameEditSelected.bind(this);
@@ -31,15 +24,14 @@ class QuickFrameEditor extends Component {
         this.onFrameColourChange = this.onFrameColourChange.bind(this);
         this.onMountThicknessChange = this.onMountThicknessChange.bind(this);
         this.onMountColourChange = this.onMountColourChange.bind(this);
-        this.onPresetOptionSelected = this.onPresetOptionSelected.bind(this);
     }
 
     componentWillMount() {
-        const { artworkData } = this.props;
-        const currentTool = artworkData.frameData.presetName === 'custom' ? 'frame' : 'presets';
+        const { frameData } = this.props;
+        const currentTool = frameData.presetName === 'custom' ? 'frame' : 'presets';
 
-        if (artworkData) {
-            this.setState({ ...artworkData.frameData, currentTool });
+        if (frameData) {
+            this.setState({ initialData: frameData, currentTool });
         }
     }
 
@@ -58,85 +50,74 @@ class QuickFrameEditor extends Component {
 
     // CUSTOM FRAME EDITING EVENTS
     onFrameColourChange(frameColour) {
-        this.setState({ frameColour, presetName: 'custom' })
+        const newFrameData = {...this.props.frameData, frameColour};
+        this.props.onDataChange({ frameData: newFrameData });
     }
 
     onMountColourChange(mountColour) {
-        this.setState({ mountColour, presetName: 'custom' })
+        const newFrameData = {...this.props.frameData, mountColour};
+        this.props.onDataChange({ frameData: newFrameData });
     }
 
     onFrameThicknessChange(value) {
-        this.setState({ frameThicknessDecimal: value, presetName: 'custom' });
+        const newFrameData = {...this.props.frameData, frameThicknessDecimal:value}
+        this.props.onDataChange({ frameData: newFrameData });
     }
 
     onMountThicknessChange(value) {
-        this.setState({ mountThicknessDecimal: value, presetName: 'custom' });
-    }
-
-    // PRESET FRAME EVENT
-    onPresetOptionSelected(presetData) {
-        this.setState({ ...presetData });
+        const newFrameData = {...this.props.frameData, mountThicknessDecimal:value}
+        this.props.onDataChange({ frameData: newFrameData });
     }
 
     // Global events
     onDoneClick() {
-        const { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour, presetName } = this.state;
-        const frameData = { presetName, frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour };
-
-        this.props.onDone(frameData);
+        this.props.onDone();
     }
 
-    onCancelClick() {
-        this.props.onCancel();
+    onResetClick() {
+        this.props.onDataChange({ frameData: this.state.initialData });
     }
 
     render() {
-        const { height, width, artworkData, masterCanvas } = this.props;
-        const { currentTool, frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour, presetName } = this.state;
+        const { frameData, onDataChange } = this.props;
+        const { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour, presetName } = frameData;
 
-        const frameData = { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour };
-        const unsavedArtworkData = { ...artworkData, frameData, titlesData: null };
-
-        /*<div style={{ backgroundColor: '#fff', padding: 10 }}>
-                            {`
-                                frameColour: { hue:${frameColour.hue},saturation:${frameColour.saturation},lightness:${frameColour.lightness}},
-                                mountColour: {hue:${mountColour.hue},saturation:${mountColour.saturation},lightness:${mountColour.lightness}},
-                                frameThicknessDecimal: ${frameThicknessDecimal},
-                                mountThicknessDecimal: ${mountThicknessDecimal}
-                            `}
-                        </div>*/
+        const dataChanged = this.state.initialData !== frameData;
 
         const globalButts = [
             <Butt key="done" fullWidth={true} style={{ fontSize: '1rem' }} label={'DONE'} green
                   onClick={this.onDoneClick}/>,
-            <Butt key="cancel" fullWidth={true} style={{ fontSize: '1rem' }} label={'CANCEL'} red
-                  onClick={this.onCancelClick}/>
+            <Butt key="cancel" fullWidth={true} style={{ fontSize: '1rem' }} label={'RESET'}
+                  red
+                  disabled={!dataChanged}
+                  onClick={this.onResetClick}/>
         ];
 
         const toolOptions = [
             {
                 label: 'PRESETS',
                 content: <PresetsControl frameData={frameData}
-                                      initialPresetName={presetName}
-                                      onPresetSelect={this.onPresetOptionSelected}/>
+                                         initialPresetName={presetName}
+                                         onDataChange={onDataChange}
+                                         onPresetSelect={this.onPresetOptionSelected}/>
             },
             {
                 label: 'FRAME',
                 content: <ColourAndSizeControl title={'Frame'}
-                                            id={'frame'}
-                                            size={frameThicknessDecimal}
-                                            colour={frameColour}
-                                            onSizeChange={this.onFrameThicknessChange}
-                                            onColourChange={this.onFrameColourChange}/>
+                                               id={'frame'}
+                                               size={frameThicknessDecimal}
+                                               colour={frameColour}
+                                               onSizeChange={this.onFrameThicknessChange}
+                                               onColourChange={this.onFrameColourChange}/>
             },
             {
                 label: 'MOUNT',
                 content: <ColourAndSizeControl title={'Mount'}
-                                            id={'mount'}
-                                            size={mountThicknessDecimal}
-                                            colour={mountColour}
-                                            onSizeChange={this.onMountThicknessChange}
-                                            onColourChange={this.onMountColourChange}/>
+                                               id={'mount'}
+                                               size={mountThicknessDecimal}
+                                               colour={mountColour}
+                                               onSizeChange={this.onMountThicknessChange}
+                                               onColourChange={this.onMountColourChange}/>
             }
         ];
 
@@ -147,111 +128,7 @@ class QuickFrameEditor extends Component {
                                   minWidth={225}
                                   titleIcon={faImage}
                                   globalButts={globalButts}
-                                  toolOptions={toolOptions}>
-
-                    {currentTool === 'presets' &&
-                    <PresetsControl frameData={frameData}
-                                    initialPresetName={presetName}
-                                    onPresetSelect={this.onPresetOptionSelected}
-                    />
-                    }
-
-                    {currentTool === 'frame' &&
-                    <ColourAndSizeControl title={'Frame'}
-                                          id={'frame'}
-                                          size={frameThicknessDecimal}
-                                          colour={frameColour}
-                                          onSizeChange={this.onFrameThicknessChange}
-                                          onColourChange={this.onFrameColourChange}
-                    />
-                    }
-
-                    {currentTool === 'mount' &&
-                    <ColourAndSizeControl title={'Mount'}
-                                          id={'mount'}
-                                          size={mountThicknessDecimal}
-                                          colour={mountColour}
-                                          onSizeChange={this.onMountThicknessChange}
-                                          onColourChange={this.onMountColourChange}
-                    />
-                    }
-                </ToolControlPanel>
-
-                {/*<div className={'quickFrameEditor--toolHolder'}>
-                    <div className={'quickFrameEditor--toolHolder--controls'}>
-
-                        {currentTool === 'presets' &&
-                        <PresetsControl frameData={frameData}
-                                        initialPresetName={presetName}
-                                        onPresetSelect={this.onPresetOptionSelected}
-                        />
-                        }
-
-                        {currentTool === 'frame' &&
-                        <ColourAndSizeControl title={'Frame'}
-                                              id={'frame'}
-                                              size={frameThicknessDecimal}
-                                              colour={frameColour}
-                                              onSizeChange={this.onFrameThicknessChange}
-                                              onColourChange={this.onFrameColourChange}
-                        />
-                        }
-
-                        {currentTool === 'mount' &&
-                        <ColourAndSizeControl title={'Mount'}
-                                              id={'mount'}
-                                              size={mountThicknessDecimal}
-                                              colour={mountColour}
-                                              onSizeChange={this.onMountThicknessChange}
-                                              onColourChange={this.onMountColourChange}
-                        />
-                        }
-                    </div>
-
-                    <div className={'quickFrameEditor--toolHolder--selectors'}>
-
-                        <ControlPanelButt onClick={this.onPresetsSelected}
-                                          isSelected={currentTool === 'presets'}
-                                          icon={faThReg}
-                                          style={{ margin: 0 }}
-                                          label={'PRESETS'}/>
-
-                        <ControlPanelButt onClick={this.onFrameEditSelected}
-                                          isSelected={currentTool === 'frame'}
-                                          icon={faSquareReg}
-                                          style={{ margin: 0 }}
-                                          label={'FRAME'}/>
-
-                        <ControlPanelButt onClick={this.onMountEditSelected}
-                                          isSelected={currentTool === 'mount'}
-                                          icon={faSquare}
-                                          style={{ margin: 0 }}
-                                          label={'MOUNT'}/>
-
-                        <div className={'quickFrameEditor--toolHolder--selectors--globalButts'}>
-
-                            <ControlPanelButt onClick={this.onDoneClick}
-                                              icon={faCheckSquare}
-                                              style={{ margin: 0, color: '#8ca630' }}
-                                              label={'SAVE'}/>
-
-                            <ControlPanelButt onClick={this.onCancelClick}
-                                              icon={faCheckSquare}
-                                              style={{ margin: 0, color: '#ce373e' }}
-                                              label={'CANCEL'}/>
-                        </div>
-
-                    </div>
-
-
-                </div>*/}
-
-                <QuickArtwork height={height}
-                              width={width}
-                              artworkData={unsavedArtworkData}
-                              isFixed={true}
-                              masterCanvas={masterCanvas}
-                />
+                                  toolOptions={toolOptions}/>
 
             </div>
         );
@@ -259,3 +136,12 @@ class QuickFrameEditor extends Component {
 }
 
 export default QuickFrameEditor;
+
+/*<div style={{ backgroundColor: '#fff', padding: 10 }}>
+                            {`
+                                frameColour: { hue:${frameColour.hue},saturation:${frameColour.saturation},lightness:${frameColour.lightness}},
+                                mountColour: {hue:${mountColour.hue},saturation:${mountColour.saturation},lightness:${mountColour.lightness}},
+                                frameThicknessDecimal: ${frameThicknessDecimal},
+                                mountThicknessDecimal: ${mountThicknessDecimal}
+                            `}
+                        </div>*/

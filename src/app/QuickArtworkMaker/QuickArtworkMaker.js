@@ -33,9 +33,7 @@ class QuickArtworkMaker extends Component {
         this.onTitlesEditorDone = this.onTitlesEditorDone.bind(this);
         this.onTitlesEditorCancel = this.onTitlesEditorCancel.bind(this);
         this.onFrameDone = this.onFrameDone.bind(this);
-        this.onFrameCancel = this.onFrameCancel.bind(this);
         this.onRoomDone = this.onRoomDone.bind(this);
-        this.onRoomCancel = this.onRoomCancel.bind(this);
         this.onArtworkDataChange = this.onArtworkDataChange.bind(this);
 
         this.state = { currentTool: 'upload', artworkData: defaultArtworkData };
@@ -44,7 +42,7 @@ class QuickArtworkMaker extends Component {
     // TEST ONLY
     componentDidMount() {
         this.sourceImg = TEST_SOURCE_IMG;
-        this.toolToShowAfterUpdate = 'room';
+        this.toolToShowAfterUpdate = 'frame';
         this.updateMasterCanvas(this.sourceImg, 1);
     }
 
@@ -110,24 +108,11 @@ class QuickArtworkMaker extends Component {
         this.setState({ currentTool: 'view' })
     }
 
-    onFrameDone(frameData) {
-        this.setState((state) => {
-            return {
-                artworkData: { ...state.artworkData, frameData },
-                currentTool: 'view'
-            }
-        })
-    }
-
-    onFrameCancel() {
+    onFrameDone() {
         this.setState({ currentTool: 'view' })
     }
 
     onRoomDone() {
-        this.setState({ currentTool: 'view' })
-    }
-
-    onRoomCancel() {
         this.setState({ currentTool: 'view' })
     }
 
@@ -155,7 +140,7 @@ class QuickArtworkMaker extends Component {
             classesForMain = 'quickArtworkMaker--mainScrollable';
         }
 
-        const showArtwork = currentTool === 'room' || currentTool === 'view';
+        const hideArtwork = currentTool === 'crop' || currentTool === 'upload'  || currentTool === 'share';
 
         return (
             <div className={'quickArtworkMaker'}>
@@ -170,7 +155,7 @@ class QuickArtworkMaker extends Component {
 
                 <div className={classesForMain}>
 
-                    {showArtwork &&
+                    {!hideArtwork &&
                     <QuickArtwork height={height}
                                   width={contentWidth}
                                   isFixed={true}
@@ -201,20 +186,17 @@ class QuickArtworkMaker extends Component {
                     {currentTool === 'frame' &&
                     <QuickFrameEditor height={height}
                                       width={contentWidth}
-                                      artworkData={artworkData}
-                                      masterCanvas={masterCanvas}
-                                      onDone={this.onFrameDone}
-                                      onCancel={this.onFrameCancel}/>
+                                      frameData={artworkData.frameData}
+                                      onDataChange={this.onArtworkDataChange}
+                                      onDone={this.onFrameDone}/>
                     }
 
                     {currentTool === 'room' &&
                     <QuickRoomEditor height={height}
                                      width={contentWidth}
                                      roomData={artworkData.roomData}
-                                     masterCanvas={masterCanvas}
                                      onDataChange={this.onArtworkDataChange}
-                                     onDone={this.onRoomDone}
-                                     onCancel={this.onRoomCancel}/>
+                                     onDone={this.onRoomDone}/>
                     }
 
                     {currentTool === 'share' &&
