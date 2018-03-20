@@ -14,27 +14,43 @@ class QuickRoomEditor extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {initialData:null};
+
         this.onDoneClick = this.onDoneClick.bind(this);
-        this.onCancelClick = this.onCancelClick.bind(this);
+        this.onResetClick = this.onResetClick.bind(this);
     }
+
+    componentWillMount(){
+        this.setState({initialData: this.props.roomData});
+    }
+
 
     // Global events
     onDoneClick() {
         this.props.onDone();
     }
 
-    onCancelClick() {
-        this.props.onCancel();
+    onResetClick() {
+        this.props.onDataChange({roomData:this.state.initialData});
     }
 
     render() {
         const { width, roomData, onDataChange } = this.props;
+        const dataChanged = this.state.initialData !== roomData;
 
         const globalButts = [
-            <Butt key="done" fullWidth={true} style={{ fontSize: '1rem' }} label={'DONE'} green
+            <Butt key="done" fullWidth={true}
+                  style={{ fontSize: '1rem' }}
+                  label={'DONE'}
+                  green
                   onClick={this.onDoneClick}/>,
-            <Butt key="cancel" fullWidth={true} style={{ fontSize: '1rem' }} label={'CANCEL'} red
-                  onClick={this.onCancelClick}/>
+
+            <Butt key="reset" fullWidth={true}
+                  style={{ fontSize: '1rem' }}
+                  label={'RESET'}
+                  disabled={!dataChanged}
+                  red
+                  onClick={this.onResetClick}/>
         ];
 
         const toolOptions = [

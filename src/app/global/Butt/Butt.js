@@ -22,8 +22,9 @@ class Butt extends Component {
     }
 
     render() {
-        const { label, useATag = false, onClick, alignLeft, size, svgIcon, showAsLink, fullWidth, ...rest } = this.props;
+        const { label, useATag = false, disabled, onClick, alignLeft, size, svgIcon, showAsLink, fullWidth, ...rest } = this.props;
 
+        let onClickHandler = onClick;
         let buttonStyle = {display:'inline-flex'};
         const wordingStyle = { width:'100%'};
 
@@ -61,6 +62,11 @@ class Butt extends Component {
         else if (blue) classes += ' butt--blue';
         else if (purple) classes += ' butt--purple';
 
+        if(disabled) {
+            classes += ' butt--disabled';
+            onClickHandler = null;
+        }
+
         const wording = label ? label : this.props.children;
 
         const iconHolderStyles = {};
@@ -72,12 +78,8 @@ class Butt extends Component {
             }
 
         if (useATag) {
-            // buttonStyle.display = 'inline-flex';
-            // buttonStyle.paddingTop = 10;
-
-
             return (
-                <a onClick={onClick}
+                <a onClick={onClickHandler}
                    href={this.props.href}
                    download={this.props.download}
                    className={classes}
@@ -96,7 +98,7 @@ class Butt extends Component {
         }
 
         return (
-            <button onClick={onClick}
+            <button onClick={onClickHandler}
                     className={classes}
                     style={buttonStyle}
                     onMouseEnter={this.onMouseEnter}

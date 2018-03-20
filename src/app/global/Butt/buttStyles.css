@@ -16,6 +16,19 @@
     /*font-family: 'Stardos Stencil', cursive;*/
 }
 
+.butt--hover {
+    text-decoration: underline;
+}
+
+.butt--disabled{
+    opacity: 0.5;
+    cursor: default;
+}
+
+.butt--disabled:hover{
+    text-decoration: none;
+}
+
 .butt--iconHolder {
     margin-right: 10px;
     padding-top: 5px;
@@ -27,9 +40,6 @@
     box-shadow: 2px 2px black;
 }
 
-.butt--hover {
-    text-decoration: underline;
-}
 
 .butt--white {
     background-color: rgba(255, 255, 255, 1);
