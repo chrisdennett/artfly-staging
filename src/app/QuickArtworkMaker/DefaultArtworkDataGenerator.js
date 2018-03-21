@@ -35,7 +35,8 @@ export default function () {
             name:'womanStanding1',
             url: '/images/audience/woman-standing-1.png',
             x: 0.5, y: 1.05,
-            height: 300, width: 120
+            height: 300, width: 120,
+            maxProportionOfScreenHeight:0.5
         }],
         includeSkirting: true,
         includeGuardRail: true,
