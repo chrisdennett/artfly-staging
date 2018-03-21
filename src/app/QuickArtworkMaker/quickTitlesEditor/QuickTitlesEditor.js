@@ -2,7 +2,6 @@ import React, { Component } from "react";
 // styles
 import './quickTitles_styles.css';
 // comps
-import QuickArtwork from "../quickArtwork/QuickArtwork";
 import Butt from "../../global/Butt/Butt";
 import WordCountInput from "./wordCountInput/WordCountInput";
 import ToolControlPanel from "../../global/toolControlPanel/ToolControlPanel";
@@ -25,7 +24,9 @@ class QuickTitlesEditor extends Component {
         this.onDateChange = this.onDateChange.bind(this);
         this.onDoneClick = this.onDoneClick.bind(this);
         this.onClearClick = this.onClearClick.bind(this);
-        this.onCancelClick = this.onCancelClick.bind(this);
+        this.onResetClick = this.onResetClick.bind(this);
+        this.update = this.update.bind(this);
+
     }
 
     componentWillMount() {
@@ -34,55 +35,48 @@ class QuickTitlesEditor extends Component {
 
     onTitleChange(value) {
         const newTitlesData = {...this.props.titlesData, title:value};
-        this.props.onDataChange({titlesData:newTitlesData});
+        this.update(newTitlesData);
     }
 
     onArtistChange(value) {
         const newTitlesData = {...this.props.titlesData, artist:value};
-        this.props.onDataChange({titlesData:newTitlesData});
-        // this.setState({ artist: value });
+        this.update(newTitlesData);
     }
 
     onDescriptionChange(value) {
         const newTitlesData = {...this.props.titlesData, description:value};
-        this.props.onDataChange({titlesData:newTitlesData});
-        // this.setState({ description: value });
+        this.update(newTitlesData);
     }
 
     onDateChange(value) {
-        // this.setState({ date: value });
         const newTitlesData = {...this.props.titlesData, date:value};
-        this.props.onDataChange({titlesData:newTitlesData});
+       this.update(newTitlesData);
+    }
+
+    update(newTitlesData){
+        // if values are missing the default data prevents errors, but mostly it's overwritten
+        const defaultMergeData = {title:'', artist:'', description:'',date:''};
+        const titlesData = {...defaultMergeData, ...newTitlesData};
+        this.props.onDataChange({titlesData});
     }
 
     onDoneClick() {
-        /*const { title, artist, description, date } = this.state;
-        const titlesPresent = title.length > 0 || artist.length > 0 || description.length > 0;
-        const titlesData = titlesPresent ? { title, artist, description, date } : null;*/
         this.props.onDone();
     }
 
     onClearClick() {
-        this.setState({ title: '', artist: '', description: '', date: '' });
+        this.props.onDataChange({titlesData:null});
     }
 
-    onCancelClick(){
-        this.props.onCancel();
+    onResetClick(){
+        this.props.onDataChange({titlesData:this.state.initialData});
     }
 
     render() {
-        const { titlesData } = this.props;
         const { maxTitleLength, maxArtistLength, maxDescriptionLength } = this.state;
+        const titlesData = this.props.titlesData ? this.props.titlesData : {title:'', artist:'', description:'',date:''};
         const {title, artist, description, date} = titlesData;
-        // const titlesPresent = title.length > 0 || artist.length > 0 || description.length > 0;
-        // const titlesData = titlesPresent ? { title, artist, description, date } : null;
-        // const modifiedArtworkData = {...artworkData, titlesData};
-
-        /*const showArtwork = width > 800;
-        let controlsClass = 'quickTitles--controls--holder--partView';
-        if(!showArtwork){
-            controlsClass = 'quickTitles--controls--holder--fullView'
-        }*/
+        const dataChanged = this.state.initialData !== titlesData;
 
         return (
             <div className={'quickTitles'}>
@@ -127,7 +121,7 @@ class QuickTitlesEditor extends Component {
                         <div className={'quickTitles--controls--butts'}>
                             <Butt fullWidth={true} label={'DONE'} green onClick={this.onDoneClick}/>
                             <Butt fullWidth={true} label={'CLEAR ALL'} onClick={this.onClearClick}/>
-                            <Butt fullWidth={true} label={'CANCEL'} red onClick={this.onCancelClick}/>
+                            <Butt fullWidth={true} label={'RESET'} disabled={!dataChanged} red onClick={this.onResetClick}/>
                         </div>
                     </div>
                 </div>

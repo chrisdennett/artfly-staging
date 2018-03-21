@@ -30,10 +30,7 @@ class QuickArtworkMaker extends Component {
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
         this.onCropAndRotateCancel = this.onCropAndRotateCancel.bind(this);
         this.updateMasterCanvas = this.updateMasterCanvas.bind(this);
-        this.onTitlesEditorDone = this.onTitlesEditorDone.bind(this);
-        this.onTitlesEditorCancel = this.onTitlesEditorCancel.bind(this);
-        this.onFrameDone = this.onFrameDone.bind(this);
-        this.onRoomDone = this.onRoomDone.bind(this);
+        this.onEditDone = this.onEditDone.bind(this);
         this.onArtworkDataChange = this.onArtworkDataChange.bind(this);
 
         this.state = { currentTool: 'upload', artworkData: defaultArtworkData };
@@ -95,24 +92,7 @@ class QuickArtworkMaker extends Component {
         this.setState({ currentTool: 'view' })
     }
 
-    onTitlesEditorDone(titlesData) {
-        this.setState((state) => {
-            return {
-                artworkData: { ...state.artworkData, titlesData },
-                currentTool: 'view'
-            }
-        })
-    }
-
-    onTitlesEditorCancel() {
-        this.setState({ currentTool: 'view' })
-    }
-
-    onFrameDone() {
-        this.setState({ currentTool: 'view' })
-    }
-
-    onRoomDone() {
+    onEditDone() {
         this.setState({ currentTool: 'view' })
     }
 
@@ -178,7 +158,7 @@ class QuickArtworkMaker extends Component {
                                        width={contentWidth}
                                        titlesData={artworkData.titlesData}
                                        onDataChange={this.onArtworkDataChange}
-                                       onDone={this.onTitlesEditorDone}
+                                       onDone={this.onEditDone}
                     />
                     }
 
@@ -187,7 +167,7 @@ class QuickArtworkMaker extends Component {
                                       width={contentWidth}
                                       frameData={artworkData.frameData}
                                       onDataChange={this.onArtworkDataChange}
-                                      onDone={this.onFrameDone}/>
+                                      onDone={this.onEditDone}/>
                     }
 
                     {currentTool === 'room' &&
@@ -195,7 +175,7 @@ class QuickArtworkMaker extends Component {
                                      width={contentWidth}
                                      roomData={artworkData.roomData}
                                      onDataChange={this.onArtworkDataChange}
-                                     onDone={this.onRoomDone}/>
+                                     onDone={this.onEditDone}/>
                     }
 
                     {currentTool === 'share' &&
