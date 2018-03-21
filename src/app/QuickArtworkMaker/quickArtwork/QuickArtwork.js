@@ -7,7 +7,8 @@ import GuardRailTile from './../../images/guard-rail.png';
 // import WallTile from './../../images/brickwall.png';
 // import WallTile from './../../images/Concrete-8.jpg';
 // import FloorboardsTile from './../../images/floor-boards.png';
-import People from './../../images/bench-girls-sillhouette-400-260.png';
+// import People from './../../images/bench-girls-sillhouette-400-260.png';
+import People from './../../images/woman-standing-1.png';
 // import People from './../../images/business-2089532_640.png';
 
 class QuickArtwork extends Component {
@@ -598,7 +599,7 @@ const drawPeople = (ctx, width, height, callback) => {
     img.setAttribute('crossOrigin', 'anonymous'); //
     img.src = People;
     img.onload = () => {
-        ctx.drawImage(img, 0, 0, 400, 260, 300, height-240, 400, 260);
+        ctx.drawImage(img, 0, 0, 400, 300, 300, height-300, 400, 300);
 
         if (callback) callback();
     };

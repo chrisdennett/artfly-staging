@@ -39,7 +39,7 @@ class QuickArtworkMaker extends Component {
     // TEST ONLY
     componentDidMount() {
         this.sourceImg = TEST_SOURCE_IMG;
-        this.toolToShowAfterUpdate = 'titles';
+        this.toolToShowAfterUpdate = 'room';
         this.updateMasterCanvas(this.sourceImg, 1);
     }
 
