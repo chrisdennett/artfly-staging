@@ -8,7 +8,8 @@ import GuardRailTile from './../../images/guard-rail.png';
 // import WallTile from './../../images/Concrete-8.jpg';
 // import FloorboardsTile from './../../images/floor-boards.png';
 // import People from './../../images/bench-girls-sillhouette-400-260.png';
-import People from './../../images/woman-standing-1.png';
+// import People from './../../images/woman-standing-1.png';
+
 // import People from './../../images/business-2089532_640.png';
 
 class QuickArtwork extends Component {
@@ -18,7 +19,6 @@ class QuickArtwork extends Component {
 
         this.setupCanvas = this.setupCanvas.bind(this);
         this.onCanvasInit = this.onCanvasInit.bind(this);
-        this.loadImageTiles = this.loadImageTiles.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -31,36 +31,17 @@ class QuickArtwork extends Component {
         if (this.props.onCanvasSetUp) this.props.onCanvasSetUp(canvas)
     }
 
-    // TODO: Could be split out into helper function
-    loadImageTiles(wallTileUrl, floorTileUrl) {
-        this.setState({ wallTileUrl, floorTileUrl }, () => {
-            let img = new Image();
-            img.setAttribute('crossOrigin', 'anonymous'); //
-            // img.src = WallTile;
-            img.src = wallTileUrl;
+    loadImage(url, name) {
+        let img = new Image();
+        img.setAttribute('crossOrigin', 'anonymous'); //
+        img.src = url;
 
-            img.onload = () => {
-                this.wallTile = img;
-                let img2 = new Image();
-                img2.setAttribute('crossOrigin', 'anonymous'); //
-                // img2.src = FloorboardsTile;
-                img2.src = floorTileUrl;
-                img2.onload = () => {
-
-                    this.floorTile = img2;
-
-                    let img3 = new Image();
-                    img3.setAttribute('crossOrigin', 'anonymous'); //
-                    img3.src = GuardRailTile;
-                    img3.onload = () => {
-                        this.guardTile = img3;
-                        this.setupCanvas(this.props);
-                    };
-                }
-            };
-
-        })
-
+        img.onload = () => {
+            this[name] = img;
+            this.setState({ [`${name}Url`]: url }, () => {
+                this.setupCanvas(this.props)
+            });
+        }
     }
 
     setupCanvas(props) {
@@ -72,17 +53,26 @@ class QuickArtwork extends Component {
         // FRAME DATA
         const { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour } = frameData;
         // ROOM DATA
-        const { wallTileUrl, floorTileUrl, includeSkirting, includeGuardRail, includePeople } = roomData;
+        const { audience, wallTileUrl, floorTileUrl, includeSkirting, includeGuardRail, includePeople } = roomData;
 
         // prevent errors by stopping if critical elements not available
         if (!this.canvas || width < 1 || height < 1 || !masterCanvas) {
             return null;
         }
 
-        if (!this.wallTile || !this.floorTile || !this.guardTile || wallTileUrl !== this.state.wallTileUrl || floorTileUrl !== this.state.floorTileUrl) {
-            this.loadImageTiles(wallTileUrl, floorTileUrl);
-            return null;
+        let loadingImage = false;
+        if (!this.wallTile || wallTileUrl !== this.state.wallTileUrl) {
+            loadingImage = true;
+            this.loadImage(wallTileUrl, 'wallTile');
         }
+
+        if (!this.floorTile || floorTileUrl !== this.state.floorTileUrl) {
+            loadingImage = true;
+            this.loadImage(floorTileUrl, 'floorTile');
+        }
+
+        // don't continue if loading an image
+        if (loadingImage) return null;
 
         const srcWidth = masterCanvas.width;
         const srcHeight = masterCanvas.height;
@@ -120,14 +110,12 @@ class QuickArtwork extends Component {
 
         const wallHeight = height - floorHeight;
 
-        const ctx = this.canvas.getContext('2d');
+        const ctx = this.canvas.getContext('2d', { alpha: false });
         ctx.clearRect(0, 0, width, height);
 
         drawWall(ctx, this.wallTile, 0, 0, width, height);
         // add the floor
         drawFloor(ctx, this.floorTile, 0, floorY, width, floorHeight);
-
-        drawRadialGradientOverlay(ctx, width, wallHeight);
 
         drawFrameShadow(ctx, frameX, frameY, frameWidth, frameHeight);
 
@@ -148,12 +136,17 @@ class QuickArtwork extends Component {
         }
 
         if (includeGuardRail) {
-            let guardRailY = floorY - 20;
-            const railHeight = 64;
-            if (guardRailY + railHeight > height) {
-                guardRailY -= railHeight / 3;
+            if (this.guardTile) {
+                let guardRailY = floorY - 20;
+                const railHeight = 64;
+                if (guardRailY + railHeight > height) {
+                    guardRailY -= railHeight / 3;
+                }
+                drawGuardRail(ctx, this.guardTile, 0, guardRailY, width, railHeight);
             }
-            drawGuardRail(ctx, this.guardTile, 0, guardRailY, width, railHeight);
+            else {
+                this.loadImage(GuardRailTile, 'guardTile');
+            }
         }
 
         // add titlesData text
@@ -162,8 +155,39 @@ class QuickArtwork extends Component {
             addTitles(ctx, textWidth, frameHeight, textX, frameY, titlesData);
         }
 
+        drawRadialGradientOverlay(ctx, width, wallHeight);
+
         // add people
-        if(includePeople) drawPeople(ctx, width, height);
+        if (includePeople) {
+            const person = audience[0];
+            const { name, url, x, y } = person;
+            const xPos = width * x;
+            const yPos = height * y;
+
+            if (!this[name] || url !== this.state[`${name}Url`]) {
+                this.loadImage(url, name);
+            }
+            else {
+                drawPeople(ctx, this[name], person.width, person.height, xPos, yPos);
+            }
+
+
+            /*
+
+            if (this.guardTile) {
+                let guardRailY = floorY - 20;
+                const railHeight = 64;
+                if (guardRailY + railHeight > height) {
+                    guardRailY -= railHeight / 3;
+                }
+                drawGuardRail(ctx, this.guardTile, 0, guardRailY, width, railHeight);
+            }
+            else {
+                this.loadImage(GuardRailTile, 'guardTile');
+            }
+
+            drawPeople(audience, ctx, width, height);*/
+        }
 
         // add artfly.io bit to the bottom right;
         const branding = "ArtFly.io";
@@ -185,492 +209,486 @@ class QuickArtwork extends Component {
 
 export default QuickArtwork;
 
-const generateWrappedText = (ctx, text, maxWidth) => {
-    const words = text.split(' ');
-    let line = '';
-    let lines = [];
+const
+    generateWrappedText = (ctx, text, maxWidth) => {
+        const words = text.split(' ');
+        let line = '';
+        let lines = [];
 
-    for (let n = 0; n < words.length; n++) {
-        const testLine = line + words[n] + ' ';
-        const metrics = ctx.measureText(testLine);
-        const testWidth = metrics.width;
-        if (testWidth > maxWidth && n > 0) {
-            lines.push(line);
-            line = words[n] + ' ';
+        for (let n = 0; n < words.length; n++) {
+            const testLine = line + words[n] + ' ';
+            const metrics = ctx.measureText(testLine);
+            const testWidth = metrics.width;
+            if (testWidth > maxWidth && n > 0) {
+                lines.push(line);
+                line = words[n] + ' ';
+            }
+            else {
+                line = testLine;
+            }
         }
-        else {
-            line = testLine;
+        lines.push(line);
+
+        return lines;
+    };
+
+const
+    addWrappedText = (ctx, lines, x, startY, lineHeight) => {
+        let y = startY;
+
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            ctx.fillText(line, x, y);
+            y += lineHeight;
         }
-    }
-    lines.push(line);
+    };
 
-    return lines;
-};
+const
+    addTitles = (ctx, maxWidth, maxHeight, x, y, titlesData) => {
+        const { title, artist, description, date, background = true } = titlesData;
 
-const addWrappedText = (ctx, lines, x, startY, lineHeight) => {
-    let y = startY;
+        const width = background ? maxWidth - 40 : maxWidth;
+        const paddingLeftPercent = background ? 0.3 : 0.1;
 
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        ctx.fillText(line, x, y);
-        y += lineHeight;
-    }
-};
+        const titlePercent = 0.08;
+        const artistPercent = 0.08;
+        const descriptionPercent = 0.06;
+        const paddingTextPercent = 0.06;
+        const dateTextPercent = 0.04;
 
-const addTitles = (ctx, maxWidth, maxHeight, x, y, titlesData) => {
-    const { title, artist, description, date, background = true } = titlesData;
+        const paddingLeft = Math.min(width * paddingLeftPercent, 45);
+        const textPadding = Math.min(width * paddingTextPercent, 20);
 
-    const width = background ? maxWidth - 40 : maxWidth;
-    const paddingLeftPercent = background ? 0.3 : 0.1;
+        let titleFontSize = Math.min(width * titlePercent, 40);
+        let artistFontTitleSize = Math.min(width * artistPercent, 20);
+        const descriptionFontSize = Math.min(width * descriptionPercent, 20);
+        const dateFontSize = Math.min(width * dateTextPercent, 16);
 
-    const titlePercent = 0.08;
-    const artistPercent = 0.08;
-    const descriptionPercent = 0.06;
-    const paddingTextPercent = 0.06;
-    const dateTextPercent = 0.04;
+        ctx.font = `${descriptionFontSize}px 'Stardos Stencil'`;
+        const lines = generateWrappedText(ctx, description, width);
+        const descriptionLineHeight = descriptionFontSize * 1.3;
+        const descriptionHeight = lines.length * descriptionLineHeight;
+        const dateHeight = dateFontSize + textPadding;
 
-    const paddingLeft = Math.min(width * paddingLeftPercent, 45);
-    const textPadding = Math.min(width * paddingTextPercent, 20);
+        const totalTitlesHeight = descriptionHeight + titleFontSize + artistFontTitleSize + dateHeight + (2 * textPadding);
 
-    let titleFontSize = Math.min(width * titlePercent, 40);
-    let artistFontTitleSize = Math.min(width * artistPercent, 20);
-    const descriptionFontSize = Math.min(width * descriptionPercent, 20);
-    const dateFontSize = Math.min(width * dateTextPercent, 16);
+        const textX = x + paddingLeft;
+        const titleTextY = y + (maxHeight - totalTitlesHeight) / 2;
+        const artistTextY = titleTextY + titleFontSize + textPadding;
 
-    ctx.font = `${descriptionFontSize}px 'Stardos Stencil'`;
-    const lines = generateWrappedText(ctx, description, width);
-    const descriptionLineHeight = descriptionFontSize * 1.3;
-    const descriptionHeight = lines.length * descriptionLineHeight;
-    const dateHeight = dateFontSize + textPadding;
+        if (background) {
+            const paddingPercent = 0.1;
+            const padding = width * paddingPercent;
+            const titlesBoardX = textX - padding;
+            const titlesBoardY = titleTextY - padding;
+            const titlesBoardWidth = width + (padding * 2);
+            const titlesBoardHeight = totalTitlesHeight + (padding * 2);
 
-    const totalTitlesHeight = descriptionHeight + titleFontSize + artistFontTitleSize + dateHeight + (2 * textPadding);
+            ctx.beginPath();
+            ctx.fillStyle = "rgb(250,250,250)";
+            ctx.rect(titlesBoardX, titlesBoardY, titlesBoardWidth, titlesBoardHeight);
+            ctx.fill();
 
-    const textX = x + paddingLeft;
-    const titleTextY = y + (maxHeight - totalTitlesHeight) / 2;
-    const artistTextY = titleTextY + titleFontSize + textPadding;
+            ctx.fillStyle = 'rgba(0,0,0,0.4)';
+            ctx.fillRect(titlesBoardX, titlesBoardY + titlesBoardHeight, titlesBoardWidth, 2);
+            ctx.closePath();
+        }
 
-    if (background) {
-        const paddingPercent = 0.1;
-        const padding = width * paddingPercent;
-        const titlesBoardX = textX - padding;
-        const titlesBoardY = titleTextY - padding;
-        const titlesBoardWidth = width + (padding*2);
-        const titlesBoardHeight = totalTitlesHeight + (padding*2);
+        // Title
+        ctx.textBaseline = 'top';
+        ctx.fillStyle = "rgba(0,0,0,0.7)";
+        // ctx.fillStyle = "rgba(255,255,255,0.7)";
 
-        ctx.beginPath();
-        ctx.fillStyle = "rgb(250,250,250)";
-        ctx.rect(titlesBoardX, titlesBoardY, titlesBoardWidth, titlesBoardHeight);
-        ctx.fill();
-        ctx.closePath();
-
-        ctx.save();
-        ctx.shadowColor = 'rgba(0,0,0,0.4)';
-        ctx.shadowBlur = 2;
-        ctx.shadowOffsetX = 3;
-        ctx.shadowOffsetY = 3;
-        ctx.fillRect(titlesBoardX, titlesBoardY, titlesBoardWidth, titlesBoardHeight);
-
-        ctx.shadowColor = 'rgba(0,0,0,0.3)';
-        ctx.shadowBlur = 4;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 0;
-
-        ctx.fillRect(titlesBoardX, titlesBoardY, titlesBoardWidth, titlesBoardHeight);
-
-        ctx.restore(); // clear it or will be added to everything
-    }
-
-    // Title
-    ctx.textBaseline = 'top';
-    ctx.fillStyle = "rgba(0,0,0,0.7)";
-    // ctx.fillStyle = "rgba(255,255,255,0.7)";
-
-    ctx.font = `${titleFontSize}px 'Stardos Stencil'`;
-    let titleWidth = ctx.measureText(title).width;
-    let safetyCounter = 0;
-    while (titleWidth > width) {
-        titleFontSize -= 1;
         ctx.font = `${titleFontSize}px 'Stardos Stencil'`;
-        titleWidth = ctx.measureText(title).width;
-
-        safetyCounter++;
-        if (safetyCounter > 100) break;
-    }
-
-    ctx.fillText(title, textX, titleTextY);
-
-    // Artist
-    if (artist.length > 0) {
-        ctx.font = `bold ${artistFontTitleSize}px 'Stardos Stencil'`;
-        let artistWidth = ctx.measureText(artist).width;
-        safetyCounter = 0;
-        while (artistWidth > width) {
-            artistFontTitleSize -= 1;
-            ctx.font = `${artistFontTitleSize}px 'Stardos Stencil'`;
-            artistWidth = ctx.measureText(artist).width;
+        let titleWidth = ctx.measureText(title).width;
+        let safetyCounter = 0;
+        while (titleWidth > width) {
+            titleFontSize -= 1;
+            ctx.font = `${titleFontSize}px 'Stardos Stencil'`;
+            titleWidth = ctx.measureText(title).width;
 
             safetyCounter++;
             if (safetyCounter > 100) break;
         }
 
-        ctx.fillStyle = 'rgba(255,250,3,0.55)';
-        const polygonPadding = 0.3 * artistFontTitleSize;
-        const polygonTop = artistTextY - polygonPadding;
-        const polygonBottom = artistTextY + artistFontTitleSize + (polygonPadding * 1.5);
-        const aSymmetricalJag = 0.4 * artistFontTitleSize;
+        ctx.fillText(title, textX, titleTextY);
+
+        // Artist
+        if (artist.length > 0) {
+            ctx.font = `bold ${artistFontTitleSize}px 'Stardos Stencil'`;
+            let artistWidth = ctx.measureText(artist).width;
+            safetyCounter = 0;
+            while (artistWidth > width) {
+                artistFontTitleSize -= 1;
+                ctx.font = `${artistFontTitleSize}px 'Stardos Stencil'`;
+                artistWidth = ctx.measureText(artist).width;
+
+                safetyCounter++;
+                if (safetyCounter > 100) break;
+            }
+
+            ctx.fillStyle = 'rgba(255,250,3,0.55)';
+            const polygonPadding = 0.3 * artistFontTitleSize;
+            const polygonTop = artistTextY - polygonPadding;
+            const polygonBottom = artistTextY + artistFontTitleSize + (polygonPadding * 1.5);
+            const aSymmetricalJag = 0.4 * artistFontTitleSize;
+            drawPolygon(ctx,
+                textX - 5, polygonTop,
+                textX + width - aSymmetricalJag, polygonTop,
+                textX + width, polygonBottom,
+                textX - 5, polygonBottom
+            );
+            ctx.fill();
+            ctx.fillStyle = "rgba(0,0,0,0.7)";
+
+            ctx.fillText(`By ${artist}`, textX + 5, artistTextY);
+        }
+
+        // Description
+        const descriptionTextY = artist.length > 0 ? artistTextY + descriptionFontSize + textPadding : artistTextY;
+        // const description = "All the world is a stage, and all the men and women merely players.  They have their exits and their entrances: And one man in his time plays many parts.";
+        ctx.font = `${descriptionFontSize}px 'Stardos Stencil'`;
+        // const lineHeight =
+        addWrappedText(ctx, lines, textX, descriptionTextY, descriptionLineHeight);
+
+        const dateY = description.length > 0 ? descriptionTextY + descriptionHeight + textPadding : descriptionTextY;
+        ctx.font = `${dateFontSize}px 'Stardos Stencil'`;
+        ctx.fillStyle = "rgba(0,0,0,0.4)";
+        ctx.fillText(date, textX, dateY);
+    };
+
+const
+    drawArtworkImage = (ctx, sourceImg, outputCanvas, imgX, imgY, imgWidth, imgHeight, cropData) => {
+
+        const srcW = sourceImg.width;
+        const srcH = sourceImg.height;
+        const srcRight = srcW * cropData.rightPercent;
+        const srcLeft = srcW * cropData.leftPercent;
+        const croppedW = srcRight - srcLeft;
+
+        const srcTop = srcH * cropData.topPercent;
+        const srcBottom = srcH * cropData.bottomPercent;
+        const croppedH = srcBottom - srcTop;
+
+        ctx.drawImage(sourceImg, srcLeft, srcTop, croppedW, croppedH, imgX, imgY, imgWidth, imgHeight);
+    };
+
+const
+    drawFrame = (ctx, startX, startY, width, height, thickness, frameColour) => {
+
+        const { hue, saturation, lightness } = frameColour;
+
+        // if you don't draw a rectangle behind you get seams see:https://stackoverflow.com/questions/19319963/how-to-avoid-seams-between-filled-areas-in-canvas
+        // ctx.fillStyle = '#4c4c4c';
+        ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, 1)`;
+        ctx.fillRect(startX, startY, width, height);
+
+        // top frame section
+        ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, 1)`;
         drawPolygon(ctx,
-            textX - 5, polygonTop,
-            textX + width - aSymmetricalJag, polygonTop,
-            textX + width, polygonBottom,
-            textX - 5, polygonBottom
-        );
+            startX, startY,
+            startX + width, startY,
+            startX + width - thickness, startY + thickness,
+            startX + thickness, startY + thickness);
         ctx.fill();
-        ctx.fillStyle = "rgba(0,0,0,0.7)";
 
-        ctx.fillText(`By ${artist}`, textX + 5, artistTextY);
-    }
+        // right frame section
+        // ctx.fillStyle = '#3b3b3b';
+        ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 5}%, 1)`;
+        drawPolygon(ctx,
+            startX + width - thickness, startY + thickness,
+            startX + width, startY,
+            startX + width, startY + height,
+            startX + width - thickness, startY + height - thickness);
+        ctx.fill();
 
-    // Description
-    const descriptionTextY = artist.length > 0 ? artistTextY + descriptionFontSize + textPadding : artistTextY;
-    // const description = "All the world is a stage, and all the men and women merely players.  They have their exits and their entrances: And one man in his time plays many parts.";
-    ctx.font = `${descriptionFontSize}px 'Stardos Stencil'`;
-    // const lineHeight =
-    addWrappedText(ctx, lines, textX, descriptionTextY, descriptionLineHeight);
+        // bottom frame section
+        ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 10}%, 1)`;
+        drawPolygon(ctx,
+            startX + thickness, startY + height - thickness,
+            startX + width - thickness, startY + height - thickness,
+            startX + width, startY + height,
+            startX, startY + height);
+        ctx.fill();
 
-    const dateY = description.length > 0 ? descriptionTextY + descriptionHeight + textPadding : descriptionTextY;
-    ctx.font = `${dateFontSize}px 'Stardos Stencil'`;
-    ctx.fillStyle = "rgba(0,0,0,0.4)";
-    ctx.fillText(date, textX, dateY);
-};
-
-const drawArtworkImage = (ctx, sourceImg, outputCanvas, imgX, imgY, imgWidth, imgHeight, cropData) => {
-
-    const srcW = sourceImg.width;
-    const srcH = sourceImg.height;
-    const srcRight = srcW * cropData.rightPercent;
-    const srcLeft = srcW * cropData.leftPercent;
-    const croppedW = srcRight - srcLeft;
-
-    const srcTop = srcH * cropData.topPercent;
-    const srcBottom = srcH * cropData.bottomPercent;
-    const croppedH = srcBottom - srcTop;
-
-    ctx.drawImage(sourceImg, srcLeft, srcTop, croppedW, croppedH, imgX, imgY, imgWidth, imgHeight);
-};
-
-const drawFrame = (ctx, startX, startY, width, height, thickness, frameColour) => {
-
-    const { hue, saturation, lightness } = frameColour;
-
-    // if you don't draw a rectangle behind you get seams see:https://stackoverflow.com/questions/19319963/how-to-avoid-seams-between-filled-areas-in-canvas
-    // ctx.fillStyle = '#4c4c4c';
-    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, 1)`;
-    ctx.fillRect(startX, startY, width, height);
-
-    // top frame section
-    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, 1)`;
-    drawPolygon(ctx,
-        startX, startY,
-        startX + width, startY,
-        startX + width - thickness, startY + thickness,
-        startX + thickness, startY + thickness);
-    ctx.fill();
-
-    // right frame section
-    // ctx.fillStyle = '#3b3b3b';
-    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 5}%, 1)`;
-    drawPolygon(ctx,
-        startX + width - thickness, startY + thickness,
-        startX + width, startY,
-        startX + width, startY + height,
-        startX + width - thickness, startY + height - thickness);
-    ctx.fill();
-
-    // bottom frame section
-    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 10}%, 1)`;
-    drawPolygon(ctx,
-        startX + thickness, startY + height - thickness,
-        startX + width - thickness, startY + height - thickness,
-        startX + width, startY + height,
-        startX, startY + height);
-    ctx.fill();
-
-    // left frame section
-    // ctx.fillStyle = '#3b3b3b';
-    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 5}%, 1)`;
-    drawPolygon(ctx,
-        startX, startY,
-        startX + thickness, startY + thickness,
-        startX + thickness, startY + height - thickness,
-        startX, startY + height);
-    ctx.fill();
+        // left frame section
+        // ctx.fillStyle = '#3b3b3b';
+        ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 5}%, 1)`;
+        drawPolygon(ctx,
+            startX, startY,
+            startX + thickness, startY + thickness,
+            startX + thickness, startY + height - thickness,
+            startX, startY + height);
+        ctx.fill();
 
 
-    // draw frame edges
-    const edgeThickness = 3;
+        // draw frame edges
+        const edgeThickness = 3;
 
-    const innerTop = startY + thickness;
-    const innerBottom = startY + height - thickness;
-    const outerTop = innerTop - edgeThickness;
-    const outerBottom = innerBottom + edgeThickness;
+        const innerTop = startY + thickness;
+        const innerBottom = startY + height - thickness;
+        const outerTop = innerTop - edgeThickness;
+        const outerBottom = innerBottom + edgeThickness;
 
-    const innerLeft = startX + thickness;
-    const innerRight = startX + width - thickness;
-    const outerLeft = innerLeft - edgeThickness;
-    const outerRight = innerRight + edgeThickness;
+        const innerLeft = startX + thickness;
+        const innerRight = startX + width - thickness;
+        const outerLeft = innerLeft - edgeThickness;
+        const outerRight = innerRight + edgeThickness;
 
-    // top edge
-    ctx.fillStyle = 'rgba(255,255,255,0.1)';
-    drawPolygon(ctx, outerLeft, outerTop, outerRight, outerTop, innerRight, innerTop, innerLeft, innerTop);
-    ctx.fill();
+        // top edge
+        ctx.fillStyle = 'rgba(255,255,255,0.1)';
+        drawPolygon(ctx, outerLeft, outerTop, outerRight, outerTop, innerRight, innerTop, innerLeft, innerTop);
+        ctx.fill();
 
-    // right edge
-    ctx.fillStyle = 'rgba(255,255,255,0.3)';
-    drawPolygon(ctx, outerRight, outerTop, innerRight, innerTop, innerRight, innerBottom, outerRight, outerBottom);
-    ctx.fill();
+        // right edge
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        drawPolygon(ctx, outerRight, outerTop, innerRight, innerTop, innerRight, innerBottom, outerRight, outerBottom);
+        ctx.fill();
 
-    // bottom edge
-    ctx.fillStyle = 'rgba(255,255,255,0.3)';
-    drawPolygon(ctx, innerLeft, innerBottom, innerRight, innerBottom, outerRight, outerBottom, outerLeft, outerBottom);
-    ctx.fill();
+        // bottom edge
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        drawPolygon(ctx, innerLeft, innerBottom, innerRight, innerBottom, outerRight, outerBottom, outerLeft, outerBottom);
+        ctx.fill();
 
-    // left edge
-    ctx.fillStyle = 'rgba(255,255,255,0.1)';
-    drawPolygon(ctx, outerLeft, outerTop, innerLeft, innerTop, innerLeft, innerBottom, outerLeft, outerBottom);
-    ctx.fill();
-};
-
-const drawMount = (ctx, startX, startY, width, height, thickness, mountColour) => {
-    const { hue, saturation, lightness } = mountColour;
-
-    // draw basic mount rect
-    ctx.beginPath();
-    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, 1)`;
-    ctx.fillRect(startX, startY, width, height);
-
-    // draw mount edges
-    const edgeThickness = 3;
-
-    const innerTop = startY + thickness;
-    const innerBottom = startY + height - thickness;
-    const outerTop = innerTop - edgeThickness;
-    const outerBottom = innerBottom + edgeThickness;
-
-    const innerLeft = startX + thickness;
-    const innerRight = startX + width - thickness;
-    const outerLeft = innerLeft - edgeThickness;
-    const outerRight = innerRight + edgeThickness;
-
-    // top edge
-    // ctx.fillStyle = '#f1f1f1';
-    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 6}%, 1)`;
-    drawPolygon(ctx, outerLeft, outerTop, outerRight, outerTop, innerRight, innerTop, innerLeft, innerTop);
-    ctx.fill();
-
-    // right edge
-    // ctx.fillStyle = '#cccccc';
-    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 12}%, 1)`;
-    drawPolygon(ctx, outerRight, outerTop, innerRight, innerTop, innerRight, innerBottom, outerRight, outerBottom);
-    ctx.fill();
-
-    // bottom edge
-    ctx.fillStyle = '#f1f1f1';
-    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 6}%, 1)`;
-    drawPolygon(ctx, innerLeft, innerBottom, innerRight, innerBottom, outerRight, outerBottom, outerLeft, outerBottom);
-    ctx.fill();
-
-    // left edge
-    // ctx.fillStyle = '#cccccc';
-    ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 12}%, 1)`;
-    drawPolygon(ctx, outerLeft, outerTop, innerLeft, innerTop, innerLeft, innerBottom, outerLeft, outerBottom);
-    ctx.fill();
-};
-
-const drawPolygon = (ctx, x1, y1, x2, y2, x3, y3, x4, y4) => {
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.lineTo(x3, y3);
-    ctx.lineTo(x4, y4);
-    ctx.closePath();
-};
-
-const drawSkirtingBoard = (ctx, startX, startY, width, height) => {
-    const topBarPercent = 0.16;
-    const topBarShadowPercent = 0.04;
-    const bottomShadowPercent = 0.01;
-    const mainPanelPercent = 1 - (topBarPercent + topBarShadowPercent + bottomShadowPercent);
-
-    const topBarHeight = height * topBarPercent;
-    const topBarShadowHeight = height * topBarShadowPercent;
-    const mainPanelHeight = height * mainPanelPercent;
-    const bottomShadowHeight = height * bottomShadowPercent;
-
-    const topBarShadowY = startY + topBarHeight;
-    const mainPanelY = topBarShadowY + topBarShadowHeight;
-    const bottomShadowY = mainPanelY + mainPanelHeight;
-
-    // top bar
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(startX, startY, width, topBarHeight);
-
-    // main panel
-    ctx.fillStyle = '#f7f7f7';
-    ctx.fillRect(startX, mainPanelY, width, mainPanelHeight);
-
-    // top bar shadow
-    ctx.fillStyle = '#d3d3d3';
-    ctx.fillRect(startX, topBarShadowY, width, topBarShadowHeight);
-
-    // top bar shadow
-    ctx.fillStyle = '#515151';
-    ctx.fillRect(startX, bottomShadowY, width, bottomShadowHeight);
-
-    const gradient = ctx.createLinearGradient(0, 0, width, 0);
-    gradient.addColorStop(0, 'rgba(0,0,0,0.08)');
-    gradient.addColorStop(0.5, 'rgba(0,0,0,0)');
-    gradient.addColorStop(1, 'rgba(0,0,0,0.08)');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, startY, width, height);
-};
-
-const drawGuardRail = (ctx, guardRailTile, startX, startY, width, height) => {
-    const pat = ctx.createPattern(guardRailTile, "repeat-x");
-
-    ctx.beginPath();
-    ctx.save();
-    ctx.translate(0, startY);
-    ctx.rect(startX, 0, width, height);
-    ctx.fillStyle = pat;
-    ctx.fill();
-    ctx.restore();
-    ctx.closePath();
-};
-
-const drawFloor = (ctx, floorTile, startX, startY, width, height) => {
-    const pat = ctx.createPattern(floorTile, "repeat");
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(startX, startY, width, height);
-    ctx.fillStyle = pat;
-    ctx.fill();
-    ctx.closePath();
-    ctx.restore();
-};
-
-const drawWall = (ctx, wallTile, startX, startY, width, height) => {
-    const pat = ctx.createPattern(wallTile, "repeat");
-
-    ctx.beginPath();
-    ctx.rect(startX, startY, width, height);
-    ctx.fillStyle = pat;
-    ctx.fill();
-    ctx.closePath();
-};
-
-const drawRadialGradientOverlay = (ctx, width, height) => {
-    const centerX = width / 2;
-    const centerY = height / 2;
-    const radiusOfStartCircle = Math.max(width / 2, height / 2); // outer shadow circle
-    const radiusOfEndCircle = Math.max(width / 5, height / 5); // inner shadow circle
-
-    let gradient = ctx.createRadialGradient(centerX, centerY, radiusOfStartCircle, centerX, centerY, radiusOfEndCircle);
-    gradient.addColorStop(0, 'rgba(0,0,0,0.1)');
-    gradient.addColorStop(0.4, 'rgba(0,0,0,0)');
-    gradient.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, height);
-};
-
-const drawFrameShadow = (ctx, x, y, width, height) => {
-    ctx.save();
-    ctx.shadowColor = 'rgba(0,0,0,0.5)';
-    ctx.shadowBlur = 5;
-    ctx.shadowOffsetX = 5;
-    ctx.shadowOffsetY = 8;
-
-    ctx.fillStyle = 'white';
-    ctx.fillRect(x, y, width, height);
-    ctx.restore(); // clear it or will be added to everything
-};
-
-const drawPeople = (ctx, width, height, callback) => {
-    let img = new Image();
-    img.setAttribute('crossOrigin', 'anonymous'); //
-    img.src = People;
-    img.onload = () => {
-        ctx.drawImage(img, 0, 0, 400, 300, 300, height-300, 400, 300);
-
-        if (callback) callback();
+        // left edge
+        ctx.fillStyle = 'rgba(255,255,255,0.1)';
+        drawPolygon(ctx, outerLeft, outerTop, innerLeft, innerTop, innerLeft, innerBottom, outerLeft, outerBottom);
+        ctx.fill();
     };
-};
 
-const calculateCanvasArtworkSizes = ({ frameThicknessDecimal = 0.04, mountThicknessDecimal = 0.06, width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 30, minPaddingSides = 20 }) => {
-    // const mountThicknessPercent = 0.06;
-    const spaceBelowPicturePercent = 0.15;
-    const maxPercentageTakenUpBySkirting = 0.3;
-    const maxSkirtingHeight = 34;
-    const minGapPercent = 0.3;
+const
+    drawMount = (ctx, startX, startY, width, height, thickness, mountColour) => {
+        const { hue, saturation, lightness } = mountColour;
 
-    const spaceBelowPicture = spaceBelowPicturePercent * height;
+        // draw basic mount rect
+        ctx.beginPath();
+        ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, 1)`;
+        ctx.fillRect(startX, startY, width, height);
 
-    let minPaddingLeft = minPaddingSides;
-    const minPaddingRight = minPaddingSides;
-    const minPaddingBottom = spaceBelowPicture;
+        // draw mount edges
+        const edgeThickness = 3;
 
-    const maxWidth = width - (minPaddingLeft + minPaddingRight);
-    const maxHeight = height - (minPaddingTop + minPaddingBottom);
+        const innerTop = startY + thickness;
+        const innerBottom = startY + height - thickness;
+        const outerTop = innerTop - edgeThickness;
+        const outerBottom = innerBottom + edgeThickness;
 
-    // calculate to maximise width
-    let frameThickness = Math.round(maxWidth * frameThicknessDecimal);
-    let mountThickness = Math.round(maxWidth * mountThicknessDecimal);
-    let totalFrameAndMountThickness = (frameThickness * 2) + (mountThickness * 2);
-    let imgWidth = maxWidth - totalFrameAndMountThickness;
-    let imgHeight = imgWidth * widthToHeightRatio;
-    let frameHeight = Math.round(imgHeight + totalFrameAndMountThickness);
+        const innerLeft = startX + thickness;
+        const innerRight = startX + width - thickness;
+        const outerLeft = innerLeft - edgeThickness;
+        const outerRight = innerRight + edgeThickness;
 
-    // if it doesn't fit the height, calculate to maximise height
-    if (frameHeight > maxHeight) {
-        frameThickness = Math.round(maxHeight * frameThicknessDecimal);
-        mountThickness = Math.round(maxHeight * mountThicknessDecimal);
-        totalFrameAndMountThickness = (frameThickness * 2) + (mountThickness * 2);
-        imgHeight = maxHeight - totalFrameAndMountThickness;
-        imgWidth = imgHeight * heightToWidthRatio;
-        frameHeight = Math.round(imgHeight + totalFrameAndMountThickness);
-    }
+        // top edge
+        // ctx.fillStyle = '#f1f1f1';
+        ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 6}%, 1)`;
+        drawPolygon(ctx, outerLeft, outerTop, outerRight, outerTop, innerRight, innerTop, innerLeft, innerTop);
+        ctx.fill();
 
-    let frameWidth = Math.round(imgWidth + totalFrameAndMountThickness);
-    // work out the padding around the picture
-    const totalFramedPictureWidth = imgWidth + totalFrameAndMountThickness;
-    const extraHorizontalSpace = width - (totalFramedPictureWidth + minPaddingLeft + minPaddingRight);
-    const paddingLeft = minPaddingLeft + (extraHorizontalSpace / 2);
+        // right edge
+        // ctx.fillStyle = '#cccccc';
+        ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 12}%, 1)`;
+        drawPolygon(ctx, outerRight, outerTop, innerRight, innerTop, innerRight, innerBottom, outerRight, outerBottom);
+        ctx.fill();
 
-    const extraVerticalSpace = height - (imgHeight + totalFrameAndMountThickness + minPaddingTop + minPaddingBottom);
-    const paddingTop = minPaddingTop + (extraVerticalSpace / 2);
+        // bottom edge
+        ctx.fillStyle = '#f1f1f1';
+        ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 6}%, 1)`;
+        drawPolygon(ctx, innerLeft, innerBottom, innerRight, innerBottom, outerRight, outerBottom, outerLeft, outerBottom);
+        ctx.fill();
 
-    const frameX = Math.round(paddingLeft);
-    const frameY = Math.round(paddingTop);
-    const mountX = Math.round(frameX + frameThickness);
-    const mountY = Math.round(frameY + frameThickness);
-    const imgX = Math.round(mountX + mountThickness);
-    const imgY = Math.round(mountY + mountThickness);
-    const mountWidth = Math.round(frameWidth - (frameThickness * 2));
-    const mountHeight = Math.round(frameHeight - (frameThickness * 2));
-
-    let skirtingHeight = spaceBelowPicture * maxPercentageTakenUpBySkirting;
-    if (skirtingHeight > maxSkirtingHeight) skirtingHeight = maxSkirtingHeight;
-    const gapBetweenPictureAndSkirting = spaceBelowPicture * minGapPercent;
-
-    const skirtingY = height - (spaceBelowPicture - gapBetweenPictureAndSkirting);
-    const floorY = skirtingY + skirtingHeight;
-    const floorHeight = height - floorY;
-
-    return {
-        skirtingY, skirtingHeight, floorY, floorHeight,
-        imgX, imgY, frameX, frameY, mountX, mountY,
-        frameWidth, frameHeight,
-        mountWidth, mountHeight,
-        imgWidth, imgHeight,
-        frameThickness, mountThickness
+        // left edge
+        // ctx.fillStyle = '#cccccc';
+        ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness - 12}%, 1)`;
+        drawPolygon(ctx, outerLeft, outerTop, innerLeft, innerTop, innerLeft, innerBottom, outerLeft, outerBottom);
+        ctx.fill();
     };
-};
+
+const
+    drawPolygon = (ctx, x1, y1, x2, y2, x3, y3, x4, y4) => {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.lineTo(x3, y3);
+        ctx.lineTo(x4, y4);
+        ctx.closePath();
+    };
+
+const
+    drawSkirtingBoard = (ctx, startX, startY, width, height) => {
+        const topBarPercent = 0.16;
+        const topBarShadowPercent = 0.04;
+        const bottomShadowPercent = 0.01;
+        const mainPanelPercent = 1 - (topBarPercent + topBarShadowPercent + bottomShadowPercent);
+
+        const topBarHeight = height * topBarPercent;
+        const topBarShadowHeight = height * topBarShadowPercent;
+        const mainPanelHeight = height * mainPanelPercent;
+        const bottomShadowHeight = height * bottomShadowPercent;
+
+        const topBarShadowY = startY + topBarHeight;
+        const mainPanelY = topBarShadowY + topBarShadowHeight;
+        const bottomShadowY = mainPanelY + mainPanelHeight;
+
+        // top bar
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(startX, startY, width, topBarHeight);
+
+        // main panel
+        ctx.fillStyle = '#f7f7f7';
+        ctx.fillRect(startX, mainPanelY, width, mainPanelHeight);
+
+        // top bar shadow
+        ctx.fillStyle = '#d3d3d3';
+        ctx.fillRect(startX, topBarShadowY, width, topBarShadowHeight);
+
+        // top bar shadow
+        ctx.fillStyle = '#515151';
+        ctx.fillRect(startX, bottomShadowY, width, bottomShadowHeight);
+
+        const gradient = ctx.createLinearGradient(0, 0, width, 0);
+        gradient.addColorStop(0, 'rgba(0,0,0,0.08)');
+        gradient.addColorStop(0.5, 'rgba(0,0,0,0)');
+        gradient.addColorStop(1, 'rgba(0,0,0,0.08)');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, startY, width, height);
+    };
+
+const
+    drawGuardRail = (ctx, guardRailTile, startX, startY, width, height) => {
+        const pat = ctx.createPattern(guardRailTile, "repeat-x");
+
+        ctx.beginPath();
+        ctx.save();
+        ctx.translate(0, startY);
+        ctx.rect(startX, 0, width, height);
+        ctx.fillStyle = pat;
+        ctx.fill();
+        ctx.restore();
+        ctx.closePath();
+    };
+
+const
+    drawFloor = (ctx, floorTile, startX, startY, width, height) => {
+        const pat = ctx.createPattern(floorTile, "repeat");
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(startX, startY, width, height);
+        ctx.fillStyle = pat;
+        ctx.fill();
+        ctx.closePath();
+        ctx.restore();
+    };
+
+const
+    drawWall = (ctx, wallTile, startX, startY, width, height) => {
+        const pat = ctx.createPattern(wallTile, "repeat");
+
+        ctx.beginPath();
+        ctx.rect(startX, startY, width, height);
+        ctx.fillStyle = pat;
+        ctx.fill();
+        ctx.closePath();
+    };
+
+const
+    drawRadialGradientOverlay = (ctx, width, height) => {
+        const centerX = width / 2;
+        const centerY = height / 2;
+        const radiusOfStartCircle = Math.max(width / 2, height / 2); // outer shadow circle
+        const radiusOfEndCircle = Math.max(width / 5, height / 5); // inner shadow circle
+
+        let gradient = ctx.createRadialGradient(centerX, centerY, radiusOfStartCircle, centerX, centerY, radiusOfEndCircle);
+        gradient.addColorStop(0, 'rgba(0,0,0,0.15)');
+        gradient.addColorStop(0.4, 'rgba(0,0,0,0)');
+        gradient.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
+    };
+
+const
+    drawFrameShadow = (ctx, x, y, width, height, shadowThickness = 20) => {
+
+        ctx.beginPath();
+
+        ctx.fillStyle = 'rgba(0,0,0,0.3)';
+        ctx.fillRect(x, y + height, width, shadowThickness);
+        ctx.fill();
+
+        ctx.closePath();
+    };
+
+const
+    drawPeople = (ctx, img, width, height, xPos, yPos) => {
+        ctx.drawImage(img, 0, 0, width, height, xPos, yPos-height, width, height);
+    };
+
+const
+    calculateCanvasArtworkSizes = ({ frameThicknessDecimal = 0.04, mountThicknessDecimal = 0.06, width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 30, minPaddingSides = 20 }) => {
+        // const mountThicknessPercent = 0.06;
+        const spaceBelowPicturePercent = 0.15;
+        const maxPercentageTakenUpBySkirting = 0.3;
+        const maxSkirtingHeight = 34;
+        const minGapPercent = 0.3;
+
+        const spaceBelowPicture = spaceBelowPicturePercent * height;
+
+        let minPaddingLeft = minPaddingSides;
+        const minPaddingRight = minPaddingSides;
+        const minPaddingBottom = spaceBelowPicture;
+
+        const maxWidth = width - (minPaddingLeft + minPaddingRight);
+        const maxHeight = height - (minPaddingTop + minPaddingBottom);
+
+        // calculate to maximise width
+        let frameThickness = Math.round(maxWidth * frameThicknessDecimal);
+        let mountThickness = Math.round(maxWidth * mountThicknessDecimal);
+        let totalFrameAndMountThickness = (frameThickness * 2) + (mountThickness * 2);
+        let imgWidth = maxWidth - totalFrameAndMountThickness;
+        let imgHeight = imgWidth * widthToHeightRatio;
+        let frameHeight = Math.round(imgHeight + totalFrameAndMountThickness);
+
+        // if it doesn't fit the height, calculate to maximise height
+        if (frameHeight > maxHeight) {
+            frameThickness = Math.round(maxHeight * frameThicknessDecimal);
+            mountThickness = Math.round(maxHeight * mountThicknessDecimal);
+            totalFrameAndMountThickness = (frameThickness * 2) + (mountThickness * 2);
+            imgHeight = maxHeight - totalFrameAndMountThickness;
+            imgWidth = imgHeight * heightToWidthRatio;
+            frameHeight = Math.round(imgHeight + totalFrameAndMountThickness);
+        }
+
+        let frameWidth = Math.round(imgWidth + totalFrameAndMountThickness);
+        // work out the padding around the picture
+        const totalFramedPictureWidth = imgWidth + totalFrameAndMountThickness;
+        const extraHorizontalSpace = width - (totalFramedPictureWidth + minPaddingLeft + minPaddingRight);
+        const paddingLeft = minPaddingLeft + (extraHorizontalSpace / 2);
+
+        const extraVerticalSpace = height - (imgHeight + totalFrameAndMountThickness + minPaddingTop + minPaddingBottom);
+        const paddingTop = minPaddingTop + (extraVerticalSpace / 2);
+
+        const frameX = Math.round(paddingLeft);
+        const frameY = Math.round(paddingTop);
+        const mountX = Math.round(frameX + frameThickness);
+        const mountY = Math.round(frameY + frameThickness);
+        const imgX = Math.round(mountX + mountThickness);
+        const imgY = Math.round(mountY + mountThickness);
+        const mountWidth = Math.round(frameWidth - (frameThickness * 2));
+        const mountHeight = Math.round(frameHeight - (frameThickness * 2));
+
+        let skirtingHeight = spaceBelowPicture * maxPercentageTakenUpBySkirting;
+        if (skirtingHeight > maxSkirtingHeight) skirtingHeight = maxSkirtingHeight;
+        const gapBetweenPictureAndSkirting = spaceBelowPicture * minGapPercent;
+
+        const skirtingY = height - (spaceBelowPicture - gapBetweenPictureAndSkirting);
+        const floorY = skirtingY + skirtingHeight;
+        const floorHeight = height - floorY;
+
+        return {
+            skirtingY, skirtingHeight, floorY, floorHeight,
+            imgX, imgY, frameX, frameY, mountX, mountY,
+            frameWidth, frameHeight,
+            mountWidth, mountHeight,
+            imgWidth, imgHeight,
+            frameThickness, mountThickness
+        };
+    };

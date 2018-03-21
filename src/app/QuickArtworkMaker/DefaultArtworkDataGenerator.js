@@ -1,4 +1,4 @@
-export default function(){
+export default function () {
 
     // CROP DATA
     const defaultCropData = { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 };
@@ -7,10 +7,10 @@ export default function(){
     const defaultFrameColour = { hue: 96, saturation: 0, lightness: 29 };
     const defaultMountColour = { hue: 96, saturation: 0, lightness: 100 };
     const defaultFrameData = {
-        frameThicknessDecimal:defaultFrameThickness,
-        mountThicknessDecimal:defaultMountThickness,
-        frameColour:defaultFrameColour,
-        mountColour:defaultMountColour
+        frameThicknessDecimal: defaultFrameThickness,
+        mountThicknessDecimal: defaultMountThickness,
+        frameColour: defaultFrameColour,
+        mountColour: defaultMountColour
     };
 
     // TITLES
@@ -25,21 +25,26 @@ export default function(){
     const year = now.getFullYear();
 
     const date = month + " " + year;
-    const defaultTitlesData = {title, artist, description, date};
+    const defaultTitlesData = { title, artist, description, date };
 
     // ROOM
-    // const wallTileUrl = '/images/tiles-wall/Brick-13.jpg'; // tube station bricks
-    const wallTileUrl = '/images/tiles-wall/Concrete-8.jpg';
-    const floorTileUrl = '/images/tiles-floor/floor-boards.png';
-    const includeSkirting = true;
-    const includeGuardRail = true;
-    const includePeople = true;
-
-    const defaultRoomData = {wallTileUrl, floorTileUrl, includeSkirting, includeGuardRail, includePeople};
+    const defaultRoomData = {
+        wallTileUrl: '/images/tiles-wall/Concrete-8.jpg',
+        floorTileUrl: '/images/tiles-floor/floor-boards.png',
+        audience: [{
+            name:'womanStanding1',
+            url: '/images/audience/woman-standing-1.png',
+            x: 0.5, y: 1.05,
+            height: 300, width: 120
+        }],
+        includeSkirting: true,
+        includeGuardRail: true,
+        includePeople: true
+    };
 
     return {
-        cropData:defaultCropData,
-        frameData:defaultFrameData,
+        cropData: defaultCropData,
+        frameData: defaultFrameData,
         orientation: 1,
         titlesData: defaultTitlesData,
         roomData: defaultRoomData
