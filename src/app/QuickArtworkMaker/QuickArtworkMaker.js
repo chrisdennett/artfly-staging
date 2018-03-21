@@ -42,7 +42,7 @@ class QuickArtworkMaker extends Component {
     // TEST ONLY
     componentDidMount() {
         this.sourceImg = TEST_SOURCE_IMG;
-        this.toolToShowAfterUpdate = 'frame';
+        this.toolToShowAfterUpdate = 'titles';
         this.updateMasterCanvas(this.sourceImg, 1);
     }
 
@@ -176,10 +176,9 @@ class QuickArtworkMaker extends Component {
                     {currentTool === 'titles' &&
                     <QuickTitlesEditor height={height}
                                        width={contentWidth}
-                                       artworkData={artworkData}
-                                       masterCanvas={masterCanvas}
+                                       titlesData={artworkData.titlesData}
+                                       onDataChange={this.onArtworkDataChange}
                                        onDone={this.onTitlesEditorDone}
-                                       onCancel={this.onTitlesEditorCancel}
                     />
                     }
 

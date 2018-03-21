@@ -24,7 +24,6 @@ class QuickRoomEditor extends Component {
         this.setState({initialData: this.props.roomData});
     }
 
-
     // Global events
     onDoneClick() {
         this.props.onDone();

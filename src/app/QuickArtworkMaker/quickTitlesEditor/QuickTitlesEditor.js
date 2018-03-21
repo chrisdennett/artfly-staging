@@ -17,7 +17,7 @@ class QuickTitlesEditor extends Component {
         const maxDescriptionLength = 170;
         const maxDateLength = 24;
 
-        this.state = { title: '', artist: '', description: '', date: '', maxTitleLength, maxArtistLength, maxDescriptionLength, maxDateLength };
+        this.state = {initialData:null, maxTitleLength, maxArtistLength, maxDescriptionLength, maxDateLength };
 
         this.onDescriptionChange = this.onDescriptionChange.bind(this);
         this.onTitleChange = this.onTitleChange.bind(this);
@@ -29,34 +29,37 @@ class QuickTitlesEditor extends Component {
     }
 
     componentWillMount() {
-        const {artworkData} = this.props;
-
-        if (artworkData.titlesData) {
-            this.setState({ ...artworkData.titlesData });
-        }
+        this.setState({initialData: this.props.titlesData});
     }
 
     onTitleChange(value) {
-        this.setState({ title: value});
+        const newTitlesData = {...this.props.titlesData, title:value};
+        this.props.onDataChange({titlesData:newTitlesData});
     }
 
     onArtistChange(value) {
-        this.setState({ artist: value });
+        const newTitlesData = {...this.props.titlesData, artist:value};
+        this.props.onDataChange({titlesData:newTitlesData});
+        // this.setState({ artist: value });
     }
 
     onDescriptionChange(value) {
-        this.setState({ description: value });
+        const newTitlesData = {...this.props.titlesData, description:value};
+        this.props.onDataChange({titlesData:newTitlesData});
+        // this.setState({ description: value });
     }
 
     onDateChange(value) {
-        this.setState({ date: value });
+        // this.setState({ date: value });
+        const newTitlesData = {...this.props.titlesData, date:value};
+        this.props.onDataChange({titlesData:newTitlesData});
     }
 
     onDoneClick() {
-        const { title, artist, description, date } = this.state;
+        /*const { title, artist, description, date } = this.state;
         const titlesPresent = title.length > 0 || artist.length > 0 || description.length > 0;
-        const titlesData = titlesPresent ? { title, artist, description, date } : null;
-        this.props.onDone(titlesData);
+        const titlesData = titlesPresent ? { title, artist, description, date } : null;*/
+        this.props.onDone();
     }
 
     onClearClick() {
@@ -68,35 +71,27 @@ class QuickTitlesEditor extends Component {
     }
 
     render() {
-        const { height, width, artworkData, masterCanvas } = this.props;
-        const { title, artist, description, date, maxTitleLength, maxArtistLength, maxDescriptionLength } = this.state;
-        const titlesPresent = title.length > 0 || artist.length > 0 || description.length > 0;
-        const titlesData = titlesPresent ? { title, artist, description, date } : null;
-        const modifiedArtworkData = {...artworkData, titlesData};
+        const { titlesData } = this.props;
+        const { maxTitleLength, maxArtistLength, maxDescriptionLength } = this.state;
+        const {title, artist, description, date} = titlesData;
+        // const titlesPresent = title.length > 0 || artist.length > 0 || description.length > 0;
+        // const titlesData = titlesPresent ? { title, artist, description, date } : null;
+        // const modifiedArtworkData = {...artworkData, titlesData};
 
-        const showArtwork = width > 800;
+        /*const showArtwork = width > 800;
         let controlsClass = 'quickTitles--controls--holder--partView';
         if(!showArtwork){
             controlsClass = 'quickTitles--controls--holder--fullView'
-        }
+        }*/
 
         return (
             <div className={'quickTitles'}>
-
-                {showArtwork &&
-                <QuickArtwork height={height}
-                              width={width}
-                              isFixed={true}
-                              artworkData={modifiedArtworkData}
-                              masterCanvas={masterCanvas}
-                />
-                }
 
                 <ToolControlPanel>
 
                 </ToolControlPanel>
 
-                <div className={`quickTitles--controls--holder ${controlsClass}`}>
+                <div className={`quickTitles--controls--holder quickTitles--controls--holder--partView`}>
                     <div className={'quickTitles--controls'}>
                         <h2>Artwork Titles:</h2>
 
