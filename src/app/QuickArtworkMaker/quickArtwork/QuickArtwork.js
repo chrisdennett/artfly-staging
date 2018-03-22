@@ -153,10 +153,10 @@ class QuickArtwork extends Component {
         if (includePeople) {
             const person = audience[0];
             const { name, url, x, y, maxProportionOfScreenHeight } = person;
-            const xPos = width * x;
-            const yPos = height * y;
             let personHeight = person.height;
             let personWidth = person.width;
+            const xPos = (width * x) - (personWidth/2); // allow to go half off the sides
+            const yPos = height * y;
 
             if (personHeight / height > maxProportionOfScreenHeight) {
                 const heightToWidthRatio = personWidth / personHeight;

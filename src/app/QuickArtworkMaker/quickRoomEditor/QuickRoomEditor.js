@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import faPalletAlt from "@fortawesome/fontawesome-pro-solid/faPalletAlt";
-// import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 // styles
 import './quickRoom_styles.css';
 // comps
-// import QuickArtwork from "../quickArtwork/QuickArtwork";
 import RoomPresets from "./presets/RoomPresets";
 import Butt from "../../global/Butt/Butt";
 import ToolControlPanel from "../../global/toolControlPanel/ToolControlPanel";
@@ -16,7 +14,6 @@ class QuickRoomEditor extends Component {
 
         this.state = {initialData:null};
 
-        this.onDoneClick = this.onDoneClick.bind(this);
         this.onResetClick = this.onResetClick.bind(this);
     }
 
@@ -25,16 +22,12 @@ class QuickRoomEditor extends Component {
     }
 
     // Global events
-    onDoneClick() {
-        this.props.onDone();
-    }
-
     onResetClick() {
         this.props.onDataChange({roomData:this.state.initialData});
     }
 
     render() {
-        const { width, roomData, onDataChange } = this.props;
+        const { width, roomData, onDataChange, onDone } = this.props;
         const dataChanged = this.state.initialData !== roomData;
 
         const globalButts = [
@@ -42,7 +35,7 @@ class QuickRoomEditor extends Component {
                   style={{ fontSize: '1rem' }}
                   label={'DONE'}
                   green
-                  onClick={this.onDoneClick}/>,
+                  onClick={onDone}/>,
 
             <Butt key="reset" fullWidth={true}
                   style={{ fontSize: '1rem' }}

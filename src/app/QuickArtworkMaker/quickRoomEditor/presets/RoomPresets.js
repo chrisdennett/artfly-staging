@@ -6,6 +6,7 @@ import CheckBox from "../../../global/CheckBox/CheckBox";
 import ToolControlPanelContent from "../../../global/toolControlPanel/ToolControlPanelContent";
 import ToolControlPanelSection from "../../../global/toolControlPanel/ToolControlPanelSection";
 import Palette from "../../../global/pallete/Palette";
+import MySlider from "../../../global/slider/Slider";
 
 const wallPresets = {
     baseUrl: '/images/tiles-wall/',
@@ -89,7 +90,6 @@ const wallPresets = {
 
     }
 };
-
 const floorPresets = {
     baseUrl: '/images/tiles-floor/',
     tiles: {
@@ -114,6 +114,8 @@ class RoomPresets extends Component {
         this.onIncludeSkirtingChange = this.onIncludeSkirtingChange.bind(this);
         this.onIncludeGuardRailChange = this.onIncludeGuardRailChange.bind(this);
         this.onIncludePeopleChange = this.onIncludePeopleChange.bind(this);
+        this.onPersonPositionChange = this.onPersonPositionChange.bind(this);
+
     }
 
     onWallSwatchClick(tileUrl) {
@@ -141,9 +143,21 @@ class RoomPresets extends Component {
         this.props.onDataChange({ roomData: newRoomData });
     }
 
+    onPersonPositionChange(xPos){
+        let newAudienceData = {...this.props.roomData.audience};
+        const person = newAudienceData[0];
+        person.x = xPos;
+        newAudienceData[0] = person;
+
+        const newRoomData = { ...this.props.roomData, audience:newAudienceData };
+        this.props.onDataChange({ roomData: newRoomData });
+    }
+
     render() {
         const { roomData } = this.props;
-        const { includeSkirting, includeGuardRail, wallTileUrl, floorTileUrl, includePeople } = roomData;
+        const { audience, includeSkirting, includeGuardRail, wallTileUrl, floorTileUrl, includePeople } = roomData;
+
+        const person = audience[0];
 
         return (
             <ToolControlPanelContent>
@@ -166,21 +180,31 @@ class RoomPresets extends Component {
                         <CheckBox label={'Skirting'}
                                   id={'include-skirting'}
                                   value={includeSkirting}
-                                  onChange={(e) => this.onIncludeSkirtingChange(e.target.checked)}
+                                  onChange={e => this.onIncludeSkirtingChange(e.target.checked)}
                         />
 
                         <CheckBox label={'Guard rail'}
                                   id={'include-guard-rail'}
                                   value={includeGuardRail}
-                                  onChange={(e) => this.onIncludeGuardRailChange(e.target.checked)}
+                                  onChange={e => this.onIncludeGuardRailChange(e.target.checked)}
                         />
 
                         <CheckBox label={'Include people'}
                                   id={'include-people'}
                                   value={includePeople}
-                                  onChange={(e) => this.onIncludePeopleChange(e.target.checked)}
+                                  onChange={e => this.onIncludePeopleChange(e.target.checked)}
                         />
                     </div>
+
+                    <ToolControlPanelSection title={'Person position:'}>
+                        <MySlider value={person.x}
+                                  onChange={this.onPersonPositionChange}
+                                  min={0}
+                                  max={1}
+                                  step={0.001}
+                        />
+                    </ToolControlPanelSection>
+
                 </ToolControlPanelSection>
             </ToolControlPanelContent>
         )
