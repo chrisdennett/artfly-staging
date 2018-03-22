@@ -31,13 +31,22 @@ export default function () {
     const defaultRoomData = {
         wallTileUrl: '/images/tiles-wall/Concrete-8.jpg',
         floorTileUrl: '/images/tiles-floor/floor-boards.png',
-        audience: [{
-            name:'womanStanding1',
-            url: '/images/audience/woman-standing-1.png',
-            x: 0.5, y: 1.05,
-            height: 300, width: 120,
-            maxProportionOfScreenHeight:0.5
-        }],
+        audience: [
+            {
+                name: 'womanStanding1',
+                url: '/images/audience/woman-standing-1.png',
+                x: 0.5, y: 1.05,
+                height: 300, width: 120,
+                maxProportionOfScreenHeight: 0.5
+            },
+            {
+                name: 'peopleSitting1',
+                url: '/images/audience/people-sitting-1.png',
+                x: 0.2, y: 1.05,
+                height: 200, width: 310,
+                maxProportionOfScreenHeight: 0.3
+            }
+        ],
         includeSkirting: true,
         includeGuardRail: true,
         includePeople: true

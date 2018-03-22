@@ -145,9 +145,9 @@ class RoomPresets extends Component {
 
     onPersonPositionChange(xPos){
         let newAudienceData = {...this.props.roomData.audience};
-        const person = newAudienceData[0];
+        const person = newAudienceData[1];
         person.x = xPos;
-        newAudienceData[0] = person;
+        newAudienceData[1] = person;
 
         const newRoomData = { ...this.props.roomData, audience:newAudienceData };
         this.props.onDataChange({ roomData: newRoomData });
@@ -157,7 +157,7 @@ class RoomPresets extends Component {
         const { roomData } = this.props;
         const { audience, includeSkirting, includeGuardRail, wallTileUrl, floorTileUrl, includePeople } = roomData;
 
-        const person = audience[0];
+        const person = audience[1];
 
         return (
             <ToolControlPanelContent>
