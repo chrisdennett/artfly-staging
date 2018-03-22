@@ -2,7 +2,7 @@ import React from 'react';
 // styles
 import './palette_styles.css';
 
-const Palette = function ({swatchData, onSwatchSelected, selectedUrl}) {
+const Palette = function ({ swatchData, onSwatchSelected, selectedUrl }) {
     const swatchKeys = Object.keys(swatchData.tiles);
 
     return (
@@ -12,10 +12,19 @@ const Palette = function ({swatchData, onSwatchSelected, selectedUrl}) {
                     const preset = swatchData.tiles[key];
                     const tileUrl = swatchData.baseUrl + preset.fileName;
 
-                    let swatchStyle = {backgroundColor: '#ffffff'};
-                    swatchStyle.backgroundImage = `url(${tileUrl})`;
+                    let swatchStyle = { backgroundColor: '#ffffff' };
+                    let img;
 
-                    if(selectedUrl && selectedUrl === tileUrl){
+                    if (preset.thumb) {
+                        const thumbUrl = swatchData.baseUrl + preset.thumb;
+                        img = <img src={thumbUrl} alt={preset.name} />
+                    }
+                    else {
+                        swatchStyle.backgroundImage = `url(${tileUrl})`;
+                        img = null
+                    }
+
+                    if (selectedUrl && selectedUrl === tileUrl) {
                         swatchStyle.border = '#ffa115 3px dashed';
                     }
 
@@ -23,7 +32,13 @@ const Palette = function ({swatchData, onSwatchSelected, selectedUrl}) {
                         <div key={key}
                              className={'palette--swatch'}
                              style={swatchStyle}
-                             onClick={() => onSwatchSelected(tileUrl, key)} />
+                             onClick={() => onSwatchSelected(tileUrl, preset)}>
+
+                            {img &&
+                                img
+                            }
+
+                        </div>
                     )
                 })
             }

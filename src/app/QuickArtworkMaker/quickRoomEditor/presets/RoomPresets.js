@@ -8,6 +8,28 @@ import ToolControlPanelSection from "../../../global/toolControlPanel/ToolContro
 import Palette from "../../../global/pallete/Palette";
 import MySlider from "../../../global/slider/Slider";
 
+const audienceOptions = {
+    baseUrl: '/images/audience/',
+    tiles: {
+        womanStanding1: {
+            presetName: 'womanStanding1',
+            thumb: 'woman-standing-1-thumb.png',
+            fileName: 'woman-standing-1.png',
+            x: 0.5, y: 1.05,
+            height: 300, width: 120,
+            maxProportionOfScreenHeight: 0.5
+        },
+        peopleSitting1: {
+            presetName: 'peopleSitting1',
+            thumb: 'people-sitting-1-thumb.png',
+            fileName: 'people-sitting-1.png',
+            x: 0.2, y: 1.02,
+            height: 200, width: 310,
+            maxProportionOfScreenHeight: 0.3
+        }
+    }
+};
+
 const wallPresets = {
     baseUrl: '/images/tiles-wall/',
     tiles: {
@@ -115,7 +137,7 @@ class RoomPresets extends Component {
         this.onIncludeGuardRailChange = this.onIncludeGuardRailChange.bind(this);
         this.onIncludePeopleChange = this.onIncludePeopleChange.bind(this);
         this.onPersonPositionChange = this.onPersonPositionChange.bind(this);
-
+        this.onPeopleSwatchClick = this.onPeopleSwatchClick.bind(this);
     }
 
     onWallSwatchClick(tileUrl) {
@@ -127,6 +149,7 @@ class RoomPresets extends Component {
         const newRoomData = { ...this.props.roomData, floorTileUrl: tileUrl };
         this.props.onDataChange({ roomData: newRoomData });
     }
+
 
     onIncludeSkirtingChange(value) {
         const newRoomData = { ...this.props.roomData, includeSkirting: value };
@@ -143,13 +166,24 @@ class RoomPresets extends Component {
         this.props.onDataChange({ roomData: newRoomData });
     }
 
-    onPersonPositionChange(xPos){
-        let newAudienceData = {...this.props.roomData.audience};
-        const person = newAudienceData[1];
-        person.x = xPos;
-        newAudienceData[1] = person;
+    onPeopleSwatchClick(newUrl, preset) {
 
-        const newRoomData = { ...this.props.roomData, audience:newAudienceData };
+        let newAudienceData = { ...this.props.roomData.audience };
+        newAudienceData[0] = {
+            ...preset, url:newUrl
+        };
+
+        const newRoomData = { ...this.props.roomData, audience: newAudienceData };
+        this.props.onDataChange({ roomData: newRoomData });
+    }
+
+    onPersonPositionChange(xPos) {
+        let newAudienceData = { ...this.props.roomData.audience };
+        const person = newAudienceData[0];
+        person.x = xPos;
+        newAudienceData[0] = person;
+
+        const newRoomData = { ...this.props.roomData, audience: newAudienceData };
         this.props.onDataChange({ roomData: newRoomData });
     }
 
@@ -157,7 +191,7 @@ class RoomPresets extends Component {
         const { roomData } = this.props;
         const { audience, includeSkirting, includeGuardRail, wallTileUrl, floorTileUrl, includePeople } = roomData;
 
-        const person = audience[1];
+        const person = audience[0];
 
         return (
             <ToolControlPanelContent>
@@ -175,6 +209,25 @@ class RoomPresets extends Component {
                     />
                 </ToolControlPanelSection>
 
+                <ToolControlPanelSection title={'People:'}>
+                    <CheckBox label={'Include people'}
+                              id={'include-people'}
+                              value={includePeople}
+                              onChange={e => this.onIncludePeopleChange(e.target.checked)}
+                    />
+                    <Palette swatchData={audienceOptions}
+                             selectedUrl={person.url}
+                             onSwatchSelected={this.onPeopleSwatchClick}
+                    />
+                </ToolControlPanelSection>
+
+                <MySlider value={person.x}
+                          onChange={this.onPersonPositionChange}
+                          min={0}
+                          max={1}
+                          step={0.001}
+                />
+
                 <ToolControlPanelSection>
                     <div className={'skirtingControlHolder'}>
                         <CheckBox label={'Skirting'}
@@ -189,21 +242,8 @@ class RoomPresets extends Component {
                                   onChange={e => this.onIncludeGuardRailChange(e.target.checked)}
                         />
 
-                        <CheckBox label={'Include people'}
-                                  id={'include-people'}
-                                  value={includePeople}
-                                  onChange={e => this.onIncludePeopleChange(e.target.checked)}
-                        />
                     </div>
 
-                    <ToolControlPanelSection title={'Person position:'}>
-                        <MySlider value={person.x}
-                                  onChange={this.onPersonPositionChange}
-                                  min={0}
-                                  max={1}
-                                  step={0.001}
-                        />
-                    </ToolControlPanelSection>
 
                 </ToolControlPanelSection>
             </ToolControlPanelContent>
