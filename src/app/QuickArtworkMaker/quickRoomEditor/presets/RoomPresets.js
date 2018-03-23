@@ -24,6 +24,13 @@ const audienceOptions = {
             fileName: 'people-sitting-1.png',
             height: 200, width: 310,
             maxProportionOfScreenHeight: 0.3
+        },
+        peopleWalking1: {
+            presetName: 'peopleWalking1',
+            thumb: 'people-walking-1-thumb.png',
+            fileName: 'people-walking-1.png',
+            height: 320, width: 224,
+            maxProportionOfScreenHeight: 0.5
         }
     }
 };
