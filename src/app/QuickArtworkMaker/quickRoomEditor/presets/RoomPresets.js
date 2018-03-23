@@ -15,7 +15,6 @@ const audienceOptions = {
             presetName: 'womanStanding1',
             thumb: 'woman-standing-1-thumb.png',
             fileName: 'woman-standing-1.png',
-            x: 0.5, y: 1.05,
             height: 300, width: 120,
             maxProportionOfScreenHeight: 0.5
         },
@@ -23,7 +22,6 @@ const audienceOptions = {
             presetName: 'peopleSitting1',
             thumb: 'people-sitting-1-thumb.png',
             fileName: 'people-sitting-1.png',
-            x: 0.2, y: 1.02,
             height: 200, width: 310,
             maxProportionOfScreenHeight: 0.3
         }
@@ -167,9 +165,8 @@ class RoomPresets extends Component {
     }
 
     onPeopleSwatchClick(newUrl, preset) {
-
         let newAudienceData = { ...this.props.roomData.audience };
-        newAudienceData[0] = {
+        newAudienceData.people[0] = {
             ...preset, url:newUrl
         };
 
@@ -179,9 +176,9 @@ class RoomPresets extends Component {
 
     onPersonPositionChange(xPos) {
         let newAudienceData = { ...this.props.roomData.audience };
-        const person = newAudienceData[0];
-        person.x = xPos;
-        newAudienceData[0] = person;
+        const person = newAudienceData.people[0];
+        newAudienceData.x = xPos;
+        newAudienceData.people[0] = person;
 
         const newRoomData = { ...this.props.roomData, audience: newAudienceData };
         this.props.onDataChange({ roomData: newRoomData });
@@ -191,7 +188,7 @@ class RoomPresets extends Component {
         const { roomData } = this.props;
         const { audience, includeSkirting, includeGuardRail, wallTileUrl, floorTileUrl, includePeople } = roomData;
 
-        const person = audience[0];
+        const person = audience.people[0];
 
         return (
             <ToolControlPanelContent>
@@ -221,7 +218,7 @@ class RoomPresets extends Component {
                     />
                 </ToolControlPanelSection>
 
-                <MySlider value={person.x}
+                <MySlider value={audience.x}
                           onChange={this.onPersonPositionChange}
                           min={0}
                           max={1}
@@ -241,9 +238,7 @@ class RoomPresets extends Component {
                                   value={includeGuardRail}
                                   onChange={e => this.onIncludeGuardRailChange(e.target.checked)}
                         />
-
                     </div>
-
 
                 </ToolControlPanelSection>
             </ToolControlPanelContent>

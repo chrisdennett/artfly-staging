@@ -31,16 +31,18 @@ export default function () {
     const defaultRoomData = {
         wallTileUrl: '/images/tiles-wall/Concrete-8.jpg',
         floorTileUrl: '/images/tiles-floor/floor-boards.png',
-        audience: [
+        audience: {
+            x: 0.2, y: 1.02,
+            people:[
             {
                 presetName: 'peopleSitting1',
                 url: '/images/audience/people-sitting-1.png',
                 thumb: '/images/audience/people-sitting-1-thumb.png',
-                x: 0.2, y: 1.02,
                 height: 200, width: 310,
                 maxProportionOfScreenHeight: 0.3
             }
-        ],
+        ]
+        },
         includeSkirting: true,
         includeGuardRail: true,
         includePeople: true
