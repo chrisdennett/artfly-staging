@@ -10,7 +10,6 @@ import { IN_BETA_TESTING } from '../global/GLOBAL_CONSTANTS';
 import Title from "./Title";
 import SignInOut from '../SignInOut/SignInOut';
 import PublicHome from "./PublicHome/PublicHome";
-import UserHome from "./UserHome/UserHome";
 import Footer from "./Footer/Footer";
 
 const Home = ({ user }) => {
@@ -44,10 +43,6 @@ const Home = ({ user }) => {
                 }
 
             </div>
-
-            {userLoggedIn &&
-            <UserHome/>
-            }
 
             {!userLoggedIn &&
             <PublicHome/>

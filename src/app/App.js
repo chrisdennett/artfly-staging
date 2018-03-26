@@ -3,27 +3,12 @@ import React, { Component } from "react";
 import './appStyles.css';
 // components
 import WindowDimensionsTracker from "./global/WindowDimensionsTracker";
-// import Link from "./global/Butt/Link";
-// import IconButt from "./global/Butt/IconButt";
-import GalleryControlsContainer from "./GalleryControls/GalleryControlsContainer";
 import { IN_STAGING } from "./global/GLOBAL_CONSTANTS";
 
 class App extends Component {
 
-    componentDidMount(){
-        setTimeout(function(){
-            // Hide the address bar!
-            window.scrollTo(0, 1);
-        }, 0);
-    }
-
     render() {
-        // const { params, children, page, user } = this.props;
-        const { params, children } = this.props;
-        const { artworkId, galleryId } = params;
-        const { inArtStudio } = params;
-
-        const leftMargin = inArtStudio ? 75 : 0;
+        const { children } = this.props;
 
         return (
             <div className='app'>
@@ -34,35 +19,7 @@ class App extends Component {
                 </div>
                 }
 
-                {/*{!inArtStudio && page !== 'home' && page !== 'newUser' &&
-                <Link className='app--homeButt' linkTo={'/'}>
-                    <IconButt icon={'logo'}
-                              leftCorner={true}
-                              stroke={'#000'}
-                              fill={'#fff'}
-                              label={'home'}/>
-                </Link>
-                }*/}
-
-                {/*{!inArtStudio && user.loginStatus === 'loggedIn' && page !== 'newUser' &&
-                <Link className='app--addArtButt' linkTo={`/artStudio/new/uploadPhoto`}>
-                    <IconButt icon={'addArt'}
-                              rightCorner={true}
-                              stroke={'#000'}
-                              fill={'#fff'}
-                              label={'+new'}/>
-                </Link>
-                }*/}
-
-                {galleryId &&
-                <div className='app--galleryControls'>
-                    <GalleryControlsContainer className='app--galleryControls'
-                                              galleryId={galleryId}
-                                              artworkId={artworkId}/>
-                </div>
-                }
-
-                <WindowDimensionsTracker leftMargin={leftMargin}>
+                <WindowDimensionsTracker>
                     {children}
                 </WindowDimensionsTracker>
 

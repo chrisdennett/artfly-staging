@@ -6,7 +6,6 @@ import './newUser_styles.css';
 // components
 import FormRenderField from '../global/formField/FormRenderField'
 import Butt from "../global/Butt/Butt";
-// import Title from '../Title';
 import GallerySign from "../global/gallerySign/GallerySign";
 import StencilHeader from "../global/stencilHeader/StencilHeader";
 

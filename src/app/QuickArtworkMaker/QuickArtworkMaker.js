@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 // styles
 import './quickArtworkMaker_styles.css';
 // helpers
-import * as ImageHelper from "../ArtStudio/ImageHelper";
+import * as ImageHelper from "../global/ImageHelper";
 import DefaultArtworkDataGenerator from "./DefaultArtworkDataGenerator";
 // comps
 import QuickPhotoSelector from "./quickPhotoSelector/QuickPhotoSelector";

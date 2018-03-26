@@ -1,7 +1,0 @@
-.newArtworkPhotoSelector {
-    display: flex;
-    flex-wrap: wrap;
-    align-content: space-evenly;
-    padding: 42px;
-    min-height: 100%;
-}

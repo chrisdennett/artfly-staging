@@ -1,9 +1,0 @@
-.pictureMakerToolControls{
-    bottom:10px;
-    left:65px;
-    right: 0;
-    position:fixed;
-    z-index: 10;
-    display: flex;
-    justify-content: center;
-}

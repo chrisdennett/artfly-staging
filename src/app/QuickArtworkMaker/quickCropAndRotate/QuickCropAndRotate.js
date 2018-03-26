@@ -6,7 +6,7 @@ import faCheck from '@fortawesome/fontawesome-pro-solid/faCheck';
 // styles
 import './quickCropAndRotate_styles.css';
 // helpers
-import * as ImageHelper from "../../ArtStudio/ImageHelper";
+import * as ImageHelper from "../../global/ImageHelper";
 // components
 import QuickCuttingBoard from "./QuickCuttingBoard";
 import QuickCuttingMat from "../quickCuttingMat/QuickCuttingMat";
