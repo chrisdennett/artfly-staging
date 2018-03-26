@@ -47,7 +47,8 @@ const PublicHome = function () {
                             <FontAwesomeIcon icon={faChild}/> HAVE A PLAY...
                         </LinkButt>
 
-                        <p>Or if you'd rather see a poorly made video, I've got a real treat for you! Every time I do an update
+                        <p>Or if you'd rather see a poorly made video, I've got a real treat for you! Every time I do an
+                            update
                             I try to explain myself using the medium of youtube... and fail.</p>
                     </div>
 
@@ -70,23 +71,20 @@ const PublicHome = function () {
                     </div>
 
                     <div className={'publicHome--intro'}>
-                        If you'd like to hear about updates, or look out for updates on <a
+                        You can follow updates: <a
                         href='https://twitter.com/artflychris'
                         target="_blank"
-                        rel="noopener noreferrer"><FontAwesomeIcon icon={faTwitterSquare}/> Twitter @ArtflyChris</a>
+                        rel="noopener noreferrer"><FontAwesomeIcon icon={faTwitterSquare}/>on Twitter @ArtflyChris</a>,
 
                         <span> or </span>
 
                         <a href='https://www.facebook.com/artfly.io/'
                            target="_blank"
-                           rel="noopener noreferrer"><FontAwesomeIcon icon={faFacebookSquare}/> Facebook</a>
+                           rel="noopener noreferrer"><FontAwesomeIcon icon={faFacebookSquare}/> Facebook </a>
+                        or by email:
                     </div>
 
                     <div className={'publicHome--signUpSection'}>
-                        <p>
-                            ... or by email
-                        </p>
-
                         <SignUpForm/>
                     </div>
                 </GallerySign>
@@ -97,7 +95,8 @@ const PublicHome = function () {
                 <div className={'app--section--content'}>
                     <StencilHeader wording={'A place to create, display and share'}/>
 
-                    <p>I'm making Artfly with my own children in mind. I wanted quick ways to create, store, display and share their
+                    <p>I'm making Artfly with my own children in mind. I wanted quick ways to create, store, display and
+                        share their
                         artwork. Here's how it'll work:</p>
 
                     <div className={'app--section-content--cards'}>
