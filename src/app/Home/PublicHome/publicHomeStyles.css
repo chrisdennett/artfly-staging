@@ -2,6 +2,32 @@
     padding: 30px;
 }
 
+.publicHome--intro{
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.publicHome--intro a{
+    font-size: 1em;
+    color: rgb(120, 0, 120);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.publicHome--intro h2{
+    margin: 0 auto 20px 0;
+    border-bottom: rgba(0, 0, 0, 0.46) 1px solid;
+    padding-bottom: 20px;
+}
+
+.publicHome--intro p{
+    margin: 10px 0;
+}
+
+.publicHome--intro--tryButt{
+    margin: 20px 0 20px 0;
+}
+
 .publicHome--signUpSection {
     text-align: left;
     font-size: 0.9rem;
@@ -13,6 +39,7 @@
 .embed-container {
     position: relative;
     padding-bottom: 56.25%;
+    margin-bottom: 30px;
     height: 0;
     overflow: hidden;
     max-width: 100%;

@@ -26,6 +26,10 @@ html, body {
     overflow-x: hidden;
 }
 
+h2, h2 span{
+    line-height: 1.6;
+}
+
 button, a{
     font-family: 'Work Sans', sans-serif;
     /*font-family: 'Stardos Stencil', cursive;*/
@@ -147,7 +151,7 @@ button, a{
 
     body {
         font-size: 1rem;
-        line-height: 1.2rem;
+        /*line-height: 1.8rem;*/
     }
 
     .app--section {
@@ -159,4 +163,10 @@ button, a{
         font-size: 2rem;
         line-height: 2rem;
     }
+
+    h2, h2 span{
+        font-size: 1.2rem;
+        /*line-height: 1.6;*/
+    }
+
 }

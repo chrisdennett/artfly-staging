@@ -4,6 +4,12 @@
     justify-content: flex-end;
 }
 
+.home--topBar a{
+    font-size: 2rem;
+    color: rgba(0, 0, 0, 0.5);
+    padding: 0 0 0 10px;
+}
+
 .home--heading {
     padding: 3rem 10px 0 10px;
 }

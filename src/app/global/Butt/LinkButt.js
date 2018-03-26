@@ -4,9 +4,9 @@ import history from '../history';
 
 import Butt from "./Butt";
 
-const LinkButt = function ({ children, linkTo, fullWidth, ...rest }) {
+const LinkButt = function ({className, children, linkTo, fullWidth, ...rest }) {
     return (
-        <Butt onClick={() => {history.push(linkTo)}} {...rest} fullWidth={fullWidth}>
+        <Butt className={className} onClick={() => {history.push(linkTo)}} {...rest} fullWidth={fullWidth}>
             {children}
         </Butt>
     )

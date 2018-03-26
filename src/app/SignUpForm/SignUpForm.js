@@ -31,7 +31,7 @@ class SignUpForm extends Component {
                 </label>
 
                 <input type="submit"
-                       value="Get Updates"
+                       value="Get Email Updates"
                        name="subscribe"
                        id="mc-embedded-subscribe"
                        className={'signUpForm--submitButt'}/>

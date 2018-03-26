@@ -15,7 +15,7 @@ import QuickTitlesEditor from "./quickTitlesEditor/QuickTitlesEditor";
 import QuickFrameEditor from "./quickFrameEditor/QuickFrameEditor";
 import QuickRoomEditor from "./quickRoomEditor/QuickRoomEditor";
 // DEV ONLY
-import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
+// import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
 
 // Constants
 const defaultArtworkData = DefaultArtworkDataGenerator();
@@ -37,11 +37,11 @@ class QuickArtworkMaker extends Component {
     }
 
     // TEST ONLY
-    componentDidMount() {
+    /*componentDidMount() {
         this.sourceImg = TEST_SOURCE_IMG;
         this.toolToShowAfterUpdate = 'room';
         this.updateMasterCanvas(this.sourceImg, 1);
-    }
+    }*/
 
     // Left nav tool selection
     onToolSelect(toolName) {

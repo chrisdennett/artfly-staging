@@ -1,5 +1,8 @@
 // externals
 import React from "react";
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import faFacebookSquare from '@fortawesome/fontawesome-free-brands/faFacebookSquare';
+import faTwitterSquare from '@fortawesome/fontawesome-free-brands/faTwitterSquare';
 // styles
 import './homeStyles.css';
 // components
@@ -16,9 +19,13 @@ const Home = ({ user }) => {
     return (
         <div>
             <div className={'home--topBar'}>
+                <a href='https://twitter.com/artflychris'
+                   target="_blank"
+                   rel="noopener noreferrer"><FontAwesomeIcon icon={faTwitterSquare}/></a>
+
                 <a href='https://www.facebook.com/artfly.io/'
                    target="_blank"
-                   rel="noopener noreferrer">Facebook</a>
+                   rel="noopener noreferrer"><FontAwesomeIcon icon={faFacebookSquare}/> </a>
             </div>
 
             <div className='home--heading'>

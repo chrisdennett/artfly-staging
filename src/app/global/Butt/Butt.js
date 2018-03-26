@@ -22,7 +22,7 @@ class Butt extends Component {
     }
 
     render() {
-        const { label, useATag = false, disabled, onClick, alignLeft, size, svgIcon, showAsLink, fullWidth, ...rest } = this.props;
+        const { label, useATag = false, disabled, onClick, alignLeft, size, svgIcon, showAsLink, fullWidth, className, ...rest } = this.props;
 
         let onClickHandler = onClick;
         let buttonStyle = {display:'inline-flex'};
@@ -65,6 +65,10 @@ class Butt extends Component {
         if(disabled) {
             classes += ' butt--disabled';
             onClickHandler = null;
+        }
+
+        if(className){
+            classes += ' ' + className;
         }
 
         const wording = label ? label : this.props.children;
