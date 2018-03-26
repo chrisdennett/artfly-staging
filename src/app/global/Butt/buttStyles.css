@@ -88,11 +88,17 @@
 .butt--facebook {
     background-color: #01579b;
     color: #fff;
+    text-align: left;
 }
 
 .butt--google {
     color: #666;
     background-color: #fff;
+    text-align: left;
+}
+
+.butt--google svg{
+    vertical-align: -.125em;
 }
 
 .butt--link {

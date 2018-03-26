@@ -53,6 +53,7 @@ class Butt extends Component {
 
         if (facebook) classes += ' butt--facebook';
         else if (google) classes += ' butt--google';
+
         else if (link) classes += ' butt--link';
         else if (red) classes += ' butt--red';
         else if (orange) classes += ' butt--orange';
