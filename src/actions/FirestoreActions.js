@@ -309,6 +309,31 @@ export function fs_getArtistChanges(artistId, onChangeCallback = null) {
 //*** ARTWORK ***********************************************************
 
 // ADD ARTWORK
+export function fs_addArtwork(type, userId, imgFile, artworkData, onChangeCallback = null) {
+    // Get artwork database id first so can be used for the filename
+    const artworkDatabaseRef = db.collection('artworks').doc();
+    const artworkId = artworkDatabaseRef.id;
+
+    int_saveImage(artworkId, imgFile, '',
+        (onChangeData) => {
+            if (onChangeCallback) onChangeCallback(onChangeData);
+        },
+        (onCompleteData) => {
+            // Upload completed successfully - save artwork data
+            const newArtworkData = {
+                ...artworkData,
+                type,
+                adminId: userId,
+                url: onCompleteData.downloadURL,
+                dateAdded: Date.now()
+            };
+
+            int_saveArtworkChanges(artworkId, newArtworkData, () => {
+                onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
+            });
+        });
+}
+/*
 export function fs_addArtwork(type, userId, artistId, imgFile, widthToHeightRatio, heightToWidthRatio, onChangeCallback = null) {
     // Get artwork database id first so can be used for the filename
     const artworkDatabaseRef = db.collection('artworks').doc();
@@ -335,6 +360,7 @@ export function fs_addArtwork(type, userId, artistId, imgFile, widthToHeightRati
             });
         });
 }
+*/
 
 export function fs_addThumbnail(artworkId, artistId, thumbFile, onChangeCallback = null) {
     int_saveImage(artworkId, artistId, thumbFile, 'thumbnail_',
@@ -423,6 +449,28 @@ function int_saveArtworkChanges(artworkId, newData, onChangeCallback = null) {
 }
 
 // INTERNAL ARTWORK DATA
+function int_saveImage(artworkId, blob, prefix, onChangeCallback, onCompleteCallback) {
+    const fileName = prefix + artworkId;
+    const userPicturesRef = store.child(`userContent/${fileName}`);
+    // start the upload
+    const uploadTask = userPicturesRef.put(blob);
+    // listen for upload events
+    uploadTask
+        .on(storageEvents.STATE_CHANGED,
+            (snapshot) => {
+                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                onChangeCallback({ progress, id: artworkId, status: 'uploading' });
+            },
+            (error) => {
+                // A full list of error codes is available at https://firebase.google.com/docs/storage/web/handle-errors
+                console.log("uncaught error: ", error);
+            },
+            () => {
+                onCompleteCallback({ downloadURL: uploadTask.snapshot.downloadURL });
+            })
+}
+
+/*
 function int_saveImage(artworkId, artistId, blob, prefix, onChangeCallback, onCompleteCallback) {
     const fileName = prefix + artworkId;
     const userPicturesRef = store.child(`userContent/${artistId}/${fileName}`);
@@ -443,6 +491,7 @@ function int_saveImage(artworkId, artistId, blob, prefix, onChangeCallback, onCo
                 onCompleteCallback({ downloadURL: uploadTask.snapshot.downloadURL });
             })
 }
+*/
 
 // GET ARTIST ARTWORK CHANGES
 export function fs_getArtistArtworkChanges(artistId, userId, onChangeCallback = null) {
@@ -489,7 +538,7 @@ export function fs_getArtworkChanges(artworkId, onChangeCallback = null, onError
         .doc(artworkId)
         .onSnapshot(doc => {
                 if (!doc.exists) {
-                    if(onErrorCallback) onErrorCallback();
+                    if (onErrorCallback) onErrorCallback();
                     return;
                 }
 
@@ -501,7 +550,7 @@ export function fs_getArtworkChanges(artworkId, onChangeCallback = null, onError
                 if (onChangeCallback) onChangeCallback(artworkDataWithId);
             },
             (error) => {
-                if(onErrorCallback) onErrorCallback(error);
+                if (onErrorCallback) onErrorCallback(error);
                 console.log("artwork changes listener error: ", error);
             });
 }

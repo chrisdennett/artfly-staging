@@ -1,8 +1,5 @@
 // externals
 import React from "react";
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import faFacebookSquare from '@fortawesome/fontawesome-free-brands/faFacebookSquare';
-import faTwitterSquare from '@fortawesome/fontawesome-free-brands/faTwitterSquare';
 // styles
 import './homeStyles.css';
 // components
@@ -13,20 +10,10 @@ import PublicHome from "./PublicHome/PublicHome";
 import Footer from "./Footer/Footer";
 
 const Home = ({ user }) => {
-    const userLoggedIn = user && user.loginStatus === 'loggedIn';
+    // const userLoggedIn = user && user.loginStatus === 'loggedIn';
 
     return (
         <div>
-            <div className={'home--topBar'}>
-                <a href='https://twitter.com/artflychris'
-                   target="_blank"
-                   rel="noopener noreferrer"><FontAwesomeIcon icon={faTwitterSquare}/></a>
-
-                <a href='https://www.facebook.com/artfly.io/'
-                   target="_blank"
-                   rel="noopener noreferrer"><FontAwesomeIcon icon={faFacebookSquare}/> </a>
-            </div>
-
             <div className='home--heading'>
                 <div>
                     <Title/>
@@ -44,9 +31,9 @@ const Home = ({ user }) => {
 
             </div>
 
-            {!userLoggedIn &&
+
             <PublicHome/>
-            }
+
 
             <Footer/>
 

@@ -293,9 +293,9 @@ export function clearImageUpload() {
     }
 }
 
-export function addArtwork(artworkType, userId, artistId, imgFile, widthToHeightRatio, heightToWidthRatio, callback = null) {
+export function addArtwork(artworkType, userId, imgFile, artworkData, callback = null) {
     return dispatch => {
-        fs_addArtwork(artworkType, userId, artistId, imgFile, widthToHeightRatio, heightToWidthRatio, (uploadData) => {
+        fs_addArtwork(artworkType, userId, imgFile, artworkData, (uploadData) => {
             if (uploadData.status === 'uploading') {
                 dispatch({
                     type: IMAGE_UPLOAD_PROGRESS,

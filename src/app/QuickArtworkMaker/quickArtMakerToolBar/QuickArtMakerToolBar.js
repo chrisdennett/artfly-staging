@@ -6,6 +6,7 @@ import faListAlt from "@fortawesome/fontawesome-pro-solid/faListAlt";
 import faImage from "@fortawesome/fontawesome-pro-solid/faImage";
 import faEye from "@fortawesome/fontawesome-pro-solid/faEye";
 import faPalletAlt from "@fortawesome/fontawesome-pro-solid/faPalletAlt";
+import faSave from "@fortawesome/fontawesome-pro-solid/faSave";
 // styles
 import './quickArtMakerTools_styles.css';
 // comps
@@ -36,7 +37,9 @@ class QuickArtMakerToolBar extends Component {
     onShareClick() { this.props.onToolSelect('share') }
 
     render() {
-        const { currentTool, disableEditing } = this.props;
+        const { currentTool, disableEditing, showArtworkControls, onSave } = this.props;
+
+        console.log("showArtworkControls: ", showArtworkControls);
 
         return (
             <div className={'quickArtMakerTools'}>
@@ -46,6 +49,13 @@ class QuickArtMakerToolBar extends Component {
                     </Link>
 
                 </div>
+
+                {showArtworkControls &&
+                <ControlPanelButt
+                    icon={faSave}
+                    onClick={onSave}
+                    label={'SAVE'}/>
+                }
 
                 <ControlPanelButt
                     isSelected={currentTool === 'upload'}

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 // styles
 import './quickArtworkMaker_styles.css';
+// actions
+import { addArtwork } from "../../actions/UserDataActions";
 // helpers
 import * as ImageHelper from "../global/ImageHelper";
 import DefaultArtworkDataGenerator from "./DefaultArtworkDataGenerator";
@@ -15,7 +17,7 @@ import QuickTitlesEditor from "./quickTitlesEditor/QuickTitlesEditor";
 import QuickFrameEditor from "./quickFrameEditor/QuickFrameEditor";
 import QuickRoomEditor from "./quickRoomEditor/QuickRoomEditor";
 // DEV ONLY
-// import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
+import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
 
 // Constants
 const defaultArtworkData = DefaultArtworkDataGenerator();
@@ -32,16 +34,17 @@ class QuickArtworkMaker extends Component {
         this.updateMasterCanvas = this.updateMasterCanvas.bind(this);
         this.onEditDone = this.onEditDone.bind(this);
         this.onArtworkDataChange = this.onArtworkDataChange.bind(this);
+        this.onArtworkSaveClick = this.onArtworkSaveClick.bind(this);
 
         this.state = { currentTool: 'upload', artworkData: defaultArtworkData };
     }
 
     // TEST ONLY
-    /*componentDidMount() {
+    componentDidMount() {
         this.sourceImg = TEST_SOURCE_IMG;
         this.toolToShowAfterUpdate = 'room';
         this.updateMasterCanvas(this.sourceImg, 1);
-    }*/
+    }
 
     // Left nav tool selection
     onToolSelect(toolName) {
@@ -104,13 +107,46 @@ class QuickArtworkMaker extends Component {
         })
     }
 
+    onArtworkSaveClick() {
+        const { user } = this.props;
+        const { artworkData } = this.state;
+        const { orientation, cropData } = artworkData;
+        this.getImageBlob(this.sourceImg, orientation, cropData, 3000, (maxBlob) => {
+            this.props.addArtwork("picture", user.uid, maxBlob, artworkData, (saveReturnData) => {
+                console.log("saveReturnData: ", saveReturnData);
+            });
+        })
+    }
+
+    getImageBlob(sourceImg, rotation, cropData, maxSize, callback) {
+        const canvas = document.createElement('canvas');
+
+        ImageHelper.drawToCanvas({
+            sourceCanvas: sourceImg,
+            outputCanvas: canvas,
+            orientation: rotation,
+            cropPercents: cropData,
+            maxOutputCanvasWidth: maxSize,
+            maxOutputCanvasHeight: maxSize
+        }, (widthToHeightRatio, heightToWidthRatio) => {
+
+            canvas.toBlob((canvasBlobData) => {
+                callback(canvasBlobData, widthToHeightRatio, heightToWidthRatio)
+            }, 'image/jpeg', 0.95);
+
+        });
+    }
+
     render() {
         const { currentTool, artworkData, sourceImg, masterCanvas } = this.state;
-        const { height, width } = this.props;
+        const { height, width, user } = this.props;
 
         const sidebarWidth = 60;
         const disableEditing = !this.sourceImg;
 
+        // console.log("user: ", user);
+        const { loginStatus } = user;
+        console.log("loginStatus: ", loginStatus);
         const showSideControls = true; //currentTool !== 'frame';
         const contentWidth = showSideControls ? width - sidebarWidth : width;
 
@@ -120,7 +156,7 @@ class QuickArtworkMaker extends Component {
             classesForMain = 'quickArtworkMaker--mainScrollable';
         }
 
-        const hideArtwork = currentTool === 'crop' || currentTool === 'upload'  || currentTool === 'share';
+        const hideArtwork = currentTool === 'crop' || currentTool === 'upload' || currentTool === 'share';
 
         return (
             <div className={'quickArtworkMaker'}>
@@ -128,7 +164,9 @@ class QuickArtworkMaker extends Component {
                 {showSideControls &&
                 <div className={'quickArtworkMaker--sideBar'} style={{ width: sidebarWidth }}>
                     <QuickArtMakerToolBar onToolSelect={this.onToolSelect}
+                                          showArtworkControls={loginStatus === 'loggedIn'}
                                           disableEditing={disableEditing}
+                                          onSave={this.onArtworkSaveClick}
                                           currentTool={currentTool}/>
                 </div>
                 }
@@ -206,4 +244,6 @@ const mapStateToProps = (state) => {
     return { width, height }
 };
 
-export default connect(mapStateToProps)(QuickArtworkMaker);
+const mapActionsToProps = { addArtwork };
+
+export default connect(mapStateToProps, mapActionsToProps)(QuickArtworkMaker);

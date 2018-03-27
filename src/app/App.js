@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import faFacebookSquare from '@fortawesome/fontawesome-free-brands/faFacebookSquare';
+import faTwitterSquare from '@fortawesome/fontawesome-free-brands/faTwitterSquare';
 // styles
 import './appStyles.css';
 // components
@@ -9,12 +12,27 @@ import SignInOut from './SignInOut/SignInOut';
 class App extends Component {
 
     render() {
-        const { children } = this.props;
+        const { children, page } = this.props;
 
         return (
             <div className='app'>
 
-                <SignInOut />
+                {page !== 'quickArtworkMaker' &&
+                <div className={'app--topBar'}>
+                    <div>
+                        <a href='https://twitter.com/artflychris'
+                            target="_blank"
+                            rel="noopener noreferrer"><FontAwesomeIcon icon={faTwitterSquare}/></a>
+
+                        <a href='https://www.facebook.com/artfly.io/'
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <FontAwesomeIcon icon={faFacebookSquare}/> </a>
+                    </div>
+                    <SignInOut/>
+                </div>
+                }
+
 
                 {IN_STAGING &&
                 <div className={'app--betaTestingFlag'}>
