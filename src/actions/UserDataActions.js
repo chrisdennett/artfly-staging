@@ -262,13 +262,15 @@ export function listenForArtistArtworkChanges(artistId, userId) {
     }
 }
 
-export function listenForArtworkChanges(artworkId, errorCallback) {
+export function listenForArtworkChanges(artworkId, callback, errorCallback) {
     return (dispatch) => {
         fs_getArtworkChanges(artworkId, (artworkData) => {
             dispatch({
                 type: ARTWORK_CHANGE,
                 payload: artworkData
             });
+            if(callback)callback(artworkData);
+
         }, () => {
             if(errorCallback) errorCallback(artworkId);
         } )

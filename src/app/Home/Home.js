@@ -35,7 +35,6 @@ const Home = ({ user }) => {
 
             </div>
 
-
             {!userLoggedIn &&
             <PublicHome/>
             }
