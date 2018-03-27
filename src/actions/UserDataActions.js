@@ -6,7 +6,7 @@ import {
     fs_addNewUser, fs_addNewArtist, fs_getUserChanges, fs_getUserArtistChanges,
     fs_getArtistArtworkChanges, fs_getArtistChanges, fs_addArtwork, fs_updateArtist, fs_getArtworkChanges,
     fs_updateArtworkArtist, fs_deleteArtwork, fs_deleteArtistAndArtworks, fs_deleteUser,
-    fs_addThumbnail, fs_updateArtworkImage, fs_updateThumbnail
+    fs_addThumbnail, fs_updateArtworkImage, fs_updateThumbnail, fs_getArtworkDataOnce
 } from './FirestoreActions';
 
 export const ARTWORK_CHANGE = "artworkChange";
@@ -274,6 +274,18 @@ export function listenForArtworkChanges(artworkId, callback, errorCallback) {
         }, () => {
             if(errorCallback) errorCallback(artworkId);
         } )
+    }
+}
+
+export function getArtworkDataOnce(artworkId, callback) {
+    return dispatch => {
+        fs_getArtworkDataOnce(artworkId, (artworkData) => {
+            dispatch({
+                type: ARTWORK_DELETED,
+                payload: artworkId
+            });
+            if(callback) callback({...artworkData, artworkId});
+        });
     }
 }
 

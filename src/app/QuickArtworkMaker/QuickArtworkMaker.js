@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 // styles
 import './quickArtworkMaker_styles.css';
 // actions
-import { addArtwork, listenForArtworkChanges } from "../../actions/UserDataActions";
+import { addArtwork, getArtworkDataOnce } from "../../actions/UserDataActions";
 // helpers
 import * as ImageHelper from "../global/ImageHelper";
 import DefaultArtworkDataGenerator from "./DefaultArtworkDataGenerator";
@@ -40,46 +40,21 @@ class QuickArtworkMaker extends Component {
     }
 
     componentWillMount() {
-        const { artworkId, user } = this.props;
+        const { artworkId } = this.props;
 
         // If there's an artwork id in the url, load in the artwork
         if (artworkId) {
-            let artwork;
-            if (user && user.artworks) {
-                artwork = user.artworks.find((element) => {
-                    return element.artworkId === artworkId;
-                })
-            }
-
-            if (artwork) {
-                this.setState({ artworkData: artwork }, () => {
+            this.props.getArtworkDataOnce(artworkId, (artworkData) => {
+                this.setState({ artworkData }, () => {
                     let img = new Image();
-                    img.src = artwork.url;
+                    img.src = artworkData.url;
                     img.onload = () => {
-                        this.updateMasterCanvas(img, artwork.orientation)
+                        this.updateMasterCanvas(img, artworkData.orientation)
                     }
                 })
-            }
-            else{
-                this.props.listenForArtworkChanges(artworkId, (artworkObject) => {
+            })
 
-                    const artworkData = artworkObject[artworkId];
-                    console.log("artworkData: ", artworkData);
-
-                    this.setState({ artworkData }, () => {
-                        let img = new Image();
-                        img.src = artworkData.url;
-                        img.onload = () => {
-                            this.updateMasterCanvas(img, artworkData.orientation)
-                        }
-                    })
-                })
-            }
         }
-    }
-
-    componentWillReceiveProps(props){
-        console.log("-----props: ", props);
     }
 
     // TEST ONLY
@@ -287,6 +262,6 @@ const mapStateToProps = (state) => {
     return { width, height }
 };
 
-const mapActionsToProps = { addArtwork, listenForArtworkChanges };
+const mapActionsToProps = { addArtwork, getArtworkDataOnce };
 
 export default connect(mapStateToProps, mapActionsToProps)(QuickArtworkMaker);

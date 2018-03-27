@@ -529,6 +529,23 @@ export function fs_getArtistArtworkChanges(artistId, userId, onChangeCallback = 
             })
 }
 
+// GET ARTWORK DATA ONCE
+export function fs_getArtworkDataOnce(artworkId, onComplete=null) {
+    const docRef = db.collection('artworks').doc(artworkId);
+
+    docRef.get().then(function(doc) {
+        if (doc.exists) {
+            console.log("Document data:", doc.data());
+            onComplete(doc.data());
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
+}
+
 // GET ARTWORK CHANGES
 export function fs_getArtworkChanges(artworkId, onChangeCallback = null, onErrorCallback) {
     if (unsubscribers.artworkListeners[artworkId]) {
