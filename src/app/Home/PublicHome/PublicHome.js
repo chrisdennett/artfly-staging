@@ -21,8 +21,6 @@ import faTwitterSquare from "@fortawesome/fontawesome-free-brands/faTwitterSquar
 import faFacebookSquare from "@fortawesome/fontawesome-free-brands/faFacebookSquare";
 
 const PublicHome = function () {
-
-
     return (
         <div>
             <div className={'app--section app--section--dark'}>

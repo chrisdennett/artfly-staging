@@ -333,6 +333,7 @@ export function fs_addArtwork(type, userId, imgFile, artworkData, onChangeCallba
             });
         });
 }
+
 /*
 export function fs_addArtwork(type, userId, artistId, imgFile, widthToHeightRatio, heightToWidthRatio, onChangeCallback = null) {
     // Get artwork database id first so can be used for the filename
@@ -564,19 +565,15 @@ export function fs_getUserArtworkChanges(userId) {
     unsubscribers.userArtworkListeners[userId] = db.collection('artworks')
         .where('adminId', '==', userId)
         .onSnapshot(querySnapshot => {
-                const changedDocsArr = querySnapshot.docChanges;
-                let docAddedOrDeleted = false;
+                const docsArr = querySnapshot.docs;
+                const artworks = [];
 
-                for (let change of changedDocsArr) {
-                    if (change.type === 'added' || change.type === 'removed') {
-                        docAddedOrDeleted = true;
-                    }
+                for (let doc of docsArr) {
+                    const artworkId = doc.id;
+                    artworks.push({...doc.data(), artworkId});
                 }
 
-                if (docAddedOrDeleted) {
-                    const totalArtworks = querySnapshot.size;
-                    fs_updateUser(userId, { totalArtworks });
-                }
+                fs_updateUser(userId, { artworks });
             },
             error => {
                 console.log("user artworks listener error: ", error);

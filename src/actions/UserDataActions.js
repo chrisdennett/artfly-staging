@@ -162,6 +162,9 @@ export function deleteUser() {
     }
 }
 
+export function getUserArtworks() {
+
+}
 // ARTIST ************************************************************
 
 // ADD NEW ARTIST

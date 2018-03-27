@@ -8,9 +8,13 @@ import Title from "./Title";
 import SignInOut from '../SignInOut/SignInOut';
 import PublicHome from "./PublicHome/PublicHome";
 import Footer from "./Footer/Footer";
+import LinkButt from "../global/Butt/LinkButt";
 
 const Home = ({ user }) => {
-    // const userLoggedIn = user && user.loginStatus === 'loggedIn';
+    const userArtworks = user && user.artworks ? user.artworks : [];
+    const userLoggedIn = user && user.loginStatus === 'loggedIn';
+
+    console.log("userArtworks: ", userArtworks);
 
     return (
         <div>
@@ -32,8 +36,15 @@ const Home = ({ user }) => {
             </div>
 
 
+            {!userLoggedIn &&
             <PublicHome/>
+            }
 
+            {userLoggedIn &&
+            <div>
+                <LinkButt linkTo={`/quickArtworkMaker/${userArtworks[0].artworkId}`}>Open artwork</LinkButt>
+            </div>
+            }
 
             <Footer/>
 

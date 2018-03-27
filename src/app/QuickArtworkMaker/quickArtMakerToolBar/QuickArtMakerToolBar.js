@@ -39,8 +39,6 @@ class QuickArtMakerToolBar extends Component {
     render() {
         const { currentTool, disableEditing, showArtworkControls, onSave } = this.props;
 
-        console.log("showArtworkControls: ", showArtworkControls);
-
         return (
             <div className={'quickArtMakerTools'}>
                 <div className={'quickArtMakerTools--logoHolder'}>

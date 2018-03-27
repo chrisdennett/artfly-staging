@@ -49,6 +49,15 @@ class ArtflyRouting extends Component {
         else {
             const sections = fullPath.split('/').slice(1);
             page = sections[0];
+
+            switch (page) {
+                case 'quickArtworkMaker':
+                    params.artworkId = sections[1];
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         this.setState(() => {

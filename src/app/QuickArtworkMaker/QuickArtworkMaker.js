@@ -17,7 +17,7 @@ import QuickTitlesEditor from "./quickTitlesEditor/QuickTitlesEditor";
 import QuickFrameEditor from "./quickFrameEditor/QuickFrameEditor";
 import QuickRoomEditor from "./quickRoomEditor/QuickRoomEditor";
 // DEV ONLY
-import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
+// import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
 
 // Constants
 const defaultArtworkData = DefaultArtworkDataGenerator();
@@ -39,12 +39,36 @@ class QuickArtworkMaker extends Component {
         this.state = { currentTool: 'upload', artworkData: defaultArtworkData };
     }
 
+    componentWillMount() {
+        const { artworkId, user } = this.props;
+
+        // If there's an artwork id in the url, load in the artwork
+        if (artworkId) {
+            let artwork;
+            if (user && user.artworks) {
+                artwork = user.artworks.find((element) => {
+                    return element.artworkId === artworkId;
+                })
+            }
+
+            if (artwork) {
+                this.setState({ artworkData: artwork }, () => {
+                    let img = new Image();
+                    img.src = artwork.url;
+                    img.onload = () => {
+                        this.updateMasterCanvas(img, artwork.orientation)
+                    }
+                })
+            }
+        }
+    }
+
     // TEST ONLY
-    componentDidMount() {
+    /*componentDidMount() {
         this.sourceImg = TEST_SOURCE_IMG;
         this.toolToShowAfterUpdate = 'room';
         this.updateMasterCanvas(this.sourceImg, 1);
-    }
+    }*/
 
     // Left nav tool selection
     onToolSelect(toolName) {
@@ -109,6 +133,7 @@ class QuickArtworkMaker extends Component {
 
     onArtworkSaveClick() {
         const { user } = this.props;
+
         const { artworkData } = this.state;
         const { orientation, cropData } = artworkData;
         this.getImageBlob(this.sourceImg, orientation, cropData, 3000, (maxBlob) => {
@@ -142,11 +167,10 @@ class QuickArtworkMaker extends Component {
         const { height, width, user } = this.props;
 
         const sidebarWidth = 60;
-        const disableEditing = !this.sourceImg;
+        const disableEditing = !sourceImg;
 
         // console.log("user: ", user);
         const { loginStatus } = user;
-        console.log("loginStatus: ", loginStatus);
         const showSideControls = true; //currentTool !== 'frame';
         const contentWidth = showSideControls ? width - sidebarWidth : width;
 
