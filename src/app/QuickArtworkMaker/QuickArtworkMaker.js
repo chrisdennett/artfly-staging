@@ -128,22 +128,24 @@ class QuickArtworkMaker extends Component {
         const { user } = this.props;
 
         const { artworkData } = this.state;
-        const { orientation, cropData } = artworkData;
-        this.getImageBlob(this.state.sourceImg, orientation, cropData, 3000, (maxBlob) => {
+        this.getImageBlob(this.state.sourceImg, 3000, (maxBlob) => {
             this.props.addArtwork("picture", user.uid, maxBlob, artworkData, (saveReturnData) => {
                 console.log("saveReturnData: ", saveReturnData);
             });
         })
     }
 
-    getImageBlob(sourceImg, rotation, cropData, maxSize, callback) {
+    getImageBlob(sourceImg, maxSize, callback) {
         const canvas = document.createElement('canvas');
+
+        // not providing crop data and orientation because now keeping source as is
+        // instead the crop data and orientation is being saved with artwork data
+        // and applied each time artwork viewed
+        // This way edits are non-destructive.
 
         ImageHelper.drawToCanvas({
             sourceCanvas: sourceImg,
             outputCanvas: canvas,
-            orientation: rotation,
-            cropPercents: cropData,
             maxOutputCanvasWidth: maxSize,
             maxOutputCanvasHeight: maxSize
         }, (widthToHeightRatio, heightToWidthRatio) => {

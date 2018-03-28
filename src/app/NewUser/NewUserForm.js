@@ -13,6 +13,7 @@ class NewUserForm extends Component {
 
     render() {
         const { handleSubmit, pristine, submitting, addNewUser, signOutUser, userId } = this.props; // handleSubmit is added to props by redux-form
+        console.log("pristine: ", pristine);
 
         return (
             <div className={'newUserForm--holder'}>
