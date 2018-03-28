@@ -19,8 +19,6 @@ class UserEditorHolder extends Component {
 
             let initialValues = {
                 email: userEmail,
-                firstName: '',
-                lastName: ''
             };
             return ( <NewUserForm userId={userId}
                                   initialValues={initialValues}

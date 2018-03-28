@@ -47,6 +47,7 @@ class QuickArtworkMaker extends Component {
             this.props.getArtworkDataOnce(artworkId, (artworkData) => {
                 this.setState({ artworkData }, () => {
                     let img = new Image();
+                    img.setAttribute('crossOrigin', 'anonymous'); //
                     img.src = artworkData.url;
                     img.onload = () => {
                         this.updateMasterCanvas(img, artworkData.orientation)
@@ -59,9 +60,8 @@ class QuickArtworkMaker extends Component {
 
     // TEST ONLY
     /*componentDidMount() {
-        this.sourceImg = TEST_SOURCE_IMG;
         this.toolToShowAfterUpdate = 'room';
-        this.updateMasterCanvas(this.sourceImg, 1);
+        this.updateMasterCanvas(TEST_SOURCE_IMG, 1);
     }*/
 
     // Left nav tool selection
@@ -80,7 +80,6 @@ class QuickArtworkMaker extends Component {
     // Use Master canvas
     updateMasterCanvas(sourceImg, orientation) {
         const masterCanvas = document.createElement('canvas');
-        this.sourceImg = sourceImg;
         if (!this.toolToShowAfterUpdate) this.toolToShowAfterUpdate = 'crop';
 
         ImageHelper.drawImageToCanvas({ sourceImg, outputCanvas: masterCanvas, orientation },
@@ -98,7 +97,7 @@ class QuickArtworkMaker extends Component {
     }
 
     onCropAndRotateDone(orientation, cropData) {
-        ImageHelper.drawImageToCanvas({ sourceImg: this.sourceImg, outputCanvas: this.state.masterCanvas, orientation },
+        ImageHelper.drawImageToCanvas({ sourceImg: this.state.sourceImg, outputCanvas: this.state.masterCanvas, orientation },
             () => {
                 this.setState((state) => {
                     return {
@@ -130,7 +129,7 @@ class QuickArtworkMaker extends Component {
 
         const { artworkData } = this.state;
         const { orientation, cropData } = artworkData;
-        this.getImageBlob(this.sourceImg, orientation, cropData, 3000, (maxBlob) => {
+        this.getImageBlob(this.state.sourceImg, orientation, cropData, 3000, (maxBlob) => {
             this.props.addArtwork("picture", user.uid, maxBlob, artworkData, (saveReturnData) => {
                 console.log("saveReturnData: ", saveReturnData);
             });

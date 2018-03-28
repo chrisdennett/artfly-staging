@@ -12,7 +12,7 @@ import SignInOut from './SignInOut/SignInOut';
 class App extends Component {
 
     render() {
-        const { children, page } = this.props;
+        const { children, page, user } = this.props;
 
         return (
             <div className='app'>
@@ -29,7 +29,9 @@ class App extends Component {
                            rel="noopener noreferrer">
                             <FontAwesomeIcon icon={faFacebookSquare}/> </a>
                     </div>
-                    <SignInOut/>
+
+                    <SignInOut user={user}/>
+
                 </div>
                 }
 

@@ -6,6 +6,7 @@ import faFacebook from '@fortawesome/fontawesome-free-brands/faFacebookSquare';
 import './signInModalStyles.css';
 // components
 import Butt from "../global/Butt/Butt";
+import NewUserFormContainer from "../NewUser/NewUserFormContainer";
 
 // font awesome doesn't have the correct logo so got it from google
 const GoogleIcon = <svg width={20} height={20} viewBox="0 0 118 120">
@@ -26,20 +27,26 @@ const GoogleIcon = <svg width={20} height={20} viewBox="0 0 118 120">
     </g>
 </svg>;
 
-const SignInModal = ({isOpen, loginStatus, signInWithGoogleClick, signInWithFacebookClick, closeModal}) => {
+const SignInModal = ({isOpen, isNewUser, loginStatus, signInWithGoogleClick, signInWithFacebookClick, closeModal}) => {
 
     if (isOpen === false) {
         return null;
     }
 
+    console.log("loginStatus: ", loginStatus);
+
     return (
         <div className='signInModal'>
+
+            {isNewUser &&
+            <NewUserFormContainer/>
+            }
 
             {loginStatus === 'pending' &&
             <div><h3>Signing in...</h3></div>
             }
 
-            {loginStatus !== 'pending' &&
+            {(!loginStatus || loginStatus === 'loggedOut') &&
             <div style={{display: 'flex', flexDirection:'column'}}>
                 <Butt svgIcon={<FontAwesomeIcon icon={faFacebook}/>}
                       facebook

@@ -89,8 +89,7 @@ export function addNewUser(authId, formValues, callback = null) {
 
     return dispatch => {
         const newUserData = {
-            email: formValues.email,
-            totalArtworks: 0
+            email: formValues.email
         };
 
         fs_addNewUser(authId, newUserData, (userId) => {
@@ -277,6 +276,7 @@ export function listenForArtworkChanges(artworkId, callback, errorCallback) {
     }
 }
 
+// Gets a single snapshot of the artwork data
 export function getArtworkDataOnce(artworkId, callback) {
     return dispatch => {
         fs_getArtworkDataOnce(artworkId, (artworkData) => {

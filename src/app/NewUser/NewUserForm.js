@@ -31,25 +31,11 @@ class NewUserForm extends Component {
                                 component={FormRenderField}
                             />
 
-                            <p className={'newUserForm--sectionHeader'}>Artist:</p>
-                            <Field
-                                name="firstName"
-                                label="First Name: "
-                                component={FormRenderField}
-                            />
-                            <Field
-                                name="lastName"
-                                label="Last Name: "
-                                component={FormRenderField}
-                            />
-
-                            <p>You can add more artists later.</p>
-
                         </GallerySign>
                     </div>
 
                     <div className={'newUserForm--butts'}>
-                        <Butt type="submit" disabled={pristine || submitting}>Set up</Butt>
+                        <Butt type="submit" disabled={submitting}>Set up</Butt>
                         <Butt fullWidth={true} label={'Cancel'} type="button" onClick={signOutUser}/>
                     </div>
                 </form>
@@ -60,20 +46,6 @@ class NewUserForm extends Component {
 
 const validate = values => {
     const errors = {};
-
-    if (!values.firstName) {
-        errors.firstName = 'Required'
-    }
-    else if (values.firstName.length > 15) {
-        errors.firstName = 'Must be 15 characters or less'
-    }
-
-    if (!values.lastName) {
-        errors.lastName = 'Required'
-    }
-    else if (values.lastName.length > 15) {
-        errors.lastName = 'Must be 15 characters or less'
-    }
 
     if (!values.email) {
         errors.email = 'Required'

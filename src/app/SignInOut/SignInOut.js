@@ -40,16 +40,19 @@ class SignInOut extends Component {
 
     render() {
 
-        const { signOutUser, loginStatus } = this.props;
+        const { signOutUser, loginStatus, user } = this.props;
         const userLoggedIn = loginStatus === 'loggedIn';
+        const isNewUser = userLoggedIn && user.status === 'new';
+        const isModalOpen = this.state.isModalOpen || isNewUser;
 
         return (
             <div>
                 <SignInModal closeModal={this.closeModal}
                              signInWithGoogleClick={this.signInWithGoogleClick}
                              signInWithFacebookClick={this.signInWithFacebookClick}
-                             loginStatus={this.props.loginStatus}
-                             isOpen={this.state.isModalOpen}/>
+                             isNewUser={isNewUser}
+                             loginStatus={loginStatus}
+                             isOpen={isModalOpen}/>
 
                 {userLoggedIn &&
                 <Butt className='userHome--signOutButt'
@@ -68,6 +71,7 @@ class SignInOut extends Component {
         )
     }
 }
+
 /*<IconButt icon={'signIn'} label={'sign in'} fill={'hsl(250,98%,80%)'} onClick={this.openModal}/>*/
 
 const mapStateToProps = (state) => {

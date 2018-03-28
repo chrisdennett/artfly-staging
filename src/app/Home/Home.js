@@ -14,8 +14,6 @@ const Home = ({ user }) => {
     const userArtworks = user && user.artworks ? user.artworks : [];
     const userLoggedIn = user && user.loginStatus === 'loggedIn';
 
-    console.log("userArtworks: ", userArtworks);
-
     return (
         <div>
             <div className='home--heading'>
@@ -41,7 +39,13 @@ const Home = ({ user }) => {
 
             {userLoggedIn &&
             <div>
-                <LinkButt linkTo={`/quickArtworkMaker/${userArtworks[0].artworkId}`}>Open artwork</LinkButt>
+                <LinkButt linkTo={'/quickArtworkMaker'}>Add new Artwork</LinkButt>
+                {
+                    userArtworks.map(artwork => {
+                        return <LinkButt key={artwork.artworkId} linkTo={`/quickArtworkMaker/${artwork.artworkId}`}>Open artwork</LinkButt>
+                    })
+
+                }
             </div>
             }
 
