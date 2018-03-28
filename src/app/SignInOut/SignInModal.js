@@ -61,7 +61,6 @@ const SignInModal = ({isOpen, isNewUser, loginStatus, signInWithGoogleClick, sig
                       onClick={signInWithGoogleClick}
                       label={'Sign in with Google'}/>
 
-
                 <Butt label={`Don't sign in`}
                       link
                       onClick={closeModal}/>

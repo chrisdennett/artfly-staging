@@ -22,7 +22,7 @@ class Butt extends Component {
     }
 
     render() {
-        const { label, useATag = false, disabled, onClick, alignLeft, size, svgIcon, showAsLink, fullWidth, className, ...rest } = this.props;
+        const { label, type, useATag = false, disabled, onClick, alignLeft, size, svgIcon, showAsLink, fullWidth, className, ...rest } = this.props;
 
         let onClickHandler = onClick;
         let buttonStyle = {display:'inline-flex'};
@@ -104,6 +104,7 @@ class Butt extends Component {
 
         return (
             <button onClick={onClickHandler}
+                    type={type}
                     className={classes}
                     style={buttonStyle}
                     onMouseEnter={this.onMouseEnter}

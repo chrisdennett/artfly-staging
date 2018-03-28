@@ -85,7 +85,7 @@ export function signOutUser() {
 // ADD NEW USER
 export function addNewUser(authId, formValues, callback = null) {
 
-    console.log("formValues: ", formValues);
+    console.log("addNewUser addNewUser addNewUserformValues: ", formValues);
 
     return dispatch => {
         const newUserData = {

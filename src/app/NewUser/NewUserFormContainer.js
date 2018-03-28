@@ -30,7 +30,6 @@ class UserEditorHolder extends Component {
 
 // Map state to props maps to the intermediary component which uses or passes them through
 const mapStateToProps = (state) => {
-
     return {
         userId: state.user.uid,
         userStatus: state.user.status,
