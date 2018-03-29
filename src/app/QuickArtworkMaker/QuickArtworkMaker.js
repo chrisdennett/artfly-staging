@@ -36,26 +36,37 @@ class QuickArtworkMaker extends Component {
         this.onArtworkDataChange = this.onArtworkDataChange.bind(this);
         this.onArtworkSaveClick = this.onArtworkSaveClick.bind(this);
 
+        this.loadArtwork = this.loadArtwork.bind(this);
+
         this.state = { currentTool: 'upload', artworkData: defaultArtworkData };
     }
 
     componentWillMount() {
-        const { artworkId } = this.props;
+        const { artworkId, artworks } = this.props;
+        if (!artworkId) return;
 
         // If there's an artwork id in the url, load in the artwork
-        if (artworkId) {
-            this.props.getArtworkDataOnce(artworkId, (artworkData) => {
-                this.setState({ artworkData }, () => {
-                    let img = new Image();
-                    img.setAttribute('crossOrigin', 'anonymous'); //
-                    img.src = artworkData.url;
-                    img.onload = () => {
-                        this.updateMasterCanvas(img, artworkData.orientation)
-                    }
-                })
-            })
-
+        if (artworks[artworkId]) {
+            // if the artworkData is already available use it
+            this.loadArtwork(artworks[artworkId]);
         }
+        else {
+            // otherwise load it in once
+            this.props.getArtworkDataOnce(artworkId, (artworkData) => {
+                this.loadArtwork(artworkData);
+            })
+        }
+    }
+
+    loadArtwork(artworkData) {
+        this.setState({ artworkData }, () => {
+            let img = new Image();
+            img.setAttribute('crossOrigin', 'anonymous'); //
+            img.src = artworkData.url;
+            img.onload = () => {
+                this.updateMasterCanvas(img, artworkData.orientation)
+            }
+        })
     }
 
     // TEST ONLY
@@ -260,7 +271,12 @@ const mapStateToProps = (state) => {
         height = state.ui.windowSize.windowHeight;
     }
 
-    return { width, height }
+    return {
+        artworks: state.artworks,
+        user: state.user,
+        width,
+        height
+    }
 };
 
 const mapActionsToProps = { addArtwork, getArtworkDataOnce };

@@ -28,10 +28,12 @@ firebase.initializeApp(config);
 
 if(1===2) console.log("fs: ", firestore); //just prevents annoying not used console warning
 
-firebase.firestore().enablePersistence()
+firebase.firestore();
+
+/*firebase.firestore().enablePersistence()
     .then(function () {
         // Initialize Cloud Firestore through firebase
-        // console.log("persistence granted");
+        console.log("persistence granted");
     })
     .catch(function (err) {
         if (err.code === 'failed-precondition') {
@@ -41,7 +43,7 @@ firebase.firestore().enablePersistence()
             console.log(" The current browser does not support all of the features required to enable persistence", err.code);
         }
         console.log("firebase config err: ", err);
-    });
+    });*/
 
 export const storageEvents = firebase.storage.TaskEvent;
 export const storageRef = firebase.storage().ref();

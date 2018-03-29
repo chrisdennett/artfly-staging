@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faFacebookSquare from '@fortawesome/fontawesome-free-brands/faFacebookSquare';
 import faTwitterSquare from '@fortawesome/fontawesome-free-brands/faTwitterSquare';
@@ -17,7 +18,7 @@ class App extends Component {
         return (
             <div className='app'>
 
-                {page !== 'quickArtworkMaker' &&
+                {page !== 'artwork' &&
                 <div className={'app--topBar'}>
                     <div>
                         <a href='https://twitter.com/artflychris'
@@ -51,4 +52,10 @@ class App extends Component {
     }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    return {
+        user: state.user
+    }
+};
+const mapActionsToProps = null; //{ listenForUserChanges, listenForUserArtworkChanges };
+export default connect(mapStateToProps, mapActionsToProps)(App);

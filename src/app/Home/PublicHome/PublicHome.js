@@ -41,7 +41,7 @@ const PublicHome = function () {
 
                         <LinkButt className={'publicHome--intro--tryButt'}
                                   style={{ backgroundColor: '#abc837' }}
-                                  linkTo={'/quickArtworkMaker'}>
+                                  linkTo={'/artwork'}>
                             <FontAwesomeIcon icon={faChild}/> HAVE A PLAY...
                         </LinkButt>
 

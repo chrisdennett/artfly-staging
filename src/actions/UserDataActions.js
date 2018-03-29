@@ -1,19 +1,17 @@
 // FB - Firestore actions
 import {
+    fs_getUserArtworkChanges,
     fs_addAuthListener,
     fs_signInWithProvider,
     fs_signOut,
-    fs_addNewUser, fs_addNewArtist, fs_getUserChanges, fs_getUserArtistChanges,
-    fs_getArtistArtworkChanges, fs_getArtistChanges, fs_addArtwork, fs_updateArtist, fs_getArtworkChanges,
-    fs_updateArtworkArtist, fs_deleteArtwork, fs_deleteArtistAndArtworks, fs_deleteUser,
+    fs_addNewUser, fs_getUserChanges,
+    fs_addArtwork, fs_getArtworkChanges,
+    fs_deleteArtwork, fs_deleteUser,
     fs_addThumbnail, fs_updateArtworkImage, fs_updateThumbnail, fs_getArtworkDataOnce
 } from './FirestoreActions';
 
+export const USER_ARTWORKS_CHANGE = "userArtworksChange";
 export const ARTWORK_CHANGE = "artworkChange";
-export const ARTIST_CHANGE = "artistChange";
-export const ARTIST_ARTWORK_IDS_CHANGE = "artistArtworkIdsChange";
-export const ARTIST_UPDATED = 'artistUpdated';
-export const ARTIST_DELETED = 'artistDeleted';
 export const ARTWORK_DELETED = 'artworkDeleted';
 export const UPDATE_ARTWORK_COMPLETE = 'updateArtworkComplete';
 export const UPDATE_THUMBNAIL_COMPLETE = 'updateThumbnailComplete';
@@ -28,13 +26,14 @@ export const SIGN_IN_USER = "signInUser";
 export const SIGN_IN_USER_TRIGGERED = "signInUserTriggered";
 export const SIGN_OUT_USER = "signOutUser";
 export const DELETE_USER = "deleteUser";
-export const ADD_USER_ARTIST = 'addUserArtist';
 
 
 // AUTH ************************************************************
 
 // SIGN IN - with google
 export function signInWithGoogle() {
+    console.log("signInWithGoogle: ");
+
     return dispatch => {
         dispatch({
             type: SIGN_IN_USER_TRIGGERED,
@@ -52,6 +51,7 @@ export function signInWithGoogle() {
 
 // SIGN IN - with facebook
 export function signInWithFacebook() {
+    console.log("signInWithFacebook: ");
     return dispatch => {
         dispatch({
             type: SIGN_IN_USER_TRIGGERED,
@@ -89,15 +89,13 @@ export function addNewUser(authId, formValues, callback = null) {
             email: formValues.email
         };
 
-        fs_addNewUser(authId, newUserData, (userId) => {
-            int_addArtist(userId, formValues, () => {
-                dispatch({
-                    type: CREATE_USER,
-                    payload: newUserData
-                });
+        fs_addNewUser(authId, newUserData, () => {
+            dispatch({
+                type: CREATE_USER,
+                payload: newUserData
+            });
 
-                if (callback) callback();
-            })
+            if (callback) callback();
         });
     }
 }
@@ -158,101 +156,15 @@ export function deleteUser() {
     }
 }
 
-export function getUserArtworks() {
-
-}
-// ARTIST ************************************************************
-
-// ADD NEW ARTIST
-export function addNewArtist(userId, formValues, callback = null) {
-    return dispatch => {
-        int_addArtist(userId, formValues, dispatch, () => {
-            if (callback) callback();
-        })
-    }
-}
-
-// ADD NEW ARTIST - INTERNAL FUNCTION SO CAN BE CALLED BY ADD NEW USER AS WELL
-function int_addArtist(userId, formValues, dispatch, callback = null) {
-    const newArtistData = {
-        firstName: formValues.firstName,
-        lastName: formValues.lastName,
-        adminId: userId,
-        totalArtworks: 0
-    };
-
-    fs_addNewArtist(newArtistData, (newArtistId) => {
-        dispatch({
-            type: ADD_USER_ARTIST,
-            payload: { [newArtistId]: newArtistData }
-        });
-
-        if (callback) callback(newArtistId);
-    })
-}
-
-// UPDATE ARTIST
-export function updateArtist(artistId, artistData, callback) {
-    return dispatch => {
-        fs_updateArtist(artistId, artistData, () => {
-            dispatch({
-                type: ARTIST_UPDATED,
-                payload: artistData
-            });
-
-            if (callback) callback();
-        })
-    }
-}
-
-// DELETE ARTIST
-export function deleteArtist(artistId, callback) {
-    return dispatch => {
-
-        fs_deleteArtistAndArtworks(artistId, () => {
-            dispatch({
-                type: ARTIST_DELETED,
-                payload: artistId
-            });
-
-            if (callback) callback();
-        })
-    }
-}
-
-// LISTEN FOR ARTIST DATA CHANGES
-export function getUserArtistChanges(userId) {
-    return (dispatch) => {
-        fs_getUserArtistChanges(userId, (artistData) => {
-            dispatch({
-                type: ARTIST_CHANGE,
-                payload: artistData
-            });
-        })
-    }
-}
-
-export function listenForArtistChanges(artistId) {
-    return (dispatch) => {
-        fs_getArtistChanges(artistId, (artistData) => {
-            dispatch({
-                type: ARTIST_CHANGE,
-                payload: artistData
-            });
-        })
-    }
-}
-
 // ARTWORK ************************************************************
 
 // LISTEN FOR ARTWORK DATA CHANGES
-export function listenForArtistArtworkChanges(artistId, userId) {
-
+export function listenForUserArtworkChanges(userId) {
     return (dispatch) => {
-        fs_getArtistArtworkChanges(artistId, userId, (artworkData) => {
+        fs_getUserArtworkChanges(userId, (artworks) => {
             dispatch({
-                type: ARTWORK_CHANGE,
-                payload: artworkData
+                type: USER_ARTWORKS_CHANGE,
+                payload: artworks
             });
         })
     }
@@ -265,11 +177,11 @@ export function listenForArtworkChanges(artworkId, callback, errorCallback) {
                 type: ARTWORK_CHANGE,
                 payload: artworkData
             });
-            if(callback)callback(artworkData);
+            if (callback) callback(artworkData);
 
         }, () => {
-            if(errorCallback) errorCallback(artworkId);
-        } )
+            if (errorCallback) errorCallback(artworkId);
+        })
     }
 }
 
@@ -278,10 +190,10 @@ export function getArtworkDataOnce(artworkId, callback) {
     return dispatch => {
         fs_getArtworkDataOnce(artworkId, (artworkData) => {
             dispatch({
-                type: ARTWORK_DELETED,
-                payload: artworkId
+                type: ARTWORK_CHANGE,
+                payload: { [artworkId]: artworkData }
             });
-            if(callback) callback({...artworkData, artworkId});
+            if (callback) callback({ ...artworkData, artworkId });
         });
     }
 }
@@ -372,19 +284,6 @@ export function updateArtworkThumbnail(artworkId, artistId, newThumbImg, callbac
             });
 
             if (callback) callback(updateProgressData);
-        })
-    }
-}
-
-export function updateArtworkArtist(artworkId, newArtistId, callback) {
-    return dispatch => {
-        fs_updateArtworkArtist(artworkId, newArtistId, (updateCompleteData) => {
-            dispatch({
-                type: UPDATE_ARTWORK_COMPLETE,
-                payload: updateCompleteData
-            });
-
-            if (callback) callback();
         })
     }
 }

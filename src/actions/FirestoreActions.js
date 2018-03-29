@@ -6,25 +6,16 @@ import {
     storageEvents
 } from '../libs/firebaseConfig';
 
-// TODO: haven't got rid of listeners anywhere, they "could" build up the data massively
-// Could clear artist and artwork data when a new gallery is loaded in (clear the old data and listeners first)
-
 // listener object - each listener is stored on it with a name matching the Action function
 const unsubscribers = {};
 unsubscribers.userListeners = {};
-unsubscribers.userArtistListeners = {};
 unsubscribers.userArtworkListeners = {};
-unsubscribers.artistListeners = {};
-unsubscribers.artistArtworkListeners = {};
 unsubscribers.artworkListeners = {};
 
 // UNSUBSCRIBE LISTENERS
 function unsubscribAllListeners() {
     unsubscribeUserListeners();
-    unsubscribeUserArtistListeners();
     unsubscribeUserArtworkListeners();
-    unsubscribeArtistListeners();
-    unsubscribeArtistArtworkListeners();
     unsubscribeArtworkListeners();
 }
 
@@ -35,31 +26,10 @@ function unsubscribeUserListeners() {
     }
 }
 
-function unsubscribeUserArtistListeners() {
-    const userIds = Object.keys(unsubscribers.userArtistListeners);
-    for (let id of userIds) {
-        unsubscribers.userArtistListeners[id]();
-    }
-}
-
 function unsubscribeUserArtworkListeners() {
     const userIds = Object.keys(unsubscribers.userArtworkListeners);
     for (let id of userIds) {
         unsubscribers.userArtworkListeners[id]();
-    }
-}
-
-function unsubscribeArtistListeners() {
-    const artistIds = Object.keys(unsubscribers.artistListeners);
-    for (let id of artistIds) {
-        unsubscribers.artistListeners[id]();
-    }
-}
-
-function unsubscribeArtistArtworkListeners() {
-    const artistIds = Object.keys(unsubscribers.artistArtworkListeners);
-    for (let id of artistIds) {
-        unsubscribers.artistArtworkListeners[id]();
     }
 }
 
@@ -98,6 +68,8 @@ export function fs_signInWithProvider(providerName, onChangeCallback = null) {
 export function fs_signOut(onChangeCallback = null) {
     unsubscribAllListeners();
 
+    console.log("fs_signOut: ");
+
     auth
         .signOut()
         .then(() => {
@@ -124,9 +96,7 @@ export function fs_addAuthListener(onChangeCallback = null) {
         })
 }
 
-
 //*** USER ************************************************************
-
 // ADD NEW USER
 export function fs_addNewUser(authId, newUserData, onAddedCallback = null) {
     db.collection('users')
@@ -137,19 +107,6 @@ export function fs_addNewUser(authId, newUserData, onAddedCallback = null) {
         })
         .catch(function (error) {
             console.log('Add new user failed: ', error);
-        })
-}
-
-// UPDATE USER
-export function fs_updateUser(userId, newData, onChangeCallback = null) {
-    db.collection('users')
-        .doc(userId)
-        .update(newData)
-        .then(() => {
-            if (onChangeCallback) onChangeCallback({ [userId]: newData });
-        })
-        .catch(function (error) {
-            console.log('Update user failed: ', error);
         })
 }
 
@@ -182,8 +139,6 @@ export function fs_getUserChanges(userId, onChangeCallback = null) {
                 }
 
                 if (onChangeCallback) onChangeCallback(doc.data());
-
-                fs_getUserArtworkChanges(userId);
             },
             error => {
                 console.log("userId: ", userId);
@@ -191,123 +146,7 @@ export function fs_getUserChanges(userId, onChangeCallback = null) {
             });
 }
 
-
-//*** ARTIST ***********************************************************
-
-// ADD ARTIST
-export function fs_addNewArtist(newArtistData, onChangeCallback = null) {
-    db.collection('artists')
-        .add(newArtistData)
-        .then((docRef) => {
-            if (onChangeCallback) onChangeCallback(docRef.id);
-        })
-        .catch(function (error) {
-            console.log('Add New Artist failed: ', error);
-        })
-}
-
-// GET USER ARTIST CHANGES
-export function fs_getUserArtistChanges(userId, onChangeCallback = null) {
-    if (unsubscribers.userArtistListeners[userId]) {
-        return;
-    }
-
-    unsubscribers.userArtistListeners[userId] = db.collection('artists')
-        .where('adminId', '==', userId)
-        .onSnapshot(querySnapshot => {
-                const changedDocsArr = querySnapshot.docChanges;
-                let docAddedOrDeleted = false;
-                for (let change of changedDocsArr) {
-                    const artistId = change.doc.id;
-                    // the function itself will prevent multiple listeners
-                    fs_getArtistChanges(artistId, onChangeCallback);
-
-                    // find out if there'll be a new number of artists
-                    if (change.type === 'added' || change.type === 'removed') {
-                        docAddedOrDeleted = true;
-                    }
-                }
-
-                // if there's a different number of artists, update totalArtists
-                if (docAddedOrDeleted) {
-                    const totalArtists = querySnapshot.size;
-                    fs_updateUser(userId, { totalArtists });
-                }
-            },
-            error => {
-                console.log("user artist listener error: ", error);
-            })
-}
-
-// UPDATE ARTIST
-export function fs_updateArtist(artistId, newData, onChangeCallback = null) {
-    db.collection('artists')
-        .doc(artistId)
-        .update(newData)
-        .then(() => {
-            if (onChangeCallback) onChangeCallback();
-        })
-        .catch(function (error) {
-            console.log('Update artist failed: ', error);
-        })
-}
-
-// DELETE ARTIST
-export function fs_deleteArtistAndArtworks(artistId, onCompleteCallback) {
-    int_deleteArtistData(artistId, () => {
-        // called here in case there are no artworks or one fails.
-        onCompleteCallback();
-
-        int_deleteArtistArtworks(artistId, () => {
-            console.log("Artworks deleted for: ", artistId);
-        });
-    });
-
-}
-
-function int_deleteArtistData(artistId, onCompleteCallback) {
-    db.collection('artists')
-        .doc(artistId)
-        .delete()
-        .then(() => {
-            if (onCompleteCallback) onCompleteCallback();
-        })
-        .catch(function (error) {
-            console.log('delete artist data failed: ', error);
-        })
-}
-
-// GET ARTIST CHANGES
-export function fs_getArtistChanges(artistId, onChangeCallback = null) {
-    if (!artistId) {
-        console.log("no artistId: ", artistId);
-        return;
-    }
-
-    if (unsubscribers.artistListeners[artistId]) return "already_running";
-
-    unsubscribers.artistListeners[artistId] = db.collection('artists')
-        .doc(artistId)
-        .onSnapshot(doc => {
-                if (!doc.exists) {
-                    // TODO: should return something so ui can deal with this.
-                    return;
-                }
-
-                const artistId = doc.id;
-                const artistData = doc.data();
-                const artistDataWithId = { ...artistData, artistId };
-
-                if (onChangeCallback) onChangeCallback(artistDataWithId);
-            },
-            (error) => {
-                console.log("artist listener error: ", error);
-            });
-}
-
-
 //*** ARTWORK ***********************************************************
-
 // ADD ARTWORK
 export function fs_addArtwork(type, userId, imgFile, artworkData, onChangeCallback = null) {
     // Get artwork database id first so can be used for the filename
@@ -334,35 +173,6 @@ export function fs_addArtwork(type, userId, imgFile, artworkData, onChangeCallba
         });
 }
 
-/*
-export function fs_addArtwork(type, userId, artistId, imgFile, widthToHeightRatio, heightToWidthRatio, onChangeCallback = null) {
-    // Get artwork database id first so can be used for the filename
-    const artworkDatabaseRef = db.collection('artworks').doc();
-    const artworkId = artworkDatabaseRef.id;
-
-    int_saveImage(artworkId, artistId, imgFile, '',
-        (onChangeData) => {
-            if (onChangeCallback) onChangeCallback(onChangeData);
-        },
-        (onCompleteData) => {
-            // Upload completed successfully - save artwork data
-            const newArtworkData = {
-                type,
-                artistId,
-                widthToHeightRatio,
-                heightToWidthRatio,
-                adminId: userId,
-                url: onCompleteData.downloadURL,
-                dateAdded: Date.now()
-            };
-
-            int_saveArtworkChanges(artworkId, newArtworkData, () => {
-                onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
-            });
-        });
-}
-*/
-
 export function fs_addThumbnail(artworkId, artistId, thumbFile, onChangeCallback = null) {
     int_saveImage(artworkId, artistId, thumbFile, 'thumbnail_',
         (onChangeData) => {
@@ -379,13 +189,6 @@ export function fs_addThumbnail(artworkId, artistId, thumbFile, onChangeCallback
 }
 
 // UPDATE ARTWORK
-export function fs_updateArtworkArtist(artworkId, newArtistId, onChangeCallback = null) {
-    const newArtworkData = { artistId: newArtistId };
-    int_saveArtworkChanges(artworkId, newArtworkData, () => {
-        onChangeCallback({ ...newArtworkData, status: 'complete', artworkId })
-    });
-}
-
 export function fs_updateArtworkImage(artworkId, artistId, newImage, widthToHeightRatio, heightToWidthRatio, onChangeCallback = null) {
     // delete the server generated image urls
     db.collection('artworks')
@@ -435,7 +238,6 @@ export function fs_updateThumbnail(artworkId, artistId, thumbFile, onChangeCallb
 
 // INTERNAL SAVE ARTWORK CHANGES
 function int_saveArtworkChanges(artworkId, newData, onChangeCallback = null) {
-
     newData.lastUpdated = Date.now();
 
     db.collection('artworks')
@@ -471,77 +273,20 @@ function int_saveImage(artworkId, blob, prefix, onChangeCallback, onCompleteCall
             })
 }
 
-/*
-function int_saveImage(artworkId, artistId, blob, prefix, onChangeCallback, onCompleteCallback) {
-    const fileName = prefix + artworkId;
-    const userPicturesRef = store.child(`userContent/${artistId}/${fileName}`);
-    // start the upload
-    const uploadTask = userPicturesRef.put(blob);
-    // listen for upload events
-    uploadTask
-        .on(storageEvents.STATE_CHANGED,
-            (snapshot) => {
-                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-                onChangeCallback({ progress, artistId, id: artworkId, status: 'uploading' });
-            },
-            (error) => {
-                // A full list of error codes is available at https://firebase.google.com/docs/storage/web/handle-errors
-                console.log("uncaught error: ", error);
-            },
-            () => {
-                onCompleteCallback({ downloadURL: uploadTask.snapshot.downloadURL });
-            })
-}
-*/
-
-// GET ARTIST ARTWORK CHANGES
-export function fs_getArtistArtworkChanges(artistId, userId, onChangeCallback = null) {
-    if (!userId || unsubscribers.artistArtworkListeners[artistId]) {
-        return;
-    }
-
-    unsubscribers.artistArtworkListeners[artistId] = db.collection('artworks')
-        .where('artistId', '==', artistId)
-        .onSnapshot(querySnapshot => {
-                const changedDocsArr = querySnapshot.docChanges;
-                let docAddedOrDeleted = false;
-
-                for (let change of changedDocsArr) {
-                    const artworkId = change.doc.id;
-                    fs_getArtworkChanges(artworkId, onChangeCallback);
-
-                    if (change.type === 'added' || change.type === 'removed') {
-                        docAddedOrDeleted = true;
-                    }
-                }
-
-                // only attempts to update artist totals if there is a userId
-                // however if userId doesn't match the artist adminId it'll fail
-                if (userId) {
-                    if (docAddedOrDeleted) {
-                        const totalArtworks = querySnapshot.size;
-                        fs_updateArtist(artistId, { totalArtworks });
-                    }
-                }
-            },
-            error => {
-                console.log("Artist artwork listener error: ", error);
-            })
-}
-
 // GET ARTWORK DATA ONCE
-export function fs_getArtworkDataOnce(artworkId, onComplete=null) {
+export function fs_getArtworkDataOnce(artworkId, onComplete = null) {
     const docRef = db.collection('artworks').doc(artworkId);
 
-    docRef.get().then(function(doc) {
+    docRef.get().then(function (doc) {
         if (doc.exists) {
             console.log("Document data:", doc.data());
             onComplete(doc.data());
-        } else {
+        }
+        else {
             // doc.data() will be undefined in this case
             console.log("No such document!");
         }
-    }).catch(function(error) {
+    }).catch(function (error) {
         console.log("Error getting document:", error);
     });
 }
@@ -551,6 +296,8 @@ export function fs_getArtworkChanges(artworkId, onChangeCallback = null, onError
     if (unsubscribers.artworkListeners[artworkId]) {
         return "already_running";
     }
+
+    console.log("artworkId: ", artworkId);
 
     unsubscribers.artworkListeners[artworkId] = db.collection('artworks')
         .doc(artworkId)
@@ -574,23 +321,24 @@ export function fs_getArtworkChanges(artworkId, onChangeCallback = null, onError
 }
 
 // GET USER ARTWORK CHANGES
-export function fs_getUserArtworkChanges(userId) {
-    if (unsubscribers.userArtworkListeners[userId]) {
+export function fs_getUserArtworkChanges(userId, callback) {
+    if (!userId || unsubscribers.userArtworkListeners[userId]) {
         return "already_running";
     }
+
+    console.log("userId: ", userId);
 
     unsubscribers.userArtworkListeners[userId] = db.collection('artworks')
         .where('adminId', '==', userId)
         .onSnapshot(querySnapshot => {
-                const docsArr = querySnapshot.docs;
-                const artworks = [];
 
-                for (let doc of docsArr) {
-                    const artworkId = doc.id;
-                    artworks.push({...doc.data(), artworkId});
-                }
+            let userArtworks = {};
 
-                fs_updateUser(userId, { artworks });
+                querySnapshot.forEach(doc => {
+                    userArtworks[doc.id] = doc.data();
+                });
+
+                if (callback) callback(userArtworks);
             },
             error => {
                 console.log("user artworks listener error: ", error);
@@ -631,19 +379,5 @@ function int_deleteArtworkData(artworkId, onCompleteCallback) {
         })
         .catch(function (error) {
             console.log('delete artwork failed: ', error);
-        })
-}
-
-// DELETE ARTIST'S ARTWORKS
-function int_deleteArtistArtworks(artistId) {
-    // find all artworks with the matching artistId
-    db.collection('artworks')
-        .where('artistId', '==', artistId)
-        .get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach(doc => {
-                fs_deleteArtwork(doc.id, artistId)
-            })
-
         })
 }

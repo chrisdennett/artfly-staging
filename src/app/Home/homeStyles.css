@@ -1,3 +1,7 @@
+.home{
+    background: url("../../app/images/brickwall.png");
+}
+
 .home--heading {
     padding: 3rem 10px 0 10px;
 }

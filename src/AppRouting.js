@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import ga from './libs/googleAnalyticsConfig';
 // actions
-import { listenForUserChanges } from './actions/UserDataActions';
+import { listenForUserChanges, listenForUserArtworkChanges } from './actions/UserDataActions';
 // components
 import history from './app/global/history';
 // route components
@@ -11,11 +11,11 @@ import Home from './app/Home/Home';
 import FourOhFour from "./app/FourOhFour/FourOhFour";
 import LoadingOverlay from "./app/global/LoadingOverlay";
 import App from "./app/App";
-import QuickArtworkMaker from "./app/QuickArtworkMaker/QuickArtworkMaker";
+import Artwork from "./app/artwork/Artwork";
 
 const routes = {
     home: { component: Home },
-    quickArtworkMaker: { component: QuickArtworkMaker },
+    artwork: { component: Artwork }
 };
 
 class ArtflyRouting extends Component {
@@ -36,6 +36,17 @@ class ArtflyRouting extends Component {
         this.setState({ unlisten: unlisten });
     }
 
+    componentWillReceiveProps(nextProps) {
+        const {uid:newUid} = nextProps.user;
+        const {uid:currentUid} = this.props.user;
+
+        if (nextProps.user) {
+            if (newUid !== currentUid) {
+                this.props.listenForUserArtworkChanges(newUid);
+            }
+        }
+    }
+
     componentWillUnmount() {
         this.state.unlisten();
     }
@@ -51,7 +62,7 @@ class ArtflyRouting extends Component {
             page = sections[0];
 
             switch (page) {
-                case 'quickArtworkMaker':
+                case 'artwork':
                     params.artworkId = sections[1];
                     break;
 
@@ -75,14 +86,14 @@ class ArtflyRouting extends Component {
         const { page, params } = this.state;
 
         const PageComponent = routes[page] ? routes[page].component : FourOhFour;
-        const PageComponentWithProps = <PageComponent {...params} user={this.props.user} page={page}/>;
+        const PageComponentWithProps = <PageComponent {...params} page={page}/>;
 
         if (!this.props.user.status || this.props.user.status === 'pending') {
             return <LoadingOverlay/>
         }
 
         return (
-            <App params={params} user={this.props.user} page={page}>
+            <App params={params} page={page}>
                 {PageComponentWithProps}
             </App>
         );
@@ -95,6 +106,6 @@ const mapStateToProps = (state) => {
         user: state.user
     }
 };
-const mapActionsToProps = { listenForUserChanges };
+const mapActionsToProps = { listenForUserChanges, listenForUserArtworkChanges };
 
 export default connect(mapStateToProps, mapActionsToProps)(ArtflyRouting);

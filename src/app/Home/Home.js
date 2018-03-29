@@ -1,5 +1,6 @@
 // externals
 import React from "react";
+import { connect } from 'react-redux';
 // styles
 import './homeStyles.css';
 // components
@@ -10,12 +11,11 @@ import PublicHome from "./PublicHome/PublicHome";
 import Footer from "./Footer/Footer";
 import LinkButt from "../global/Butt/LinkButt";
 
-const Home = ({ user }) => {
-    const userArtworks = user && user.artworks ? user.artworks : [];
+const Home = ({ user, userArtworks }) => {
     const userLoggedIn = user && user.loginStatus === 'loggedIn';
 
     return (
-        <div>
+        <div className={'home'}>
             <div className='home--heading'>
                 <div>
                     <Title/>
@@ -39,10 +39,12 @@ const Home = ({ user }) => {
 
             {userLoggedIn &&
             <div>
-                <LinkButt linkTo={'/quickArtworkMaker'}>Add new Artwork</LinkButt>
+                <LinkButt linkTo={'/artwork'}>Add new Artwork</LinkButt>
                 {
-                    userArtworks.map(artwork => {
-                        return <LinkButt key={artwork.artworkId} linkTo={`/quickArtworkMaker/${artwork.artworkId}`}>Open artwork</LinkButt>
+                    Object.keys(userArtworks).map(artworkId => {
+                        return <LinkButt key={artworkId} linkTo={`/artwork/${artworkId}`}>
+                            Open artwork: {artworkId}
+                        </LinkButt>
                     })
 
                 }
@@ -55,4 +57,25 @@ const Home = ({ user }) => {
     );
 };
 
-export default Home;
+const mapStateToProps = (state) => {
+    const { user, artworks } = state;
+    let userArtworks = {};
+
+    if (user && artworks) {
+        const artworkIds = Object.keys(artworks);
+        const userId = user.uid;
+        for (let id of artworkIds) {
+            const art = artworks[id];
+            if (art.adminId === userId) {
+                userArtworks[id] = art;
+            }
+        }
+    }
+
+    return {
+        user,
+        userArtworks
+    }
+};
+const mapActionsToProps = null; //{ listenForUserChanges, listenForUserArtworkChanges };
+export default connect(mapStateToProps, mapActionsToProps)(Home)
