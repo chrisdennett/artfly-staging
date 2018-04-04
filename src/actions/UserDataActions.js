@@ -7,7 +7,7 @@ import {
     fs_addNewUser, fs_getUserChanges,
     fs_addArtwork, fs_getArtworkChanges,
     fs_deleteArtwork, fs_deleteUser,
-    fs_addThumbnail, fs_updateArtworkImage, fs_updateThumbnail, fs_getArtworkDataOnce
+    fs_addThumbnail, fs_updateArtworkImage, fs_updateThumbnail, fs_getArtworkDataOnce, fs_updateArtwork
 } from './FirestoreActions';
 
 export const USER_ARTWORKS_CHANGE = "userArtworksChange";
@@ -236,6 +236,20 @@ export function addArtwork(artworkType, userId, imgFile, artworkData, callback =
 
                 if (callback) callback(uploadData);
             }
+        });
+    }
+}
+
+export function updateArtwork(artworkId, newArtworkData, callback = null) {
+
+    return dispatch => {
+        fs_updateArtwork(artworkId, newArtworkData, () => {
+            dispatch({
+                type: ARTWORK_CHANGE,
+                payload: newArtworkData
+            });
+
+            if (callback) callback();
         });
     }
 }

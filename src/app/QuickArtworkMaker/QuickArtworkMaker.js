@@ -19,9 +19,6 @@ import QuickRoomEditor from "./quickRoomEditor/QuickRoomEditor";
 // DEV ONLY
 // import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
 
-// Constants
-const defaultArtworkData = DefaultArtworkDataGenerator();
-
 class QuickArtworkMaker extends Component {
 
     constructor(props) {
@@ -33,32 +30,11 @@ class QuickArtworkMaker extends Component {
         this.onCropAndRotateCancel = this.onCropAndRotateCancel.bind(this);
         this.updateMasterCanvas = this.updateMasterCanvas.bind(this);
         this.onEditDone = this.onEditDone.bind(this);
-        this.onArtworkDataChange = this.onArtworkDataChange.bind(this);
-        this.onArtworkSaveClick = this.onArtworkSaveClick.bind(this);
 
-        this.loadArtwork = this.loadArtwork.bind(this);
-
-        this.state = { currentTool: 'upload', artworkData: defaultArtworkData };
+        this.state = { currentTool: 'upload' };
     }
 
-    componentWillMount() {
-        const { artworkId, artworks } = this.props;
-        if (!artworkId) return;
-
-        // If there's an artwork id in the url, load in the artwork
-        if (artworks[artworkId]) {
-            // if the artworkData is already available use it
-            this.loadArtwork(artworks[artworkId]);
-        }
-        else {
-            // otherwise load it in once
-            this.props.getArtworkDataOnce(artworkId, (artworkData) => {
-                this.loadArtwork(artworkData);
-            })
-        }
-    }
-
-    loadArtwork(artworkData) {
+    /*loadArtwork(artworkData) {
         this.setState({ artworkData }, () => {
             let img = new Image();
             img.setAttribute('crossOrigin', 'anonymous'); //
@@ -67,7 +43,7 @@ class QuickArtworkMaker extends Component {
                 this.updateMasterCanvas(img, artworkData.orientation)
             }
         })
-    }
+    }*/
 
     // TEST ONLY
     /*componentDidMount() {
@@ -127,25 +103,6 @@ class QuickArtworkMaker extends Component {
         this.setState({ currentTool: 'view' })
     }
 
-    onArtworkDataChange(newPartialData) {
-        this.setState((state) => {
-            return {
-                artworkData: { ...state.artworkData, ...newPartialData }
-            }
-        })
-    }
-
-    onArtworkSaveClick() {
-        const { user } = this.props;
-
-        const { artworkData } = this.state;
-        this.getImageBlob(this.state.sourceImg, 3000, (maxBlob) => {
-            this.props.addArtwork("picture", user.uid, maxBlob, artworkData, (saveReturnData) => {
-                console.log("saveReturnData: ", saveReturnData);
-            });
-        })
-    }
-
     getImageBlob(sourceImg, maxSize, callback) {
         const canvas = document.createElement('canvas');
 
@@ -169,8 +126,8 @@ class QuickArtworkMaker extends Component {
     }
 
     render() {
-        const { currentTool, artworkData, sourceImg, masterCanvas } = this.state;
-        const { height, width, user } = this.props;
+        const { currentTool } = this.state;
+        const { height, width, user, artworkData, sourceImg, masterCanvas, onArtworkDataChange, onArtworkSave } = this.props;
 
         const sidebarWidth = 60;
         const disableEditing = !sourceImg;
@@ -182,7 +139,7 @@ class QuickArtworkMaker extends Component {
 
         let classesForMain = 'quickArtworkMaker--mainFixed';
 
-        if (currentTool === 'share') {
+        if (currentTool === "share") {
             classesForMain = 'quickArtworkMaker--mainScrollable';
         }
 
@@ -196,7 +153,7 @@ class QuickArtworkMaker extends Component {
                     <QuickArtMakerToolBar onToolSelect={this.onToolSelect}
                                           showArtworkControls={loginStatus === 'loggedIn'}
                                           disableEditing={disableEditing}
-                                          onSave={this.onArtworkSaveClick}
+                                          onSave={onArtworkSave}
                                           currentTool={currentTool}/>
                 </div>
                 }
@@ -225,7 +182,7 @@ class QuickArtworkMaker extends Component {
                     <QuickTitlesEditor height={height}
                                        width={contentWidth}
                                        titlesData={artworkData.titlesData}
-                                       onDataChange={this.onArtworkDataChange}
+                                       onDataChange={onArtworkDataChange}
                                        onDone={this.onEditDone}
                     />
                     }
@@ -234,7 +191,7 @@ class QuickArtworkMaker extends Component {
                     <QuickFrameEditor height={height}
                                       width={contentWidth}
                                       frameData={artworkData.frameData}
-                                      onDataChange={this.onArtworkDataChange}
+                                      onDataChange={onArtworkDataChange}
                                       onDone={this.onEditDone}/>
                     }
 
@@ -242,7 +199,7 @@ class QuickArtworkMaker extends Component {
                     <QuickRoomEditor height={height}
                                      width={contentWidth}
                                      roomData={artworkData.roomData}
-                                     onDataChange={this.onArtworkDataChange}
+                                     onDataChange={onArtworkDataChange}
                                      onDone={this.onEditDone}/>
                     }
 

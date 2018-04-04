@@ -66,7 +66,7 @@ const mapStateToProps = (state) => {
         const userId = user.uid;
         for (let id of artworkIds) {
             const art = artworks[id];
-            if (art.adminId === userId) {
+            if (art && art.adminId === userId) {
                 userArtworks[id] = art;
             }
         }

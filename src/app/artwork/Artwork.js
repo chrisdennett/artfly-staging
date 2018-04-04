@@ -7,7 +7,7 @@ import QuickArtworkMaker from '../QuickArtworkMaker/QuickArtworkMaker';
 import QuickArtwork from "../QuickArtworkMaker/quickArtwork/QuickArtwork";
 import * as ImageHelper from "../global/ImageHelper";
 import DefaultArtworkDataGenerator from "../QuickArtworkMaker/DefaultArtworkDataGenerator";
-import { getArtworkDataOnce } from "../../actions/UserDataActions";
+import { getArtworkDataOnce, updateArtwork } from "../../actions/UserDataActions";
 import ScrollbarRemover from "../global/ScrollbarRemover";
 // Constants
 const defaultArtworkData = DefaultArtworkDataGenerator();
@@ -19,8 +19,10 @@ class Artwork extends Component {
 
         this.updateMasterCanvas = this.updateMasterCanvas.bind(this);
         this.loadArtwork = this.loadArtwork.bind(this);
+        this.onArtworkEditorDataChange = this.onArtworkEditorDataChange.bind(this);
+        this.onArtworkEditorSave = this.onArtworkEditorSave.bind(this);
 
-        this.state = { currentTool: 'upload', artworkData: defaultArtworkData };
+        this.state = { currentTool: 'upload', artworkData: defaultArtworkData, unsavedArtworkData: {} };
     }
 
     componentWillMount() {
@@ -67,26 +69,53 @@ class Artwork extends Component {
             })
     }
 
-    render() {
-        const { width, height, user, artworkId } = this.props;
-        const { artworkData, masterCanvas} = this.state;
-        const allowEditing = user.uid && user.uid === artworkData.adminId;
+    onArtworkEditorDataChange(updatedData) {
+        this.setState((state) => {
+            return {
+                unsavedArtworkData: { ...state.unsavedArtworkData, ...updatedData }
+            }
+        })
+    }
 
-        console.log("allowEditing: ", allowEditing);
-        console.log("user: ", user);
+    onArtworkEditorSave() {
+        // combined saved and unsaved data and update artwork.
+        const { artworkData, unsavedArtworkData } = this.state;
+        const { artworkId } = this.props;
+
+        if (artworkId) {
+            const newArtworkData = {...artworkData, ...unsavedArtworkData};
+
+            this.props.updateArtwork(artworkId, newArtworkData, (returnData) => {
+                // console.log("update artwork returnData: ", returnData);
+            });
+        }
+        else {
+            console.log("save new artwork");
+        }
+    }
+
+    render() {
+        const { width, height, user } = this.props;
+        const { artworkData, unsavedArtworkData, masterCanvas, sourceImg } = this.state;
+        const currentArtworkData = { ...artworkData, ...unsavedArtworkData };
+        const allowEditing = user.uid && user.uid === artworkData.adminId;
 
         return (
             <ScrollbarRemover showScrollbars={false}>
 
-                {allowEditing || !artworkId &&
-                <QuickArtworkMaker/>
+                {allowEditing &&
+                <QuickArtworkMaker artworkData={currentArtworkData}
+                                   onArtworkDataChange={this.onArtworkEditorDataChange}
+                                   onArtworkSave={this.onArtworkEditorSave}
+                                   sourceImg={sourceImg}
+                                   masterCanvas={masterCanvas}/>
                 }
 
                 {!allowEditing &&
                 <QuickArtwork height={height}
                               width={width}
                               isFixed={true}
-                              artworkData={artworkData}
+                              artworkData={currentArtworkData}
                               masterCanvas={masterCanvas}
                 />
                 }
@@ -110,6 +139,6 @@ const mapStateToProps = (state) => {
     }
 };
 
-const mapActionsToProps = { getArtworkDataOnce };
+const mapActionsToProps = { getArtworkDataOnce, updateArtwork };
 
 export default connect(mapStateToProps, mapActionsToProps)(Artwork);

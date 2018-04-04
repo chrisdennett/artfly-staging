@@ -68,8 +68,6 @@ export function fs_signInWithProvider(providerName, onChangeCallback = null) {
 export function fs_signOut(onChangeCallback = null) {
     unsubscribAllListeners();
 
-    console.log("fs_signOut: ");
-
     auth
         .signOut()
         .then(() => {
@@ -236,6 +234,13 @@ export function fs_updateThumbnail(artworkId, artistId, thumbFile, onChangeCallb
         });
 }
 
+export function fs_updateArtwork(artworkId, newArtworkData, onChangeCallback = null) {
+    // Get artwork database id first so can be used for the filename
+    int_saveArtworkChanges(artworkId, newArtworkData, () => {
+        onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
+    });
+}
+
 // INTERNAL SAVE ARTWORK CHANGES
 function int_saveArtworkChanges(artworkId, newData, onChangeCallback = null) {
     newData.lastUpdated = Date.now();
@@ -326,13 +331,11 @@ export function fs_getUserArtworkChanges(userId, callback) {
         return "already_running";
     }
 
-    console.log("userId: ", userId);
-
     unsubscribers.userArtworkListeners[userId] = db.collection('artworks')
         .where('adminId', '==', userId)
         .onSnapshot(querySnapshot => {
 
-            let userArtworks = {};
+                let userArtworks = {};
 
                 querySnapshot.forEach(doc => {
                     userArtworks[doc.id] = doc.data();
