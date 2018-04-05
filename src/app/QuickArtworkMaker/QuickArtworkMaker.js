@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import './quickArtworkMaker_styles.css';
 // actions
 import { addArtwork, getArtworkDataOnce } from "../../actions/UserDataActions";
-// helpers
-import * as ImageHelper from "../global/ImageHelper";
 // comps
 import QuickPhotoSelector from "./quickPhotoSelector/QuickPhotoSelector";
 import QuickArtwork from "./quickArtwork/QuickArtwork";
@@ -15,8 +13,6 @@ import QuickShare from "./quickShare/QuickShare";
 import QuickTitlesEditor from "./quickTitlesEditor/QuickTitlesEditor";
 import QuickFrameEditor from "./quickFrameEditor/QuickFrameEditor";
 import QuickRoomEditor from "./quickRoomEditor/QuickRoomEditor";
-// DEV ONLY
-// import { TEST_SOURCE_IMG } from './DEV_TEST_SOURCE_IMG';
 
 class QuickArtworkMaker extends Component {
 
@@ -26,41 +22,14 @@ class QuickArtworkMaker extends Component {
         this.onToolSelect = this.onToolSelect.bind(this);
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
         this.onCropAndRotateCancel = this.onCropAndRotateCancel.bind(this);
-        this.updateMasterCanvas = this.updateMasterCanvas.bind(this);
         this.onEditDone = this.onEditDone.bind(this);
 
         this.state = { currentTool: 'upload' };
     }
 
-    // TEST ONLY
-    /*componentDidMount() {
-        this.toolToShowAfterUpdate = 'room';
-        this.updateMasterCanvas(TEST_SOURCE_IMG, 1);
-    }*/
-
     // Left nav tool selection
     onToolSelect(toolName) {
         this.setState({ currentTool: toolName })
-    }
-
-    // Use Master canvas
-    updateMasterCanvas(sourceImg, orientation) {
-        const masterCanvas = document.createElement('canvas');
-        if (!this.toolToShowAfterUpdate) this.toolToShowAfterUpdate = 'crop';
-
-        ImageHelper.drawImageToCanvas({ sourceImg, outputCanvas: masterCanvas, orientation },
-            (widthToHeightRatio, heightToWidthRatio) => {
-
-                this.setState((state) => {
-                    return {
-                        sourceImg,
-                        masterCanvas,
-
-                        artworkData: { ...state.artworkData, widthToHeightRatio, heightToWidthRatio, orientation },
-                        currentTool: this.toolToShowAfterUpdate
-                    }
-                });
-            })
     }
 
     onCropAndRotateDone(newData) {
@@ -72,6 +41,8 @@ class QuickArtworkMaker extends Component {
         else{
             this.props.onCanvasOrientationChange(newData);
         }
+
+        this.setState({ currentTool: 'view' });
     }
 
     onCropAndRotateCancel() {

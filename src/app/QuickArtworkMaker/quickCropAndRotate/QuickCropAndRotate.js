@@ -34,19 +34,6 @@ class QuickCropAndRotate extends Component {
         this.setState({ localCropData:cropData, localOrientation:orientation })
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { artworkData } = nextProps;
-        const { cropData, orientation } = artworkData;
-
-        console.log("componentWillReceiveProps > cropData: ", cropData);
-
-        this.setState({ localCropData:cropData, localOrientation:orientation });
-    }
-
-    componentDidMount() {
-        // this.drawCuttingBoardCanvas();
-    }
-
     onCropUpdate(cropData) {
         this.setState({ localCropData:cropData });
     }
@@ -65,16 +52,12 @@ class QuickCropAndRotate extends Component {
     onDoneClick() {
         const { localCropData:cropData, localOrientation:orientation } = this.state;
 
-        console.log("onDoneClick > cropData: ", cropData);
-
         this.props.onDone({ orientation, cropData });
     }
 
     drawCuttingBoardCanvas(props = this.props) {
         const { width, height, sourceImg } = props;
         const { localOrientation:orientation, canvas } = this.state;
-
-        console.log("drawCuttingBoardCanvas > orientation: ", orientation);
 
         if (!sourceImg || !width || !canvas) return;
 
@@ -110,8 +93,6 @@ class QuickCropAndRotate extends Component {
         const newT = leftPercent;
         const newB = rightPercent;
 
-        console.log("onRotateClockwiseClick");
-
         this.setState({ localOrientation: newOrientation, localCropData: { leftPercent: newL, rightPercent: newR, topPercent: newT, bottomPercent: newB } }, () => {
             this.drawCuttingBoardCanvas();
         });
@@ -120,7 +101,6 @@ class QuickCropAndRotate extends Component {
     render() {
         const { width, height } = this.props;
         const { localCropData:cropData } = this.state;
-        console.log("cropData: ", cropData);
         const buttStyle = { color: 'rgba(255,255,255,0.7)', marginRight: 10 };
 
         const showCuttingBoard = Math.max(width, height) > 800;

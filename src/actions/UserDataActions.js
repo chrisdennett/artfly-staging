@@ -162,9 +162,6 @@ export function deleteUser() {
 export function listenForUserArtworkChanges(userId) {
     return (dispatch) => {
         fs_getUserArtworkChanges(userId, (artworks) => {
-
-            console.log("listenForUserArtworkChanges > artworks: ", artworks);
-
             dispatch({
                 type: USER_ARTWORKS_CHANGE,
                 payload: artworks
@@ -248,9 +245,6 @@ export function addArtwork(userId, imgFile, artworkData, callback = null) {
 }
 
 export function updateArtwork(artworkId, newArtworkData, callback = null) {
-
-    console.log("updateArtwork");
-
     return dispatch => {
         fs_updateArtwork(artworkId, newArtworkData, () => {
             dispatch({
