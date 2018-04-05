@@ -23,6 +23,7 @@ class QuickArtworkMaker extends Component {
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
         this.onCropAndRotateCancel = this.onCropAndRotateCancel.bind(this);
         this.onEditDone = this.onEditDone.bind(this);
+        this.onPhotoSelected = this.onPhotoSelected.bind(this);
 
         this.state = { currentTool: 'upload' };
     }
@@ -46,11 +47,16 @@ class QuickArtworkMaker extends Component {
     }
 
     onCropAndRotateCancel() {
-        this.setState({ currentTool: 'view' })
+        this.setState({ currentTool: 'view' });
     }
 
     onEditDone() {
-        this.setState({ currentTool: 'view' })
+        this.setState({ currentTool: 'view' });
+    }
+
+    onPhotoSelected(imgFile){
+       this.props.onPhotoSelected(imgFile);
+        this.setState({ currentTool: 'view' });
     }
 
     render() {
@@ -58,7 +64,7 @@ class QuickArtworkMaker extends Component {
         const {
                   height, width, user, artworkData,
                   sourceImg, masterCanvas,
-                  onArtworkDataChange, onArtworkSave, onPhotoSelected
+                  onArtworkDataChange, onArtworkSave
               } = this.props;
 
         const sidebarWidth = 60;
@@ -101,7 +107,7 @@ class QuickArtworkMaker extends Component {
                     }
 
                     {currentTool === 'upload' &&
-                    <QuickPhotoSelector onPhotoSelected={onPhotoSelected}
+                    <QuickPhotoSelector onPhotoSelected={this.onPhotoSelected}
                                         height={height}
                                         width={contentWidth}/>
                     }

@@ -31,6 +31,7 @@ class Artwork extends Component {
 
     componentWillMount() {
         const { artworkId, artworks } = this.props;
+        // If there's no artworkId it's been opened to add a new artwork
         if (!artworkId) {
             this.setState({ unsavedArtworkData: defaultArtworkData });
         }
@@ -39,8 +40,8 @@ class Artwork extends Component {
             // if the artworkData is already available use it
             this.loadArtwork(artworks[artworkId]);
         }
+        // otherwise load the artwork data in
         else {
-            // otherwise load it in once
             this.props.getArtworkDataOnce(artworkId, (artworkData) => {
                 this.loadArtwork(artworkData);
             })
