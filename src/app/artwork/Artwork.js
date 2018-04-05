@@ -76,8 +76,7 @@ class Artwork extends Component {
             (widthToHeightRatio, heightToWidthRatio) => {
                 this.setState((state) => {
                     const newCropData = { ...state.artworkData.cropData, ...cropData };
-                    console.log("updateMasterCanvas > newCropData: ", newCropData);
-                    const newArtworkData = { ...state.artworkData, cropData: newCropData, orientation: 1, widthToHeightRatio, heightToWidthRatio };
+                    const newArtworkData = { ...state.artworkData, cropData: newCropData, orientation, widthToHeightRatio, heightToWidthRatio };
 
                     return {
                         sourceImg,
@@ -103,13 +102,9 @@ class Artwork extends Component {
         const newArtworkData = { ...artworkData, ...unsavedArtworkData };
 
         if (artworkId) {
-
-            this.props.updateArtwork(artworkId, newArtworkData, (returnData) => {
-                // console.log("update artwork returnData: ", returnData);
-            });
+            this.props.updateArtwork(artworkId, newArtworkData);
         }
         else {
-
             this.getImageBlob(sourceImg, 3000, (blobData) => {
                 this.props.addArtwork(user.uid, blobData, newArtworkData);
             })

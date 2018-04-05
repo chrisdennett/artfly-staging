@@ -6,7 +6,6 @@ import './quickArtworkMaker_styles.css';
 import { addArtwork, getArtworkDataOnce } from "../../actions/UserDataActions";
 // helpers
 import * as ImageHelper from "../global/ImageHelper";
-// import DefaultArtworkDataGenerator from "./DefaultArtworkDataGenerator";
 // comps
 import QuickPhotoSelector from "./quickPhotoSelector/QuickPhotoSelector";
 import QuickArtwork from "./quickArtwork/QuickArtwork";
@@ -24,7 +23,6 @@ class QuickArtworkMaker extends Component {
     constructor(props) {
         super(props);
 
-        // this.onPhotoSelect = this.onPhotoSelect.bind(this);
         this.onToolSelect = this.onToolSelect.bind(this);
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
         this.onCropAndRotateCancel = this.onCropAndRotateCancel.bind(this);
@@ -33,17 +31,6 @@ class QuickArtworkMaker extends Component {
 
         this.state = { currentTool: 'upload' };
     }
-
-    /*loadArtwork(artworkData) {
-        this.setState({ artworkData }, () => {
-            let img = new Image();
-            img.setAttribute('crossOrigin', 'anonymous'); //
-            img.src = artworkData.url;
-            img.onload = () => {
-                this.updateMasterCanvas(img, artworkData.orientation)
-            }
-        })
-    }*/
 
     // TEST ONLY
     /*componentDidMount() {
@@ -55,14 +42,6 @@ class QuickArtworkMaker extends Component {
     onToolSelect(toolName) {
         this.setState({ currentTool: toolName })
     }
-
-    // Photo selected
-    /*onPhotoSelect(imgFile) {
-        ImageHelper.GetImage(imgFile,
-            (sourceImg, imgOrientation) => {
-                this.updateMasterCanvas(sourceImg, imgOrientation);
-            });
-    }*/
 
     // Use Master canvas
     updateMasterCanvas(sourceImg, orientation) {
@@ -76,7 +55,8 @@ class QuickArtworkMaker extends Component {
                     return {
                         sourceImg,
                         masterCanvas,
-                        artworkData: { ...state.artworkData, widthToHeightRatio, heightToWidthRatio },
+
+                        artworkData: { ...state.artworkData, widthToHeightRatio, heightToWidthRatio, orientation },
                         currentTool: this.toolToShowAfterUpdate
                     }
                 });
@@ -92,17 +72,6 @@ class QuickArtworkMaker extends Component {
         else{
             this.props.onCanvasOrientationChange(newData);
         }
-
-
-        /*ImageHelper.drawImageToCanvas({ sourceImg: this.state.sourceImg, outputCanvas: this.state.masterCanvas, orientation },
-            () => {
-                this.setState((state) => {
-                    return {
-                        artworkData: { ...state.artworkData, orientation, cropData },
-                        currentTool: 'view'
-                    }
-                });
-            });*/
     }
 
     onCropAndRotateCancel() {
@@ -111,28 +80,6 @@ class QuickArtworkMaker extends Component {
 
     onEditDone() {
         this.setState({ currentTool: 'view' })
-    }
-
-    getImageBlob(sourceImg, maxSize, callback) {
-        const canvas = document.createElement('canvas');
-
-        // not providing crop data and orientation because now keeping source as is
-        // instead the crop data and orientation is being saved with artwork data
-        // and applied each time artwork viewed
-        // This way edits are non-destructive.
-
-        ImageHelper.drawToCanvas({
-            sourceCanvas: sourceImg,
-            outputCanvas: canvas,
-            maxOutputCanvasWidth: maxSize,
-            maxOutputCanvasHeight: maxSize
-        }, (widthToHeightRatio, heightToWidthRatio) => {
-
-            canvas.toBlob((canvasBlobData) => {
-                callback(canvasBlobData, widthToHeightRatio, heightToWidthRatio)
-            }, 'image/jpeg', 0.95);
-
-        });
     }
 
     render() {
@@ -189,7 +136,7 @@ class QuickArtworkMaker extends Component {
                     }
 
                     {currentTool === 'crop' &&
-                    <QuickCropAndRotate sourceImg={masterCanvas}
+                    <QuickCropAndRotate sourceImg={sourceImg}
                                         artworkData={artworkData}
                                         onCancel={this.onCropAndRotateCancel}
                                         onDone={this.onCropAndRotateDone}
