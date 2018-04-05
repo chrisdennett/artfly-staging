@@ -6,7 +6,7 @@ import './quickArtworkMaker_styles.css';
 import { addArtwork, getArtworkDataOnce } from "../../actions/UserDataActions";
 // helpers
 import * as ImageHelper from "../global/ImageHelper";
-import DefaultArtworkDataGenerator from "./DefaultArtworkDataGenerator";
+// import DefaultArtworkDataGenerator from "./DefaultArtworkDataGenerator";
 // comps
 import QuickPhotoSelector from "./quickPhotoSelector/QuickPhotoSelector";
 import QuickArtwork from "./quickArtwork/QuickArtwork";
@@ -24,7 +24,7 @@ class QuickArtworkMaker extends Component {
     constructor(props) {
         super(props);
 
-        this.onPhotoSelect = this.onPhotoSelect.bind(this);
+        // this.onPhotoSelect = this.onPhotoSelect.bind(this);
         this.onToolSelect = this.onToolSelect.bind(this);
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
         this.onCropAndRotateCancel = this.onCropAndRotateCancel.bind(this);
@@ -57,12 +57,12 @@ class QuickArtworkMaker extends Component {
     }
 
     // Photo selected
-    onPhotoSelect(imgFile) {
+    /*onPhotoSelect(imgFile) {
         ImageHelper.GetImage(imgFile,
             (sourceImg, imgOrientation) => {
                 this.updateMasterCanvas(sourceImg, imgOrientation);
             });
-    }
+    }*/
 
     // Use Master canvas
     updateMasterCanvas(sourceImg, orientation) {
@@ -83,8 +83,18 @@ class QuickArtworkMaker extends Component {
             })
     }
 
-    onCropAndRotateDone(orientation, cropData) {
-        ImageHelper.drawImageToCanvas({ sourceImg: this.state.sourceImg, outputCanvas: this.state.masterCanvas, orientation },
+    onCropAndRotateDone(newData) {
+        // if the orientation is the same, just update the artwork data
+        if (newData.orientation === this.props.artworkData.orientation) {
+            this.props.onArtworkDataChange(newData);
+        }
+        // otherwise the master canvas needs to be updated as well
+        else{
+            this.props.onCanvasOrientationChange(newData);
+        }
+
+
+        /*ImageHelper.drawImageToCanvas({ sourceImg: this.state.sourceImg, outputCanvas: this.state.masterCanvas, orientation },
             () => {
                 this.setState((state) => {
                     return {
@@ -92,7 +102,7 @@ class QuickArtworkMaker extends Component {
                         currentTool: 'view'
                     }
                 });
-            });
+            });*/
     }
 
     onCropAndRotateCancel() {
@@ -127,12 +137,15 @@ class QuickArtworkMaker extends Component {
 
     render() {
         const { currentTool } = this.state;
-        const { height, width, user, artworkData, sourceImg, masterCanvas, onArtworkDataChange, onArtworkSave } = this.props;
+        const {
+                  height, width, user, artworkData,
+                  sourceImg, masterCanvas,
+                  onArtworkDataChange, onArtworkSave, onPhotoSelected
+              } = this.props;
 
         const sidebarWidth = 60;
         const disableEditing = !sourceImg;
 
-        // console.log("user: ", user);
         const { loginStatus } = user;
         const showSideControls = true; //currentTool !== 'frame';
         const contentWidth = showSideControls ? width - sidebarWidth : width;
@@ -169,8 +182,14 @@ class QuickArtworkMaker extends Component {
                     />
                     }
 
+                    {currentTool === 'upload' &&
+                    <QuickPhotoSelector onPhotoSelected={onPhotoSelected}
+                                        height={height}
+                                        width={contentWidth}/>
+                    }
+
                     {currentTool === 'crop' &&
-                    <QuickCropAndRotate sourceImg={sourceImg}
+                    <QuickCropAndRotate sourceImg={masterCanvas}
                                         artworkData={artworkData}
                                         onCancel={this.onCropAndRotateCancel}
                                         onDone={this.onCropAndRotateDone}
@@ -208,12 +227,6 @@ class QuickArtworkMaker extends Component {
                                 artworkData={artworkData}
                                 width={contentWidth}
                                 height={height}/>
-                    }
-
-                    {currentTool === 'upload' &&
-                    <QuickPhotoSelector onPhotoSelected={this.onPhotoSelect}
-                                        height={height}
-                                        width={contentWidth}/>
                     }
                 </div>
             </div>

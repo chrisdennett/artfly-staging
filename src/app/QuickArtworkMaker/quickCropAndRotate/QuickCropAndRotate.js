@@ -16,33 +16,39 @@ class QuickCropAndRotate extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {localOrientation:1, localCropData:null};
+
         this.onCropUpdate = this.onCropUpdate.bind(this);
         this.onCanvasSetup = this.onCanvasSetup.bind(this);
         this.onRotateClockwiseClick = this.onRotateClockwiseClick.bind(this);
         this.onDoneClick = this.onDoneClick.bind(this);
         this.onCancelClick = this.onCancelClick.bind(this);
         this.drawCuttingBoardCanvas = this.drawCuttingBoardCanvas.bind(this);
-
     }
 
     componentWillMount() {
         // set crop data and rotation to default or values set be parents
-        const {artworkData} = this.props;
-        const {cropData, orientation } = artworkData;
+        const { artworkData } = this.props;
+        const { cropData, orientation } = artworkData;
 
-        this.setState({ cropData, orientation })
+        this.setState({ localCropData:cropData, localOrientation:orientation })
     }
 
     componentWillReceiveProps(nextProps) {
-        this.drawCuttingBoardCanvas(nextProps);
+        const { artworkData } = nextProps;
+        const { cropData, orientation } = artworkData;
+
+        console.log("componentWillReceiveProps > cropData: ", cropData);
+
+        this.setState({ localCropData:cropData, localOrientation:orientation });
     }
 
     componentDidMount() {
-        this.drawCuttingBoardCanvas();
+        // this.drawCuttingBoardCanvas();
     }
 
     onCropUpdate(cropData) {
-        this.setState({ cropData });
+        this.setState({ localCropData:cropData });
     }
 
     onCanvasSetup(canvas) {
@@ -57,13 +63,18 @@ class QuickCropAndRotate extends Component {
     }
 
     onDoneClick() {
-        const { orientation, cropData } = this.state;
-        this.props.onDone(orientation, cropData);
+        const { localCropData:cropData, localOrientation:orientation } = this.state;
+
+        console.log("onDoneClick > cropData: ", cropData);
+
+        this.props.onDone({ orientation, cropData });
     }
 
     drawCuttingBoardCanvas(props = this.props) {
         const { width, height, sourceImg } = props;
-        const { orientation, canvas } = this.state;
+        const { localOrientation:orientation, canvas } = this.state;
+
+        console.log("drawCuttingBoardCanvas > orientation: ", orientation);
 
         if (!sourceImg || !width || !canvas) return;
 
@@ -88,25 +99,28 @@ class QuickCropAndRotate extends Component {
     // Rotate using info from:
     // https://stackoverflow.com/questions/7584794/accessing-jpeg-exif-rotation-data-in-javascript-on-the-client-side/32490603#32490603
     onRotateClockwiseClick() {
-        const currentRotation = this.state.orientation ? this.state.orientation : 1;
+        const currentRotation = this.state.localOrientation ? this.state.localOrientation : 1;
         const nextRotations = { 1: 6, 6: 3, 3: 8, 8: 1 }; // order of rotations by 90° clockwise increments
         const newOrientation = nextRotations[currentRotation] || 6;
 
-        let { leftPercent, rightPercent, topPercent, bottomPercent } = this.state.cropData;
+        let { leftPercent, rightPercent, topPercent, bottomPercent } = this.state.localCropData;
 
         const newL = 1 - bottomPercent;
         const newR = 1 - topPercent;
         const newT = leftPercent;
         const newB = rightPercent;
 
-        this.setState({ orientation: newOrientation, cropData: { leftPercent: newL, rightPercent: newR, topPercent: newT, bottomPercent: newB } }, () => {
+        console.log("onRotateClockwiseClick");
+
+        this.setState({ localOrientation: newOrientation, localCropData: { leftPercent: newL, rightPercent: newR, topPercent: newT, bottomPercent: newB } }, () => {
             this.drawCuttingBoardCanvas();
         });
     }
 
     render() {
         const { width, height } = this.props;
-        const { cropData } = this.state;
+        const { localCropData:cropData } = this.state;
+        console.log("cropData: ", cropData);
         const buttStyle = { color: 'rgba(255,255,255,0.7)', marginRight: 10 };
 
         const showCuttingBoard = Math.max(width, height) > 800;

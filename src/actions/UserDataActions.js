@@ -162,6 +162,9 @@ export function deleteUser() {
 export function listenForUserArtworkChanges(userId) {
     return (dispatch) => {
         fs_getUserArtworkChanges(userId, (artworks) => {
+
+            console.log("listenForUserArtworkChanges > artworks: ", artworks);
+
             dispatch({
                 type: USER_ARTWORKS_CHANGE,
                 payload: artworks
@@ -173,9 +176,10 @@ export function listenForUserArtworkChanges(userId) {
 export function listenForArtworkChanges(artworkId, callback, errorCallback) {
     return (dispatch) => {
         fs_getArtworkChanges(artworkId, (artworkData) => {
+
             dispatch({
                 type: ARTWORK_CHANGE,
-                payload: artworkData
+                payload: {[artworkId]:artworkData}
             });
             if (callback) callback(artworkData);
 
@@ -189,6 +193,9 @@ export function listenForArtworkChanges(artworkId, callback, errorCallback) {
 export function getArtworkDataOnce(artworkId, callback) {
     return dispatch => {
         fs_getArtworkDataOnce(artworkId, (artworkData) => {
+
+            console.log("fs_getArtworkDataOnce");
+
             dispatch({
                 type: ARTWORK_CHANGE,
                 payload: { [artworkId]: artworkData }
@@ -219,9 +226,9 @@ export function clearImageUpload() {
     }
 }
 
-export function addArtwork(artworkType, userId, imgFile, artworkData, callback = null) {
+export function addArtwork(userId, imgFile, artworkData, callback = null) {
     return dispatch => {
-        fs_addArtwork(artworkType, userId, imgFile, artworkData, (uploadData) => {
+        fs_addArtwork(userId, imgFile, artworkData, (uploadData) => {
             if (uploadData.status === 'uploading') {
                 dispatch({
                     type: IMAGE_UPLOAD_PROGRESS,
@@ -242,11 +249,13 @@ export function addArtwork(artworkType, userId, imgFile, artworkData, callback =
 
 export function updateArtwork(artworkId, newArtworkData, callback = null) {
 
+    console.log("updateArtwork");
+
     return dispatch => {
         fs_updateArtwork(artworkId, newArtworkData, () => {
             dispatch({
                 type: ARTWORK_CHANGE,
-                payload: newArtworkData
+                payload: {[artworkId]:newArtworkData}
             });
 
             if (callback) callback();

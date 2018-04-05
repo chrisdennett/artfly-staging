@@ -146,7 +146,7 @@ export function fs_getUserChanges(userId, onChangeCallback = null) {
 
 //*** ARTWORK ***********************************************************
 // ADD ARTWORK
-export function fs_addArtwork(type, userId, imgFile, artworkData, onChangeCallback = null) {
+export function fs_addArtwork(userId, imgFile, artworkData, onChangeCallback = null) {
     // Get artwork database id first so can be used for the filename
     const artworkDatabaseRef = db.collection('artworks').doc();
     const artworkId = artworkDatabaseRef.id;
@@ -159,7 +159,6 @@ export function fs_addArtwork(type, userId, imgFile, artworkData, onChangeCallba
             // Upload completed successfully - save artwork data
             const newArtworkData = {
                 ...artworkData,
-                type,
                 adminId: userId,
                 url: onCompleteData.downloadURL,
                 dateAdded: Date.now()

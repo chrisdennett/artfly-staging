@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-//
+// styles
 import './artwork_styles.css';
-//
+// helpers
+import DefaultArtworkDataGenerator from "./DefaultArtworkDataGenerator";
+import * as ImageHelper from "../global/ImageHelper";
+//actions
+import { getArtworkDataOnce, updateArtwork, addArtwork } from "../../actions/UserDataActions";
+//comps
 import QuickArtworkMaker from '../QuickArtworkMaker/QuickArtworkMaker';
 import QuickArtwork from "../QuickArtworkMaker/quickArtwork/QuickArtwork";
-import * as ImageHelper from "../global/ImageHelper";
-import DefaultArtworkDataGenerator from "../QuickArtworkMaker/DefaultArtworkDataGenerator";
-import { getArtworkDataOnce, updateArtwork } from "../../actions/UserDataActions";
 import ScrollbarRemover from "../global/ScrollbarRemover";
 // Constants
 const defaultArtworkData = DefaultArtworkDataGenerator();
@@ -21,16 +23,19 @@ class Artwork extends Component {
         this.loadArtwork = this.loadArtwork.bind(this);
         this.onArtworkEditorDataChange = this.onArtworkEditorDataChange.bind(this);
         this.onArtworkEditorSave = this.onArtworkEditorSave.bind(this);
+        this.onPhotoSelected = this.onPhotoSelected.bind(this);
+        this.onCanvasOrientationChange = this.onCanvasOrientationChange.bind(this);
 
-        this.state = { currentTool: 'upload', artworkData: defaultArtworkData, unsavedArtworkData: {} };
+        this.state = { currentTool: 'upload', artworkData: {}, unsavedArtworkData: {} };
     }
 
     componentWillMount() {
         const { artworkId, artworks } = this.props;
-        if (!artworkId) return;
-
+        if (!artworkId) {
+            this.setState({ unsavedArtworkData: defaultArtworkData });
+        }
         // If there's an artwork id in the url, load in the artwork
-        if (artworks[artworkId]) {
+        else if (artworks[artworkId]) {
             // if the artworkData is already available use it
             this.loadArtwork(artworks[artworkId]);
         }
@@ -40,6 +45,17 @@ class Artwork extends Component {
                 this.loadArtwork(artworkData);
             })
         }
+    }
+
+    onPhotoSelected(imgFile) {
+        ImageHelper.GetImage(imgFile,
+            (sourceImg, imgOrientation) => {
+                this.updateMasterCanvas(sourceImg, imgOrientation);
+            });
+    }
+
+    onCanvasOrientationChange(newData) {
+        this.updateMasterCanvas(this.state.sourceImg, newData.orientation, newData.cropData);
     }
 
     loadArtwork(artworkData) {
@@ -53,17 +69,20 @@ class Artwork extends Component {
         })
     }
 
-    updateMasterCanvas(sourceImg, orientation) {
-        const masterCanvas = document.createElement('canvas');
+    updateMasterCanvas(sourceImg, orientation, cropData = {}) {
+        const masterCanvas = this.state.masterCanvas || document.createElement('canvas');
 
         ImageHelper.drawImageToCanvas({ sourceImg, outputCanvas: masterCanvas, orientation },
             (widthToHeightRatio, heightToWidthRatio) => {
-
                 this.setState((state) => {
+                    const newCropData = { ...state.artworkData.cropData, ...cropData };
+                    console.log("updateMasterCanvas > newCropData: ", newCropData);
+                    const newArtworkData = { ...state.artworkData, cropData: newCropData, orientation: 1, widthToHeightRatio, heightToWidthRatio };
+
                     return {
                         sourceImg,
                         masterCanvas,
-                        artworkData: { ...state.artworkData, widthToHeightRatio, heightToWidthRatio }
+                        artworkData: newArtworkData
                     }
                 });
             })
@@ -79,33 +98,61 @@ class Artwork extends Component {
 
     onArtworkEditorSave() {
         // combined saved and unsaved data and update artwork.
-        const { artworkData, unsavedArtworkData } = this.state;
-        const { artworkId } = this.props;
+        const { artworkData, unsavedArtworkData, sourceImg } = this.state;
+        const { artworkId, user } = this.props;
+        const newArtworkData = { ...artworkData, ...unsavedArtworkData };
 
         if (artworkId) {
-            const newArtworkData = {...artworkData, ...unsavedArtworkData};
 
             this.props.updateArtwork(artworkId, newArtworkData, (returnData) => {
                 // console.log("update artwork returnData: ", returnData);
             });
         }
         else {
-            console.log("save new artwork");
+
+            this.getImageBlob(sourceImg, 3000, (blobData) => {
+                this.props.addArtwork(user.uid, blobData, newArtworkData);
+            })
         }
     }
 
+    getImageBlob(sourceImg, maxSize, callback) {
+        const canvas = document.createElement('canvas');
+
+        // not providing crop data and orientation because now keeping source as is
+        // instead the crop data and orientation is being saved with artwork data
+        // and applied each time artwork viewed
+        // This way edits are non-destructive.
+
+        ImageHelper.drawToCanvas({
+            sourceCanvas: sourceImg,
+            outputCanvas: canvas,
+            maxOutputCanvasWidth: maxSize,
+            maxOutputCanvasHeight: maxSize
+        }, (widthToHeightRatio, heightToWidthRatio) => {
+
+            canvas.toBlob((canvasBlobData) => {
+                callback(canvasBlobData, widthToHeightRatio, heightToWidthRatio)
+            }, 'image/jpeg', 0.95);
+
+        });
+    }
+
     render() {
-        const { width, height, user } = this.props;
+        const { width, height, user, artworkId } = this.props;
         const { artworkData, unsavedArtworkData, masterCanvas, sourceImg } = this.state;
         const currentArtworkData = { ...artworkData, ...unsavedArtworkData };
         const allowEditing = user.uid && user.uid === artworkData.adminId;
+        const isNewArtwork = !artworkId;
 
         return (
             <ScrollbarRemover showScrollbars={false}>
 
-                {allowEditing &&
+                {(isNewArtwork || allowEditing) &&
                 <QuickArtworkMaker artworkData={currentArtworkData}
+                                   onPhotoSelected={this.onPhotoSelected}
                                    onArtworkDataChange={this.onArtworkEditorDataChange}
+                                   onCanvasOrientationChange={this.onCanvasOrientationChange}
                                    onArtworkSave={this.onArtworkEditorSave}
                                    sourceImg={sourceImg}
                                    masterCanvas={masterCanvas}/>
@@ -139,6 +186,6 @@ const mapStateToProps = (state) => {
     }
 };
 
-const mapActionsToProps = { getArtworkDataOnce, updateArtwork };
+const mapActionsToProps = { getArtworkDataOnce, updateArtwork, addArtwork };
 
 export default connect(mapStateToProps, mapActionsToProps)(Artwork);
