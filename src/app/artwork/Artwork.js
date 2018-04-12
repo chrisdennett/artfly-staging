@@ -40,7 +40,7 @@ class Artwork extends Component {
             // if the artworkData is already available use it
             this.loadArtwork(artworks[artworkId]);
         }
-        // otherwise load the artwork data in
+        // otherwise load the artwork data from the server
         else {
             this.props.getArtworkDataOnce(artworkId, (artworkData) => {
                 this.loadArtwork(artworkData);
@@ -48,6 +48,8 @@ class Artwork extends Component {
         }
     }
 
+    // Draw uploaded images to the master canvas
+    // NB: Crop data isn't reset so will use any existing crop data
     onPhotoSelected(imgFile) {
         ImageHelper.GetImage(imgFile,
             (sourceImg, imgOrientation) => {
@@ -55,10 +57,15 @@ class Artwork extends Component {
             });
     }
 
+    // The source image remains at its original orientation
+    // it is draw to the master canvas with the updated orientation
     onCanvasOrientationChange(newData) {
         this.updateMasterCanvas(this.state.sourceImg, newData.orientation, newData.cropData);
     }
 
+    // Loads in artwork Image from the server using the saved url
+    // NB Currently loading in the source image, but should only do this
+    // if needed for editing.
     loadArtwork(artworkData) {
         this.setState({ artworkData }, () => {
             let img = new Image();
@@ -70,6 +77,7 @@ class Artwork extends Component {
         })
     }
 
+    // Draws the selected or loaded image to an off-screen canvas
     updateMasterCanvas(sourceImg, orientation, cropData = {}) {
         const masterCanvas = this.state.masterCanvas || document.createElement('canvas');
 
@@ -88,6 +96,7 @@ class Artwork extends Component {
             })
     }
 
+    // Keeps any changes from the editor in state.
     onArtworkEditorDataChange(updatedData) {
         this.setState((state) => {
             return {
@@ -96,15 +105,18 @@ class Artwork extends Component {
         })
     }
 
+    // Updates existing artwork data with the unsaved data
     onArtworkEditorSave() {
         // combined saved and unsaved data and update artwork.
         const { artworkData, unsavedArtworkData, sourceImg } = this.state;
         const { artworkId, user } = this.props;
         const newArtworkData = { ...artworkData, ...unsavedArtworkData };
 
+        // if editing an artwork, just update the data
         if (artworkId) {
             this.props.updateArtwork(artworkId, newArtworkData);
         }
+        // otherwise add a new artwork including the image.
         else {
             this.getImageBlob(sourceImg, 3000, (blobData) => {
                 this.props.addArtwork(user.uid, blobData, newArtworkData);
@@ -115,7 +127,7 @@ class Artwork extends Component {
     getImageBlob(sourceImg, maxSize, callback) {
         const canvas = document.createElement('canvas');
 
-        // not providing crop data and orientation because now keeping source as is
+        // not providing crop data and orientation because keeping source as is
         // instead the crop data and orientation is being saved with artwork data
         // and applied each time artwork viewed
         // This way edits are non-destructive.
