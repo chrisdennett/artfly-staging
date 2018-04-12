@@ -4,7 +4,7 @@ import faRedo from '@fortawesome/fontawesome-pro-solid/faRedo';
 import faTimes from '@fortawesome/fontawesome-pro-solid/faTimes';
 import faCheck from '@fortawesome/fontawesome-pro-solid/faCheck';
 // styles
-import './quickCropAndRotate_styles.css';
+import './cropAndRotate_styles.css';
 // helpers
 import * as ImageHelper from "../../global/ImageHelper";
 // components
@@ -12,7 +12,7 @@ import QuickCuttingBoard from "./QuickCuttingBoard";
 import QuickCuttingMat from "../quickCuttingMat/QuickCuttingMat";
 import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 
-class QuickCropAndRotate extends Component {
+class CropAndRotateEditor extends Component {
     constructor(props) {
         super(props);
 
@@ -150,4 +150,4 @@ class QuickCropAndRotate extends Component {
     }
 }
 
-export default QuickCropAndRotate;
+export default CropAndRotateEditor;

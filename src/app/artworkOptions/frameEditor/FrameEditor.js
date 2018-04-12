@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import faImage from "@fortawesome/fontawesome-pro-solid/faImage";
 // styles
-import './quickFrame_styles.css';
+import './frameEditor_styles.css';
 // comps
 import ColourAndSizeControl from "../../global/colourAndSizeControl/ColourAndSizeControl";
 import PresetsControl from "./presets/PresetsControl";
 import Butt from "../../global/Butt/Butt";
 import ToolControlPanel from "../../global/toolControlPanel/ToolControlPanel";
 
-class QuickFrameEditor extends Component {
+class FrameEditor extends Component {
 
     constructor(props) {
         super(props);
@@ -135,7 +135,7 @@ class QuickFrameEditor extends Component {
     }
 }
 
-export default QuickFrameEditor;
+export default FrameEditor;
 
 /*<div style={{ backgroundColor: '#fff', padding: 10 }}>
                             {`

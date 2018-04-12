@@ -1,20 +1,19 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 // styles
-import './quickArtworkMaker_styles.css';
+import './artworkOptions_styles.css';
 // actions
 import { addArtwork, getArtworkDataOnce } from "../../actions/UserDataActions";
 // comps
-import QuickPhotoSelector from "./quickPhotoSelector/QuickPhotoSelector";
-import QuickArtwork from "./quickArtwork/QuickArtwork";
-import QuickCropAndRotate from "./quickCropAndRotate/QuickCropAndRotate";
+import QuickPhotoSelector from "./photoSelector/PhotoSelector";
+import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
 import QuickArtMakerToolBar from "./quickArtMakerToolBar/QuickArtMakerToolBar";
-import QuickShare from "./quickShare/QuickShare";
-import QuickTitlesEditor from "./quickTitlesEditor/QuickTitlesEditor";
-import QuickFrameEditor from "./quickFrameEditor/QuickFrameEditor";
-import QuickRoomEditor from "./quickRoomEditor/QuickRoomEditor";
+import QuickShare from "./sharingOptions/SharingOptions";
+import TitlesEditor from "./titlesEditor/TitlesEditor";
+import FrameEditor from "./frameEditor/FrameEditor";
+import RoomEditor from "./roomEditor/RoomEditor";
 
-class QuickArtworkMaker extends Component {
+class ArtworkOptions extends Component {
 
     constructor(props) {
         super(props);
@@ -80,8 +79,6 @@ class QuickArtworkMaker extends Component {
             classesForMain = 'quickArtworkMaker--mainScrollable';
         }
 
-        const hideArtwork = currentTool === 'crop' || currentTool === 'upload' || currentTool === 'share';
-
         return (
             <div className={'quickArtworkMaker'}>
 
@@ -97,53 +94,42 @@ class QuickArtworkMaker extends Component {
 
                 <div className={classesForMain}>
 
-                    {!hideArtwork &&
-                    <QuickArtwork height={height}
-                                  width={contentWidth}
-                                  isFixed={true}
-                                  artworkData={artworkData}
-                                  masterCanvas={masterCanvas}
-                    />
-                    }
-
                     {currentTool === 'upload' &&
-                    <QuickPhotoSelector onPhotoSelected={this.onPhotoSelected}
-                                        height={height}
-                                        width={contentWidth}/>
+                    <QuickPhotoSelector onPhotoSelected={this.onPhotoSelected}/>
                     }
 
                     {currentTool === 'crop' &&
-                    <QuickCropAndRotate sourceImg={sourceImg}
-                                        artworkData={artworkData}
-                                        onCancel={this.onCropAndRotateCancel}
-                                        onDone={this.onCropAndRotateDone}
-                                        width={contentWidth}
-                                        height={height}/>
+                    <CropAndRotateEditor sourceImg={sourceImg}
+                                         artworkData={artworkData}
+                                         onCancel={this.onCropAndRotateCancel}
+                                         onDone={this.onCropAndRotateDone}
+                                         width={contentWidth}
+                                         height={height}/>
                     }
 
                     {currentTool === 'titles' &&
-                    <QuickTitlesEditor height={height}
-                                       width={contentWidth}
-                                       titlesData={artworkData.titlesData}
-                                       onDataChange={onArtworkDataChange}
-                                       onDone={this.onEditDone}
+                    <TitlesEditor height={height}
+                                  width={contentWidth}
+                                  titlesData={artworkData.titlesData}
+                                  onDataChange={onArtworkDataChange}
+                                  onDone={this.onEditDone}
                     />
                     }
 
                     {currentTool === 'frame' &&
-                    <QuickFrameEditor height={height}
-                                      width={contentWidth}
-                                      frameData={artworkData.frameData}
-                                      onDataChange={onArtworkDataChange}
-                                      onDone={this.onEditDone}/>
+                    <FrameEditor height={height}
+                                 width={contentWidth}
+                                 frameData={artworkData.frameData}
+                                 onDataChange={onArtworkDataChange}
+                                 onDone={this.onEditDone}/>
                     }
 
                     {currentTool === 'room' &&
-                    <QuickRoomEditor height={height}
-                                     width={contentWidth}
-                                     roomData={artworkData.roomData}
-                                     onDataChange={onArtworkDataChange}
-                                     onDone={this.onEditDone}/>
+                    <RoomEditor height={height}
+                                width={contentWidth}
+                                roomData={artworkData.roomData}
+                                onDataChange={onArtworkDataChange}
+                                onDone={this.onEditDone}/>
                     }
 
                     {currentTool === 'share' &&
@@ -175,4 +161,4 @@ const mapStateToProps = (state) => {
 
 const mapActionsToProps = { addArtwork, getArtworkDataOnce };
 
-export default connect(mapStateToProps, mapActionsToProps)(QuickArtworkMaker);
+export default connect(mapStateToProps, mapActionsToProps)(ArtworkOptions);

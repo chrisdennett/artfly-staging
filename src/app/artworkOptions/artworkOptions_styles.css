@@ -1,0 +1,30 @@
+.quickArtworkMaker {
+    /*overflow: hidden;*/
+    /*min-width:100vw;*/
+    /*min-height:100vh;*/
+}
+
+.quickArtworkMaker--sideBar{
+    /*background: aliceblue;*/
+    background: url("../../app/images/brickwall.png");
+    position: fixed;
+    z-index: 9999;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.4);
+    top:0;
+    left: 0;
+    bottom: 0;
+    overflow-x:hidden;
+    overflow-y:auto;
+}
+
+.quickArtworkMaker--mainScrollable {
+    margin-left: 60px;
+}
+
+.quickArtworkMaker--mainFixed{
+    position: fixed;
+    top: 0;
+    left: 60px;
+    right: 0;
+    bottom: 0;
+}

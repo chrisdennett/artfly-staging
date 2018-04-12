@@ -11,7 +11,7 @@ import faPinterest from '@fortawesome/fontawesome-free-brands/faPinterest';
 import faTwitter from '@fortawesome/fontawesome-free-brands/faTwitter';
 import faGooglePlus from '@fortawesome/fontawesome-free-brands/faGooglePlus';
 // styles
-import './quickShare_styles.css';
+import './sharingOptions_styles.css';
 // comps
 import Butt from "../../global/Butt/Butt";
 import QuickArtwork from "../quickArtwork/QuickArtwork";
@@ -98,7 +98,7 @@ const presets = [
     }
 ];
 
-class QuickShare extends Component {
+class SharingOptions extends Component {
 
     constructor(props) {
         super(props);
@@ -242,4 +242,4 @@ class QuickShare extends Component {
     }
 }
 
-export default QuickShare;
+export default SharingOptions;

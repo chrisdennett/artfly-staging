@@ -1,4 +1,4 @@
-/*.quickFrameEditor--toolHolder {
+/*.frameEditor--toolHolder {
     position: fixed;
     left: 60px;
     right: 0;
@@ -7,7 +7,7 @@
     flex-direction: column;
 }
 
-.quickFrameEditor--toolHolder--selectors {
+.frameEditor--toolHolder--selectors {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,11 +15,11 @@
     border-top: rgba(0, 0, 0, 0.3) 1px solid;
 }
 
-.quickFrameEditor--toolHolder--selectors--options{
+.frameEditor--toolHolder--selectors--options{
     display: flex;
 }
 
-.quickFrameEditor--toolHolder--selectors--globalButts{
+.frameEditor--toolHolder--selectors--globalButts{
     display: flex;
     border-left: rgba(0, 0, 0, 0.4) 1px solid;
     border-right: rgba(0, 0, 0, 0.4) 1px solid;

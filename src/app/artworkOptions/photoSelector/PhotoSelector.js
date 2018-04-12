@@ -1,9 +1,8 @@
 // externals
 import React, { Component } from 'react';
 // styles
-import './quickPhotoSelector_styles.css';
+import './photoSelector_styles.css';
 // comps
-import Flooring from "../../global/flooring/Flooring";
 import StencilHeader from "../../global/stencilHeader/StencilHeader";
 
 class PhotoSelector extends Component {
@@ -32,8 +31,7 @@ class PhotoSelector extends Component {
     }
 
     render() {
-        const { id = '123', height } = this.props;
-        const showFloor = height > 500;
+        const { id = '123' } = this.props;
         const stencilHeaderStyle = { color: 'rgba(0, 0, 0, 0.4)', fontWeight: 'bold' };
 
         return (
@@ -68,10 +66,6 @@ class PhotoSelector extends Component {
 
                     </label>
                 </div>
-
-                {showFloor &&
-                <Flooring/>
-                }
 
             </div>
         )

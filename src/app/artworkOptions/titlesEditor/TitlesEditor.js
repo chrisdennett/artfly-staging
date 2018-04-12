@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 // styles
-import './quickTitles_styles.css';
+import './titlesEditor_styles.css';
 // comps
 import Butt from "../../global/Butt/Butt";
 import WordCountInput from "./wordCountInput/WordCountInput";
 import ToolControlPanel from "../../global/toolControlPanel/ToolControlPanel";
 
-class QuickTitlesEditor extends Component {
+class TitlesEditor extends Component {
 
     constructor(props) {
         super(props);
@@ -130,4 +130,4 @@ class QuickTitlesEditor extends Component {
     }
 }
 
-export default QuickTitlesEditor;
+export default TitlesEditor;

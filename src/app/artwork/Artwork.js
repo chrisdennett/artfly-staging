@@ -8,8 +8,8 @@ import * as ImageHelper from "../global/ImageHelper";
 //actions
 import { getArtworkDataOnce, updateArtwork, addArtwork } from "../../actions/UserDataActions";
 //comps
-import QuickArtworkMaker from '../QuickArtworkMaker/QuickArtworkMaker';
-import QuickArtwork from "../QuickArtworkMaker/quickArtwork/QuickArtwork";
+import QuickArtworkMaker from '../artworkOptions/ArtworkOptions';
+import QuickArtwork from "../artworkOptions/quickArtwork/QuickArtwork";
 import ScrollbarRemover from "../global/ScrollbarRemover";
 // Constants
 const defaultArtworkData = DefaultArtworkDataGenerator();
@@ -26,7 +26,7 @@ class Artwork extends Component {
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.onCanvasOrientationChange = this.onCanvasOrientationChange.bind(this);
 
-        this.state = { currentTool: 'upload', artworkData: {}, unsavedArtworkData: {} };
+        this.state = { currentTool: 'upload', artworkData: null, unsavedArtworkData: null };
     }
 
     componentWillMount() {
@@ -150,13 +150,16 @@ class Artwork extends Component {
         const { width, height, user, artworkId } = this.props;
         const { artworkData, unsavedArtworkData, masterCanvas, sourceImg } = this.state;
         const currentArtworkData = { ...artworkData, ...unsavedArtworkData };
-        const allowEditing = user.uid && user.uid === artworkData.adminId;
-        const isNewArtwork = !artworkId;
+        // const allowEditing = user.uid && user.uid === artworkData.adminId;
+        // const isNewArtwork = !artworkId;
+
+        if(!artworkData) return null;
+
 
         return (
             <ScrollbarRemover showScrollbars={false}>
 
-                {(isNewArtwork || allowEditing) &&
+
                 <QuickArtworkMaker artworkData={currentArtworkData}
                                    onPhotoSelected={this.onPhotoSelected}
                                    onArtworkDataChange={this.onArtworkEditorDataChange}
@@ -164,16 +167,16 @@ class Artwork extends Component {
                                    onArtworkSave={this.onArtworkEditorSave}
                                    sourceImg={sourceImg}
                                    masterCanvas={masterCanvas}/>
-                }
 
-                {!allowEditing &&
+
                 <QuickArtwork height={height}
                               width={width}
                               isFixed={true}
                               artworkData={currentArtworkData}
                               masterCanvas={masterCanvas}
                 />
-                }
+
+
             </ScrollbarRemover>
         )
     }

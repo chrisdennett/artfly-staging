@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import faPalletAlt from "@fortawesome/fontawesome-pro-solid/faPalletAlt";
 // styles
-import './quickRoom_styles.css';
+import './room_styles.css';
 // comps
 import RoomPresets from "./presets/RoomPresets";
 import Butt from "../../global/Butt/Butt";
 import ToolControlPanel from "../../global/toolControlPanel/ToolControlPanel";
 
-class QuickRoomEditor extends Component {
+class RoomEditor extends Component {
 
     constructor(props) {
         super(props);
@@ -70,4 +70,4 @@ class QuickRoomEditor extends Component {
     }
 }
 
-export default QuickRoomEditor;
+export default RoomEditor;
