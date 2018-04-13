@@ -11,7 +11,7 @@ import Home from './app/Home/Home';
 import FourOhFour from "./app/FourOhFour/FourOhFour";
 import LoadingOverlay from "./app/global/LoadingOverlay";
 import App from "./app/App";
-import Artwork from "./app/artwork/Artwork";
+import Artwork from "./app/artwork/ArtworkViewer";
 
 const routes = {
     home: { component: Home },

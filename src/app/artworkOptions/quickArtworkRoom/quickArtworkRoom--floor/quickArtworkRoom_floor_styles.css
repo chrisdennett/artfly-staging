@@ -1,9 +1,0 @@
-.quickArtworkRoom_floor {
-    display: flex;
-    flex-direction: column;
-}
-
-.quickArtworkRoom_floor--floorBoards {
-    width: 100%;
-    background: url("../../../images/floor-boards.png");
-}

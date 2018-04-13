@@ -14,7 +14,7 @@ import faGooglePlus from '@fortawesome/fontawesome-free-brands/faGooglePlus';
 import './sharingOptions_styles.css';
 // comps
 import Butt from "../../global/Butt/Butt";
-import QuickArtwork from "../quickArtwork/QuickArtwork";
+import Artwork from "../../artwork/Artwork";
 import PresetButton from "./PresetButton";
 import StencilHeader from "../../global/stencilHeader/StencilHeader";
 
@@ -214,11 +214,11 @@ class SharingOptions extends Component {
                 <div className={'quickShare--imagePreview'}>
                     <div className={'quickShare--imagePreview--label'}>{presetName}: {presetWidth}x{presetHeight}</div>
                     <div className={'quickShare--quickArtworkHolder'}>
-                        <QuickArtwork width={presetWidth}
-                                      height={presetHeight}
-                                      artworkData={artworkData}
-                                      onCanvasSetUp={this.onCanvasSetUp}
-                                      masterCanvas={masterCanvas}
+                        <Artwork width={presetWidth}
+                                 height={presetHeight}
+                                 artworkData={artworkData}
+                                 onCanvasSetUp={this.onCanvasSetUp}
+                                 masterCanvas={masterCanvas}
                         />
                     </div>
                 </div>

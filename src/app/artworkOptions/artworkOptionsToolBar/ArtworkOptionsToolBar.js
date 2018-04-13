@@ -8,13 +8,13 @@ import faEye from "@fortawesome/fontawesome-pro-solid/faEye";
 import faPalletAlt from "@fortawesome/fontawesome-pro-solid/faPalletAlt";
 import faSave from "@fortawesome/fontawesome-pro-solid/faSave";
 // styles
-import './quickArtMakerTools_styles.css';
+import './artworkOptionsToolBar_styles.css';
 // comps
 import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 import IconLogo from "../../global/icon/icons/IconLogo";
 import Link from "../../global/Butt/Link";
 
-class QuickArtMakerToolBar extends Component {
+class ArtworkOptionsToolBar extends Component {
 
     constructor(props) {
         super(props);
@@ -107,4 +107,4 @@ class QuickArtMakerToolBar extends Component {
     }
 }
 
-export default QuickArtMakerToolBar;
+export default ArtworkOptionsToolBar;

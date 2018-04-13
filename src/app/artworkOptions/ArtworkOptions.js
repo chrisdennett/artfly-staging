@@ -7,7 +7,7 @@ import { addArtwork, getArtworkDataOnce } from "../../actions/UserDataActions";
 // comps
 import QuickPhotoSelector from "./photoSelector/PhotoSelector";
 import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
-import QuickArtMakerToolBar from "./quickArtMakerToolBar/QuickArtMakerToolBar";
+import ArtworkOptionsToolBar from "./artworkOptionsToolBar/ArtworkOptionsToolBar";
 import QuickShare from "./sharingOptions/SharingOptions";
 import TitlesEditor from "./titlesEditor/TitlesEditor";
 import FrameEditor from "./frameEditor/FrameEditor";
@@ -84,11 +84,11 @@ class ArtworkOptions extends Component {
 
                 {showSideControls &&
                 <div className={'quickArtworkMaker--sideBar'} style={{ width: sidebarWidth }}>
-                    <QuickArtMakerToolBar onToolSelect={this.onToolSelect}
-                                          showArtworkControls={loginStatus === 'loggedIn'}
-                                          disableEditing={disableEditing}
-                                          onSave={onArtworkSave}
-                                          currentTool={currentTool}/>
+                    <ArtworkOptionsToolBar onToolSelect={this.onToolSelect}
+                                           showArtworkControls={loginStatus === 'loggedIn'}
+                                           disableEditing={disableEditing}
+                                           onSave={onArtworkSave}
+                                           currentTool={currentTool}/>
                 </div>
                 }
 
