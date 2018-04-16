@@ -24,7 +24,7 @@ class ArtworkOptions extends Component {
         this.onEditDone = this.onEditDone.bind(this);
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
 
-        this.state = { currentTool: 'upload' };
+        this.state = { currentTool: 'view' };
     }
 
     // Left nav tool selection
@@ -60,18 +60,15 @@ class ArtworkOptions extends Component {
 
     render() {
         const { currentTool } = this.state;
-        const {
-                  height, width, user, artworkData,
+        const {   height, width, user, allowEditing, artworkData,
                   sourceImg, masterCanvas,
-                  onArtworkDataChange, onArtworkSave
-              } = this.props;
+                  onArtworkDataChange, onArtworkSave  } = this.props;
 
         const sidebarWidth = 60;
         const disableEditing = !sourceImg;
 
         const { loginStatus } = user;
-        const showSideControls = true; //currentTool !== 'frame';
-        const contentWidth = showSideControls ? width - sidebarWidth : width;
+        const contentWidth = width - sidebarWidth;
 
         let classesForMain = 'quickArtworkMaker--mainFixed';
 
@@ -82,15 +79,14 @@ class ArtworkOptions extends Component {
         return (
             <div className={'quickArtworkMaker'}>
 
-                {showSideControls &&
                 <div className={'quickArtworkMaker--sideBar'} style={{ width: sidebarWidth }}>
                     <ArtworkOptionsToolBar onToolSelect={this.onToolSelect}
                                            showArtworkControls={loginStatus === 'loggedIn'}
+                                           allowEditing={allowEditing}
                                            disableEditing={disableEditing}
                                            onSave={onArtworkSave}
                                            currentTool={currentTool}/>
                 </div>
-                }
 
                 <div className={classesForMain}>
 

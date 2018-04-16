@@ -283,7 +283,6 @@ export function fs_getArtworkDataOnce(artworkId, onComplete = null) {
 
     docRef.get().then(function (doc) {
         if (doc.exists) {
-            console.log("Document data:", doc.data());
             onComplete(doc.data());
         }
         else {

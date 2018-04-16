@@ -8,7 +8,7 @@ import * as ImageHelper from "../global/ImageHelper";
 //actions
 import { getArtworkDataOnce, updateArtwork, addArtwork } from "../../actions/UserDataActions";
 //comps
-import QuickArtworkMaker from '../artworkOptions/ArtworkOptions';
+import ArtworkOptions from '../artworkOptions/ArtworkOptions';
 import Artwork from "./Artwork";
 import ScrollbarRemover from "../global/ScrollbarRemover";
 // Constants
@@ -150,23 +150,24 @@ class ArtworkViewer extends Component {
         const { width, height, user, artworkId } = this.props;
         const { artworkData, unsavedArtworkData, masterCanvas, sourceImg } = this.state;
         const currentArtworkData = { ...artworkData, ...unsavedArtworkData };
-        // const allowEditing = user.uid && user.uid === artworkData.adminId;
-        // const isNewArtwork = !artworkId;
+        const allowEditing = user.uid && user.uid === artworkData.adminId;
+        const isNewArtwork = !artworkId;
+        console.log("allowEditing: ", allowEditing);
+        console.log("isNewArtwork: ", isNewArtwork);
 
-        if(!artworkData) return null;
-
+        if (!artworkData) return null;
 
         return (
             <ScrollbarRemover showScrollbars={false}>
-
-
-                <QuickArtworkMaker artworkData={currentArtworkData}
-                                   onPhotoSelected={this.onPhotoSelected}
-                                   onArtworkDataChange={this.onArtworkEditorDataChange}
-                                   onCanvasOrientationChange={this.onCanvasOrientationChange}
-                                   onArtworkSave={this.onArtworkEditorSave}
-                                   sourceImg={sourceImg}
-                                   masterCanvas={masterCanvas}/>
+                
+                <ArtworkOptions artworkData={currentArtworkData}
+                                allowEditing={allowEditing}
+                                onPhotoSelected={this.onPhotoSelected}
+                                onArtworkDataChange={this.onArtworkEditorDataChange}
+                                onCanvasOrientationChange={this.onCanvasOrientationChange}
+                                onArtworkSave={this.onArtworkEditorSave}
+                                sourceImg={sourceImg}
+                                masterCanvas={masterCanvas}/>
 
 
                 <Artwork height={height}
