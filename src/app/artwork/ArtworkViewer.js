@@ -11,6 +11,9 @@ import { getArtworkDataOnce, updateArtwork, addArtwork } from "../../actions/Use
 import ArtworkOptions from '../artworkOptions/ArtworkOptions';
 import Artwork from "./Artwork";
 import ScrollbarRemover from "../global/ScrollbarRemover";
+import ArtworkOptionsToolBar from "../artworkOptions/artworkOptionsToolBar/ArtworkOptionsToolBar";
+import Link from "../global/Butt/Link";
+import IconLogo from "../global/icon/icons/IconLogo";
 // Constants
 const defaultArtworkData = DefaultArtworkDataGenerator();
 
@@ -25,8 +28,10 @@ class ArtworkViewer extends Component {
         this.onArtworkEditorSave = this.onArtworkEditorSave.bind(this);
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.onCanvasOrientationChange = this.onCanvasOrientationChange.bind(this);
+        this.onToolSelect = this.onToolSelect.bind(this);
+        this.onCloseCurrentTool = this.onCloseCurrentTool.bind(this);
 
-        this.state = { currentTool: 'upload', artworkData: null, unsavedArtworkData: null };
+        this.state = { currentTool: 'view', artworkData: null, unsavedArtworkData: null };
     }
 
     componentWillMount() {
@@ -146,28 +151,53 @@ class ArtworkViewer extends Component {
         });
     }
 
+    onToolSelect(toolName) {
+        this.setState({ currentTool: toolName })
+    }
+
+    onCloseCurrentTool() {
+        this.setState({ currentTool: 'view' })
+    }
+
     render() {
         const { width, height, user, artworkId } = this.props;
-        const { artworkData, unsavedArtworkData, masterCanvas, sourceImg } = this.state;
+        const { currentTool, artworkData, unsavedArtworkData, masterCanvas, sourceImg } = this.state;
         const currentArtworkData = { ...artworkData, ...unsavedArtworkData };
-        const allowEditing = user.uid && user.uid === artworkData.adminId;
-        const isNewArtwork = !artworkId;
-        console.log("allowEditing: ", allowEditing);
-        console.log("isNewArtwork: ", isNewArtwork);
+        const userIsAdmin = user.uid && user.uid === artworkData.adminId;
+        // const isNewArtwork = !artworkId;
 
         if (!artworkData) return null;
 
         return (
             <ScrollbarRemover showScrollbars={false}>
-                
+
+                <div className={'artworkViewer--topBar'}>
+                    <Link linkTo={'/'}>
+                        <IconLogo/>
+                    </Link>
+                </div>
+
+                {userIsAdmin &&
+                <div className={'quickArtworkMaker--sideBar'}>
+                    <ArtworkOptionsToolBar onToolSelect={this.onToolSelect}
+                                           userIsAdmin={userIsAdmin}
+                                           onSave={this.onArtworkEditorSave}
+                                           currentTool={currentTool}/>
+                </div>
+                }
+
+                {userIsAdmin &&
                 <ArtworkOptions artworkData={currentArtworkData}
-                                allowEditing={allowEditing}
+                                currentTool={currentTool}
+                                userIsAdmin={userIsAdmin}
                                 onPhotoSelected={this.onPhotoSelected}
                                 onArtworkDataChange={this.onArtworkEditorDataChange}
                                 onCanvasOrientationChange={this.onCanvasOrientationChange}
                                 onArtworkSave={this.onArtworkEditorSave}
+                                onCloseCurrentTool={this.onCloseCurrentTool}
                                 sourceImg={sourceImg}
                                 masterCanvas={masterCanvas}/>
+                }
 
 
                 <Artwork height={height}

@@ -7,7 +7,7 @@ import { addArtwork, getArtworkDataOnce } from "../../actions/UserDataActions";
 // comps
 import QuickPhotoSelector from "./photoSelector/PhotoSelector";
 import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
-import ArtworkOptionsToolBar from "./artworkOptionsToolBar/ArtworkOptionsToolBar";
+// import ArtworkOptionsToolBar from "./artworkOptionsToolBar/ArtworkOptionsToolBar";
 import QuickShare from "./sharingOptions/SharingOptions";
 import TitlesEditor from "./titlesEditor/TitlesEditor";
 import FrameEditor from "./frameEditor/FrameEditor";
@@ -18,18 +18,12 @@ class ArtworkOptions extends Component {
     constructor(props) {
         super(props);
 
-        this.onToolSelect = this.onToolSelect.bind(this);
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
         this.onCropAndRotateCancel = this.onCropAndRotateCancel.bind(this);
         this.onEditDone = this.onEditDone.bind(this);
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
 
-        this.state = { currentTool: 'view' };
-    }
-
-    // Left nav tool selection
-    onToolSelect(toolName) {
-        this.setState({ currentTool: toolName })
+        // this.state = { currentTool: 'view' };
     }
 
     onCropAndRotateDone(newData) {
@@ -42,32 +36,27 @@ class ArtworkOptions extends Component {
             this.props.onCanvasOrientationChange(newData);
         }
 
-        this.setState({ currentTool: 'view' });
+        // this.setState({ currentTool: 'view' });
     }
 
     onCropAndRotateCancel() {
-        this.setState({ currentTool: 'view' });
+        // this.setState({ currentTool: 'view' });
     }
 
     onEditDone() {
-        this.setState({ currentTool: 'view' });
+        this.props.onCloseCurrentTool();
     }
 
     onPhotoSelected(imgFile){
        this.props.onPhotoSelected(imgFile);
-        this.setState({ currentTool: 'view' });
     }
 
     render() {
-        const { currentTool } = this.state;
-        const {   height, width, user, allowEditing, artworkData,
-                  sourceImg, masterCanvas,
-                  onArtworkDataChange, onArtworkSave  } = this.props;
+        const {   height, width, artworkData,
+                  sourceImg, masterCanvas, currentTool,
+                  onArtworkDataChange  } = this.props;
 
         const sidebarWidth = 60;
-        const disableEditing = !sourceImg;
-
-        const { loginStatus } = user;
         const contentWidth = width - sidebarWidth;
 
         let classesForMain = 'quickArtworkMaker--mainFixed';
@@ -78,15 +67,6 @@ class ArtworkOptions extends Component {
 
         return (
             <div className={'quickArtworkMaker'}>
-
-                <div className={'quickArtworkMaker--sideBar'} style={{ width: sidebarWidth }}>
-                    <ArtworkOptionsToolBar onToolSelect={this.onToolSelect}
-                                           showArtworkControls={loginStatus === 'loggedIn'}
-                                           allowEditing={allowEditing}
-                                           disableEditing={disableEditing}
-                                           onSave={onArtworkSave}
-                                           currentTool={currentTool}/>
-                </div>
 
                 <div className={classesForMain}>
 

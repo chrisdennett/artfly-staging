@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import faObjectGroup from "@fortawesome/fontawesome-pro-solid/faObjectGroup";
-import faShare from "@fortawesome/fontawesome-pro-solid/faShare";
-import faUpload from "@fortawesome/fontawesome-pro-solid/faUpload";
-import faListAlt from "@fortawesome/fontawesome-pro-solid/faListAlt";
-import faImage from "@fortawesome/fontawesome-pro-solid/faImage";
-import faEye from "@fortawesome/fontawesome-pro-solid/faEye";
-import faPalletAlt from "@fortawesome/fontawesome-pro-solid/faPalletAlt";
+import * as faObjectGroup from "@fortawesome/fontawesome-pro-solid/faObjectGroup";
+import * as faShare from "@fortawesome/fontawesome-pro-solid/faShare";
+import * as faUpload from "@fortawesome/fontawesome-pro-solid/faUpload";
+import * as faListAlt from "@fortawesome/fontawesome-pro-solid/faListAlt";
+import * as faImage from "@fortawesome/fontawesome-pro-solid/faImage";
+import * as faEye from "@fortawesome/fontawesome-pro-solid/faEye";
+import * as faPalletAlt from "@fortawesome/fontawesome-pro-solid/faPalletAlt";
 import * as faSave from "@fortawesome/fontawesome-pro-solid/faSave";
+import * as faBars from "@fortawesome/fontawesome-pro-solid/faBars";
 // styles
 import './artworkOptionsToolBar_styles.css';
 // comps
@@ -16,24 +17,35 @@ import Link from "../../global/Butt/Link";
 
 class ArtworkOptionsToolBar extends Component {
 
-    /*constructor(props) {
+    constructor(props) {
         super(props);
 
-    }*/
+        this.state = {editingControlsAreOpen:false};
+
+        this.onEditOpenClick = this.onEditOpenClick.bind(this);
+
+    }
+
+    onEditOpenClick(){
+        this.setState((state) => {
+            return {editingControlsAreOpen: !state.editingControlsAreOpen}
+        })
+    }
 
     render() {
-        const { currentTool, disableEditing, allowEditing, showArtworkControls, onSave, onToolSelect } = this.props;
-
-        // const artworkIsEditable = false;
+        const { editingControlsAreOpen } = this.state;
+        const { currentTool, disableEditing, userIsAdmin, showArtworkControls, onSave, onToolSelect } = this.props;
+        const allowEditing = userIsAdmin && editingControlsAreOpen;
+        const dynamicClass = allowEditing ? 'quickArtMakerTools--withBackground' : '';
 
         return (
-            <div className={'quickArtMakerTools'}>
-                <div className={'quickArtMakerTools--logoHolder'}>
-                    <Link linkTo={'/'}>
-                        <IconLogo/>
-                    </Link>
+            <div className={`quickArtMakerTools ${dynamicClass}`}>
 
-                </div>
+                {userIsAdmin &&
+                <ControlPanelButt icon={faBars}
+                                  onClick={this.onEditOpenClick}/>
+                }
+
 
                 {allowEditing &&
                 <div>
@@ -91,7 +103,7 @@ class ArtworkOptionsToolBar extends Component {
                         disabled={disableEditing}
                         icon={faShare}
                         onClick={() => onToolSelect('share')}
-                        label={'SAVE & SHARE'}/>
+                        label={'SHARE'}/>
                 </div>
                 }
             </div>
