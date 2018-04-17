@@ -95,7 +95,8 @@ class ArtworkViewer extends Component {
                     return {
                         sourceImg,
                         masterCanvas,
-                        artworkData: newArtworkData
+                        artworkData: newArtworkData,
+                        currentTool: 'view'
                     }
                 });
             })
@@ -189,7 +190,6 @@ class ArtworkViewer extends Component {
                 <ArtworkOptions artworkData={currentArtworkData}
                                 currentTool={currentTool}
                                 userIsAdmin={userIsAdmin}
-                                onPhotoSelected={this.onPhotoSelected}
                                 onArtworkDataChange={this.onArtworkEditorDataChange}
                                 onCanvasOrientationChange={this.onCanvasOrientationChange}
                                 onArtworkSave={this.onArtworkEditorSave}

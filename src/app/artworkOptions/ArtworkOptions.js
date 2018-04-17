@@ -21,7 +21,7 @@ class ArtworkOptions extends Component {
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
         this.onCropAndRotateCancel = this.onCropAndRotateCancel.bind(this);
         this.onEditDone = this.onEditDone.bind(this);
-        this.onPhotoSelected = this.onPhotoSelected.bind(this);
+        // this.onPhotoSelected = this.onPhotoSelected.bind(this);
 
         // this.state = { currentTool: 'view' };
     }
@@ -47,10 +47,6 @@ class ArtworkOptions extends Component {
         this.props.onCloseCurrentTool();
     }
 
-    onPhotoSelected(imgFile){
-       this.props.onPhotoSelected(imgFile);
-    }
-
     render() {
         const {   height, width, artworkData,
                   sourceImg, masterCanvas, currentTool,
@@ -70,14 +66,10 @@ class ArtworkOptions extends Component {
 
                 <div className={classesForMain}>
 
-                    {currentTool === 'upload' &&
-                    <QuickPhotoSelector onPhotoSelected={this.onPhotoSelected}/>
-                    }
-
                     {currentTool === 'crop' &&
                     <CropAndRotateEditor sourceImg={sourceImg}
                                          artworkData={artworkData}
-                                         onCancel={this.onCropAndRotateCancel}
+                                         onCancel={this.onEditDone}
                                          onDone={this.onCropAndRotateDone}
                                          width={contentWidth}
                                          height={height}/>
