@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import './artwork_styles.css';
 // images
 import GuardRailTile from './../images/guard-rail.png';
+import PhotoSelector from "../artworkOptions/photoSelector/PhotoSelector";
 
 class Artwork extends Component {
 
@@ -37,7 +38,14 @@ class Artwork extends Component {
     }
 
     setupCanvas(props) {
-        const { width, height, artworkData, masterCanvas } = props;
+        const { width, height, artworkData, masterCanvas, isNewArtwork } = props;
+
+        // prevent errors by stopping if critical elements not available
+        if (!this.canvas || !artworkData || width < 1 || height < 1) {
+            return;
+        }
+
+        if (!masterCanvas && !isNewArtwork) return;
 
         let { cropData, frameData, titlesData, roomData, widthToHeightRatio, heightToWidthRatio } = artworkData;
         // CROP DATA
@@ -46,11 +54,6 @@ class Artwork extends Component {
         const { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour } = frameData;
         // ROOM DATA
         const { audience, wallTileUrl, floorTileUrl, includeSkirting, includeGuardRail, includePeople } = roomData;
-
-        // prevent errors by stopping if critical elements not available
-        if (!this.canvas || width < 1 || height < 1 || !masterCanvas) {
-            return null;
-        }
 
         let loadingImage = false;
         if (!this.wallTile || wallTileUrl !== this.state.wallTileUrl) {
@@ -66,8 +69,8 @@ class Artwork extends Component {
         // don't continue if loading an image
         if (loadingImage) return null;
 
-        const srcWidth = masterCanvas.width;
-        const srcHeight = masterCanvas.height;
+        const srcWidth = masterCanvas ? masterCanvas.width : 300;
+        const srcHeight = masterCanvas ? masterCanvas.height : 300;
 
         const cropWidthPercent = leftPercent + (1 - rightPercent);
         const widthToCrop = srcWidth * cropWidthPercent;
@@ -109,18 +112,27 @@ class Artwork extends Component {
         // add the floor
         drawFloor(ctx, this.floorTile, 0, floorY, width, floorHeight);
 
-        drawFrameShadow(ctx, frameX, frameY, frameWidth, frameHeight);
+        // If it's a new artwork the photo uploader will be shown on top so need a blank wall
+        if (!isNewArtwork || masterCanvas) {
+            drawFrameShadow(ctx, frameX, frameY, frameWidth, frameHeight);
 
-        if (frameThickness > 0) {
-            drawFrame(ctx, frameX, frameY, frameWidth, frameHeight, frameThickness, frameColour);
+            if (frameThickness > 0) {
+                drawFrame(ctx, frameX, frameY, frameWidth, frameHeight, frameThickness, frameColour);
+            }
+
+            if (mountThickness > 0) {
+                drawMount(ctx, mountX, mountY, mountWidth, mountHeight, mountThickness, mountColour);
+            }
+
+            // add artwork
+            drawArtworkImage(ctx, masterCanvas, this.canvas, imgX, imgY, imgWidth, imgHeight, cropData);
+
+            // add titlesData text
+            if (titlesData) {
+                const textX = frameX + frameWidth;
+                addTitles(ctx, textWidth, frameHeight, textX, frameY, titlesData);
+            }
         }
-
-        if (mountThickness > 0) {
-            drawMount(ctx, mountX, mountY, mountWidth, mountHeight, mountThickness, mountColour);
-        }
-
-        // add artwork
-        drawArtworkImage(ctx, masterCanvas, this.canvas, imgX, imgY, imgWidth, imgHeight, cropData);
 
         // add skirting board
         if (includeSkirting) {
@@ -141,11 +153,6 @@ class Artwork extends Component {
             }
         }
 
-        // add titlesData text
-        if (titlesData) {
-            const textX = frameX + frameWidth;
-            addTitles(ctx, textWidth, frameHeight, textX, frameY, titlesData);
-        }
 
         drawRadialGradientOverlay(ctx, width, wallHeight);
 
@@ -182,11 +189,19 @@ class Artwork extends Component {
     }
 
     render() {
+        const { isNewArtwork, onPhotoSelected, masterCanvas } = this.props;
+        const showPhotoSelector = isNewArtwork && !masterCanvas;
+
         return (
-            <canvas className={'quickArtwork--canvas'}
-                    ref={this.onCanvasInit}
-                    width={300}
-                    height={300}/>
+            <div>
+                {showPhotoSelector &&
+                <PhotoSelector onPhotoSelected={onPhotoSelected}/>
+                }
+                <canvas className={'quickArtwork--canvas'}
+                        ref={this.onCanvasInit}
+                        width={300}
+                        height={300}/>
+            </div>
         );
     }
 }

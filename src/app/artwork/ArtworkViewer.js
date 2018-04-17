@@ -31,7 +31,7 @@ class ArtworkViewer extends Component {
         this.onToolSelect = this.onToolSelect.bind(this);
         this.onCloseCurrentTool = this.onCloseCurrentTool.bind(this);
 
-        this.state = { currentTool: 'view', artworkData: null, unsavedArtworkData: null };
+        this.state = { currentTool: 'view', artworkData: {}, unsavedArtworkData: {} };
     }
 
     componentWillMount() {
@@ -163,10 +163,9 @@ class ArtworkViewer extends Component {
         const { width, height, user, artworkId } = this.props;
         const { currentTool, artworkData, unsavedArtworkData, masterCanvas, sourceImg } = this.state;
         const currentArtworkData = { ...artworkData, ...unsavedArtworkData };
-        const userIsAdmin = user.uid && user.uid === artworkData.adminId;
-        // const isNewArtwork = !artworkId;
-
-        if (!artworkData) return null;
+        const isNewArtwork = !artworkId;
+        const userIsAdmin = isNewArtwork || (user.uid && user.uid === artworkData.adminId);
+        const showEditingControls = userIsAdmin && masterCanvas;
 
         return (
             <ScrollbarRemover showScrollbars={false}>
@@ -177,7 +176,7 @@ class ArtworkViewer extends Component {
                     </Link>
                 </div>
 
-                {userIsAdmin &&
+                {showEditingControls &&
                 <div className={'quickArtworkMaker--sideBar'}>
                     <ArtworkOptionsToolBar onToolSelect={this.onToolSelect}
                                            userIsAdmin={userIsAdmin}
@@ -199,14 +198,14 @@ class ArtworkViewer extends Component {
                                 masterCanvas={masterCanvas}/>
                 }
 
-
                 <Artwork height={height}
                          width={width}
                          isFixed={true}
+                         onPhotoSelected={this.onPhotoSelected}
+                         isNewArtwork={isNewArtwork}
                          artworkData={currentArtworkData}
                          masterCanvas={masterCanvas}
                 />
-
 
             </ScrollbarRemover>
         )
