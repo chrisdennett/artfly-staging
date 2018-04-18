@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // styles
 import './artworkViewer_styles.css';
 // helpers
@@ -153,6 +155,7 @@ class ArtworkViewer extends Component {
     }
 
     onToolSelect(toolName) {
+        toast('wow: '+toolName);
         this.setState({ currentTool: toolName })
     }
 
@@ -171,10 +174,14 @@ class ArtworkViewer extends Component {
         return (
             <ScrollbarRemover showScrollbars={false}>
 
+                <ToastContainer />
+
                 <div className={'artworkViewer--topBar'}>
                     <Link linkTo={'/'}>
                         <IconLogo/>
                     </Link>
+
+                    <button onClick={this.onArtworkEditorSave} style={{marginRight: 150}}>SAVE</button>
                 </div>
 
                 {showEditingControls &&

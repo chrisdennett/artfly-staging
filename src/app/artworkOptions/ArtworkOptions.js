@@ -5,10 +5,10 @@ import './artworkOptions_styles.css';
 // actions
 import { addArtwork, getArtworkDataOnce } from "../../actions/UserDataActions";
 // comps
-import QuickPhotoSelector from "./photoSelector/PhotoSelector";
+// import QuickPhotoSelector from "./photoSelector/PhotoSelector";
 import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
 // import ArtworkOptionsToolBar from "./artworkOptionsToolBar/ArtworkOptionsToolBar";
-import QuickShare from "./sharingOptions/SharingOptions";
+// import QuickShare from "./sharingOptions/SharingOptions";
 import TitlesEditor from "./titlesEditor/TitlesEditor";
 import FrameEditor from "./frameEditor/FrameEditor";
 import RoomEditor from "./roomEditor/RoomEditor";
@@ -19,11 +19,6 @@ class ArtworkOptions extends Component {
         super(props);
 
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
-        this.onCropAndRotateCancel = this.onCropAndRotateCancel.bind(this);
-        this.onEditDone = this.onEditDone.bind(this);
-        // this.onPhotoSelected = this.onPhotoSelected.bind(this);
-
-        // this.state = { currentTool: 'view' };
     }
 
     onCropAndRotateDone(newData) {
@@ -32,28 +27,19 @@ class ArtworkOptions extends Component {
             this.props.onArtworkDataChange(newData);
         }
         // otherwise the master canvas needs to be updated as well
-        else{
+        else {
             this.props.onCanvasOrientationChange(newData);
         }
-
-        // this.setState({ currentTool: 'view' });
-    }
-
-    onCropAndRotateCancel() {
-        // this.setState({ currentTool: 'view' });
-    }
-
-    onEditDone() {
         this.props.onCloseCurrentTool();
     }
 
     render() {
-        const {   height, width, artworkData,
-                  sourceImg, masterCanvas, currentTool,
-                  onArtworkDataChange  } = this.props;
+        const {
+                  height, width, artworkData,
+                  sourceImg, currentTool,
+                  onArtworkDataChange, onCloseCurrentTool
+              } = this.props;
 
-        const sidebarWidth = 60;
-        const contentWidth = width - sidebarWidth;
 
         let classesForMain = 'quickArtworkMaker--mainFixed';
 
@@ -69,43 +55,43 @@ class ArtworkOptions extends Component {
                     {currentTool === 'crop' &&
                     <CropAndRotateEditor sourceImg={sourceImg}
                                          artworkData={artworkData}
-                                         onCancel={this.onEditDone}
+                                         onCancel={onCloseCurrentTool}
                                          onDone={this.onCropAndRotateDone}
-                                         width={contentWidth}
+                                         width={width}
                                          height={height}/>
                     }
 
                     {currentTool === 'titles' &&
                     <TitlesEditor height={height}
-                                  width={contentWidth}
+                                  width={width}
                                   titlesData={artworkData.titlesData}
                                   onDataChange={onArtworkDataChange}
-                                  onDone={this.onEditDone}
+                                  onDone={onCloseCurrentTool}
                     />
                     }
 
                     {currentTool === 'frame' &&
                     <FrameEditor height={height}
-                                 width={contentWidth}
+                                 width={width}
                                  frameData={artworkData.frameData}
                                  onDataChange={onArtworkDataChange}
-                                 onDone={this.onEditDone}/>
+                                 onDone={onCloseCurrentTool}/>
                     }
 
                     {currentTool === 'room' &&
                     <RoomEditor height={height}
-                                width={contentWidth}
+                                width={width}
                                 roomData={artworkData.roomData}
                                 onDataChange={onArtworkDataChange}
-                                onDone={this.onEditDone}/>
+                                onDone={onCloseCurrentTool}/>
                     }
 
-                    {currentTool === 'share' &&
+                    {/*{currentTool === 'share' &&
                     <QuickShare masterCanvas={masterCanvas}
                                 artworkData={artworkData}
                                 width={contentWidth}
                                 height={height}/>
-                    }
+                    }*/}
                 </div>
             </div>
         );

@@ -12,8 +12,8 @@ import * as faBars from "@fortawesome/fontawesome-pro-solid/faBars";
 import './artworkOptionsToolBar_styles.css';
 // comps
 import ControlPanelButt from "../../global/Butt/ControlPanelButt";
-import IconLogo from "../../global/icon/icons/IconLogo";
-import Link from "../../global/Butt/Link";
+// import IconLogo from "../../global/icon/icons/IconLogo";
+// import Link from "../../global/Butt/Link";
 
 class ArtworkOptionsToolBar extends Component {
 
