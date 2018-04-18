@@ -234,7 +234,6 @@ export function fs_updateThumbnail(artworkId, artistId, thumbFile, onChangeCallb
 }
 
 export function fs_updateArtwork(artworkId, newArtworkData, onChangeCallback = null) {
-    // Get artwork database id first so can be used for the filename
     int_saveArtworkChanges(artworkId, newArtworkData, () => {
         onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
     });
@@ -247,7 +246,10 @@ function int_saveArtworkChanges(artworkId, newData, onChangeCallback = null) {
     db.collection('artworks')
         .doc(artworkId)
         .set(newData, { merge: true })
-        .then(() => {
+        .then((hello) => {
+
+            console.log("hello: ", hello);
+
             if (onChangeCallback) onChangeCallback();
         })
         .catch(function (error) {

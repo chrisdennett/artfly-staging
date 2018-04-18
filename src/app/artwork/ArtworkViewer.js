@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {ToastContainer, toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+import * as faSave from "@fortawesome/fontawesome-pro-solid/faSave";
+import * as faUser from "@fortawesome/fontawesome-pro-solid/faUser";
+import * as faShare from "@fortawesome/fontawesome-pro-solid/faShare";
 // styles
+import 'react-toastify/dist/ReactToastify.css';
 import './artworkViewer_styles.css';
 // helpers
 import DefaultArtworkDataGenerator from "./DefaultArtworkDataGenerator";
@@ -16,6 +19,7 @@ import ScrollbarRemover from "../global/ScrollbarRemover";
 import ArtworkOptionsToolBar from "../artworkOptions/artworkOptionsToolBar/ArtworkOptionsToolBar";
 import Link from "../global/Butt/Link";
 import IconLogo from "../global/icon/icons/IconLogo";
+import FontAwesomeButt from "../global/Butt/FontAwesomeButt";
 // Constants
 const defaultArtworkData = DefaultArtworkDataGenerator();
 
@@ -67,7 +71,13 @@ class ArtworkViewer extends Component {
     // The source image remains at its original orientation
     // it is draw to the master canvas with the updated orientation
     onCanvasOrientationChange(newData) {
-        this.updateMasterCanvas(this.state.sourceImg, newData.orientation, newData.cropData);
+        this.setState((state) => {
+            return {
+                unsavedArtworkData: { ...state.unsavedArtworkData, ...newData }
+            }
+        }, () => {
+            this.updateMasterCanvas(this.state.sourceImg, newData.orientation, newData.cropData);
+        })
     }
 
     // Loads in artwork Image from the server using the saved url
@@ -130,6 +140,8 @@ class ArtworkViewer extends Component {
                 this.props.addArtwork(user.uid, blobData, newArtworkData);
             })
         }
+
+        this.setState({ artworkData: newArtworkData, unsavedArtworkData: {} });
     }
 
     getImageBlob(sourceImg, maxSize, callback) {
@@ -155,7 +167,7 @@ class ArtworkViewer extends Component {
     }
 
     onToolSelect(toolName) {
-        toast('wow: '+toolName);
+        // toast('wow: ' + toolName);
         this.setState({ currentTool: toolName })
     }
 
@@ -170,18 +182,38 @@ class ArtworkViewer extends Component {
         const isNewArtwork = !artworkId;
         const userIsAdmin = isNewArtwork || (user.uid && user.uid === artworkData.adminId);
         const showEditingControls = userIsAdmin && masterCanvas;
+        let topButtonsStyle = { display: 'flex', marginRight: 5, marginTop: 5 };
+        if (userIsAdmin) topButtonsStyle.marginRight = 65;
+
+        const hasUnsavedChanges = userIsAdmin && Object.keys(unsavedArtworkData).length > 0;
+
+        const showButtonLabels = width > 600;
 
         return (
             <ScrollbarRemover showScrollbars={false}>
 
-                <ToastContainer />
+                <ToastContainer/>
 
                 <div className={'artworkViewer--topBar'}>
                     <Link linkTo={'/'}>
                         <IconLogo/>
                     </Link>
 
-                    <button onClick={this.onArtworkEditorSave} style={{marginRight: 150}}>SAVE</button>
+                    <div style={topButtonsStyle}>
+                        {hasUnsavedChanges &&
+                        <FontAwesomeButt style={{ backgroundColor: '#5dac42', border: '3px solid rgba(0, 0, 0, 0.5)' }}
+                                         onClick={this.onArtworkEditorSave}
+                                         icon={faSave} label={showButtonLabels && 'save changes'}/>
+                        }
+
+                        {/*{userIsAdmin &&
+                        <FontAwesomeButt icon={faUser}/>
+                        }
+
+                        <FontAwesomeButt icon={faShare} label={showButtonLabels && 'share'}/>*/}
+                    </div>
+
+                    {/*<button onClick={this.onArtworkEditorSave} style={{marginRight: 150}}>SAVE</button>*/}
                 </div>
 
                 {showEditingControls &&

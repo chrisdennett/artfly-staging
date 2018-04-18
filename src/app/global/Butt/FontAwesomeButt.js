@@ -6,12 +6,17 @@ import './fontAwesomeButt_styles.css';
 
 const FontAwesomeButt = function ({ icon, linkTo, onClick, label, isSelected, disabled, style={} }) {
 
+    const iconStyle = label ? {marginRight:5} : {};
+
     return (
         <div className={`fontAwesomeButt`}
              style={style}
              onClick={onClick}>
 
-            <FontAwesomeIcon className={'fontAwesomeButt--icon'} icon={icon} fixedWidth/>
+            <FontAwesomeIcon style={iconStyle} className={'fontAwesomeButt--icon'} icon={icon} fixedWidth/>
+
+            {label}
+
         </div>
     )
 };
