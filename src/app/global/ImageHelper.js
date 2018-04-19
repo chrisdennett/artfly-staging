@@ -18,8 +18,8 @@ export function GetImage(imgFile, callback) {
                 const w = img.width;
                 const h = img.height;
 
-                const widthToHeightRatio = h / w;
-                const heightToWidthRatio = w / h;
+                const widthToHeightRatio = Math.round(100 * (h / w)) / 100;
+                const heightToWidthRatio = Math.round(100 * (w / h)) / 100;
 
                 callback(img, orientation, widthToHeightRatio, heightToWidthRatio);
             }
@@ -40,8 +40,8 @@ export function GetImageFromUrl(imgUrl, callback) {
         const w = img.width;
         const h = img.height;
 
-        const widthToHeightRatio = h / w;
-        const heightToWidthRatio = w / h;
+        const widthToHeightRatio = Math.round(100 * (h / w)) / 100;
+        const heightToWidthRatio = Math.round(100 * (w / h)) / 100;
 
         callback(img, widthToHeightRatio, heightToWidthRatio);
     }
@@ -144,8 +144,8 @@ export function drawImageToCanvas({ sourceImg, outputCanvas, orientation, maxOut
     // restore ensures resets transform in case another image is added
     ctx.restore();
 
-    const widthToHeightRatio = canvasH / canvasW;
-    const heightToWidthRatio = canvasW / canvasH;
+    const widthToHeightRatio = Math.round(100 * (canvasH / canvasW)) / 100;
+    const heightToWidthRatio = Math.round(100 * (canvasW / canvasH)) / 100;
 
     if (callback) callback(widthToHeightRatio, heightToWidthRatio)
 }
@@ -175,8 +175,8 @@ export function drawToCanvas({ sourceCanvas, outputCanvas, orientation, cropPerc
     const maxW = imgW >= maxOutputCanvasWidth ? maxOutputCanvasWidth : imgW;
     const maxH = imgH >= maxOutputCanvasHeight ? maxOutputCanvasHeight : imgH;
 
-    const widthToHeightRatio = imgH / imgW;
-    const heightToWidthRatio = imgW / imgH;
+    const widthToHeightRatio = Math.round(100 * (imgH / imgW)) / 100;
+    const heightToWidthRatio = Math.round(100 * (imgW / imgH)) / 100;
 
     let canvasW = maxW;
     let canvasH = maxW * widthToHeightRatio;

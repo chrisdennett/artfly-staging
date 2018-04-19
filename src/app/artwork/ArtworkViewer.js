@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import * as faSave from "@fortawesome/fontawesome-pro-solid/faSave";
-import * as faUser from "@fortawesome/fontawesome-pro-solid/faUser";
-import * as faShare from "@fortawesome/fontawesome-pro-solid/faShare";
+// import * as faUser from "@fortawesome/fontawesome-pro-solid/faUser";
+// import * as faShare from "@fortawesome/fontawesome-pro-solid/faShare";
 // styles
 import 'react-toastify/dist/ReactToastify.css';
 import './artworkViewer_styles.css';
@@ -82,7 +82,7 @@ class ArtworkViewer extends Component {
 
     // Loads in artwork Image from the server using the saved url
     // NB Currently loading in the source image, but should only do this
-    // if needed for editing.
+    // if needed for editing.`
     loadArtwork(artworkData) {
         this.setState({ artworkData }, () => {
             let img = new Image();
@@ -107,11 +107,57 @@ class ArtworkViewer extends Component {
                     return {
                         sourceImg,
                         masterCanvas,
-                        artworkData: newArtworkData,
+                        unsavedArtworkData: newArtworkData,
                         currentTool: 'view'
                     }
                 });
             })
+    }
+
+    // TODO REVERSE THE EMPHASIS OF THIS - updateContainsChanges
+    updateWillNotChangeData(existingObject, objectContainingChanges) {
+        // for each key of obj2 exists in obj1 and the value is the same
+        let doesMatch = true;
+        if (!objectContainingChanges || Object.keys(objectContainingChanges).length < 1) {
+            return doesMatch;
+        }
+
+        const objectContainingChangesKeys = Object.keys(objectContainingChanges);
+
+        for (let key of objectContainingChangesKeys) {
+            if (existingObject.hasOwnProperty(key) === false) {
+                doesMatch = false;
+                break;
+            }
+            else {
+                const currExistingProp = existingObject[key];
+                const currChangedProp = objectContainingChanges[key];
+
+                if (Array.isArray(currChangedProp)) {
+                    // as each thing in the array could be an array or an object
+                    // need to recursively call self for each
+                    for (let i = 0; i < currChangedProp.length; i++) {
+                        doesMatch = this.updateWillNotChangeData({ testProp: currExistingProp[i] }, { testProp: currChangedProp[i] });
+                        if (!doesMatch) break;
+                    }
+                }
+                else if (typeof currExistingProp === 'object') {
+                    doesMatch = this.updateWillNotChangeData(currExistingProp, currChangedProp);
+                }
+                else if (currExistingProp !== currChangedProp) {
+                    console.log("NOTTY > currExistingProp: ", currExistingProp);
+                    console.log("NOTTY > currChangedProp: ", currChangedProp);
+                    doesMatch = false;
+                }
+                if (!doesMatch) break;
+            }
+        }
+
+        if (!doesMatch) {
+            console.log("objectContainingChanges: ", objectContainingChanges);
+        }
+
+        return doesMatch;
     }
 
     // Keeps any changes from the editor in state.
@@ -185,7 +231,7 @@ class ArtworkViewer extends Component {
         let topButtonsStyle = { display: 'flex', marginRight: 5, marginTop: 5 };
         if (userIsAdmin) topButtonsStyle.marginRight = 65;
 
-        const hasUnsavedChanges = userIsAdmin && Object.keys(unsavedArtworkData).length > 0;
+        const hasUnsavedChanges = userIsAdmin && !this.updateWillNotChangeData(artworkData, unsavedArtworkData);
 
         const showButtonLabels = width > 600;
 

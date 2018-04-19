@@ -30,6 +30,8 @@ class FrameEditor extends Component {
         const { frameData } = this.props;
         const currentTool = frameData.presetName === 'custom' ? 'frame' : 'presets';
 
+        // console.log("frameData: ", frameData);
+
         if (frameData) {
             this.setState({ initialData: frameData, currentTool });
         }

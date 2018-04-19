@@ -173,6 +173,7 @@ class RoomPresets extends Component {
 
     onPeopleSwatchClick(newUrl, preset) {
         let newAudienceData = { ...this.props.roomData.audience };
+        newAudienceData.people = newAudienceData.people.concat();
         newAudienceData.people[0] = {
             ...preset, url:newUrl
         };
@@ -183,6 +184,7 @@ class RoomPresets extends Component {
 
     onPersonPositionChange(xPos) {
         let newAudienceData = { ...this.props.roomData.audience };
+        newAudienceData.people = newAudienceData.people.concat();
         const person = newAudienceData.people[0];
         newAudienceData.x = xPos;
         newAudienceData.people[0] = person;

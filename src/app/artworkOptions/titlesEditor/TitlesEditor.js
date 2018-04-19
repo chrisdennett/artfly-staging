@@ -65,7 +65,7 @@ class TitlesEditor extends Component {
     }
 
     onClearClick() {
-        this.props.onDataChange({titlesData:null});
+        this.props.onDataChange({titlesData:{title:'', artist:'', description:'',date:''}});
     }
 
     onResetClick(){

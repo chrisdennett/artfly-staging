@@ -201,6 +201,10 @@ class Artwork extends Component {
                         ref={this.onCanvasInit}
                         width={300}
                         height={300}/>
+
+               {/* {this.canvas &&
+                <img src={this.canvas.toDataURL('image/png')} />
+                }*/}
             </div>
         );
     }
