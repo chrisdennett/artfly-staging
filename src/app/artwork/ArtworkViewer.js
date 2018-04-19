@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ToastContainer, toast } from 'react-toastify';
+// import { ToastContainer, toast } from 'react-toastify';
 import * as faSave from "@fortawesome/fontawesome-pro-solid/faSave";
+import * as faUndo from "@fortawesome/fontawesome-pro-solid/faUndo";
 // import * as faUser from "@fortawesome/fontawesome-pro-solid/faUser";
 // import * as faShare from "@fortawesome/fontawesome-pro-solid/faShare";
 // styles
-import 'react-toastify/dist/ReactToastify.css';
+// import 'react-toastify/dist/ReactToastify.css';
 import './artworkViewer_styles.css';
 // helpers
 import DefaultArtworkDataGenerator from "./DefaultArtworkDataGenerator";
@@ -32,6 +33,7 @@ class ArtworkViewer extends Component {
         this.loadArtwork = this.loadArtwork.bind(this);
         this.onArtworkEditorDataChange = this.onArtworkEditorDataChange.bind(this);
         this.onArtworkEditorSave = this.onArtworkEditorSave.bind(this);
+        this.onArtworkUnderChanges = this.onArtworkUnderChanges.bind(this);
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.onCanvasOrientationChange = this.onCanvasOrientationChange.bind(this);
         this.onToolSelect = this.onToolSelect.bind(this);
@@ -145,16 +147,10 @@ class ArtworkViewer extends Component {
                     doesMatch = this.updateWillNotChangeData(currExistingProp, currChangedProp);
                 }
                 else if (currExistingProp !== currChangedProp) {
-                    console.log("NOTTY > currExistingProp: ", currExistingProp);
-                    console.log("NOTTY > currChangedProp: ", currChangedProp);
                     doesMatch = false;
                 }
                 if (!doesMatch) break;
             }
-        }
-
-        if (!doesMatch) {
-            console.log("objectContainingChanges: ", objectContainingChanges);
         }
 
         return doesMatch;
@@ -167,6 +163,12 @@ class ArtworkViewer extends Component {
                 unsavedArtworkData: { ...state.unsavedArtworkData, ...updatedData }
             }
         })
+    }
+
+    onArtworkUnderChanges() {
+        this.setState({ unsavedArtworkData: {} });
+        // if the artwork orientation has changed, need to redraw the master canvas
+        this.updateMasterCanvas(this.state.sourceImg, this.state.artworkData.orientation, this.state.artworkData.cropData);
     }
 
     // Updates existing artwork data with the unsaved data
@@ -238,18 +240,24 @@ class ArtworkViewer extends Component {
         return (
             <ScrollbarRemover showScrollbars={false}>
 
-                <ToastContainer/>
+                {/*<ToastContainer/>*/}
 
                 <div className={'artworkViewer--topBar'}>
                     <Link linkTo={'/'}>
                         <IconLogo/>
                     </Link>
 
-                    <div style={topButtonsStyle}>
+                    <div className={'artworkViewer--topBar--topButts'} style={topButtonsStyle}>
                         {hasUnsavedChanges &&
                         <FontAwesomeButt style={{ backgroundColor: '#5dac42', border: '3px solid rgba(0, 0, 0, 0.5)' }}
                                          onClick={this.onArtworkEditorSave}
                                          icon={faSave} label={showButtonLabels && 'save changes'}/>
+                        }
+
+                        {hasUnsavedChanges &&
+                        <FontAwesomeButt style={{ backgroundColor: '#ac364c', border: '3px solid rgba(0, 0, 0, 0.5)' }}
+                                         onClick={this.onArtworkUnderChanges}
+                                         icon={faUndo} label={showButtonLabels && 'undo changes'}/>
                         }
 
                         {/*{userIsAdmin &&
