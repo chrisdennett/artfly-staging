@@ -14,6 +14,7 @@ import * as ImageHelper from "../global/ImageHelper";
 //actions
 import { getArtworkDataOnce, updateArtwork, addArtwork, deleteArtwork } from "../../actions/UserDataActions";
 //comps
+import history from './../global/history';
 import ArtworkOptions from '../artworkOptions/ArtworkOptions';
 import Artwork from "./Artwork";
 import ScrollbarRemover from "../global/ScrollbarRemover";
@@ -58,6 +59,12 @@ class ArtworkViewer extends Component {
         else {
             this.props.getArtworkDataOnce(artworkId, (artworkData) => {
                 this.loadArtwork(artworkData);
+            }, () => {
+                // artwork not found
+                history.push('/');
+            }, () => {
+                // error loading the artwork
+                console.log("error loading that not found");
             })
         }
     }
@@ -84,8 +91,7 @@ class ArtworkViewer extends Component {
     }
 
     // Loads in artwork Image from the server using the saved url
-    // NB Currently loading in the source image, but should only do this
-    // if needed for editing.`
+    // NB Currently loading in the source image - should use a smaller image
     loadArtwork(artworkData) {
         this.setState({ artworkData }, () => {
             let img = new Image();

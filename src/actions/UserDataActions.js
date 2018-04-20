@@ -188,7 +188,7 @@ export function listenForArtworkChanges(artworkId, callback, errorCallback) {
 }
 
 // Gets a single snapshot of the artwork data
-export function getArtworkDataOnce(artworkId, callback) {
+export function getArtworkDataOnce(artworkId, callback, noDocCallback) {
     return dispatch => {
         fs_getArtworkDataOnce(artworkId, (artworkData) => {
             const dataWithId = { ...artworkData, artworkId };
@@ -198,6 +198,8 @@ export function getArtworkDataOnce(artworkId, callback) {
                 payload: { [artworkId]: dataWithId }
             });
             if (callback) callback(dataWithId);
+        }, () => {
+            if(noDocCallback) noDocCallback();
         });
     }
 }

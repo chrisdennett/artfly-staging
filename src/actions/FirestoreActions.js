@@ -280,7 +280,7 @@ function int_saveImage(artworkId, blob, prefix, onChangeCallback, onCompleteCall
 }
 
 // GET ARTWORK DATA ONCE
-export function fs_getArtworkDataOnce(artworkId, onComplete = null) {
+export function fs_getArtworkDataOnce(artworkId, onComplete = null, onNotFound=null) {
     const docRef = db.collection('artworks').doc(artworkId);
 
     docRef.get().then(function (doc) {
@@ -290,6 +290,7 @@ export function fs_getArtworkDataOnce(artworkId, onComplete = null) {
         else {
             // doc.data() will be undefined in this case
             console.log("No such document!");
+            if(onNotFound) onNotFound(artworkId);
         }
     }).catch(function (error) {
         console.log("Error getting document:", error);
