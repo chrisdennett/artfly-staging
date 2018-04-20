@@ -302,8 +302,6 @@ export function fs_getArtworkChanges(artworkId, onChangeCallback = null, onError
         return "already_running";
     }
 
-    console.log("artworkId: ", artworkId);
-
     unsubscribers.artworkListeners[artworkId] = db.collection('artworks')
         .doc(artworkId)
         .onSnapshot(doc => {
@@ -338,7 +336,10 @@ export function fs_getUserArtworkChanges(userId, callback) {
                 let userArtworks = {};
 
                 querySnapshot.forEach(doc => {
-                    userArtworks[doc.id] = doc.data();
+                    const artworkId = doc.id;
+                    const artworkData = doc.data();
+                    const dataWithId = {...artworkData, artworkId};
+                    userArtworks[doc.id] = dataWithId;
                 });
 
                 if (callback) callback(userArtworks);
@@ -349,21 +350,21 @@ export function fs_getUserArtworkChanges(userId, callback) {
 }
 
 // DELETE ARTWORK
-export function fs_deleteArtwork(artworkId, artistId, onCompleteCallback = null) {
+export function fs_deleteArtwork(artworkId, onCompleteCallback = null) {
     int_deleteArtworkData(artworkId, () => {
-        int_deleteImageFromStorage(artworkId, artistId, '', () => {
+        int_deleteImageFromStorage(artworkId, '', () => {
             if (onCompleteCallback) onCompleteCallback();
         });
 
-        int_deleteImageFromStorage(artworkId, artistId, 'thumbnail_', () => {
+        /*int_deleteImageFromStorage(artworkId, 'thumbnail_', () => {
             console.log("thumbnail image deleted ta");
-        })
+        })*/
     })
 }
 
-function int_deleteImageFromStorage(artworkId, artistId, prefix, onCompleteCallback) {
+function int_deleteImageFromStorage(artworkId, prefix, onCompleteCallback) {
     const fileName = prefix + artworkId;
-    const imageRef = store.child(`userContent/${artistId}/${fileName}`);
+    const imageRef = store.child(`userContent/${fileName}`);
     imageRef.delete()
         .then(() => {
             onCompleteCallback();

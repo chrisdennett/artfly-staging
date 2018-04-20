@@ -12,7 +12,7 @@ import './artworkViewer_styles.css';
 import DefaultArtworkDataGenerator from "./DefaultArtworkDataGenerator";
 import * as ImageHelper from "../global/ImageHelper";
 //actions
-import { getArtworkDataOnce, updateArtwork, addArtwork } from "../../actions/UserDataActions";
+import { getArtworkDataOnce, updateArtwork, addArtwork, deleteArtwork } from "../../actions/UserDataActions";
 //comps
 import ArtworkOptions from '../artworkOptions/ArtworkOptions';
 import Artwork from "./Artwork";
@@ -38,6 +38,7 @@ class ArtworkViewer extends Component {
         this.onCanvasOrientationChange = this.onCanvasOrientationChange.bind(this);
         this.onToolSelect = this.onToolSelect.bind(this);
         this.onCloseCurrentTool = this.onCloseCurrentTool.bind(this);
+        this.onArtworkDelete = this.onArtworkDelete.bind(this);
 
         this.state = { currentTool: 'view', artworkData: {}, unsavedArtworkData: {} };
     }
@@ -192,6 +193,11 @@ class ArtworkViewer extends Component {
         this.setState({ artworkData: newArtworkData, unsavedArtworkData: {} });
     }
 
+    onArtworkDelete(artworkId){
+        this.props.deleteArtwork(artworkId);
+        // need to redirect either to home page or to add artwork page (
+    }
+
     getImageBlob(sourceImg, maxSize, callback) {
         const canvas = document.createElement('canvas');
 
@@ -261,6 +267,12 @@ class ArtworkViewer extends Component {
                         }
 
                         {/*{userIsAdmin &&
+                        <FontAwesomeButt style={{ backgroundColor: '#ac364c', border: '3px solid rgba(0, 0, 0, 0.5)' }}
+                                         onClick={this.onArtworkUnderChanges}
+                                         icon={faTrashAlt}/>
+                        }*/}
+
+                        {/*{userIsAdmin &&
                         <FontAwesomeButt icon={faUser}/>
                         }
 
@@ -283,6 +295,7 @@ class ArtworkViewer extends Component {
                 <ArtworkOptions artworkData={currentArtworkData}
                                 currentTool={currentTool}
                                 userIsAdmin={userIsAdmin}
+                                onArtworkDelete={this.onArtworkDelete}
                                 onArtworkDataChange={this.onArtworkEditorDataChange}
                                 onCanvasOrientationChange={this.onCanvasOrientationChange}
                                 onArtworkSave={this.onArtworkEditorSave}
@@ -320,6 +333,6 @@ const mapStateToProps = (state) => {
     }
 };
 
-const mapActionsToProps = { getArtworkDataOnce, updateArtwork, addArtwork };
+const mapActionsToProps = { getArtworkDataOnce, updateArtwork, addArtwork, deleteArtwork };
 
 export default connect(mapStateToProps, mapActionsToProps)(ArtworkViewer);

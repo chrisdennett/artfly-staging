@@ -6,7 +6,7 @@ import * as faListAlt from "@fortawesome/fontawesome-pro-solid/faListAlt";
 import * as faImage from "@fortawesome/fontawesome-pro-solid/faImage";
 // import * as faEye from "@fortawesome/fontawesome-pro-solid/faEye";
 import * as faPalletAlt from "@fortawesome/fontawesome-pro-solid/faPalletAlt";
-// import * as faSave from "@fortawesome/fontawesome-pro-solid/faSave";
+import * as faTrashAlt from "@fortawesome/fontawesome-pro-solid/faTrashAlt";
 import * as faBars from "@fortawesome/fontawesome-pro-solid/faBars";
 // styles
 import './artworkOptionsToolBar_styles.css';
@@ -61,6 +61,14 @@ class ArtworkOptionsToolBar extends Component {
                         icon={faUpload}
                         onClick={() => onToolSelect('upload')}
                         label={'ADD PIC'}/>*/}
+
+                    <ControlPanelButt
+                        isSelected={currentTool === 'crop'}
+                        disabled={disableEditing}
+                        icon={faTrashAlt}
+                        style={{color:'#d02828'}}
+                        onClick={() => onToolSelect('delete')}
+                        label={'DELETE'}/>
 
                     <ControlPanelButt
                         isSelected={currentTool === 'crop'}

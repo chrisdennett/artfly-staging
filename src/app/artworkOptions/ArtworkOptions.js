@@ -12,6 +12,7 @@ import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
 import TitlesEditor from "./titlesEditor/TitlesEditor";
 import FrameEditor from "./frameEditor/FrameEditor";
 import RoomEditor from "./roomEditor/RoomEditor";
+import DeleteArtworkPanel from "./deleteArtworkPanel/DeleteArtworkPanel";
 
 class ArtworkOptions extends Component {
 
@@ -37,9 +38,10 @@ class ArtworkOptions extends Component {
         const {
                   height, width, artworkData,
                   sourceImg, currentTool,
-                  onArtworkDataChange, onCloseCurrentTool
+                  onArtworkDataChange, onCloseCurrentTool, onArtworkDelete
               } = this.props;
 
+        // const currentTool = 'delete';
 
         let classesForMain = 'quickArtworkMaker--mainFixed';
 
@@ -51,6 +53,12 @@ class ArtworkOptions extends Component {
             <div className={'quickArtworkMaker'}>
 
                 <div className={classesForMain}>
+
+                    {currentTool === 'delete' &&
+                    <DeleteArtworkPanel artworkId={artworkData.artworkId}
+                                        onArtworkDeleteCancel={onCloseCurrentTool}
+                                        onArtworkDelete={onArtworkDelete}/>
+                    }
 
                     {currentTool === 'crop' &&
                     <CropAndRotateEditor sourceImg={sourceImg}

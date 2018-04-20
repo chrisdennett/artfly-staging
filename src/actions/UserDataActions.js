@@ -173,12 +173,13 @@ export function listenForUserArtworkChanges(userId) {
 export function listenForArtworkChanges(artworkId, callback, errorCallback) {
     return (dispatch) => {
         fs_getArtworkChanges(artworkId, (artworkData) => {
+            const dataWithId = { ...artworkData, artworkId };
 
             dispatch({
                 type: ARTWORK_CHANGE,
-                payload: {[artworkId]:artworkData}
+                payload: {[artworkId]:dataWithId}
             });
-            if (callback) callback(artworkData);
+            if (callback) callback(dataWithId);
 
         }, () => {
             if (errorCallback) errorCallback(artworkId);
@@ -190,21 +191,20 @@ export function listenForArtworkChanges(artworkId, callback, errorCallback) {
 export function getArtworkDataOnce(artworkId, callback) {
     return dispatch => {
         fs_getArtworkDataOnce(artworkId, (artworkData) => {
-
-            console.log("fs_getArtworkDataOnce");
+            const dataWithId = { ...artworkData, artworkId };
 
             dispatch({
                 type: ARTWORK_CHANGE,
-                payload: { [artworkId]: artworkData }
+                payload: { [artworkId]: dataWithId }
             });
-            if (callback) callback({ ...artworkData, artworkId });
+            if (callback) callback(dataWithId);
         });
     }
 }
 
-export function deleteArtwork(artworkId, artistId, callback = null) {
+export function deleteArtwork(artworkId, callback = null) {
     return dispatch => {
-        fs_deleteArtwork(artworkId, artistId, () => {
+        fs_deleteArtwork(artworkId, () => {
             dispatch({
                 type: ARTWORK_DELETED,
                 payload: artworkId
