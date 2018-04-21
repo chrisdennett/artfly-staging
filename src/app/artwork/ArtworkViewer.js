@@ -12,7 +12,14 @@ import './artworkViewer_styles.css';
 import DefaultArtworkDataGenerator from "./DefaultArtworkDataGenerator";
 import * as ImageHelper from "../global/ImageHelper";
 //actions
-import { getArtworkDataOnce, updateArtwork, addArtwork, deleteArtwork } from "../../actions/UserDataActions";
+import {
+    getArtworkDataOnce,
+    updateArtwork,
+    addArtwork,
+    deleteArtwork,
+    sendNotification,
+    endNotification
+} from "../../actions/UserDataActions";
 //comps
 import history from './../global/history';
 import ArtworkOptions from '../artworkOptions/ArtworkOptions';
@@ -93,14 +100,20 @@ class ArtworkViewer extends Component {
     // Loads in artwork Image from the server using the saved url
     // NB Currently loading in the source image - should use a smaller image
     loadArtwork(artworkData) {
-        this.setState({ artworkData }, () => {
-            let img = new Image();
-            img.setAttribute('crossOrigin', 'anonymous'); //
-            img.src = artworkData.url;
-            img.onload = () => {
-                this.updateMasterCanvas(img, artworkData.orientation)
-            }
-        })
+
+        this.props.sendNotification("Loading image...", (timeStamp) => {
+
+            this.setState({ artworkData }, () => {
+                let img = new Image();
+                img.setAttribute('crossOrigin', 'anonymous'); //
+                img.src = artworkData.url;
+                img.onload = () => {
+                    this.updateMasterCanvas(img, artworkData.orientation);
+
+                    this.props.endNotification(timeStamp);
+                }
+            })
+        });
     }
 
     // Draws the selected or loaded image to an off-screen canvas
@@ -199,7 +212,7 @@ class ArtworkViewer extends Component {
         this.setState({ artworkData: newArtworkData, unsavedArtworkData: {} });
     }
 
-    onArtworkDelete(artworkId){
+    onArtworkDelete(artworkId) {
         this.props.deleteArtwork(artworkId);
         // need to redirect either to home page or to add artwork page (
     }
@@ -339,6 +352,6 @@ const mapStateToProps = (state) => {
     }
 };
 
-const mapActionsToProps = { getArtworkDataOnce, updateArtwork, addArtwork, deleteArtwork };
+const mapActionsToProps = { getArtworkDataOnce, updateArtwork, addArtwork, deleteArtwork, sendNotification, endNotification };
 
 export default connect(mapStateToProps, mapActionsToProps)(ArtworkViewer);

@@ -26,6 +26,8 @@ export const SIGN_IN_USER = "signInUser";
 export const SIGN_IN_USER_TRIGGERED = "signInUserTriggered";
 export const SIGN_OUT_USER = "signOutUser";
 export const DELETE_USER = "deleteUser";
+export const NOTIFICATION = "notification";
+export const NOTIFICATION_COMPLETE = "notification_complete";
 
 
 // AUTH ************************************************************
@@ -161,10 +163,22 @@ export function deleteUser() {
 // LISTEN FOR ARTWORK DATA CHANGES
 export function listenForUserArtworkChanges(userId) {
     return (dispatch) => {
+        const timeStamp = Date.now();
+
+        dispatch({
+            type: NOTIFICATION,
+            payload: { wording: 'Artwork is being loaded', timeStamp }
+        });
+
         fs_getUserArtworkChanges(userId, (artworks) => {
             dispatch({
                 type: USER_ARTWORKS_CHANGE,
                 payload: artworks
+            });
+
+            dispatch({
+                type: NOTIFICATION_COMPLETE,
+                payload: { timeStamp }
             });
         })
     }
@@ -177,7 +191,7 @@ export function listenForArtworkChanges(artworkId, callback, errorCallback) {
 
             dispatch({
                 type: ARTWORK_CHANGE,
-                payload: {[artworkId]:dataWithId}
+                payload: { [artworkId]: dataWithId }
             });
             if (callback) callback(dataWithId);
 
@@ -190,6 +204,7 @@ export function listenForArtworkChanges(artworkId, callback, errorCallback) {
 // Gets a single snapshot of the artwork data
 export function getArtworkDataOnce(artworkId, callback, noDocCallback) {
     return dispatch => {
+
         fs_getArtworkDataOnce(artworkId, (artworkData) => {
             const dataWithId = { ...artworkData, artworkId };
 
@@ -199,7 +214,7 @@ export function getArtworkDataOnce(artworkId, callback, noDocCallback) {
             });
             if (callback) callback(dataWithId);
         }, () => {
-            if(noDocCallback) noDocCallback();
+            if (noDocCallback) noDocCallback();
         });
     }
 }
@@ -251,7 +266,7 @@ export function updateArtwork(artworkId, newArtworkData, callback = null) {
         fs_updateArtwork(artworkId, newArtworkData, () => {
             dispatch({
                 type: ARTWORK_CHANGE,
-                payload: {[artworkId]:newArtworkData}
+                payload: { [artworkId]: newArtworkData }
             });
 
             if (callback) callback();
@@ -304,5 +319,30 @@ export function updateArtworkThumbnail(artworkId, artistId, newThumbImg, callbac
 
             if (callback) callback(updateProgressData);
         })
+    }
+}
+
+// NOTIFICATIONS ONLY
+export function sendNotification(wording, callback) {
+    const timeStamp = Date.now();
+
+    console.log("wording: ", wording);
+
+    return dispatch => {
+        dispatch({
+            type: NOTIFICATION,
+            payload: { wording, timeStamp }
+        });
+
+        callback(timeStamp)
+    }
+}
+
+export function endNotification(timeStamp) {
+    return dispatch => {
+        dispatch({
+            type: NOTIFICATION_COMPLETE,
+            payload: { timeStamp }
+        });
     }
 }

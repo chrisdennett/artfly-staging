@@ -1,0 +1,29 @@
+.notificationsHolder{
+    position: absolute;
+    top:0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.notifications{
+    display: flex;
+    flex-direction: column;
+}
+
+.notifications-hidden{
+    display: none;
+    width: 1px;
+    height: 1px;
+    top: -10px;
+}
+
+.notification{
+    margin-top: 10px;
+    border: black 1px solid;
+    background-color: white;
+    padding: 30px;
+    max-width: 300px;
+}

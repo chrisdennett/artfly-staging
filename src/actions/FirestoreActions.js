@@ -280,21 +280,23 @@ function int_saveImage(artworkId, blob, prefix, onChangeCallback, onCompleteCall
 }
 
 // GET ARTWORK DATA ONCE
-export function fs_getArtworkDataOnce(artworkId, onComplete = null, onNotFound=null) {
+export function fs_getArtworkDataOnce(artworkId, onComplete = null, onNotFound = null) {
     const docRef = db.collection('artworks').doc(artworkId);
 
-    docRef.get().then(function (doc) {
-        if (doc.exists) {
-            onComplete(doc.data());
-        }
-        else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-            if(onNotFound) onNotFound(artworkId);
-        }
-    }).catch(function (error) {
-        console.log("Error getting document:", error);
-    });
+    docRef
+        .get()
+        .then((doc) => {
+            if (doc.exists) {
+                onComplete(doc.data());
+            }
+            else {
+                // doc.data() will be undefined in this case
+                if (onNotFound) onNotFound(artworkId);
+            }
+        })
+        .catch(function (error) {
+            console.log("Error getting document:", error);
+        });
 }
 
 // GET ARTWORK CHANGES
@@ -339,7 +341,7 @@ export function fs_getUserArtworkChanges(userId, callback) {
                 querySnapshot.forEach(doc => {
                     const artworkId = doc.id;
                     const artworkData = doc.data();
-                    const dataWithId = {...artworkData, artworkId};
+                    const dataWithId = { ...artworkData, artworkId };
                     userArtworks[doc.id] = dataWithId;
                 });
 

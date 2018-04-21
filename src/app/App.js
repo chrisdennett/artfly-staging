@@ -9,6 +9,7 @@ import './appStyles.css';
 import WindowDimensionsTracker from "./global/WindowDimensionsTracker";
 import { IN_STAGING } from "./global/GLOBAL_CONSTANTS";
 import SignInOut from './SignInOut/SignInOut';
+import NotificationViewer from "./global/notifications/NotificationViewer";
 
 class App extends Component {
 
@@ -17,6 +18,8 @@ class App extends Component {
 
         return (
             <div className='app'>
+
+                <NotificationViewer/>
 
                 {page !== 'artwork' &&
                 <div className={'app--topBar'}>
