@@ -197,18 +197,25 @@ class ArtworkViewer extends Component {
         const { artworkId, user } = this.props;
         const newArtworkData = { ...artworkData, ...unsavedArtworkData };
 
-        // if editing an artwork, just update the data
-        if (artworkId) {
-            this.props.updateArtwork(artworkId, newArtworkData);
-        }
-        // otherwise add a new artwork including the image.
-        else {
-            this.getImageBlob(sourceImg, 3000, (blobData) => {
-                this.props.addArtwork(user.uid, blobData, newArtworkData);
-            })
-        }
+        this.props.sendNotification('Saving artwork...', (timeStamp) => {
+            // if editing an artwork, just update the data
+            if (artworkId) {
+                this.props.updateArtwork(artworkId, newArtworkData, () => {
+                    this.props.endNotification(timeStamp);
+                });
 
-        this.setState({ artworkData: newArtworkData, unsavedArtworkData: {} });
+            }
+            // otherwise add a new artwork including the image.
+            else {
+                this.getImageBlob(sourceImg, 3000, (blobData) => {
+                    this.props.addArtwork(user.uid, blobData, newArtworkData, () => {
+                        this.props.endNotification(timeStamp);
+                    });
+                })
+            }
+
+            this.setState({ artworkData: newArtworkData, unsavedArtworkData: {} });
+        })
     }
 
     onArtworkDelete(artworkId) {
@@ -256,16 +263,15 @@ class ArtworkViewer extends Component {
         const { currentTool, artworkData, unsavedArtworkData, masterCanvas, sourceImg } = this.state;
         const currentArtworkData = { ...artworkData, ...unsavedArtworkData };
 
-        console.log("currentArtworkData: ", currentArtworkData);
-
         const isNewArtwork = !artworkId;
         const userIsAdmin = isNewArtwork || (user.uid && user.uid === artworkData.adminId);
         const showEditingControls = userIsAdmin && masterCanvas;
         let topButtonsStyle = { display: 'flex', marginRight: 5, marginTop: 5 };
         if (userIsAdmin) topButtonsStyle.marginRight = 65;
 
-        const hasUnsavedChanges = userIsAdmin && !this.updateWillNotChangeData(artworkData, unsavedArtworkData);
+        const isNewArtworkWithoutImage = isNewArtwork && !sourceImg;
 
+        const hasUnsavedChanges = !isNewArtworkWithoutImage && userIsAdmin && !this.updateWillNotChangeData(artworkData, unsavedArtworkData);
         const showButtonLabels = width > 600;
 
         return (
