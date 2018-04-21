@@ -326,8 +326,6 @@ export function updateArtworkThumbnail(artworkId, artistId, newThumbImg, callbac
 export function sendNotification(wording, callback) {
     const timeStamp = Date.now();
 
-    console.log("wording: ", wording);
-
     return dispatch => {
         dispatch({
             type: NOTIFICATION,

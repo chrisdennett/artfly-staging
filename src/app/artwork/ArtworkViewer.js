@@ -100,7 +100,6 @@ class ArtworkViewer extends Component {
     // Loads in artwork Image from the server using the saved url
     // NB Currently loading in the source image - should use a smaller image
     loadArtwork(artworkData) {
-
         this.props.sendNotification("Loading image...", (timeStamp) => {
 
             this.setState({ artworkData }, () => {
@@ -129,7 +128,7 @@ class ArtworkViewer extends Component {
                     return {
                         sourceImg,
                         masterCanvas,
-                        unsavedArtworkData: newArtworkData,
+                        artworkData: newArtworkData,
                         currentTool: 'view'
                     }
                 });
@@ -213,8 +212,12 @@ class ArtworkViewer extends Component {
     }
 
     onArtworkDelete(artworkId) {
-        this.props.deleteArtwork(artworkId);
-        // need to redirect either to home page or to add artwork page (
+        this.props.sendNotification("Deleting artwork...", (timeStamp) => {
+            this.props.deleteArtwork(artworkId, () => {
+                history.push('/');
+                this.props.endNotification(timeStamp);
+            });
+        })
     }
 
     getImageBlob(sourceImg, maxSize, callback) {
@@ -252,6 +255,9 @@ class ArtworkViewer extends Component {
         const { width, height, user, artworkId } = this.props;
         const { currentTool, artworkData, unsavedArtworkData, masterCanvas, sourceImg } = this.state;
         const currentArtworkData = { ...artworkData, ...unsavedArtworkData };
+
+        console.log("currentArtworkData: ", currentArtworkData);
+
         const isNewArtwork = !artworkId;
         const userIsAdmin = isNewArtwork || (user.uid && user.uid === artworkData.adminId);
         const showEditingControls = userIsAdmin && masterCanvas;

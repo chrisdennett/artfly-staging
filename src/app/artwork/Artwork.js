@@ -48,6 +48,9 @@ class Artwork extends Component {
         if (!masterCanvas && !isNewArtwork) return;
 
         let { cropData, frameData, titlesData, roomData, widthToHeightRatio, heightToWidthRatio } = artworkData;
+        console.log("frameData: ", frameData);
+        // if(!frameData || !cropData || !roomData) return;
+
         // CROP DATA
         const { leftPercent, rightPercent, topPercent, bottomPercent } = cropData;
         // FRAME DATA

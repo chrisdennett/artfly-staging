@@ -6,7 +6,6 @@ export default function (state = [], action) {
         case NOTIFICATION:
             const arr = state.concat();
             arr.unshift(action.payload);
-
             return arr;
 
         case NOTIFICATION_COMPLETE:

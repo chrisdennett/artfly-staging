@@ -3,25 +3,11 @@ import { connect } from 'react-redux';
 // styles
 import './notifications_styles.css';
 
-const testNotification = { wording: 'Artwork Loading', timestamp: 1 };
-
 class NotificationViewer extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = { TESTnotifications: [testNotification] }
-    }
-
-
     render() {
-        const { TESTnotifications } = this.state;
         const { notifications } = this.props;
-
-        console.log("notifications: ", notifications);
-
         const showNotifications = notifications && notifications.length > 0;
-
         const viewerClasses = showNotifications ? 'notifications' : 'notifications-hidden';
 
         return (
