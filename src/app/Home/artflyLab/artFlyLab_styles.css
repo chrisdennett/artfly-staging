@@ -1,0 +1,20 @@
+.artFlyLab{
+    /*border-top: 3px solid rgba(0, 0, 0, 0.4);*/
+    border-top: 10px dashed rgba(0, 0, 0, 0.6);
+    border-bottom: 4px solid rgba(0, 0, 0, 0.48);
+    background: linear-gradient(#984eac, #774089);;
+    /*background-color: #984eac;*/
+    padding-bottom: 50px;
+    color: white;
+}
+
+.artFlyLab--intro{
+    padding: 20px 20px 0 20px;
+}
+
+.artFlyLab--projectCards{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px;
+    justify-content: space-around;
+}

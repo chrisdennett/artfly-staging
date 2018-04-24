@@ -1,10 +1,7 @@
 import React from 'react';
-// comp
-import history from '../history';
 
-const LinkButt = function ({ children, linkTo, isPrimary = false, style = {} }) {
+const LinkExternalButt = function ({children, linkTo, style, isPrimary, target='_self' }) {
 
-    //isPositive = false, isNegative = false, // consider for go / no go butts
     let bgColour = '#fff';
     let fontColour = '#000';
     if (isPrimary) {
@@ -24,10 +21,13 @@ const LinkButt = function ({ children, linkTo, isPrimary = false, style = {} }) 
     const combinedStyle = { ...defaultStyle, ...style };
 
     return (
-        <button style={combinedStyle} onClick={() => {history.push(linkTo)}}>
+        <a href={linkTo}
+           style={combinedStyle}
+           target={target}
+           rel="noopener noreferrer">
             {children}
-        </button>
+        </a>
     )
 };
 
-export default LinkButt;
+export default LinkExternalButt;

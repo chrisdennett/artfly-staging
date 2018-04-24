@@ -24,7 +24,7 @@ const PublicHome = function () {
     return (
         <div>
             <div className={'app--section app--section--dark'}>
-                <GallerySign>
+               {/* <GallerySign>
 
                     <div className={'publicHome--intro'}>
                         <h2>
@@ -85,7 +85,7 @@ const PublicHome = function () {
                     <div className={'publicHome--signUpSection'}>
                         <SignUpForm/>
                     </div>
-                </GallerySign>
+                </GallerySign>*/}
             </div>
 
             <div className={'app--section'}>

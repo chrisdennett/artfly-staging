@@ -7,9 +7,16 @@ import './homeStyles.css';
 import { IN_BETA_TESTING } from '../global/GLOBAL_CONSTANTS';
 import Title from "./Title";
 import SignInOut from '../SignInOut/SignInOut';
-import PublicHome from "./PublicHome/PublicHome";
+// import PublicHome from "./PublicHome/PublicHome";
 import Footer from "./Footer/Footer";
 import LinkButt from "../global/Butt/LinkButt";
+import SocialMediaStuff from "./socialMediaStuff/SocialMediaStuff";
+import ArtFlyLab from "./artflyLab/ArtFlyLab";
+import ArtFlyIntro from "./artFlyIntro/ArtFlyIntro";
+// import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+// import faFacebookSquare from '@fortawesome/fontawesome-free-brands/faFacebookSquare';
+// import faTwitterSquare from '@fortawesome/fontawesome-free-brands/faTwitterSquare';
+// import Link from "../global/Butt/Link";
 
 const Home = ({ user, userArtworks }) => {
     const userLoggedIn = user && user.loginStatus === 'loggedIn';
@@ -33,9 +40,9 @@ const Home = ({ user, userArtworks }) => {
 
             </div>
 
-            {!userLoggedIn &&
+            {/*{!userLoggedIn &&
             <PublicHome/>
-            }
+            }*/}
 
             {userLoggedIn &&
             <div>
@@ -50,6 +57,13 @@ const Home = ({ user, userArtworks }) => {
                 }
             </div>
             }
+
+            <ArtFlyIntro/>
+
+            <ArtFlyLab/>
+
+            <SocialMediaStuff/>
+
 
             <Footer/>
 

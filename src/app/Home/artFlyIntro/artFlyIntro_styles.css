@@ -1,0 +1,10 @@
+.artFlyIntro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 42px;
+}
+
+.artFlyIntro--content{
+    max-width: 1000px;
+}

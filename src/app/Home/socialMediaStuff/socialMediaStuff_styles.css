@@ -1,0 +1,28 @@
+.socialMediaStuff {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 42px;
+    padding: 20px;
+}
+
+.socialMediaStuff--intro{
+    max-width: 1000px;
+}
+
+.socialMediaStuff--socialIcons{
+    font-size: 36px;
+}
+
+
+.socialMediaStuff--socialIcons a{
+    color: rgba(0, 0, 0, 0.6);
+    margin-right: 10px;
+}
+
+.socialMediaStuff--iFrame{
+    width: 100%;
+    border: none;
+    max-width: 600px;
+    height: 80vh
+}

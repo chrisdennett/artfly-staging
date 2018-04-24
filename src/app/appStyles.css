@@ -28,6 +28,7 @@ html, body {
 
 h2, h2 span{
     line-height: 1.6;
+    margin-bottom: 0.5rem;
 }
 
 button, a{
@@ -52,13 +53,13 @@ button, a{
 }
 
 .app--topBar{
-    position: absolute;
+    /*position: absolute;
     left: 0;
     right: 15px;
     top: 0;
-    display: flex;
+    display: flex;*/
     padding: 5px 10px;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
 }
 
 .app--topBar a{

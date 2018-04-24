@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import faFacebookSquare from '@fortawesome/fontawesome-free-brands/faFacebookSquare';
-import faTwitterSquare from '@fortawesome/fontawesome-free-brands/faTwitterSquare';
 // styles
 import './appStyles.css';
 // components
@@ -23,19 +20,7 @@ class App extends Component {
 
                 {page !== 'artwork' &&
                 <div className={'app--topBar'}>
-                    <div>
-                        <a href='https://twitter.com/artflychris'
-                            target="_blank"
-                            rel="noopener noreferrer"><FontAwesomeIcon icon={faTwitterSquare}/></a>
-
-                        <a href='https://www.facebook.com/artfly.io/'
-                           target="_blank"
-                           rel="noopener noreferrer">
-                            <FontAwesomeIcon icon={faFacebookSquare}/> </a>
-                    </div>
-
                     <SignInOut user={user}/>
-
                 </div>
                 }
 
