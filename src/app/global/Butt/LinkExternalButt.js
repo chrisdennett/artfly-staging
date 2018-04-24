@@ -11,6 +11,7 @@ const LinkExternalButt = function ({children, linkTo, style, isPrimary, target='
 
     const defaultStyle = {
         padding: 10,
+        textDecoration: 'none',
         fontSize: '1.1rem',
         color: fontColour,
         background: bgColour,

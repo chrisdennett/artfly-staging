@@ -67,6 +67,15 @@ const Home = ({ user, userArtworks }) => {
 
             <Footer/>
 
+            <div style={{backgroundColor: '#000',
+                color:'#fff',
+                border: '10px solid #555', padding: 42, textAlign:'center'}}>
+                <img style={{background:'#fff', padding: 10}} src={'images/lab/Rotoscoping.gif'} alt={'rotoscoping gif'}/>
+                <p>You know it's all over when the victorian lady jumps the stool...</p>
+                <p style={{margin:0, color:'#aaa'}}>2018 Copyright bit nobody reads</p>
+            </div>
+
+
         </div>
     );
 };
