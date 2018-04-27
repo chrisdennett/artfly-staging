@@ -11,7 +11,7 @@ const ArtFlyLab = function (props) {
         <div className={'artFlyLab'}>
             <div className={'artFlyLab--intro'}>
                 <h2><FontAwesomeIcon icon={faFlask} /> ArtFly Lab</h2>
-                <p>These are things I'm working on - trying out new things to find what works.</p>
+                <p>These are things I'm working on:</p>
             </div>
 
             <div className={'artFlyLab--projectCards'}>

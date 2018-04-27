@@ -7,16 +7,11 @@ import './homeStyles.css';
 import { IN_BETA_TESTING } from '../global/GLOBAL_CONSTANTS';
 import Title from "./Title";
 import SignInOut from '../SignInOut/SignInOut';
-// import PublicHome from "./PublicHome/PublicHome";
 import Footer from "./Footer/Footer";
 import LinkButt from "../global/Butt/LinkButt";
 import SocialMediaStuff from "./socialMediaStuff/SocialMediaStuff";
 import ArtFlyLab from "./artflyLab/ArtFlyLab";
 import ArtFlyIntro from "./artFlyIntro/ArtFlyIntro";
-// import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-// import faFacebookSquare from '@fortawesome/fontawesome-free-brands/faFacebookSquare';
-// import faTwitterSquare from '@fortawesome/fontawesome-free-brands/faTwitterSquare';
-// import Link from "../global/Butt/Link";
 
 const Home = ({ user, userArtworks }) => {
     const userLoggedIn = user && user.loginStatus === 'loggedIn';
@@ -27,9 +22,7 @@ const Home = ({ user, userArtworks }) => {
                 <div>
                     <Title/>
                 </div>
-                <div className='home--tagLine'>Artworks don't belong in a drawer, bin or hard drive. <br/>There's a
-                    better
-                    place...
+                <div className='home--tagLine'>Make bad art, make good art, just make it and let your ArtFly.
                 </div>
 
                 {!IN_BETA_TESTING &&
@@ -63,7 +56,6 @@ const Home = ({ user, userArtworks }) => {
             <ArtFlyLab/>
 
             <SocialMediaStuff/>
-
 
             <Footer/>
 

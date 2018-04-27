@@ -5,10 +5,9 @@ import * as faDesktopAlt from '@fortawesome/fontawesome-pro-regular/faDesktopAlt
 import * as faPaintBrush from '@fortawesome/fontawesome-pro-regular/faPaintBrush'
 import * as faChild from '@fortawesome/fontawesome-pro-solid/faChild'
 import * as faVial from '@fortawesome/fontawesome-pro-solid/faVial'
-import * as faWrench from '@fortawesome/fontawesome-pro-solid/faWrench'
-
 //
 import './artFlyIntro_styles.css';
+// comps
 import LinkExternalButt from "../../global/Butt/LinkExternalButt";
 
 const ArtFlyIntro = function (props) {
@@ -16,22 +15,20 @@ const ArtFlyIntro = function (props) {
         <div className={'artFlyIntro'}>
             <div className={'artFlyIntro--content'}>
                 <h2>What is ArtFly?</h2>
-                <p>It's really just me - Chris Dennett (hello!) - but I think ArtFly sounds better <FontAwesomeIcon
+                <p>It's just me - Chris Dennett (hello!) - but ArtFly sounds better <FontAwesomeIcon
                     icon={faSmile}/>.</p>
-                <p>I want to make a things that help people make art. I'm specifically interested in:</p>
+                <p>Aim: help people make art. Specifically:</p>
                 <ul>
-                    <li>Mixing digital <FontAwesomeIcon icon={faDesktopAlt}/> and traditional arts <FontAwesomeIcon
-                        icon={faPaintBrush}/> and crafts.
+                    <li>Help parents to encourage and cope with kids <FontAwesomeIcon icon={faChild}/> constant creations.
                     </li>
-                    <li>Helping to bring more creative experiences back into schools <FontAwesomeIcon icon={faChild}/>.
+                    <li>Make cross-curricular creative stuff for schools <FontAwesomeIcon
+                        icon={faPaintBrush}/>.
                     </li>
-                    <li>Making simple tools <FontAwesomeIcon icon={faWrench}/> to encourage anyone to make some art.
+                    <li>Making simple tools <FontAwesomeIcon icon={faDesktopAlt}/> to encourage anyone to make some art.
                     </li>
                 </ul>
 
-                <p>Artfly is currently a testing area <FontAwesomeIcon icon={faVial}/> for me to find out what works and
-                    what doesn't. Please have a play the stuff in the lab and let me know what you think on them there
-                    social medias.</p>
+                <p>I'm currently experimenting <FontAwesomeIcon icon={faVial}/> to find out what works best. Have a play and let me know what you think.</p>
 
                 <LinkExternalButt linkTo={'https://blog.artfly.io/artfly-roadmap'}
                                   style={{float:'right', backgroundColor:'#38abc9'}}

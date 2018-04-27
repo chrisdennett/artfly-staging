@@ -38,11 +38,7 @@ const SocialMediaStuff = function (props) {
                        rel="noopener noreferrer">
                         <FontAwesomeIcon icon={faGooglePlus}/></a>
                 </div>
-                <p>I struggle to keep up with social media without being sucked in and ceasing all other activity so
-                    I post pretty much the same things to all social thingies. So if you love repetition follow me
-                    everywhere!</p>
-                <p>I'm currently favouring Twitter as a place to explore and hang out though so that's where I'm
-                    most active.</p>
+                <p>I post pretty much the same things everywhere. Stuff like this:</p>
             </div>
             <iframe className={'socialMediaStuff--iFrame'}
                     title={'@ArtFlyChris Twitter Feed'}

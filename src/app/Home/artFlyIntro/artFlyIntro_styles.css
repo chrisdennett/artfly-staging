@@ -2,12 +2,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 4rem;
-    padding: 42px 0;
+    margin-top: 2rem;
+    padding: 2rem 0;
     border-top: 1px solid rgba(0, 0, 0, 0.47);
     background-color: rgba(255, 255, 255, 0.3);
 }
 
 .artFlyIntro--content{
     max-width: 1000px;
+    padding: 0 1rem;
 }

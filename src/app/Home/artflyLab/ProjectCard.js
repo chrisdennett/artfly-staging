@@ -9,7 +9,6 @@ const ProjectCard = function ({ title, description, link, labLink, blogLink }) {
     return (
         <div className={'projectCard'}>
 
-
             <h3 className={'projectCard--info--title'}>{title}</h3>
             <p className={'projectCard--info--description'}>{description}</p>
 
