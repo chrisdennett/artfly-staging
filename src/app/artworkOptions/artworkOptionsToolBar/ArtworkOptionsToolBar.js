@@ -20,7 +20,7 @@ class ArtworkOptionsToolBar extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {editingControlsAreOpen:true};
+        this.state = {editingControlsAreOpen:false};
 
         this.onEditOpenClick = this.onEditOpenClick.bind(this);
 

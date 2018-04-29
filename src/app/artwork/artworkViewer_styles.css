@@ -6,8 +6,8 @@
 
 .artworkViewer--topBar {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 60px;
+    left: 70px;
     right: 0;
     z-index: 1;
     display: flex;

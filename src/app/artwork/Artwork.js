@@ -154,7 +154,6 @@ class Artwork extends Component {
             }
         }
 
-
         drawRadialGradientOverlay(ctx, width, wallHeight);
 
         // add people
@@ -580,6 +579,16 @@ const
         ctx.fillStyle = pat;
         ctx.fill();
         ctx.closePath();
+
+
+
+        let gradient = ctx.createLinearGradient(startX, startY, startX, startY + height);
+        gradient.addColorStop(0, 'rgba(0,0,0,0)');
+        // gradient.addColorStop(0.4, 'rgba(0,0,0,0.3)');
+        gradient.addColorStop(1, 'rgba(0,0,0,0.5)');
+        ctx.globalCompositeOperation = 'color-burn';
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, startY, width, height);
         ctx.restore();
     };
 
@@ -629,7 +638,7 @@ const
     };
 
 const
-    calculateCanvasArtworkSizes = ({ frameThicknessDecimal = 0.04, mountThicknessDecimal = 0.06, width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 30, minPaddingSides = 20 }) => {
+    calculateCanvasArtworkSizes = ({ frameThicknessDecimal = 0.04, mountThicknessDecimal = 0.06, width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 80, minPaddingSides = 20 }) => {
         // const mountThicknessPercent = 0.06;
         const spaceBelowPicturePercent = 0.15;
         const maxPercentageTakenUpBySkirting = 0.3;

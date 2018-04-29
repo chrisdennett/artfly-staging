@@ -28,7 +28,6 @@ firebase.initializeApp(config);
 
 if(1===2) console.log("fs: ", firestore); //just prevents annoying not used console warning
 
-firebase.firestore();
 
 /*firebase.firestore().enablePersistence()
     .then(function () {
@@ -49,6 +48,9 @@ export const storageEvents = firebase.storage.TaskEvent;
 export const storageRef = firebase.storage().ref();
 export const firestoreDb = firebase.firestore();
 export const auth = firebase.auth();
+
+const settings = {timestampsInSnapshots: true};
+firestoreDb.settings(settings);
 
 export default firebase;
 

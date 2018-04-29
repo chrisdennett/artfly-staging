@@ -26,8 +26,8 @@ import ArtworkOptions from '../artworkOptions/ArtworkOptions';
 import Artwork from "./Artwork";
 import ScrollbarRemover from "../global/ScrollbarRemover";
 import ArtworkOptionsToolBar from "../artworkOptions/artworkOptionsToolBar/ArtworkOptionsToolBar";
-import Link from "../global/Butt/Link";
-import IconLogo from "../global/icon/icons/IconLogo";
+// import Link from "../global/Butt/Link";
+// import IconLogo from "../global/icon/icons/IconLogo";
 import FontAwesomeButt from "../global/Butt/FontAwesomeButt";
 // Constants
 const defaultArtworkData = DefaultArtworkDataGenerator();
@@ -280,9 +280,9 @@ class ArtworkViewer extends Component {
                 {/*<ToastContainer/>*/}
 
                 <div className={'artworkViewer--topBar'}>
-                    <Link linkTo={'/'}>
+                    {/*<Link linkTo={'/'}>
                         <IconLogo/>
-                    </Link>
+                    </Link>*/}
 
                     <div className={'artworkViewer--topBar--topButts'} style={topButtonsStyle}>
                         {hasUnsavedChanges &&
@@ -314,12 +314,11 @@ class ArtworkViewer extends Component {
                 </div>
 
                 {showEditingControls &&
-                <div className={'quickArtworkMaker--sideBar'}>
-                    <ArtworkOptionsToolBar onToolSelect={this.onToolSelect}
-                                           userIsAdmin={userIsAdmin}
-                                           onSave={this.onArtworkEditorSave}
-                                           currentTool={currentTool}/>
-                </div>
+                <ArtworkOptionsToolBar onToolSelect={this.onToolSelect}
+                                       userIsAdmin={userIsAdmin}
+                                       onSave={this.onArtworkEditorSave}
+                                       currentTool={currentTool}/>
+
                 }
 
                 {userIsAdmin &&

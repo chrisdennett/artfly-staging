@@ -13,8 +13,8 @@ const audienceOptions = {
     tiles: {
         womanStanding1: {
             presetName: 'womanStanding1',
-            thumb: 'woman-standing-1-thumb.png',
-            fileName: 'woman-standing-1.png',
+            thumb: 'woman-standing-1-darker-thumb.png',
+            fileName: 'woman-standing-1-darker.png',
             height: 300, width: 120,
             maxProportionOfScreenHeight: 0.5
         },

@@ -2,13 +2,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { Button } from 'rmwc/Button';
 import faSignOutAlt from '@fortawesome/fontawesome-pro-solid/faSignOutAlt';
 import faSignInAlt from '@fortawesome/fontawesome-pro-solid/faSignInAlt';
 // actions
 import { signInWithGoogle, signInWithFacebook, signOutUser } from '../../actions/UserDataActions';
 // components
 import SignInModal from "./SignInModal";
-import Butt from "../global/Butt/Butt";
 
 class SignInOut extends Component {
     constructor() {
@@ -55,17 +55,15 @@ class SignInOut extends Component {
                              isOpen={isModalOpen}/>
 
                 {userLoggedIn &&
-                <Butt className='userHome--signOutButt'
-                      svgIcon={<FontAwesomeIcon icon={faSignOutAlt}/>}
-                      label={'Sign out'}
-                      onClick={signOutUser}/>
+                <Button onClick={signOutUser} style={{lineHeight:'1.6rem'}}>
+                    <FontAwesomeIcon icon={faSignOutAlt} style={{fontSize:'1.2rem', marginRight: 5}}/> Sign Out
+                </Button>
                 }
 
                 {!userLoggedIn &&
-                <Butt className='userHome--signOutButt'
-                      svgIcon={<FontAwesomeIcon icon={faSignInAlt}/>}
-                      label={'Sign in'}
-                      onClick={this.openModal}/>
+                <Button onClick={this.openModal} style={{lineHeight:'1.6rem'}}>
+                    <FontAwesomeIcon icon={faSignInAlt} style={{fontSize:'1.2rem', marginRight: 5}}/> Sign In
+                </Button>
                 }
             </div>
         )

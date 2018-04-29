@@ -4,11 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="viewport"
-          content="minimal-ui, width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--
+     manifest.json provides metadata used when your web app is added to the
+     homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
+   -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     <link rel="icon" type="image/png" href="%PUBLIC_URL%/favicon-32x32.png" sizes="32x32"/>
     <link rel="icon" type="image/png" href="%PUBLIC_URL%/favicon-16x16.png" sizes="16x16"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--
       Notice the use of %PUBLIC_URL% in the tag above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -22,7 +28,10 @@
     <script src="https://cdn.paddle.com/paddle/paddle.js"></script>
     <!--<script src="//cdn.polyfill.io/v2/polyfill.min.js"></script>-->
 </head>
-<body>
+<body className="mdc-typography">
+<noscript>
+    You need to enable JavaScript to run this app.
+</noscript>
 <!--[if lte IE 10]>
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade
     your browser</a> to improve your experience and security.</p>
@@ -40,6 +49,9 @@
   To begin the development, run `npm start`.
   To create a production bundle, use `npm run build`.
 -->
-
+<script>
+    let toolbar = mdc.toolbar.MDCToolbar.attachTo(document.querySelector('.mdc-toolbar'));
+    toolbar.fixedAdjustElement = document.querySelector('.mdc-toolbar-fixed-adjust');
+</script>
 </body>
 </html>
