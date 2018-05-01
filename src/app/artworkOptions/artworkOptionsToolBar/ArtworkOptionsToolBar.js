@@ -77,12 +77,7 @@ class ArtworkOptionsToolBar extends Component {
                         </Tab>
 
                         <Tab>
-                            <TabIcon>
-                                <FontAwesomeIcon icon={faObjectGroup}/>
-                            </TabIcon>
-                            <TabIconText className={'artworkOptionsToolBar--tabLabel'}>
-                                Crop
-                            </TabIconText>
+                            <TabIcon use={'crop_rotate'}/>
                         </Tab>
 
                         {/*<Tab>

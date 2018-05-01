@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Toolbar, ToolbarRow, ToolbarSection, ToolbarIcon } from 'rmwc/Toolbar';
+import { SimpleDialog } from 'rmwc/Dialog';
+import { Button, ButtonIcon } from 'rmwc/Button';
 // styles
 import './artworkViewer_styles.css';
 // helpers
@@ -41,8 +43,9 @@ class ArtworkViewer extends Component {
         this.onToolSelect = this.onToolSelect.bind(this);
         this.onCloseCurrentTool = this.onCloseCurrentTool.bind(this);
         this.onArtworkDelete = this.onArtworkDelete.bind(this);
+        this.onArtworkDeleteConfirm = this.onArtworkDeleteConfirm.bind(this);
 
-        this.state = { currentTool: 'view', artworkData: {}, unsavedArtworkData: {} };
+        this.state = { currentTool: 'view', artworkData: {}, unsavedArtworkData: {}, errorConfirmDialogIsOpen: false };
     }
 
     componentWillMount() {
@@ -212,7 +215,13 @@ class ArtworkViewer extends Component {
         })
     }
 
-    onArtworkDelete(artworkId) {
+    onArtworkDelete() {
+        this.setState({errorConfirmDialogIsOpen:true});
+    }
+
+    onArtworkDeleteConfirm() {
+        const {artworkId} = this.state.artworkData;
+
         this.props.sendNotification("Deleting artwork...", (timeStamp) => {
             this.props.deleteArtwork(artworkId, () => {
                 history.push('/');
@@ -263,9 +272,11 @@ class ArtworkViewer extends Component {
         let topButtonsStyle = { display: 'flex', marginRight: 5, marginTop: 5 };
         if (userIsAdmin) topButtonsStyle.marginRight = 65;
 
-        // const isNewArtworkWithoutImage = isNewArtwork && !sourceImg;
-        // const hasUnsavedChanges = !isNewArtworkWithoutImage && userIsAdmin && !this.updateWillNotChangeData(artworkData, unsavedArtworkData);
+        const isNewArtworkWithoutImage = isNewArtwork && !sourceImg;
+        const hasUnsavedChanges = !isNewArtworkWithoutImage && userIsAdmin && !this.updateWillNotChangeData(artworkData, unsavedArtworkData);
         // const showButtonLabels = width > 600;
+
+        const deleteStyle = {color: '#a82021'};
 
         return (
             <div className={'artworkViewer'}>
@@ -276,12 +287,32 @@ class ArtworkViewer extends Component {
                                 <IconLogo/>
                             </Link>
                         </ToolbarSection>
+                        {hasUnsavedChanges &&
+                        <ToolbarSection>
+                            <Button raised theme="secondary-bg text-primary-on-secondary" onClick={this.onArtworkEditorSave}><ButtonIcon use="save" /> SAVE</Button>
+                        </ToolbarSection>
+                        }
+
+                        {hasUnsavedChanges &&
+                        <ToolbarSection>
+                            <Button onClick={this.onArtworkUndoChanges}><ButtonIcon use="undo"/> UNDO</Button>
+                        </ToolbarSection>
+                        }
                         <ToolbarSection alignEnd>
-                            <ToolbarIcon onClick={this.onArtworkEditorSave} use="save" style={{color:'black'}}/>
-                            <ToolbarIcon onClick={this.onArtworkUndoChanges} use="undo" style={{color:'black'}}/>
+                            <ToolbarIcon onClick={this.onArtworkDelete} use="delete_forever" style={deleteStyle}/>
                         </ToolbarSection>
                     </ToolbarRow>
                 </Toolbar>
+
+                <SimpleDialog
+                    title="Delete Artwork"
+                    body="Are you sure you want to delete this Artwork?"
+                    open={this.state.errorConfirmDialogIsOpen}
+                    acceptLabel={'DELETE IT'}
+                    cancelLabel={'KEEP IT'}
+                    onClose={() => this.setState({ errorConfirmDialogIsOpen: false })}
+                    onAccept={this.onArtworkDeleteConfirm}
+                />
 
                 <ArtworkContainer onPhotoSelected={this.onPhotoSelected}
                                   isNewArtwork={isNewArtwork}
@@ -307,9 +338,7 @@ class ArtworkViewer extends Component {
                                        userIsAdmin={userIsAdmin}
                                        onSave={this.onArtworkEditorSave}
                                        currentTool={currentTool}/>
-
                 }
-
 
             </div>
         )
