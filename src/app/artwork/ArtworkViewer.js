@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Toolbar, ToolbarRow, ToolbarSection } from 'rmwc/Toolbar';
+import { Toolbar, ToolbarRow, ToolbarSection, ToolbarIcon } from 'rmwc/Toolbar';
 // styles
 import './artworkViewer_styles.css';
 // helpers
@@ -35,7 +35,7 @@ class ArtworkViewer extends Component {
         this.loadArtwork = this.loadArtwork.bind(this);
         this.onArtworkEditorDataChange = this.onArtworkEditorDataChange.bind(this);
         this.onArtworkEditorSave = this.onArtworkEditorSave.bind(this);
-        this.onArtworkUnderChanges = this.onArtworkUnderChanges.bind(this);
+        this.onArtworkUndoChanges = this.onArtworkUndoChanges.bind(this);
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.onCanvasOrientationChange = this.onCanvasOrientationChange.bind(this);
         this.onToolSelect = this.onToolSelect.bind(this);
@@ -178,7 +178,7 @@ class ArtworkViewer extends Component {
         })
     }
 
-    onArtworkUnderChanges() {
+    onArtworkUndoChanges() {
         this.setState({ unsavedArtworkData: {} });
         // if the artwork orientation has changed, need to redraw the master canvas
         this.updateMasterCanvas(this.state.sourceImg, this.state.artworkData.orientation, this.state.artworkData.cropData);
@@ -269,12 +269,16 @@ class ArtworkViewer extends Component {
 
         return (
             <div className={'artworkViewer'}>
-                <Toolbar style={{ background: '#fff' }}>
+                <Toolbar style={{ background: '#fff', color: '#000' }}>
                     <ToolbarRow>
                         <ToolbarSection alignStart>
                             <Link linkTo={'/'}>
                                 <IconLogo/>
                             </Link>
+                        </ToolbarSection>
+                        <ToolbarSection alignEnd>
+                            <ToolbarIcon onClick={this.onArtworkEditorSave} use="save" style={{color:'black'}}/>
+                            <ToolbarIcon onClick={this.onArtworkUndoChanges} use="undo" style={{color:'black'}}/>
                         </ToolbarSection>
                     </ToolbarRow>
                 </Toolbar>
@@ -284,7 +288,6 @@ class ArtworkViewer extends Component {
                                   artworkData={currentArtworkData}
                                   masterCanvas={masterCanvas}
                 />
-
 
                 {userIsAdmin &&
                 <ArtworkOptions artworkData={currentArtworkData}
@@ -314,17 +317,9 @@ class ArtworkViewer extends Component {
 }
 
 const mapStateToProps = (state) => {
-    let width = 100, height = 100;
-    if (state.ui.windowSize) {
-        width = state.ui.windowSize.windowWidth;
-        height = state.ui.windowSize.windowHeight;
-    }
-
     return {
         artworks: state.artworks,
-        user: state.user,
-        width,
-        height
+        user: state.user
     }
 };
 
