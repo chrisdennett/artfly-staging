@@ -1,6 +1,7 @@
 // externals
 import React from "react";
 import { connect } from 'react-redux';
+import { Toolbar, ToolbarRow, ToolbarSection } from 'rmwc/Toolbar';
 // styles
 import './homeStyles.css';
 // components
@@ -18,6 +19,15 @@ const Home = ({ user, userArtworks }) => {
 
     return (
         <div className={'home'}>
+
+            <Toolbar fixed style={{background:'rgba(0,0,0,0.2)', boxShadow:'none'}}>
+                <ToolbarRow>
+                    <ToolbarSection alignEnd>
+                        <SignInOut user={user}/>
+                    </ToolbarSection>
+                </ToolbarRow>
+            </Toolbar>
+
             <div className='home--heading'>
                 <div>
                     <Title/>

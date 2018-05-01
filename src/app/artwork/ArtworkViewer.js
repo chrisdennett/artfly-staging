@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { ToastContainer, toast } from 'react-toastify';
-import * as faSave from "@fortawesome/fontawesome-pro-solid/faSave";
-import * as faUndo from "@fortawesome/fontawesome-pro-solid/faUndo";
-// import * as faUser from "@fortawesome/fontawesome-pro-solid/faUser";
-// import * as faShare from "@fortawesome/fontawesome-pro-solid/faShare";
+import { Toolbar, ToolbarRow, ToolbarSection } from 'rmwc/Toolbar';
 // styles
-// import 'react-toastify/dist/ReactToastify.css';
 import './artworkViewer_styles.css';
 // helpers
 import DefaultArtworkDataGenerator from "./DefaultArtworkDataGenerator";
@@ -23,12 +18,11 @@ import {
 //comps
 import history from './../global/history';
 import ArtworkOptions from '../artworkOptions/ArtworkOptions';
-import Artwork from "./Artwork";
-import ScrollbarRemover from "../global/ScrollbarRemover";
 import ArtworkOptionsToolBar from "../artworkOptions/artworkOptionsToolBar/ArtworkOptionsToolBar";
-// import Link from "../global/Butt/Link";
-// import IconLogo from "../global/icon/icons/IconLogo";
-import FontAwesomeButt from "../global/Butt/FontAwesomeButt";
+import Link from "../global/Butt/Link";
+import IconLogo from "../global/icon/icons/IconLogo";
+// import SignInOut from '../SignInOut/SignInOut';
+import ArtworkContainer from "./ArtworkContainer";
 // Constants
 const defaultArtworkData = DefaultArtworkDataGenerator();
 
@@ -129,7 +123,7 @@ class ArtworkViewer extends Component {
                         sourceImg,
                         masterCanvas,
                         artworkData: newArtworkData,
-                        currentTool: 'view'
+                        currentTool: 'frame'
                     }
                 });
             })
@@ -259,7 +253,7 @@ class ArtworkViewer extends Component {
     }
 
     render() {
-        const { width, height, user, artworkId } = this.props;
+        const { user, artworkId } = this.props;
         const { currentTool, artworkData, unsavedArtworkData, masterCanvas, sourceImg } = this.state;
         const currentArtworkData = { ...artworkData, ...unsavedArtworkData };
 
@@ -269,57 +263,28 @@ class ArtworkViewer extends Component {
         let topButtonsStyle = { display: 'flex', marginRight: 5, marginTop: 5 };
         if (userIsAdmin) topButtonsStyle.marginRight = 65;
 
-        const isNewArtworkWithoutImage = isNewArtwork && !sourceImg;
-
-        const hasUnsavedChanges = !isNewArtworkWithoutImage && userIsAdmin && !this.updateWillNotChangeData(artworkData, unsavedArtworkData);
-        const showButtonLabels = width > 600;
+        // const isNewArtworkWithoutImage = isNewArtwork && !sourceImg;
+        // const hasUnsavedChanges = !isNewArtworkWithoutImage && userIsAdmin && !this.updateWillNotChangeData(artworkData, unsavedArtworkData);
+        // const showButtonLabels = width > 600;
 
         return (
-            <ScrollbarRemover showScrollbars={false}>
+            <div className={'artworkViewer'}>
+                <Toolbar style={{ background: '#fff' }}>
+                    <ToolbarRow>
+                        <ToolbarSection alignStart>
+                            <Link linkTo={'/'}>
+                                <IconLogo/>
+                            </Link>
+                        </ToolbarSection>
+                    </ToolbarRow>
+                </Toolbar>
 
-                {/*<ToastContainer/>*/}
+                <ArtworkContainer onPhotoSelected={this.onPhotoSelected}
+                                  isNewArtwork={isNewArtwork}
+                                  artworkData={currentArtworkData}
+                                  masterCanvas={masterCanvas}
+                />
 
-                <div className={'artworkViewer--topBar'}>
-                    {/*<Link linkTo={'/'}>
-                        <IconLogo/>
-                    </Link>*/}
-
-                    <div className={'artworkViewer--topBar--topButts'} style={topButtonsStyle}>
-                        {hasUnsavedChanges &&
-                        <FontAwesomeButt style={{ backgroundColor: '#5dac42', border: '3px solid rgba(0, 0, 0, 0.5)' }}
-                                         onClick={this.onArtworkEditorSave}
-                                         icon={faSave} label={showButtonLabels && 'save changes'}/>
-                        }
-
-                        {hasUnsavedChanges &&
-                        <FontAwesomeButt style={{ backgroundColor: '#ac364c', border: '3px solid rgba(0, 0, 0, 0.5)' }}
-                                         onClick={this.onArtworkUnderChanges}
-                                         icon={faUndo} label={showButtonLabels && 'undo changes'}/>
-                        }
-
-                        {/*{userIsAdmin &&
-                        <FontAwesomeButt style={{ backgroundColor: '#ac364c', border: '3px solid rgba(0, 0, 0, 0.5)' }}
-                                         onClick={this.onArtworkUnderChanges}
-                                         icon={faTrashAlt}/>
-                        }*/}
-
-                        {/*{userIsAdmin &&
-                        <FontAwesomeButt icon={faUser}/>
-                        }
-
-                        <FontAwesomeButt icon={faShare} label={showButtonLabels && 'share'}/>*/}
-                    </div>
-
-                    {/*<button onClick={this.onArtworkEditorSave} style={{marginRight: 150}}>SAVE</button>*/}
-                </div>
-
-                {showEditingControls &&
-                <ArtworkOptionsToolBar onToolSelect={this.onToolSelect}
-                                       userIsAdmin={userIsAdmin}
-                                       onSave={this.onArtworkEditorSave}
-                                       currentTool={currentTool}/>
-
-                }
 
                 {userIsAdmin &&
                 <ArtworkOptions artworkData={currentArtworkData}
@@ -334,16 +299,16 @@ class ArtworkViewer extends Component {
                                 masterCanvas={masterCanvas}/>
                 }
 
-                <Artwork height={height}
-                         width={width}
-                         isFixed={true}
-                         onPhotoSelected={this.onPhotoSelected}
-                         isNewArtwork={isNewArtwork}
-                         artworkData={currentArtworkData}
-                         masterCanvas={masterCanvas}
-                />
+                {showEditingControls &&
+                <ArtworkOptionsToolBar onToolSelect={this.onToolSelect}
+                                       userIsAdmin={userIsAdmin}
+                                       onSave={this.onArtworkEditorSave}
+                                       currentTool={currentTool}/>
 
-            </ScrollbarRemover>
+                }
+
+
+            </div>
         )
     }
 }

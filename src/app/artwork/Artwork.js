@@ -181,11 +181,11 @@ class Artwork extends Component {
         }
 
         // add artfly.io bit to the bottom right;
-        const branding = "ArtFly.io";
+        /*const branding = "ArtFly.io";
         ctx.font = `${20}px 'Stardos Stencil'`;
         const brandingLength = ctx.measureText(branding).width + 10;
         ctx.fillStyle = "rgba(0,0,0,0.3)";
-        ctx.fillText(branding, width - brandingLength, height - 30);
+        ctx.fillText(branding, width - brandingLength, height - 30);*/
     }
 
     render() {
@@ -201,14 +201,14 @@ class Artwork extends Component {
                         ref={this.onCanvasInit}
                         width={300}
                         height={300}/>
-
-               {/* {this.canvas &&
-                <img src={this.canvas.toDataURL('image/png')} />
-                }*/}
             </div>
         );
     }
 }
+
+/*{this.canvas &&
+                <img src={this.canvas.toDataURL('image/png')} />
+                }*/
 
 export default Artwork;
 
@@ -581,7 +581,6 @@ const
         ctx.closePath();
 
 
-
         let gradient = ctx.createLinearGradient(startX, startY, startX, startY + height);
         gradient.addColorStop(0, 'rgba(0,0,0,0)');
         // gradient.addColorStop(0.4, 'rgba(0,0,0,0.3)');
@@ -632,13 +631,11 @@ const
 
 const
     drawPeople = (ctx, img, sourceWidth, sourceHeight, outputWidth, outputHeight, xPos, yPos) => {
-
-
         ctx.drawImage(img, 0, 0, sourceWidth, sourceHeight, xPos, yPos - outputHeight, outputWidth, outputHeight);
     };
 
 const
-    calculateCanvasArtworkSizes = ({ frameThicknessDecimal = 0.04, mountThicknessDecimal = 0.06, width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 80, minPaddingSides = 20 }) => {
+    calculateCanvasArtworkSizes = ({ frameThicknessDecimal = 0.04, mountThicknessDecimal = 0.06, width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 20, minPaddingSides = 20 }) => {
         // const mountThicknessPercent = 0.06;
         const spaceBelowPicturePercent = 0.15;
         const maxPercentageTakenUpBySkirting = 0.3;

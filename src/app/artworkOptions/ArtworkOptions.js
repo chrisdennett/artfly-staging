@@ -10,9 +10,10 @@ import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
 // import ArtworkOptionsToolBar from "./artworkOptionsToolBar/ArtworkOptionsToolBar";
 // import QuickShare from "./sharingOptions/SharingOptions";
 import TitlesEditor from "./titlesEditor/TitlesEditor";
-import FrameEditor from "./frameEditor/FrameEditor";
+import FrameSizeOptions from "./frameEditor/FrameSizeOptions";
 import RoomEditor from "./roomEditor/RoomEditor";
 import DeleteArtworkPanel from "./deleteArtworkPanel/DeleteArtworkPanel";
+import FrameColourOptions from "./frameEditor/FrameColourOptions";
 
 class ArtworkOptions extends Component {
 
@@ -41,66 +42,57 @@ class ArtworkOptions extends Component {
                   onArtworkDataChange, onCloseCurrentTool, onArtworkDelete
               } = this.props;
 
-        // const currentTool = 'delete';
-
-        let classesForMain = 'quickArtworkMaker--mainFixed';
-
-        if (currentTool === "share") {
-            classesForMain = 'quickArtworkMaker--mainScrollable';
-        }
-
         return (
-            <div className={'quickArtworkMaker'}>
+            <div className={'artworkOptions'}>
 
-                <div className={classesForMain}>
+                {currentTool === 'delete' &&
+                <DeleteArtworkPanel artworkId={artworkData.artworkId}
+                                    onArtworkDeleteCancel={onCloseCurrentTool}
+                                    onArtworkDelete={onArtworkDelete}/>
+                }
 
-                    {currentTool === 'delete' &&
-                    <DeleteArtworkPanel artworkId={artworkData.artworkId}
-                                        onArtworkDeleteCancel={onCloseCurrentTool}
-                                        onArtworkDelete={onArtworkDelete}/>
-                    }
+                {currentTool === 'crop' &&
+                <CropAndRotateEditor sourceImg={sourceImg}
+                                     artworkData={artworkData}
+                                     onCancel={onCloseCurrentTool}
+                                     onDone={this.onCropAndRotateDone}
+                                     width={width}
+                                     height={height}/>
+                }
 
-                    {currentTool === 'crop' &&
-                    <CropAndRotateEditor sourceImg={sourceImg}
-                                         artworkData={artworkData}
-                                         onCancel={onCloseCurrentTool}
-                                         onDone={this.onCropAndRotateDone}
-                                         width={width}
-                                         height={height}/>
-                    }
+                {currentTool === 'titles' &&
+                <TitlesEditor height={height}
+                              width={width}
+                              titlesData={artworkData.titlesData}
+                              onDataChange={onArtworkDataChange}
+                              onDone={onCloseCurrentTool}
+                />
+                }
 
-                    {currentTool === 'titles' &&
-                    <TitlesEditor height={height}
-                                  width={width}
-                                  titlesData={artworkData.titlesData}
-                                  onDataChange={onArtworkDataChange}
-                                  onDone={onCloseCurrentTool}
-                    />
-                    }
+                {currentTool === 'frame' &&
+                <FrameSizeOptions frameData={artworkData.frameData}
+                                  onDataChange={onArtworkDataChange}/>
+                }
 
-                    {currentTool === 'frame' &&
-                    <FrameEditor height={height}
-                                 width={width}
-                                 frameData={artworkData.frameData}
-                                 onDataChange={onArtworkDataChange}
-                                 onDone={onCloseCurrentTool}/>
-                    }
+                {currentTool === 'frameColour' &&
+                <FrameColourOptions frameData={artworkData.frameData}
+                                  onDataChange={onArtworkDataChange}/>
+                }
 
-                    {currentTool === 'room' &&
-                    <RoomEditor height={height}
-                                width={width}
-                                roomData={artworkData.roomData}
-                                onDataChange={onArtworkDataChange}
-                                onDone={onCloseCurrentTool}/>
-                    }
+                {currentTool === 'room' &&
+                <RoomEditor height={height}
+                            width={width}
+                            roomData={artworkData.roomData}
+                            onDataChange={onArtworkDataChange}
+                            onDone={onCloseCurrentTool}/>
+                }
 
-                    {/*{currentTool === 'share' &&
+                {/*{currentTool === 'share' &&
                     <QuickShare masterCanvas={masterCanvas}
                                 artworkData={artworkData}
                                 width={contentWidth}
                                 height={height}/>
                     }*/}
-                </div>
             </div>
         );
     }

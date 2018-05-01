@@ -1,26 +1,23 @@
 import React from 'react';
+import { Ripple } from 'rmwc/Ripple';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import * as faObjectGroup from "@fortawesome/fontawesome-pro-solid/faObjectGroup";
 // styles
 import './iconButtStyles.css';
 // components
-import Icon from "../icon/Icon";
 
-const IconButt = function ({ icon, fill, stroke, onClick, leftCorner, rightCorner}) {
-
-    let classes = 'iconButt';
-
-    if(leftCorner){
-        classes += ' iconButt--leftCorner';
-    }
-    else if(rightCorner){
-        classes += ' iconButt--rightCorner';
-    }
+const IconButt = function ({ onClick, label }) {
 
     return (
-        <div className={classes} onClick={onClick}>
-            <div className='iconButt--icon'>
-                <Icon type={icon} fill={fill} stroke={stroke}/>
+        <Ripple>
+            <div className={'iconButt'} onClick={onClick}>
+                <FontAwesomeIcon icon={faObjectGroup}/>
+
+                {label &&
+                <div>{label}</div>
+                }
             </div>
-        </div>
+        </Ripple>
     )
 };
 

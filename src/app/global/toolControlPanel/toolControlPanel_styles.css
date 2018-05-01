@@ -1,15 +1,13 @@
 .toolControlPanel {
     position: fixed;
+    left: 0;
     right: 0;
-    top:0;
     bottom: 0;
     background: white;
     /*min-width: 200px;*/
-    width: 250px;
     box-shadow: -3px 0 3px rgba(0, 0, 0, 0.51);
     display: flex;
     flex-direction: column;
-    min-height: 100%;
 }
 
 /*PANEL TITLE*/

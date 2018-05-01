@@ -1,16 +1,54 @@
-.quickArtMakerTools{
+.artworkOptionsToolBar{
+    padding-top: 10px;
+    background-color: white;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    border-top: black 1px solid;
+    /*align-items: center;
     justify-content: stretch;
     position: fixed;
     left: 0;
     top: 70px;
-    width: 60px;
+    width: 60px;*/
+}
+
+.bottomControls{
+   /* position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;*/
+}
+
+.artworkOptionsToolBar--tabLabel{
+    font-size: 0.7rem;
 }
 
 .quickArtMakerTools--withBackground{
-    background-color: white;
+   /* background-color: white;
     margin-left: 5px;
-    box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.4);
+    box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.4);*/
+}
+
+.slider--vertical--popOut--holder{
+    position: relative;
+}
+
+.slider--vertical--popOut{
+    position: absolute;
+}
+
+.frameOptions{
+    /*margin: 10px;*/
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+
+.frameOptions button{
+    height: 50px;
+    margin-right: 10px;
+    margin-bottom: 10px;
 }
