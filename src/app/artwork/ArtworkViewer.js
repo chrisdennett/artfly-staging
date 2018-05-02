@@ -40,12 +40,10 @@ class ArtworkViewer extends Component {
         this.onArtworkUndoChanges = this.onArtworkUndoChanges.bind(this);
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.onCanvasOrientationChange = this.onCanvasOrientationChange.bind(this);
-        this.onToolSelect = this.onToolSelect.bind(this);
-        this.onCloseCurrentTool = this.onCloseCurrentTool.bind(this);
         this.onArtworkDelete = this.onArtworkDelete.bind(this);
         this.onArtworkDeleteConfirm = this.onArtworkDeleteConfirm.bind(this);
 
-        this.state = { currentTool: 'view', artworkData: {}, unsavedArtworkData: {}, errorConfirmDialogIsOpen: false };
+        this.state = { artworkData: {}, unsavedArtworkData: {}, errorConfirmDialogIsOpen: false };
     }
 
     componentWillMount() {
@@ -252,18 +250,9 @@ class ArtworkViewer extends Component {
         });
     }
 
-    onToolSelect(toolName) {
-        // toast('wow: ' + toolName);
-        this.setState({ currentTool: toolName })
-    }
-
-    onCloseCurrentTool() {
-        this.setState({ currentTool: 'view' })
-    }
-
     render() {
         const { user, artworkId } = this.props;
-        const { currentTool, artworkData, unsavedArtworkData, masterCanvas, sourceImg } = this.state;
+        const { artworkData, unsavedArtworkData, masterCanvas, sourceImg } = this.state;
         const currentArtworkData = { ...artworkData, ...unsavedArtworkData };
 
         const isNewArtwork = !artworkId;
@@ -317,23 +306,19 @@ class ArtworkViewer extends Component {
 
                 {userIsAdmin &&
                 <ArtworkOptions artworkData={currentArtworkData}
-                                currentTool={currentTool}
-                                userIsAdmin={userIsAdmin}
-                                onArtworkDelete={this.onArtworkDelete}
                                 onArtworkDataChange={this.onArtworkEditorDataChange}
                                 onCanvasOrientationChange={this.onCanvasOrientationChange}
                                 onArtworkSave={this.onArtworkEditorSave}
-                                onCloseCurrentTool={this.onCloseCurrentTool}
                                 sourceImg={sourceImg}
                                 masterCanvas={masterCanvas}/>
                 }
 
-                {showEditingControls &&
+                {/*{showEditingControls &&
                 <ArtworkOptionsToolBar onToolSelect={this.onToolSelect}
                                        userIsAdmin={userIsAdmin}
                                        onSave={this.onArtworkEditorSave}
                                        currentTool={currentTool}/>
-                }
+                }*/}
 
             </div>
         )

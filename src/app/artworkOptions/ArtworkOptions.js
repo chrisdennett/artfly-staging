@@ -4,23 +4,50 @@ import { connect } from 'react-redux';
 import './artworkOptions_styles.css';
 // actions
 import { addArtwork, getArtworkDataOnce } from "../../actions/UserDataActions";
+// images
+import IconFrameSize from './../images/icons/frame-size.png';
+import IconFrameColour from './../images/icons/frame-colour.png';
+import IconPeople from './../images/icons/people.png';
+import IconCropRotate from './../images/icons/crop-rotate.png';
 // comps
-// import QuickPhotoSelector from "./photoSelector/PhotoSelector";
 import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
-// import ArtworkOptionsToolBar from "./artworkOptionsToolBar/ArtworkOptionsToolBar";
-// import QuickShare from "./sharingOptions/SharingOptions";
-import TitlesEditor from "./titlesEditor/TitlesEditor";
 import FrameSizeOptions from "./frameEditor/FrameSizeOptions";
-import RoomEditor from "./roomEditor/RoomEditor";
-import DeleteArtworkPanel from "./deleteArtworkPanel/DeleteArtworkPanel";
 import FrameColourOptions from "./frameEditor/FrameColourOptions";
+import PeopleOptions from "./peopleOptions/PeoplesOptions";
+import ArtworkOptionsToolBar from "./artworkOptionsToolBar/ArtworkOptionsToolBar";
+
+const artworkOptions = {
+    frame: {
+        index: 0,
+        name: 'Frame Size',
+        icon: IconFrameSize
+    },
+    frameColour: {
+        index: 1,
+        name: 'Frame Colour',
+        icon: IconFrameColour
+    },
+    people: {
+        index: 2,
+        name: 'People',
+        icon: IconPeople
+    },
+    crop: {
+        index: 3,
+        name: 'Crop & Rotate',
+        icon: IconCropRotate
+    }
+};
 
 class ArtworkOptions extends Component {
 
     constructor(props) {
         super(props);
 
+        this.state = { currentOptionIndex: 2 };
+
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
+        this.onToolSelect = this.onToolSelect.bind(this);
     }
 
     onCropAndRotateDone(newData) {
@@ -32,26 +59,38 @@ class ArtworkOptions extends Component {
         else {
             this.props.onCanvasOrientationChange(newData);
         }
-        this.props.onCloseCurrentTool();
+    }
+
+    onToolSelect(selectedIndex) {
+        this.setState({ currentOptionIndex: selectedIndex })
     }
 
     render() {
+        const { currentOptionIndex } = this.state;
         const {
                   height, width, artworkData,
-                  sourceImg, currentTool,
-                  onArtworkDataChange, onCloseCurrentTool, onArtworkDelete
+                  sourceImg, onArtworkDataChange, onCloseCurrentTool
               } = this.props;
 
         return (
             <div className={'artworkOptions'}>
 
-                {currentTool === 'delete' &&
-                <DeleteArtworkPanel artworkId={artworkData.artworkId}
-                                    onArtworkDeleteCancel={onCloseCurrentTool}
-                                    onArtworkDelete={onArtworkDelete}/>
+                {currentOptionIndex === 0 &&
+                <FrameSizeOptions frameData={artworkData.frameData}
+                                  onDataChange={onArtworkDataChange}/>
                 }
 
-                {currentTool === 'crop' &&
+                {currentOptionIndex === 1 &&
+                <FrameColourOptions frameData={artworkData.frameData}
+                                    onDataChange={onArtworkDataChange}/>
+                }
+
+                {currentOptionIndex === 2 &&
+                <PeopleOptions people={artworkData.people}
+                               onDataChange={onArtworkDataChange}/>
+                }
+
+                {currentOptionIndex === 3 &&
                 <CropAndRotateEditor sourceImg={sourceImg}
                                      artworkData={artworkData}
                                      onCancel={onCloseCurrentTool}
@@ -60,56 +99,20 @@ class ArtworkOptions extends Component {
                                      height={height}/>
                 }
 
-                {currentTool === 'titles' &&
-                <TitlesEditor height={height}
-                              width={width}
-                              titlesData={artworkData.titlesData}
-                              onDataChange={onArtworkDataChange}
-                              onDone={onCloseCurrentTool}
+                <ArtworkOptionsToolBar
+                    options={artworkOptions}
+                    onOptionSelect={this.onToolSelect}
+                    selectedOptionIndex={currentOptionIndex}
                 />
-                }
-
-                {currentTool === 'frame' &&
-                <FrameSizeOptions frameData={artworkData.frameData}
-                                  onDataChange={onArtworkDataChange}/>
-                }
-
-                {currentTool === 'frameColour' &&
-                <FrameColourOptions frameData={artworkData.frameData}
-                                  onDataChange={onArtworkDataChange}/>
-                }
-
-                {currentTool === 'room' &&
-                <RoomEditor height={height}
-                            width={width}
-                            roomData={artworkData.roomData}
-                            onDataChange={onArtworkDataChange}
-                            onDone={onCloseCurrentTool}/>
-                }
-
-                {/*{currentTool === 'share' &&
-                    <QuickShare masterCanvas={masterCanvas}
-                                artworkData={artworkData}
-                                width={contentWidth}
-                                height={height}/>
-                    }*/}
             </div>
         );
     }
 }
 
 const mapStateToProps = (state) => {
-    let width = 100, height = 100;
-    if (state.ui.windowSize) {
-        width = state.ui.windowSize.windowWidth;
-        height = state.ui.windowSize.windowHeight;
-    }
-
     return {
         artworks: state.artworks,
-        user: state.user,
-        width,
-        height
+        user: state.user
     }
 };
 

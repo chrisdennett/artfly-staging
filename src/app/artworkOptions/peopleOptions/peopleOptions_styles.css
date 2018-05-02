@@ -1,0 +1,26 @@
+/*.frameEditor--toolHolder {
+    position: fixed;
+    left: 60px;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.frameEditor--toolHolder--selectors {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.5);
+    border-top: rgba(0, 0, 0, 0.3) 1px solid;
+}
+
+.frameEditor--toolHolder--selectors--options{
+    display: flex;
+}
+
+.frameEditor--toolHolder--selectors--globalButts{
+    display: flex;
+    border-left: rgba(0, 0, 0, 0.4) 1px solid;
+    border-right: rgba(0, 0, 0, 0.4) 1px solid;
+}*/
