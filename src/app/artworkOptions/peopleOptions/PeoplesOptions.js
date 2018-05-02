@@ -4,7 +4,7 @@ import { Slider } from 'rmwc/Slider';
 import './peopleOptions_styles.css';
 import HorizontalList from "../../global/horizontalList/HorizontalList";
 
-const peopleOptions = {
+const peopleOptionData = {
     baseUrl: '/images/audience/',
     people: {
         womanStanding1: {
@@ -32,13 +32,16 @@ const peopleOptions = {
 const PeopleOptions = ({ people, onDataChange }) => {
 
     const peopleIds = Object.keys(people);
-    const peopleOptionsIds = Object.keys(peopleOptions.people);
-    const baseUrl = peopleOptions.baseUrl;
+    const peopleOptionsIds = Object.keys(peopleOptionData.people);
+    const baseUrl = peopleOptionData.baseUrl;
 
     console.log("peopleIds: ", peopleIds);
 
     const onPersonPositionSliderChangeX = (x) => {
         console.log("x: ", x);
+
+
+
         /*const newFrameData = { ...frameData, mountThicknessDecimal };
         onDataChange({ frameData: newFrameData });*/
     };
@@ -47,7 +50,7 @@ const PeopleOptions = ({ people, onDataChange }) => {
         <div style={{ padding: 10 }} className={'pretty-scroll'}>
             <HorizontalList>
                 {peopleOptionsIds.map(id => {
-                    const option = peopleOptions.people[id];
+                    const option = peopleOptionData.people[id];
 
                     return <div key={id}><img src={baseUrl+option.thumb} /></div>
                 })

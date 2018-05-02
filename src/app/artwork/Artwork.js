@@ -47,7 +47,7 @@ class Artwork extends Component {
 
         if (!masterCanvas && !isNewArtwork) return;
 
-        let { cropData, frameData, titlesData, roomData, widthToHeightRatio, heightToWidthRatio } = artworkData;
+        let { cropData, frameData, titlesData, roomData, people, widthToHeightRatio, heightToWidthRatio } = artworkData;
 
         // CROP DATA
         const { leftPercent, rightPercent, topPercent, bottomPercent } = cropData;
@@ -158,25 +158,29 @@ class Artwork extends Component {
 
         // add people
         if (includePeople) {
-            const { people, x, y } = audience;
-            const person = people[0];
-            const { name, url, maxProportionOfScreenHeight } = person;
-            let personHeight = person.height;
-            let personWidth = person.width;
+            const peopleKeys = Object.keys(people);
+            const firstPersonKey = peopleKeys[0];
+            const person = people[firstPersonKey];
+            const { name, url, x, y, imageWidth, imageHeight, realLifeHeight } = person;
+
+            /*
+            * frameHeight is always 4m
+            * find scale of frame then scale person by this using realLifeHeight;
+            * */
+            const frameRealLifeHeight = 3; // meters
+            const pixelsPerMeter = frameHeight / frameRealLifeHeight;
+
+            const personHeight = realLifeHeight * pixelsPerMeter;
+            const personScale = personHeight / imageHeight;
+            const personWidth = imageWidth * personScale;
             const xPos = (width * x) - (personWidth / 2); // allow to go half off the sides
             const yPos = height * y;
-
-            if (personHeight / height > maxProportionOfScreenHeight) {
-                const heightToWidthRatio = personWidth / personHeight;
-                personHeight = height * maxProportionOfScreenHeight;
-                personWidth = personHeight * heightToWidthRatio;
-            }
 
             if (!this[name] || url !== this.state[`${name}Url`]) {
                 this.loadImage(url, name);
             }
             else {
-                drawPeople(ctx, this[name], person.width, person.height, personWidth, personHeight, xPos, yPos);
+                drawPeople(ctx, this[name], imageWidth, imageHeight, personWidth, personHeight, xPos, yPos);
             }
         }
 
