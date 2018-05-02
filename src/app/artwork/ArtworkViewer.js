@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Toolbar, ToolbarRow, ToolbarSection, ToolbarIcon } from 'rmwc/Toolbar';
 import { SimpleDialog } from 'rmwc/Dialog';
-import { Button, ButtonIcon } from 'rmwc/Button';
+import { Button } from 'rmwc/Button';
 // styles
 import './artworkViewer_styles.css';
 // helpers
@@ -289,13 +289,8 @@ class ArtworkViewer extends Component {
                         </ToolbarSection>
                         {hasUnsavedChanges &&
                         <ToolbarSection>
-                            <Button raised theme="secondary-bg text-primary-on-secondary" onClick={this.onArtworkEditorSave}><ButtonIcon use="save" /> SAVE</Button>
-                        </ToolbarSection>
-                        }
-
-                        {hasUnsavedChanges &&
-                        <ToolbarSection>
-                            <Button onClick={this.onArtworkUndoChanges}><ButtonIcon use="undo"/> UNDO</Button>
+                            <Button raised theme="secondary-bg text-primary-on-secondary" onClick={this.onArtworkEditorSave}>Save</Button>
+                            <Button onClick={this.onArtworkUndoChanges}>Undo</Button>
                         </ToolbarSection>
                         }
                         <ToolbarSection alignEnd>

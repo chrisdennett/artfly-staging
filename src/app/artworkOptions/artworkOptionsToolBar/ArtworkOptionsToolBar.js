@@ -1,15 +1,13 @@
 import React, { Component } from "react";
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import * as faObjectGroup from "@fortawesome/fontawesome-pro-solid/faObjectGroup";
-import { TabBar, Tab, TabIcon, TabIconText } from 'rmwc/Tabs';
-import * as faPalletAlt from "@fortawesome/fontawesome-pro-solid/faPalletAlt";
-
+import { TabBar, Tab } from 'rmwc/Tabs';
 // styles
 import './artworkOptionsToolBar_styles.css';
 import HorizontalList from "../../global/horizontalList/HorizontalList";
 // images
 import IconFrameSize from './../../images/icons/frame-size.png';
 import IconFrameColour from './../../images/icons/frame-colour.png';
+import IconPeople from './../../images/icons/people.png';
+import IconCropRotate from './../../images/icons/crop-rotate.png';
 
 class ArtworkOptionsToolBar extends Component {
 
@@ -73,75 +71,15 @@ class ArtworkOptionsToolBar extends Component {
                         </Tab>
 
                         <Tab>
-                            <FontAwesomeIcon fixedWidth style={{width:40,height:40}} icon={faPalletAlt}/>
+                            <img src={IconPeople} alt={'People'}/>
                         </Tab>
 
                         <Tab>
-                            <TabIcon use={'crop_rotate'}/>
+                            <img src={IconCropRotate} alt={'People'}/>
                         </Tab>
-
-                        {/*<Tab>
-                            <TabIcon>
-                                <FontAwesomeIcon icon={faTrashAlt}/>
-                            </TabIcon>
-                            <TabIconText className={'artworkOptionsToolBar--tabLabel'}>
-                                Delete
-                            </TabIconText>
-                        </Tab>*/}
-
 
                     </TabBar>
                 </HorizontalList>
-
-                {/*{!saveButtonIsDisabled &&
-                    <ControlPanelButt
-                        icon={faSave}
-                        onClick={onSave}
-                        label={'SAVE'}/>
-                    }*/}
-
-                {/*<ControlPanelButt
-                        isSelected={currentTool === 'upload'}
-                        icon={faUpload}
-                        onClick={() => onToolSelect('upload')}
-                        label={'ADD PIC'}/>*/}
-
-                {/*<ControlPanelButt
-                    isSelected={currentTool === 'crop'}
-                    disabled={disableEditing}
-                    icon={faTrashAlt}
-                    style={{ color: '#d02828' }}
-                    onClick={() => onToolSelect('delete')}
-                    label={'DELETE'}/>
-
-                <ControlPanelButt
-                    isSelected={currentTool === 'crop'}
-                    disabled={disableEditing}
-                    icon={faObjectGroup}
-                    onClick={() => onToolSelect('crop')}
-                    label={'CROP & ROTATE'}/>
-
-                <ControlPanelButt
-                    isSelected={currentTool === 'titles'}
-                    disabled={disableEditing}
-                    icon={faListAlt}
-                    onClick={() => onToolSelect('titles')}
-                    label={'TITLES'}/>
-
-                <ControlPanelButt
-                    isSelected={currentTool === 'frame'}
-                    disabled={disableEditing}
-                    icon={faImage}
-                    onClick={() => onToolSelect('frame')}
-                    label={'FRAME'}/>
-
-                <ControlPanelButt
-                    isSelected={currentTool === 'room'}
-                    disabled={disableEditing}
-                    icon={faPalletAlt}
-                    onClick={() => onToolSelect('room')}
-                    label={'ROOM'}/>*/}
-
             </div>
         );
     }
