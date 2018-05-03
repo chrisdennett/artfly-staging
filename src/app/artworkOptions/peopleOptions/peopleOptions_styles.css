@@ -1,26 +1,31 @@
-/*.frameEditor--toolHolder {
-    position: fixed;
-    left: 60px;
-    right: 0;
-    bottom: 0;
+.people-tiles {
     display: flex;
-    flex-direction: column;
+    background-color: #01579b;
 }
 
-.frameEditor--toolHolder--selectors {
+.person-tile {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-right: 10px;
+    border-radius: 10px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    background: rgba(255, 255, 255, 0.5);
-    border-top: rgba(0, 0, 0, 0.3) 1px solid;
+    /*justify-content: center;*/
+    flex-direction: column;
+    min-width: 60px;
 }
 
-.frameEditor--toolHolder--selectors--options{
+.person-tile--imgHolder {
+    flex: 1;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
 }
 
-.frameEditor--toolHolder--selectors--globalButts{
-    display: flex;
-    border-left: rgba(0, 0, 0, 0.4) 1px solid;
-    border-right: rgba(0, 0, 0, 0.4) 1px solid;
-}*/
+.person-tile--selected {
+    border: #984eac 2px solid;
+}
+
+.person-tile--toggleHolder {
+
+}

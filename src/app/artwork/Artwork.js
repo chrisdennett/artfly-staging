@@ -24,14 +24,14 @@ class Artwork extends Component {
         if (this.props.onCanvasSetUp) this.props.onCanvasSetUp(canvas)
     }
 
-    loadImage(url, name) {
+    loadImage(url, id) {
         let img = new Image();
         img.setAttribute('crossOrigin', 'anonymous'); //
         img.src = url;
 
         img.onload = () => {
-            this[name] = img;
-            this.setState({ [`${name}Url`]: url }, () => {
+            this[id] = img;
+            this.setState({ [`${id}Url`]: url }, () => {
                 this.setupCanvas(this.props)
             });
         }
@@ -54,7 +54,7 @@ class Artwork extends Component {
         // FRAME DATA
         const { frameThicknessDecimal, frameColour, mountThicknessDecimal, mountColour } = frameData;
         // ROOM DATA
-        const { audience, wallTileUrl, floorTileUrl, includeSkirting, includeGuardRail, includePeople } = roomData;
+        const { wallTileUrl, floorTileUrl, includeSkirting, includeGuardRail, includePeople } = roomData;
 
         let loadingImage = false;
         if (!this.wallTile || wallTileUrl !== this.state.wallTileUrl) {
@@ -159,9 +159,7 @@ class Artwork extends Component {
         // add people
         if (includePeople) {
             const peopleKeys = Object.keys(people);
-            const firstPersonKey = peopleKeys[0];
-            const person = people[firstPersonKey];
-            const { name, url, x, y, imageWidth, imageHeight, realLifeHeight } = person;
+            if (peopleKeys.length < 1) return;
 
             /*
             * frameHeight is always 4m
@@ -170,17 +168,24 @@ class Artwork extends Component {
             const frameRealLifeHeight = 3; // meters
             const pixelsPerMeter = frameHeight / frameRealLifeHeight;
 
-            const personHeight = realLifeHeight * pixelsPerMeter;
-            const personScale = personHeight / imageHeight;
-            const personWidth = imageWidth * personScale;
-            const xPos = (width * x) - (personWidth / 2); // allow to go half off the sides
-            const yPos = height * y;
+            // for each
+            for (let key of peopleKeys) {
+                const person = people[key];
 
-            if (!this[name] || url !== this.state[`${name}Url`]) {
-                this.loadImage(url, name);
-            }
-            else {
-                drawPeople(ctx, this[name], imageWidth, imageHeight, personWidth, personHeight, xPos, yPos);
+                const { id, url, x, y, imageWidth, imageHeight, realLifeHeight } = person;
+                const personHeight = realLifeHeight * pixelsPerMeter;
+                const personScale = personHeight / imageHeight;
+                const personWidth = imageWidth * personScale;
+                const xPos = (width * x) - (personWidth / 2); // allow to go half off the sides
+                const yPos = height * y;
+
+                if (!this[id] || url !== this.state[`${id}Url`]) {
+                    // console.log("id: ", id);
+                    this.loadImage(url, id);
+                }
+                else {
+                    drawPeople(ctx, this[id], imageWidth, imageHeight, personWidth, personHeight, xPos, yPos);
+                }
             }
         }
 
@@ -635,6 +640,9 @@ const
 
 const
     drawPeople = (ctx, img, sourceWidth, sourceHeight, outputWidth, outputHeight, xPos, yPos) => {
+
+        console.log("sourceWidth, sourceHeight, outputWidth, outputHeight, xPos, yPos: ", sourceWidth, sourceHeight, outputWidth, outputHeight, xPos, yPos);
+
         ctx.drawImage(img, 0, 0, sourceWidth, sourceHeight, xPos, yPos - outputHeight, outputWidth, outputHeight);
     };
 

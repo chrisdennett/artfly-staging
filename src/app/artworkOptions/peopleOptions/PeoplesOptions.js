@@ -1,67 +1,135 @@
-import React from "react";
+import React, { Component } from "react";
 import { Slider } from 'rmwc/Slider';
 // styles
 import './peopleOptions_styles.css';
 import HorizontalList from "../../global/horizontalList/HorizontalList";
+import PersonTile from "./PersonTile";
 
 const baseUrl = '/images/audience/';
 const peopleOptionData = {
     womanStanding1: {
+        id: 'womanStanding1',
+        name: 'woman standing 1',
         thumb: `${baseUrl}woman-standing-1-darker-thumb.png`,
         url: `${baseUrl}woman-standing-1-darker.png`,
-        height: 300, width: 120,
-        maxProportionOfScreenHeight: 0.5
+        imageHeight: 300, imageWidth: 120,
+        x: 0.5, y: 1.02,
+        realLifeHeight: 1.83
     },
     peopleSitting1: {
+        id: 'peopleSitting1',
+        name: 'people sitting 1',
         thumb: `${baseUrl}people-sitting-1-thumb.png`,
         url: `${baseUrl}people-sitting-1.png`,
-        height: 200, width: 310,
-        maxProportionOfScreenHeight: 0.3
+        imageHeight: 200, imageWidth: 310,
+        x: 0.5, y: 1.02,
+        realLifeHeight: 1.2
     },
     peopleWalking1: {
+        id: 'peopleWalking1',
+        name: 'people walking 1',
         thumb: `${baseUrl}people-walking-1-thumb.png`,
         url: `${baseUrl}people-walking-1.png`,
-        height: 320, width: 224,
-        maxProportionOfScreenHeight: 0.5
+        imageHeight: 320, imageWidth: 224,
+        x: 0.5, y: 1.02,
+        realLifeHeight: 1.75
     }
 };
 
-const PeopleOptions = ({ people, onDataChange }) => {
+class PeopleOptions extends Component {
 
-    const peopleIds = Object.keys(people);
-    const peopleOptionsIds = Object.keys(peopleOptionData);
-        const firstPersonId = peopleIds[0];
-        const person = people[firstPersonId];
+    constructor(props) {
+        super(props);
 
-    const onPersonPositionSliderChangeX = (x) => {
+        this.state = { selectedId: -1 };
 
+        this.onPersonPositionSliderChangeX = this.onPersonPositionSliderChangeX.bind(this);
+        this.onPersonIncludedChange = this.onPersonIncludedChange.bind(this);
+        this.onPersonSelected = this.onPersonSelected.bind(this);
+    }
+
+    componentWillMount() {
+        const { people } = this.props;
+        const peopleIds = Object.keys(people);
+        if (peopleIds.length > 0) {
+            const firstId = peopleIds[0];
+            this.setState({ selectedId: firstId })
+        }
+    }
+
+    onPersonSelected(personId) {
+
+            this.setState({ selectedId: personId })
+
+    }
+
+    onPersonPositionSliderChangeX(x, personId, person) {
+        const { people, onDataChange } = this.props;
         const roundedX = Math.round(x * 1000) / 1000;
 
         const updatedPersonData = { ...person, x: roundedX };
-        const updatedPeople = {...people, [firstPersonId]:updatedPersonData};
+        const updatedPeople = { ...people, [personId]: updatedPersonData };
 
         onDataChange({ people: updatedPeople });
-    };
+    }
 
-    return (
-        <div style={{ padding: 10 }} className={'pretty-scroll'}>
-            <HorizontalList>
-                {peopleOptionsIds.map(id => {
-                    const option = peopleOptionData[id];
-                    return <div key={id}><img src={option.thumb}/></div>
-                })
+    onPersonIncludedChange(isIncluded, personId, person) {
+        const { people, onDataChange } = this.props;
+        const updatedPeople = { ...people };
 
+        if (isIncluded) {
+            console.log("person: ", person);
+            updatedPeople[personId] = person;
+        }
+        else {
+            delete updatedPeople[personId];
+        }
+
+        onDataChange({ people: updatedPeople });
+    }
+
+    render() {
+        const { people } = this.props;
+        const { selectedId } = this.state;
+        const selectedPerson = people[selectedId];
+        const peopleOptionsIds = Object.keys(peopleOptionData);
+
+        return (
+            <div style={{ padding: 10 }} className={'pretty-scroll'}>
+                <HorizontalList>
+                    {peopleOptionsIds.map(id => {
+                        const person = peopleOptionData[id];
+                        const peopleIds = Object.keys(people);
+                        const isIncluded = peopleIds.indexOf(id) > -1;
+                        const isSelected = selectedId === id;
+
+                        return (
+                            <PersonTile key={id}
+                                        imgSrc={person.thumb}
+                                        name={person.name}
+                                        onPersonSelected={() => this.onPersonSelected(id)}
+                                        onIncludeChange={isIncluded => this.onPersonIncludedChange(isIncluded, id, person)}
+                                        isIncluded={isIncluded}
+                                        isSelected={isSelected}/>
+                        )
+                    })
+                    }
+
+                </HorizontalList>
+
+                {selectedPerson &&
+                <div>
+                    Position:
+                    <Slider
+                        min={0} max={1}
+                        value={selectedPerson.x}
+                        onInput={e => this.onPersonPositionSliderChangeX(e.detail.value, selectedId, selectedPerson)}
+                    />
+                </div>
                 }
-            </HorizontalList>
-
-            Position:
-            <Slider
-                min={0} max={1}
-                value={person.x}
-                onInput={e => onPersonPositionSliderChangeX(e.detail.value)}
-            />
-        </div>
-    );
-}
+            </div>
+        );
+    }
+};
 
 export default PeopleOptions;

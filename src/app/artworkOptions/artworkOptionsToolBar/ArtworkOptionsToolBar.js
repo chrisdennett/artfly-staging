@@ -4,7 +4,7 @@ import { TabBar, Tab } from 'rmwc/Tabs';
 import './artworkOptionsToolBar_styles.css';
 import HorizontalList from "../../global/horizontalList/HorizontalList";
 
-const ArtworkOptionsToolBar = ({onOptionSelect,options, selectedOptionIndex}) => {
+const ArtworkOptionsToolBar = ({ onOptionSelect, options, selectedOptionIndex }) => {
 
     const optionKeys = options ? Object.keys(options) : [];
     const onTabSelect = (e) => {

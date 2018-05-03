@@ -20,7 +20,6 @@ import {
 //comps
 import history from './../global/history';
 import ArtworkOptions from '../artworkOptions/ArtworkOptions';
-import ArtworkOptionsToolBar from "../artworkOptions/artworkOptionsToolBar/ArtworkOptionsToolBar";
 import Link from "../global/Butt/Link";
 import IconLogo from "../global/icon/icons/IconLogo";
 // import SignInOut from '../SignInOut/SignInOut';
@@ -257,7 +256,6 @@ class ArtworkViewer extends Component {
 
         const isNewArtwork = !artworkId;
         const userIsAdmin = isNewArtwork || (user.uid && user.uid === artworkData.adminId);
-        const showEditingControls = userIsAdmin && masterCanvas;
         let topButtonsStyle = { display: 'flex', marginRight: 5, marginTop: 5 };
         if (userIsAdmin) topButtonsStyle.marginRight = 65;
 

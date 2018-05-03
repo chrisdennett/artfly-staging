@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import 'material-components-web/dist/material-components-web.min.css';
 import './appStyles.css';
 // components
-import WindowDimensionsTracker from "./global/WindowDimensionsTracker";
 import { IN_STAGING } from "./global/GLOBAL_CONSTANTS";
 import NotificationViewer from "./global/notifications/NotificationViewer";
 
@@ -24,9 +23,7 @@ class App extends Component {
                 </div>
                 }
 
-                <WindowDimensionsTracker>
-                    {children}
-                </WindowDimensionsTracker>
+                {children}
 
             </div>
         );
