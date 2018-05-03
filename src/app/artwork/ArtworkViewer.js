@@ -138,6 +138,13 @@ class ArtworkViewer extends Component {
         }
 
         const objectContainingChangesKeys = Object.keys(objectContainingChanges);
+        const existingObjectKeys = Object.keys(existingObject);
+
+        // if number of keys don't match a change must have happend
+        if(objectContainingChangesKeys.length !== existingObjectKeys.length){
+            doesMatch = false;
+            return doesMatch;
+        }
 
         for (let key of objectContainingChangesKeys) {
             if (existingObject.hasOwnProperty(key) === false) {

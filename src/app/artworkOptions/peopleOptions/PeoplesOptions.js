@@ -58,9 +58,7 @@ class PeopleOptions extends Component {
     }
 
     onPersonSelected(personId) {
-
-            this.setState({ selectedId: personId })
-
+        this.setState({ selectedId: personId })
     }
 
     onPersonPositionSliderChangeX(x, personId, person) {

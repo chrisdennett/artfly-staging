@@ -210,14 +210,14 @@ class Artwork extends Component {
                         ref={this.onCanvasInit}
                         width={300}
                         height={300}/>
+
+                {/*{this.canvas &&
+                <img src={this.canvas.toDataURL('image/png')} />
+                }*/}
             </div>
         );
     }
 }
-
-/*{this.canvas &&
-                <img src={this.canvas.toDataURL('image/png')} />
-                }*/
 
 export default Artwork;
 
@@ -640,9 +640,6 @@ const
 
 const
     drawPeople = (ctx, img, sourceWidth, sourceHeight, outputWidth, outputHeight, xPos, yPos) => {
-
-        console.log("sourceWidth, sourceHeight, outputWidth, outputHeight, xPos, yPos: ", sourceWidth, sourceHeight, outputWidth, outputHeight, xPos, yPos);
-
         ctx.drawImage(img, 0, 0, sourceWidth, sourceHeight, xPos, yPos - outputHeight, outputWidth, outputHeight);
     };
 
