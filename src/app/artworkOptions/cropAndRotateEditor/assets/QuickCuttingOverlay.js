@@ -76,7 +76,7 @@ class QuickCuttingOverlay extends Component {
 
         return (
             <div className='cropAndRotate--cuttingOverlay'>
-                <svg width={width} height={height} style={{ position: 'absolute' }}>
+                <svg width={width} height={height}>
                     <defs>
                         <mask id="hole">
                             <rect width={width} height={height} fill="white"/>

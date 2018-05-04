@@ -313,7 +313,6 @@ class ArtworkViewer extends Component {
             });
         const currentArtworkOption = artworkOptions[currentEditingOptionKey];
         const {useFullPage:editingOptionUsesFullPage} = currentArtworkOption;
-        console.log("editingOptionUsesFullPage: ", editingOptionUsesFullPage);
 
         let optionStyle = editingOptionUsesFullPage ? {flex: 1, display: 'flex', flexDirection: 'column'} : optionStyle;
 

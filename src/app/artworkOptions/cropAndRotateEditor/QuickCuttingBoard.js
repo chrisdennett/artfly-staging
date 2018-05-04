@@ -7,16 +7,8 @@ class QuickCuttingBoard extends Component {
     constructor(props) {
         super(props);
 
-        this.canvasInit = this.canvasInit.bind(this);
         this.onCuttingOverlayChange = this.onCuttingOverlayChange.bind(this);
-
-        this.state = { displayWidth: 1, displayHeight: 1 };
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.cuttingBoardCanvas) {
-            this.setState({ displayWidth:this.cuttingBoardCanvas.width, displayHeight:this.cuttingBoardCanvas.height });
-        }
+        this.getCropData = this.getCropData.bind(this);
     }
 
     // Update on Handle move to store values and ensure image can be
@@ -44,28 +36,16 @@ class QuickCuttingBoard extends Component {
         return { leftX: newLeftX, rightX: newRightX, topY: newTopY, bottomY: newBottomY, width: w, height: h }
     }
 
-    canvasInit(canvas) {
-        this.cuttingBoardCanvas = canvas;
-
-        if (this.props.onCanvasSetup) {
-            this.props.onCanvasSetup(this.cuttingBoardCanvas);
-        }
-    }
-
     render() {
-        const { displayWidth, displayHeight } = this.state;
-
-        const cropData = this.getCropData(displayWidth, displayHeight);
+        const { width = 100, height = 100 } = this.props;
+        const cropData = this.getCropData(width, height);
 
         return (
-            <div className='cropAndRotate--cuttingBoard'>
-                <QuickCuttingOverlay
-                    onChange={this.onCuttingOverlayChange}
-                    {...cropData}/>
 
-                <canvas ref={this.canvasInit}
-                        style={{ boxShadow: '3px 3px 3px 0px rgba(0,0,0,0.4)' }}/>
-            </div>
+            <QuickCuttingOverlay
+                onChange={this.onCuttingOverlayChange}
+                {...cropData}/>
+
         );
     }
 }

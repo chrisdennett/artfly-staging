@@ -1,6 +1,6 @@
 // externals
 import React, { Component } from "react";
-import faRedo from '@fortawesome/fontawesome-pro-solid/faRedo';
+// import faRedo from '@fortawesome/fontawesome-pro-solid/faRedo';
 import Measure from 'react-measure'; //https://www.npmjs.com/package/react-measure
 // styles
 import './cropAndRotate_styles.css';
@@ -9,63 +9,30 @@ import * as ImageHelper from "../../global/ImageHelper";
 // components
 import QuickCuttingBoard from "./QuickCuttingBoard";
 // import QuickCuttingMat from "../quickCuttingMat/QuickCuttingMat";
-import ControlPanelButt from "../../global/Butt/ControlPanelButt";
+// import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 
 class CropAndRotateEditor extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {localOrientation:1, localCropData:null};
+        this.state = {};
 
-        this.onCropUpdate = this.onCropUpdate.bind(this);
-        this.onCanvasSetup = this.onCanvasSetup.bind(this);
         this.onRotateClockwiseClick = this.onRotateClockwiseClick.bind(this);
-        this.onDoneClick = this.onDoneClick.bind(this);
-        this.onCancelClick = this.onCancelClick.bind(this);
         this.drawCuttingBoardCanvas = this.drawCuttingBoardCanvas.bind(this);
+        this.onResize = this.onResize.bind(this);
+
     }
 
-    componentWillMount() {
-        // set crop data and rotation to default or values set be parents
-        const { artworkData } = this.props;
-        const { cropData, orientation } = artworkData;
-
-        this.setState({ localCropData:cropData, localOrientation:orientation })
+    componentWillReceiveProps(newProps) {
+        this.drawCuttingBoardCanvas(newProps);
     }
 
-    componentWillUpdate(newProps, oldProps){
-        if(!oldProps.sourceImg && newProps.sourceImg){
-            this.drawCuttingBoardCanvas(newProps);
-        }
-    }
+    drawCuttingBoardCanvas(props=this.props) {
+        const { sourceImg, orientation } = props;
+        const { dimensions } = this.state;
+        const { width, height } = dimensions ? dimensions : { width: null, height: null };
 
-    onCropUpdate(cropData) {
-        this.setState({ localCropData:cropData });
-    }
-
-    onCanvasSetup(canvas) {
-        this.setState({ canvas }, () => {
-            this.drawCuttingBoardCanvas();
-        });
-    }
-
-    // Cancel current changes
-    onCancelClick() {
-        this.props.onCancel();
-    }
-
-    onDoneClick() {
-        const { localCropData:cropData, localOrientation:orientation } = this.state;
-
-        this.props.onDone({ orientation, cropData });
-    }
-
-    drawCuttingBoardCanvas(props = this.props) {
-        const { sourceImg } = props;
-        const { localOrientation:orientation, canvas, dimensions } = this.state;
-        const {width, height} = dimensions ? dimensions : {width:null, height:null};
-
-        if (!sourceImg || !width || !canvas) return;
+        if (!sourceImg || !width || !this.canvas) return;
 
         const paddingTop = 20;
         const paddingSide = 40;
@@ -75,20 +42,20 @@ class CropAndRotateEditor extends Component {
 
         ImageHelper.drawToCanvas({
             sourceCanvas: sourceImg,
-            outputCanvas: canvas,
+            outputCanvas: this.canvas,
             orientation: orientation,
             maxOutputCanvasWidth: maxCuttingBoardWidth,
             maxOutputCanvasHeight: maxCuttingBoardHeight
         });
 
         // this isn't needed for any other reason than to trigger a redraw
-        // this.setState({ maxCuttingBoardWidth, maxCuttingBoardHeight });
+        this.setState({ canvasWidth:this.canvas.width, canvasHeight:this.canvas.height });
     }
 
     // Rotate using info from:
     // https://stackoverflow.com/questions/7584794/accessing-jpeg-exif-rotation-data-in-javascript-on-the-client-side/32490603#32490603
     onRotateClockwiseClick() {
-        const currentRotation = this.state.localOrientation ? this.state.localOrientation : 1;
+        /*const currentRotation = this.state.localOrientation ? this.state.localOrientation : 1;
         const nextRotations = { 1: 6, 6: 3, 3: 8, 8: 1 }; // order of rotations by 90° clockwise increments
         const newOrientation = nextRotations[currentRotation] || 6;
 
@@ -101,45 +68,41 @@ class CropAndRotateEditor extends Component {
 
         this.setState({ localOrientation: newOrientation, localCropData: { leftPercent: newL, rightPercent: newR, topPercent: newT, bottomPercent: newB } }, () => {
             this.drawCuttingBoardCanvas();
-        });
+        });*/
     }
 
+    onResize(contentRect){
+        this.setState({dimensions:contentRect.bounds}, this.drawCuttingBoardCanvas);
+    }
+    
     render() {
-        const { localCropData:cropData } = this.state;
-        const buttStyle = { color: 'rgba(255,255,255,0.7)', marginRight: 10 };
+        const { cropData } = this.props;
+        const { canvasWidth=100, canvasHeight=100 } = this.state;
+        // const buttStyle = { color: 'rgba(255,255,255,0.7)', marginRight: 10 };
 
         return (
+            <Measure
+                bounds
+                onResize={this.onResize}>
 
-            <div className='quickCropAndRotate--holder'>
+                {({ measureRef }) =>
+                    <div ref={measureRef} className={'quickCropAndRotate--holder'}>
 
-                <Measure
-                    bounds
-                    onResize={(contentRect) => {
-                        this.setState({ dimensions: contentRect.bounds })
-                    }}>
-
-                    {({ measureRef }) =>
-                        <div ref={measureRef} className='quickCropAndRotate--cuttingBoardHolder'>
+                        <div className='quickCropAndRotate--cuttingBoardHolder'>
                             <QuickCuttingBoard
-                                onCropUpdate={this.onCropUpdate}
-                                onCanvasSetup={this.onCanvasSetup}
+                                width={canvasWidth}
+                                height={canvasHeight}
                                 cropData={cropData}/>
+
+                            <canvas ref={c => this.canvas = c}/>
                         </div>
-                    }
-                </Measure>
+                    </div>
 
 
+                }
+            </Measure>
 
 
-                <div className='quickCropAndRotate--controls'>
-                    <ControlPanelButt icon={faRedo}
-                                      style={buttStyle}
-                                      key={'cropRotate'}
-                                      label={'ROTATE'}
-                                      onClick={this.onRotateClockwiseClick}/>
-                </div>
-
-            </div>
         );
     }
 }

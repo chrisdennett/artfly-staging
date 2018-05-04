@@ -60,9 +60,7 @@ class ArtworkOptions extends Component {
 
                 {currentOptionIndex === 3 &&
                 <CropAndRotateEditor sourceImg={sourceImg}
-                                     artworkData={artworkData}
-                                     onCancel={onCloseCurrentTool}
-                                     onDone={this.onCropAndRotateDone}
+                                     cropData={artworkData.cropData}
                                      width={width}
                                      height={height}/>
                 }

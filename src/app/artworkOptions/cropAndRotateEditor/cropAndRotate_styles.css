@@ -3,6 +3,9 @@
     flex: 1;
     background-color: #01579b;
     z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .quickCropAndRotate--controls {
@@ -12,18 +15,10 @@
 }
 
 .quickCropAndRotate--cuttingBoardHolder {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 67px;
-
-    display: flex;
-    flex: 1;
-    align-items: center;
-    justify-content: center;
+    z-index: 99999;
+    line-height: 0;
 }
 
-.cropAndRotate--cuttingBoard {
-    position: relative;
+.cropAndRotate--cuttingOverlay{
+    position: absolute;
 }
