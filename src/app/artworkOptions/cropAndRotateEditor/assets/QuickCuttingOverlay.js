@@ -66,7 +66,7 @@ class QuickCuttingOverlay extends Component {
     }
 
     render() {
-        const { width, height, leftX, rightX, topY, bottomY } = this.props;
+        const { width, height, leftX, rightX, topY, bottomY, onRotateClick } = this.props;
 
         // find the middle for placement of side handles
         const cutoutWidth = rightX - leftX;
@@ -94,7 +94,14 @@ class QuickCuttingOverlay extends Component {
                                    onHandleUpdate={this.onRectDrag}
                                    bounds={{ left: 0, right: width - cutoutWidth, top: 0, bottom: height - cutoutHeight }}/>
 
+                    <rect fill={'rgb(255,255,0)'}
+                          onClick={onRotateClick}
+                          width={50} height={50}
+                          x={middleX-25} y={middleY-25}
+                    />
+
                 </svg>
+
 
                 <DragHandle id={'top-left'}
                             bounds={{ left: 0, right: rightX - 50, top: 0, bottom: bottomY - 50 }}

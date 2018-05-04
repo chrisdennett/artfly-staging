@@ -37,12 +37,13 @@ class QuickCuttingBoard extends Component {
     }
 
     render() {
-        const { width = 100, height = 100 } = this.props;
+        const { width = 100, height = 100, onRotateClick } = this.props;
         const cropData = this.getCropData(width, height);
 
         return (
 
             <QuickCuttingOverlay
+                onRotateClick={onRotateClick}
                 onChange={this.onCuttingOverlayChange}
                 {...cropData}/>
 

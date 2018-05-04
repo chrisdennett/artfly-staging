@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
 // styles
 import './artworkOptions_styles.css';
 // actions
@@ -12,25 +11,6 @@ import PeopleOptions from "./peopleOptions/PeoplesOptions";
 import ArtworkOptionsToolBar from "./artworkOptionsToolBar/ArtworkOptionsToolBar";
 
 class ArtworkOptions extends Component {
-
-    constructor(props) {
-        super(props);
-
-        // this.state = { currentOptionIndex: 3 };
-
-        this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
-    }
-
-    onCropAndRotateDone(newData) {
-        // if the orientation is the same, just update the artwork data
-        if (newData.orientation === this.props.artworkData.orientation) {
-            this.props.onArtworkDataChange(newData);
-        }
-        // otherwise the master canvas needs to be updated as well
-        else {
-            this.props.onCanvasOrientationChange(newData);
-        }
-    }
 
     render() {
         const {
@@ -58,6 +38,7 @@ class ArtworkOptions extends Component {
 
                 {currentOptionIndex === 3 &&
                 <CropAndRotateEditor sourceImg={sourceImg}
+                                     orientation={artworkData.orientation}
                                      cropData={artworkData.cropData}
                                      onDataChange={onArtworkDataChange}/>
                 }
@@ -72,13 +53,4 @@ class ArtworkOptions extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        artworks: state.artworks,
-        user: state.user
-    }
-};
-
-const mapActionsToProps = { addArtwork, getArtworkDataOnce };
-
-export default connect(mapStateToProps, mapActionsToProps)(ArtworkOptions);
+export default ArtworkOptions;
