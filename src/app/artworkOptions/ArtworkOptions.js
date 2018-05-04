@@ -32,12 +32,10 @@ class ArtworkOptions extends Component {
         }
     }
 
-
     render() {
         const {
                   currentOptionIndex, onToolSelect, artworkOptions,
-                  height, width, artworkData, style,
-                  sourceImg, onArtworkDataChange, onCloseCurrentTool
+                  artworkData, style, sourceImg, onArtworkDataChange
               } = this.props;
 
         return (
@@ -61,8 +59,7 @@ class ArtworkOptions extends Component {
                 {currentOptionIndex === 3 &&
                 <CropAndRotateEditor sourceImg={sourceImg}
                                      cropData={artworkData.cropData}
-                                     width={width}
-                                     height={height}/>
+                                     onDataChange={onArtworkDataChange}/>
                 }
 
                 <ArtworkOptionsToolBar

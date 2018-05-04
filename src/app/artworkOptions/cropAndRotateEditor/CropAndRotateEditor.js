@@ -20,6 +20,7 @@ class CropAndRotateEditor extends Component {
         this.onRotateClockwiseClick = this.onRotateClockwiseClick.bind(this);
         this.drawCuttingBoardCanvas = this.drawCuttingBoardCanvas.bind(this);
         this.onResize = this.onResize.bind(this);
+        this.onCropChange = this.onCropChange.bind(this);
 
     }
 
@@ -74,9 +75,13 @@ class CropAndRotateEditor extends Component {
     onResize(contentRect){
         this.setState({dimensions:contentRect.bounds}, this.drawCuttingBoardCanvas);
     }
+
+    onCropChange(cropData){
+        this.props.onDataChange({cropData});
+    }
     
     render() {
-        const { cropData } = this.props;
+        const { cropData, onDataChange } = this.props;
         const { canvasWidth=100, canvasHeight=100 } = this.state;
         // const buttStyle = { color: 'rgba(255,255,255,0.7)', marginRight: 10 };
 
@@ -92,6 +97,7 @@ class CropAndRotateEditor extends Component {
                             <QuickCuttingBoard
                                 width={canvasWidth}
                                 height={canvasHeight}
+                                onCropUpdate={this.onCropChange}
                                 cropData={cropData}/>
 
                             <canvas ref={c => this.canvas = c}/>
