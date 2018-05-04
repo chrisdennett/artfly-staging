@@ -35,11 +35,9 @@ class CropAndRotateEditor extends Component {
 
         if (!sourceImg || !width || !this.canvas) return;
 
-        const paddingTop = 20;
-        const paddingSide = 40;
-        const spaceForButtons = 112;
-        const maxCuttingBoardWidth = width - (paddingSide * 2);
-        const maxCuttingBoardHeight = height - (spaceForButtons + paddingTop);
+        const padding = 26;
+        const maxCuttingBoardWidth = width - (padding * 2);
+        const maxCuttingBoardHeight = height - (padding * 2);
 
         ImageHelper.drawToCanvas({
             sourceCanvas: sourceImg,
@@ -81,7 +79,7 @@ class CropAndRotateEditor extends Component {
     }
     
     render() {
-        const { cropData, onDataChange } = this.props;
+        const { cropData } = this.props;
         const { canvasWidth=100, canvasHeight=100 } = this.state;
         // const buttStyle = { color: 'rgba(255,255,255,0.7)', marginRight: 10 };
 
@@ -97,8 +95,9 @@ class CropAndRotateEditor extends Component {
                             <QuickCuttingBoard
                                 width={canvasWidth}
                                 height={canvasHeight}
+                                cropData={cropData}
                                 onCropUpdate={this.onCropChange}
-                                cropData={cropData}/>
+                            />
 
                             <canvas ref={c => this.canvas = c}/>
                         </div>
