@@ -1,25 +1,14 @@
 .quickCropAndRotate--holder {
     /*border: red 1px solid;*/
-    position: relative;
-    line-height: 0;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #12615a;
+    flex: 1;
+    background-color: #01579b;
+    z-index: 99999;
 }
 
 .quickCropAndRotate--controls {
-    position: fixed;
+    /*position: fixed;
     bottom: 10px;
-    display: flex;
-}
-
-.quickCropAndRotate--cuttingMatHolder {
-    /*position: absolute;
-    top: 0;
-    left: 0;*/
+    display: flex;*/
 }
 
 .quickCropAndRotate--cuttingBoardHolder {

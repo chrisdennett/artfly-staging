@@ -1,15 +1,14 @@
 // externals
 import React, { Component } from "react";
 import faRedo from '@fortawesome/fontawesome-pro-solid/faRedo';
-import faTimes from '@fortawesome/fontawesome-pro-solid/faTimes';
-import faCheck from '@fortawesome/fontawesome-pro-solid/faCheck';
+import Measure from 'react-measure'; //https://www.npmjs.com/package/react-measure
 // styles
 import './cropAndRotate_styles.css';
 // helpers
 import * as ImageHelper from "../../global/ImageHelper";
 // components
 import QuickCuttingBoard from "./QuickCuttingBoard";
-import QuickCuttingMat from "../quickCuttingMat/QuickCuttingMat";
+// import QuickCuttingMat from "../quickCuttingMat/QuickCuttingMat";
 import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 
 class CropAndRotateEditor extends Component {
@@ -34,6 +33,12 @@ class CropAndRotateEditor extends Component {
         this.setState({ localCropData:cropData, localOrientation:orientation })
     }
 
+    componentWillUpdate(newProps, oldProps){
+        if(!oldProps.sourceImg && newProps.sourceImg){
+            this.drawCuttingBoardCanvas(newProps);
+        }
+    }
+
     onCropUpdate(cropData) {
         this.setState({ localCropData:cropData });
     }
@@ -56,8 +61,9 @@ class CropAndRotateEditor extends Component {
     }
 
     drawCuttingBoardCanvas(props = this.props) {
-        const { width, height, sourceImg } = props;
-        const { localOrientation:orientation, canvas } = this.state;
+        const { sourceImg } = props;
+        const { localOrientation:orientation, canvas, dimensions } = this.state;
+        const {width, height} = dimensions ? dimensions : {width:null, height:null};
 
         if (!sourceImg || !width || !canvas) return;
 
@@ -76,7 +82,7 @@ class CropAndRotateEditor extends Component {
         });
 
         // this isn't needed for any other reason than to trigger a redraw
-        this.setState({ maxCuttingBoardWidth, maxCuttingBoardHeight })
+        // this.setState({ maxCuttingBoardWidth, maxCuttingBoardHeight });
     }
 
     // Rotate using info from:
@@ -99,24 +105,31 @@ class CropAndRotateEditor extends Component {
     }
 
     render() {
-        const { width, height } = this.props;
         const { localCropData:cropData } = this.state;
         const buttStyle = { color: 'rgba(255,255,255,0.7)', marginRight: 10 };
-
-        const showCuttingBoard = Math.max(width, height) > 800;
 
         return (
 
             <div className='quickCropAndRotate--holder'>
 
-                {showCuttingBoard &&
-                <div className='quickCropAndRotate--cuttingMatHolder'>
-                    <QuickCuttingMat width={width}
-                                     height={height}
-                                     label={"Crop and Rotate"}
-                    />
-                </div>
-                }
+                <Measure
+                    bounds
+                    onResize={(contentRect) => {
+                        this.setState({ dimensions: contentRect.bounds })
+                    }}>
+
+                    {({ measureRef }) =>
+                        <div ref={measureRef} className='quickCropAndRotate--cuttingBoardHolder'>
+                            <QuickCuttingBoard
+                                onCropUpdate={this.onCropUpdate}
+                                onCanvasSetup={this.onCanvasSetup}
+                                cropData={cropData}/>
+                        </div>
+                    }
+                </Measure>
+
+
+
 
                 <div className='quickCropAndRotate--controls'>
                     <ControlPanelButt icon={faRedo}
@@ -124,25 +137,6 @@ class CropAndRotateEditor extends Component {
                                       key={'cropRotate'}
                                       label={'ROTATE'}
                                       onClick={this.onRotateClockwiseClick}/>
-
-                    <ControlPanelButt icon={faCheck}
-                                      style={buttStyle}
-                                      key={'cropDone'}
-                                      label={'DONE'}
-                                      onClick={this.onDoneClick}/>
-
-                    <ControlPanelButt icon={faTimes}
-                                      style={buttStyle}
-                                      key={'cropCancel'}
-                                      label={'CANCEL'}
-                                      onClick={this.onCancelClick}/>
-                </div>
-
-                <div className='quickCropAndRotate--cuttingBoardHolder'>
-                    <QuickCuttingBoard
-                        onCropUpdate={this.onCropUpdate}
-                        onCanvasSetup={this.onCanvasSetup}
-                        cropData={cropData}/>
                 </div>
 
             </div>

@@ -76,7 +76,6 @@ class PeopleOptions extends Component {
         const updatedPeople = { ...people };
 
         if (isIncluded) {
-            console.log("person: ", person);
             updatedPeople[personId] = person;
         }
         else {
@@ -115,16 +114,17 @@ class PeopleOptions extends Component {
 
                 </HorizontalList>
 
-                {selectedPerson &&
+
                 <div>
                     Position:
                     <Slider
+                        disabled={!selectedPerson}
                         min={0} max={1}
-                        value={selectedPerson.x}
+                        value={selectedPerson ? selectedPerson.x : 0}
                         onInput={e => this.onPersonPositionSliderChangeX(e.detail.value, selectedId, selectedPerson)}
                     />
                 </div>
-                }
+
             </div>
         );
     }

@@ -6,8 +6,8 @@ const PersonTile = ({ imgSrc, name, isSelected, isIncluded=false, onIncludeChang
     const classes = isSelected ? 'person-tile person-tile--selected' : 'person-tile';
 
     return (
-        <div className={classes}>
-            <div className={'person-tile--imgHolder'} onClick={onPersonSelected}>
+        <div className={classes} onClick={onPersonSelected}>
+            <div className={'person-tile--imgHolder'}>
                 <img src={imgSrc} alt={name}/>
             </div>
 

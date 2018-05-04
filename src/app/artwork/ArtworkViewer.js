@@ -17,6 +17,11 @@ import {
     sendNotification,
     endNotification
 } from "../../actions/UserDataActions";
+// images
+import IconFrameSize from './../images/icons/frame-size.png';
+import IconFrameColour from './../images/icons/frame-colour.png';
+import IconPeople from './../images/icons/people.png';
+import IconCropRotate from './../images/icons/crop-rotate.png';
 //comps
 import history from './../global/history';
 import ArtworkOptions from '../artworkOptions/ArtworkOptions';
@@ -26,6 +31,30 @@ import IconLogo from "../global/icon/icons/IconLogo";
 import ArtworkContainer from "./ArtworkContainer";
 // Constants
 const defaultArtworkData = DefaultArtworkDataGenerator();
+
+const artworkOptions = {
+    frame: {
+        index: 0,
+        name: 'Frame Size',
+        icon: IconFrameSize
+    },
+    frameColour: {
+        index: 1,
+        name: 'Frame Colour',
+        icon: IconFrameColour
+    },
+    people: {
+        index: 2,
+        name: 'People',
+        icon: IconPeople
+    },
+    crop: {
+        index: 3,
+        name: 'Crop & Rotate',
+        useFullPage: true,
+        icon: IconCropRotate
+    }
+};
 
 class ArtworkViewer extends Component {
 
@@ -41,8 +70,9 @@ class ArtworkViewer extends Component {
         this.onCanvasOrientationChange = this.onCanvasOrientationChange.bind(this);
         this.onArtworkDelete = this.onArtworkDelete.bind(this);
         this.onArtworkDeleteConfirm = this.onArtworkDeleteConfirm.bind(this);
+        this.onToolSelect = this.onToolSelect.bind(this);
 
-        this.state = { artworkData: {}, unsavedArtworkData: {}, errorConfirmDialogIsOpen: false };
+        this.state = { artworkData: {}, unsavedArtworkData: {}, errorConfirmDialogIsOpen: false, currentOptionIndex: 3 };
     }
 
     componentWillMount() {
@@ -122,8 +152,7 @@ class ArtworkViewer extends Component {
                     return {
                         sourceImg,
                         masterCanvas,
-                        artworkData: newArtworkData,
-                        currentTool: 'frame'
+                        artworkData: newArtworkData
                     }
                 });
             })
@@ -141,7 +170,7 @@ class ArtworkViewer extends Component {
         const existingObjectKeys = Object.keys(existingObject);
 
         // if number of keys don't match a change must have happend
-        if(objectContainingChangesKeys.length !== existingObjectKeys.length){
+        if (objectContainingChangesKeys.length !== existingObjectKeys.length) {
             doesMatch = false;
             return doesMatch;
         }
@@ -220,11 +249,11 @@ class ArtworkViewer extends Component {
     }
 
     onArtworkDelete() {
-        this.setState({errorConfirmDialogIsOpen:true});
+        this.setState({ errorConfirmDialogIsOpen: true });
     }
 
     onArtworkDeleteConfirm() {
-        const {artworkId} = this.state.artworkData;
+        const { artworkId } = this.state.artworkData;
 
         this.props.sendNotification("Deleting artwork...", (timeStamp) => {
             this.props.deleteArtwork(artworkId, () => {
@@ -256,9 +285,13 @@ class ArtworkViewer extends Component {
         });
     }
 
+    onToolSelect(selectedIndex) {
+        this.setState({ currentOptionIndex: selectedIndex })
+    }
+
     render() {
         const { user, artworkId } = this.props;
-        const { artworkData, unsavedArtworkData, masterCanvas, sourceImg } = this.state;
+        const { artworkData, unsavedArtworkData, masterCanvas, sourceImg, currentOptionIndex } = this.state;
         const currentArtworkData = { ...artworkData, ...unsavedArtworkData };
 
         const isNewArtwork = !artworkId;
@@ -270,7 +303,19 @@ class ArtworkViewer extends Component {
         const hasUnsavedChanges = !isNewArtworkWithoutImage && userIsAdmin && !this.updateWillNotChangeData(artworkData, unsavedArtworkData);
         // const showButtonLabels = width > 600;
 
-        const deleteStyle = {color: '#a82021'};
+        const deleteStyle = { color: '#a82021' };
+
+        const currentEditingOptionKey = Object
+            .keys(artworkOptions)
+            .find(key => {
+                const opt = artworkOptions[key];
+                return opt.index === currentOptionIndex
+            });
+        const currentArtworkOption = artworkOptions[currentEditingOptionKey];
+        const {useFullPage:editingOptionUsesFullPage} = currentArtworkOption;
+        console.log("editingOptionUsesFullPage: ", editingOptionUsesFullPage);
+
+        let optionStyle = editingOptionUsesFullPage ? {flex: 1, display: 'flex', flexDirection: 'column'} : optionStyle;
 
         return (
             <div className={'artworkViewer'}>
@@ -283,7 +328,8 @@ class ArtworkViewer extends Component {
                         </ToolbarSection>
                         {hasUnsavedChanges &&
                         <ToolbarSection>
-                            <Button raised theme="secondary-bg text-primary-on-secondary" onClick={this.onArtworkEditorSave}>Save</Button>
+                            <Button raised theme="secondary-bg text-primary-on-secondary"
+                                    onClick={this.onArtworkEditorSave}>Save</Button>
                             <Button onClick={this.onArtworkUndoChanges}>Undo</Button>
                         </ToolbarSection>
                         }
@@ -303,28 +349,26 @@ class ArtworkViewer extends Component {
                     onAccept={this.onArtworkDeleteConfirm}
                 />
 
+                {!editingOptionUsesFullPage &&
                 <ArtworkContainer onPhotoSelected={this.onPhotoSelected}
                                   isNewArtwork={isNewArtwork}
                                   artworkData={currentArtworkData}
                                   masterCanvas={masterCanvas}
                 />
+                }
 
                 {userIsAdmin &&
                 <ArtworkOptions artworkData={currentArtworkData}
+                                style={optionStyle}
+                                artworkOptions={artworkOptions}
+                                currentOptionIndex={currentOptionIndex}
+                                onToolSelect={this.onToolSelect}
                                 onArtworkDataChange={this.onArtworkEditorDataChange}
                                 onCanvasOrientationChange={this.onCanvasOrientationChange}
                                 onArtworkSave={this.onArtworkEditorSave}
                                 sourceImg={sourceImg}
                                 masterCanvas={masterCanvas}/>
                 }
-
-                {/*{showEditingControls &&
-                <ArtworkOptionsToolBar onToolSelect={this.onToolSelect}
-                                       userIsAdmin={userIsAdmin}
-                                       onSave={this.onArtworkEditorSave}
-                                       currentTool={currentTool}/>
-                }*/}
-
             </div>
         )
     }

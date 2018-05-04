@@ -4,11 +4,6 @@ import { connect } from 'react-redux';
 import './artworkOptions_styles.css';
 // actions
 import { addArtwork, getArtworkDataOnce } from "../../actions/UserDataActions";
-// images
-import IconFrameSize from './../images/icons/frame-size.png';
-import IconFrameColour from './../images/icons/frame-colour.png';
-import IconPeople from './../images/icons/people.png';
-import IconCropRotate from './../images/icons/crop-rotate.png';
 // comps
 import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
 import FrameSizeOptions from "./frameEditor/FrameSizeOptions";
@@ -16,38 +11,14 @@ import FrameColourOptions from "./frameEditor/FrameColourOptions";
 import PeopleOptions from "./peopleOptions/PeoplesOptions";
 import ArtworkOptionsToolBar from "./artworkOptionsToolBar/ArtworkOptionsToolBar";
 
-const artworkOptions = {
-    frame: {
-        index: 0,
-        name: 'Frame Size',
-        icon: IconFrameSize
-    },
-    frameColour: {
-        index: 1,
-        name: 'Frame Colour',
-        icon: IconFrameColour
-    },
-    people: {
-        index: 2,
-        name: 'People',
-        icon: IconPeople
-    },
-    crop: {
-        index: 3,
-        name: 'Crop & Rotate',
-        icon: IconCropRotate
-    }
-};
-
 class ArtworkOptions extends Component {
 
     constructor(props) {
         super(props);
 
-        this.state = { currentOptionIndex: 2 };
+        // this.state = { currentOptionIndex: 3 };
 
         this.onCropAndRotateDone = this.onCropAndRotateDone.bind(this);
-        this.onToolSelect = this.onToolSelect.bind(this);
     }
 
     onCropAndRotateDone(newData) {
@@ -61,19 +32,16 @@ class ArtworkOptions extends Component {
         }
     }
 
-    onToolSelect(selectedIndex) {
-        this.setState({ currentOptionIndex: selectedIndex })
-    }
 
     render() {
-        const { currentOptionIndex } = this.state;
         const {
-                  height, width, artworkData,
+                  currentOptionIndex, onToolSelect, artworkOptions,
+                  height, width, artworkData, style,
                   sourceImg, onArtworkDataChange, onCloseCurrentTool
               } = this.props;
 
         return (
-            <div className={'artworkOptions'}>
+            <div className={'artworkOptions'} style={style}>
 
                 {currentOptionIndex === 0 &&
                 <FrameSizeOptions frameData={artworkData.frameData}
@@ -101,7 +69,7 @@ class ArtworkOptions extends Component {
 
                 <ArtworkOptionsToolBar
                     options={artworkOptions}
-                    onOptionSelect={this.onToolSelect}
+                    onOptionSelect={onToolSelect}
                     selectedOptionIndex={currentOptionIndex}
                 />
             </div>
