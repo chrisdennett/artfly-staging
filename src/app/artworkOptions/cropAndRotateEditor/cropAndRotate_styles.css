@@ -1,7 +1,9 @@
 .quickCropAndRotate--holder {
     /*border: red 1px solid;*/
     flex: 1;
-    background-color: #01579b;
+    /*background-color: #01579b;*/
+    /*background-image: url("./images/bg");*/
+    background: #fff url("../../images/bg/cuttingMat.png");
     z-index: 99999;
     display: flex;
     align-items: center;
