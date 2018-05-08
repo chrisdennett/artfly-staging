@@ -238,7 +238,8 @@ class ArtworkViewer extends Component {
         // combined saved and unsaved data and update artwork.
         const { artworkData, unsavedArtworkData, sourceImg } = this.state;
         const { artworkId, user } = this.props;
-        const newArtworkData = { ...artworkData, ...unsavedArtworkData };
+
+        let newArtworkData = { ...artworkData, ...unsavedArtworkData };
 
         this.props.sendNotification('Saving artwork...', (timeStamp) => {
             // if editing an artwork, just update the data
@@ -246,7 +247,6 @@ class ArtworkViewer extends Component {
                 this.props.updateArtwork(artworkId, newArtworkData, () => {
                     this.props.endNotification(timeStamp);
                 });
-
             }
             // otherwise add a new artwork including the image.
             else {

@@ -79,7 +79,7 @@ class PeopleOptions extends Component {
             updatedPeople[personId] = person;
         }
         else {
-            delete updatedPeople[personId];
+            updatedPeople[personId] = null;
         }
 
         onDataChange({ people: updatedPeople });
@@ -97,7 +97,7 @@ class PeopleOptions extends Component {
                     {peopleOptionsIds.map(id => {
                         const person = peopleOptionData[id];
                         const peopleIds = Object.keys(people);
-                        const isIncluded = peopleIds.indexOf(id) > -1;
+                        const isIncluded = peopleIds.indexOf(id) > -1 && people[id] !== null;
                         const isSelected = selectedId === id;
 
                         return (

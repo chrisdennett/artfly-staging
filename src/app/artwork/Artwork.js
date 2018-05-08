@@ -170,6 +170,7 @@ class Artwork extends Component {
 
             // for each
             for (let key of peopleKeys) {
+                if(!people[key]) return;
                 const person = people[key];
 
                 const { id, url, x, y, imageWidth, imageHeight, realLifeHeight } = person;
