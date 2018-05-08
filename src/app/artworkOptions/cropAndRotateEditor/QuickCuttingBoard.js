@@ -1,5 +1,7 @@
 // externals
 import React, { Component } from "react";
+// Helpers
+import {ROUND_TO} from '../../global/UTILS';
 // components
 import QuickCuttingOverlay from "./assets/QuickCuttingOverlay";
 
@@ -14,10 +16,10 @@ class QuickCuttingBoard extends Component {
     // Update on Handle move to store values and ensure image can be
     onCuttingOverlayChange(leftX, rightX, topY, bottomY, width, height) {
         if (this.props.onCropUpdate) {
-            const leftPercent = leftX / width;
-            const rightPercent = rightX / width;
-            const topPercent = topY / height;
-            const bottomPercent = bottomY / height;
+            const leftPercent = ROUND_TO(leftX / width, 3);
+            const rightPercent = ROUND_TO(rightX / width, 3);
+            const topPercent = ROUND_TO(topY / height, 3);
+            const bottomPercent = ROUND_TO(bottomY / height, 3);
 
             this.props.onCropUpdate({ leftPercent, rightPercent, topPercent, bottomPercent });
         }
