@@ -72,7 +72,7 @@ class ArtworkViewer extends Component {
         this.onArtworkDeleteConfirm = this.onArtworkDeleteConfirm.bind(this);
         this.onToolSelect = this.onToolSelect.bind(this);
 
-        this.state = { artworkData: {}, unsavedArtworkData: {}, errorConfirmDialogIsOpen: false, currentOptionIndex: 3 };
+        this.state = { artworkData: {}, unsavedArtworkData: {}, errorConfirmDialogIsOpen: false, currentOptionIndex: 0 };
     }
 
     componentWillMount() {
@@ -332,9 +332,12 @@ class ArtworkViewer extends Component {
                 <Toolbar style={{ background: '#fff', color: '#000' }}>
                     <ToolbarRow>
                         <ToolbarSection alignStart>
-                            <Link linkTo={'/'}>
-                                <IconLogo/>
+                            <Link linkTo={'/'} style={{paddingTop:7}}>
+                                <IconLogo width={30} height={30}/>
                             </Link>
+                            <ToolbarIcon onClick={() => console.log("edit")}
+                                         use="edit"
+                                         style={{color:'black'}}/>
                         </ToolbarSection>
                         {hasUnsavedChanges &&
                         <ToolbarSection>
@@ -344,7 +347,9 @@ class ArtworkViewer extends Component {
                         </ToolbarSection>
                         }
                         <ToolbarSection alignEnd>
-                            <ToolbarIcon onClick={this.onArtworkDelete} use="delete_forever" style={deleteStyle}/>
+                            <ToolbarIcon onClick={this.onArtworkDelete}
+                                         use="delete_forever"
+                                         style={deleteStyle}/>
                         </ToolbarSection>
                     </ToolbarRow>
                 </Toolbar>
