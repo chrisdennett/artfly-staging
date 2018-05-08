@@ -75,6 +75,7 @@ class ArtworkViewer extends Component {
         this.state = { artworkData: {}, unsavedArtworkData: {}, errorConfirmDialogIsOpen: false, currentOptionIndex: 0 };
     }
 
+    // Loads artwork or configures for adding new artwork.
     componentWillMount() {
         const { artworkId, artworks } = this.props;
         // If there's no artworkId it's been opened to add a new artwork
@@ -225,6 +226,7 @@ class ArtworkViewer extends Component {
         )
     }
 
+    // Clears local state changes - reverting to last saved data
     onArtworkUndoChanges() {
         this.setState({ unsavedArtworkData: {} });
         // if the artwork orientation has changed, need to redraw the master canvas
@@ -259,10 +261,12 @@ class ArtworkViewer extends Component {
         })
     }
 
+    // Triggers to delete confirm dialog
     onArtworkDelete() {
         this.setState({ errorConfirmDialogIsOpen: true });
     }
 
+    // Deletes artwork and navigates back to the home screen
     onArtworkDeleteConfirm() {
         const { artworkId } = this.state.artworkData;
 
@@ -274,6 +278,7 @@ class ArtworkViewer extends Component {
         })
     }
 
+    // Gets blob from canvas for saving.
     getImageBlob(sourceImg, maxSize, callback) {
         const canvas = document.createElement('canvas');
 
@@ -296,6 +301,7 @@ class ArtworkViewer extends Component {
         });
     }
 
+    // Coordinates the current tool
     onToolSelect(selectedIndex) {
         this.setState({ currentOptionIndex: selectedIndex })
     }
@@ -395,7 +401,6 @@ const mapStateToProps = (state) => {
         user: state.user
     }
 };
-
 const mapActionsToProps = { getArtworkDataOnce, updateArtwork, addArtwork, deleteArtwork, sendNotification, endNotification };
 
 export default connect(mapStateToProps, mapActionsToProps)(ArtworkViewer);

@@ -140,7 +140,7 @@ class Artwork extends Component {
             drawSkirtingBoard(ctx, 0, skirtingY, width, skirtingHeight);
         }
 
-        if (includeGuardRail) {
+        if (includeGuardRail && 1 === 2) {
             if (this.guardTile) {
                 let guardRailY = floorY - 20;
                 const railHeight = 64;
