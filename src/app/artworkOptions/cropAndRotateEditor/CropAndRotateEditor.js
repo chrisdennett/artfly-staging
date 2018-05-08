@@ -80,7 +80,6 @@ class CropAndRotateEditor extends Component {
     }
 
     onRotateClick(){
-        console.log("rotate click: ", this.props);
         const currentRotation = this.props.orientation;
         const nextRotations = { 1: 6, 6: 3, 3: 8, 8: 1 }; // order of rotations by 90° clockwise increments
         const newOrientation = nextRotations[currentRotation] || 6;
@@ -92,13 +91,9 @@ class CropAndRotateEditor extends Component {
         const newT = leftPercent;
         const newB = rightPercent;
 
-        // const newCropData =
+        const newCropData = {leftPercent:newL, rightPercent:newR, topPercent:newT, bottomPercent:newB};
 
-        this.props.onDataChange({orientation:newOrientation});
-
-        // this.setState({ localOrientation: newOrientation, localCropData: { leftPercent: newL, rightPercent: newR, topPercent: newT, bottomPercent: newB } }, () => {
-        //     this.drawCuttingBoardCanvas();
-        // });
+        this.props.onDataChange({orientation:newOrientation, cropData:newCropData});
     }
     
     render() {
