@@ -208,10 +208,21 @@ class ArtworkViewer extends Component {
     // Keeps any changes from the editor in state.
     onArtworkEditorDataChange(updatedData) {
         this.setState((state) => {
-            return {
-                unsavedArtworkData: { ...state.unsavedArtworkData, ...updatedData }
+                return {
+                    unsavedArtworkData: { ...state.unsavedArtworkData, ...updatedData }
+                }
+            },
+            () => {
+                // if orientation has changed need to redraw canvas
+                if(updatedData.hasOwnProperty('orientation')){
+                    const {cropData:currentCropData} = this.state.artworkData;
+                    const {cropData:unsavedCropData} = this.state.unsavedArtworkData;
+                    const latestCropData = {...currentCropData, ...unsavedCropData};
+
+                    this.updateMasterCanvas(this.state.sourceImg, updatedData.orientation, latestCropData);
+                }
             }
-        })
+        )
     }
 
     onArtworkUndoChanges() {
@@ -312,9 +323,9 @@ class ArtworkViewer extends Component {
                 return opt.index === currentOptionIndex
             });
         const currentArtworkOption = artworkOptions[currentEditingOptionKey];
-        const {useFullPage:editingOptionUsesFullPage} = currentArtworkOption;
+        const { useFullPage: editingOptionUsesFullPage } = currentArtworkOption;
 
-        let optionStyle = editingOptionUsesFullPage ? {flex: 1, display: 'flex', flexDirection: 'column'} : optionStyle;
+        let optionStyle = editingOptionUsesFullPage ? { flex: 1, display: 'flex', flexDirection: 'column' } : optionStyle;
 
         return (
             <div className={'artworkViewer'}>

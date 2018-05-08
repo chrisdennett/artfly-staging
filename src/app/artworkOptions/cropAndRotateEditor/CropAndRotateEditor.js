@@ -76,7 +76,6 @@ class CropAndRotateEditor extends Component {
     }
 
     onCropChange(cropData){
-        console.log("cropData: ", cropData);
         this.props.onDataChange({cropData});
     }
 
@@ -93,7 +92,9 @@ class CropAndRotateEditor extends Component {
         const newT = leftPercent;
         const newB = rightPercent;
 
-        // this.props.onDataChange({cropData});
+        // const newCropData =
+
+        this.props.onDataChange({orientation:newOrientation});
 
         // this.setState({ localOrientation: newOrientation, localCropData: { leftPercent: newL, rightPercent: newR, topPercent: newT, bottomPercent: newB } }, () => {
         //     this.drawCuttingBoardCanvas();
