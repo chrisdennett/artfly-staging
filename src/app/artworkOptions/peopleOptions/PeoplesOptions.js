@@ -5,6 +5,7 @@ import './peopleOptions_styles.css';
 import HorizontalList from "../../global/horizontalList/HorizontalList";
 import PersonTile from "./PersonTile";
 
+// Static data
 const baseUrl = '/images/audience/';
 const peopleOptionData = {
     womanStanding1: {

@@ -29,6 +29,8 @@ import Link from "../global/Butt/Link";
 import IconLogo from "../global/icon/icons/IconLogo";
 // import SignInOut from '../SignInOut/SignInOut';
 import ArtworkContainer from "./ArtworkContainer";
+import ArtworkOptionsToolBar from "../artworkOptions/artworkOptionsToolBar/ArtworkOptionsToolBar";
+import ArtworkViewerToolbar from "./ArtworkViewerToolbar";
 // Constants
 const defaultArtworkData = DefaultArtworkDataGenerator();
 
@@ -68,11 +70,16 @@ class ArtworkViewer extends Component {
         this.onArtworkUndoChanges = this.onArtworkUndoChanges.bind(this);
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.onCanvasOrientationChange = this.onCanvasOrientationChange.bind(this);
-        this.onArtworkDelete = this.onArtworkDelete.bind(this);
         this.onArtworkDeleteConfirm = this.onArtworkDeleteConfirm.bind(this);
         this.onToolSelect = this.onToolSelect.bind(this);
+        this.onEditOpenChange = this.onEditOpenChange.bind(this);
 
-        this.state = { artworkData: {}, unsavedArtworkData: {}, errorConfirmDialogIsOpen: false, currentOptionIndex: 0 };
+        this.state = {
+            artworkData: {},
+            unsavedArtworkData: {},
+            currentOptionIndex: 0,
+            isEditOpen: false
+        };
     }
 
     // Loads artwork or configures for adding new artwork.
@@ -215,10 +222,10 @@ class ArtworkViewer extends Component {
             },
             () => {
                 // if orientation has changed need to redraw canvas
-                if(updatedData.hasOwnProperty('orientation')){
-                    const {cropData:currentCropData} = this.state.artworkData;
-                    const {cropData:unsavedCropData} = this.state.unsavedArtworkData;
-                    const latestCropData = {...currentCropData, ...unsavedCropData};
+                if (updatedData.hasOwnProperty('orientation')) {
+                    const { cropData: currentCropData } = this.state.artworkData;
+                    const { cropData: unsavedCropData } = this.state.unsavedArtworkData;
+                    const latestCropData = { ...currentCropData, ...unsavedCropData };
 
                     this.updateMasterCanvas(this.state.sourceImg, updatedData.orientation, latestCropData);
                 }
@@ -261,11 +268,6 @@ class ArtworkViewer extends Component {
         })
     }
 
-    // Triggers to delete confirm dialog
-    onArtworkDelete() {
-        this.setState({ errorConfirmDialogIsOpen: true });
-    }
-
     // Deletes artwork and navigates back to the home screen
     onArtworkDeleteConfirm() {
         const { artworkId } = this.state.artworkData;
@@ -306,21 +308,26 @@ class ArtworkViewer extends Component {
         this.setState({ currentOptionIndex: selectedIndex })
     }
 
+    //
+    onEditOpenChange(isEditOpen) {
+        if (isEditOpen) {
+            this.setState({ isEditOpen })
+        }
+        else {
+            this.setState({ isEditOpen, currentOptionIndex: 0 })
+        }
+    }
+
     render() {
         const { user, artworkId } = this.props;
-        const { artworkData, unsavedArtworkData, masterCanvas, sourceImg, currentOptionIndex } = this.state;
+        const { artworkData, unsavedArtworkData, masterCanvas, sourceImg, currentOptionIndex, isEditOpen } = this.state;
         const currentArtworkData = { ...artworkData, ...unsavedArtworkData };
 
         const isNewArtwork = !artworkId;
         const userIsAdmin = isNewArtwork || (user.uid && user.uid === artworkData.adminId);
-        let topButtonsStyle = { display: 'flex', marginRight: 5, marginTop: 5 };
-        if (userIsAdmin) topButtonsStyle.marginRight = 65;
 
         const isNewArtworkWithoutImage = isNewArtwork && !sourceImg;
         const hasUnsavedChanges = !isNewArtworkWithoutImage && userIsAdmin && !this.updateWillNotChangeData(artworkData, unsavedArtworkData);
-        // const showButtonLabels = width > 600;
-
-        const deleteStyle = { color: '#a82021' };
 
         const currentEditingOptionKey = Object
             .keys(artworkOptions)
@@ -335,39 +342,12 @@ class ArtworkViewer extends Component {
 
         return (
             <div className={'artworkViewer'}>
-                <Toolbar style={{ background: '#fff', color: '#000' }}>
-                    <ToolbarRow>
-                        <ToolbarSection alignStart>
-                            <Link linkTo={'/'} style={{paddingTop:7}}>
-                                <IconLogo width={30} height={30}/>
-                            </Link>
-                            <ToolbarIcon onClick={() => console.log("edit")}
-                                         use="edit"
-                                         style={{color:'black'}}/>
-                        </ToolbarSection>
-                        {hasUnsavedChanges &&
-                        <ToolbarSection>
-                            <Button raised theme="secondary-bg text-primary-on-secondary"
-                                    onClick={this.onArtworkEditorSave}>Save</Button>
-                            <Button onClick={this.onArtworkUndoChanges}>Undo</Button>
-                        </ToolbarSection>
-                        }
-                        <ToolbarSection alignEnd>
-                            <ToolbarIcon onClick={this.onArtworkDelete}
-                                         use="delete_forever"
-                                         style={deleteStyle}/>
-                        </ToolbarSection>
-                    </ToolbarRow>
-                </Toolbar>
-
-                <SimpleDialog
-                    title="Delete Artwork"
-                    body="Are you sure you want to delete this Artwork?"
-                    open={this.state.errorConfirmDialogIsOpen}
-                    acceptLabel={'DELETE IT'}
-                    cancelLabel={'KEEP IT'}
-                    onClose={() => this.setState({ errorConfirmDialogIsOpen: false })}
-                    onAccept={this.onArtworkDeleteConfirm}
+                <ArtworkViewerToolbar isEditOpen={isEditOpen}
+                                      hasUnsavedChanges={hasUnsavedChanges}
+                                      onEditOpenChange={this.onEditOpenChange}
+                                      onArtworkEditorSave={this.onArtworkEditorSave}
+                                      onArtworkUndoChanges={this.onArtworkUndoChanges}
+                                      onArtworkDeleteConfirm={this.onArtworkDelete}
                 />
 
                 {!editingOptionUsesFullPage &&
@@ -378,7 +358,7 @@ class ArtworkViewer extends Component {
                 />
                 }
 
-                {userIsAdmin &&
+                {userIsAdmin && isEditOpen &&
                 <ArtworkOptions artworkData={currentArtworkData}
                                 style={optionStyle}
                                 artworkOptions={artworkOptions}
@@ -402,5 +382,4 @@ const mapStateToProps = (state) => {
     }
 };
 const mapActionsToProps = { getArtworkDataOnce, updateArtwork, addArtwork, deleteArtwork, sendNotification, endNotification };
-
 export default connect(mapStateToProps, mapActionsToProps)(ArtworkViewer);
