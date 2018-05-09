@@ -1,7 +1,6 @@
 import * as fb from 'firebase';
 import {
     auth,
-    storage,
     firestoreDb as db,
     storageRef as store,
     storageEvents
@@ -410,41 +409,4 @@ export function fs_getUserArtworkChanges(userId, callback) {
             error => {
                 console.log("user artworks listener error: ", error);
             })
-}
-
-// DELETE ARTWORK
-export function fs_deleteArtwork(artworkId, onCompleteCallback = null) {
-    int_deleteArtworkData(artworkId, () => {
-        if (onCompleteCallback) onCompleteCallback();
-    })
-}
-
-// DELETE ARTWORK IMAGE
-export function fs_deleteArtworkImage(url, onCompleteCallback = null) {
-    int_deleteImageFromStorage(url, () => {
-        if (onCompleteCallback) onCompleteCallback();
-    });
-}
-
-function int_deleteImageFromStorage(url, onCompleteCallback) {
-    const imageRef = storage.refFromURL(url);
-    imageRef.delete()
-        .then(() => {
-            onCompleteCallback();
-        })
-        .catch(function (error) {
-            console.log('Delete image failed: ', error);
-        })
-}
-
-function int_deleteArtworkData(artworkId, onCompleteCallback) {
-    db.collection('artworks')
-        .doc(artworkId)
-        .delete()
-        .then(() => {
-            if (onCompleteCallback) onCompleteCallback();
-        })
-        .catch(function (error) {
-            console.log('delete artwork failed: ', error);
-        })
 }

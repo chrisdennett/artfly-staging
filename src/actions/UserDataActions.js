@@ -7,13 +7,13 @@ import {
     fs_addNewUser,
     fs_getUserChanges,
     fs_getArtworkChanges,
-    fs_deleteArtwork,
     fs_deleteUser,
     fs_updateArtworkImage,
     fs_updateThumbnail,
     fs_getArtworkDataOnce,
     fs_updateArtwork,
-    fs_saveArtworkImage, fs_saveNewArtworkData, fs_deleteArtworkImage
+    fs_saveArtworkImage,
+    fs_saveNewArtworkData,
 } from './FirestoreActions';
 // helpers
 import * as ImageHelper from "../app/global/ImageHelper";

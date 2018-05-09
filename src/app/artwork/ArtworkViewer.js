@@ -150,10 +150,16 @@ class ArtworkViewer extends Component {
                     const newCropData = { ...state.artworkData.cropData, ...cropData };
                     const newArtworkData = { ...state.artworkData, cropData: newCropData, orientation, widthToHeightRatio, heightToWidthRatio };
 
+                    // this is hacky, I don't like it.  Need to refactor updateMasterCanvas
+                    // This is needed to stop default orientation overwriting orientation from loaded file.
+                    // causing a knock on prob with save always being shown now.
+                    const updatedUnsavedArtworkData = {...state.unsavedArtworkData, orientation};
+
                     return {
                         sourceImg,
                         masterCanvas,
-                        artworkData: newArtworkData
+                        artworkData: newArtworkData,
+                        unsavedArtworkData: updatedUnsavedArtworkData,
                     }
                 });
             })
@@ -257,7 +263,7 @@ class ArtworkViewer extends Component {
                         history.push(`/artwork/${artworkId}`);
                     });
             }
-        })
+        });
 
         this.setState({ artworkData: newArtworkData, unsavedArtworkData: {} });
     }
