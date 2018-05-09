@@ -10,10 +10,10 @@ import {
     getArtworkDataOnce,
     updateArtwork,
     addArtwork,
-    deleteArtwork,
     sendNotification,
     endNotification
 } from "../../actions/UserDataActions";
+import { deleteArtwork } from '../../actions/ArtworkActions';
 // images
 import IconFrameSize from './../images/icons/frame-size.png';
 import IconFrameColour from './../images/icons/frame-colour.png';
@@ -241,23 +241,23 @@ class ArtworkViewer extends Component {
         const newArtworkData = { ...artworkData, ...unsavedArtworkData };
 
         // if editing an artwork, just update the data
-        if (artworkId) {
-            this.props.sendNotification('Saving artwork...', (timeStamp) => {
+        this.props.sendNotification('Saving artwork...', (timeStamp) => {
+            if (artworkId) {
                 this.props.updateArtwork(artworkId, newArtworkData, () => {
                     this.props.endNotification(timeStamp);
                 });
-            })
-        }
-        // otherwise add a new artwork including the image.
-        else {
-            this.props.addArtwork(user.uid, newArtworkData, sourceImg, masterCanvas);
-
-            /*this.getImageBlob(sourceImg, 3000, (blobData) => {
-                this.props.addArtwork(user.uid, blobData, newArtworkData, () => {
-                    this.props.endNotification(timeStamp);
-                });
-            })*/
-        }
+            }
+            // otherwise add a new artwork including the image.
+            else {
+                this.props.addArtwork(
+                    user.uid, newArtworkData, sourceImg, masterCanvas
+                    ,
+                    (artworkId) => {
+                        this.props.endNotification(timeStamp);
+                        history.push(`/artwork/${artworkId}`);
+                    });
+            }
+        })
 
         this.setState({ artworkData: newArtworkData, unsavedArtworkData: {} });
     }
@@ -272,28 +272,6 @@ class ArtworkViewer extends Component {
                 this.props.endNotification(timeStamp);
             });
         })
-    }
-
-    // Gets blob from canvas for saving.
-    getImageBlob(sourceImg, maxSize, callback) {
-        const canvas = document.createElement('canvas');
-
-        // not providing crop data and orientation because keeping source as is
-        // instead the crop data and orientation is being saved with artwork data
-        // and applied each time artwork viewed
-        // This way edits are non-destructive.
-        ImageHelper.drawToCanvas({
-            sourceCanvas: sourceImg,
-            outputCanvas: canvas,
-            maxOutputCanvasWidth: maxSize,
-            maxOutputCanvasHeight: maxSize
-        }, (widthToHeightRatio, heightToWidthRatio) => {
-
-            canvas.toBlob((canvasBlobData) => {
-                callback(canvasBlobData, widthToHeightRatio, heightToWidthRatio)
-            }, 'image/jpeg', 0.95);
-
-        });
     }
 
     // Coordinates the current tool

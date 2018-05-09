@@ -227,29 +227,6 @@ export function getArtworkDataOnce(artworkId, callback, noDocCallback) {
     }
 }
 
-export function deleteArtwork(artworkData, callback = null) {
-    return dispatch => {
-        const { artworkId, url, sourceUrl, thumbUrl, largeUrl, mediumUrl } = artworkData;
-        const urlsToDelete = [url, sourceUrl, thumbUrl, largeUrl, mediumUrl];
-
-        // delete artwork data
-        fs_deleteArtwork(artworkId, () => {
-            dispatch({
-                type: ARTWORK_DELETED,
-                payload: artworkId
-            });
-            if (callback) callback();
-        });
-
-        // delete all the images
-        for (let currUrl of urlsToDelete) {
-            if (currUrl && currUrl.length > 0) {
-                fs_deleteArtworkImage(currUrl, () => {  })
-            }
-        }
-    }
-}
-
 export function clearImageUpload() {
     return dispatch => {
         dispatch({
@@ -267,7 +244,7 @@ export function clearImageUpload() {
  * @param masterCanvas
  * @returns {Function}
  */
-export function addArtwork(userId, artworkData, imgFile, masterCanvas) {
+export function addArtwork(userId, artworkData, imgFile, masterCanvas, callback) {
     return dispatch => {
 
         saveImage(userId, imgFile, 3000,
@@ -291,6 +268,8 @@ export function addArtwork(userId, artworkData, imgFile, masterCanvas) {
                                 type: ARTWORK_CHANGE,
                                 payload: { [artworkId]: newArtworkData }
                             });
+
+                            if(callback) callback(artworkId);
                         });
 
                     });
