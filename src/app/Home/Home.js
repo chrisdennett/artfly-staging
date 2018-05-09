@@ -20,7 +20,7 @@ const Home = ({ user, userArtworks }) => {
     return (
         <div className={'home'}>
 
-            <Toolbar fixed style={{background:'rgba(0,0,0,0.2)', boxShadow:'none'}}>
+            <Toolbar fixed style={{ background: 'rgba(0,0,0,0.2)', boxShadow: 'none' }}>
                 <ToolbarRow>
                     <ToolbarSection alignEnd>
                         <SignInOut user={user}/>
@@ -32,7 +32,7 @@ const Home = ({ user, userArtworks }) => {
                 <div>
                     <Title/>
                 </div>
-                <div className='home--tagLine'>Make bad art, make good art, just make it and let your ArtFly.
+                <div className='home--tagLine'>Make bad art, make good art, just let your Art Fly.
                 </div>
 
                 {!IN_BETA_TESTING &&
@@ -52,9 +52,14 @@ const Home = ({ user, userArtworks }) => {
                 <LinkButt linkTo={'/artwork'}>Add new Artwork</LinkButt>
                 {
                     Object.keys(userArtworks).map(artworkId => {
-                        return <LinkButt key={artworkId} linkTo={`/artwork/${artworkId}`}>
-                            Open artwork: {artworkId}
-                        </LinkButt>
+                        return (
+                            <div key={artworkId}>
+                                <img src={userArtworks[artworkId].thumbUrl} alt={'thumb'} />
+                                <LinkButt linkTo={`/artwork/${artworkId}`}>
+                                    OPEN
+                                </LinkButt>
+                            </div>
+                        )
                     })
 
                 }
@@ -69,12 +74,15 @@ const Home = ({ user, userArtworks }) => {
 
             <Footer/>
 
-            <div style={{backgroundColor: '#000',
-                color:'#fff',
-                border: '10px solid #555', padding: 42, textAlign:'center'}}>
-                <img style={{background:'#fff', padding: 10}} src={'images/lab/Rotoscoping.gif'} alt={'rotoscoping gif'}/>
+            <div style={{
+                backgroundColor: '#000',
+                color: '#fff',
+                border: '10px solid #555', padding: 42, textAlign: 'center'
+            }}>
+                <img style={{ background: '#fff', padding: 10 }} src={'images/lab/Rotoscoping.gif'}
+                     alt={'rotoscoping gif'}/>
                 <p>You know it's all over when the victorian lady jumps the stool...</p>
-                <p style={{margin:0, color:'#aaa'}}>2018 Copyright bit nobody reads</p>
+                <p style={{ margin: 0, color: '#aaa' }}>2018 Copyright bit nobody reads</p>
             </div>
 
 

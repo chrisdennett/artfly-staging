@@ -182,7 +182,7 @@ export function fs_saveNewArtworkData(userId, newArtworkData, callback) {
     });
 }
 
-export function fs_addArtwork(userId, blobData, artworkData, onChangeCallback = null) {
+/*export function fs_addArtwork(userId, blobData, artworkData, onChangeCallback = null) {
     // Get artwork database id first so can be used for the filename
     const artworkDatabaseRef = db.collection('artworks').doc();
     const artworkId = artworkDatabaseRef.id;
@@ -204,9 +204,9 @@ export function fs_addArtwork(userId, blobData, artworkData, onChangeCallback = 
                 onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
             });
         });
-}
+}*/
 
-export function fs_addThumbnail(artworkId, artistId, thumbBlobData, onChangeCallback = null) {
+/*export function fs_addThumbnail(artworkId, artistId, thumbBlobData, onChangeCallback = null) {
     int_saveImage(artworkId, thumbBlobData, 'thumbnail_',
         (onChangeData) => {
             if (onChangeCallback) onChangeCallback(onChangeData);
@@ -219,7 +219,7 @@ export function fs_addThumbnail(artworkId, artistId, thumbBlobData, onChangeCall
                 onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
             });
         });
-}
+}*/
 
 // UPDATE ARTWORK
 export function fs_updateArtworkImage(artworkId, artistId, newImage, widthToHeightRatio, heightToWidthRatio, onChangeCallback = null) {

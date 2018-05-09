@@ -170,22 +170,23 @@ class Artwork extends Component {
 
             // for each
             for (let key of peopleKeys) {
-                if(!people[key]) return;
-                const person = people[key];
+                if (people[key]) {
+                    const person = people[key];
 
-                const { id, url, x, y, imageWidth, imageHeight, realLifeHeight } = person;
-                const personHeight = realLifeHeight * pixelsPerMeter;
-                const personScale = personHeight / imageHeight;
-                const personWidth = imageWidth * personScale;
-                const xPos = (width * x) - (personWidth / 2); // allow to go half off the sides
-                const yPos = height * y;
+                    const { id, url, x, y, imageWidth, imageHeight, realLifeHeight } = person;
+                    const personHeight = realLifeHeight * pixelsPerMeter;
+                    const personScale = personHeight / imageHeight;
+                    const personWidth = imageWidth * personScale;
+                    const xPos = (width * x) - (personWidth / 2); // allow to go half off the sides
+                    const yPos = height * y;
 
-                if (!this[id] || url !== this.state[`${id}Url`]) {
-                    // console.log("id: ", id);
-                    this.loadImage(url, id);
-                }
-                else {
-                    drawPeople(ctx, this[id], imageWidth, imageHeight, personWidth, personHeight, xPos, yPos);
+                    if (!this[id] || url !== this.state[`${id}Url`]) {
+                        // console.log("id: ", id);
+                        this.loadImage(url, id);
+                    }
+                    else {
+                        drawPeople(ctx, this[id], imageWidth, imageHeight, personWidth, personHeight, xPos, yPos);
+                    }
                 }
             }
         }

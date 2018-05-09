@@ -6,11 +6,9 @@ import {
     fs_signOut,
     fs_addNewUser,
     fs_getUserChanges,
-    fs_addArtwork,
     fs_getArtworkChanges,
     fs_deleteArtwork,
     fs_deleteUser,
-    fs_addThumbnail,
     fs_updateArtworkImage,
     fs_updateThumbnail,
     fs_getArtworkDataOnce,
@@ -262,10 +260,6 @@ export function clearImageUpload() {
 }
 
 /**
- * TODO:
- * Create blob data for source file and save source image.
- * Create blob data from master canvas (includes rotation and crop)
- * and save as large file, medium file and thumb.
  *
  * @param userId
  * @param artworkData
@@ -372,7 +366,7 @@ export function updateArtwork(artworkId, newArtworkData, callback = null) {
     }
 }
 
-export function addThumbnail(artworkId, artistId, thumbFile, callback = null) {
+/*export function addThumbnail(artworkId, artistId, thumbFile, callback = null) {
     return dispatch => {
         fs_addThumbnail(artworkId, artistId, thumbFile, (uploadData) => {
             if (uploadData.status === 'uploading') {
@@ -392,7 +386,7 @@ export function addThumbnail(artworkId, artistId, thumbFile, callback = null) {
 
         });
     }
-}
+}*/
 
 export function updateArtworkImage(artworkId, artistId, newImg, widthToHeightRatio, heightToWidthRatio, callback = null) {
     return dispatch => {
