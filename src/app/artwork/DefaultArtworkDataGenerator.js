@@ -14,17 +14,17 @@ export default function () {
     };
 
     // TITLES
-    const title = 'Utopia';
-    const artist = "Anon";
-    const description = "A seminal work of pivotal importance to humanity. A true masterpiece.";
-    const now = new Date();
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
-    const month = monthNames[now.getMonth()].toUpperCase();
-    const year = now.getFullYear();
+    // const title = 'Utopia';
+    // const artist = "Anon";
+    // const description = "A seminal work of pivotal importance to humanity. A true masterpiece.";
+    // const now = new Date();
+    // const monthNames = ["January", "February", "March", "April", "May", "June",
+    //     "July", "August", "September", "October", "November", "December"
+    // ];
+    // const month = monthNames[now.getMonth()].toUpperCase();
+    // const year = now.getFullYear();
 
-    const date = month + " " + year;
+    // const date = month + " " + year;
     const defaultTitlesData = null; //{ title, artist, description, date };
 
     // PEOPLE

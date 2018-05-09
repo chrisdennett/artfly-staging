@@ -1,11 +1,11 @@
 import * as fb from 'firebase';
 import {
     auth,
+    storage,
     firestoreDb as db,
     storageRef as store,
     storageEvents
 } from '../libs/firebaseConfig';
-
 
 /*[2018-04-29T08:01:00.438Z]  @firebase/firestore: Firestore (4.13.0):
 The behavior for Date objects stored in Firestore is going to change
@@ -37,8 +37,6 @@ const unsubscribers = {};
 unsubscribers.userListeners = {};
 unsubscribers.userArtworkListeners = {};
 unsubscribers.artworkListeners = {};
-
-
 
 
 // UNSUBSCRIBE LISTENERS
@@ -175,12 +173,21 @@ export function fs_getUserChanges(userId, onChangeCallback = null) {
 
 //*** ARTWORK ***********************************************************
 // ADD ARTWORK
-export function fs_addArtwork(userId, imgFile, artworkData, onChangeCallback = null) {
+export function fs_saveNewArtworkData(userId, newArtworkData, callback) {
+    const artworkDatabaseRef = db.collection('artworks').doc();
+    const artworkId = artworkDatabaseRef.id;
+
+    int_saveArtworkChanges(artworkId, newArtworkData, () => {
+        if (callback) callback(artworkId);
+    });
+}
+
+export function fs_addArtwork(userId, blobData, artworkData, onChangeCallback = null) {
     // Get artwork database id first so can be used for the filename
     const artworkDatabaseRef = db.collection('artworks').doc();
     const artworkId = artworkDatabaseRef.id;
 
-    int_saveImage(artworkId, imgFile, '',
+    int_saveImage(artworkId, blobData, '',
         (onChangeData) => {
             if (onChangeCallback) onChangeCallback(onChangeData);
         },
@@ -199,8 +206,8 @@ export function fs_addArtwork(userId, imgFile, artworkData, onChangeCallback = n
         });
 }
 
-export function fs_addThumbnail(artworkId, artistId, thumbFile, onChangeCallback = null) {
-    int_saveImage(artworkId, artistId, thumbFile, 'thumbnail_',
+export function fs_addThumbnail(artworkId, artistId, thumbBlobData, onChangeCallback = null) {
+    int_saveImage(artworkId, thumbBlobData, 'thumbnail_',
         (onChangeData) => {
             if (onChangeCallback) onChangeCallback(onChangeData);
         },
@@ -283,9 +290,22 @@ function int_saveArtworkChanges(artworkId, newData, onChangeCallback = null) {
         })
 }
 
+export function fs_saveArtworkImage(blobData, onChangeCallback, onCompleteCallback) {
+    int_saveImage(blobData,
+        (progress) => {
+            if (onChangeCallback) onChangeCallback(progress);
+        },
+        (downloadURL) => {
+            // Upload completed successfully - return download url
+            if (onCompleteCallback) onCompleteCallback(downloadURL);
+        });
+}
+
 // INTERNAL ARTWORK DATA
-function int_saveImage(artworkId, blob, prefix, onChangeCallback, onCompleteCallback) {
-    const fileName = prefix + artworkId;
+function int_saveImage(blob, onChangeCallback, onCompleteCallback) {
+    // generate random unique name
+    const fileName = generateUUID();
+    // create the reference
     const userPicturesRef = store.child(`userContent/${fileName}`);
     // start the upload
     const uploadTask = userPicturesRef.put(blob);
@@ -294,15 +314,29 @@ function int_saveImage(artworkId, blob, prefix, onChangeCallback, onCompleteCall
         .on(storageEvents.STATE_CHANGED,
             (snapshot) => {
                 const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-                onChangeCallback({ progress, id: artworkId, status: 'uploading' });
+                onChangeCallback(progress);
             },
             (error) => {
                 // A full list of error codes is available at https://firebase.google.com/docs/storage/web/handle-errors
                 console.log("uncaught error: ", error);
             },
             () => {
-                onCompleteCallback({ downloadURL: uploadTask.snapshot.downloadURL });
+                // return the download url so it can be saved to artwork data
+                onCompleteCallback(uploadTask.snapshot.downloadURL);
             })
+}
+
+//https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+function generateUUID() { // Public Domain/MIT
+    let d = new Date().getTime();
+    if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
+        d += performance.now(); //use high-precision timer if available
+    }
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        const r = (d + Math.random() * 16) % 16 | 0;
+        d = Math.floor(d / 16);
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
 }
 
 // GET ARTWORK DATA ONCE
@@ -381,19 +415,19 @@ export function fs_getUserArtworkChanges(userId, callback) {
 // DELETE ARTWORK
 export function fs_deleteArtwork(artworkId, onCompleteCallback = null) {
     int_deleteArtworkData(artworkId, () => {
-        int_deleteImageFromStorage(artworkId, '', () => {
-            if (onCompleteCallback) onCompleteCallback();
-        });
-
-        /*int_deleteImageFromStorage(artworkId, 'thumbnail_', () => {
-            console.log("thumbnail image deleted ta");
-        })*/
+        if (onCompleteCallback) onCompleteCallback();
     })
 }
 
-function int_deleteImageFromStorage(artworkId, prefix, onCompleteCallback) {
-    const fileName = prefix + artworkId;
-    const imageRef = store.child(`userContent/${fileName}`);
+// DELETE ARTWORK IMAGE
+export function fs_deleteArtworkImage(url, onCompleteCallback = null) {
+    int_deleteImageFromStorage(url, () => {
+        if (onCompleteCallback) onCompleteCallback();
+    });
+}
+
+function int_deleteImageFromStorage(url, onCompleteCallback) {
+    const imageRef = storage.refFromURL(url);
     imageRef.delete()
         .then(() => {
             onCompleteCallback();

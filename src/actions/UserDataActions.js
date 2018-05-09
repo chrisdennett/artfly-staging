@@ -4,11 +4,21 @@ import {
     fs_addAuthListener,
     fs_signInWithProvider,
     fs_signOut,
-    fs_addNewUser, fs_getUserChanges,
-    fs_addArtwork, fs_getArtworkChanges,
-    fs_deleteArtwork, fs_deleteUser,
-    fs_addThumbnail, fs_updateArtworkImage, fs_updateThumbnail, fs_getArtworkDataOnce, fs_updateArtwork
+    fs_addNewUser,
+    fs_getUserChanges,
+    fs_addArtwork,
+    fs_getArtworkChanges,
+    fs_deleteArtwork,
+    fs_deleteUser,
+    fs_addThumbnail,
+    fs_updateArtworkImage,
+    fs_updateThumbnail,
+    fs_getArtworkDataOnce,
+    fs_updateArtwork,
+    fs_saveArtworkImage, fs_saveNewArtworkData, fs_deleteArtworkImage
 } from './FirestoreActions';
+// helpers
+import * as ImageHelper from "../app/global/ImageHelper";
 
 export const USER_ARTWORKS_CHANGE = "userArtworksChange";
 export const ARTWORK_CHANGE = "artworkChange";
@@ -219,15 +229,26 @@ export function getArtworkDataOnce(artworkId, callback, noDocCallback) {
     }
 }
 
-export function deleteArtwork(artworkId, callback = null) {
+export function deleteArtwork(artworkData, callback = null) {
     return dispatch => {
+        const { artworkId, url, sourceUrl, thumbUrl, largeUrl, mediumUrl } = artworkData;
+        const urlsToDelete = [url, sourceUrl, thumbUrl, largeUrl, mediumUrl];
+
+        // delete artwork data
         fs_deleteArtwork(artworkId, () => {
             dispatch({
                 type: ARTWORK_DELETED,
                 payload: artworkId
             });
             if (callback) callback();
-        })
+        });
+
+        // delete all the images
+        for (let currUrl of urlsToDelete) {
+            if (currUrl && currUrl.length > 0) {
+                fs_deleteArtworkImage(currUrl, () => {  })
+            }
+        }
     }
 }
 
@@ -240,7 +261,84 @@ export function clearImageUpload() {
     }
 }
 
-export function addArtwork(userId, imgFile, artworkData, callback = null) {
+/**
+ * TODO:
+ * Create blob data for source file and save source image.
+ * Create blob data from master canvas (includes rotation and crop)
+ * and save as large file, medium file and thumb.
+ *
+ * @param userId
+ * @param artworkData
+ * @param imgFile
+ * @param masterCanvas
+ * @returns {Function}
+ */
+export function addArtwork(userId, artworkData, imgFile, masterCanvas) {
+    return dispatch => {
+
+        saveImage(userId, imgFile, 3000,
+            progress => console.log("progress: ", progress)
+            ,
+            sourceImgUrl => {
+                saveImage(userId, masterCanvas, 250,
+                    progress => console.log("Thumb progress: ", progress)
+                    ,
+                    thumbUrl => {
+                        const newArtworkData = {
+                            ...artworkData,
+                            adminId: userId,
+                            sourceUrl: sourceImgUrl,
+                            thumbUrl: thumbUrl,
+                            dateAdded: Date.now()
+                        };
+
+                        fs_saveNewArtworkData(userId, newArtworkData, (artworkId) => {
+                            dispatch({
+                                type: ARTWORK_CHANGE,
+                                payload: { [artworkId]: newArtworkData }
+                            });
+                        });
+
+                    });
+            })
+    }
+}
+
+const saveImage = (userId, source, maxSize, onProgress, onComplete) => {
+    getImageBlob(source, maxSize, blobData => {
+        fs_saveArtworkImage(
+            blobData
+            ,
+            (progressData) => {
+                if (onProgress) onProgress(progressData);
+            }
+            ,
+            (url) => {
+                console.log("url: ", url);
+                if (onComplete) onComplete(url)
+            }
+        )
+    });
+};
+
+const getImageBlob = (source, maxSize, callback) => {
+    const canvas = document.createElement('canvas');
+
+    ImageHelper.drawToCanvas({
+        sourceCanvas: source,
+        outputCanvas: canvas,
+        maxOutputCanvasWidth: maxSize,
+        maxOutputCanvasHeight: maxSize
+    }, () => {
+
+        canvas.toBlob((canvasBlobData) => {
+            callback(canvasBlobData)
+        }, 'image/jpeg', 0.95);
+
+    });
+};
+
+/*export function addArtwork(userId, imgFile, artworkData, callback = null) {
     return dispatch => {
         fs_addArtwork(userId, imgFile, artworkData, (uploadData) => {
             if (uploadData.status === 'uploading') {
@@ -259,7 +357,7 @@ export function addArtwork(userId, imgFile, artworkData, callback = null) {
             }
         });
     }
-}
+}*/
 
 export function updateArtwork(artworkId, newArtworkData, callback = null) {
     return dispatch => {

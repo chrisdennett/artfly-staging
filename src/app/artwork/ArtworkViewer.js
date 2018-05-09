@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Toolbar, ToolbarRow, ToolbarSection, ToolbarIcon } from 'rmwc/Toolbar';
-import { SimpleDialog } from 'rmwc/Dialog';
-import { Button } from 'rmwc/Button';
 // styles
 import './artworkViewer_styles.css';
 // helpers
@@ -25,11 +22,7 @@ import IconCropRotate from './../images/icons/crop-rotate.png';
 //comps
 import history from './../global/history';
 import ArtworkOptions from '../artworkOptions/ArtworkOptions';
-import Link from "../global/Butt/Link";
-import IconLogo from "../global/icon/icons/IconLogo";
-// import SignInOut from '../SignInOut/SignInOut';
 import ArtworkContainer from "./ArtworkContainer";
-import ArtworkOptionsToolBar from "../artworkOptions/artworkOptionsToolBar/ArtworkOptionsToolBar";
 import ArtworkViewerToolbar from "./ArtworkViewerToolbar";
 // Constants
 const defaultArtworkData = DefaultArtworkDataGenerator();
@@ -137,7 +130,7 @@ class ArtworkViewer extends Component {
             this.setState({ artworkData }, () => {
                 let img = new Image();
                 img.setAttribute('crossOrigin', 'anonymous'); //
-                img.src = artworkData.url;
+                img.src = artworkData.url ? artworkData.url : artworkData.sourceUrl;
                 img.onload = () => {
                     this.updateMasterCanvas(img, artworkData.orientation);
 
@@ -243,37 +236,38 @@ class ArtworkViewer extends Component {
     // Updates existing artwork data with the unsaved data
     onArtworkEditorSave() {
         // combined saved and unsaved data and update artwork.
-        const { artworkData, unsavedArtworkData, sourceImg } = this.state;
+        const { artworkData, unsavedArtworkData, sourceImg, masterCanvas } = this.state;
         const { artworkId, user } = this.props;
+        const newArtworkData = { ...artworkData, ...unsavedArtworkData };
 
-        let newArtworkData = { ...artworkData, ...unsavedArtworkData };
-
-        this.props.sendNotification('Saving artwork...', (timeStamp) => {
-            // if editing an artwork, just update the data
-            if (artworkId) {
+        // if editing an artwork, just update the data
+        if (artworkId) {
+            this.props.sendNotification('Saving artwork...', (timeStamp) => {
                 this.props.updateArtwork(artworkId, newArtworkData, () => {
                     this.props.endNotification(timeStamp);
                 });
-            }
-            // otherwise add a new artwork including the image.
-            else {
-                this.getImageBlob(sourceImg, 3000, (blobData) => {
-                    this.props.addArtwork(user.uid, blobData, newArtworkData, () => {
-                        this.props.endNotification(timeStamp);
-                    });
-                })
-            }
+            })
+        }
+        // otherwise add a new artwork including the image.
+        else {
+            this.props.addArtwork(user.uid, newArtworkData, sourceImg, masterCanvas);
 
-            this.setState({ artworkData: newArtworkData, unsavedArtworkData: {} });
-        })
+            /*this.getImageBlob(sourceImg, 3000, (blobData) => {
+                this.props.addArtwork(user.uid, blobData, newArtworkData, () => {
+                    this.props.endNotification(timeStamp);
+                });
+            })*/
+        }
+
+        this.setState({ artworkData: newArtworkData, unsavedArtworkData: {} });
     }
 
     // Deletes artwork and navigates back to the home screen
     onArtworkDeleteConfirm() {
-        const { artworkId } = this.state.artworkData;
+        const { artworkData } = this.state;
 
         this.props.sendNotification("Deleting artwork...", (timeStamp) => {
-            this.props.deleteArtwork(artworkId, () => {
+            this.props.deleteArtwork(artworkData, () => {
                 history.push('/');
                 this.props.endNotification(timeStamp);
             });
@@ -288,7 +282,6 @@ class ArtworkViewer extends Component {
         // instead the crop data and orientation is being saved with artwork data
         // and applied each time artwork viewed
         // This way edits are non-destructive.
-
         ImageHelper.drawToCanvas({
             sourceCanvas: sourceImg,
             outputCanvas: canvas,
@@ -339,7 +332,7 @@ class ArtworkViewer extends Component {
         const currentArtworkOption = artworkOptions[currentEditingOptionKey];
         const { useFullPage: editingOptionUsesFullPage } = currentArtworkOption;
 
-        let optionStyle = editingOptionUsesFullPage ? { flex: 1, display: 'flex', flexDirection: 'column' } : optionStyle;
+        let optionStyle = editingOptionUsesFullPage ? { flex: 1, display: 'flex', flexDirection: 'column' } : {};
 
         return (
             <div className={'artworkViewer'}>
