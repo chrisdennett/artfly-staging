@@ -25,24 +25,28 @@ export default function () {
     const year = now.getFullYear();
 
     const date = month + " " + year;
-    const defaultTitlesData = { title, artist, description, date };
+    const defaultTitlesData = null; //{ title, artist, description, date };
+
+    // PEOPLE
+    const defaultPeopleData = {
+        peopleSitting1: {
+            id: "peopleSitting1",
+            name: 'people sitting 1',
+            url: '/images/audience/people-sitting-1.png',
+            thumb: '/images/audience/people-sitting-1-thumb.png',
+            imageHeight: 200,
+            imageWidth: 310,
+            x: 0.493,
+            y: 1.02,
+            realLifeHeight: 1.2
+        }
+    };
 
     // ROOM
     const defaultRoomData = {
         wallTileUrl: '/images/tiles-wall/Concrete-8.jpg',
         floorTileUrl: '/images/tiles-floor/floor-boards.png',
-        audience: {
-            x: 0.2, y: 1.02,
-            people:[
-            {
-                presetName: 'peopleSitting1',
-                url: '/images/audience/people-sitting-1.png',
-                thumb: '/images/audience/people-sitting-1-thumb.png',
-                height: 200, width: 310,
-                maxProportionOfScreenHeight: 0.3
-            }
-        ]
-        },
+        audience: {},
         includeSkirting: true,
         includeGuardRail: true,
         includePeople: true
@@ -53,6 +57,7 @@ export default function () {
         frameData: defaultFrameData,
         orientation: 1,
         titlesData: defaultTitlesData,
-        roomData: defaultRoomData
+        roomData: defaultRoomData,
+        people: defaultPeopleData,
     };
 };

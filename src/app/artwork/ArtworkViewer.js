@@ -308,11 +308,12 @@ class ArtworkViewer extends Component {
         this.setState({ currentOptionIndex: selectedIndex })
     }
 
-    //
+    // Opens and closes the editor
     onEditOpenChange(isEditOpen) {
         if (isEditOpen) {
             this.setState({ isEditOpen })
         }
+        // if closing the editor need to ensure the option selected doesn't require the full screen
         else {
             this.setState({ isEditOpen, currentOptionIndex: 0 })
         }
@@ -347,7 +348,7 @@ class ArtworkViewer extends Component {
                                       onEditOpenChange={this.onEditOpenChange}
                                       onArtworkEditorSave={this.onArtworkEditorSave}
                                       onArtworkUndoChanges={this.onArtworkUndoChanges}
-                                      onArtworkDeleteConfirm={this.onArtworkDelete}
+                                      onArtworkDeleteConfirm={this.onArtworkDeleteConfirm}
                 />
 
                 {!editingOptionUsesFullPage &&

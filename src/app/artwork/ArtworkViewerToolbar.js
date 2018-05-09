@@ -21,6 +21,7 @@ class ArtworkViewerToolbar extends Component {
                   onArtworkEditorSave,
                   onArtworkUndoChanges,
                   onEditOpenChange,
+                  onArtworkDeleteConfirm,
               } = this.props;
 
         const deleteStyle = { color: '#a82021' };
@@ -35,7 +36,7 @@ class ArtworkViewerToolbar extends Component {
                     acceptLabel={'DELETE IT'}
                     cancelLabel={'KEEP IT'}
                     onClose={() => this.setState({ errorConfirmDialogIsOpen: false })}
-                    onAccept={this.onArtworkDeleteConfirm}
+                    onAccept={onArtworkDeleteConfirm}
                 />
 
                 <ToolbarRow>
