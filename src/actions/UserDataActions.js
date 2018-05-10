@@ -8,15 +8,9 @@ import {
     fs_getUserChanges,
     fs_getArtworkChanges,
     fs_deleteUser,
-    fs_updateArtworkImage,
-    fs_updateThumbnail,
     fs_getArtworkDataOnce,
-    fs_updateArtwork,
-    fs_saveArtworkImage,
-    fs_saveNewArtworkData
 } from './FirestoreActions';
-// helpers
-import * as ImageHelper from "../app/global/ImageHelper";
+
 
 export const USER_ARTWORKS_CHANGE = "userArtworksChange";
 export const ARTWORK_CHANGE = "artworkChange";
@@ -232,15 +226,7 @@ export function clearImageUpload() {
     }
 }
 
-/**
- *
- * @param userId
- * @param artworkData
- * @param imgFile
- * @param masterCanvas
- * @returns {Function}
- */
-export function addArtwork(userId, artworkData, imgFile, masterCanvas, callback) {
+/*export function addArtwork(userId, artworkData, imgFile, masterCanvas, callback) {
     return dispatch => {
 
         saveImage(userId, imgFile, 3000,
@@ -307,7 +293,7 @@ const getImageBlob = (source, maxSize, callback) => {
         }, 'image/jpeg', 0.95);
 
     });
-};
+};*/
 
 /*export function addArtwork(userId, imgFile, artworkData, callback = null) {
     return dispatch => {
@@ -330,18 +316,6 @@ const getImageBlob = (source, maxSize, callback) => {
     }
 }*/
 
-export function updateArtwork(artworkId, newArtworkData, callback = null) {
-    return dispatch => {
-        fs_updateArtwork(artworkId, newArtworkData, () => {
-            dispatch({
-                type: ARTWORK_CHANGE,
-                payload: { [artworkId]: newArtworkData }
-            });
-
-            if (callback) callback();
-        });
-    }
-}
 
 /*export function addThumbnail(artworkId, artistId, thumbFile, callback = null) {
     return dispatch => {
@@ -364,32 +338,6 @@ export function updateArtwork(artworkId, newArtworkData, callback = null) {
         });
     }
 }*/
-
-export function updateArtworkImage(artworkId, artistId, newImg, widthToHeightRatio, heightToWidthRatio, callback = null) {
-    return dispatch => {
-        fs_updateArtworkImage(artworkId, artistId, newImg, widthToHeightRatio, heightToWidthRatio, (updateProgressData) => {
-            dispatch({
-                type: UPDATE_ARTWORK_COMPLETE,
-                payload: updateProgressData
-            });
-
-            if (callback) callback(updateProgressData);
-        })
-    }
-}
-
-export function updateArtworkThumbnail(artworkId, artistId, newThumbImg, callback = null) {
-    return dispatch => {
-        fs_updateThumbnail(artworkId, artistId, newThumbImg, (updateProgressData) => {
-            dispatch({
-                type: UPDATE_THUMBNAIL_COMPLETE,
-                payload: updateProgressData
-            });
-
-            if (callback) callback(updateProgressData);
-        })
-    }
-}
 
 // NOTIFICATIONS ONLY
 export function sendNotification(wording, callback) {

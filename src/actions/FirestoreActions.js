@@ -2,8 +2,6 @@ import * as fb from 'firebase';
 import {
     auth,
     firestoreDb as db,
-    storageRef as store,
-    storageEvents
 } from '../libs/firebaseConfig';
 
 /*[2018-04-29T08:01:00.438Z]  @firebase/firestore: Firestore (4.13.0):
@@ -172,14 +170,6 @@ export function fs_getUserChanges(userId, onChangeCallback = null) {
 
 //*** ARTWORK ***********************************************************
 // ADD ARTWORK
-export function fs_saveNewArtworkData(userId, newArtworkData, callback) {
-    const artworkDatabaseRef = db.collection('artworks').doc();
-    const artworkId = artworkDatabaseRef.id;
-
-    int_saveArtworkChanges(artworkId, newArtworkData, () => {
-        if (callback) callback(artworkId);
-    });
-}
 
 /*export function fs_addArtwork(userId, blobData, artworkData, onChangeCallback = null) {
     // Get artwork database id first so can be used for the filename
@@ -220,123 +210,7 @@ export function fs_saveNewArtworkData(userId, newArtworkData, callback) {
         });
 }*/
 
-// UPDATE ARTWORK
-export function fs_updateArtworkImage(artworkId, artistId, newImage, widthToHeightRatio, heightToWidthRatio, onChangeCallback = null) {
-    // delete the server generated image urls
-    db.collection('artworks')
-        .doc(artworkId)
-        .update({
-            url_large: fb.firestore.FieldValue.delete(),
-            url_med: fb.firestore.FieldValue.delete()
-        })
-        // delete the source image
-        .then(() => {
-            int_saveImage(artworkId, artistId, newImage, '',
-                (onChangeData) => {
-                    if (onChangeCallback) onChangeCallback(onChangeData);
-                },
-                (onCompleteData) => {
-                    // Upload completed successfully - save artwork data
-                    let newArtworkData = {
-                        widthToHeightRatio,
-                        heightToWidthRatio,
-                        url: onCompleteData.downloadURL
-                    };
 
-                    int_saveArtworkChanges(artworkId, newArtworkData, () => {
-                        onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
-                    });
-                });
-        })
-        .catch(function (error) {
-            console.log('Update artwork failed: ', error);
-        })
-}
-
-export function fs_updateThumbnail(artworkId, artistId, thumbFile, onChangeCallback = null) {
-    int_saveImage(artworkId, artistId, thumbFile, 'thumbnail_',
-        (onChangeData) => {
-            if (onChangeCallback) onChangeCallback(onChangeData);
-        },
-        (onCompleteData) => {
-            // Upload completed successfully - save artwork data
-            const newArtworkData = { thumb_url: onCompleteData.downloadURL };
-
-            int_saveArtworkChanges(artworkId, newArtworkData, () => {
-                onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
-            });
-        });
-}
-
-export function fs_updateArtwork(artworkId, newArtworkData, onChangeCallback = null) {
-    int_saveArtworkChanges(artworkId, newArtworkData, () => {
-        onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
-    });
-}
-
-// INTERNAL SAVE ARTWORK CHANGES
-function int_saveArtworkChanges(artworkId, newData, onChangeCallback = null) {
-    newData.lastUpdated = Date.now();
-
-    db.collection('artworks')
-        .doc(artworkId)
-        .set(newData, { merge: true })
-        .then(() => {
-            if (onChangeCallback) onChangeCallback();
-        })
-        .catch(function (error) {
-            console.log('Update artwork failed: ', error);
-        })
-}
-
-export function fs_saveArtworkImage(blobData, onChangeCallback, onCompleteCallback) {
-    int_saveImage(blobData,
-        (progress) => {
-            if (onChangeCallback) onChangeCallback(progress);
-        },
-        (downloadURL) => {
-            // Upload completed successfully - return download url
-            if (onCompleteCallback) onCompleteCallback(downloadURL);
-        });
-}
-
-// INTERNAL ARTWORK DATA
-function int_saveImage(blob, onChangeCallback, onCompleteCallback) {
-    // generate random unique name
-    const fileName = generateUUID();
-    // create the reference
-    const userPicturesRef = store.child(`userContent/${fileName}`);
-    // start the upload
-    const uploadTask = userPicturesRef.put(blob);
-    // listen for upload events
-    uploadTask
-        .on(storageEvents.STATE_CHANGED,
-            (snapshot) => {
-                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-                onChangeCallback(progress);
-            },
-            (error) => {
-                // A full list of error codes is available at https://firebase.google.com/docs/storage/web/handle-errors
-                console.log("uncaught error: ", error);
-            },
-            () => {
-                // return the download url so it can be saved to artwork data
-                onCompleteCallback(uploadTask.snapshot.downloadURL);
-            })
-}
-
-//https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
-function generateUUID() { // Public Domain/MIT
-    let d = new Date().getTime();
-    if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
-        d += performance.now(); //use high-precision timer if available
-    }
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        const r = (d + Math.random() * 16) % 16 | 0;
-        d = Math.floor(d / 16);
-        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-}
 
 // GET ARTWORK DATA ONCE
 export function fs_getArtworkDataOnce(artworkId, onComplete = null, onNotFound = null) {

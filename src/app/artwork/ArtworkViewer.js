@@ -8,12 +8,11 @@ import * as ImageHelper from "../global/ImageHelper";
 //actions
 import {
     getArtworkDataOnce,
-    updateArtwork,
-    addArtwork,
     sendNotification,
     endNotification
 } from "../../actions/UserDataActions";
 import { deleteArtwork } from '../../actions/DeleteArtworkActions';
+import { addArtwork, updateArtwork } from '../../actions/AddArtworkActions';
 // images
 import IconFrameSize from './../images/icons/frame-size.png';
 import IconFrameColour from './../images/icons/frame-colour.png';
