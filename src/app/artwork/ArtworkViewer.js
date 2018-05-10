@@ -134,19 +134,14 @@ class ArtworkViewer extends Component {
     // NB Currently loading in the source image - should use a smaller image
     loadArtwork(artworkData) {
         this.props.sendNotification("Loading image...", (timeStamp) => {
-
             this.setState({ artworkData }, () => {
                 let sourceImg = new Image();
                 sourceImg.setAttribute('crossOrigin', 'anonymous'); //
                 sourceImg.src = artworkData.url ? artworkData.url : artworkData.sourceUrl;
                 sourceImg.onload = () => {
-                    this.updateMasterCanvas(sourceImg, artworkData.orientation, (widthToHeightRatio, heightToWidthRatio) => {
+                    this.updateMasterCanvas(sourceImg, artworkData.orientation, () => {
                         this.setState({
                             sourceImg,
-                            unsavedArtworkData: {
-                                ...this.state.unsavedArtworkData,
-                                widthToHeightRatio, heightToWidthRatio
-                            }
                         });
                     });
 
@@ -167,22 +162,25 @@ class ArtworkViewer extends Component {
 
     // TODO REVERSE THE EMPHASIS OF THIS - updateContainsChanges
     updateWillNotChangeData(existingObject, objectContainingChanges) {
-        // for each key of obj2 exists in obj1 and the value is the same
+
+        // if there isn't an object containing changes or it has not properties
+        // there can be no changes
         let doesMatch = true;
         if (!objectContainingChanges || Object.keys(objectContainingChanges).length < 1) {
             return doesMatch;
         }
 
-        const objectContainingChangesKeys = Object.keys(objectContainingChanges);
-        const existingObjectKeys = Object.keys(existingObject);
-
-        // if number of keys don't match a change must have happend
-        if (objectContainingChangesKeys.length !== existingObjectKeys.length) {
+        // if the object being tested doesn't exist it must be a change
+        if(!existingObject){
             doesMatch = false;
             return doesMatch;
         }
 
+        // loop through the change properties to see if they exist and if there are
+        // the same in the existing object
+        const objectContainingChangesKeys = Object.keys(objectContainingChanges);
         for (let key of objectContainingChangesKeys) {
+            // if the existing object doesn't contain the property, there must be a change
             if (existingObject.hasOwnProperty(key) === false) {
                 doesMatch = false;
                 break;
@@ -191,6 +189,8 @@ class ArtworkViewer extends Component {
                 const currExistingProp = existingObject[key];
                 const currChangedProp = objectContainingChanges[key];
 
+                // Don't think I'm using arrays any more, but left this in just in case
+                // I want to add them.
                 if (Array.isArray(currChangedProp)) {
                     // as each thing in the array could be an array or an object
                     // need to recursively call self for each
@@ -199,16 +199,18 @@ class ArtworkViewer extends Component {
                         if (!doesMatch) break;
                     }
                 }
+                // if the property is an object use recursion to check all its properties
                 else if (typeof currExistingProp === 'object') {
                     doesMatch = this.updateWillNotChangeData(currExistingProp, currChangedProp);
                 }
+                // check the value
                 else if (currExistingProp !== currChangedProp) {
                     doesMatch = false;
                 }
+                // only care if there's at least one change so break out if doesn't match
                 if (!doesMatch) break;
             }
         }
-
         return doesMatch;
     }
 
