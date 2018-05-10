@@ -138,7 +138,8 @@ class ArtworkViewer extends Component {
             this.setState({ artworkData }, () => {
                 let sourceImg = new Image();
                 sourceImg.setAttribute('crossOrigin', 'anonymous'); //
-                sourceImg.src = artworkData.url ? artworkData.url : artworkData.sourceUrl;
+                sourceImg.src = artworkData.largeImgUrl ? artworkData.largeImgUrl : artworkData.sourceUrl;
+                console.log("sourceImg.src: ", sourceImg.src);
                 sourceImg.onload = () => {
                     this.updateMasterCanvas(sourceImg, artworkData.orientation, () => {
                         this.setState({

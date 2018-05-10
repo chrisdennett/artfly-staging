@@ -23,13 +23,12 @@
     "react-ga": "^2.4.1",
     "react-measure": "^2.0.2",
     "react-redux": "^5.0.7",
-    "react-toastify": "^4.0.0-rc.4",
     "react-transition-group": "^2.2.1",
     "redux": "^4.0.0",
     "redux-devtools-extension": "^2.13.2",
     "redux-form": "^7.2.3",
     "redux-thunk": "^2.2.0",
-    "rmwc": "^1.6.1",
+    "rmwc": "^1.6.2",
     "source-map-explorer": "^1.5.0"
   },
   "externals": {

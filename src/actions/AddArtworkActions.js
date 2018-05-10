@@ -12,30 +12,39 @@ export function addArtwork(userId, artworkData, imgFile, masterCanvas, callback)
             progress => console.log("progress: ", progress)
             ,
             sourceImgUrl => {
+
+            // save thumb
                 saveImage(userId, masterCanvas, 250,
                     progress => console.log("Thumb progress: ", progress)
                     ,
                     thumbUrl => {
-                        const newArtworkData = {
-                            ...artworkData,
-                            adminId: userId,
-                            sourceUrl: sourceImgUrl,
-                            thumbUrl: thumbUrl,
-                            dateAdded: Date.now()
-                        };
 
-                        fs_saveNewArtworkData(userId, newArtworkData, (artworkId) => {
+                    // save large image
+                        saveImage(userId, masterCanvas, 960,
+                            progress => console.log("large image progress: ", progress)
+                            ,
+                            largeImgUrl => {
+                                const newArtworkData = {
+                                    ...artworkData,
+                                    adminId: userId,
+                                    largeImgUrl: largeImgUrl,
+                                    sourceUrl: sourceImgUrl,
+                                    thumbUrl: thumbUrl,
+                                    dateAdded: Date.now()
+                                };
 
-                            const newArtworkDataWithId = {...newArtworkData, artworkId};
+                                fs_saveNewArtworkData(userId, newArtworkData, (artworkId) => {
 
-                            dispatch({
-                                type: ARTWORK_CHANGE,
-                                payload: { [artworkId]: newArtworkDataWithId }
+                                    const newArtworkDataWithId = { ...newArtworkData, artworkId };
+
+                                    dispatch({
+                                        type: ARTWORK_CHANGE,
+                                        payload: { [artworkId]: newArtworkDataWithId }
+                                    });
+
+                                    if (callback) callback(artworkId);
+                                });
                             });
-
-                            if (callback) callback(artworkId);
-                        });
-
                     });
             })
     }
@@ -135,7 +144,6 @@ function fs_updateArtwork(artworkId, newArtworkData, onChangeCallback = null) {
         onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
     });
 }
-
 
 
 /*export function fs_updateThumbnail(artworkId, artistId, thumbFile, onChangeCallback = null) {
