@@ -22,6 +22,7 @@ class ArtworkContainer extends Component {
         const { onPhotoSelected, isNewArtwork, artworkData, masterCanvas } = this.props;
         const passThroughProps = { onPhotoSelected, isNewArtwork, artworkData, masterCanvas };
         const { dimensions } = this.state;
+        console.log("masterCanvas: ", masterCanvas);
 
         return (
             <div style={{ flex: 1, backgroundColor: 'black', display: 'flex', flexDirection: 'column' }}>

@@ -68,31 +68,31 @@ class ArtworkViewer extends Component {
         this.onEditOpenChange = this.onEditOpenChange.bind(this);
 
         this.state = {
-            artworkData: {},
             unsavedArtworkData: {},
             currentOptionIndex: 0,
-            isEditOpen: false
+            isEditOpen: false,
+            masterCanvas: document.createElement('canvas')
         };
     }
 
     // Loads artwork or configures for adding new artwork.
     componentWillMount() {
-        const { artworkId, artworks } = this.props;
+        const { artworkId, currentArtworkData } = this.props;
         // If there's no artworkId it's been opened to add a new artwork
         if (!artworkId) {
             this.setState({ unsavedArtworkData: defaultArtworkData });
         }
         // If there's an artwork id in the url, load in the artwork
-        else if (artworks[artworkId]) {
+        else if (currentArtworkData) {
             // if the artworkData is already available use it
-            this.loadArtwork(artworks[artworkId]);
+            this.loadArtwork(currentArtworkData);
         }
         // otherwise load the artwork data from the server
         else {
             this.props.getArtworkDataOnce(artworkId, (artworkData) => {
                 this.loadArtwork(artworkData);
             }, () => {
-                // artwork not found
+                // artwork not found - may have been deleted or incorrect url
                 history.push('/');
             }, () => {
                 // error loading the artwork
@@ -106,20 +106,28 @@ class ArtworkViewer extends Component {
     onPhotoSelected(imgFile) {
         ImageHelper.GetImage(imgFile,
             (sourceImg, imgOrientation) => {
-                this.updateMasterCanvas(sourceImg, imgOrientation);
+                this.updateMasterCanvas(sourceImg, imgOrientation, (widthToHeightRatio, heightToWidthRatio) => {
+                    this.setState({
+                        sourceImg,
+                        unsavedArtworkData: {
+                            ...this.state.unsavedArtworkData, widthToHeightRatio, heightToWidthRatio
+                        }
+                    });
+                });
             });
     }
 
     // The source image remains at its original orientation
     // it is draw to the master canvas with the updated orientation
     onCanvasOrientationChange(newData) {
-        this.setState((state) => {
-            return {
-                unsavedArtworkData: { ...state.unsavedArtworkData, ...newData }
-            }
-        }, () => {
-            this.updateMasterCanvas(this.state.sourceImg, newData.orientation, newData.cropData);
-        })
+        // update the state and canvas
+        const { sourceImg, unsavedArtworkData } = this.state;
+
+        this.updateMasterCanvas(sourceImg, newData.orientation, (widthToHeightRatio, heightToWidthRatio) => {
+            this.setState({
+                unsavedArtworkData: { ...unsavedArtworkData, ...newData, widthToHeightRatio, heightToWidthRatio }
+            });
+        });
     }
 
     // Loads in artwork Image from the server using the saved url
@@ -128,11 +136,19 @@ class ArtworkViewer extends Component {
         this.props.sendNotification("Loading image...", (timeStamp) => {
 
             this.setState({ artworkData }, () => {
-                let img = new Image();
-                img.setAttribute('crossOrigin', 'anonymous'); //
-                img.src = artworkData.url ? artworkData.url : artworkData.sourceUrl;
-                img.onload = () => {
-                    this.updateMasterCanvas(img, artworkData.orientation);
+                let sourceImg = new Image();
+                sourceImg.setAttribute('crossOrigin', 'anonymous'); //
+                sourceImg.src = artworkData.url ? artworkData.url : artworkData.sourceUrl;
+                sourceImg.onload = () => {
+                    this.updateMasterCanvas(sourceImg, artworkData.orientation, (widthToHeightRatio, heightToWidthRatio) => {
+                        this.setState({
+                            sourceImg,
+                            unsavedArtworkData: {
+                                ...this.state.unsavedArtworkData,
+                                widthToHeightRatio, heightToWidthRatio
+                            }
+                        });
+                    });
 
                     this.props.endNotification(timeStamp);
                 }
@@ -141,27 +157,11 @@ class ArtworkViewer extends Component {
     }
 
     // Draws the selected or loaded image to an off-screen canvas
-    updateMasterCanvas(sourceImg, orientation, cropData = {}) {
-        const masterCanvas = this.state.masterCanvas || document.createElement('canvas');
-
-        ImageHelper.drawImageToCanvas({ sourceImg, outputCanvas: masterCanvas, orientation },
+    // In doing so, generates new width to height ratios
+    updateMasterCanvas(sourceImg, orientation, callback) {
+        ImageHelper.drawImageToCanvas({ sourceImg, outputCanvas: this.state.masterCanvas, orientation },
             (widthToHeightRatio, heightToWidthRatio) => {
-                this.setState((state) => {
-                    const newCropData = { ...state.artworkData.cropData, ...cropData };
-                    const newArtworkData = { ...state.artworkData, cropData: newCropData, orientation, widthToHeightRatio, heightToWidthRatio };
-
-                    // this is hacky, I don't like it.  Need to refactor updateMasterCanvas
-                    // This is needed to stop default orientation overwriting orientation from loaded file.
-                    // causing a knock on prob with save always being shown now.
-                    const updatedUnsavedArtworkData = {...state.unsavedArtworkData, orientation};
-
-                    return {
-                        sourceImg,
-                        masterCanvas,
-                        artworkData: newArtworkData,
-                        unsavedArtworkData: updatedUnsavedArtworkData,
-                    }
-                });
+                if (callback) callback(widthToHeightRatio, heightToWidthRatio);
             })
     }
 
@@ -222,11 +222,15 @@ class ArtworkViewer extends Component {
             () => {
                 // if orientation has changed need to redraw canvas
                 if (updatedData.hasOwnProperty('orientation')) {
-                    const { cropData: currentCropData } = this.state.artworkData;
+                    const { cropData: currentCropData } = this.props.currentArtworkData;
                     const { cropData: unsavedCropData } = this.state.unsavedArtworkData;
                     const latestCropData = { ...currentCropData, ...unsavedCropData };
 
-                    this.updateMasterCanvas(this.state.sourceImg, updatedData.orientation, latestCropData);
+                    this.updateMasterCanvas(this.state.sourceImg, updatedData.orientation, (widthToHeightRatio, heightToWidthRatio) => {
+                        this.setState({
+                            unsavedArtworkData: { ...this.state.unsavedArtworkData, cropData: latestCropData, widthToHeightRatio, heightToWidthRatio }
+                        });
+                    });
                 }
             }
         )
@@ -236,15 +240,15 @@ class ArtworkViewer extends Component {
     onArtworkUndoChanges() {
         this.setState({ unsavedArtworkData: {} });
         // if the artwork orientation has changed, need to redraw the master canvas
-        this.updateMasterCanvas(this.state.sourceImg, this.state.artworkData.orientation, this.state.artworkData.cropData);
+        this.updateMasterCanvas(this.state.sourceImg, this.props.currentArtworkData.orientation);
     }
 
     // Updates existing artwork data with the unsaved data
     onArtworkEditorSave() {
         // combined saved and unsaved data and update artwork.
-        const { artworkData, unsavedArtworkData, sourceImg, masterCanvas } = this.state;
-        const { artworkId, user } = this.props;
-        const newArtworkData = { ...artworkData, ...unsavedArtworkData };
+        const { unsavedArtworkData, sourceImg, masterCanvas } = this.state;
+        const { artworkId, user, currentArtworkData } = this.props;
+        const newArtworkData = { ...currentArtworkData, ...unsavedArtworkData };
 
         // if editing an artwork, just update the data
         this.props.sendNotification('Saving artwork...', (timeStamp) => {
@@ -265,15 +269,15 @@ class ArtworkViewer extends Component {
             }
         });
 
-        this.setState({ artworkData: newArtworkData, unsavedArtworkData: {} });
+        this.setState({ unsavedArtworkData: {} });
     }
 
     // Deletes artwork and navigates back to the home screen
     onArtworkDeleteConfirm() {
-        const { artworkData } = this.state;
+        const { currentArtworkData } = this.props;
 
         this.props.sendNotification("Deleting artwork...", (timeStamp) => {
-            this.props.deleteArtwork(artworkData, () => {
+            this.props.deleteArtwork(currentArtworkData, () => {
                 history.push('/');
                 this.props.endNotification(timeStamp);
             });
@@ -297,15 +301,15 @@ class ArtworkViewer extends Component {
     }
 
     render() {
-        const { user, artworkId } = this.props;
-        const { artworkData, unsavedArtworkData, masterCanvas, sourceImg, currentOptionIndex, isEditOpen } = this.state;
-        const currentArtworkData = { ...artworkData, ...unsavedArtworkData };
+        const { user, artworkId, currentArtworkData } = this.props;
+        const { unsavedArtworkData, masterCanvas, sourceImg, currentOptionIndex, isEditOpen } = this.state;
+        const combinedArtworkData = { ...currentArtworkData, ...unsavedArtworkData };
 
         const isNewArtwork = !artworkId;
-        const userIsAdmin = isNewArtwork || (user.uid && user.uid === artworkData.adminId);
+        const userIsAdmin = isNewArtwork || (user.uid && user.uid === currentArtworkData.adminId);
 
         const isNewArtworkWithoutImage = isNewArtwork && !sourceImg;
-        const hasUnsavedChanges = !isNewArtworkWithoutImage && userIsAdmin && !this.updateWillNotChangeData(artworkData, unsavedArtworkData);
+        const hasUnsavedChanges = !isNewArtworkWithoutImage && userIsAdmin && !this.updateWillNotChangeData(currentArtworkData, unsavedArtworkData);
 
         const currentEditingOptionKey = Object
             .keys(artworkOptions)
@@ -331,13 +335,13 @@ class ArtworkViewer extends Component {
                 {!editingOptionUsesFullPage &&
                 <ArtworkContainer onPhotoSelected={this.onPhotoSelected}
                                   isNewArtwork={isNewArtwork}
-                                  artworkData={currentArtworkData}
+                                  artworkData={combinedArtworkData}
                                   masterCanvas={masterCanvas}
                 />
                 }
 
                 {userIsAdmin && isEditOpen &&
-                <ArtworkOptions artworkData={currentArtworkData}
+                <ArtworkOptions artworkData={combinedArtworkData}
                                 style={optionStyle}
                                 artworkOptions={artworkOptions}
                                 currentOptionIndex={currentOptionIndex}
@@ -353,10 +357,14 @@ class ArtworkViewer extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
+    const { artworkId } = props;
+    const currentArtworkData = artworkId ? state.artworks[artworkId] : null;
+
     return {
         artworks: state.artworks,
-        user: state.user
+        user: state.user,
+        currentArtworkData: currentArtworkData
     }
 };
 const mapActionsToProps = { getArtworkDataOnce, updateArtwork, addArtwork, deleteArtwork, sendNotification, endNotification };
