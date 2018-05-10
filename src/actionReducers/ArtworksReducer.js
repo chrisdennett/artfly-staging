@@ -10,11 +10,9 @@ export default function (state = {}, action) {
             return newState;
 
         case ARTWORK_CHANGE:
-            console.log("action: ", action);
             return { ...state, ...action.payload };
 
         case USER_ARTWORKS_CHANGE:
-            console.log("USER_ARTWORKS_CHANGE action: ", action);
             return {...state, ...action.payload };
 
         default:

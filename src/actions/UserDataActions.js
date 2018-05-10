@@ -13,7 +13,7 @@ import {
     fs_getArtworkDataOnce,
     fs_updateArtwork,
     fs_saveArtworkImage,
-    fs_saveNewArtworkData,
+    fs_saveNewArtworkData
 } from './FirestoreActions';
 // helpers
 import * as ImageHelper from "../app/global/ImageHelper";
@@ -195,13 +195,11 @@ export function listenForUserArtworkChanges(userId) {
 export function listenForArtworkChanges(artworkId, callback, errorCallback) {
     return (dispatch) => {
         fs_getArtworkChanges(artworkId, (artworkData) => {
-            const dataWithId = { ...artworkData, artworkId };
-
             dispatch({
                 type: ARTWORK_CHANGE,
-                payload: { [artworkId]: dataWithId }
+                payload: { [artworkId]: artworkData }
             });
-            if (callback) callback(dataWithId);
+            if (callback) callback(artworkData);
 
         }, () => {
             if (errorCallback) errorCallback(artworkId);
@@ -214,13 +212,11 @@ export function getArtworkDataOnce(artworkId, callback, noDocCallback) {
     return dispatch => {
 
         fs_getArtworkDataOnce(artworkId, (artworkData) => {
-            const dataWithId = { ...artworkData, artworkId };
-
             dispatch({
                 type: ARTWORK_CHANGE,
-                payload: { [artworkId]: dataWithId }
+                payload: { [artworkId]: artworkData }
             });
-            if (callback) callback(dataWithId);
+            if (callback) callback(artworkData);
         }, () => {
             if (noDocCallback) noDocCallback();
         });
@@ -264,12 +260,15 @@ export function addArtwork(userId, artworkData, imgFile, masterCanvas, callback)
                         };
 
                         fs_saveNewArtworkData(userId, newArtworkData, (artworkId) => {
+
+                            const newArtworkDataWithId = {...newArtworkData, artworkId};
+
                             dispatch({
                                 type: ARTWORK_CHANGE,
-                                payload: { [artworkId]: newArtworkData }
+                                payload: { [artworkId]: newArtworkDataWithId }
                             });
 
-                            if(callback) callback(artworkId);
+                            if (callback) callback(artworkId);
                         });
 
                     });
@@ -287,7 +286,6 @@ const saveImage = (userId, source, maxSize, onProgress, onComplete) => {
             }
             ,
             (url) => {
-                console.log("url: ", url);
                 if (onComplete) onComplete(url)
             }
         )

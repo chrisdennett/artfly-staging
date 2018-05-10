@@ -105,12 +105,14 @@ class ArtworkViewer extends Component {
     // NB: Crop data isn't reset so will use any existing crop data
     onPhotoSelected(imgFile) {
         ImageHelper.GetImage(imgFile,
-            (sourceImg, imgOrientation) => {
-                this.updateMasterCanvas(sourceImg, imgOrientation, (widthToHeightRatio, heightToWidthRatio) => {
+            (sourceImg, orientation) => {
+                this.updateMasterCanvas(sourceImg, orientation, (widthToHeightRatio, heightToWidthRatio) => {
                     this.setState({
                         sourceImg,
                         unsavedArtworkData: {
-                            ...this.state.unsavedArtworkData, widthToHeightRatio, heightToWidthRatio
+                            ...this.state.unsavedArtworkData,
+                            widthToHeightRatio, heightToWidthRatio,
+                            orientation,
                         }
                     });
                 });

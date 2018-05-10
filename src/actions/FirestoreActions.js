@@ -340,13 +340,15 @@ function generateUUID() { // Public Domain/MIT
 
 // GET ARTWORK DATA ONCE
 export function fs_getArtworkDataOnce(artworkId, onComplete = null, onNotFound = null) {
+
+    console.log("artworkId: ", artworkId);
+
     const docRef = db.collection('artworks').doc(artworkId);
 
     docRef
         .get()
         .then((doc) => {
             if (doc.exists) {
-                const artworkId = doc.id;
                 let artworkData = doc.data();
                 artworkData.artworkId = artworkId; // add id to data for ease of use
                 const artworkDataWithId = { [artworkId]: artworkData };
