@@ -13,7 +13,7 @@ import {
     sendNotification,
     endNotification
 } from "../../actions/UserDataActions";
-import { deleteArtwork } from '../../actions/ArtworkActions';
+import { deleteArtwork } from '../../actions/DeleteArtworkActions';
 // images
 import IconFrameSize from './../images/icons/frame-size.png';
 import IconFrameColour from './../images/icons/frame-colour.png';
