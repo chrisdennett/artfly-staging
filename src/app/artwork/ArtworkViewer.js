@@ -162,9 +162,7 @@ class ArtworkViewer extends Component {
 
     // TODO REVERSE THE EMPHASIS OF THIS - updateContainsChanges
     updateWillNotChangeData(existingObject, objectContainingChanges) {
-
-        // if there isn't an object containing changes or it has not properties
-        // there can be no changes
+        // if there's no change object or it has not properties there can't be changes
         let doesMatch = true;
         if (!objectContainingChanges || Object.keys(objectContainingChanges).length < 1) {
             return doesMatch;
@@ -307,7 +305,7 @@ class ArtworkViewer extends Component {
         const { unsavedArtworkData, masterCanvas, sourceImg, currentOptionIndex, isEditOpen } = this.state;
         const combinedArtworkData = { ...currentArtworkData, ...unsavedArtworkData };
 
-        const isNewArtwork = !artworkId;
+        const isNewArtwork = !artworkId || !currentArtworkData;
         const userIsAdmin = isNewArtwork || (user.uid && user.uid === currentArtworkData.adminId);
 
         const isNewArtworkWithoutImage = isNewArtwork && !sourceImg;
@@ -336,13 +334,13 @@ class ArtworkViewer extends Component {
 
                 {!editingOptionUsesFullPage &&
                 <ArtworkContainer onPhotoSelected={this.onPhotoSelected}
-                                  isNewArtwork={isNewArtwork}
+                                  isNewArtworkWithoutImage={isNewArtworkWithoutImage}
                                   artworkData={combinedArtworkData}
                                   masterCanvas={masterCanvas}
                 />
                 }
 
-                {userIsAdmin && isEditOpen &&
+                {userIsAdmin && isEditOpen && currentArtworkData &&
                 <ArtworkOptions artworkData={combinedArtworkData}
                                 style={optionStyle}
                                 artworkOptions={artworkOptions}
@@ -361,7 +359,9 @@ class ArtworkViewer extends Component {
 
 const mapStateToProps = (state, props) => {
     const { artworkId } = props;
-    const currentArtworkData = artworkId ? state.artworks[artworkId] : null;
+    let currentArtworkData = artworkId ? state.artworks[artworkId] : null;
+    // initially an empty object is set up, but it's easier to treat that as null.
+    if(currentArtworkData && Object.keys(currentArtworkData).length === 0) currentArtworkData = null;
 
     return {
         artworks: state.artworks,

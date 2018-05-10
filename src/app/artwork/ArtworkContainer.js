@@ -19,8 +19,8 @@ class ArtworkContainer extends Component {
     }
 
     render() {
-        const { onPhotoSelected, isNewArtwork, artworkData, masterCanvas } = this.props;
-        const passThroughProps = { onPhotoSelected, isNewArtwork, artworkData, masterCanvas };
+        const { onPhotoSelected, isNewArtworkWithoutImage, artworkData, masterCanvas } = this.props;
+        const passThroughProps = { onPhotoSelected, isNewArtworkWithoutImage, artworkData, masterCanvas };
         const { dimensions } = this.state;
 
         return (

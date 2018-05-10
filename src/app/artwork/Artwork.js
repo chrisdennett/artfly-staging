@@ -38,14 +38,12 @@ class Artwork extends Component {
     }
 
     setupCanvas(props) {
-        const { width, height, artworkData, masterCanvas, isNewArtwork } = props;
+        const { width, height, artworkData, masterCanvas, isNewArtworkWithoutImage } = props;
 
         // prevent errors by stopping if critical elements not available
-        if (!this.canvas || !artworkData || width < 1 || height < 1) {
+        if (!this.canvas || !artworkData || Object.keys(artworkData).length === 0 || width < 1 || height < 1) {
             return;
         }
-
-        if (!masterCanvas && !isNewArtwork) return;
 
         let { cropData, frameData, titlesData, roomData, people, widthToHeightRatio, heightToWidthRatio } = artworkData;
 
@@ -114,7 +112,7 @@ class Artwork extends Component {
         drawFloor(ctx, this.floorTile, 0, floorY, width, floorHeight);
 
         // If it's a new artwork the photo uploader will be shown on top so need a blank wall
-        if (!isNewArtwork || masterCanvas) {
+        if (!isNewArtworkWithoutImage) {
             drawFrameShadow(ctx, frameX, frameY, frameWidth, frameHeight);
 
             if (frameThickness > 0) {
@@ -200,18 +198,18 @@ class Artwork extends Component {
     }
 
     render() {
-        const { isNewArtwork, onPhotoSelected, masterCanvas } = this.props;
-        const showPhotoSelector = isNewArtwork && !masterCanvas;
-
+        const { isNewArtworkWithoutImage, onPhotoSelected } = this.props;
         return (
             <div>
-                {showPhotoSelector &&
+                {isNewArtworkWithoutImage &&
                 <PhotoSelector onPhotoSelected={onPhotoSelected}/>
                 }
+
                 <canvas className={'quickArtwork--canvas'}
                         ref={this.onCanvasInit}
                         width={300}
                         height={300}/>
+
 
                 {/*{this.canvas &&
                 <img src={this.canvas.toDataURL('image/png')} />

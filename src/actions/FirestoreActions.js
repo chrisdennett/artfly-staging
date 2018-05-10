@@ -346,7 +346,12 @@ export function fs_getArtworkDataOnce(artworkId, onComplete = null, onNotFound =
         .get()
         .then((doc) => {
             if (doc.exists) {
-                onComplete(doc.data());
+                const artworkId = doc.id;
+                let artworkData = doc.data();
+                artworkData.artworkId = artworkId; // add id to data for ease of use
+                const artworkDataWithId = { [artworkId]: artworkData };
+
+                onComplete(artworkDataWithId);
             }
             else {
                 // doc.data() will be undefined in this case
