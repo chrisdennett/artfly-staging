@@ -13,6 +13,7 @@ import LinkButt from "../global/Butt/LinkButt";
 import SocialMediaStuff from "./socialMediaStuff/SocialMediaStuff";
 import ArtFlyLab from "./artflyLab/ArtFlyLab";
 import ArtFlyIntro from "./artFlyIntro/ArtFlyIntro";
+import ArtworkThumb from "../artwork/ArtworkThumb";
 
 const Home = ({ user, userArtworks }) => {
     const userLoggedIn = user && user.loginStatus === 'loggedIn';
@@ -54,10 +55,15 @@ const Home = ({ user, userArtworks }) => {
                     Object.keys(userArtworks).map(artworkId => {
                         return (
                             <div key={artworkId}>
-                                <img src={userArtworks[artworkId].thumbUrl} alt={'thumb'} />
+                                <ArtworkThumb artworkData={userArtworks[artworkId]}/>
+                                {/*<img src={userArtworks[artworkId].thumbUrl} alt={'thumb'} />*/}
                                 <LinkButt linkTo={`/artwork/${artworkId}`}>
                                     OPEN
                                 </LinkButt>
+
+
+
+
                             </div>
                         )
                     })
