@@ -61,9 +61,6 @@ const Home = ({ user, userArtworks }) => {
                                     OPEN
                                 </LinkButt>
 
-
-
-
                             </div>
                         )
                     })
