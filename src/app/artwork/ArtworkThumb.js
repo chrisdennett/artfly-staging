@@ -1,6 +1,11 @@
 import React, { Component } from "react";
-import Artwork from "./Artwork";
+import { Elevation } from 'rmwc/Elevation';
+import { Ripple } from 'rmwc/Ripple';
+// helpers
 import * as ImageHelper from "../global/ImageHelper";
+// comps
+import Artwork from "./Artwork";
+import history from "../global/history";
 
 class ArtworkThumb extends Component {
 
@@ -31,17 +36,33 @@ class ArtworkThumb extends Component {
 
     render() {
         const { masterCanvas } = this.state;
-        const { artworkData } = this.props;
+        const { artworkData, artworkId } = this.props;
 
         return (
-            <div>
-                {masterCanvas && artworkData &&
-                <Artwork masterCanvas={masterCanvas}
-                         artworkData={artworkData}
-                         width={300}
-                         height={300}/>
-                }
-            </div>
+            <Elevation
+                z={this.state.elevation || 0}
+                transition
+                onMouseOver={() => this.setState({ elevation: 14 })}
+                onMouseOut={() => this.setState({ elevation: 0 })}
+            >
+                <Ripple>
+
+                    <div style={{lineHeight:0}}
+                         onClick={() => {history.push(`artwork/${artworkId}`)}}
+                    >
+                        {
+                            masterCanvas && artworkData &&
+                            <Artwork masterCanvas={masterCanvas}
+                                     artworkData={artworkData}
+                                     width={300}
+                                     height={300}
+                            />
+                        }
+                    </div>
+                </Ripple>
+            </Elevation>
+
+
         );
     }
 }

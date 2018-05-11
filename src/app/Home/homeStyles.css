@@ -2,8 +2,13 @@
     background: url("../../app/images/brickwall.png");
 }
 
+.home-topBar{
+    text-align: right;
+    padding: 10px;
+}
+
 .home--heading {
-    padding: 3rem 10px 0 10px;
+    padding: 0 10px 0 10px;
 }
 
 .home--title{
@@ -38,6 +43,18 @@
     font-size: 2rem;
 }
 
+.home--artworks{
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.artworkThumbs{
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .home--footer{
     margin-top: 4rem;
     border-top: 20px solid white;
@@ -54,8 +71,6 @@
 .home--footer--p{
     font-size: 1rem;
     margin-bottom: 1rem;
-
-
 }
 
 @media (max-width: 600px) {

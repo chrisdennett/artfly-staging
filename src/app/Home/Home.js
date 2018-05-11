@@ -1,7 +1,6 @@
 // externals
 import React from "react";
 import { connect } from 'react-redux';
-import { Toolbar, ToolbarRow, ToolbarSection } from 'rmwc/Toolbar';
 // styles
 import './homeStyles.css';
 // components
@@ -21,13 +20,16 @@ const Home = ({ user, userArtworks }) => {
     return (
         <div className={'home'}>
 
-            <Toolbar fixed style={{ background: 'rgba(0,0,0,0.2)', boxShadow: 'none' }}>
+            {/*<Toolbar fixed style={{ background: 'rgba(0,0,0,0.2)', boxShadow: 'none' }}>
                 <ToolbarRow>
                     <ToolbarSection alignEnd>
                         <SignInOut user={user}/>
                     </ToolbarSection>
                 </ToolbarRow>
-            </Toolbar>
+            </Toolbar>*/}
+            <div className={'home-topBar'}>
+                <SignInOut user={user}/>
+            </div>
 
             <div className='home--heading'>
                 <div>
@@ -35,6 +37,7 @@ const Home = ({ user, userArtworks }) => {
                 </div>
                 <div className='home--tagLine'>Make bad art, make good art, just let your Art Fly.
                 </div>
+
 
                 {!IN_BETA_TESTING &&
                 <div className='home--signInOut'>
@@ -49,20 +52,22 @@ const Home = ({ user, userArtworks }) => {
             }*/}
 
             {userLoggedIn &&
-            <div>
+            <div className={'home--artworks'}>
+
                 <LinkButt linkTo={'/artwork'}>Add new Artwork</LinkButt>
+
+                <div className={'artworkThumbs'}>
                 {
                     Object.keys(userArtworks).map(artworkId => {
                         return (
-                            <div key={artworkId}>
-                                <LinkButt linkTo={`/artwork/${artworkId}`}>
-                                    <ArtworkThumb artworkData={userArtworks[artworkId]}/>
-                                </LinkButt>
-                            </div>
+                            <ArtworkThumb key={artworkId}
+                                          artworkId={artworkId}
+                                          artworkData={userArtworks[artworkId]}
+                            />
                         )
                     })
-
                 }
+                </div>
             </div>
             }
 

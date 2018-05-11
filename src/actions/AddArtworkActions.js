@@ -4,6 +4,20 @@ import { getImageBlob, generateUUID } from "../app/global/ImageHelper";
 // constants
 import { ARTWORK_CHANGE } from "./UserDataActions";
 
+// UPDATE ARTWORK
+export function updateArtwork(artworkId, newArtworkData, callback = null) {
+    return dispatch => {
+        int_saveArtworkChanges(artworkId, newArtworkData, () => {
+            dispatch({
+                type: ARTWORK_CHANGE,
+                payload: { [artworkId]: newArtworkData }
+            });
+
+            if (callback) callback();
+        });
+    }
+}
+
 // ADD ARTWORK
 export function addArtwork(userId, artworkData, imgFile, masterCanvas, callback) {
     return dispatch => {
@@ -50,26 +64,6 @@ export function addArtwork(userId, artworkData, imgFile, masterCanvas, callback)
     }
 }
 
-function fs_saveNewArtworkData(userId, newArtworkData, callback) {
-    const artworkDatabaseRef = db.collection('artworks').doc();
-    const artworkId = artworkDatabaseRef.id;
-
-    int_saveArtworkChanges(artworkId, newArtworkData, () => {
-        if (callback) callback(artworkId);
-    });
-}
-
-function fs_saveArtworkImage(blobData, onChangeCallback, onCompleteCallback) {
-    int_saveImage(blobData,
-        (progress) => {
-            if (onChangeCallback) onChangeCallback(progress);
-        },
-        (downloadURL) => {
-            // Upload completed successfully - return download url
-            if (onCompleteCallback) onCompleteCallback(downloadURL);
-        });
-}
-
 function saveImage(userId, source, maxSize, onProgress, onComplete) {
     getImageBlob(source, maxSize, blobData => {
         fs_saveArtworkImage(
@@ -84,15 +78,15 @@ function saveImage(userId, source, maxSize, onProgress, onComplete) {
             }
         )
     });
-};
+}
 
-function int_saveImage(blob, onChangeCallback, onCompleteCallback) {
+function fs_saveArtworkImage(blobData, onChangeCallback, onCompleteCallback) {
     // generate random unique name
     const fileName = generateUUID();
     // create the reference
     const userPicturesRef = store.child(`userContent/${fileName}`);
     // start the upload
-    const uploadTask = userPicturesRef.put(blob);
+    const uploadTask = userPicturesRef.put(blobData);
     // listen for upload events
     uploadTask
         .on(storageEvents.STATE_CHANGED,
@@ -110,6 +104,15 @@ function int_saveImage(blob, onChangeCallback, onCompleteCallback) {
             })
 }
 
+function fs_saveNewArtworkData(userId, newArtworkData, callback) {
+    const artworkDatabaseRef = db.collection('artworks').doc();
+    const artworkId = artworkDatabaseRef.id;
+
+    int_saveArtworkChanges(artworkId, newArtworkData, () => {
+        if (callback) callback(artworkId);
+    });
+}
+
 // AVE ARTWORK CHANGES
 function int_saveArtworkChanges(artworkId, newData, onChangeCallback = null) {
     newData.lastUpdated = Date.now();
@@ -125,26 +128,36 @@ function int_saveArtworkChanges(artworkId, newData, onChangeCallback = null) {
         })
 }
 
-// UPDATE ARTWORK
-export function updateArtwork(artworkId, newArtworkData, callback = null) {
-    return dispatch => {
-        fs_updateArtwork(artworkId, newArtworkData, () => {
-            dispatch({
-                type: ARTWORK_CHANGE,
-                payload: { [artworkId]: newArtworkData }
-            });
 
-            if (callback) callback();
-        });
-    }
-}
+/*function int_saveImage(blobData, onChangeCallback, onCompleteCallback) {
+    // generate random unique name
+    const fileName = generateUUID();
+    // create the reference
+    const userPicturesRef = store.child(`userContent/${fileName}`);
+    // start the upload
+    const uploadTask = userPicturesRef.put(blobData);
+    // listen for upload events
+    uploadTask
+        .on(storageEvents.STATE_CHANGED,
+            (snapshot) => {
+                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                onChangeCallback(progress);
+            },
+            (error) => {
+                // A full list of error codes is available at https://firebase.google.com/docs/storage/web/handle-errors
+                console.log("uncaught error: ", error);
+            },
+            () => {
+                // return the download url so it can be saved to artwork data
+                onCompleteCallback(uploadTask.snapshot.downloadURL);
+            })
+}*/
 
-function fs_updateArtwork(artworkId, newArtworkData, onChangeCallback = null) {
+/*function fs_updateArtwork(artworkId, newArtworkData, onChangeCallback = null) {
     int_saveArtworkChanges(artworkId, newArtworkData, () => {
         onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
     });
-}
-
+}*/
 
 /*export function fs_updateThumbnail(artworkId, artistId, thumbFile, onChangeCallback = null) {
     int_saveImage(artworkId, artistId, thumbFile, 'thumbnail_',
