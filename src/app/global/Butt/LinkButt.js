@@ -1,4 +1,5 @@
 import React from 'react';
+import { Ripple } from 'rmwc/Ripple';
 // comp
 import history from '../history';
 
@@ -18,15 +19,17 @@ const LinkButt = function ({ children, linkTo, isPrimary = false, style = {} }) 
         color: fontColour,
         background: bgColour,
         border: '1px solid rgba(0,0,0,0.2)',
-        cursor: 'pointer',
+        cursor: 'pointer'
     };
 
     const combinedStyle = { ...defaultStyle, ...style };
 
     return (
-        <button style={combinedStyle} onClick={() => {history.push(linkTo)}}>
-            {children}
-        </button>
+        <Ripple>
+            <button style={combinedStyle} onClick={() => {history.push(linkTo)}}>
+                {children}
+            </button>
+        </Ripple>
     )
 };
 

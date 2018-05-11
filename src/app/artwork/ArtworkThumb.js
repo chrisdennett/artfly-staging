@@ -35,7 +35,6 @@ class ArtworkThumb extends Component {
 
         return (
             <div>
-                <h1>ArtworkThumb</h1>
                 {masterCanvas && artworkData &&
                 <Artwork masterCanvas={masterCanvas}
                          artworkData={artworkData}

@@ -55,12 +55,9 @@ const Home = ({ user, userArtworks }) => {
                     Object.keys(userArtworks).map(artworkId => {
                         return (
                             <div key={artworkId}>
-                                <ArtworkThumb artworkData={userArtworks[artworkId]}/>
-                                {/*<img src={userArtworks[artworkId].thumbUrl} alt={'thumb'} />*/}
                                 <LinkButt linkTo={`/artwork/${artworkId}`}>
-                                    OPEN
+                                    <ArtworkThumb artworkData={userArtworks[artworkId]}/>
                                 </LinkButt>
-
                             </div>
                         )
                     })
