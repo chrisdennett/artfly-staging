@@ -165,12 +165,16 @@ class ArtworkViewer extends Component {
     updateWillNotChangeData(existingObject, objectContainingChanges) {
         // if there's no change object or it has not properties there can't be changes
         let doesMatch = true;
-        if (!objectContainingChanges || Object.keys(objectContainingChanges).length < 1) {
+        /*if (!objectContainingChanges || Object.keys(objectContainingChanges).length < 1) {
             return doesMatch;
-        }
+        }*/
 
         // if the object being tested doesn't exist it must be a change
         if(!existingObject){
+            doesMatch = false;
+            return doesMatch;
+        }
+        else if(!objectContainingChanges){
             doesMatch = false;
             return doesMatch;
         }
@@ -245,9 +249,12 @@ class ArtworkViewer extends Component {
     }
 
     // Updates existing artwork data with the unsaved data
+    // Images are all made with the source image so all usage of
+    // saved images will need to implement the crop and rotation
+    // saved in the data.
     onArtworkEditorSave() {
         // combined saved and unsaved data and update artwork.
-        const { unsavedArtworkData, sourceImg, masterCanvas } = this.state;
+        const { unsavedArtworkData, sourceImg } = this.state;
         const { artworkId, user, currentArtworkData } = this.props;
         const newArtworkData = { ...currentArtworkData, ...unsavedArtworkData };
 
@@ -261,7 +268,7 @@ class ArtworkViewer extends Component {
             // otherwise add a new artwork including the image.
             else {
                 this.props.addArtwork(
-                    user.uid, newArtworkData, sourceImg, masterCanvas
+                    user.uid, newArtworkData, sourceImg
                     ,
                     (artworkId) => {
                         this.props.endNotification(timeStamp);

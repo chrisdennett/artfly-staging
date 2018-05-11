@@ -10,7 +10,7 @@ import './artFlyIntro_styles.css';
 // comps
 import LinkExternalButt from "../../global/Butt/LinkExternalButt";
 
-const ArtFlyIntro = function (props) {
+const ArtFlyIntro = function () {
     return (
         <div className={'artFlyIntro'}>
             <div className={'artFlyIntro--content'}>
@@ -21,10 +21,10 @@ const ArtFlyIntro = function (props) {
                 <ul>
                     <li>Help parents to encourage and cope with kids <FontAwesomeIcon icon={faChild}/> constant creations.
                     </li>
-                    <li>Make cross-curricular creative stuff for schools <FontAwesomeIcon
-                        icon={faPaintBrush}/>.
+                    <li>Make simple tools <FontAwesomeIcon icon={faDesktopAlt}/> to encourage anyone to make art.
                     </li>
-                    <li>Making simple tools <FontAwesomeIcon icon={faDesktopAlt}/> to encourage anyone to make some art.
+                    <li>Create cross-curricular school packs that mix art <FontAwesomeIcon
+                        icon={faPaintBrush}/> in with other subjects.
                     </li>
                 </ul>
 

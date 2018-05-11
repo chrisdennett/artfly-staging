@@ -19,7 +19,7 @@ export function updateArtwork(artworkId, newArtworkData, callback = null) {
 }
 
 // ADD ARTWORK
-export function addArtwork(userId, artworkData, imgFile, masterCanvas, callback) {
+export function addArtwork(userId, artworkData, imgFile, callback) {
     return dispatch => {
 
         saveImage(userId, imgFile, 3000,
@@ -28,13 +28,13 @@ export function addArtwork(userId, artworkData, imgFile, masterCanvas, callback)
             sourceImgUrl => {
 
             // save thumb
-                saveImage(userId, masterCanvas, 250,
+                saveImage(userId, imgFile, 250,
                     progress => console.log("Thumb progress: ", progress)
                     ,
                     thumbUrl => {
 
                     // save large image
-                        saveImage(userId, masterCanvas, 960,
+                        saveImage(userId, imgFile, 960,
                             progress => console.log("large image progress: ", progress)
                             ,
                             largeImgUrl => {
