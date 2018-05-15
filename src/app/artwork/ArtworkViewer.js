@@ -173,8 +173,8 @@ class ArtworkViewer extends Component {
             return doesMatch;
         }*/
 
-        // if the object being tested doesn't exist it must be a change
-        if (!existingObject) {
+        // if the object being tested doesn't exist and there are changes it must be a change
+        if (!existingObject && objectContainingChanges ) {
             doesMatch = false;
             return doesMatch;
         }
@@ -203,6 +203,7 @@ class ArtworkViewer extends Component {
                     // need to recursively call self for each
                     for (let i = 0; i < currChangedProp.length; i++) {
                         doesMatch = this.updateWillNotChangeData({ testProp: currExistingProp[i] }, { testProp: currChangedProp[i] });
+
                         if (!doesMatch) break;
                     }
                 }
@@ -276,6 +277,11 @@ class ArtworkViewer extends Component {
                     ,
                     (artworkId) => {
                         this.props.endNotification(timeStamp);
+
+                        // clear unsaved data otherwise otherwise it won't re-render and
+                        // will continue to show the save and undo buttons.
+                        this.setState({unsavedArtworkData:{}});
+
                         history.push(`/artwork/${artworkId}`);
                     });
             }
