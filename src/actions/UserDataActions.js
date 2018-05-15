@@ -1,26 +1,16 @@
 // FB - Firestore actions
 import {
-    fs_getUserArtworkChanges,
     fs_addAuthListener,
     fs_signInWithProvider,
     fs_signOut,
     fs_addNewUser,
     fs_getUserChanges,
-    fs_getArtworkChanges,
     fs_deleteUser,
-    fs_getArtworkDataOnce,
 } from './FirestoreActions';
 
 
-export const USER_ARTWORKS_CHANGE = "userArtworksChange";
-export const ARTWORK_CHANGE = "artworkChange";
-export const ARTWORK_DELETED = 'artworkDeleted';
-export const UPDATE_ARTWORK_COMPLETE = 'updateArtworkComplete';
-export const UPDATE_THUMBNAIL_COMPLETE = 'updateThumbnailComplete';
 export const IMAGE_UPLOAD_PROGRESS = 'imageUploadProgress';
 export const ADD_ARTWORK_COMPLETE = 'addArtworkComplete';
-export const THUMBNAIL_UPLOAD_PROGRESS = 'thumbnailUploadProgress';
-export const ADD_THUMBNAIL_COMPLETE = 'addThumbnailComplete';
 export const CLEAR_IMAGE_UPLOAD = 'clearImageUpload';
 export const CREATE_USER = 'create_user';
 export const FETCH_USER = "fetchUser";
@@ -161,61 +151,7 @@ export function deleteUser() {
 }
 
 // ARTWORK ************************************************************
-
-// LISTEN FOR ARTWORK DATA CHANGES
-export function listenForUserArtworkChanges(userId) {
-    return (dispatch) => {
-        const timeStamp = Date.now();
-
-        dispatch({
-            type: NOTIFICATION,
-            payload: { wording: 'Artwork is being loaded', timeStamp }
-        });
-
-        fs_getUserArtworkChanges(userId, (artworks) => {
-            dispatch({
-                type: USER_ARTWORKS_CHANGE,
-                payload: artworks
-            });
-
-            dispatch({
-                type: NOTIFICATION_COMPLETE,
-                payload: { timeStamp }
-            });
-        })
-    }
-}
-
-export function listenForArtworkChanges(artworkId, callback, errorCallback) {
-    return (dispatch) => {
-        fs_getArtworkChanges(artworkId, (artworkData) => {
-            dispatch({
-                type: ARTWORK_CHANGE,
-                payload: { [artworkId]: artworkData }
-            });
-            if (callback) callback(artworkData);
-
-        }, () => {
-            if (errorCallback) errorCallback(artworkId);
-        })
-    }
-}
-
-// Gets a single snapshot of the artwork data
-export function getArtworkDataOnce(artworkId, callback, noDocCallback) {
-    return dispatch => {
-
-        fs_getArtworkDataOnce(artworkId, (artworkData) => {
-            dispatch({
-                type: ARTWORK_CHANGE,
-                payload: { [artworkId]: artworkData }
-            });
-            if (callback) callback(artworkData);
-        }, () => {
-            if (noDocCallback) noDocCallback();
-        });
-    }
-}
+/*
 
 export function clearImageUpload() {
     return dispatch => {
@@ -225,6 +161,7 @@ export function clearImageUpload() {
         });
     }
 }
+*/
 
 /*export function addArtwork(userId, artworkData, imgFile, masterCanvas, callback) {
     return dispatch => {

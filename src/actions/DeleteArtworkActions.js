@@ -1,6 +1,6 @@
 import { firestoreDb as db, storage } from "../libs/firebaseConfig";
 // constants
-import { ARTWORK_DELETED } from "./UserDataActions";
+export const ARTWORK_DELETED = 'artworkDeleted';
 
 export function deleteArtwork(artworkData, callback = null) {
     return dispatch => {

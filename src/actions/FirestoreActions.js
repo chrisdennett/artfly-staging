@@ -1,7 +1,7 @@
 import * as fb from 'firebase';
 import {
     auth,
-    firestoreDb as db,
+    firestoreDb as db
 } from '../libs/firebaseConfig';
 
 /*[2018-04-29T08:01:00.438Z]  @firebase/firestore: Firestore (4.13.0):
@@ -30,10 +30,8 @@ future release, the behavior will change to the new behavior, so if you do not
 
 
 // listener object - each listener is stored on it with a name matching the Action function
-const unsubscribers = {};
+let unsubscribers = {};
 unsubscribers.userListeners = {};
-unsubscribers.userArtworkListeners = {};
-unsubscribers.artworkListeners = {};
 
 
 // UNSUBSCRIBE LISTENERS
@@ -212,82 +210,6 @@ export function fs_getUserChanges(userId, onChangeCallback = null) {
 
 
 
-// GET ARTWORK DATA ONCE
-export function fs_getArtworkDataOnce(artworkId, onComplete = null, onNotFound = null) {
 
-    console.log("artworkId: ", artworkId);
 
-    const docRef = db.collection('artworks').doc(artworkId);
 
-    docRef
-        .get()
-        .then((doc) => {
-            if (doc.exists) {
-                let artworkData = doc.data();
-                artworkData.artworkId = artworkId; // add id to data for ease of use
-                const artworkDataWithId = { [artworkId]: artworkData };
-
-                onComplete(artworkDataWithId);
-            }
-            else {
-                // doc.data() will be undefined in this case
-                if (onNotFound) onNotFound(artworkId);
-            }
-        })
-        .catch(function (error) {
-            console.log("Error getting document:", error);
-        });
-}
-
-// GET ARTWORK CHANGES
-export function fs_getArtworkChanges(artworkId, onChangeCallback = null, onErrorCallback) {
-    if (unsubscribers.artworkListeners[artworkId]) {
-        return "already_running";
-    }
-
-    unsubscribers.artworkListeners[artworkId] = db.collection('artworks')
-        .doc(artworkId)
-        .onSnapshot(doc => {
-                if (!doc.exists) {
-                    if (onErrorCallback) onErrorCallback();
-                    return;
-                }
-
-                const artworkId = doc.id;
-                let artworkData = doc.data();
-                artworkData.artworkId = artworkId; // add id to data for ease of use
-                const artworkDataWithId = { [artworkId]: artworkData };
-
-                if (onChangeCallback) onChangeCallback(artworkDataWithId);
-            },
-            (error) => {
-                if (onErrorCallback) onErrorCallback(error);
-                console.log("artwork changes listener error: ", error);
-            });
-}
-
-// GET USER ARTWORK CHANGES
-export function fs_getUserArtworkChanges(userId, callback) {
-    if (!userId || unsubscribers.userArtworkListeners[userId]) {
-        return "already_running";
-    }
-
-    unsubscribers.userArtworkListeners[userId] = db.collection('artworks')
-        .where('adminId', '==', userId)
-        .onSnapshot(querySnapshot => {
-
-                let userArtworks = {};
-
-                querySnapshot.forEach(doc => {
-                    const artworkId = doc.id;
-                    const artworkData = doc.data();
-                    const dataWithId = { ...artworkData, artworkId };
-                    userArtworks[doc.id] = dataWithId;
-                });
-
-                if (callback) callback(userArtworks);
-            },
-            error => {
-                console.log("user artworks listener error: ", error);
-            })
-}

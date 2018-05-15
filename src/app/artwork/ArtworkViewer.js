@@ -6,11 +6,8 @@ import './artworkViewer_styles.css';
 import DefaultArtworkDataGenerator from "./DefaultArtworkDataGenerator";
 import * as ImageHelper from "../global/ImageHelper";
 //actions
-import {
-    getArtworkDataOnce,
-    sendNotification,
-    endNotification
-} from "../../actions/UserDataActions";
+import { sendNotification, endNotification } from "../../actions/UserDataActions";
+import { listenForIndividualArtworkChanged } from '../../actions/GetArtworkActions';
 import { deleteArtwork } from '../../actions/DeleteArtworkActions';
 import { addArtwork, updateArtwork } from '../../actions/AddArtworkActions';
 // images
@@ -65,6 +62,7 @@ class ArtworkViewer extends Component {
         this.onArtworkDeleteConfirm = this.onArtworkDeleteConfirm.bind(this);
         this.onToolSelect = this.onToolSelect.bind(this);
         this.onEditOpenChange = this.onEditOpenChange.bind(this);
+        this.setup = this.setup.bind(this);
 
         this.state = {
             unsavedArtworkData: {},
@@ -75,8 +73,16 @@ class ArtworkViewer extends Component {
     }
 
     // Loads artwork or configures for adding new artwork.
-    componentWillMount() {
-        const { artworkId, currentArtworkData } = this.props;
+    componentWillReceiveProps(props){
+        this.setup(props);
+    }
+
+    componentWillMount(){
+        this.setup(this.props);
+    }
+
+    setup(props) {
+        const { artworkId, currentArtworkData } = props;
         // If there's no artworkId it's been opened to add a new artwork
         if (!artworkId) {
             this.setState({ unsavedArtworkData: defaultArtworkData });
@@ -88,7 +94,7 @@ class ArtworkViewer extends Component {
         }
         // otherwise load the artwork data from the server
         else {
-            this.props.getArtworkDataOnce(artworkId, (artworkData) => {
+            this.props.listenForIndividualArtworkChanged(artworkId, (artworkData) => {
                 this.loadArtwork(artworkData);
             }, () => {
                 // artwork not found - may have been deleted or incorrect url
@@ -111,7 +117,7 @@ class ArtworkViewer extends Component {
                         unsavedArtworkData: {
                             ...this.state.unsavedArtworkData,
                             widthToHeightRatio, heightToWidthRatio,
-                            orientation,
+                            orientation
                         }
                     });
                 });
@@ -134,22 +140,20 @@ class ArtworkViewer extends Component {
     // Loads in artwork Image from the server using the saved url
     // NB Currently loading in the source image - should use a smaller image
     loadArtwork(artworkData) {
-        this.props.sendNotification("Loading image...", (timeStamp) => {
-            this.setState({ artworkData }, () => {
-                let sourceImg = new Image();
-                sourceImg.setAttribute('crossOrigin', 'anonymous'); //
-                sourceImg.src = artworkData.largeImgUrl ? artworkData.largeImgUrl : artworkData.sourceUrl;
-                sourceImg.onload = () => {
-                    this.updateMasterCanvas(sourceImg, artworkData.orientation, () => {
-                        this.setState({
-                            sourceImg,
-                        });
-                    });
+        if(this.state.sourceImg) return;
 
-                    this.props.endNotification(timeStamp);
-                }
-            })
-        });
+        this.setState({ artworkData }, () => {
+            let sourceImg = new Image();
+            sourceImg.setAttribute('crossOrigin', 'anonymous'); //
+            sourceImg.src = artworkData.largeImgUrl ? artworkData.largeImgUrl : artworkData.sourceUrl;
+            sourceImg.onload = () => {
+                this.updateMasterCanvas(sourceImg, artworkData.orientation, () => {
+                    this.setState({
+                        sourceImg
+                    });
+                });
+            }
+        })
     }
 
     // Draws the selected or loaded image to an off-screen canvas
@@ -170,11 +174,11 @@ class ArtworkViewer extends Component {
         }*/
 
         // if the object being tested doesn't exist it must be a change
-        if(!existingObject){
+        if (!existingObject) {
             doesMatch = false;
             return doesMatch;
         }
-        else if(!objectContainingChanges){
+        else if (!objectContainingChanges) {
             doesMatch = false;
             return doesMatch;
         }
@@ -369,7 +373,15 @@ const mapStateToProps = (state, props) => {
     const { artworkId } = props;
     let currentArtworkData = artworkId ? state.artworks[artworkId] : null;
     // initially an empty object is set up, but it's easier to treat that as null.
-    if(currentArtworkData && Object.keys(currentArtworkData).length === 0) currentArtworkData = null;
+    if (currentArtworkData && Object.keys(currentArtworkData).length === 0) {
+        currentArtworkData = null;
+    }
+    else if (currentArtworkData) {
+        if (state.resources[currentArtworkData.resources]) {
+            const resources = state.resources[currentArtworkData.resources];
+            currentArtworkData = { ...currentArtworkData, ...resources };
+        }
+    }
 
     return {
         artworks: state.artworks,
@@ -377,5 +389,5 @@ const mapStateToProps = (state, props) => {
         currentArtworkData: currentArtworkData
     }
 };
-const mapActionsToProps = { getArtworkDataOnce, updateArtwork, addArtwork, deleteArtwork, sendNotification, endNotification };
+const mapActionsToProps = { listenForIndividualArtworkChanged, updateArtwork, addArtwork, deleteArtwork, sendNotification, endNotification };
 export default connect(mapStateToProps, mapActionsToProps)(ArtworkViewer);

@@ -57,16 +57,17 @@ const Home = ({ user, userArtworks }) => {
                 <LinkButt linkTo={'/artwork'}>Add new Artwork</LinkButt>
 
                 <div className={'artworkThumbs'}>
-                {
-                    Object.keys(userArtworks).map(artworkId => {
-                        return (
-                            <ArtworkThumb key={artworkId}
-                                          artworkId={artworkId}
-                                          artworkData={userArtworks[artworkId]}
-                            />
-                        )
-                    })
-                }
+                    {
+                        Object.keys(userArtworks).map(artworkId => {
+                            const artworkData = userArtworks[artworkId];
+                            return (
+                                <ArtworkThumb key={artworkId}
+                                              artworkId={artworkId}
+                                              artworkData={artworkData}
+                                />
+                            )
+                        })
+                    }
                 </div>
             </div>
             }
@@ -96,15 +97,19 @@ const Home = ({ user, userArtworks }) => {
 };
 
 const mapStateToProps = (state) => {
-    const { user, artworks } = state;
+    const { user, artworks, resources } = state;
     let userArtworks = {};
 
     if (user && artworks) {
         const artworkIds = Object.keys(artworks);
         const userId = user.uid;
         for (let id of artworkIds) {
-            const art = artworks[id];
+            let art = artworks[id];
             if (art && art.adminId === userId) {
+                if (resources && art.resources) {
+                    art = { ...art, ...resources[art.resources] };
+                }
+
                 userArtworks[id] = art;
             }
         }

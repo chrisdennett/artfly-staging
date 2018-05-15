@@ -41,11 +41,12 @@ class Artwork extends Component {
         const { width, height, artworkData, masterCanvas, isNewArtworkWithoutImage } = props;
 
         // prevent errors by stopping if critical elements not available
-        if (!this.canvas || !artworkData || Object.keys(artworkData).length === 0 || width < 1 || height < 1) {
+        if (!masterCanvas || !this.canvas || !artworkData || Object.keys(artworkData).length === 0 || width < 1 || height < 1) {
             return;
         }
 
-        let { cropData, frameData, titlesData, roomData, people, widthToHeightRatio, heightToWidthRatio } = artworkData;
+        let { cropData, frameData, roomData, people, widthToHeightRatio, heightToWidthRatio } = artworkData;
+        if(!cropData) return;
 
         // CROP DATA
         const { leftPercent, rightPercent, topPercent, bottomPercent } = cropData;
@@ -54,6 +55,7 @@ class Artwork extends Component {
         // ROOM DATA
         const { wallTileUrl, floorTileUrl, includeSkirting, includeGuardRail, includePeople } = roomData;
 
+        // Ensure the wall and floor images are loaded in before continuing.
         let loadingImage = false;
         if (!this.wallTile || wallTileUrl !== this.state.wallTileUrl) {
             loadingImage = true;
@@ -68,8 +70,9 @@ class Artwork extends Component {
         // don't continue if loading an image
         if (loadingImage) return null;
 
-        const srcWidth = masterCanvas ? masterCanvas.width : 300;
-        const srcHeight = masterCanvas ? masterCanvas.height : 300;
+        // work out the sizes
+        const srcWidth = masterCanvas ? masterCanvas.width : 10;
+        const srcHeight = masterCanvas ? masterCanvas.height : 10;
 
         const cropWidthPercent = leftPercent + (1 - rightPercent);
         const widthToCrop = srcWidth * cropWidthPercent;
@@ -82,17 +85,11 @@ class Artwork extends Component {
         widthToHeightRatio = croppedHeight / croppedWidth;
         heightToWidthRatio = croppedWidth / croppedHeight;
 
-        const textWidthPercent = 0.3;
-        const textPaddingPercent = 0.03;
-        const maxTextWidth = 400;
-        const textWidth = width * textWidthPercent < maxTextWidth ? width * textWidthPercent : maxTextWidth;
+        const artworkSizes = calculateCanvasArtworkSizes({ frameThicknessDecimal, mountThicknessDecimal, width, height, widthToHeightRatio, heightToWidthRatio });
 
-        const paddingWidth = width * textPaddingPercent;
-        const pictureWidth = titlesData ? width - (textWidth + paddingWidth) : width;
-
-        const artworkSizes = calculateCanvasArtworkSizes({ frameThicknessDecimal, mountThicknessDecimal, width: pictureWidth, height, widthToHeightRatio, heightToWidthRatio });
 
         let {
+                pixelsPerMeter,
                 imgX, imgY, imgWidth, imgHeight,
                 frameX, frameY, frameWidth, frameHeight, frameThickness,
                 mountX, mountY, mountWidth, mountHeight, mountThickness,
@@ -125,12 +122,6 @@ class Artwork extends Component {
 
             // add artwork
             drawArtworkImage(ctx, masterCanvas, this.canvas, imgX, imgY, imgWidth, imgHeight, cropData);
-
-            // add titlesData text
-            if (titlesData) {
-                const textX = frameX + frameWidth;
-                addTitles(ctx, textWidth, frameHeight, textX, frameY, titlesData);
-            }
         }
 
         // add skirting board
@@ -138,10 +129,11 @@ class Artwork extends Component {
             drawSkirtingBoard(ctx, 0, skirtingY, width, skirtingHeight);
         }
 
-        if (includeGuardRail && 1 === 2) {
+        if (includeGuardRail) {
             if (this.guardTile) {
                 let guardRailY = floorY - 20;
-                const railHeight = 64;
+                const realLifeRailHeight = 0.35;
+                const railHeight = Math.min(realLifeRailHeight * pixelsPerMeter, 65);
                 if (guardRailY + railHeight > height) {
                     guardRailY -= railHeight / 3;
                 }
@@ -159,27 +151,22 @@ class Artwork extends Component {
             const peopleKeys = Object.keys(people);
             if (peopleKeys.length < 1) return;
 
-            /*
-            * frameHeight is always 4m
-            * find scale of frame then scale person by this using realLifeHeight;
-            * */
-            const frameRealLifeHeight = 3; // meters
-            const pixelsPerMeter = frameHeight / frameRealLifeHeight;
-
             // for each
             for (let key of peopleKeys) {
                 if (people[key]) {
                     const person = people[key];
 
                     const { id, url, x, y, imageWidth, imageHeight, realLifeHeight } = person;
-                    const personHeight = realLifeHeight * pixelsPerMeter;
+
+                    // Limit person height to imageHeight to stop it going blurry.
+                    // This will mean that the picture will
+                    const personHeight = Math.min(realLifeHeight * pixelsPerMeter, imageHeight);
                     const personScale = personHeight / imageHeight;
                     const personWidth = imageWidth * personScale;
                     const xPos = (width * x) - (personWidth / 2); // allow to go half off the sides
-                    const yPos = height * y;
+                    const yPos = skirtingY + skirtingHeight + 50;
 
                     if (!this[id] || url !== this.state[`${id}Url`]) {
-                        // console.log("id: ", id);
                         this.loadImage(url, id);
                     }
                     else {
@@ -188,13 +175,6 @@ class Artwork extends Component {
                 }
             }
         }
-
-        // add artfly.io bit to the bottom right;
-        /*const branding = "ArtFly.io";
-        ctx.font = `${20}px 'Stardos Stencil'`;
-        const brandingLength = ctx.measureText(branding).width + 10;
-        ctx.fillStyle = "rgba(0,0,0,0.3)";
-        ctx.fillText(branding, width - brandingLength, height - 30);*/
     }
 
     render() {
@@ -207,9 +187,8 @@ class Artwork extends Component {
 
                 <canvas className={'quickArtwork--canvas'}
                         ref={this.onCanvasInit}
-                        width={300}
-                        height={300}/>
-
+                        width={350}
+                        height={350}/>
 
                 {/*{this.canvas &&
                 <img src={this.canvas.toDataURL('image/png')} />
@@ -255,7 +234,7 @@ const
         }
     };
 
-const
+/*const
     addTitles = (ctx, maxWidth, maxHeight, x, y, titlesData) => {
         const { title, artist, description, date, background = true } = titlesData;
 
@@ -367,7 +346,7 @@ const
         ctx.font = `${dateFontSize}px 'Stardos Stencil'`;
         ctx.fillStyle = "rgba(0,0,0,0.4)";
         ctx.fillText(date, textX, dateY);
-    };
+    };*/
 
 const
     drawArtworkImage = (ctx, sourceImg, outputCanvas, imgX, imgY, imgWidth, imgHeight, cropData) => {
@@ -588,8 +567,7 @@ const
         ctx.fillStyle = pat;
         ctx.fill();
         ctx.closePath();
-
-
+        
         let gradient = ctx.createLinearGradient(startX, startY, startX, startY + height);
         gradient.addColorStop(0, 'rgba(0,0,0,0)');
         // gradient.addColorStop(0.4, 'rgba(0,0,0,0.3)');
@@ -645,11 +623,9 @@ const
 
 const
     calculateCanvasArtworkSizes = ({ frameThicknessDecimal = 0.04, mountThicknessDecimal = 0.06, width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 20, minPaddingSides = 20 }) => {
-        // const mountThicknessPercent = 0.06;
+        const skirtingRealLifeHeight = 0.15; // in meters
         const spaceBelowPicturePercent = 0.15;
-        const maxPercentageTakenUpBySkirting = 0.3;
-        const maxSkirtingHeight = 34;
-        const minGapPercent = 0.3;
+        const maxSkirtingHeight = 30;
 
         const spaceBelowPicture = spaceBelowPicturePercent * height;
 
@@ -679,11 +655,22 @@ const
         }
 
         let frameWidth = Math.round(imgWidth + totalFrameAndMountThickness);
+
+        /*
+        * this is crucial for the scale of everything.
+        * frameHeight is always 3m
+        * find scale of frame then scale things using realLifeHeight properties in each;
+        * */
+        const sizeOfMaximumPictureDimensionInMeters = 2.5; // meters
+        const minDimension = Math.min(frameHeight, frameWidth);
+        const pixelsPerMeter = minDimension / sizeOfMaximumPictureDimensionInMeters;
+
         // work out the padding around the picture
         const totalFramedPictureWidth = imgWidth + totalFrameAndMountThickness;
         const extraHorizontalSpace = width - (totalFramedPictureWidth + minPaddingLeft + minPaddingRight);
         const paddingLeft = minPaddingLeft + (extraHorizontalSpace / 2);
 
+        // divides up the extra vertical space to position the picture in the middle of the screen.
         const extraVerticalSpace = height - (imgHeight + totalFrameAndMountThickness + minPaddingTop + minPaddingBottom);
         const paddingTop = minPaddingTop + (extraVerticalSpace / 2);
 
@@ -695,16 +682,16 @@ const
         const imgY = Math.round(mountY + mountThickness);
         const mountWidth = Math.round(frameWidth - (frameThickness * 2));
         const mountHeight = Math.round(frameHeight - (frameThickness * 2));
+        const skirtingHeight = Math.min(skirtingRealLifeHeight * pixelsPerMeter, maxSkirtingHeight);
 
-        let skirtingHeight = spaceBelowPicture * maxPercentageTakenUpBySkirting;
-        if (skirtingHeight > maxSkirtingHeight) skirtingHeight = maxSkirtingHeight;
-        const gapBetweenPictureAndSkirting = spaceBelowPicture * minGapPercent;
+        const frameBottom = frameY + frameHeight;
 
-        const skirtingY = height - (spaceBelowPicture - gapBetweenPictureAndSkirting);
+        const skirtingY = frameBottom + (spaceBelowPicture / 2);
         const floorY = skirtingY + skirtingHeight;
         const floorHeight = height - floorY;
 
         return {
+            pixelsPerMeter,
             skirtingY, skirtingHeight, floorY, floorHeight,
             imgX, imgY, frameX, frameY, mountX, mountY,
             frameWidth, frameHeight,
@@ -712,4 +699,4 @@ const
             imgWidth, imgHeight,
             frameThickness, mountThickness
         };
-    };
+};

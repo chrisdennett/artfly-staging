@@ -3,7 +3,8 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import ga from './libs/googleAnalyticsConfig';
 // actions
-import { listenForUserChanges, listenForUserArtworkChanges } from './actions/UserDataActions';
+import { listenForUserChanges } from './actions/UserDataActions';
+import { listenForUserArtworkChanges } from './actions/GetArtworkActions';
 // components
 import history from './app/global/history';
 // route components

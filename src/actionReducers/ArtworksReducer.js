@@ -1,4 +1,5 @@
-import { ARTWORK_CHANGE, ARTWORK_DELETED, USER_ARTWORKS_CHANGE } from '../actions/UserDataActions';
+import { ARTWORK_DELETED } from '../actions/DeleteArtworkActions';
+import { ARTWORK_CHANGE } from '../actions/GetArtworkActions';
 
 export default function (state = {}, action) {
     switch (action.type) {
@@ -11,9 +12,6 @@ export default function (state = {}, action) {
 
         case ARTWORK_CHANGE:
             return { ...state, ...action.payload };
-
-        case USER_ARTWORKS_CHANGE:
-            return {...state, ...action.payload };
 
         default:
             return state;

@@ -7,6 +7,7 @@ import ArtworksReducer from './ArtworksReducer';
 import ImageUploadReducer from './ImageUploadReducer';
 import FormReducer from './FormReducer';
 import NotificationsReducer from "./NotificationsReducer";
+import ResourcesReducer from "./ResourcesReducer";
 
 const rootReducer = combineReducers({
     notifications: NotificationsReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
     paddle: PaddleReducer,
     user: UserReducer,
     artworks: ArtworksReducer,
+    resources: ResourcesReducer,
     imageUploadInfo: ImageUploadReducer,
     form: FormReducer
 });

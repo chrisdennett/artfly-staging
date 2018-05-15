@@ -2,12 +2,12 @@ import { firestoreDb as db, storageEvents, storageRef as store } from "../libs/f
 // helpers
 import { getImageBlob, generateUUID } from "../app/global/ImageHelper";
 // constants
-import { ARTWORK_CHANGE } from "./UserDataActions";
+import { ARTWORK_CHANGE } from "./GetArtworkActions";
 
 // UPDATE ARTWORK
 export function updateArtwork(artworkId, newArtworkData, callback = null) {
     return dispatch => {
-        int_saveArtworkChanges(artworkId, newArtworkData, () => {
+        saveArtworkChanges(artworkId, newArtworkData, () => {
             dispatch({
                 type: ARTWORK_CHANGE,
                 payload: { [artworkId]: newArtworkData }
@@ -26,38 +26,51 @@ export function addArtwork(userId, artworkData, imgFile, callback) {
             progress => console.log("progress: ", progress)
             ,
             sourceImgUrl => {
-
-            // save thumb
+                // save thumb
                 saveImage(userId, imgFile, 250,
                     progress => console.log("Thumb progress: ", progress)
                     ,
                     thumbUrl => {
 
-                    // save large image
+                        // save large image
                         saveImage(userId, imgFile, 960,
                             progress => console.log("large image progress: ", progress)
                             ,
                             largeImgUrl => {
-                                const newArtworkData = {
-                                    ...artworkData,
+                                const { orientation, cropData, heightToWidthRatio, widthToHeightRatio, ...rest } = artworkData;
+
+                                const resourceData = {
                                     adminId: userId,
                                     largeImgUrl: largeImgUrl,
                                     sourceUrl: sourceImgUrl,
                                     thumbUrl: thumbUrl,
-                                    dateAdded: Date.now()
+                                    orientation,
+                                    cropData, heightToWidthRatio, widthToHeightRatio
                                 };
 
-                                fs_saveNewArtworkData(userId, newArtworkData, (artworkId) => {
 
-                                    const newArtworkDataWithId = { ...newArtworkData, artworkId };
+                                // Save the resource first to get the Id.
+                                saveNewResource(userId, resourceData, (resourceId) => {
+                                    const newArtworkData = {
+                                        ...rest,
+                                        resources:resourceId,
+                                        adminId: userId,
+                                        dateAdded: Date.now()
+                                    };
 
-                                    dispatch({
-                                        type: ARTWORK_CHANGE,
-                                        payload: { [artworkId]: newArtworkDataWithId }
+                                    // save the resource id in the artwork data.
+                                    saveNewArtworkData(userId, newArtworkData, (artworkId) => {
+                                        const newArtworkDataWithId = { ...newArtworkData, artworkId};
+
+                                        dispatch({
+                                            type: ARTWORK_CHANGE,
+                                            payload: { [artworkId]: newArtworkDataWithId }
+                                        });
+
+                                        if (callback) callback(artworkId);
                                     });
+                                })
 
-                                    if (callback) callback(artworkId);
-                                });
                             });
                     });
             })
@@ -104,17 +117,41 @@ function fs_saveArtworkImage(blobData, onChangeCallback, onCompleteCallback) {
             })
 }
 
-function fs_saveNewArtworkData(userId, newArtworkData, callback) {
+// SAVE NEW RESOURCE
+function saveNewResource(userId, resourceData, callback) {
+    const resourceDatabaseRef = db.collection('resources').doc();
+    const resourceId = resourceDatabaseRef.id;
+
+    saveResourceChanges(resourceId, resourceData, callback);
+}
+
+// SAVE RESOURCE CHANGES
+function saveResourceChanges(resourceId, newData, callback) {
+    newData.lastUpdated = Date.now();
+
+    db.collection('resources')
+        .doc(resourceId)
+        .set(newData, { merge: true })
+        .then(() => {
+            if (callback) callback(resourceId);
+        })
+        .catch(function (error) {
+            console.log('Update resource failed: ', error);
+        })
+}
+
+// SAVE NEW ARTWORK
+function saveNewArtworkData(userId, newArtworkData, callback) {
     const artworkDatabaseRef = db.collection('artworks').doc();
     const artworkId = artworkDatabaseRef.id;
 
-    int_saveArtworkChanges(artworkId, newArtworkData, () => {
+    saveArtworkChanges(artworkId, newArtworkData, () => {
         if (callback) callback(artworkId);
     });
 }
 
-// AVE ARTWORK CHANGES
-function int_saveArtworkChanges(artworkId, newData, onChangeCallback = null) {
+// SAVE ARTWORK CHANGES
+function saveArtworkChanges(artworkId, newData, onChangeCallback = null) {
     newData.lastUpdated = Date.now();
 
     db.collection('artworks')
@@ -154,7 +191,7 @@ function int_saveArtworkChanges(artworkId, newData, onChangeCallback = null) {
 }*/
 
 /*function fs_updateArtwork(artworkId, newArtworkData, onChangeCallback = null) {
-    int_saveArtworkChanges(artworkId, newArtworkData, () => {
+    saveArtworkChanges(artworkId, newArtworkData, () => {
         onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
     });
 }*/
@@ -168,7 +205,7 @@ function int_saveArtworkChanges(artworkId, newData, onChangeCallback = null) {
             // Upload completed successfully - save artwork data
             const newArtworkData = { thumb_url: onCompleteData.downloadURL };
 
-            int_saveArtworkChanges(artworkId, newArtworkData, () => {
+            saveArtworkChanges(artworkId, newArtworkData, () => {
                 onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
             });
         });
@@ -223,7 +260,7 @@ export function fs_updateArtworkImage(artworkId, artistId, newImage, widthToHeig
                         url: onCompleteData.downloadURL
                     };
 
-                    int_saveArtworkChanges(artworkId, newArtworkData, () => {
+                    saveArtworkChanges(artworkId, newArtworkData, () => {
                         onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
                     });
                 });

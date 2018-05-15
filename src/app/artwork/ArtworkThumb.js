@@ -13,10 +13,22 @@ class ArtworkThumb extends Component {
         super(props);
 
         this.state = {};
+
+        this.setup = this.setup.bind(this);
     }
 
-    componentWillMount() {
-        const { thumbUrl, orientation } = this.props.artworkData;
+    componentWillMount(){
+        this.setup(this.props);
+    }
+
+    componentWillReceiveProps(newProps){
+        this.setup(newProps);
+    }
+
+    setup(newProps) {
+        const { thumbUrl, orientation } = newProps.artworkData;
+
+        if (!thumbUrl) return;
 
         let sourceImg = new Image();
         sourceImg.setAttribute('crossOrigin', 'anonymous'); //
@@ -47,7 +59,7 @@ class ArtworkThumb extends Component {
             >
                 <Ripple>
 
-                    <div style={{lineHeight:0}}
+                    <div style={{ lineHeight: 0, padding:10, border: '1px solid black' }}
                          onClick={() => {history.push(`artwork/${artworkId}`)}}
                     >
                         {
