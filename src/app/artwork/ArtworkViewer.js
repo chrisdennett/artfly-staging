@@ -9,7 +9,7 @@ import * as ImageHelper from "../global/ImageHelper";
 import { sendNotification, endNotification } from "../../actions/UserDataActions";
 import { listenForIndividualArtworkChanged } from '../../actions/GetArtworkActions';
 import { deleteArtwork } from '../../actions/DeleteArtworkActions';
-import { addArtwork, updateArtwork } from '../../actions/AddArtworkActions';
+import { addArtwork, updateArtwork } from '../../actions/SaveArtworkActions';
 // images
 import IconFrameSize from './../images/icons/frame-size.png';
 import IconFrameColour from './../images/icons/frame-colour.png';
@@ -145,7 +145,7 @@ class ArtworkViewer extends Component {
         this.setState({ artworkData }, () => {
             let sourceImg = new Image();
             sourceImg.setAttribute('crossOrigin', 'anonymous'); //
-            sourceImg.src = artworkData.largeImgUrl ? artworkData.largeImgUrl : artworkData.sourceUrl;
+            sourceImg.src = artworkData.largeUrl ? artworkData.largeUrl : artworkData.sourceUrl;
             sourceImg.onload = () => {
                 this.updateMasterCanvas(sourceImg, artworkData.orientation, () => {
                     this.setState({
@@ -289,7 +289,7 @@ class ArtworkViewer extends Component {
         const { currentArtworkData } = this.props;
 
         this.props.sendNotification("Deleting artwork...", (timeStamp) => {
-            this.props.deleteArtwork(currentArtworkData, () => {
+            this.props.deleteArtwork(currentArtworkData, true, () => {
                 history.push('/');
                 this.props.endNotification(timeStamp);
             });

@@ -25,7 +25,7 @@ export function addArtwork(userId, artworkData, imgFile, callback) {
         saveImage(userId, imgFile, 3000,
             progress => console.log("progress: ", progress)
             ,
-            sourceImgUrl => {
+            sourceUrl => {
                 // save thumb
                 saveImage(userId, imgFile, 250,
                     progress => console.log("Thumb progress: ", progress)
@@ -36,14 +36,14 @@ export function addArtwork(userId, artworkData, imgFile, callback) {
                         saveImage(userId, imgFile, 960,
                             progress => console.log("large image progress: ", progress)
                             ,
-                            largeImgUrl => {
+                            largeUrl => {
                                 const { orientation, cropData, heightToWidthRatio, widthToHeightRatio, ...rest } = artworkData;
 
                                 const resourceData = {
                                     adminId: userId,
-                                    largeImgUrl: largeImgUrl,
-                                    sourceUrl: sourceImgUrl,
-                                    thumbUrl: thumbUrl,
+                                    largeUrl,
+                                    sourceUrl,
+                                    thumbUrl,
                                     orientation,
                                     cropData, heightToWidthRatio, widthToHeightRatio
                                 };
