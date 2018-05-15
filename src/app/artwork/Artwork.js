@@ -156,7 +156,7 @@ class Artwork extends Component {
                 if (people[key]) {
                     const person = people[key];
 
-                    const { id, url, x, y, imageWidth, imageHeight, realLifeHeight } = person;
+                    const { id, url, x, imageWidth, imageHeight, realLifeHeight } = person;
 
                     // Limit person height to imageHeight to stop it going blurry.
                     // This will mean that the picture will
@@ -200,7 +200,7 @@ class Artwork extends Component {
 
 export default Artwork;
 
-const
+/*const
     generateWrappedText = (ctx, text, maxWidth) => {
         const words = text.split(' ');
         let line = '';
@@ -232,7 +232,7 @@ const
             ctx.fillText(line, x, y);
             y += lineHeight;
         }
-    };
+    };*/
 
 /*const
     addTitles = (ctx, maxWidth, maxHeight, x, y, titlesData) => {

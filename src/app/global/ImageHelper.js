@@ -2,7 +2,6 @@ const maxImageWidth = 3000;
 const maxImageHeight = 3000;
 
 // Returns an image element given a file
-
 export function GetImage(imgFile, callback) {
     GetPhotoOrientation(imgFile, (orientation) => {
         const reader = new FileReader();
@@ -28,17 +27,13 @@ export function GetImage(imgFile, callback) {
     })
 }
 
-//https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+// Used to generate unique image names
+// used getTime and extra random digits to deal with 2 images
+// created in the same ms.
+// https://gist.github.com/gordonbrander/2230317
 export function generateUUID() {
     let d = new Date().getTime();
-    if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
-        d += performance.now(); //use high-precision timer if available
-    }
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        const r = (d + Math.random() * 16) % 16 | 0;
-        d = Math.floor(d / 16);
-        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
+    return d + '_' + Math.random().toString(36).substr(2, 9);
 }
 
 export function getImageBlob(source, maxSize, callback) {

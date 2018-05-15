@@ -11,7 +11,7 @@ class ArtworkViewerToolbar extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {errorConfirmDialogIsOpen: false,};
+        this.state = { errorConfirmDialogIsOpen: false };
     }
 
     render() {
@@ -21,13 +21,13 @@ class ArtworkViewerToolbar extends Component {
                   onArtworkEditorSave,
                   onArtworkUndoChanges,
                   onEditOpenChange,
-                  onArtworkDeleteConfirm,
+                  onArtworkDeleteConfirm
               } = this.props;
 
         const deleteStyle = { color: '#a82021' };
 
         return (
-            <Toolbar style={{ background: '#fff', color: '#000' }}>
+            <div>
 
                 <SimpleDialog
                     title="Delete Artwork"
@@ -39,41 +39,43 @@ class ArtworkViewerToolbar extends Component {
                     onAccept={onArtworkDeleteConfirm}
                 />
 
-                <ToolbarRow>
-                    <ToolbarSection alignStart>
-                        <Link linkTo={'/'} style={{ paddingTop: 7 }}>
-                            <IconLogo width={30} height={30}/>
-                        </Link>
+                <Toolbar style={{ background: '#fff', color: '#000' }}>
+                    <ToolbarRow>
+                        <ToolbarSection alignStart>
+                            <Link linkTo={'/'} style={{ paddingTop: 7 }}>
+                                <IconLogo width={30} height={30}/>
+                            </Link>
 
-                        {!isEditOpen &&
-                        <ToolbarIcon onClick={() => onEditOpenChange(true)}
-                                     use="edit"
-                                     style={{ color: 'black' }}/>
+                            {!isEditOpen &&
+                            <ToolbarIcon onClick={() => onEditOpenChange(true)}
+                                         use="edit"
+                                         style={{ color: 'black' }}/>
+                            }
+
+                            {isEditOpen &&
+                            <ToolbarIcon onClick={() => onEditOpenChange(false)}
+                                         use="cloud_done"
+                                         style={{ color: 'black' }}/>
+                            }
+                        </ToolbarSection>
+                        {hasUnsavedChanges &&
+                        <ToolbarSection>
+                            <Button raised theme="secondary-bg text-primary-on-secondary"
+                                    onClick={onArtworkEditorSave}>Save</Button>
+                            <Button onClick={onArtworkUndoChanges}>Undo</Button>
+                        </ToolbarSection>
                         }
 
                         {isEditOpen &&
-                        <ToolbarIcon onClick={() => onEditOpenChange(false)}
-                                     use="cloud_done"
-                                     style={{ color: 'black' }}/>
+                        <ToolbarSection alignEnd>
+                            <ToolbarIcon onClick={() => this.setState({ errorConfirmDialogIsOpen: true })}
+                                         use="delete_forever"
+                                         style={deleteStyle}/>
+                        </ToolbarSection>
                         }
-                    </ToolbarSection>
-                    {hasUnsavedChanges &&
-                    <ToolbarSection>
-                        <Button raised theme="secondary-bg text-primary-on-secondary"
-                                onClick={onArtworkEditorSave}>Save</Button>
-                        <Button onClick={onArtworkUndoChanges}>Undo</Button>
-                    </ToolbarSection>
-                    }
-
-                    {isEditOpen &&
-                    <ToolbarSection alignEnd>
-                        <ToolbarIcon onClick={() => this.setState({ errorConfirmDialogIsOpen: true })}
-                                     use="delete_forever"
-                                     style={deleteStyle}/>
-                    </ToolbarSection>
-                    }
-                </ToolbarRow>
-            </Toolbar>
+                    </ToolbarRow>
+                </Toolbar>
+            </div>
         )
     }
 }
