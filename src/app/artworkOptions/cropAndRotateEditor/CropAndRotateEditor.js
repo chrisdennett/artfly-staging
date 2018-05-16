@@ -17,7 +17,6 @@ class CropAndRotateEditor extends Component {
 
         this.state = {};
 
-        this.onRotateClockwiseClick = this.onRotateClockwiseClick.bind(this);
         this.drawCuttingBoardCanvas = this.drawCuttingBoardCanvas.bind(this);
         this.onResize = this.onResize.bind(this);
         this.onCropChange = this.onCropChange.bind(this);
@@ -26,6 +25,9 @@ class CropAndRotateEditor extends Component {
     }
 
     componentWillReceiveProps(newProps) {
+
+        console.log("newProps: ", newProps);
+
         this.drawCuttingBoardCanvas(newProps);
     }
 
@@ -50,25 +52,6 @@ class CropAndRotateEditor extends Component {
 
         // this isn't needed for any other reason than to trigger a redraw
         this.setState({ canvasWidth:this.canvas.width, canvasHeight:this.canvas.height });
-    }
-
-    // Rotate using info from:
-    // https://stackoverflow.com/questions/7584794/accessing-jpeg-exif-rotation-data-in-javascript-on-the-client-side/32490603#32490603
-    onRotateClockwiseClick() {
-        /*const currentRotation = this.state.localOrientation ? this.state.localOrientation : 1;
-        const nextRotations = { 1: 6, 6: 3, 3: 8, 8: 1 }; // order of rotations by 90° clockwise increments
-        const newOrientation = nextRotations[currentRotation] || 6;
-
-        let { leftPercent, rightPercent, topPercent, bottomPercent } = this.state.localCropData;
-
-        const newL = 1 - bottomPercent;
-        const newR = 1 - topPercent;
-        const newT = leftPercent;
-        const newB = rightPercent;
-
-        this.setState({ localOrientation: newOrientation, localCropData: { leftPercent: newL, rightPercent: newR, topPercent: newT, bottomPercent: newB } }, () => {
-            this.drawCuttingBoardCanvas();
-        });*/
     }
 
     onResize(contentRect){

@@ -13,6 +13,7 @@ import SocialMediaStuff from "./socialMediaStuff/SocialMediaStuff";
 import ArtFlyLab from "./artflyLab/ArtFlyLab";
 import ArtFlyIntro from "./artFlyIntro/ArtFlyIntro";
 import ArtworkThumb from "../artwork/ArtworkThumb";
+import AppTopBar from "../AppTopBar/AppTopBar";
 
 const Home = ({ user, userArtworks }) => {
     const userLoggedIn = user && user.loginStatus === 'loggedIn';
@@ -20,16 +21,9 @@ const Home = ({ user, userArtworks }) => {
     return (
         <div className={'home'}>
 
-            {/*<Toolbar fixed style={{ background: 'rgba(0,0,0,0.2)', boxShadow: 'none' }}>
-                <ToolbarRow>
-                    <ToolbarSection alignEnd>
-                        <SignInOut user={user}/>
-                    </ToolbarSection>
-                </ToolbarRow>
-            </Toolbar>*/}
-            <div className={'home-topBar'}>
+            {/*<div className={'home-topBar'}>
                 <SignInOut user={user}/>
-            </div>
+            </div>*/}
 
             <div className='home--heading'>
                 <div>

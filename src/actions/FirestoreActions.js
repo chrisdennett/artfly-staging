@@ -35,7 +35,7 @@ unsubscribers.userListeners = {};
 
 
 // UNSUBSCRIBE LISTENERS
-function unsubscribAllListeners() {
+function unsubscribeAllListeners() {
     unsubscribeUserListeners();
     unsubscribeUserArtworkListeners();
     unsubscribeArtworkListeners();
@@ -88,7 +88,7 @@ export function fs_signInWithProvider(providerName, onChangeCallback = null) {
 
 // SIGN OUT
 export function fs_signOut(onChangeCallback = null) {
-    unsubscribAllListeners();
+    // unsubscribeUserListeners();
 
     auth
         .signOut()

@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
-
-import UiReducer from './UiReducer';
+//
 import PaddleReducer from './PaddleReducer';
 import UserReducer from './UserReducer';
 import ArtworksReducer from './ArtworksReducer';
@@ -11,7 +10,6 @@ import ResourcesReducer from "./ResourcesReducer";
 
 const rootReducer = combineReducers({
     notifications: NotificationsReducer,
-    ui: UiReducer,
     paddle: PaddleReducer,
     user: UserReducer,
     artworks: ArtworksReducer,

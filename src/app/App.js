@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import { connect } from 'react-redux';
+import React from "react";
 // styles
 import 'material-components-web/dist/material-components-web.min.css';
 import './appStyles.css';
@@ -7,33 +6,23 @@ import './appStyles.css';
 import { IN_STAGING } from "./global/GLOBAL_CONSTANTS";
 import NotificationViewer from "./global/notifications/NotificationViewer";
 
-class App extends Component {
+const App = function ({ children }) {
 
-    render() {
-        const { children } = this.props;
+    return (
+        <div className='app'>
 
-        return (
-            <div className='app'>
+            <NotificationViewer/>
 
-                <NotificationViewer/>
-
-                {IN_STAGING &&
-                <div className={'app--betaTestingFlag'}>
-                    IN STAGING MODE
-                </div>
-                }
-
-                {children}
-
+            {IN_STAGING &&
+            <div className={'app--betaTestingFlag'}>
+                IN STAGING MODE
             </div>
-        );
-    }
-}
+            }
 
-const mapStateToProps = (state) => {
-    return {
-        user: state.user
-    }
+            {children}
+
+        </div>
+    );
 };
-const mapActionsToProps = null;
-export default connect(mapStateToProps, mapActionsToProps)(App);
+
+export default App;

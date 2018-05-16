@@ -8,15 +8,18 @@ import { listenForUserArtworkChanges } from './actions/GetArtworkActions';
 // components
 import history from './app/global/history';
 // route components
+import App from "./app/App";
 import Home from './app/Home/Home';
 import FourOhFour from "./app/FourOhFour/FourOhFour";
 import LoadingOverlay from "./app/global/LoadingOverlay";
-import App from "./app/App";
-import Artwork from "./app/artwork/ArtworkViewer";
+import ArtworkViewer from "./app/artwork/ArtworkViewer";
+import SignInPage from "./app/signInPage/SignInPage";
+import AppTopBar from "./app/AppTopBar/AppTopBar";
 
 const routes = {
     home: { component: Home },
-    artwork: { component: Artwork }
+    signIn: { component: SignInPage },
+    artwork: { component: ArtworkViewer }
 };
 
 class ArtflyRouting extends Component {
@@ -38,8 +41,8 @@ class ArtflyRouting extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const {uid:newUid} = nextProps.user;
-        const {uid:currentUid} = this.props.user;
+        const { uid: newUid } = nextProps.user;
+        const { uid: currentUid } = this.props.user;
 
         if (nextProps.user) {
             if (newUid !== currentUid) {
@@ -94,9 +97,12 @@ class ArtflyRouting extends Component {
         }
 
         return (
-            <App params={params} page={page}>
-                {PageComponentWithProps}
-            </App>
+            <div>
+                <AppTopBar/>
+                <App params={params} page={page}>
+                    {PageComponentWithProps}
+                </App>
+            </div>
         );
     }
 }

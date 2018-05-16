@@ -5,6 +5,7 @@ export const RESOURCE_CHANGE = "resourceChange";
 
 let artworkListeners = {};
 let resourcesListeners = {};
+let userArtworkListenerUnsubscriber;
 
 /*export function listenForUserArtworkChanges(userId) {
     return (dispatch) => {
@@ -24,8 +25,15 @@ export function listenForIndividualArtworkChanged(artworkId){
 }
 
 export function listenForUserArtworkChanges(userId) {
+
     return (dispatch) => {
-        db.collection('artworks')
+
+        if (!userId) {
+            userArtworkListenerUnsubscriber();
+            return {};
+        }
+
+        userArtworkListenerUnsubscriber = db.collection('artworks')
             .where('adminId', '==', userId)
             .onSnapshot(querySnapshot => {
                     querySnapshot.forEach(doc => {

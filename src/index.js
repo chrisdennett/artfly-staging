@@ -4,9 +4,11 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import { Provider } from 'react-redux';
 // store - where the entire app state lives
-import store from './store';
+import store from './store/store';
 // homebrew routing
 import AppRouting from "./AppRouting";
+
+window.store = store;
 
 // Provider allows any child component to connect to the redux store
 const provider = (

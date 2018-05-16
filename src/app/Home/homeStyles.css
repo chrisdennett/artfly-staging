@@ -75,9 +75,8 @@
 
 @media (max-width: 600px) {
     .home--heading {
-        padding: 8% 10px 0 10px;
+        padding: 0 10px 0 10px;
     }
-
 
     .home--tagLine {
         padding: 0;

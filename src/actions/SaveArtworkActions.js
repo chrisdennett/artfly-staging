@@ -7,14 +7,26 @@ import { ARTWORK_CHANGE } from "./GetArtworkActions";
 // UPDATE ARTWORK
 export function updateArtwork(artworkId, newArtworkData, callback = null) {
     return dispatch => {
-        saveArtworkChanges(artworkId, newArtworkData, () => {
-            dispatch({
-                type: ARTWORK_CHANGE,
-                payload: { [artworkId]: newArtworkData }
-            });
 
-            if (callback) callback();
-        });
+        // Hmmm, how do I know if this has changed perhaps should use a different method
+        // which I think would mean separating out resource and artwork data in component.
+        const { orientation, cropData, heightToWidthRatio, widthToHeightRatio, resources, ...rest } = newArtworkData;
+        const resourceData = { orientation,
+            cropData, heightToWidthRatio, widthToHeightRatio };
+
+        console.log("resources: ", resources);
+        console.log("resourceData: ", resourceData);
+
+        saveResourceChanges(resources, resourceData, () => {
+            saveArtworkChanges(artworkId, newArtworkData, () => {
+                dispatch({
+                    type: ARTWORK_CHANGE,
+                    payload: { [artworkId]: rest }
+                });
+
+                if (callback) callback();
+            });
+        })
     }
 }
 
@@ -48,19 +60,18 @@ export function addArtwork(userId, artworkData, imgFile, callback) {
                                     cropData, heightToWidthRatio, widthToHeightRatio
                                 };
 
-
                                 // Save the resource first to get the Id.
                                 saveNewResource(userId, resourceData, (resourceId) => {
                                     const newArtworkData = {
                                         ...rest,
-                                        resources:resourceId,
+                                        resources: resourceId,
                                         adminId: userId,
                                         dateAdded: Date.now()
                                     };
 
                                     // save the resource id in the artwork data.
                                     saveNewArtworkData(userId, newArtworkData, (artworkId) => {
-                                        const newArtworkDataWithId = { ...newArtworkData, artworkId};
+                                        const newArtworkDataWithId = { ...newArtworkData, artworkId };
 
                                         dispatch({
                                             type: ARTWORK_CHANGE,
