@@ -342,13 +342,13 @@ class ArtworkViewer extends Component {
 
         return (
             <div className={'artworkViewer'}>
-                <ArtworkViewerToolbar isEditOpen={isEditOpen}
+                {/*<ArtworkViewerToolbar isEditOpen={isEditOpen}
                                       hasUnsavedChanges={hasUnsavedChanges}
                                       onEditOpenChange={this.onEditOpenChange}
                                       onArtworkEditorSave={this.onArtworkEditorSave}
                                       onArtworkUndoChanges={this.onArtworkUndoChanges}
                                       onArtworkDeleteConfirm={this.onArtworkDeleteConfirm}
-                />
+                />*/}
 
                 {!editingOptionUsesFullPage &&
                 <ArtworkContainer onPhotoSelected={this.onPhotoSelected}

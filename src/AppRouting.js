@@ -97,7 +97,7 @@ class ArtflyRouting extends Component {
         }
 
         return (
-            <div>
+            <div style={{display:'flex', flexDirection: 'column'}}>
                 <AppTopBar/>
                 <App params={params} page={page}>
                     {PageComponentWithProps}

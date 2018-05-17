@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+// import sizeMe from 'react-sizeme'; //https://github.com/ctrlplusb/react-sizeme
 import Measure from 'react-measure'; //https://www.npmjs.com/package/react-measure
 // comps
 import Artwork from "./Artwork";
@@ -25,6 +26,7 @@ class ArtworkContainer extends Component {
 
         return (
             <div style={{ flex: 1, backgroundColor: 'black', display: 'flex', flexDirection: 'column' }}>
+
                 <Measure
                     bounds
                     onResize={(contentRect) => {
@@ -40,13 +42,15 @@ class ArtworkContainer extends Component {
                     }
                 </Measure>
 
+
                 {dimensions &&
-                <div style={{ overflow: 'hidden', maxHeight: dimensions.height, position: 'fixed' }}>
+                <div style={{ overflow: 'hidden', position: 'fixed', top:48 }}>
                     <Artwork {...passThroughProps}
                              width={dimensions.width}
-                             height={dimensions.height}/>
+                             height={dimensions.height-48}/>
                 </div>
                 }
+
             </div>
         );
     }

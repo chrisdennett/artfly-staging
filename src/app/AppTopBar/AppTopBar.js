@@ -17,7 +17,6 @@ const AppTopBar = function (props) {
                     </ToolbarSection>
                 </ToolbarRow>
             </Toolbar>
-            <ToolbarFixedAdjust/>
         </div>
     )
 };
