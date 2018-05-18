@@ -1,15 +1,27 @@
 import React from "react";
 import { connect } from 'react-redux';
-import { MenuItem } from 'rmwc/Menu';
+import {
+    List,
+    ListItem,
+    ListItemText,
+    ListItemGraphic
+} from 'rmwc/List';
 //
 import { signOutUser } from "../../actions/UserDataActions";
+import history from "../global/history";
 
 const SignOutMenu = ({ signOutUser }) => {
     return (
-        <MenuItem
-            onClick={signOutUser}>
-            Sign out
-        </MenuItem>
+        <List>
+            <ListItem onClick={() => history.push('/profile')}>
+                <ListItemGraphic>person</ListItemGraphic>
+                <ListItemText>Profile</ListItemText>
+            </ListItem>
+            <ListItem onClick={signOutUser}>
+                <ListItemGraphic>exit_to_app</ListItemGraphic>
+                <ListItemText>Sign out</ListItemText>
+            </ListItem>
+        </List>
     );
 };
 

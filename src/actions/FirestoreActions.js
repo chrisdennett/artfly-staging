@@ -44,6 +44,9 @@ export function fs_signInWithProvider(providerName, onChangeCallback = null) {
     else if (providerName === 'facebook') {
         provider = new firebase.auth.FacebookAuthProvider();
     }
+    else if (providerName === 'twitter') {
+        provider = new firebase.auth.TwitterAuthProvider();
+    }
 
     auth
         .getRedirectResult()

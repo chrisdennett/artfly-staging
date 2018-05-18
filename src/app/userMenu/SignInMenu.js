@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from 'react-redux';
-import * as faFacebook from "@fortawesome/fontawesome-free-brands/faFacebookSquare";
+import * as faFacebookSquare from "@fortawesome/fontawesome-free-brands/faFacebookSquare";
+import * as faTwitterSquare from "@fortawesome/fontawesome-free-brands/faTwitterSquare";
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import {
     List,
@@ -9,11 +10,11 @@ import {
     ListItemGraphic
 } from 'rmwc/List';
 // actions
-import { signInWithGoogle, signInWithFacebook } from '../../actions/UserDataActions';
+import { signInWithGoogle, signInWithFacebook, signInWithTwitter } from '../../actions/UserDataActions';
 // comps
 import GoogleIcon from "../global/GoogleIcon";
 
-const SignInMenu = ({ signInWithGoogle, signInWithFacebook }) => {
+const SignInMenu = ({ signInWithGoogle, signInWithFacebook, signInWithTwitter }) => {
 
     return (
         <List>
@@ -22,8 +23,13 @@ const SignInMenu = ({ signInWithGoogle, signInWithFacebook }) => {
                 <ListItemText>with Google</ListItemText>
             </ListItem>
 
+            <ListItem onClick={signInWithTwitter}>
+                <ListItemGraphic><FontAwesomeIcon icon={faTwitterSquare}/></ListItemGraphic>
+                <ListItemText>with Twitter</ListItemText>
+            </ListItem>
+
             <ListItem onClick={signInWithFacebook}>
-                <ListItemGraphic><FontAwesomeIcon icon={faFacebook}/></ListItemGraphic>
+                <ListItemGraphic><FontAwesomeIcon icon={faFacebookSquare}/></ListItemGraphic>
                 <ListItemText>with Facebook</ListItemText>
             </ListItem>
 
@@ -31,5 +37,5 @@ const SignInMenu = ({ signInWithGoogle, signInWithFacebook }) => {
     );
 };
 
-const mapActionsToProps = { signInWithGoogle, signInWithFacebook };
+const mapActionsToProps = { signInWithGoogle, signInWithFacebook, signInWithTwitter };
 export default connect(null, mapActionsToProps)(SignInMenu);

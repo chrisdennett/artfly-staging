@@ -61,6 +61,24 @@ export function signInWithFacebook() {
     }
 }
 
+// SIGN IN - with facebook
+export function signInWithTwitter() {
+    console.log("signInWithTwitter: ");
+    return dispatch => {
+        dispatch({
+            type: SIGN_IN_USER_TRIGGERED,
+            payload: { loginStatus: 'pending' }
+        });
+
+        fs_signInWithProvider('twitter', (user) => {
+            dispatch({
+                type: SIGN_IN_USER,
+                payload: user
+            });
+        })
+    }
+}
+
 // SIGN OUT
 export function signOutUser() {
     return dispatch => {

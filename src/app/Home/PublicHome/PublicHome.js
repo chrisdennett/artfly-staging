@@ -15,7 +15,7 @@ import SnapPicIcon from "../animatedIcons/SnapPicIcon";
 import PrepareTheCanvasIcon from "../animatedIcons/PrepareTheCanvasIcon";
 import FrameItIcon from "../animatedIcons/FrameItIcon";
 import BuildGalleryAndShareIcon from "../animatedIcons/BuildGalleryAndShareIcon";
-import SignUpForm from "../../SignUpForm/SignUpForm";
+import SignUpForm from "../SignUpForm/SignUpForm";
 import LinkButt from "../../global/Butt/LinkButt";
 import faTwitterSquare from "@fortawesome/fontawesome-free-brands/faTwitterSquare";
 import faFacebookSquare from "@fortawesome/fontawesome-free-brands/faFacebookSquare";
