@@ -3,20 +3,22 @@ import {
     Toolbar,
     ToolbarRow,
     ToolbarSection,
-    ToolbarFixedAdjust
+    ToolbarFixedAdjust,
 } from 'rmwc/Toolbar';
-import SignInOutButton from "../SignInOut/SignInOutButton";
+//
+import UserMenu from "../userMenu/UserMenu";
 
-const AppTopBar = function (props) {
+const AppTopBar = function () {
     return (
         <div>
             <Toolbar fixed>
                 <ToolbarRow>
                     <ToolbarSection alignEnd>
-                        <SignInOutButton/>
+                        <UserMenu />
                     </ToolbarSection>
                 </ToolbarRow>
             </Toolbar>
+            <ToolbarFixedAdjust/>
         </div>
     )
 };

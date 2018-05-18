@@ -1,5 +1,8 @@
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
+import * as storage2 from 'firebase/storage';
+import * as auth2 from 'firebase/auth';
 import firestore from 'firebase/firestore';
+// constants
 import {IN_STAGING} from '../app/global/GLOBAL_CONSTANTS';
 
 // FOR STAGING
@@ -22,11 +25,17 @@ const productionConfig = {
     messagingSenderId: "156669954952"
 };
 
+console.log("storage2: ", storage2);
+
 const config = IN_STAGING ? stagingOnlyConfig : productionConfig;
 
 firebase.initializeApp(config);
 
-if(1===2) console.log("fs: ", firestore); //just prevents annoying not used console warning
+if(1===2) {
+    console.log("fs: ", firestore);
+    console.log("storage2: ", storage2);
+    console.log("auth2: ", auth2);
+} //just prevents annoying not used console warning
 
 
 /*firebase.firestore().enablePersistence()
@@ -44,14 +53,14 @@ if(1===2) console.log("fs: ", firestore); //just prevents annoying not used cons
         console.log("firebase config err: ", err);
     });*/
 
-export const storageEvents = firebase.storage.TaskEvent;
 export const storage = firebase.storage();
+export const storageEvent = firebase.storage.TaskEvent;
 export const storageRef = firebase.storage().ref();
 export const firestoreDb = firebase.firestore();
 export const auth = firebase.auth();
 
-// const settings = {timestampsInSnapshots: true};
-// firestoreDb.settings(settings);
+const settings = {timestampsInSnapshots: true};
+firestoreDb.settings(settings);
 
 export default firebase;
 

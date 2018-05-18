@@ -44,10 +44,10 @@ class ArtworkContainer extends Component {
 
 
                 {dimensions &&
-                <div style={{ overflow: 'hidden', position: 'fixed', top:48 }}>
+                <div style={{ overflow: 'hidden', position: 'fixed' }}>
                     <Artwork {...passThroughProps}
                              width={dimensions.width}
-                             height={dimensions.height-48}/>
+                             height={dimensions.height}/>
                 </div>
                 }
 

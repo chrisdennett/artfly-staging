@@ -1,4 +1,4 @@
-import { firestoreDb as db, storageEvents, storageRef as store } from "../libs/firebaseConfig";
+import { firestoreDb as db, storageEvent, storageRef as store } from "../libs/firebaseConfig";
 // helpers
 import { getImageBlob, generateUUID } from "../app/global/ImageHelper";
 // constants
@@ -49,6 +49,9 @@ export function addArtwork(userId, artworkData, imgFile, callback) {
                             progress => console.log("large image progress: ", progress)
                             ,
                             largeUrl => {
+
+
+                                console.log("largeUrl: ", largeUrl);
                                 const { orientation, cropData, heightToWidthRatio, widthToHeightRatio, ...rest } = artworkData;
 
                                 const resourceData = {
@@ -98,6 +101,8 @@ function saveImage(userId, source, maxSize, onProgress, onComplete) {
             }
             ,
             (url) => {
+                console.log("url: ", url);
+
                 if (onComplete) onComplete(url)
             }
         )
@@ -112,8 +117,9 @@ function fs_saveArtworkImage(blobData, onChangeCallback, onCompleteCallback) {
     // start the upload
     const uploadTask = userPicturesRef.put(blobData);
     // listen for upload events
+
     uploadTask
-        .on(storageEvents.STATE_CHANGED,
+        .on(storageEvent.STATE_CHANGED,
             (snapshot) => {
                 const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
                 onChangeCallback(progress);
@@ -124,7 +130,8 @@ function fs_saveArtworkImage(blobData, onChangeCallback, onCompleteCallback) {
             },
             () => {
                 // return the download url so it can be saved to artwork data
-                onCompleteCallback(uploadTask.snapshot.downloadURL);
+                uploadTask.snapshot.ref.getDownloadURL()
+                    .then(downloadURL => onCompleteCallback(downloadURL));
             })
 }
 

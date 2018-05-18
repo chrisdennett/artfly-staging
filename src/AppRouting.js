@@ -14,7 +14,6 @@ import FourOhFour from "./app/FourOhFour/FourOhFour";
 import LoadingOverlay from "./app/global/LoadingOverlay";
 import ArtworkViewer from "./app/artwork/ArtworkViewer";
 import SignInPage from "./app/signInPage/SignInPage";
-import AppTopBar from "./app/AppTopBar/AppTopBar";
 
 const routes = {
     home: { component: Home },
@@ -92,13 +91,11 @@ class ArtflyRouting extends Component {
         const PageComponent = routes[page] ? routes[page].component : FourOhFour;
         const PageComponentWithProps = <PageComponent {...params} page={page}/>;
 
-        if (!this.props.user.status || this.props.user.status === 'pending') {
-            return <LoadingOverlay/>
-        }
-
         return (
-            <div style={{display:'flex', flexDirection: 'column'}}>
-                <AppTopBar/>
+            <div>
+                {(!this.props.user.status || this.props.user.status === 'pending') &&
+                <LoadingOverlay/>
+                }
                 <App params={params} page={page}>
                     {PageComponentWithProps}
                 </App>

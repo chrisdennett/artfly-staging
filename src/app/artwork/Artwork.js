@@ -85,7 +85,7 @@ class Artwork extends Component {
         widthToHeightRatio = croppedHeight / croppedWidth;
         heightToWidthRatio = croppedWidth / croppedHeight;
 
-        const artworkSizes = calculateCanvasArtworkSizes({ frameThicknessDecimal, mountThicknessDecimal, width, height, widthToHeightRatio, heightToWidthRatio });
+        const artworkSizes = calculateCanvasArtworkSizes({ srcWidth, srcHeight, frameThicknessDecimal, mountThicknessDecimal, width, height, widthToHeightRatio, heightToWidthRatio });
 
 
         let {
@@ -622,7 +622,7 @@ const
     };
 
 const
-    calculateCanvasArtworkSizes = ({ frameThicknessDecimal = 0.04, mountThicknessDecimal = 0.06, width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 20, minPaddingSides = 20 }) => {
+    calculateCanvasArtworkSizes = ({srcWidth, srcHeight, frameThicknessDecimal = 0.04, mountThicknessDecimal = 0.06, width, height, widthToHeightRatio, heightToWidthRatio, minPaddingTop = 20, minPaddingSides = 20 }) => {
         const skirtingRealLifeHeight = 0.15; // in meters
         const spaceBelowPicturePercent = 0.15;
         const maxSkirtingHeight = 30;
@@ -640,8 +640,8 @@ const
         let frameThickness = Math.round(maxWidth * frameThicknessDecimal);
         let mountThickness = Math.round(maxWidth * mountThicknessDecimal);
         let totalFrameAndMountThickness = (frameThickness * 2) + (mountThickness * 2);
-        let imgWidth = maxWidth - totalFrameAndMountThickness;
-        let imgHeight = imgWidth * widthToHeightRatio;
+        let imgWidth = Math.min(maxWidth - totalFrameAndMountThickness, srcWidth);
+        let imgHeight = Math.min(imgWidth * widthToHeightRatio, srcHeight);
         let frameHeight = Math.round(imgHeight + totalFrameAndMountThickness);
 
         // if it doesn't fit the height, calculate to maximise height

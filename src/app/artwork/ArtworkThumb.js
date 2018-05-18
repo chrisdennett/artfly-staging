@@ -49,6 +49,9 @@ class ArtworkThumb extends Component {
     render() {
         const { masterCanvas } = this.state;
         const { artworkData, artworkId } = this.props;
+        // const {widthToHeightRatio,heightToWidthRatio} = artworkData;
+        // const isPortrait = heightToWidthRatio < widthToHeightRatio;
+        // const maxImageHeight = isPortrait ? 600 : 300;
 
         return (
             <Elevation
@@ -59,7 +62,7 @@ class ArtworkThumb extends Component {
             >
                 <Ripple>
 
-                    <div style={{ lineHeight: 0, padding:10, border: '1px solid black' }}
+                    <div style={{ lineHeight: 0, padding:10 }}
                          onClick={() => {history.push(`artwork/${artworkId}`)}}
                     >
                         {

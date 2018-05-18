@@ -24,12 +24,13 @@ const Home = ({ user, userArtworks }) => {
             {/*<div className={'home-topBar'}>
                 <SignInOut user={user}/>
             </div>*/}
+            <AppTopBar/>
 
             <div className='home--heading'>
                 <div>
                     <Title/>
                 </div>
-                <div className='home--tagLine'>Make bad art, make good art, just let your Art Fly.
+                <div className='home--tagLine'>Forget about what others think and let the Art Fly.
                 </div>
 
 

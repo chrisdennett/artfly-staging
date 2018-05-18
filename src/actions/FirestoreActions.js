@@ -1,4 +1,4 @@
-import * as fb from 'firebase';
+import firebase from 'firebase/app';
 import {
     auth,
     firestoreDb as db
@@ -30,37 +30,8 @@ future release, the behavior will change to the new behavior, so if you do not
 
 
 // listener object - each listener is stored on it with a name matching the Action function
-let unsubscribers = {};
-unsubscribers.userListeners = {};
+let unsubscribeUserListener;
 
-
-// UNSUBSCRIBE LISTENERS
-function unsubscribeAllListeners() {
-    unsubscribeUserListeners();
-    unsubscribeUserArtworkListeners();
-    unsubscribeArtworkListeners();
-}
-
-function unsubscribeUserListeners() {
-    const userIds = Object.keys(unsubscribers.userListeners);
-    for (let id of userIds) {
-        unsubscribers.userListeners[id]();
-    }
-}
-
-function unsubscribeUserArtworkListeners() {
-    const userIds = Object.keys(unsubscribers.userArtworkListeners);
-    for (let id of userIds) {
-        unsubscribers.userArtworkListeners[id]();
-    }
-}
-
-function unsubscribeArtworkListeners() {
-    const artworkIds = Object.keys(unsubscribers.artworkListeners);
-    for (let id of artworkIds) {
-        unsubscribers.artworkListeners[id]();
-    }
-}
 
 //*** AUTH ************************************************************
 
@@ -68,10 +39,10 @@ function unsubscribeArtworkListeners() {
 export function fs_signInWithProvider(providerName, onChangeCallback = null) {
     let provider;
     if (providerName === 'google') {
-        provider = new fb.auth.GoogleAuthProvider();
+        provider = new firebase.auth.GoogleAuthProvider();
     }
     else if (providerName === 'facebook') {
-        provider = new fb.auth.FacebookAuthProvider();
+        provider = new firebase.auth.FacebookAuthProvider();
     }
 
     auth
@@ -134,7 +105,7 @@ export function fs_addNewUser(authId, newUserData, onAddedCallback = null) {
 // TODO: Currently this is just used to clear auth assuming the user has no other data
 // Rename this or update so it deletes all data
 export function fs_deleteUser(onDeletedCallback = null) {
-    fb.auth().currentUser
+    firebase.auth().currentUser
         .delete()
         .then(() => {
             if (onDeletedCallback) onDeletedCallback();
@@ -146,11 +117,14 @@ export function fs_deleteUser(onDeletedCallback = null) {
 
 // GET USER LISTENER
 export function fs_getUserChanges(userId, onChangeCallback = null) {
+
     if (!userId) {
+        // stop listener if there is one and bail
+        if(unsubscribeUserListener) unsubscribeUserListener();
         return;
     }
 
-    unsubscribers.userListeners[userId] = db.collection('users')
+    unsubscribeUserListener = db.collection('users')
         .doc(userId)
         .onSnapshot(doc => {
                 if (!doc.exists) {
