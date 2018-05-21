@@ -5,7 +5,7 @@ import {
     fs_signOut,
     fs_addNewUser,
     fs_getUserChanges,
-    fs_deleteUser,
+    fs_deleteUser, fs_updateUser
 } from './FirestoreActions';
 
 
@@ -26,8 +26,6 @@ export const NOTIFICATION_COMPLETE = "notification_complete";
 
 // SIGN IN - with google
 export function signInWithGoogle() {
-    console.log("signInWithGoogle: ");
-
     return dispatch => {
         dispatch({
             type: SIGN_IN_USER_TRIGGERED,
@@ -45,7 +43,6 @@ export function signInWithGoogle() {
 
 // SIGN IN - with facebook
 export function signInWithFacebook() {
-    console.log("signInWithFacebook: ");
     return dispatch => {
         dispatch({
             type: SIGN_IN_USER_TRIGGERED,
@@ -63,7 +60,6 @@ export function signInWithFacebook() {
 
 // SIGN IN - with facebook
 export function signInWithTwitter() {
-    console.log("signInWithTwitter: ");
     return dispatch => {
         dispatch({
             type: SIGN_IN_USER_TRIGGERED,
@@ -102,6 +98,19 @@ export function addNewUser(authId, formValues, callback = null) {
         };
 
         fs_addNewUser(authId, newUserData, () => {
+            dispatch({
+                type: CREATE_USER,
+                payload: newUserData
+            });
+
+            if (callback) callback();
+        });
+    }
+}
+
+export function updateUser(authId, newUserData, callback = null) {
+    return dispatch => {
+        fs_updateUser(authId, newUserData, () => {
             dispatch({
                 type: CREATE_USER,
                 payload: newUserData
@@ -157,8 +166,11 @@ export function listenForUserChanges() {
 // DELETE USER
 // TODO: Currently this is just used to clear auth assuming the user has no other data
 // Rename this or update so it deletes all data
-export function deleteUser() {
+export function deleteUser(userId) {
     return dispatch => {
+
+        console.log("userId: ", userId);
+
         fs_deleteUser(() => {
             dispatch({
                 type: DELETE_USER,

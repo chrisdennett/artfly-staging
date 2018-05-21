@@ -4,15 +4,21 @@ import {
     ToolbarRow,
     ToolbarSection,
     ToolbarFixedAdjust,
+    ToolbarTitle,
 } from 'rmwc/Toolbar';
 //
 import UserMenu from "../userMenu/UserMenu";
 
-const AppTopBar = function () {
+const AppTopBar = function ({title}) {
     return (
         <div>
             <Toolbar fixed>
                 <ToolbarRow>
+                    {title &&
+                    <ToolbarSection alignStart>
+                        <ToolbarTitle>{title}</ToolbarTitle>
+                    </ToolbarSection>
+                    }
                     <ToolbarSection alignEnd>
                         <UserMenu />
                     </ToolbarSection>

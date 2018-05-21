@@ -25,10 +25,7 @@ const productionConfig = {
     messagingSenderId: "156669954952"
 };
 
-console.log("storage2: ", storage2);
-
 const config = IN_STAGING ? stagingOnlyConfig : productionConfig;
-
 firebase.initializeApp(config);
 
 if(1===2) {
@@ -58,6 +55,7 @@ export const storageEvent = firebase.storage.TaskEvent;
 export const storageRef = firebase.storage().ref();
 export const firestoreDb = firebase.firestore();
 export const auth = firebase.auth();
+
 
 const settings = {timestampsInSnapshots: true};
 firestoreDb.settings(settings);

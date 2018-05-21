@@ -1,0 +1,28 @@
+.userProfile {
+    padding: 20px;
+}
+
+.userProfile--detailsList {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.userProfile--detail {
+    display: flex;
+    padding: 10px;
+    align-items: center;
+}
+
+.userProfile--detail--type {
+    flex: 1;
+}
+
+.userProfile--detail--value {
+    flex: 1;
+}
+
+/*Don't know why this is needed, but alignment was off without it*/
+.userProfile--emailTextfield input{
+    padding-bottom: 1.6rem!important;
+}

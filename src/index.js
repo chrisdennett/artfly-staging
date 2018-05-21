@@ -8,8 +8,6 @@ import store from './store/store';
 // homebrew routing
 import AppRouting from "./AppRouting";
 
-window.store = store;
-
 // Provider allows any child component to connect to the redux store
 const provider = (
     <Provider store={store}>

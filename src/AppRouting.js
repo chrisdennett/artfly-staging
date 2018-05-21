@@ -13,11 +13,11 @@ import Home from './app/Home/Home';
 import FourOhFour from "./app/FourOhFour/FourOhFour";
 import LoadingOverlay from "./app/global/LoadingOverlay";
 import ArtworkViewer from "./app/artwork/ArtworkViewer";
-import SignInPage from "./app/signInPage/SignInPage";
+import UserProfile from "./app/userProfile/UserProfile";
 
 const routes = {
     home: { component: Home },
-    signIn: { component: SignInPage },
+    profile: { component: UserProfile },
     artwork: { component: ArtworkViewer }
 };
 

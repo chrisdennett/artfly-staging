@@ -45,8 +45,8 @@ button, a{
     /*background: #fff url("./images/tiny_grid_@2X.png");*/
     /*background: url("./images/grid_42.png"), radial-gradient(circle, #fefce0, #e6e5cb);*/
     /*background: url("../app/images/brickwall.png");*/
-    min-height: 100vh;
-    min-width: 100%;
+    /*min-height: 100vh;*/
+    /*min-width: 100%;*/
     margin: 0;
     padding: 0;
     /*display: flex;*/

@@ -1,4 +1,5 @@
 import firebase from 'firebase/app';
+
 import {
     auth,
     firestoreDb as db
@@ -49,15 +50,13 @@ export function fs_signInWithProvider(providerName, onChangeCallback = null) {
     }
 
     auth
-        .getRedirectResult()
+        .signInWithPopup(provider)
         .then(result => {
             onChangeCallback(result.user);
         })
         .catch(error => {
             console.log("log in error: ", error);
         });
-
-    auth.signInWithPopup(provider);
 }
 
 // SIGN OUT
@@ -75,6 +74,8 @@ export function fs_signOut(onChangeCallback = null) {
 }
 
 // ADD USER AUTH LISTENER
+// const fbui = new firebaseui.auth.AuthUI(firebase.auth());
+
 export function fs_addAuthListener(onChangeCallback = null) {
     auth
         .onAuthStateChanged((result) => {
@@ -104,17 +105,50 @@ export function fs_addNewUser(authId, newUserData, onAddedCallback = null) {
         })
 }
 
-// DELETE USER
-// TODO: Currently this is just used to clear auth assuming the user has no other data
-// Rename this or update so it deletes all data
-export function fs_deleteUser(onDeletedCallback = null) {
-    firebase.auth().currentUser
-        .delete()
+// UPDATE USER
+export function fs_updateUser(authId, newUserData, onAddedCallback = null) {
+    db.collection('users')
+        .doc(authId)
+        .set(newUserData, { merge: true })
         .then(() => {
-            if (onDeletedCallback) onDeletedCallback();
+            if (onAddedCallback) onAddedCallback(authId);
         })
-        .catch((error) => {
-            console.log(error);
+        .catch(function (error) {
+            console.log('Add new user failed: ', error);
+        })
+}
+
+// DELETE USER
+export function fs_deleteUser(onDeletedCallback = null) {
+
+    // TODO: This obviously has to be the method they used originally! Not always twitter!
+    // TODO: Delete all artworks as well
+    const provider = new firebase.auth.TwitterAuthProvider();
+
+    // triangle of doom
+    // get users to sign in again
+    auth
+        .signInWithPopup(provider)
+        .then(result => {
+            firebase.auth().currentUser
+                .reauthenticateAndRetrieveDataWithCredential(result.credential)
+                .then(() => {
+                    console.log("user is re-authenticated");
+                    firebase.auth().currentUser
+                        .delete()
+                        .then(() => {
+                            if (onDeletedCallback) onDeletedCallback();
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                })
+                .catch((error) => {
+                    console.log("error: ", error);
+                })
+        })
+        .catch(error => {
+            console.log("log in error: ", error);
         });
 }
 
@@ -142,51 +176,3 @@ export function fs_getUserChanges(userId, onChangeCallback = null) {
                 console.log("user listener error: ", error);
             });
 }
-
-//*** ARTWORK ***********************************************************
-// ADD ARTWORK
-
-/*export function fs_addArtwork(userId, blobData, artworkData, onChangeCallback = null) {
-    // Get artwork database id first so can be used for the filename
-    const artworkDatabaseRef = db.collection('artworks').doc();
-    const artworkId = artworkDatabaseRef.id;
-
-    int_saveImage(artworkId, blobData, '',
-        (onChangeData) => {
-            if (onChangeCallback) onChangeCallback(onChangeData);
-        },
-        (onCompleteData) => {
-            // Upload completed successfully - save artwork data
-            const newArtworkData = {
-                ...artworkData,
-                adminId: userId,
-                url: onCompleteData.downloadURL,
-                dateAdded: Date.now()
-            };
-
-            int_saveArtworkChanges(artworkId, newArtworkData, () => {
-                onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
-            });
-        });
-}*/
-
-/*export function fs_addThumbnail(artworkId, artistId, thumbBlobData, onChangeCallback = null) {
-    int_saveImage(artworkId, thumbBlobData, 'thumbnail_',
-        (onChangeData) => {
-            if (onChangeCallback) onChangeCallback(onChangeData);
-        },
-        (onCompleteData) => {
-            // Upload completed successfully - save artwork data
-            const newArtworkData = { thumb_url: onCompleteData.downloadURL };
-
-            int_saveArtworkChanges(artworkId, newArtworkData, () => {
-                onChangeCallback({ ...newArtworkData, progress: 100, status: 'complete', artworkId })
-            });
-        });
-}*/
-
-
-
-
-
-
