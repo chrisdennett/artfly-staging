@@ -1,5 +1,7 @@
 .userProfile {
+    margin: 0 auto;
     padding: 20px;
+    max-width: 800px;
 }
 
 .userProfile--detailsList {
@@ -14,15 +16,26 @@
     align-items: center;
 }
 
+.userProfile--detail--col{
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+}
+
 .userProfile--detail--type {
-    flex: 1;
+    width: 200px;
 }
 
 .userProfile--detail--value {
     flex: 1;
+    padding-left: 10px;
 }
 
-/*Don't know why this is needed, but alignment was off without it*/
-.userProfile--emailTextfield input{
-    padding-bottom: 1.6rem!important;
+.userProfile--email {
+    flex: 1;
+}
+
+.userProfile--detail--buttons{
+    display: flex;
+    justify-content: flex-end;
 }
