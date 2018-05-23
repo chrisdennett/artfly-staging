@@ -8,6 +8,7 @@ import {
 } from 'rmwc/Toolbar';
 //
 import UserMenu from "../userMenu/UserMenu";
+import HomeIconButton from "../../homeIconButton/HomeIconButton";
 
 const AppTopBar = function ({title}) {
     return (
@@ -16,6 +17,7 @@ const AppTopBar = function ({title}) {
                 <ToolbarRow>
                     {title &&
                     <ToolbarSection alignStart>
+                        <HomeIconButton/>
                         <ToolbarTitle>{title}</ToolbarTitle>
                     </ToolbarSection>
                     }
