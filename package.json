@@ -20,6 +20,7 @@
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-draggable": "^3.0.5",
+    "react-firebaseui": "^3.0.4",
     "react-ga": "^2.5.2",
     "react-measure": "^2.0.2",
     "react-redux": "^5.0.7",

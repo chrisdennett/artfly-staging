@@ -1,6 +1,5 @@
 import React from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import * as faSmile from '@fortawesome/fontawesome-pro-regular/faSmile'
 import * as faDesktopAlt from '@fortawesome/fontawesome-pro-regular/faDesktopAlt'
 import * as faPaintBrush from '@fortawesome/fontawesome-pro-regular/faPaintBrush'
 import * as faChild from '@fortawesome/fontawesome-pro-solid/faChild'
@@ -15,8 +14,7 @@ const ArtFlyIntro = function () {
         <div className={'artFlyIntro'}>
             <div className={'artFlyIntro--content'}>
                 <h2>What is ArtFly?</h2>
-                <p>It's just me - Chris Dennett (hello!) - but ArtFly sounds better <FontAwesomeIcon
-                    icon={faSmile}/>.</p>
+                <p>A website for you to store and create artworks for yourself, your kids or for anyone.</p>
                 <p>Aim: help people make art. Specifically:</p>
                 <ul>
                     <li>Help parents to encourage and cope with kids <FontAwesomeIcon icon={faChild}/> constant creations.

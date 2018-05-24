@@ -3,9 +3,9 @@ import {
     CREATE_USER,
     SIGN_IN_USER,
     SIGN_OUT_USER,
-    DELETE_USER,
     SIGN_IN_USER_TRIGGERED
 } from '../actions/UserDataActions';
+import { DELETE_USER } from "../actions/DeleteUserActions";
 import ArtflyAccountTypes from '../app/global/ArtflyAccountTypes';
 
 export default function (state = {}, action) {

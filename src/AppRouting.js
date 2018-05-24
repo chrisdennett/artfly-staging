@@ -11,12 +11,13 @@ import history from './app/global/history';
 import App from "./app/App";
 import Home from './app/Home/Home';
 import FourOhFour from "./app/FourOhFour/FourOhFour";
-import LoadingOverlay from "./app/global/LoadingOverlay";
 import ArtworkViewer from "./app/artwork/ArtworkViewer";
 import UserProfile from "./app/userProfile/UserProfile";
+import SignIn from "./app/signIn/SignIn";
 
 const routes = {
     home: { component: Home },
+    signIn: { component: SignIn },
     profile: { component: UserProfile },
     artwork: { component: ArtworkViewer }
 };
@@ -93,9 +94,6 @@ class ArtflyRouting extends Component {
 
         return (
             <div>
-                {(!this.props.user.status || this.props.user.status === 'pending') &&
-                <LoadingOverlay/>
-                }
                 <App params={params} page={page}>
                     {PageComponentWithProps}
                 </App>

@@ -118,39 +118,7 @@ export function fs_updateUser(authId, newUserData, onAddedCallback = null) {
         })
 }
 
-// DELETE USER
-export function fs_deleteUser(onDeletedCallback = null) {
 
-    // TODO: This obviously has to be the method they used originally! Not always twitter!
-    // TODO: Delete all artworks as well
-    const provider = new firebase.auth.TwitterAuthProvider();
-
-    // triangle of doom
-    // get users to sign in again
-    auth
-        .signInWithPopup(provider)
-        .then(result => {
-            firebase.auth().currentUser
-                .reauthenticateAndRetrieveDataWithCredential(result.credential)
-                .then(() => {
-                    console.log("user is re-authenticated");
-                    firebase.auth().currentUser
-                        .delete()
-                        .then(() => {
-                            if (onDeletedCallback) onDeletedCallback();
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        });
-                })
-                .catch((error) => {
-                    console.log("error: ", error);
-                })
-        })
-        .catch(error => {
-            console.log("log in error: ", error);
-        });
-}
 
 // GET USER LISTENER
 export function fs_getUserChanges(userId, onChangeCallback = null) {

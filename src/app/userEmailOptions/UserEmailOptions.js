@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, ButtonIcon } from 'rmwc/Button';
 import { TextField } from 'rmwc/TextField';
 import { Switch } from 'rmwc/Switch'
+import { Icon } from 'rmwc/Icon';
 
 class UserEmailOptions extends Component {
 
@@ -12,7 +13,7 @@ class UserEmailOptions extends Component {
     }
 
     render() {
-        const { userEmail, allowEmailUpdates, updateUser, userId } = this.props;
+        const { userEmail, allowEmailUpdates=false, updateUser, userId } = this.props;
         const { inEditMode, unsavedEmail } = this.state;
         let currentEmailValue = unsavedEmail.length > 0 ? unsavedEmail : userEmail;
         if (currentEmailValue === null) currentEmailValue = '';
@@ -34,22 +35,36 @@ class UserEmailOptions extends Component {
                     <div className={'userProfile--detail--buttons'}>
                         <Button>Cancel</Button>
                         <Button raised
-                                onClick={() => updateUser(userId, {email:currentEmailValue})}
+                                onClick={() => updateUser(userId, { email: currentEmailValue })}
                                 theme="secondary-bg on-secondary">
                             <ButtonIcon>save</ButtonIcon>
                             Save
                         </Button>
                     </div>
                     }
-
-                    {userEmail &&
-                    <Switch
-                        checked={allowEmailUpdates}
-                        onChange={() => updateUser(userId, {allowEmailUpdates: !allowEmailUpdates})}>
-                        Get email updates
-                    </Switch>
-                    }
                 </div>
+
+
+                {userEmail &&
+                <div className={'userProfile--detail'}>
+                    <div className={'userProfile--detail--type'}>Get brill email updates:</div>
+                    <div className={'userProfile--detail--value'}>
+                        <Switch
+                            checked={allowEmailUpdates}
+                            onChange={() => updateUser(userId, { allowEmailUpdates: !allowEmailUpdates })}>
+
+                            {!allowEmailUpdates &&
+                            <Icon use="sentiment_very_dissatisfied" className={'mood-icon'}/>
+                            }
+
+                            {allowEmailUpdates &&
+                            <Icon use="sentiment_very_satisfied" className={'mood-icon'}/>
+                            }
+
+                        </Switch>
+                    </div>
+                </div>
+                }
             </div>
         );
     }

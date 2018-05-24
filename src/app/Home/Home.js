@@ -4,9 +4,7 @@ import { connect } from 'react-redux';
 // styles
 import './homeStyles.css';
 // components
-import { IN_BETA_TESTING } from '../global/GLOBAL_CONSTANTS';
 import Title from "./Title";
-import SignInOut from '../SignInOut/SignInOut';
 import Footer from "./Footer/Footer";
 import LinkButt from "../global/Butt/LinkButt";
 import SocialMediaStuff from "./socialMediaStuff/SocialMediaStuff";
@@ -21,9 +19,6 @@ const Home = ({ user, userArtworks }) => {
     return (
         <div className={'home'}>
 
-            {/*<div className={'home-topBar'}>
-                <SignInOut user={user}/>
-            </div>*/}
             <AppTopBar/>
 
             <div className='home--heading'>
@@ -33,18 +28,7 @@ const Home = ({ user, userArtworks }) => {
                 <div className='home--tagLine'>Forget about what others think and let the Art Fly.
                 </div>
 
-
-                {!IN_BETA_TESTING &&
-                <div className='home--signInOut'>
-                    <SignInOut/>
-                </div>
-                }
-
             </div>
-
-            {/*{!userLoggedIn &&
-            <PublicHome/>
-            }*/}
 
             {userLoggedIn &&
             <div className={'home--artworks'}>

@@ -3,8 +3,8 @@ import { Toolbar, ToolbarRow, ToolbarSection, ToolbarIcon } from 'rmwc/Toolbar';
 import { SimpleDialog } from 'rmwc/Dialog';
 import { Button } from 'rmwc/Button';
 //
-import Link from "../global/Butt/Link";
-import IconLogo from "../global/icon/icons/IconLogo";
+import HomeIconButton from "../../homeIconButton/HomeIconButton";
+import UserMenu from "../userMenu/UserMenu";
 
 class ArtworkViewerToolbar extends Component {
 
@@ -24,8 +24,6 @@ class ArtworkViewerToolbar extends Component {
                   onArtworkDeleteConfirm
               } = this.props;
 
-        const deleteStyle = { color: '#a82021' };
-
         return (
             <div>
 
@@ -39,40 +37,45 @@ class ArtworkViewerToolbar extends Component {
                     onAccept={onArtworkDeleteConfirm}
                 />
 
-                <Toolbar style={{ background: '#fff', color: '#000' }}>
+                <Toolbar>
                     <ToolbarRow>
                         <ToolbarSection alignStart>
-                            <Link linkTo={'/'} style={{ paddingTop: 7 }}>
-                                <IconLogo width={30} height={30}/>
-                            </Link>
+                            <HomeIconButton/>
 
                             {!isEditOpen &&
                             <ToolbarIcon onClick={() => onEditOpenChange(true)}
-                                         use="edit"
-                                         style={{ color: 'black' }}/>
+                                         use="edit"/>
                             }
 
                             {isEditOpen &&
                             <ToolbarIcon onClick={() => onEditOpenChange(false)}
-                                         use="cloud_done"
-                                         style={{ color: 'black' }}/>
+                                         use="cloud_done"/>
+                            }
+
+                            {isEditOpen &&
+                            <ToolbarIcon onClick={() => this.setState({ errorConfirmDialogIsOpen: true })}
+                                         use="delete_forever"/>
                             }
                         </ToolbarSection>
+
                         {hasUnsavedChanges &&
                         <ToolbarSection>
                             <Button raised theme="secondary-bg text-primary-on-secondary"
                                     onClick={onArtworkEditorSave}>Save</Button>
-                            <Button onClick={onArtworkUndoChanges}>Undo</Button>
                         </ToolbarSection>
                         }
 
-                        {isEditOpen &&
-                        <ToolbarSection alignEnd>
-                            <ToolbarIcon onClick={() => this.setState({ errorConfirmDialogIsOpen: true })}
-                                         use="delete_forever"
-                                         style={deleteStyle}/>
+                        {hasUnsavedChanges &&
+                        <ToolbarSection>
+                            <Button raised theme="secondary-bg text-primary-on-secondary"
+                                    onClick={onArtworkUndoChanges}>Undo</Button>
                         </ToolbarSection>
                         }
+
+                        <ToolbarSection alignEnd>
+                            <UserMenu/>
+                        </ToolbarSection>
+
                     </ToolbarRow>
                 </Toolbar>
             </div>

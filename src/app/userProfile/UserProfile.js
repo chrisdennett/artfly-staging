@@ -3,13 +3,15 @@ import { connect } from 'react-redux';
 // styles
 import './userProfile_styles.css';
 // actions
-import { deleteUser, updateUser } from "../../actions/UserDataActions";
+import { deleteArtworks, deleteResources } from "../../actions/DeleteArtworkActions";
+import { updateUser } from "../../actions/UserDataActions";
+import { deleteUser, deleteUserAuth } from "../../actions/DeleteUserActions";
 // comps
 import AppTopBar from "../AppTopBar/AppTopBar";
 import DeleteUser from "../deleteUser/DeleteUser";
 import UserEmailOptions from "../userEmailOptions/UserEmailOptions";
 
-const UserProfile = function ({ userSignInMethod, updateUser, totalUserArtworks, allowEmailUpdates, deleteUser, userId, userEmail, accountType, userStatus }) {
+const UserProfile = function ({ userSignInMethod, deleteResources, deleteUserAuth, userArtworks, userResources, updateUser, allowEmailUpdates, deleteUser, deleteArtworks, userId, userEmail, accountType, userStatus }) {
     const noLoggedInUser = userStatus === 'none' || !userStatus;
 
     return (
@@ -38,7 +40,7 @@ const UserProfile = function ({ userSignInMethod, updateUser, totalUserArtworks,
                         </div>
                         <div className={'userProfile--detail'}>
                             <div className={'userProfile--detail--type'}>Artworks added:</div>
-                            <div className={'userProfile--detail--value'}>{totalUserArtworks}</div>
+                            <div className={'userProfile--detail--value'}>{Object.keys(userArtworks).length}</div>
                         </div>
 
                         <UserEmailOptions userEmail={userEmail}
@@ -54,8 +56,12 @@ const UserProfile = function ({ userSignInMethod, updateUser, totalUserArtworks,
                     </div>
 
                     <DeleteUser deleteUser={deleteUser}
-                                userId={userId}
-                                totalUserArtworks={totalUserArtworks}
+                                deleteUserAuth={deleteUserAuth}
+                                userSignInMethod={userSignInMethod}
+                                deleteArtworks={deleteArtworks}
+                                deleteResources={deleteResources}
+                                userResources={userResources}
+                                userArtworks={userArtworks}
                     />
 
                 </div>
@@ -66,16 +72,37 @@ const UserProfile = function ({ userSignInMethod, updateUser, totalUserArtworks,
     )
 };
 
-const mapStateToProps = (state) => (
-    {
+// NOT RIGHT - only finds one
+const getUserArtworks = (userId, artworks) => {
+    return Object.keys(artworks)
+        .filter(artworkId => artworks[artworkId].adminId === userId)
+        .reduce((obj, key) => {
+            obj[key] = artworks[key];
+            return obj
+        }, {});
+};
+
+const getUserResources = (userId, resources) => {
+    return Object.keys(resources)
+        .filter(resourceId => resources[resourceId].adminId === userId)
+        .reduce((obj, key) => {
+            obj[key] = resources[key];
+            return obj
+        }, {});
+};
+
+const mapStateToProps = (state) => {
+    return {
         userId: state.user.uid,
         userSignInMethod: state.user.signedInWith,
         userEmail: state.user.email,
         accountType: state.user.planName,
         userStatus: state.user.status,
         allowEmailUpdates: state.user.allowEmailUpdates,
-        totalUserArtworks: Object.keys(state.artworks).length
+        userArtworks: getUserArtworks(state.user.uid, state.artworks),
+        userResources: getUserResources(state.user.uid, state.resources),
     }
-);
-const mapActionsToProps = { deleteUser, updateUser };
+};
+
+const mapActionsToProps = { deleteUser, deleteUserAuth, updateUser, deleteArtworks, deleteResources };
 export default connect(mapStateToProps, mapActionsToProps)(UserProfile);

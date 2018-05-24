@@ -4,6 +4,7 @@ import { ToolbarIcon } from 'rmwc/Toolbar';
 import { Menu, MenuAnchor } from 'rmwc/Menu';
 import { Button } from 'rmwc/Button';
 // comps
+import history from '../global/history';
 import SignInMenu from "./SignInMenu";
 import SignOutMenu from "./SignOutMenu";
 
@@ -33,11 +34,10 @@ class UserMenu extends Component {
 
     render() {
         const { menuIsOpen } = this.state;
-        const { userStatus, userLoginStatus } = this.props;
+        const { userLoginStatus } = this.props;
         // userStatus: complete, pending, none, new
         // userLoginStatus: loggedIn, loggedOut, pending
 
-        const isLoggedOut = userStatus === 'none' || userLoginStatus === 'loggedOut';
         const isLoggedIn = userLoginStatus === 'loggedIn';
 
         return (
@@ -50,7 +50,7 @@ class UserMenu extends Component {
                         onClose={() => this.setState({ menuIsOpen: false })}
                     >
 
-                        {isLoggedOut &&
+                        {!isLoggedIn &&
                         <SignInMenu/>
                         }
 
@@ -61,10 +61,10 @@ class UserMenu extends Component {
                     </Menu>
 
                     {
-                        isLoggedOut &&
+                        !isLoggedIn &&
                         <Button raised
                                 theme="secondary-bg on-secondary"
-                                onClick={() => this.setState({ menuIsOpen: true })}
+                                onClick={() => history.push('/signIn')}
                         >
                             Sign in / up
                         </Button>
@@ -83,7 +83,6 @@ class UserMenu extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userStatus: state.user.status,
         userLoginStatus: state.user.loginStatus
     }
 };

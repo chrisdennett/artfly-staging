@@ -4,7 +4,8 @@ import history from '../history';
 const Link = function ({linkTo, children, ...rest}) {
 
     const style = {
-        display: 'inline-block'
+        display: 'inline-block',
+        cursor: 'pointer',
     };
 
     return (
