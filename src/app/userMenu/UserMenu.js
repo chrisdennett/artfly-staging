@@ -2,28 +2,18 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { ToolbarIcon } from 'rmwc/Toolbar';
 import { Menu, MenuAnchor } from 'rmwc/Menu';
-import { Button } from 'rmwc/Button';
+import {
+    List,
+    ListItem,
+    ListItemText,
+    ListItemGraphic
+} from 'rmwc/List';
+// actions
+import { signOutUser } from "../../actions/UserAuthActions";
 // comps
-import history from '../global/history';
-import SignInMenu from "./SignInMenu";
-import SignOutMenu from "./SignOutMenu";
+import SignInButt from '../signInButt/SignInButt';
+import history from "../global/history";
 
-/*
-* If user isn't logged in show sign in / up button
-* The sign in/up button opens a menu to sign in with
-* google or facebook
-*
-* If they've not logged in before show a popup dialog
-* asking to confirm their email address with funny tick
-* boxes to say what I can use the email for.
-*
-* Once logged in completely show the user icon or display
-* image if they have one in a little circle.
-*
-* Clicking this brings up the menu to 'log out' (and
-* 'profile' in the future)
-*
-* */
 class UserMenu extends Component {
 
     constructor(props) {
@@ -34,46 +24,35 @@ class UserMenu extends Component {
 
     render() {
         const { menuIsOpen } = this.state;
-        const { userLoginStatus } = this.props;
-        // userStatus: complete, pending, none, new
-        // userLoginStatus: loggedIn, loggedOut, pending
-
-        const isLoggedIn = userLoginStatus === 'loggedIn';
+        const { userSignedIn, signOutUser } = this.props;
 
         return (
             <div>
-
                 <MenuAnchor>
                     <Menu
                         open={menuIsOpen}
                         anchorCorner={'topLeft'}
                         onClose={() => this.setState({ menuIsOpen: false })}
                     >
-
-                        {!isLoggedIn &&
-                        <SignInMenu/>
+                        {userSignedIn &&
+                        <List>
+                            <ListItem onClick={() => history.push('/profile')}>
+                                <ListItemGraphic>person</ListItemGraphic>
+                                <ListItemText>Profile</ListItemText>
+                            </ListItem>
+                            <ListItem onClick={signOutUser}>
+                                <ListItemGraphic>exit_to_app</ListItemGraphic>
+                                <ListItemText>Sign out</ListItemText>
+                            </ListItem>
+                        </List>
                         }
-
-                        {isLoggedIn &&
-                        <SignOutMenu/>
-                        }
-
                     </Menu>
 
-                    {
-                        !isLoggedIn &&
-                        <Button raised
-                                theme="secondary-bg on-secondary"
-                                onClick={() => history.push('/signIn')}
-                        >
-                            Sign in / up
-                        </Button>
-                    }
+                    {!userSignedIn && <SignInButt/>}
 
-                    {
-                        isLoggedIn &&
-                        <ToolbarIcon use="person"
-                                     onClick={() => this.setState({ menuIsOpen: true })}/>
+                    {userSignedIn &&
+                    <ToolbarIcon use="person"
+                                 onClick={() => this.setState({ menuIsOpen: true })}/>
                     }
                 </MenuAnchor>
             </div>
@@ -82,8 +61,9 @@ class UserMenu extends Component {
 }
 
 const mapStateToProps = (state) => {
+    // just care about a 
     return {
-        userLoginStatus: state.user.loginStatus
+        userSignedIn: !!state.user.uid
     }
 };
-export default connect(mapStateToProps)(UserMenu);
+export default connect(mapStateToProps, {signOutUser})(UserMenu);

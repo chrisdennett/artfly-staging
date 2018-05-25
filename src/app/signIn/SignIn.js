@@ -7,19 +7,18 @@ import {
     ToolbarSection,
     ToolbarFixedAdjust,
     ToolbarTitle,
-    ToolbarIcon,
+    ToolbarIcon
 } from 'rmwc/Toolbar';
+// styles
+import './signIn_styles.css';
 // helper
 import history from '../global/history';
 
 // Configure FirebaseUI.
+// https://github.com/firebase/firebaseui-web/#available-callbacks
 const uiConfig = {
-    // Popup signin flow rather than redirect flow.
-    signInFlow: 'redirect',
-    // Redirect to /signedIn after sign in is successful.
-    // Alternatively you can provide a callbacks.signInSuccess function.
+    signInFlow: 'popup',
     signInSuccessUrl: '/',
-    // We will display Google and Facebook as auth providers.
     signInOptions: [
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
         firebase.auth.FacebookAuthProvider.PROVIDER_ID,
@@ -27,7 +26,7 @@ const uiConfig = {
         firebase.auth.EmailAuthProvider.PROVIDER_ID,
         {
             provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
-            defaultCountry: 'GB',
+            defaultCountry: 'GB'
         }
     ]
 };
@@ -46,6 +45,11 @@ const SignIn = function () {
                 </ToolbarRow>
             </Toolbar>
             <ToolbarFixedAdjust/>
+
+            <div className={'signIn-intro'}>
+                <p>Sign in or sign up to join the ArtFly club:</p>
+            </div>
+
             <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
         </div>
     )

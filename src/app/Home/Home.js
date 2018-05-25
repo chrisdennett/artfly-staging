@@ -14,7 +14,7 @@ import ArtworkThumb from "../artwork/ArtworkThumb";
 import AppTopBar from "../AppTopBar/AppTopBar";
 
 const Home = ({ user, userArtworks }) => {
-    const userLoggedIn = user && user.loginStatus === 'loggedIn';
+    const userLoggedIn = !!user.uid;
 
     return (
         <div className={'home'}>

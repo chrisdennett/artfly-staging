@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 //
 import PaddleReducer from './PaddleReducer';
-import UserReducer from './UserReducer';
+import UserReducer from './UserAuthReducer';
 import ArtworksReducer from './ArtworksReducer';
 import ImageUploadReducer from './ImageUploadReducer';
 import FormReducer from './FormReducer';

@@ -9,11 +9,11 @@ class UserEmailOptions extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { inEditMode: true, unsavedEmail: '' }
+        this.state = { inEditMode: false, unsavedEmail: '' }
     }
 
     render() {
-        const { userEmail, allowEmailUpdates=false, updateUser, userId } = this.props;
+        const { userEmail, allowEmailUpdates = false, updateUser, userId } = this.props;
         const { inEditMode, unsavedEmail } = this.state;
         let currentEmailValue = unsavedEmail.length > 0 ? unsavedEmail : userEmail;
         if (currentEmailValue === null) currentEmailValue = '';
@@ -21,15 +21,22 @@ class UserEmailOptions extends Component {
 
         return (
             <div>
+
+                {!inEditMode &&
+                <div className={'userProfile--detail'}>
+                    <div className={'userProfile--detail--type'}>Email:</div>
+                    <div className={'userProfile--detail--value'}>{userEmail}</div>
+                </div>
+                }
+
+                {inEditMode &&
                 <div className={'userProfile--detail--col'} style={{ padding: 0 }}>
-                    {inEditMode &&
                     <TextField type={'email'}
                                className={'userProfile--email'}
                                outlined
                                onChange={(e) => this.setState({ unsavedEmail: e.target.value })}
                                value={currentEmailValue}
                                label='Email address:'/>
-                    }
 
                     {hasUnsavedChanges &&
                     <div className={'userProfile--detail--buttons'}>
@@ -43,7 +50,7 @@ class UserEmailOptions extends Component {
                     </div>
                     }
                 </div>
-
+                }
 
                 {userEmail &&
                 <div className={'userProfile--detail'}>

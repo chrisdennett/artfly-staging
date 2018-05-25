@@ -1,29 +1,26 @@
 import {
-    FETCH_USER,
-    CREATE_USER,
-    SIGN_IN_USER,
-    SIGN_OUT_USER,
-    SIGN_IN_USER_TRIGGERED
-} from '../actions/UserDataActions';
-import { DELETE_USER } from "../actions/DeleteUserActions";
-import ArtflyAccountTypes from '../app/global/ArtflyAccountTypes';
+    USER_SIGNED_IN,
+    USER_SIGNED_OUT
+} from '../actions/UserAuthActions';
+// import { DELETE_USER } from "../actions/DeleteUserActions";
+// import ArtflyAccountTypes from '../app/global/ArtflyAccountTypes';
 
 export default function (state = {}, action) {
     switch (action.type) {
 
-        case SIGN_IN_USER_TRIGGERED:
-            return { ...state, loginStatus: 'pending' };
+        case USER_SIGNED_IN:
+            return { ...action.payload };
 
-        case SIGN_IN_USER:
-            return state;
-
-        case SIGN_OUT_USER:
-            return action.payload;
-
-        case DELETE_USER:
+        case USER_SIGNED_OUT:
             return {};
 
-        case FETCH_USER:
+        default:
+            return state;
+    }
+}
+
+/*
+case FETCH_USER:
             const userData = { ...action.payload };
             const { subscription } = userData;
             let subscriptionId = 0;
@@ -41,12 +38,4 @@ export default function (state = {}, action) {
 
             return { ...state, ...action.payload, maxArtworksReached, subscription, ...extraSubscriptionParams };
 
-        case CREATE_USER:
-            // Doesn't need to return anything because there is a libs listener on the user
-            // that will trigger FETCH_USER
-            return state;
-
-        default:
-            return state;
-    }
-}
+*/

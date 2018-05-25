@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import ga from './libs/googleAnalyticsConfig';
 // actions
-import { listenForUserChanges } from './actions/UserDataActions';
+import { listenForUserAuthChanges, stopListeningForUserAuthChanges } from './actions/UserAuthActions';
 import { listenForUserArtworkChanges } from './actions/GetArtworkActions';
 // components
 import history from './app/global/history';
@@ -30,7 +30,8 @@ class ArtflyRouting extends Component {
 
     componentDidMount() {
         // fetch global data - determines routing
-        this.props.listenForUserChanges();
+        this.props.listenForUserAuthChanges();
+
         // set up routing
         const location = history.location;
         this.setPageData(location.pathname);
@@ -52,7 +53,10 @@ class ArtflyRouting extends Component {
     }
 
     componentWillUnmount() {
+        // stop listening for route changes
         this.state.unlisten();
+        // remove the auth listener
+        this.props.stopListeningForUserAuthChanges();
     }
 
     setPageData(fullPath) {
@@ -108,6 +112,6 @@ const mapStateToProps = (state) => {
         user: state.user
     }
 };
-const mapActionsToProps = { listenForUserChanges, listenForUserArtworkChanges };
+const mapActionsToProps = { listenForUserAuthChanges, stopListeningForUserAuthChanges, listenForUserArtworkChanges };
 
 export default connect(mapStateToProps, mapActionsToProps)(ArtflyRouting);
