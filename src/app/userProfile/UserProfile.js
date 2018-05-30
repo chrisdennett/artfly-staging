@@ -46,7 +46,7 @@ const UserProfile = function ({
                 {userSignedIn &&
                 <div>
                     <div className={'userProfile--detailsList'}>
-                        <div>
+                        <div className={'userProfile--detailsList--avatarHolder'}>
                             <img src={photoUrl} alt={'user avatar'}/>
                         </div>
 

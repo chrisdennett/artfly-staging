@@ -1,7 +1,20 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet');
 
+:root {
+    --mdc-theme-primary: #546e7a;
+    --mdc-theme-secondary: #bf360c;
+
+/*    mdc-theme-primary: #fcb8ab;
+    $mdc-theme-secondary: #feeae6;
+    $mdc-theme-on-primary: #442b2d;
+    $mdc-theme-on-secondary: #442b2d;*/
+}
+
 html, body {
     margin: 0;
     padding: 0;
     font-family: 'Roboto', sans-serif;
 }
+
+
+

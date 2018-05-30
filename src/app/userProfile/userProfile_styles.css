@@ -1,7 +1,7 @@
 .userProfile {
     margin: 0 auto;
     padding: 20px;
-    max-width: 800px;
+    max-width: 500px;
 }
 
 .userProfile--detailsList {
@@ -42,4 +42,13 @@
 
 .mood-icon{
     font-size: 2rem;
+}
+
+.userProfile--detailsList--avatarHolder{
+    margin: 0 auto 20px auto;
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+    line-height: 0;
+    border: 1px solid rgba(0, 0, 0, 0.3);
 }

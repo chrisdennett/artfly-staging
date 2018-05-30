@@ -1,17 +1,19 @@
 // externals
 import React from "react";
 import { connect } from 'react-redux';
+import { Typography } from 'rmwc/Typography';
+import { Button, ButtonIcon } from 'rmwc/Button';
 // styles
 import './homeStyles.css';
 // components
 import Title from "./Title";
 import Footer from "./Footer/Footer";
-import LinkButt from "../global/Butt/LinkButt";
 import SocialMediaStuff from "./socialMediaStuff/SocialMediaStuff";
 import ArtFlyLab from "./artflyLab/ArtFlyLab";
 import ArtFlyIntro from "./artFlyIntro/ArtFlyIntro";
 import ArtworkThumb from "../artwork/ArtworkThumb";
 import AppTopBar from "../AppTopBar/AppTopBar";
+import history from "../global/history";
 
 const Home = ({ user, userArtworks }) => {
     const userLoggedIn = !!user.uid;
@@ -33,7 +35,9 @@ const Home = ({ user, userArtworks }) => {
             {userLoggedIn &&
             <div className={'home--artworks'}>
 
-                <LinkButt linkTo={'/artwork'}>Add new Artwork</LinkButt>
+                <Button raised theme={'secondary-bg'} onClick={() => history.push('/artwork/')}>
+                    <ButtonIcon use="add" /> Add New Artwork
+                </Button>
 
                 <div className={'artworkThumbs'}>
                     {
@@ -66,8 +70,9 @@ const Home = ({ user, userArtworks }) => {
             }}>
                 <img style={{ background: '#fff', padding: 10 }} src={'images/lab/Rotoscoping.gif'}
                      alt={'rotoscoping gif'}/>
-                <p>You know it's all over when the victorian lady jumps the stool...</p>
-                <p style={{ margin: 0, color: '#aaa' }}>2018 Copyright bit nobody reads</p>
+                <Typography use={'body1'}>
+                    <p>You know it's all over when the victorian lady jumps the stool...</p>
+                </Typography>
             </div>
 
 

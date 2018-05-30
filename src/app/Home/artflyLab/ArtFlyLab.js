@@ -1,17 +1,23 @@
 import React from 'react';
+import { Typography } from 'rmwc/Typography';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import * as faFlask from "@fortawesome/fontawesome-pro-solid/faFlask";
+import * as faFlask from "@fortawesome/fontawesome-pro-regular/faFlask";
+
 // styles
 import './artFlyLab_styles.css';
 // comps
 import ProjectCard from "./ProjectCard";
 
-const ArtFlyLab = function (props) {
+const ArtFlyLab = function () {
     return (
         <div className={'artFlyLab'}>
             <div className={'artFlyLab--intro'}>
-                <h2><FontAwesomeIcon icon={faFlask} /> ArtFly Lab</h2>
-                <p>These are things I'm working on:</p>
+                <Typography use="headline4">
+                    <FontAwesomeIcon icon={faFlask} /> ArtFly Lab
+                </Typography>
+                <Typography use="body1">
+                    <p>These are things I'm working on:</p>
+                </Typography>
             </div>
 
             <div className={'artFlyLab--projectCards'}>

@@ -1,11 +1,12 @@
 .artFlyLab{
     /*border-top: 3px solid rgba(0, 0, 0, 0.4);*/
-    border-top: 20px dashed rgba(0, 0, 0, 0.6);
-    border-bottom: 4px solid rgba(0, 0, 0, 0.48);
-    background: linear-gradient(#984eac, #774089);
+    /*border-top: 20px dashed rgba(0, 0, 0, 0.6);*/
+    /*border-bottom: 4px solid rgba(0, 0, 0, 0.48);*/
+    /*background: linear-gradient(#984eac, #774089);*/
     /*background-color: #984eac;*/
+    margin-top: 2rem;
     padding-bottom: 50px;
-    color: white;
+    /*color: white;*/
 }
 
 .artFlyLab--intro{

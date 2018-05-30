@@ -10,6 +10,8 @@ import {
     DialogFooterButton,
     DialogBackdrop
 } from 'rmwc/Dialog';
+// styles
+import './deleteUser_styles.css';
 
 class DeleteUser extends Component {
 
@@ -36,15 +38,22 @@ class DeleteUser extends Component {
 
         return (
             <div>
-                <Button outlined onClick={() => this.setState({ deleteConfirmIsOpen: true })}>
-                    <ButtonIcon use="delete_forever"/>
-                    Delete All Data
-                </Button>
+                <div className={'delete-butts'}>
+                    <Button outlined onClick={() => this.setState({ deleteConfirmIsOpen: true })}>
+                        <ButtonIcon use="delete_forever"/>
+                        Delete artworks
+                    </Button>
 
-                <Button outlined onClick={() => deleteUserAuth(userSignInMethod)}>
-                    <ButtonIcon use="delete_forever"/>
-                    Disconnect from Sign using {userSignInMethod}
-                </Button>
+                    <Button outlined onClick={() => this.setState({ deleteConfirmIsOpen: true })}>
+                        <ButtonIcon use="delete_forever"/>
+                        Delete everything
+                    </Button>
+
+                    <Button outlined onClick={() => deleteUserAuth(userSignInMethod)}>
+                        <ButtonIcon use="delete_forever"/>
+                        Delete {userSignInMethod} Sign in
+                    </Button>
+                </div>
 
                 <Dialog
                     open={deleteConfirmIsOpen}
