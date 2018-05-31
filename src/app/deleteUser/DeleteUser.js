@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// material ui
 import { Button, ButtonIcon } from 'rmwc/Button';
 import {
     Dialog,
@@ -21,19 +22,16 @@ class DeleteUser extends Component {
         this.state = { deleteConfirmIsOpen: false };
 
         this.onConfirmDelete = this.onConfirmDelete.bind(this);
-
     }
 
     onConfirmDelete() {
-        const { deleteUser, deleteArtworks, userArtworks, deleteResources, userResources } = this.props;
-        deleteArtworks(userArtworks);
-        deleteResources(userResources);
+        const { deleteUser } = this.props;
         deleteUser();
     }
 
     render() {
         const { deleteConfirmIsOpen } = this.state;
-        const { userArtworks, deleteUserAuth, userSignInMethod } = this.props;
+        const { userArtworks } = this.props;
         const totalUserArtworks = Object.keys(userArtworks).length;
 
         return (
@@ -41,17 +39,7 @@ class DeleteUser extends Component {
                 <div className={'delete-butts'}>
                     <Button outlined onClick={() => this.setState({ deleteConfirmIsOpen: true })}>
                         <ButtonIcon use="delete_forever"/>
-                        Delete artworks
-                    </Button>
-
-                    <Button outlined onClick={() => this.setState({ deleteConfirmIsOpen: true })}>
-                        <ButtonIcon use="delete_forever"/>
-                        Delete everything
-                    </Button>
-
-                    <Button outlined onClick={() => deleteUserAuth(userSignInMethod)}>
-                        <ButtonIcon use="delete_forever"/>
-                        Delete {userSignInMethod} Sign in
+                        Delete Account
                     </Button>
                 </div>
 

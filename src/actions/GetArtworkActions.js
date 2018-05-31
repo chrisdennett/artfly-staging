@@ -25,7 +25,6 @@ export function listenForIndividualArtworkChanged(artworkId){
 }
 
 export function listenForUserArtworkChanges(userId) {
-
     return (dispatch) => {
 
         if (!userId) {
@@ -188,9 +187,6 @@ export function getArtworkDataOnce(artworkId, callback, noDocCallback) {
 
 // GET ARTWORK DATA ONCE
 function fs_getArtworkDataOnce(artworkId, onComplete = null, onNotFound = null) {
-
-    console.log("artworkId: ", artworkId);
-
     const docRef = db.collection('artworks').doc(artworkId);
 
     docRef

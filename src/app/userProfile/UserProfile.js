@@ -13,9 +13,11 @@ import UserEmailOptions from "../userEmailOptions/UserEmailOptions";
 import SignInButt from '../signInButt/SignInButt';
 
 const UserProfile = function ({
-                                  user, deleteResources, deleteUserAuth,
-                                  userArtworks, userResources, updateUser,
-                                  deleteUser, deleteArtworks
+                                  user,
+                                  userArtworks,
+                                  userResources,
+                                  updateUser,
+                                  deleteUser,
                               }) {
 
 
@@ -78,10 +80,6 @@ const UserProfile = function ({
                     </div>
 
                     <DeleteUser deleteUser={deleteUser}
-                                deleteUserAuth={deleteUserAuth}
-                                userSignInMethod={user.providerId}
-                                deleteArtworks={deleteArtworks}
-                                deleteResources={deleteResources}
                                 userResources={userResources}
                                 userArtworks={userArtworks}
                     />
