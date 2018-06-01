@@ -49,7 +49,7 @@ export function listenForUserAuthChanges() {
 }
 
 // SIGN OUT
-export function signOutUser() {
+export function signOutUser( callback) {
     return dispatch => {
         auth
             .signOut()
@@ -57,7 +57,9 @@ export function signOutUser() {
                 dispatch({
                     type: USER_SIGNED_OUT,
                     payload: { }
-                })
+                });
+
+                if(callback) callback();
             })
             .catch((error) => {
                 console.log("sign out error: ", error);

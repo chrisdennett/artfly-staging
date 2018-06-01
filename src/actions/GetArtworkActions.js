@@ -84,7 +84,6 @@ function listenForArtworkChanges(artworkId, dispatch) {
         .doc(artworkId)
         .onSnapshot(doc => {
                 if (!doc.exists) {
-                    console.log("Error doc doesn't exist doc: ", doc);
                     return;
                 }
 
