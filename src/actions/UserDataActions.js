@@ -3,7 +3,6 @@ import {
     fs_updateUser
 } from './FirestoreActions';
 
-
 export const IMAGE_UPLOAD_PROGRESS = 'imageUploadProgress';
 export const ADD_ARTWORK_COMPLETE = 'addArtworkComplete';
 export const CLEAR_IMAGE_UPLOAD = 'clearImageUpload';

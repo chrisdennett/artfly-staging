@@ -1,8 +1,7 @@
 import React, { Component } from "react";
+// material ui
 import { Button, ButtonIcon } from 'rmwc/Button';
 import { TextField } from 'rmwc/TextField';
-import { Switch } from 'rmwc/Switch'
-import { Icon } from 'rmwc/Icon';
 
 class UserEmailOptions extends Component {
 
@@ -13,7 +12,7 @@ class UserEmailOptions extends Component {
     }
 
     render() {
-        const { userEmail, allowEmailUpdates = false, updateUser, userId } = this.props;
+        const { userEmail, updateUser, userId } = this.props;
         const { inEditMode, unsavedEmail } = this.state;
         let currentEmailValue = unsavedEmail.length > 0 ? unsavedEmail : userEmail;
         if (currentEmailValue === null) currentEmailValue = '';
@@ -49,27 +48,6 @@ class UserEmailOptions extends Component {
                         </Button>
                     </div>
                     }
-                </div>
-                }
-
-                {userEmail &&
-                <div className={'userProfile--detail'}>
-                    <div className={'userProfile--detail--type'}>Get brill email updates:</div>
-                    <div className={'userProfile--detail--value'}>
-                        <Switch
-                            checked={allowEmailUpdates}
-                            onChange={() => updateUser(userId, { allowEmailUpdates: !allowEmailUpdates })}>
-
-                            {!allowEmailUpdates &&
-                            <Icon use="sentiment_very_dissatisfied" className={'mood-icon'}/>
-                            }
-
-                            {allowEmailUpdates &&
-                            <Icon use="sentiment_very_satisfied" className={'mood-icon'}/>
-                            }
-
-                        </Switch>
-                    </div>
                 </div>
                 }
             </div>

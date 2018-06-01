@@ -6,6 +6,7 @@ import { Button, ButtonIcon } from 'rmwc/Button';
 // styles
 import './homeStyles.css';
 // components
+import LoadingThing from "../loadingThing/LoadingThing";
 import Title from "./Title";
 import Footer from "./Footer/Footer";
 import SocialMediaStuff from "./socialMediaStuff/SocialMediaStuff";
@@ -17,6 +18,11 @@ import history from "../global/history";
 
 const Home = ({ user, userArtworks }) => {
     const userLoggedIn = !!user.uid;
+
+    const userPending = user === 'pending';
+    if (userPending) {
+        return <LoadingThing/>
+    }
 
     return (
         <div className={'home'}>

@@ -17,8 +17,7 @@ const UserDetails = function ({user, userArtworks, updateUser}) {
                         <strong>Welcome to your profile page.</strong>
                     </p>
                     <p>
-                        Apologies this screen being such a bore-fest! It's on my list to improve. All suggestions
-                        welcome.
+                        Apologies this screen being such a bore-fest! It's on my list to improve.
                     </p>
                 </Typography>
             </div>

@@ -40,7 +40,7 @@ class UserMenu extends Component {
                                 <ListItemGraphic>person</ListItemGraphic>
                                 <ListItemText>Profile</ListItemText>
                             </ListItem>
-                            <ListItem onClick={signOutUser}>
+                            <ListItem onClick={() => signOutUser()}>
                                 <ListItemGraphic>exit_to_app</ListItemGraphic>
                                 <ListItemText>Sign out</ListItemText>
                             </ListItem>

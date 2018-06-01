@@ -5,7 +5,6 @@ import { Button, ButtonIcon } from 'rmwc/Button';
 // styles
 import './userProfile_styles.css';
 // actions
-import { deleteArtworks, deleteResources } from "../../actions/DeleteArtworkActions";
 import { updateUser } from "../../actions/UserDataActions";
 // comps
 import AppTopBar from "../AppTopBar/AppTopBar";
@@ -13,6 +12,7 @@ import AppTopBar from "../AppTopBar/AppTopBar";
 import SignIn from '../signIn/SignIn';
 import UserDetails from "../userDetails/UserDetails";
 import UserDelete from "../userDelete/UserDelete";
+import LoadingThing from "../loadingThing/LoadingThing";
 
 class UserProfile extends Component {
 
@@ -31,6 +31,10 @@ class UserProfile extends Component {
                   updateUser
               } = this.props;
 
+        const userPending = user === 'pending';
+        if (userPending) {
+            return <LoadingThing/>
+        }
 
         const showSignInPage = !user.uid && !showDeleteAccountScreen;
         const showProfilePage = !!user.uid && !showDeleteAccountScreen;
@@ -60,6 +64,7 @@ class UserProfile extends Component {
                     <UserDetails
                         user={user}
                         userArtworks={userArtworks}
+                        userResources={userResources}
                         updateUser={updateUser}
                     />
                     <Button outlined onClick={() => this.setState({ showDeleteAccountScreen: true })}>
@@ -73,6 +78,7 @@ class UserProfile extends Component {
     }
 }
 
+// TODO: move this to a top level component
 const getUserArtworks = (userId, artworks) => {
     return Object.keys(artworks)
         .filter(artworkId => artworks[artworkId].adminId === userId)
@@ -82,6 +88,7 @@ const getUserArtworks = (userId, artworks) => {
         }, {});
 };
 
+// TODO: move this to a top level component
 const getUserResources = (userId, resources) => {
     return Object.keys(resources)
         .filter(resourceId => resources[resourceId].adminId === userId)

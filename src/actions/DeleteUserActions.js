@@ -1,9 +1,6 @@
-import firebase, { auth, firestoreDb as db, storage } from "../libs/firebaseConfig";
-// import { ARTWORK_DELETED, RESOURCE_DELETED, RESOURCE_FILE_DELETED } from "./DeleteArtworkActions";
+import { auth, firestoreDb as db, storage } from "../libs/firebaseConfig";
 
-export const DELETE_USER = "deleteUser";
 export const USER_DELETED = "userDeleted";
-// export const DELETE_USER_AUTH = "deleteUserAuth";
 
 // get resources and delete
 // get artworks and delete

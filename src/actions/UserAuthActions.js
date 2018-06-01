@@ -3,6 +3,7 @@
 
 import { auth } from "../libs/firebaseConfig";
 
+export const USER_REQUESTED = "userRequested";
 export const USER_SIGNED_IN = "userSignedIn";
 export const USER_SIGNED_OUT = "userSignedOut";
 
@@ -18,14 +19,13 @@ export function listenForUserAuthChanges() {
     if (unregisterUserAuthListener) return {};
 
     return (dispatch) => {
+
+        dispatch({
+            type: USER_REQUESTED
+        });
+
         unregisterUserAuthListener = auth
             .onAuthStateChanged(user => {
-                /*
-                * If a user is returned it means they've just logged in
-                * Could use an else statement to send logged out dispatch
-                * But using
-                * */
-
                 if (user) {
                     const { photoURL, displayName, email, emailVerified, uid, providerData } = user;
                     const { providerId } = providerData[0];
@@ -38,8 +38,7 @@ export function listenForUserAuthChanges() {
                 }
                 else{
                     dispatch({
-                        type: USER_SIGNED_OUT,
-                        payload: { }
+                        type: USER_SIGNED_OUT
                     })
                 }
             }, (error) => {
@@ -55,8 +54,7 @@ export function signOutUser( callback) {
             .signOut()
             .then(() => {
                 dispatch({
-                    type: USER_SIGNED_OUT,
-                    payload: { }
+                    type: USER_SIGNED_OUT
                 });
 
                 if(callback) callback();
