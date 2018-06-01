@@ -1,6 +1,7 @@
 import { auth, firestoreDb as db, storage } from "../libs/firebaseConfig";
 
 export const USER_DELETED = "userDeleted";
+export const USER_DELETED_ERROR = "userDeletedError";
 
 // get resources and delete
 // get artworks and delete
@@ -9,25 +10,32 @@ export function deleteUser() {
     const { uid } = auth.currentUser;
 
     return async dispatch => {
-        await deleteUserArtworks(uid);
-        console.log("deleteUserArtworksComplete");
-        await deleteUserResources(uid);
-        console.log("deleteUserResourcesComplete");
-        await deleteUserData(uid);
-        console.log("deleteUserDataComplete");
-        await deleteUserAuth();
 
-        dispatch({
-            type: USER_DELETED,
-            payload: "success"
-        })
+        try {
+            await deleteUserArtworks(uid);
+            await deleteUserResources(uid);
+            await deleteUserData(uid);
+            await deleteUserAuth();
+
+            dispatch({
+                type: USER_DELETED
+            })
+        }
+        catch (error) {
+            console.log(error);
+
+            dispatch({
+                type: USER_DELETED_ERROR,
+                payload: error
+            })
+        }
     }
 }
 
 function deleteUserData(uid) {
     return db.collection('users')
-            .doc(uid)
-            .delete();
+        .doc(uid)
+        .delete();
 }
 
 // returns a promise

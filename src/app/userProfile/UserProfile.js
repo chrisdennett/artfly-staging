@@ -38,14 +38,15 @@ class UserProfile extends Component {
                   updateUser
               } = this.props;
 
-        const userPending = user === 'pending';
-        if (userPending) {
+        if (user === 'pending') {
             return <LoadingThing/>
         }
 
         const showSignInPage = !user.uid && !showDeleteAccountScreen;
         const showProfilePage = !!user.uid && !showDeleteAccountScreen;
-        const appBarTitle = showProfilePage ? 'Profile' : 'Sign in / up';
+        let appBarTitle = 'Profile';
+        if(showSignInPage) appBarTitle = 'Sign in / up';
+        if(showDeleteAccountScreen) appBarTitle = 'Delete Account';
 
         return (
             <div>

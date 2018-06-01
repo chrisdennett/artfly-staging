@@ -8,6 +8,7 @@ import { signOutUser } from "../../actions/UserAuthActions";
 import { deleteUser } from "../../actions/DeleteUserActions";
 // comps
 import SignIn from '../signIn/SignIn';
+import LoadingThing from '../loadingThing/LoadingThing';
 
 /*
 * Ask if they are really sure they want to delete everything
@@ -33,24 +34,33 @@ class UserDelete extends Component {
         });
     }
 
-    onConfirmAccountDelete(){
-        this.props.deleteUser();
+    onConfirmAccountDelete() {
+
+        this.setState({ currentStep: 3 }, () => {
+            this.props.deleteUser();
+        })
+
     }
 
     render() {
         const { currentStep } = this.state;
-        const { user } = this.props;
+        const { user, userDeleteError } = this.props;
 
         return (
             <div>
-                <h1>Delete ArtFly account</h1>
+                {userDeleteError &&
+                <div>
+                    Hello there, here's an error
+                </div>
+                }
+
                 {currentStep === 1 &&
-                <Typography>
+                <Typography use="body1">
                     <p>
                         To confirm you are the account owner we need you to sign in again.
                     </p>
                     <Button raised onClick={this.onConfirmStep1}>
-                        Sign in again
+                        Confirm sign in
                     </Button>
                 </Typography>
                 }
@@ -67,6 +77,12 @@ class UserDelete extends Component {
                 </div>
                 }
 
+                {currentStep === 3 &&
+                <div>
+                    <LoadingThing label={'Deleting account data'}/>
+                </div>
+                }
+
             </div>
         );
     }
@@ -74,7 +90,8 @@ class UserDelete extends Component {
 
 const mapStateToProps = (state) => (
     {
-        user: state.user
+        user: state.user,
+        userDeleteError: state.errors.userDeleteError
     }
 );
 
