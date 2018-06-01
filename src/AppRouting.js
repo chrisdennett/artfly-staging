@@ -13,11 +13,9 @@ import Home from './app/Home/Home';
 import FourOhFour from "./app/FourOhFour/FourOhFour";
 import ArtworkViewer from "./app/artwork/ArtworkViewer";
 import UserProfile from "./app/userProfile/UserProfile";
-import SignIn from "./app/signIn/SignIn";
 
 const routes = {
     home: { component: Home },
-    signIn: { component: SignIn },
     profile: { component: UserProfile },
     artwork: { component: ArtworkViewer }
 };

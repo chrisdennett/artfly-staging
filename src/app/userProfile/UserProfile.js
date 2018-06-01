@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+// ui
+import { Typography } from 'rmwc/Typography';
 // styles
 import './userProfile_styles.css';
 // actions
@@ -10,14 +12,14 @@ import { deleteUser, deleteUserAuth } from "../../actions/DeleteUserActions";
 import AppTopBar from "../AppTopBar/AppTopBar";
 import DeleteUser from "../deleteUser/DeleteUser";
 import UserEmailOptions from "../userEmailOptions/UserEmailOptions";
-import SignInButt from '../signInButt/SignInButt';
+import SignIn from '../signIn/SignIn';
 
 const UserProfile = function ({
                                   user,
                                   userArtworks,
                                   userResources,
                                   updateUser,
-                                  deleteUser,
+                                  deleteUser
                               }) {
 
 
@@ -26,68 +28,66 @@ const UserProfile = function ({
     // get the smaller sized image if it's google
     let photoUrl = user.providerId === 'google.com' ? user.photoURL + '?sz=80' : user.photoURL;
 
+    const appBarTitle = userSignedIn ? 'Profile' : 'Sign in / up';
 
     return (
         <div>
-            <AppTopBar title={'User Profile'}/>
+            <AppTopBar title={appBarTitle}
+                       showUserMenu={userSignedIn}
+                       showCloseButt={!userSignedIn}/>
 
+            {!userSignedIn &&
+            <SignIn/>
+            }
+
+            {userSignedIn &&
             <div className={'userProfile'}>
-                {!userSignedIn &&
+
                 <div>
-                    <p>Nobody is signed in.</p>
-                    <SignInButt/>
+                    <Typography use="body1">
+                        <p>
+                            <strong>Welcome to your profile page.</strong>
+                        </p>
+                        <p>
+                            Sorry this screen's such a bore-fest! It's on my list to improve. All suggestions welcome.
+                        </p>
+                    </Typography>
                 </div>
-                }
 
-                {user === 'pending' &&
-                <div>
-                    Getting user status...
-                </div>
-                }
 
-                {userSignedIn &&
-                <div>
-                    <div className={'userProfile--detailsList'}>
-                        <div className={'userProfile--detailsList--avatarHolder'}>
-                            <img src={photoUrl} alt={'user avatar'}/>
-                        </div>
-
-                        <div className={'userProfile--detail'}>
-                            <div className={'userProfile--detail--type'}>Name:</div>
-                            <div className={'userProfile--detail--value'}>{user.displayName}</div>
-                        </div>
-
-                        {/*<div className={'userProfile--detail'}>
-                            <div className={'userProfile--detail--type'}>Account type:</div>
-                            <div className={'userProfile--detail--value'}>{user.planName}</div>
-                        </div>*/}
-
-                        <div className={'userProfile--detail'}>
-                            <div className={'userProfile--detail--type'}>Artworks added:</div>
-                            <div className={'userProfile--detail--value'}>{Object.keys(userArtworks).length}</div>
-                        </div>
-
-                        <UserEmailOptions userEmail={user.email}
-                                          userId={user.uid}
-                                          allowEmailUpdates={user.allowEmailUpdates}
-                                          updateUser={updateUser}
-                        />
-
-                        <div className={'userProfile--detail'}>
-                            <div className={'userProfile--detail--type'}>Sign in method:</div>
-                            <div className={'userProfile--detail--value'}>{user.providerId}</div>
-                        </div>
+                <div className={'userProfile--detailsList'}>
+                    <div className={'userProfile--detailsList--avatarHolder'}>
+                        <img src={photoUrl} alt={'user avatar'}/>
                     </div>
 
-                    <DeleteUser deleteUser={deleteUser}
-                                userResources={userResources}
-                                userArtworks={userArtworks}
+                    <div className={'userProfile--detail'}>
+                        <div className={'userProfile--detail--type'}>Name:</div>
+                        <div className={'userProfile--detail--value'}>{user.displayName}</div>
+                    </div>
+
+                    <div className={'userProfile--detail'}>
+                        <div className={'userProfile--detail--type'}>Total Artworks:</div>
+                        <div className={'userProfile--detail--value'}>{Object.keys(userArtworks).length}</div>
+                    </div>
+
+                    <UserEmailOptions userEmail={user.email}
+                                      userId={user.uid}
+                                      allowEmailUpdates={user.allowEmailUpdates}
+                                      updateUser={updateUser}
                     />
 
+                    <div className={'userProfile--detail'}>
+                        <div className={'userProfile--detail--type'}>Sign in method:</div>
+                        <div className={'userProfile--detail--value'}>{user.providerId}</div>
+                    </div>
                 </div>
-                }
 
+                <DeleteUser deleteUser={deleteUser}
+                            userResources={userResources}
+                            userArtworks={userArtworks}
+                />
             </div>
+            }
         </div>
     )
 };

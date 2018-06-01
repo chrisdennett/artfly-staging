@@ -6,7 +6,7 @@ const SignInButt = function () {
     return (
         <Button raised
                 theme="secondary-bg on-secondary"
-                onClick={() => history.push('/signIn')}
+                onClick={() => history.push('/profile')}
         >
             <ButtonIcon use="input" />
             Sign in / up

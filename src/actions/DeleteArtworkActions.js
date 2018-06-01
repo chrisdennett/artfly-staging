@@ -1,7 +1,8 @@
 import { firestoreDb as db, storage } from "../libs/firebaseConfig";
 // constants
 export const ARTWORK_DELETED = 'artworkDeleted';
-
+export const RESOURCE_DELETED = 'resourceDeleted';
+export const RESOURCE_FILE_DELETED = 'resourceFileDeleted';
 
 /*async function _deleteArtworks(artworks) {
       console.log("artworks all deleted: ", artworks)

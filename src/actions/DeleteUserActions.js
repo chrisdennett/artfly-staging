@@ -1,39 +1,37 @@
 import firebase, { auth, firestoreDb as db, storage } from "../libs/firebaseConfig";
-import { ARTWORK_DELETED } from "./DeleteArtworkActions";
+import { ARTWORK_DELETED, RESOURCE_DELETED, RESOURCE_FILE_DELETED } from "./DeleteArtworkActions";
 
 export const DELETE_USER = "deleteUser";
-export const DELETE_USER_NOT = "deleteUserNot";
 export const DELETE_USER_AUTH = "deleteUserAuth";
 
 // get resources and delete
 // get artworks and delete
 // delete user data
 export function deleteUser() {
-    return (dispatch) => {
-        const { uid } = auth.currentUser;
-        // go ahead and delete the user artworks
-        deleteUserArtworks(uid);
+    const { uid } = auth.currentUser;
+    // doesn't matter what order these happen in
+    // but all must be done before auth deleted
+    deleteUserArtworks(uid);
+    deleteUserResources(uid);
+    deleteUserData(uid);
+    deleteUserAuth();
+}
 
-        deleteUserResources(uid);
-
-        dispatch({
-            type: DELETE_USER_NOT,
-            payload: "success"
-        })
-
-    }
-    /*db.collection('users')
-        .doc(uid)
-        .delete()
-        .then(() => {
-            dispatch({
-                type: DELETE_USER,
-                payload: "success"
+function deleteUserData(uid){
+    return dispatch => {
+        db.collection('users')
+            .doc(uid)
+            .delete()
+            .then(() => {
+                dispatch({
+                    type: DELETE_USER,
+                    payload: "success"
+                })
             })
-        })
-        .catch(function (error) {
-            console.log('delete user failed: ', error);
-        });*/
+            .catch(function (error) {
+                console.log('delete user failed: ', error);
+            });
+    }
 }
 
 function deleteUserArtworks(uid) {
@@ -49,15 +47,20 @@ function deleteUserArtworks(uid) {
 }
 
 export function deleteArtwork(artworkId) {
-    db.collection('artworks')
-        .doc(artworkId)
-        .delete()
-        .then(() => {
-            console.log('artwork data deleted:', artworkId);
-        })
-        .catch(function (error) {
-            console.log('delete artwork failed: ', error);
-        });
+    return dispatch => {
+        db.collection('artworks')
+            .doc(artworkId)
+            .delete()
+            .then(() => {
+                dispatch({
+                    type: ARTWORK_DELETED,
+                    payload: artworkId
+                });
+            })
+            .catch(function (error) {
+                console.log('delete artwork failed: ', error);
+            });
+    }
 }
 
 function deleteUserResources(uid) {
@@ -67,13 +70,7 @@ function deleteUserResources(uid) {
         .then(querySnapshot => {
             querySnapshot.forEach(doc => {
                 const resourceId = doc.id;
-                deleteResource(resourceId)
-                    .then(() => {
-                        console.log("resourceId deleted: ", resourceId);
-                    })
-                    .catch(function (error) {
-                        console.log('Delete image failed' + resourceId + ': ', error);
-                    });
+                deleteResource(resourceId);
             })
         })
 }
@@ -86,27 +83,29 @@ export function getResource(resourceId) {
             return doc.data()
         })
         .catch(function (error) {
-            console.log('Delete image failed: ', error);
+            console.log('Get resource failed: ', error);
         });
 }
 
 function deleteResourceFile(url) {
     const imageRef = storage.refFromURL(url);
-    console.log("imageRef.exists: ", imageRef);
 
-    imageRef.delete()
-        .then(() => {
-            console.log("Image currUrl deleted: ", url);
-        })
-        .catch(function (error) {
-            console.log('Delete image failed: ', error);
-        })
-
+    return dispatch => {
+        imageRef.delete()
+            .then(() => {
+                dispatch({
+                    type: RESOURCE_FILE_DELETED,
+                    payload: url
+                });
+            })
+            .catch(function (error) {
+                console.log('Delete image failed: ', error);
+            })
+    }
 }
 
 export async function deleteResource(resourceId) {
     const resourceData = await getResource(resourceId);
-
     const { largeUrl, sourceUrl, thumbUrl } = resourceData;
     for (let url of [largeUrl, sourceUrl, thumbUrl]) {
         deleteResourceFile(url);
@@ -116,20 +115,27 @@ export async function deleteResource(resourceId) {
 }
 
 function deleteResourceData(resourceId) {
-    db.collection('resources').doc(resourceId)
-        .delete()
-        .then(() => {
-            console.log("Image currUrl deleted: ", resourceId);
-        })
-        .catch(function (error) {
-            console.log('Delete image failed: ', error);
-        });
+    return dispatch => {
+        db.collection('resources').doc(resourceId)
+            .delete()
+            .then(() => {
+                dispatch({
+                    type: RESOURCE_DELETED,
+                    payload: resourceId
+                });
+            })
+            .catch(function (error) {
+                console.log('Delete image failed: ', error);
+            });
+    }
 }
 
 export function deleteUserAuth() {
-    return dispatch => {
+    // return dispatch => {
 
         const currentUser = auth.currentUser;
+
+        console.log("currentUser: ", currentUser);
 
         // take the first one because not currently allowing multiple sign in
         // methods for the same account
@@ -141,7 +147,7 @@ export function deleteUserAuth() {
         if (providerId === 'facebook.com') provider = new firebase.auth.FacebookAuthProvider();
 
         // get users to sign in again
-        auth
+        /*auth
             .signInWithPopup(provider)
             .then(result => {
                 currentUser
@@ -165,6 +171,6 @@ export function deleteUserAuth() {
             })
             .catch(error => {
                 console.log("log in error: ", error);
-            });
-    }
+            });*/
+    // }
 }
