@@ -21,6 +21,13 @@ class UserProfile extends Component {
 
         this.state = { showDeleteAccountScreen: false };
     }
+    
+    componentWillReceiveProps(newProps){
+        // ensures the delete screen is removed after deletion
+        if(newProps.user === 'deleted' && this.props !== 'deleted'){
+            this.setState({showDeleteAccountScreen:false});
+        }
+    }
 
     render() {
         const { showDeleteAccountScreen } = this.state;
