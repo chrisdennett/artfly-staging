@@ -7,6 +7,8 @@ import { Typography } from 'rmwc/Typography';
 import './userProfile_styles.css';
 // actions
 import { updateUser } from "../../actions/UserDataActions";
+// selectors
+import { getUserArtworks, getUserResources } from "../../selectors/Selectors";
 // helpers
 import history from '../global/history';
 // comps
@@ -59,31 +61,11 @@ const UserProfile = ({ user, userArtworks, userResources, updateUser }) => {
     )
 };
 
-// TODO: move this to a top level component
-const getUserArtworks = (userId, artworks) => {
-    return Object.keys(artworks)
-        .filter(artworkId => artworks[artworkId].adminId === userId)
-        .reduce((obj, key) => {
-            obj[key] = artworks[key];
-            return obj
-        }, {});
-};
-
-// TODO: move this to a top level component
-const getUserResources = (userId, resources) => {
-    return Object.keys(resources)
-        .filter(resourceId => resources[resourceId].adminId === userId)
-        .reduce((obj, key) => {
-            obj[key] = resources[key];
-            return obj
-        }, {});
-};
-
 const mapStateToProps = (state) => {
     return {
         user: state.user,
         userArtworks: getUserArtworks(state.user.uid, state.artworks),
-        userResources: getUserResources(state.user.uid, state.resources)
+        userResources: getUserResources(state.user.uid, state.resources),
     }
 };
 
