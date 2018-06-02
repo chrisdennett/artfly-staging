@@ -51,7 +51,7 @@ class UserDelete extends Component {
 
     render() {
         const { userProviderId } = this.state;
-        const { userDeleteError, userDeleted, step } = this.props;
+        const { userDeleteError, userDeleted, step, userIsSignedIn } = this.props;
         let currentStep = step ? step : '1';
 
         let logInMessage = '';
@@ -65,13 +65,11 @@ class UserDelete extends Component {
             logInMessage = 'You previously signed in with Twitter.'
         }
         if (userProviderId === firebase.auth.EmailAuthProvider.PROVIDER_ID) {
-            logInMessage = 'You previously signed in with email.'
+            logInMessage = 'You previously signed in with Email.'
         }
         if (userProviderId === firebase.auth.PhoneAuthProvider.PROVIDER_ID) {
             logInMessage = 'You previously signed in by phone.'
         }
-
-        console.log("logInMessage: ", logInMessage);
 
         if (userDeleted) {
             return <Redirect to={'/'}/>
@@ -99,13 +97,30 @@ class UserDelete extends Component {
                     <p>
                         <strong>Delete account: step 1</strong>
                     </p>
-                    <p>
-                        To delete an account we like to double-check sure you're the account owner by asking you to sign
-                        in again.
-                    </p>
-                    <Button raised onClick={this.onConfirmStep1}>
-                        continue
-                    </Button>
+                    {!userIsSignedIn &&
+                    <div>
+                        <p>
+                            You need to be signed in to delete an account.  If you want to delete your account:
+                        </p>
+
+                        <Button raised onClick={() => history.push('/delete/2')}>
+                            Sign in here first
+                        </Button>
+                    </div>
+                    }
+
+                    {userIsSignedIn &&
+                    <div>
+                        <p>
+                            To delete an account we like to double-check sure you're the account owner by asking you to
+                            sign
+                            in again.
+                        </p>
+                        <Button raised onClick={this.onConfirmStep1}>
+                            continue
+                        </Button>
+                    </div>
+                    }
                 </Typography>
                 }
 
@@ -126,13 +141,29 @@ class UserDelete extends Component {
 
                 {currentStep === '3' &&
                 <Typography use="body1">
-                    <p>
-                        <strong>Step 3: Confirm delete</strong>
-                    </p>
+                    {!userIsSignedIn &&
+                        <div>
+                            <p>
+                                You need to be signed in to delete an account.  If you want to delete your account:
+                            </p>
 
-                    <Button raised onClick={this.onConfirmAccountDelete}>
-                        Confirm full account delete
-                    </Button>
+                            <Button raised onClick={() => history.push('/delete/2')}>
+                                Sign in here first
+                            </Button>
+                        </div>
+                    }
+
+                    {userIsSignedIn &&
+                    <div>
+                        <p>
+                            <strong>Step 3: Confirm delete</strong>
+                        </p>
+
+                        <Button raised onClick={this.onConfirmAccountDelete}>
+                            Confirm full account delete
+                        </Button>
+                    </div>
+                    }
                 </Typography>
                 }
 
@@ -149,6 +180,7 @@ class UserDelete extends Component {
 
 const mapStateToProps = (state) => (
     {
+        userIsSignedIn: state.user.uid,
         userDeleted: state.user === 'deleted',
         userProviderId: state.user.providerId,
         userDeleteError: state.errors.userDeleteError
