@@ -1,90 +1,63 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 // material ui
 import { Button, ButtonIcon } from 'rmwc/Button';
+import { Typography } from 'rmwc/Typography';
 // styles
 import './userProfile_styles.css';
 // actions
 import { updateUser } from "../../actions/UserDataActions";
+// helpers
+import history from '../global/history';
 // comps
 import AppTopBar from "../AppTopBar/AppTopBar";
-
 import SignIn from '../signIn/SignIn';
 import UserDetails from "../userDetails/UserDetails";
-import UserDelete from "../userDelete/UserDelete";
 import LoadingThing from "../loadingThing/LoadingThing";
 
-class UserProfile extends Component {
+const UserProfile = ({ user, userArtworks, userResources, updateUser }) => {
 
-    constructor(props) {
-        super(props);
-
-        this.state = { showDeleteAccountScreen: false };
-    }
-    
-    componentWillReceiveProps(newProps){
-        // ensures the delete screen is removed after deletion
-        if(newProps.user === 'deleted' && this.props !== 'deleted'){
-            this.setState({showDeleteAccountScreen:false});
-        }
+    if (user === 'pending') {
+        return <LoadingThing/>
     }
 
-    render() {
-        const { showDeleteAccountScreen } = this.state;
-        const {
-                  user,
-                  userArtworks,
-                  userResources,
-                  updateUser
-              } = this.props;
+    const userIsSignedIn = !!user.uid;
+    const appBarTitle = userIsSignedIn ? 'Profile' : 'Sign in / up';
 
-        if (user === 'pending') {
-            return <LoadingThing/>
-        }
+    return (
+        <div>
+            <AppTopBar title={appBarTitle}
+                       showUserMenu={userIsSignedIn}
+                       showCloseButt={!userIsSignedIn}/>
 
-        const showSignInPage = !user.uid && !showDeleteAccountScreen;
-        const showProfilePage = !!user.uid && !showDeleteAccountScreen;
-        let appBarTitle = 'Profile';
-        if(showSignInPage) appBarTitle = 'Sign in / up';
-        if(showDeleteAccountScreen) appBarTitle = 'Delete Account';
+            {!userIsSignedIn &&
+            <div className={'signIn-intro'}>
+                <Typography use={'body1'}>
+                    <p>Sign in OR sign up for the first time.</p>
+                </Typography>
+                <SignIn/>
+            </div>
+            }
 
-        return (
-            <div>
-                <AppTopBar title={appBarTitle}
-                           showUserMenu={showProfilePage}
-                           showCloseButt={showSignInPage || showDeleteAccountScreen}/>
-
-                {showDeleteAccountScreen &&
-                <div className={'userProfile'}>
-                    <UserDelete/>
-                </div>
-                }
-
-                {showSignInPage &&
-                <div className={'signIn-intro'}>
-                    <p>Sign in or sign up to join the ArtFly club:</p>
-                    <SignIn/>
-                </div>
-                }
-
-                {showProfilePage &&
-                <div className={'userProfile'}>
-                    <UserDetails
-                        user={user}
-                        userArtworks={userArtworks}
-                        userResources={userResources}
-                        updateUser={updateUser}
-                    />
-                    <Button outlined onClick={() => this.setState({ showDeleteAccountScreen: true })}>
+            {userIsSignedIn &&
+            <div className={'userProfile'}>
+                <UserDetails
+                    user={user}
+                    userArtworks={userArtworks}
+                    userResources={userResources}
+                    updateUser={updateUser}
+                />
+                <div className={'userProfile--deleteSection'}>
+                    <Button outlined onClick={() => history.push('/delete')}>
                         <ButtonIcon use="delete_forever"/>
                         Delete Account
                     </Button>
                 </div>
-                }
             </div>
-        )
-    }
-}
+            }
+        </div>
+    )
+};
 
 // TODO: move this to a top level component
 const getUserArtworks = (userId, artworks) => {

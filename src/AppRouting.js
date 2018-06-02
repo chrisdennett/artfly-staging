@@ -5,7 +5,7 @@ import ga from './libs/googleAnalyticsConfig';
 // actions
 import { listenForUserAuthChanges, stopListeningForUserAuthChanges } from './actions/UserAuthActions';
 import { listenForUserArtworkChanges } from './actions/GetArtworkActions';
-// components
+// helpers
 import history from './app/global/history';
 // route components
 import App from "./app/App";
@@ -13,10 +13,12 @@ import Home from './app/Home/Home';
 import FourOhFour from "./app/FourOhFour/FourOhFour";
 import ArtworkViewer from "./app/artwork/ArtworkViewer";
 import UserProfile from "./app/userProfile/UserProfile";
+import UserDelete from "./app/userDelete/UserDelete";
 
 const routes = {
     home: { component: Home },
     profile: { component: UserProfile },
+    delete: { component: UserDelete },
     artwork: { component: ArtworkViewer }
 };
 
@@ -70,6 +72,10 @@ class ArtflyRouting extends Component {
             switch (page) {
                 case 'artwork':
                     params.artworkId = sections[1];
+                    break;
+
+                case 'delete':
+                    params.step = sections[1];
                     break;
 
                 default:

@@ -1,7 +1,14 @@
 .userProfile {
     margin: 0 auto;
-    padding: 20px;
+    padding: 10px 20px;
     max-width: 500px;
+}
+
+.userProfile--deleteSection{
+    border-top: rgba(0, 0, 0, 0.3) 1px solid;
+    margin-top: 40px;
+    padding-top: 20px;
+    text-align: center;
 }
 
 .userProfile--detailsList {
@@ -23,7 +30,7 @@
 }
 
 .userProfile--detail--type {
-    width: 200px;
+    width: 75px;
 }
 
 .userProfile--detail--value {

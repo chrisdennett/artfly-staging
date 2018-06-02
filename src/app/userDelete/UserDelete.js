@@ -6,7 +6,10 @@ import { Button } from 'rmwc/Button';
 // actions
 import { signOutUser } from "../../actions/UserAuthActions";
 import { deleteUser } from "../../actions/DeleteUserActions";
+// helpers
+import history from '../global/history';
 // comps
+import AppTopBar from "../AppTopBar/AppTopBar";
 import SignIn from '../signIn/SignIn';
 import LoadingThing from '../loadingThing/LoadingThing';
 
@@ -22,62 +25,96 @@ class UserDelete extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { currentStep: 1 };
+        this.state = { userProviderId: null };
 
         this.onConfirmStep1 = this.onConfirmStep1.bind(this);
         this.onConfirmAccountDelete = this.onConfirmAccountDelete.bind(this);
     }
+    
+    componentWillMount(){
+        const {userProviderId} = this.props;
+        this.setState({userProviderId});
+    }
 
     onConfirmStep1() {
+        // set delete confirmed so can redirect people
+        // arriving on step 2 without confirming
+        // this.setState({ deleteConfirmed: true }, () => {
         this.props.signOutUser(() => {
-            this.setState({ currentStep: 2 })
+            history.push('/delete/2')
         });
+        // })
     }
 
     onConfirmAccountDelete() {
-
-        this.setState({ currentStep: 3 }, () => {
-            this.props.deleteUser();
-        })
-
+        history.push('/delete/4');
+        this.props.deleteUser();
     }
 
     render() {
-        const { currentStep } = this.state;
-        const { user, userDeleteError } = this.props;
+        const { userProviderId } = this.state;
+        const { userIsSignedIn, userDeleteError, step } = this.props;
+        let currentStep = step ? step : '1';
+
+        console.log("userProviderId: ", userProviderId);
 
         return (
-            <div>
-                {userDeleteError &&
-                <div>
-                    Hello there, here's an error
-                </div>
-                }
+            <div className={'userProfile'}>
+                <AppTopBar title={'Delete Account'}
+                           showUserMenu={false}
+                           showCloseButt={true}/>
 
-                {currentStep === 1 &&
+                {userDeleteError &&
                 <Typography use="body1">
                     <p>
-                        To confirm you are the account owner we need you to sign in again.
+                        Eek, there's been an error deleting your account.
                     </p>
-                    <Button raised onClick={this.onConfirmStep1}>
-                        Confirm sign in
+                    <Button raised onClick={() => history.push('/delete')}>
+                        Try again
                     </Button>
                 </Typography>
                 }
 
-                {currentStep === 2 &&
+                {currentStep === '1' &&
+                <Typography use="body1">
+                    <p>
+                        <strong>Step 1: Begin account delete</strong>
+                    </p>
+                    <p>
+                       To delete an account we like to double-check sure you're the account owner by asking you to sign in again.
+                    </p>
+                    <Button raised onClick={this.onConfirmStep1}>
+                        continue
+                    </Button>
+                </Typography>
+                }
+                
+                {currentStep === '2' &&
+                <Typography use="body1">
+                    <p>
+                        <strong>Step 2: Sign in to confirm identity</strong>
+                    </p>
+                    
+                    {!userIsSignedIn &&
+                    <SignIn successRedirect={'/delete/3'}
+                            providerId={userProviderId}/>
+                    }
+                </Typography>
+                }
+                
+                {currentStep === '3' &&
                 <div>
-                    {!user.uid && <SignIn/>}
+                    <p>
+                        <strong>Step 1: Confirm delete</strong>
+                    </p>
 
-                    {user.uid &&
                     <Button raised onClick={this.onConfirmAccountDelete}>
                         Confirm full account delete
                     </Button>
-                    }
                 </div>
                 }
 
-                {currentStep === 3 &&
+                {currentStep === '4' &&
                 <div>
                     <LoadingThing label={'Deleting account data'}/>
                 </div>
@@ -90,7 +127,8 @@ class UserDelete extends Component {
 
 const mapStateToProps = (state) => (
     {
-        user: state.user,
+        userProviderId: state.user.providerId,
+        userIsSignedIn: state.user.uid,
         userDeleteError: state.errors.userDeleteError
     }
 );
