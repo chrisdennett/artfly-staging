@@ -1,6 +1,6 @@
 .userProfile {
     margin: 0 auto;
-    padding: 10px 20px;
+    padding: 20px;
     max-width: 500px;
 }
 
@@ -14,7 +14,7 @@
 .userProfile--detailsList {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin: 20px 0;
 }
 
 .userProfile--detail {

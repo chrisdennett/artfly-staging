@@ -12,9 +12,7 @@ const UserDetails = function ({ user, userArtworks, updateUser }) {
     return (
         <div>
             <Typography use="body1">
-                <p>
-                    Apologies this screen being such a bore-fest! It's on my list to improve.
-                </p>
+                Apologies this screen being such a bore-fest! It's on my list to improve.
             </Typography>
 
             <div className={'userProfile--detailsList'}>

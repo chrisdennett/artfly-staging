@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import firebase from 'firebase/app';
 // material ui
 import { Typography } from 'rmwc/Typography';
 import { Button } from 'rmwc/Button';
@@ -12,6 +13,7 @@ import history from '../global/history';
 import AppTopBar from "../AppTopBar/AppTopBar";
 import SignIn from '../signIn/SignIn';
 import LoadingThing from '../loadingThing/LoadingThing';
+import Redirect from "../global/Redirect";
 
 /*
 * Ask if they are really sure they want to delete everything
@@ -30,20 +32,16 @@ class UserDelete extends Component {
         this.onConfirmStep1 = this.onConfirmStep1.bind(this);
         this.onConfirmAccountDelete = this.onConfirmAccountDelete.bind(this);
     }
-    
-    componentWillMount(){
-        const {userProviderId} = this.props;
-        this.setState({userProviderId});
+
+    componentWillMount() {
+        const { userProviderId } = this.props;
+        this.setState({ userProviderId });
     }
 
     onConfirmStep1() {
-        // set delete confirmed so can redirect people
-        // arriving on step 2 without confirming
-        // this.setState({ deleteConfirmed: true }, () => {
         this.props.signOutUser(() => {
             history.push('/delete/2')
         });
-        // })
     }
 
     onConfirmAccountDelete() {
@@ -53,10 +51,31 @@ class UserDelete extends Component {
 
     render() {
         const { userProviderId } = this.state;
-        const { userIsSignedIn, userDeleteError, step } = this.props;
+        const { userDeleteError, userDeleted, step } = this.props;
         let currentStep = step ? step : '1';
 
-        console.log("userProviderId: ", userProviderId);
+        let logInMessage = '';
+        if (userProviderId === firebase.auth.GoogleAuthProvider.PROVIDER_ID) {
+            logInMessage = 'You previously signed in with Google.'
+        }
+        if (userProviderId === firebase.auth.FacebookAuthProvider.PROVIDER_ID) {
+            logInMessage = 'You previously signed in with Facebook.'
+        }
+        if (userProviderId === firebase.auth.TwitterAuthProvider.PROVIDER_ID) {
+            logInMessage = 'You previously signed in with Twitter.'
+        }
+        if (userProviderId === firebase.auth.EmailAuthProvider.PROVIDER_ID) {
+            logInMessage = 'You previously signed in with email.'
+        }
+        if (userProviderId === firebase.auth.PhoneAuthProvider.PROVIDER_ID) {
+            logInMessage = 'You previously signed in by phone.'
+        }
+
+        console.log("logInMessage: ", logInMessage);
+
+        if (userDeleted) {
+            return <Redirect to={'/'}/>
+        }
 
         return (
             <div className={'userProfile'}>
@@ -78,40 +97,43 @@ class UserDelete extends Component {
                 {currentStep === '1' &&
                 <Typography use="body1">
                     <p>
-                        <strong>Step 1: Begin account delete</strong>
+                        <strong>Delete account: step 1</strong>
                     </p>
                     <p>
-                       To delete an account we like to double-check sure you're the account owner by asking you to sign in again.
+                        To delete an account we like to double-check sure you're the account owner by asking you to sign
+                        in again.
                     </p>
                     <Button raised onClick={this.onConfirmStep1}>
                         continue
                     </Button>
                 </Typography>
                 }
-                
+
                 {currentStep === '2' &&
                 <Typography use="body1">
                     <p>
                         <strong>Step 2: Sign in to confirm identity</strong>
                     </p>
-                    
-                    {!userIsSignedIn &&
-                    <SignIn successRedirect={'/delete/3'}
-                            providerId={userProviderId}/>
-                    }
+
+                    <p>
+                        {logInMessage}
+                    </p>
+
+                    <SignIn successRedirect={'/delete/3'}/>
+
                 </Typography>
                 }
-                
+
                 {currentStep === '3' &&
-                <div>
+                <Typography use="body1">
                     <p>
-                        <strong>Step 1: Confirm delete</strong>
+                        <strong>Step 3: Confirm delete</strong>
                     </p>
 
                     <Button raised onClick={this.onConfirmAccountDelete}>
                         Confirm full account delete
                     </Button>
-                </div>
+                </Typography>
                 }
 
                 {currentStep === '4' &&
@@ -127,8 +149,8 @@ class UserDelete extends Component {
 
 const mapStateToProps = (state) => (
     {
+        userDeleted: state.user === 'deleted',
         userProviderId: state.user.providerId,
-        userIsSignedIn: state.user.uid,
         userDeleteError: state.errors.userDeleteError
     }
 );
