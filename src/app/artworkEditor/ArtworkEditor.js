@@ -10,17 +10,18 @@ import { GetImage } from "../global/ImageHelper";
 // comps
 import AppBar from "../appBar/AppBar";
 import PhotoSelector from "../artworkOptions/photoSelector/PhotoSelector";
-import FramedArtworkCanvas from "../artwork/FramedArtworkCanvas";
+import CropAndRotateEditor from "../artworkOptions/cropAndRotateEditor/CropAndRotateEditor";
 
 class ArtworkEditor extends Component {
 
     constructor(props) {
         super(props);
 
-        this.state = { img: null };
+        this.state = { img: null, orientation: 1, cropData:{ leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 } };
 
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.onSaveNewArtwork = this.onSaveNewArtwork.bind(this);
+        this.onCropAndRotateChange = this.onCropAndRotateChange.bind(this);
     }
 
     onPhotoSelected(imgFile) {
@@ -29,18 +30,25 @@ class ArtworkEditor extends Component {
         })
     }
 
+    onCropAndRotateChange(newData){
+        const {orientation=this.state.orientation, cropData, widthToHeightRatio, heightToWidthRatio} = newData;
+        this.setState({orientation, cropData, widthToHeightRatio, heightToWidthRatio})
+    }
+
     onSaveNewArtwork() {
         const defaultArtworkData = GenerateDefaultArtworkData();
-        const { orientation, widthToHeightRatio, heightToWidthRatio } = this.state;
-        const newArtworkData = { ...defaultArtworkData, orientation, widthToHeightRatio, heightToWidthRatio };
+        const { orientation, cropData, widthToHeightRatio, heightToWidthRatio } = this.state;
+
+        const newArtworkData = { ...defaultArtworkData, orientation, cropData, widthToHeightRatio, heightToWidthRatio };
         this.props.addNewArtwork(this.state.img, newArtworkData);
     }
 
     render() {
-        const { img } = this.state;
+        const { img, cropData, orientation } = this.state;
 
         return (
-            <div>
+            <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+
                 <AppBar title={'Add Artwork'} fixed={false} showUserMenu={false} showCloseButt={true}/>
 
                 {!img &&
@@ -48,8 +56,13 @@ class ArtworkEditor extends Component {
                 }
 
                 {img &&
+                <CropAndRotateEditor sourceImg={img}
+                                     orientation={orientation}
+                                     cropData={cropData}
+                                     onDataChange={this.onCropAndRotateChange}/>
+                }
+                {img &&
                 <div>
-                    <FramedArtworkCanvas imgSrc={img.src}/>
                     <Button onClick={this.onSaveNewArtwork}
                             raised>
                         <ButtonIcon use={'save'}/>
@@ -64,7 +77,6 @@ class ArtworkEditor extends Component {
                     </Button>
                 </div>
                 }
-
             </div>
         )
     }

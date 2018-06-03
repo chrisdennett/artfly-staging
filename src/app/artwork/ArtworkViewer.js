@@ -9,7 +9,8 @@ import * as ImageHelper from "../global/ImageHelper";
 import { sendNotification, endNotification } from "../../actions/UserDataActions";
 import { listenForIndividualArtworkChanged } from '../../actions/GetArtworkActions';
 import { deleteArtwork } from '../../actions/DeleteArtworkActions';
-import { addArtwork, updateArtwork } from '../../actions/SaveArtworkActions';
+// import { addArtwork, updateArtwork } from '../../actions/SaveArtworkActions';
+import { updateArtwork } from '../../actions/SaveArtworkActions';
 // images
 import IconFrameSize from './../images/icons/frame-size.png';
 import IconFrameColour from './../images/icons/frame-colour.png';
@@ -272,7 +273,7 @@ class ArtworkViewer extends Component {
             }
             // otherwise add a new artwork including the image.
             else {
-                this.props.addArtwork(
+                /*this.props.addArtwork(
                     user.uid, newArtworkData, sourceImg
                     ,
                     (artworkId) => {
@@ -283,7 +284,7 @@ class ArtworkViewer extends Component {
                         this.setState({unsavedArtworkData:{}});
 
                         history.push(`/artwork/${artworkId}`);
-                    });
+                    });*/
             }
         });
 
@@ -395,5 +396,6 @@ const mapStateToProps = (state, props) => {
         currentArtworkData: currentArtworkData
     }
 };
-const mapActionsToProps = { listenForIndividualArtworkChanged, updateArtwork, addArtwork, deleteArtwork, sendNotification, endNotification };
+// const mapActionsToProps = { listenForIndividualArtworkChanged, updateArtwork, addArtwork, deleteArtwork, sendNotification, endNotification };
+const mapActionsToProps = { listenForIndividualArtworkChanged, updateArtwork, deleteArtwork, sendNotification, endNotification };
 export default connect(mapStateToProps, mapActionsToProps)(ArtworkViewer);

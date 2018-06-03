@@ -35,18 +35,20 @@ export function addNewArtwork(imgFile, artworkData){
     return dispatch => {
 
         const { uid:userId } = auth.currentUser;
-        saveImage(userId, imgFile, 3000,
+        const {orientation, cropData} = artworkData;
+
+        saveImage({userId, source:imgFile, maxSize:3000},
             progress => console.log("progress: ", progress)
             ,
             sourceUrl => {
                 // save thumb
-                saveImage(userId, imgFile, 250,
+                saveImage({userId, source:imgFile, maxSize:250, orientation, cropData},
                     progress => console.log("Thumb progress: ", progress)
                     ,
                     thumbUrl => {
 
                         // save large image
-                        saveImage(userId, imgFile, 960,
+                        saveImage({userId, source:imgFile, maxSize:960, orientation, cropData},
                             progress => console.log("large image progress: ", progress)
                             ,
                             largeUrl => {
@@ -86,7 +88,7 @@ export function addNewArtwork(imgFile, artworkData){
     }
 }
 
-export function addArtwork(userId, artworkData, imgFile, callback) {
+/*export function addArtwork(userId, artworkData, imgFile, callback) {
     return dispatch => {
 
         saveImage(userId, imgFile, 3000,
@@ -141,10 +143,10 @@ export function addArtwork(userId, artworkData, imgFile, callback) {
                     });
             })
     }
-}
+}*/
 
-function saveImage(userId, source, maxSize, onProgress, onComplete) {
-    getImageBlob(source, maxSize, blobData => {
+function saveImage({userId, source, orientation, cropData, maxSize}, onProgress, onComplete) {
+    getImageBlob({source, maxSize, orientation, cropData}, blobData => {
         fs_saveArtworkImage(
             blobData
             ,

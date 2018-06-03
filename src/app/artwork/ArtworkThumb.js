@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Elevation } from 'rmwc/Elevation';
-import { Ripple } from 'rmwc/Ripple';
+// import { Elevation } from 'rmwc/Elevation';
+// import { Ripple } from 'rmwc/Ripple';
 // helpers
 // import * as ImageHelper from "../global/ImageHelper";
 // comps
@@ -55,6 +55,20 @@ class ArtworkThumb extends Component {
         // const maxImageHeight = isPortrait ? 600 : 300;
 
         return (
+            <div style={{ lineHeight: 0, padding: 10 }}
+                 onClick={() => {history.push(`artwork/${artworkId}`)}}>
+
+                <FramedArtworkCanvas artworkData={artworkData}/>
+
+            </div>
+        );
+    }
+}
+
+export default ArtworkThumb;
+
+/*
+ return (
             <Elevation
                 z={this.state.elevation || 0}
                 transition
@@ -74,10 +88,7 @@ class ArtworkThumb extends Component {
 
 
         );
-    }
-}
-
-export default ArtworkThumb;
+*/
 
 /*
 render() {

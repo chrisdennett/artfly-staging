@@ -36,12 +36,13 @@ export function generateUUID() {
     return d + '_' + Math.random().toString(36).substr(2, 9);
 }
 
-export function getImageBlob(source, maxSize, callback) {
+export function getImageBlob({source, maxSize, orientation=1, cropData}, callback) {
     const canvas = document.createElement('canvas');
 
     drawToCanvas({
         sourceCanvas: source,
         outputCanvas: canvas,
+        orientation, cropData,
         maxOutputCanvasWidth: maxSize,
         maxOutputCanvasHeight: maxSize
     }, () => {
@@ -177,10 +178,10 @@ export function drawImageToCanvas({ sourceImg, outputCanvas, orientation, maxOut
 
 
 // Draws one canvas to another restricting to a specific size
-export function drawToCanvas({ sourceCanvas, outputCanvas, orientation, cropPercents, maxOutputCanvasWidth = maxImageWidth, maxOutputCanvasHeight = maxImageHeight }, callback) {
+export function drawToCanvas({ sourceCanvas, outputCanvas, orientation, cropData, maxOutputCanvasWidth = maxImageWidth, maxOutputCanvasHeight = maxImageHeight }, callback) {
 
-    const { topPercent, rightPercent, bottomPercent, leftPercent } = cropPercents ?
-        cropPercents : { topPercent: 0, rightPercent: 1, bottomPercent: 1, leftPercent: 0 };
+    const { topPercent, rightPercent, bottomPercent, leftPercent } = cropData ?
+        cropData : { topPercent: 0, rightPercent: 1, bottomPercent: 1, leftPercent: 0 };
 
     const isPortrait = orientation > 4 && orientation < 9;
 

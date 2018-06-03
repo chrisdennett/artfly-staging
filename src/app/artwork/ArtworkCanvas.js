@@ -1,14 +1,14 @@
 import React from 'react';
 import LoadingThing from "../loadingThing/LoadingThing";
 
-const ArtworkCanvas = function ({artworkData, imgSrc}) {
+const ArtworkCanvas = function ({artworkData, imgSrc, width='100%', height, style}) {
 
     let src = artworkData ? artworkData.thumbUrl : imgSrc;
-
-    const imgStyle = {maxWidth:300,maxHeight:300};
+    const containerStyle = {width:width, height:height, ...style};
+    const imgStyle = {width:width, height:height};
 
     return (
-        <div style={{width:300, height:300}}>
+        <div style={containerStyle}>
             {!src &&
             <LoadingThing label={'Loading artwork'}/>
             }

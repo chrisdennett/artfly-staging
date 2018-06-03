@@ -1,6 +1,5 @@
 // externals
 import React, { Component } from "react";
-// import faRedo from '@fortawesome/fontawesome-pro-solid/faRedo';
 import Measure from 'react-measure'; //https://www.npmjs.com/package/react-measure
 // styles
 import './cropAndRotate_styles.css';
@@ -8,8 +7,6 @@ import './cropAndRotate_styles.css';
 import * as ImageHelper from "../../global/ImageHelper";
 // components
 import QuickCuttingBoard from "./QuickCuttingBoard";
-// import QuickCuttingMat from "../quickCuttingMat/QuickCuttingMat";
-// import ControlPanelButt from "../../global/Butt/ControlPanelButt";
 
 class CropAndRotateEditor extends Component {
     constructor(props) {
@@ -21,13 +18,11 @@ class CropAndRotateEditor extends Component {
         this.onResize = this.onResize.bind(this);
         this.onCropChange = this.onCropChange.bind(this);
         this.onRotateClick = this.onRotateClick.bind(this);
+        this.sendUpdatedData = this.sendUpdatedData.bind(this);
 
     }
 
     componentWillReceiveProps(newProps) {
-
-        console.log("newProps: ", newProps);
-
         this.drawCuttingBoardCanvas(newProps);
     }
 
@@ -59,7 +54,15 @@ class CropAndRotateEditor extends Component {
     }
 
     onCropChange(cropData){
-        this.props.onDataChange({cropData});
+        // this.props.onDataChange({cropData});
+        this.sendUpdatedData({cropData});
+    }
+
+    // default to props so can overwrite single values without error
+    sendUpdatedData({orientation=this.props.orientation, cropData=this.props.cropData}){
+        const {canvasWidth, canvasHeight} = this.state;
+        const {widthToHeightRatio, heightToWidthRatio} = getSizeRatios(cropData, canvasWidth, canvasHeight);
+        this.props.onDataChange({orientation, cropData, widthToHeightRatio, heightToWidthRatio});
     }
 
     onRotateClick(){
@@ -77,7 +80,8 @@ class CropAndRotateEditor extends Component {
 
         const newCropData = {leftPercent:newL, rightPercent:newR, topPercent:newT, bottomPercent:newB};
 
-        this.props.onDataChange({orientation:newOrientation, cropData:newCropData});
+        this.sendUpdatedData({orientation:newOrientation, cropData:newCropData})
+        // this.props.onDataChange({orientation:newOrientation, cropData:newCropData});
     }
     
     render() {
@@ -105,14 +109,28 @@ class CropAndRotateEditor extends Component {
                             <canvas ref={c => this.canvas = c}/>
                         </div>
                     </div>
-
-
                 }
             </Measure>
-
-
         );
     }
 }
 
 export default CropAndRotateEditor;
+
+const getSizeRatios = (cropDecimals, width, height) => {
+    const {leftPercent, rightPercent, topPercent, bottomPercent} = cropDecimals;
+
+    const totalCropWidthPercentage = leftPercent + (1-rightPercent);
+    const totalCropHeightPercentage = topPercent + (1-bottomPercent);
+
+    const cropWidth = width * totalCropWidthPercentage;
+    const cropHeight = height * totalCropHeightPercentage;
+
+    const croppedWidth = width - cropWidth;
+    const croppedHeight = height - cropHeight;
+
+    const heightToWidthRatio = croppedWidth / croppedHeight;
+    const widthToHeightRatio = croppedHeight / croppedWidth;
+
+    return {widthToHeightRatio, heightToWidthRatio};
+};
