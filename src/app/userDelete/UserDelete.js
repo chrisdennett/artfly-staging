@@ -11,8 +11,7 @@ import { getTotalUserArtworks } from "../../selectors/Selectors";
 // helpers
 import history from '../global/history';
 // comps
-import AppTopBar from "../AppTopBar/AppTopBar";
-import SignIn from '../signIn/SignIn';
+import AppBar from "../appBar/AppBar";
 import LoadingThing from '../loadingThing/LoadingThing';
 import Redirect from "../global/Redirect";
 import UserDeleteConfirm from "./UserDeleteConfirm";
@@ -57,7 +56,7 @@ class UserDelete extends Component {
 
         return (
             <div className={'userProfile'}>
-                <AppTopBar title={'Delete Account'}
+                <AppBar title={'Delete Account'}
                            showUserMenu={false}
                            showCloseButt={true}/>
 

@@ -13,11 +13,11 @@ import history from "../global/history";
 import UserMenu from "../userMenu/UserMenu";
 import HomeIconButton from "../../homeIconButton/HomeIconButton";
 
-const AppTopBar = function ({title, showUserMenu=true, showCloseButt=false}) {
+const AppBar = function ({title, showUserMenu=true, showCloseButt=false, fixed=true}) {
 
     return (
         <div>
-            <Toolbar fixed>
+            <Toolbar fixed={fixed}>
                 <ToolbarRow>
                     {title &&
                     <ToolbarSection alignStart>
@@ -36,9 +36,11 @@ const AppTopBar = function ({title, showUserMenu=true, showCloseButt=false}) {
                     </ToolbarSection>
                 </ToolbarRow>
             </Toolbar>
+            {fixed &&
             <ToolbarFixedAdjust/>
+            }
         </div>
     )
 };
 
-export default AppTopBar;
+export default AppBar;

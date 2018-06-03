@@ -13,7 +13,7 @@ import SocialMediaStuff from "./socialMediaStuff/SocialMediaStuff";
 import ArtFlyLab from "./artflyLab/ArtFlyLab";
 import ArtFlyIntro from "./artFlyIntro/ArtFlyIntro";
 import ArtworkThumb from "../artwork/ArtworkThumb";
-import AppTopBar from "../AppTopBar/AppTopBar";
+import AppBar from "../appBar/AppBar";
 import history from "../global/history";
 
 const Home = ({ user, userArtworks }) => {
@@ -27,8 +27,9 @@ const Home = ({ user, userArtworks }) => {
     return (
         <div className={'home'}>
 
-            <AppTopBar/>
+            <AppBar title={'ArtFLY'} fixed={!userLoggedIn}/>
 
+            {!userLoggedIn &&
             <div className='home--heading'>
                 <div>
                     <Title/>
@@ -37,12 +38,13 @@ const Home = ({ user, userArtworks }) => {
                 </div>
 
             </div>
+            }
 
             {userLoggedIn &&
             <div className={'home--artworks'}>
 
-                <Button raised theme={'secondary-bg'} onClick={() => history.push('/artwork/')}>
-                    <ButtonIcon use="add" /> Add New Artwork
+                <Button raised theme={'secondary-bg'} onClick={() => history.push('/artworkEditor/new')}>
+                    <ButtonIcon use="add"/> Add New Artwork
                 </Button>
 
                 <div className={'artworkThumbs'}>
@@ -61,25 +63,25 @@ const Home = ({ user, userArtworks }) => {
             </div>
             }
 
-            <ArtFlyIntro/>
-
-            <ArtFlyLab/>
-
-            <SocialMediaStuff/>
-
-            <Footer/>
-
-            <div style={{
-                backgroundColor: '#000',
-                color: '#fff',
-                border: '10px solid #555', padding: 42, textAlign: 'center'
-            }}>
-                <img style={{ background: '#fff', padding: 10 }} src={'images/lab/Rotoscoping.gif'}
-                     alt={'rotoscoping gif'}/>
-                <Typography use={'body1'}>
-                    <p>You know it's all over when the victorian lady jumps the stool...</p>
-                </Typography>
+            {!userLoggedIn &&
+            <div>
+                <ArtFlyIntro/>
+                <ArtFlyLab/>
+                <SocialMediaStuff/>
+                <Footer/>
+                <div style={{
+                    backgroundColor: '#000',
+                    color: '#fff',
+                    border: '10px solid #555', padding: 42, textAlign: 'center'
+                }}>
+                    <img style={{ background: '#fff', padding: 10 }} src={'images/lab/Rotoscoping.gif'}
+                         alt={'rotoscoping gif'}/>
+                    <Typography use={'body1'}>
+                        <p>You know it's all over when the victorian lady jumps the stool...</p>
+                    </Typography>
+                </div>
             </div>
+            }
 
 
         </div>

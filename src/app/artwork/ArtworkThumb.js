@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import { Elevation } from 'rmwc/Elevation';
 import { Ripple } from 'rmwc/Ripple';
 // helpers
-import * as ImageHelper from "../global/ImageHelper";
+// import * as ImageHelper from "../global/ImageHelper";
 // comps
-import Artwork from "./Artwork";
+// import Artwork from "./Artwork";
 import history from "../global/history";
+import FramedArtworkCanvas from "./FramedArtworkCanvas";
 
 class ArtworkThumb extends Component {
 
@@ -14,10 +15,10 @@ class ArtworkThumb extends Component {
 
         this.state = {};
 
-        this.setup = this.setup.bind(this);
+        // this.setup = this.setup.bind(this);
     }
 
-    componentWillMount(){
+    /*componentWillMount(){
         this.setup(this.props);
     }
 
@@ -44,9 +45,42 @@ class ArtworkThumb extends Component {
                     });
                 })
         }
-    }
+    }*/
 
     render() {
+        // const { masterCanvas } = this.state;
+        const { artworkData, artworkId } = this.props;
+        // const {widthToHeightRatio,heightToWidthRatio} = artworkData;
+        // const isPortrait = heightToWidthRatio < widthToHeightRatio;
+        // const maxImageHeight = isPortrait ? 600 : 300;
+
+        return (
+            <Elevation
+                z={this.state.elevation || 0}
+                transition
+                onMouseOver={() => this.setState({ elevation: 14 })}
+                onMouseOut={() => this.setState({ elevation: 0 })}
+            >
+                <Ripple>
+                    <div style={{ lineHeight: 0, padding: 10 }}
+                         onClick={() => {history.push(`artwork/${artworkId}`)}}
+                    >
+
+                        <FramedArtworkCanvas artworkData={artworkData}/>
+
+                    </div>
+                </Ripple>
+            </Elevation>
+
+
+        );
+    }
+}
+
+export default ArtworkThumb;
+
+/*
+render() {
         const { masterCanvas } = this.state;
         const { artworkData, artworkId } = this.props;
         // const {widthToHeightRatio,heightToWidthRatio} = artworkData;
@@ -61,7 +95,6 @@ class ArtworkThumb extends Component {
                 onMouseOut={() => this.setState({ elevation: 0 })}
             >
                 <Ripple>
-
                     <div style={{ lineHeight: 0, padding:10 }}
                          onClick={() => {history.push(`artwork/${artworkId}`)}}
                     >
@@ -80,6 +113,4 @@ class ArtworkThumb extends Component {
 
         );
     }
-}
-
-export default ArtworkThumb;
+*/

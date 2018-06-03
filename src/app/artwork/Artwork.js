@@ -87,7 +87,6 @@ class Artwork extends Component {
 
         const artworkSizes = calculateCanvasArtworkSizes({ srcWidth, srcHeight, frameThicknessDecimal, mountThicknessDecimal, width, height, widthToHeightRatio, heightToWidthRatio });
 
-
         let {
                 pixelsPerMeter,
                 imgX, imgY, imgWidth, imgHeight,

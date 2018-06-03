@@ -1,4 +1,4 @@
-import { firestoreDb as db, storageEvent, storageRef as store } from "../libs/firebaseConfig";
+import { auth, firestoreDb as db, storageEvent, storageRef as store } from "../libs/firebaseConfig";
 // helpers
 import { getImageBlob, generateUUID } from "../app/global/ImageHelper";
 // constants
@@ -31,6 +31,61 @@ export function updateArtwork(artworkId, newArtworkData, callback = null) {
 }
 
 // ADD ARTWORK
+export function addNewArtwork(imgFile, artworkData){
+    return dispatch => {
+
+        const { uid:userId } = auth.currentUser;
+        saveImage(userId, imgFile, 3000,
+            progress => console.log("progress: ", progress)
+            ,
+            sourceUrl => {
+                // save thumb
+                saveImage(userId, imgFile, 250,
+                    progress => console.log("Thumb progress: ", progress)
+                    ,
+                    thumbUrl => {
+
+                        // save large image
+                        saveImage(userId, imgFile, 960,
+                            progress => console.log("large image progress: ", progress)
+                            ,
+                            largeUrl => {
+                                const { orientation, cropData, heightToWidthRatio, widthToHeightRatio, ...rest } = artworkData;
+
+                                const resourceData = {
+                                    adminId: userId,
+                                    largeUrl,
+                                    sourceUrl,
+                                    thumbUrl,
+                                    orientation,
+                                    cropData, heightToWidthRatio, widthToHeightRatio
+                                };
+
+                                // Save the resource first to get the Id.
+                                saveNewResource(userId, resourceData, (resourceId) => {
+                                    const newArtworkData = {
+                                        ...rest,
+                                        resources: resourceId,
+                                        adminId: userId,
+                                        dateAdded: Date.now()
+                                    };
+
+                                    // save the resource id in the artwork data.
+                                    saveNewArtworkData(userId, newArtworkData, (artworkId) => {
+                                        const newArtworkDataWithId = { ...newArtworkData, artworkId };
+
+                                        dispatch({
+                                            type: ARTWORK_CHANGE,
+                                            payload: { [artworkId]: newArtworkDataWithId }
+                                        });
+                                    });
+                                })
+                            });
+                    });
+            })
+    }
+}
+
 export function addArtwork(userId, artworkData, imgFile, callback) {
     return dispatch => {
 
@@ -49,9 +104,6 @@ export function addArtwork(userId, artworkData, imgFile, callback) {
                             progress => console.log("large image progress: ", progress)
                             ,
                             largeUrl => {
-
-
-                                console.log("largeUrl: ", largeUrl);
                                 const { orientation, cropData, heightToWidthRatio, widthToHeightRatio, ...rest } = artworkData;
 
                                 const resourceData = {

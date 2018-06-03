@@ -12,7 +12,7 @@ import { getUserArtworks, getUserResources } from "../../selectors/Selectors";
 // helpers
 import history from '../global/history';
 // comps
-import AppTopBar from "../AppTopBar/AppTopBar";
+import AppBar from "../appBar/AppBar";
 import SignIn from '../signIn/SignIn';
 import UserDetails from "../userDetails/UserDetails";
 import LoadingThing from "../loadingThing/LoadingThing";
@@ -28,7 +28,7 @@ const UserProfile = ({ user, userArtworks, userResources, updateUser }) => {
 
     return (
         <div>
-            <AppTopBar title={appBarTitle}
+            <AppBar title={appBarTitle}
                        showUserMenu={userIsSignedIn}
                        showCloseButt={!userIsSignedIn}/>
 

@@ -56,6 +56,8 @@ export default function () {
         cropData: defaultCropData,
         frameData: defaultFrameData,
         orientation: 1,
+        heightToWidthRatio: 1,
+        widthToHeightRatio: 1,
         titlesData: defaultTitlesData,
         roomData: defaultRoomData,
         people: defaultPeopleData,
