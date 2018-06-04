@@ -1,9 +1,10 @@
 // externals
 import React, { Component } from 'react';
+// material ui
+import { Typography } from 'rmwc/Typography';
 // styles
 import './photoSelector_styles.css';
 // comps
-import StencilHeader from "../../global/stencilHeader/StencilHeader";
 
 class PhotoSelector extends Component {
 
@@ -35,7 +36,7 @@ class PhotoSelector extends Component {
 
     render() {
         const { id = '123' } = this.props;
-        const stencilHeaderStyle = { color: 'rgba(0, 0, 0, 0.4)', fontWeight: 'bold' };
+        const messageStyle = { color: 'rgba(0, 0, 0, 0.4)', fontWeight: 'bold', textAlign:'center' };
 
         return (
             <div className={'quickPhotoSelectorPage'}>
@@ -49,8 +50,9 @@ class PhotoSelector extends Component {
                            name={id}
                            id={id}/>
 
-                    <StencilHeader wording={"Add an Artwork to this dull, blank wall..."}
-                                   style={stencilHeaderStyle}/>
+                    <Typography use="headline4" style={messageStyle}>
+                        Add ART to this <br/>dull, blank wall
+                    </Typography>
 
                     <label htmlFor={id}>
                         <div className={'quickPhotoSelector--customInputButton'}>

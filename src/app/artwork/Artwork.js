@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import './artwork_styles.css';
 // images
 import GuardRailTile from './../images/guard-rail.png';
-import PhotoSelector from "../artworkOptions/photoSelector/PhotoSelector";
+import PhotoSelector from "../photoSelector/PhotoSelector";
 
 class Artwork extends Component {
 

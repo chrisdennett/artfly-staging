@@ -9,7 +9,7 @@ import GenerateDefaultArtworkData from '../artwork/DefaultArtworkDataGenerator';
 import { GetImage } from "../global/ImageHelper";
 // comps
 import AppBar from "../appBar/AppBar";
-import PhotoSelector from "../artworkOptions/photoSelector/PhotoSelector";
+import PhotoSelector from "../photoSelector/PhotoSelector";
 import CropAndRotateEditor from "../artworkOptions/cropAndRotateEditor/CropAndRotateEditor";
 
 class ArtworkAdder extends Component {
