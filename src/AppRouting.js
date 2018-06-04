@@ -14,14 +14,14 @@ import FourOhFour from "./app/FourOhFour/FourOhFour";
 import ArtworkViewer from "./app/artwork/ArtworkViewer";
 import UserProfile from "./app/userProfile/UserProfile";
 import UserDelete from "./app/userDelete/UserDelete";
-import ArtworkEditor from "./app/artworkEditor/ArtworkEditor";
+import ArtworkAdder from "./app/artworkAdder/ArtworkAdder";
 
 const routes = {
     home: { component: Home },
     profile: { component: UserProfile },
     delete: { component: UserDelete },
     artwork: { component: ArtworkViewer },
-    artworkEditor: { component: ArtworkEditor },
+    artworkAdder: { component: ArtworkAdder },
 };
 
 class ArtflyRouting extends Component {
@@ -72,10 +72,6 @@ class ArtflyRouting extends Component {
             page = sections[0];
 
             switch (page) {
-                case 'artworkEditor':
-                    params.artworkId = sections[1];
-                    break;
-
                 case 'artwork':
                     params.artworkId = sections[1];
                     break;

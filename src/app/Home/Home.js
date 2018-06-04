@@ -43,7 +43,7 @@ const Home = ({ user, userArtworks }) => {
             {userLoggedIn &&
             <div className={'home--artworks'}>
 
-                <Button raised theme={'secondary-bg'} onClick={() => history.push('/artworkEditor/new')}>
+                <Button raised theme={'secondary-bg'} onClick={() => history.push('/artworkAdder')}>
                     <ButtonIcon use="add"/> Add New Artwork
                 </Button>
 

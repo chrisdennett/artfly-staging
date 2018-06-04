@@ -12,7 +12,7 @@ import AppBar from "../appBar/AppBar";
 import PhotoSelector from "../artworkOptions/photoSelector/PhotoSelector";
 import CropAndRotateEditor from "../artworkOptions/cropAndRotateEditor/CropAndRotateEditor";
 
-class ArtworkEditor extends Component {
+class ArtworkAdder extends Component {
 
     constructor(props) {
         super(props);
@@ -82,4 +82,4 @@ class ArtworkEditor extends Component {
     }
 }
 
-export default connect(null, { addNewArtwork })(ArtworkEditor);
+export default connect(null, { addNewArtwork })(ArtworkAdder);
