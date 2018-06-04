@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// material ui
-import { Button, ButtonIcon } from 'rmwc/Button';
 // actions
 import { addNewArtwork } from '../../actions/SaveArtworkActions';
 // helper
@@ -11,13 +9,14 @@ import { GetImage } from "../global/ImageHelper";
 import AppBar from "../appBar/AppBar";
 import PhotoSelector from "../photoSelector/PhotoSelector";
 import CropAndRotateEditor from "../artworkOptions/cropAndRotateEditor/CropAndRotateEditor";
+import SaveOrCancelControls from "./SaveOrCancelControls";
 
 class ArtworkAdder extends Component {
 
     constructor(props) {
         super(props);
 
-        this.state = { img: null, orientation: 1, cropData:{ leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 } };
+        this.state = { img: null, orientation: 1, cropData: { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 } };
 
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.onSaveNewArtwork = this.onSaveNewArtwork.bind(this);
@@ -30,9 +29,9 @@ class ArtworkAdder extends Component {
         })
     }
 
-    onCropAndRotateChange(newData){
-        const {orientation=this.state.orientation, cropData, widthToHeightRatio, heightToWidthRatio} = newData;
-        this.setState({orientation, cropData, widthToHeightRatio, heightToWidthRatio})
+    onCropAndRotateChange(newData) {
+        const { orientation = this.state.orientation, cropData, widthToHeightRatio, heightToWidthRatio } = newData;
+        this.setState({ orientation, cropData, widthToHeightRatio, heightToWidthRatio })
     }
 
     onSaveNewArtwork() {
@@ -62,21 +61,10 @@ class ArtworkAdder extends Component {
                                      onDataChange={this.onCropAndRotateChange}/>
                 }
                 {img &&
-                <div>
-                    <Button onClick={this.onSaveNewArtwork}
-                            raised>
-                        <ButtonIcon use={'save'}/>
-                        Save
-                    </Button>
-
-                    <Button onClick={() => this.setState({ img: null })}
-                            raised
-                            theme={'secondary-bg'}>
-                        <ButtonIcon use={'delete'}/>
-                        Cancel
-                    </Button>
-                </div>
+                <SaveOrCancelControls onSave={this.onSaveNewArtwork}
+                                      onCancel={() => this.setState({ img: null })}/>
                 }
+
             </div>
         )
     }

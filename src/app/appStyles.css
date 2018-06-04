@@ -3,6 +3,10 @@
 :root {
     --mdc-theme-primary: #546e7a;
     --mdc-theme-secondary: #bf360c;
+    --mdc-theme-background: #f5f5f5;
+    --mdc-theme-text-primary-on-background: #3b3b3b;
+
+    /*--mdc-theme-on-primary: */
 
 /*    mdc-theme-primary: #fcb8ab;
     $mdc-theme-secondary: #feeae6;

@@ -15,10 +15,12 @@ import HomeIconButton from "../../homeIconButton/HomeIconButton";
 
 const AppBar = function ({title, showUserMenu=true, showCloseButt=false, fixed=true}) {
 
+    const style = { borderBottom: '1px solid rgba(0,0,0,0.2)'};
+
     return (
         <div>
-            <Toolbar fixed={fixed}>
-                <ToolbarRow>
+            <Toolbar fixed={fixed} theme={'background'}>
+                <ToolbarRow style={style} theme={'background text-primary-on-background'}>
                     {title &&
                     <ToolbarSection alignStart>
                         <HomeIconButton/>
@@ -31,7 +33,9 @@ const AppBar = function ({title, showUserMenu=true, showCloseButt=false, fixed=t
                         }
 
                         {showCloseButt &&
-                        <ToolbarIcon use="close" onClick={() => history.push('/')}/>
+                        <ToolbarIcon use="close"
+                                     theme={'text-primary-on-background'}
+                                     onClick={() => history.push('/')}/>
                         }
                     </ToolbarSection>
                 </ToolbarRow>

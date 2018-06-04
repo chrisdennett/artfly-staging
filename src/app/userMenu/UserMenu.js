@@ -52,6 +52,7 @@ class UserMenu extends Component {
 
                     {userSignedIn &&
                     <ToolbarIcon use="person"
+                                 theme={'text-primary-on-background'}
                                  onClick={() => this.setState({ menuIsOpen: true })}/>
                     }
                 </MenuAnchor>

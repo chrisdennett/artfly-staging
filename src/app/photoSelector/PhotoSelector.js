@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { Typography } from 'rmwc/Typography';
 // styles
 import './photoSelector_styles.css';
-// comps
 
 class PhotoSelector extends Component {
 
@@ -15,18 +14,17 @@ class PhotoSelector extends Component {
         this.onInputClick = this.onInputClick.bind(this);
     }
 
+    // called when file selected
     onFileSelect(e) {
         e.preventDefault();
 
         if (e.target.files[0]) {
             const imgFile = e.target.files[0];
-
-            console.log("imgFile: ", imgFile);
-
             this.props.onPhotoSelected(imgFile);
         }
     }
 
+    // called when input started
     onInputClick() {
         const { onInputClick, id } = this.props;
         if (onInputClick) {
@@ -35,6 +33,7 @@ class PhotoSelector extends Component {
     }
 
     render() {
+        // ids important if there are more than one on a page together
         const { id = '123' } = this.props;
         const messageStyle = { color: 'rgba(0, 0, 0, 0.4)', fontWeight: 'bold', textAlign:'center' };
 
