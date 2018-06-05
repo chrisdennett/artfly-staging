@@ -1,5 +1,5 @@
 import React from 'react';
-import ArtworkAdderSavingProgress from "../artworkAdder/ArtworkAdderSavingProgress";
+// import ArtworkAdderSavingProgress from "../artworkAdder/ArtworkAdderSavingProgress";
 import AppBar from "../appBar/AppBar";
 import ArtworkAdderComplete from "../artworkAdder/ArtworkAdderComplete";
 
@@ -24,6 +24,7 @@ const TestArtworkAdderComplete = () => {
 
 
 //<TestArtworkAdderSavingProgress />
+/*
 const TestArtworkAdderSavingProgress = () => {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
@@ -48,4 +49,4 @@ const data2 = {
     source: 1,
     thumb: 0.8,
     large: 0.2
-};
+};*/

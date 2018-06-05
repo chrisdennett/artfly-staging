@@ -1,5 +1,4 @@
 import React from "react";
-import { Typography } from 'rmwc/Typography';
 // styles
 import 'material-components-web/dist/material-components-web.min.css';
 import './appStyles.css';
@@ -10,7 +9,7 @@ import NotificationViewer from "./global/notifications/NotificationViewer";
 const App = function ({ children }) {
 
     return (
-        <Typography>
+        <div>
 
             <NotificationViewer/>
 
@@ -22,7 +21,7 @@ const App = function ({ children }) {
 
             {children}
 
-        </Typography>
+        </div>
     );
 };
 

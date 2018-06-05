@@ -13,18 +13,15 @@ const ArtworkAdderComplete = ({ newArtworkId, addAnotherArtwork, currentArtwork 
 
     return (
         <div className={'artworkAdderComplete'}>
-
             <p>
                 <Typography use={'headline6'}>
                     BOOM! Artwork added. You rule.
                 </Typography>
             </p>
 
-            {currentArtwork &&
             <div className={'artworkAdderComplete--thumbHolder'}>
                 <ArtworkThumb artworkData={currentArtwork} artworkId={newArtworkId}/>
             </div>
-            }
 
             <div className={'artworkAdderComplete--buttHolder'}>
                 <Button outlined onClick={() => history.push(`/artworkEditor/${newArtworkId}`)}>

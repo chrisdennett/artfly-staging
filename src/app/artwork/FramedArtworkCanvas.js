@@ -52,6 +52,9 @@ class FramedArtworkCanvas extends Component {
 
     render() {
         const { artworkData, maxWidth = 300, maxHeight = 300 } = this.props;
+
+        if(!artworkData) return null;
+
         const { frameData, heightToWidthRatio, widthToHeightRatio } = artworkData;
         const { frameThicknessDecimal, mountThicknessDecimal } = frameData;
 

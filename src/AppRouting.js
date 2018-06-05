@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import ga from './libs/googleAnalyticsConfig';
 // actions
 import { listenForUserAuthChanges, stopListeningForUserAuthChanges } from './actions/UserAuthActions';
-import { listenForUserArtworkChanges } from './actions/GetArtworkActions';
+import { listenForUserArtworkChanges, listenForIndividualArtworkChanged } from './actions/GetArtworkActions';
 // helpers
 import history from './app/global/history';
 // route components
@@ -36,9 +36,6 @@ class ArtflyRouting extends Component {
     }
 
     componentDidMount() {
-        // fetch global data - determines routing
-        this.props.listenForUserAuthChanges();
-
         // set up routing
         const location = history.location;
         this.setPageData(location.pathname);
@@ -46,6 +43,16 @@ class ArtflyRouting extends Component {
             this.setPageData(location.pathname);
         });
         this.setState({ unlisten: unlisten });
+
+        // fetch global data
+        const sections = location.pathname.split('/').slice(1);
+        if(sections.length > 1){
+            // if there's an artwork param listen get that data first
+            this.props.listenForIndividualArtworkChanged(sections[1]);
+        }
+
+        // listen out for logging in and out
+        this.props.listenForUserAuthChanges();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -65,6 +72,8 @@ class ArtflyRouting extends Component {
         // remove the auth listener
         this.props.stopListeningForUserAuthChanges();
     }
+
+
 
     setPageData(fullPath) {
         let page, params = {};
@@ -128,6 +137,6 @@ const mapStateToProps = (state) => {
         user: state.user
     }
 };
-const mapActionsToProps = { listenForUserAuthChanges, stopListeningForUserAuthChanges, listenForUserArtworkChanges };
+const mapActionsToProps = { listenForUserAuthChanges, stopListeningForUserAuthChanges, listenForUserArtworkChanges, listenForIndividualArtworkChanged };
 
 export default connect(mapStateToProps, mapActionsToProps)(ArtflyRouting);
