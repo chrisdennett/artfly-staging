@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // actions
-import { addNewArtwork } from '../../actions/SaveArtworkActions';
+import { addNewArtwork, resetArtworkSavingProgress } from '../../actions/SaveArtworkActions';
 // helper
 import GenerateDefaultArtworkData from '../artwork/DefaultArtworkDataGenerator';
 import { GetImage } from "../global/ImageHelper";
@@ -10,6 +10,8 @@ import AppBar from "../appBar/AppBar";
 import PhotoSelector from "../photoSelector/PhotoSelector";
 import CropAndRotateEditor from "../artworkOptions/cropAndRotateEditor/CropAndRotateEditor";
 import SaveOrCancelControls from "./SaveOrCancelControls";
+import ArtworkAdderSavingProgress from "./ArtworkAdderSavingProgress";
+import ArtworkAdderComplete from "./ArtworkAdderComplete";
 
 class ArtworkAdder extends Component {
 
@@ -21,6 +23,7 @@ class ArtworkAdder extends Component {
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.onSaveNewArtwork = this.onSaveNewArtwork.bind(this);
         this.onCropAndRotateChange = this.onCropAndRotateChange.bind(this);
+        this.onAddAnother = this.onAddAnother.bind(this);
     }
 
     onPhotoSelected(imgFile) {
@@ -42,27 +45,53 @@ class ArtworkAdder extends Component {
         this.props.addNewArtwork(this.state.img, newArtworkData);
     }
 
+    onAddAnother() {
+        this.props.resetArtworkSavingProgress();
+        this.setState({ img: null, orientation: 1, cropData: { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 } });
+    }
+
     render() {
         const { img, cropData, orientation } = this.state;
+        const { artworkSavingProgress } = this.props;
+
+        const showPhotoSelector = !img && artworkSavingProgress.status === 'dormant';
+        const showPhotoCropper = img && artworkSavingProgress.status === 'dormant';
+        const saveComplete = artworkSavingProgress.status === 'complete';
+        const showPhotoSavingProgress = artworkSavingProgress.status !== 'dormant' && !saveComplete;
+
+        const savedArtworkId = artworkSavingProgress.artworkId;
+
+        const title = showPhotoSavingProgress ? 'Saving...' : 'Add Art';
 
         return (
             <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
 
-                <AppBar title={'Add Artwork'} fixed={false} showUserMenu={false} showCloseButt={true}/>
+                <AppBar title={title} fixed={false} showUserMenu={false} showCloseButt={true}/>
 
-                {!img &&
+                {saveComplete &&
+                <ArtworkAdderComplete newArtworkId={savedArtworkId}
+                                      addAnotherArtwork={this.onAddAnother}/>
+                }
+
+                {showPhotoSavingProgress &&
+                <ArtworkAdderSavingProgress artworkSavingProgress={artworkSavingProgress}/>
+                }
+
+                {showPhotoSelector &&
                 <PhotoSelector onPhotoSelected={(img) => this.onPhotoSelected(img)}/>
                 }
 
-                {img &&
-                <CropAndRotateEditor sourceImg={img}
-                                     orientation={orientation}
-                                     cropData={cropData}
-                                     onDataChange={this.onCropAndRotateChange}/>
-                }
-                {img &&
-                <SaveOrCancelControls onSave={this.onSaveNewArtwork}
-                                      onCancel={() => this.setState({ img: null })}/>
+                {showPhotoCropper &&
+                [
+                    <CropAndRotateEditor sourceImg={img}
+                                         key={1}
+                                         orientation={orientation}
+                                         cropData={cropData}
+                                         onDataChange={this.onCropAndRotateChange}/>,
+                    <SaveOrCancelControls onSave={this.onSaveNewArtwork}
+                                          key={2}
+                                          onCancel={() => this.setState({ img: null })}/>
+                ]
                 }
 
             </div>
@@ -70,4 +99,9 @@ class ArtworkAdder extends Component {
     }
 }
 
-export default connect(null, { addNewArtwork })(ArtworkAdder);
+const mapStateToProps = (state) => (
+    {
+        artworkSavingProgress: state.artworkSavingProgress
+    }
+);
+export default connect(mapStateToProps, { addNewArtwork, resetArtworkSavingProgress })(ArtworkAdder);

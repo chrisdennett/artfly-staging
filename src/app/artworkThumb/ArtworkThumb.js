@@ -6,7 +6,7 @@ import React, { Component } from "react";
 // comps
 // import Artwork from "./Artwork";
 import history from "../global/history";
-import FramedArtworkCanvas from "./FramedArtworkCanvas";
+import FramedArtworkCanvas from "../artwork/FramedArtworkCanvas";
 
 class ArtworkThumb extends Component {
 
@@ -56,9 +56,9 @@ class ArtworkThumb extends Component {
 
         return (
             <div style={{ lineHeight: 0, padding: 10 }}
-                 onClick={() => {history.push(`artwork/${artworkId}`)}}>
+                 onClick={() => {history.push(`gallery/${artworkId}`)}}>
 
-                <FramedArtworkCanvas artworkData={artworkData}/>
+                <FramedArtworkCanvas artworkData={artworkData} maxHeight={300} maxWidth={300}/>
 
             </div>
         );

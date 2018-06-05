@@ -17,7 +17,6 @@
     "lodash": "^4.17.10",
     "prop-types": "^15.6.1",
     "query-string": "^6.1.0",
-    "rc-slider": "^8.6.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-draggable": "^3.0.5",
@@ -25,7 +24,6 @@
     "react-ga": "^2.5.3",
     "react-measure": "^2.0.2",
     "react-redux": "^5.0.7",
-    "react-sizeme": "^2.4.4",
     "react-transition-group": "^2.3.1",
     "redux": "^4.0.0",
     "redux-devtools-extension": "^2.13.2",
@@ -38,7 +36,6 @@
     "Paddle": "Paddle"
   },
   "devDependencies": {
-    "@storybook/react": "^3.4.6",
     "firebase-tools": "^3.18.5",
     "gulp": "^4.0.0",
     "gulp-rename": "^1.2.3",
@@ -54,8 +51,6 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
+    "eject": "react-scripts eject"
   }
 }

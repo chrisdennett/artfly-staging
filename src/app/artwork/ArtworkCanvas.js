@@ -1,9 +1,10 @@
 import React from 'react';
 import LoadingThing from "../loadingThing/LoadingThing";
 
-const ArtworkCanvas = function ({artworkData, imgSrc, width='100%', height, style}) {
+const ArtworkCanvas = function ({artworkData, width='100%', height, style}) {
 
-    let src = artworkData ? artworkData.thumbUrl : imgSrc;
+    const src = width < 250 ? artworkData.thumbUrl : artworkData.largeUrl;
+
     const containerStyle = {width:width, height:height, ...style};
     const imgStyle = {width:width, height:height};
 

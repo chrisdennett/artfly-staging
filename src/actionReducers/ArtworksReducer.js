@@ -1,5 +1,5 @@
 import { ARTWORK_DELETED } from '../actions/DeleteArtworkActions';
-import { ARTWORK_CHANGE } from '../actions/GetArtworkActions';
+import { ARTWORK_CHANGE, RESOURCE_CHANGE } from '../actions/GetArtworkActions';
 
 export default function (state = {}, action) {
     switch (action.type) {

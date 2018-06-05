@@ -12,7 +12,7 @@ import Footer from "./Footer/Footer";
 import SocialMediaStuff from "./socialMediaStuff/SocialMediaStuff";
 import ArtFlyLab from "./artflyLab/ArtFlyLab";
 import ArtFlyIntro from "./artFlyIntro/ArtFlyIntro";
-import ArtworkThumb from "../artwork/ArtworkThumb";
+import ArtworkThumb from "../artworkThumb/ArtworkThumb";
 import AppBar from "../appBar/AppBar";
 import history from "../global/history";
 

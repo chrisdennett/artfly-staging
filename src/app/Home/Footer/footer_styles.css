@@ -4,6 +4,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #d6d3c2;
 }
 
 .footer--content {

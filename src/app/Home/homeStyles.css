@@ -60,8 +60,6 @@
 .home--footer{
     margin-top: 4rem;
     border-top: 20px solid white;
-    /*background-color: rgba(0, 0, 0, 0.68);*/
-    background: url("../images/floor-boards.png");
     padding: 1.5rem;
     color: rgba(0, 0, 0, 0.54);
 }

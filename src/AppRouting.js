@@ -11,17 +11,22 @@ import history from './app/global/history';
 import App from "./app/App";
 import Home from './app/Home/Home';
 import FourOhFour from "./app/FourOhFour/FourOhFour";
-import ArtworkViewer from "./app/artwork/ArtworkViewer";
 import UserProfile from "./app/userProfile/UserProfile";
 import UserDelete from "./app/userDelete/UserDelete";
 import ArtworkAdder from "./app/artworkAdder/ArtworkAdder";
+import TestPage from "./app/testPage/TestPage";
+import Gallery from "./app/gallery/Gallery";
+import ArtworkEditor from "./app/artworkEditor/ArtworkEditor";
 
 const routes = {
     home: { component: Home },
     profile: { component: UserProfile },
     delete: { component: UserDelete },
-    artwork: { component: ArtworkViewer },
+    gallery: { component: Gallery },
     artworkAdder: { component: ArtworkAdder },
+    artworkEditor: { component: ArtworkEditor },
+
+    TESTING: {component: TestPage}
 };
 
 class ArtflyRouting extends Component {
@@ -72,7 +77,12 @@ class ArtflyRouting extends Component {
             page = sections[0];
 
             switch (page) {
-                case 'artwork':
+
+                case 'artworkEditor':
+                    params.artworkId = sections[1];
+                    break;
+
+                case 'gallery':
                     params.artworkId = sections[1];
                     break;
 

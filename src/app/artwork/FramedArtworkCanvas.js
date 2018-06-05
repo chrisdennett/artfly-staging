@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// comps
 import ArtworkCanvas from "./ArtworkCanvas";
 
 class FramedArtworkCanvas extends Component {
@@ -10,29 +11,40 @@ class FramedArtworkCanvas extends Component {
         this.onFrameCanvasInit = this.onFrameCanvasInit.bind(this);
     }
 
-    /*componentWillReceiveProps(props) {
+    /*componentWillReceiveProps(newProps, props) {
+        console.log("this.props: ", this.props);
         console.log("props: ", props);
     }*/
 
-    /*componentWillUpdate(){
+    componentWillUpdate(newProps) {
+        const { maxWidth: currMaxWidth, maxHeight: currMaxHeight } = this.props;
+        const { maxWidth: newMaxWidth, maxHeight: newMaxHeight } = newProps;
 
-    }*/
+        if (currMaxHeight !== newMaxHeight || currMaxWidth !== newMaxWidth) {
+            this.drawFrame(newProps);
+        }
+    }
 
     // TODO: Don't think I can be sure artworkData will be available here
     onFrameCanvasInit(c) {
         if (c) {
             this.frameCanvas = c;
-            this.drawFrame();
+            this.drawFrame(this.props);
         }
     }
 
-    drawFrame() {
+    drawFrame(props) {
         const ctx = this.frameCanvas.getContext('2d');
 
-        const { artworkData, maxWidth = 300, maxHeight = 300 } = this.props;
+        const { artworkData, maxWidth, maxHeight } = props;
+        if (!artworkData || !maxWidth || !maxHeight) return;
+
         const { frameData, heightToWidthRatio, widthToHeightRatio } = artworkData;
         const { frameThicknessDecimal, mountThicknessDecimal, frameColour, mountColour } = frameData;
         const { frameWidth, frameHeight, frameThickness, mountWidth, mountHeight, mountThickness } = calculateDimensions(maxWidth, maxHeight, heightToWidthRatio, widthToHeightRatio, frameThicknessDecimal, mountThicknessDecimal);
+
+        this.frameCanvas.width = frameWidth;
+        this.frameCanvas.height = frameHeight;
 
         drawCanvasFrame(ctx, 0, 0, frameWidth, frameHeight, frameThickness, frameColour);
         drawCanvasMount(ctx, frameThickness, frameThickness, mountWidth, mountHeight, mountThickness, mountColour)
@@ -48,14 +60,12 @@ class FramedArtworkCanvas extends Component {
         const { imgWidth, imgHeight, frameHeight, frameWidth, frameThickness, mountThickness } = calculateDimensions(maxWidth, maxHeight, heightToWidthRatio, widthToHeightRatio, frameThicknessDecimal, mountThicknessDecimal);
         const totalFrameThickness = frameThickness + mountThickness;
 
-        const holderStyle = { position: 'relative'};
+        const holderStyle = { position: 'relative' };
         const artworkCanvasStyle = { position: 'absolute', left: totalFrameThickness, top: totalFrameThickness };
 
         return (
             <div style={holderStyle}>
-                <canvas ref={this.onFrameCanvasInit}
-                        width={frameWidth}
-                        height={frameHeight}/>
+                <canvas ref={this.onFrameCanvasInit}/>
 
                 <ArtworkCanvas artworkData={artworkData}
                                style={artworkCanvasStyle}

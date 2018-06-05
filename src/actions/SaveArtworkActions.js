@@ -4,6 +4,19 @@ import { getImageBlob, generateUUID } from "../app/global/ImageHelper";
 // constants
 import { ARTWORK_CHANGE } from "./GetArtworkActions";
 
+export const SAVING_ARTWORK_TRIGGERED = 'saving_artwork_triggered';
+export const SAVING_ARTWORK_COMPLETE = 'saving_artwork_complete';
+export const SAVING_ARTWORK_PROGRESS = 'saving_artwork_progress';
+export const SAVING_ARTWORK_CLEAR_PROGRESS = 'saving_artwork_clear_progress';
+
+export function resetArtworkSavingProgress() {
+    return dispatch => {
+        dispatch({
+            type: SAVING_ARTWORK_CLEAR_PROGRESS,
+        });
+    }
+}
+
 // UPDATE ARTWORK
 export function updateArtwork(artworkId, newArtworkData, callback = null) {
     return dispatch => {
@@ -11,8 +24,10 @@ export function updateArtwork(artworkId, newArtworkData, callback = null) {
         // Hmmm, how do I know if this has changed perhaps should use a different method
         // which I think would mean separating out resource and artwork data in component.
         const { orientation, cropData, heightToWidthRatio, widthToHeightRatio, resources, ...rest } = newArtworkData;
-        const resourceData = { orientation,
-            cropData, heightToWidthRatio, widthToHeightRatio };
+        const resourceData = {
+            orientation,
+            cropData, heightToWidthRatio, widthToHeightRatio
+        };
 
         console.log("resources: ", resources);
         console.log("resourceData: ", resourceData);
@@ -31,25 +46,53 @@ export function updateArtwork(artworkId, newArtworkData, callback = null) {
 }
 
 // ADD ARTWORK
-export function addNewArtwork(imgFile, artworkData){
+export function addNewArtwork(imgFile, artworkData) {
     return dispatch => {
 
-        const { uid:userId } = auth.currentUser;
-        const {orientation, cropData} = artworkData;
+        const { uid: userId } = auth.currentUser;
+        const { orientation, cropData } = artworkData;
 
-        saveImage({userId, source:imgFile, maxSize:3000},
-            progress => console.log("progress: ", progress)
+        dispatch({
+            type: SAVING_ARTWORK_TRIGGERED
+        });
+
+        saveImage({ userId, source: imgFile, maxSize: 3000 },
+            progress => {
+                dispatch({
+                    type: SAVING_ARTWORK_PROGRESS,
+                    payload: {
+                        key: 'source',
+                        progress
+                    }
+                });
+            }
             ,
             sourceUrl => {
                 // save thumb
-                saveImage({userId, source:imgFile, maxSize:250, orientation, cropData},
-                    progress => console.log("Thumb progress: ", progress)
+                saveImage({ userId, source: imgFile, maxSize: 250, orientation, cropData },
+                    progress => {
+                        dispatch({
+                            type: SAVING_ARTWORK_PROGRESS,
+                            payload: {
+                                key: 'thumb',
+                                progress
+                            }
+                        });
+                    }
                     ,
                     thumbUrl => {
 
                         // save large image
-                        saveImage({userId, source:imgFile, maxSize:960, orientation, cropData},
-                            progress => console.log("large image progress: ", progress)
+                        saveImage({ userId, source: imgFile, maxSize: 960, orientation, cropData },
+                            progress => {
+                                dispatch({
+                                    type: SAVING_ARTWORK_PROGRESS,
+                                    payload: {
+                                        key: 'large',
+                                        progress
+                                    }
+                                });
+                            }
                             ,
                             largeUrl => {
                                 const { orientation, cropData, heightToWidthRatio, widthToHeightRatio, ...rest } = artworkData;
@@ -74,11 +117,11 @@ export function addNewArtwork(imgFile, artworkData){
 
                                     // save the resource id in the artwork data.
                                     saveNewArtworkData(userId, newArtworkData, (artworkId) => {
-                                        const newArtworkDataWithId = { ...newArtworkData, artworkId };
+                                        // const newArtworkDataWithId = { ...newArtworkData, artworkId };
 
                                         dispatch({
-                                            type: ARTWORK_CHANGE,
-                                            payload: { [artworkId]: newArtworkDataWithId }
+                                            type: SAVING_ARTWORK_COMPLETE,
+                                            payload: artworkId
                                         });
                                     });
                                 })
@@ -145,8 +188,8 @@ export function addNewArtwork(imgFile, artworkData){
     }
 }*/
 
-function saveImage({userId, source, orientation, cropData, maxSize}, onProgress, onComplete) {
-    getImageBlob({source, maxSize, orientation, cropData}, blobData => {
+function saveImage({ userId, source, orientation, cropData, maxSize }, onProgress, onComplete) {
+    getImageBlob({ source, maxSize, orientation, cropData }, blobData => {
         fs_saveArtworkImage(
             blobData
             ,
@@ -155,8 +198,6 @@ function saveImage({userId, source, orientation, cropData, maxSize}, onProgress,
             }
             ,
             (url) => {
-                console.log("url: ", url);
-
                 if (onComplete) onComplete(url)
             }
         )
@@ -175,7 +216,7 @@ function fs_saveArtworkImage(blobData, onChangeCallback, onCompleteCallback) {
     uploadTask
         .on(storageEvent.STATE_CHANGED,
             (snapshot) => {
-                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100) / 100;
                 onChangeCallback(progress);
             },
             (error) => {
