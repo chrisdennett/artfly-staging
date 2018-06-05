@@ -112,5 +112,4 @@ const mapStateToProps = (state) => {
         userArtworks
     }
 };
-const mapActionsToProps = null; //{ listenForUserChanges, listenForUserArtworkChanges };
-export default connect(mapStateToProps, mapActionsToProps)(Home)
+export default connect(mapStateToProps)(Home)

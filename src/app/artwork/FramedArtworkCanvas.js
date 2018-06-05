@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // comps
 import ArtworkCanvas from "./ArtworkCanvas";
+import LoadingThing from "../loadingThing/LoadingThing";
 
 class FramedArtworkCanvas extends Component {
 
@@ -53,7 +54,9 @@ class FramedArtworkCanvas extends Component {
     render() {
         const { artworkData, maxWidth = 300, maxHeight = 300 } = this.props;
 
-        if(!artworkData) return null;
+        if (!artworkData) return (
+            <LoadingThing/>
+        );
 
         const { frameData, heightToWidthRatio, widthToHeightRatio } = artworkData;
         const { frameThicknessDecimal, mountThicknessDecimal } = frameData;
@@ -63,7 +66,7 @@ class FramedArtworkCanvas extends Component {
         const { imgWidth, imgHeight, frameThickness, mountThickness } = calculateDimensions(maxWidth, maxHeight, heightToWidthRatio, widthToHeightRatio, frameThicknessDecimal, mountThicknessDecimal);
         const totalFrameThickness = frameThickness + mountThickness;
 
-        const holderStyle = { position: 'relative', display:'inline-block' };
+        const holderStyle = { position: 'relative', display: 'inline-block' };
         const artworkCanvasStyle = { position: 'absolute', left: totalFrameThickness, top: totalFrameThickness };
 
         return (
