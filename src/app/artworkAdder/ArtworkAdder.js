@@ -61,7 +61,9 @@ class ArtworkAdder extends Component {
 
         const savedArtworkId = artworkSavingProgress.artworkId;
 
-        const title = showPhotoSavingProgress ? 'Saving...' : 'Add Art';
+        let title = 'Add Art';
+        if(showPhotoSavingProgress) title = 'Saving...';
+        if(saveComplete) title = 'Artwork Added';
 
         return (
             <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>

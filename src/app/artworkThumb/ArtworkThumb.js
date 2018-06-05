@@ -1,69 +1,20 @@
-import React, { Component } from "react";
+import React from "react";
 // import { Elevation } from 'rmwc/Elevation';
 // import { Ripple } from 'rmwc/Ripple';
 // helpers
-// import * as ImageHelper from "../global/ImageHelper";
-// comps
-// import Artwork from "./Artwork";
 import history from "../global/history";
 import FramedArtworkCanvas from "../artwork/FramedArtworkCanvas";
 
-class ArtworkThumb extends Component {
+const ArtworkThumb = ({ artworkData, artworkId }) => {
+    return (
+        <div style={{ lineHeight: 0, padding: 10 }}
+             onClick={() => {history.push(`gallery/${artworkId}`)}}>
 
-    constructor(props) {
-        super(props);
+            <FramedArtworkCanvas artworkData={artworkData} maxHeight={300} maxWidth={300}/>
 
-        this.state = {};
-
-        // this.setup = this.setup.bind(this);
-    }
-
-    /*componentWillMount(){
-        this.setup(this.props);
-    }
-
-    componentWillReceiveProps(newProps){
-        this.setup(newProps);
-    }
-
-    setup(newProps) {
-        const { thumbUrl, orientation } = newProps.artworkData;
-
-        if (!thumbUrl) return;
-
-        let sourceImg = new Image();
-        sourceImg.setAttribute('crossOrigin', 'anonymous'); //
-        sourceImg.src = thumbUrl;
-        sourceImg.onload = () => {
-
-            const masterCanvas = document.createElement('canvas');
-
-            ImageHelper.drawImageToCanvas({ sourceImg, outputCanvas: masterCanvas, orientation },
-                () => {
-                    this.setState({
-                        masterCanvas
-                    });
-                })
-        }
-    }*/
-
-    render() {
-        // const { masterCanvas } = this.state;
-        const { artworkData, artworkId } = this.props;
-        // const {widthToHeightRatio,heightToWidthRatio} = artworkData;
-        // const isPortrait = heightToWidthRatio < widthToHeightRatio;
-        // const maxImageHeight = isPortrait ? 600 : 300;
-
-        return (
-            <div style={{ lineHeight: 0, padding: 10 }}
-                 onClick={() => {history.push(`gallery/${artworkId}`)}}>
-
-                <FramedArtworkCanvas artworkData={artworkData} maxHeight={300} maxWidth={300}/>
-
-            </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
 export default ArtworkThumb;
 

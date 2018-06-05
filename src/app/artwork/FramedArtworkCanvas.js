@@ -57,10 +57,10 @@ class FramedArtworkCanvas extends Component {
 
         if (!heightToWidthRatio || !widthToHeightRatio) return null;
 
-        const { imgWidth, imgHeight, frameHeight, frameWidth, frameThickness, mountThickness } = calculateDimensions(maxWidth, maxHeight, heightToWidthRatio, widthToHeightRatio, frameThicknessDecimal, mountThicknessDecimal);
+        const { imgWidth, imgHeight, frameThickness, mountThickness } = calculateDimensions(maxWidth, maxHeight, heightToWidthRatio, widthToHeightRatio, frameThicknessDecimal, mountThicknessDecimal);
         const totalFrameThickness = frameThickness + mountThickness;
 
-        const holderStyle = { position: 'relative' };
+        const holderStyle = { position: 'relative', display:'inline-block' };
         const artworkCanvasStyle = { position: 'absolute', left: totalFrameThickness, top: totalFrameThickness };
 
         return (

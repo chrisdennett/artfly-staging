@@ -1,25 +1,63 @@
 import React from 'react';
+import { connect } from 'react-redux';
+// styles
+import './artworkAdderComplete_styles.css';
 // material ui
 import { Typography } from 'rmwc/Typography';
-import { Button, ButtonIcon } from 'rmwc/Button';
+import { Button } from 'rmwc/Button';
 // helper
 import history from "../global/history";
+import ArtworkThumb from "../artworkThumb/ArtworkThumb";
 
-const ArtworkAdderComplete = ({newArtworkId, addAnotherArtwork}) => {
+const ArtworkAdderComplete = ({ newArtworkId, addAnotherArtwork, currentArtwork }) => {
+
     return (
-        <Typography use={'body1'} style={{display:'flex', flexDirection:'column'}}>
-            Save complete, what do you wanna do now?
-            <Button raised onClick={() => history.push(`/artworkEditor/${newArtworkId}`)}>
-                Edit Artwork
-            </Button>
-            <Button raised onClick={() => history.push(`/gallery/${newArtworkId}`)}>
-                View Artwork
-            </Button>
-            <Button raised onClick={addAnotherArtwork}>
-                Add another
-            </Button>
-        </Typography>
+        <div className={'artworkAdderComplete'}>
+
+            <p>
+                <Typography use={'headline6'}>
+                    BOOM! Artwork added. You rule.
+                </Typography>
+            </p>
+
+            {currentArtwork &&
+            <div className={'artworkAdderComplete--thumbHolder'}>
+                <ArtworkThumb artworkData={currentArtwork} artworkId={newArtworkId}/>
+            </div>
+            }
+
+            <div className={'artworkAdderComplete--buttHolder'}>
+                <Button outlined onClick={() => history.push(`/artworkEditor/${newArtworkId}`)}>
+                    Edit
+                </Button>
+                <Button outlined onClick={() => history.push(`/gallery/${newArtworkId}`)}>
+                    View
+                </Button>
+                <Button outlined onClick={addAnotherArtwork}>
+                    Add another
+                </Button>
+            </div>
+        </div>
     )
 };
 
-export default ArtworkAdderComplete;
+const mapStateToProps = (state, props) => {
+    let currentArtwork = null;
+    if (state && props.newArtworkId) {
+        currentArtwork = selectCurrentArtwork(state.artworks, state.resources, props.newArtworkId)
+    }
+
+    return {
+        currentArtwork
+    }
+};
+
+export default connect(mapStateToProps)(ArtworkAdderComplete);
+
+const selectCurrentArtwork = (artworks, resources, artworkId) => {
+    const artwork = artworks[artworkId];
+    if (!artwork) return null;
+    const resourceId = artwork.resources;
+
+    return { ...artwork, ...resources[resourceId] }
+};
