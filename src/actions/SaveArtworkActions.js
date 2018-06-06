@@ -12,7 +12,7 @@ export const SAVING_ARTWORK_CLEAR_PROGRESS = 'saving_artwork_clear_progress';
 export function resetArtworkSavingProgress() {
     return dispatch => {
         dispatch({
-            type: SAVING_ARTWORK_CLEAR_PROGRESS,
+            type: SAVING_ARTWORK_CLEAR_PROGRESS
         });
     }
 }
@@ -21,27 +21,14 @@ export function resetArtworkSavingProgress() {
 export function updateArtwork(artworkId, newArtworkData, callback = null) {
     return dispatch => {
 
-        // Hmmm, how do I know if this has changed perhaps should use a different method
-        // which I think would mean separating out resource and artwork data in component.
-        const { orientation, cropData, heightToWidthRatio, widthToHeightRatio, resources, ...rest } = newArtworkData;
-        const resourceData = {
-            orientation,
-            cropData, heightToWidthRatio, widthToHeightRatio
-        };
-
-        console.log("resources: ", resources);
-        console.log("resourceData: ", resourceData);
-
-        saveResourceChanges(resources, resourceData, () => {
-            saveArtworkChanges(artworkId, newArtworkData, () => {
-                dispatch({
-                    type: ARTWORK_CHANGE,
-                    payload: { [artworkId]: rest }
-                });
-
-                if (callback) callback();
+        saveArtworkChanges(artworkId, newArtworkData, () => {
+            dispatch({
+                type: ARTWORK_CHANGE,
+                payload: { [artworkId]: newArtworkData }
             });
-        })
+
+            if (callback) callback();
+        });
     }
 }
 
@@ -95,98 +82,29 @@ export function addNewArtwork(imgFile, artworkData) {
                             }
                             ,
                             largeUrl => {
-                                const { orientation, cropData, heightToWidthRatio, widthToHeightRatio, ...rest } = artworkData;
+                                // const { orientation, cropData, heightToWidthRatio, widthToHeightRatio, ...rest } = artworkData;
 
-                                const resourceData = {
+                                const fullArtworkData = {
                                     adminId: userId,
                                     largeUrl,
                                     sourceUrl,
                                     thumbUrl,
-                                    orientation,
-                                    cropData, heightToWidthRatio, widthToHeightRatio
+                                    ...artworkData
                                 };
 
-                                // Save the resource first to get the Id.
-                                saveNewResource(userId, resourceData, (resourceId) => {
-                                    const newArtworkData = {
-                                        ...rest,
-                                        resources: resourceId,
-                                        adminId: userId,
-                                        dateAdded: Date.now()
-                                    };
+                                saveNewArtworkData(userId, fullArtworkData, (artworkId) => {
+                                    // const newArtworkDataWithId = { ...newArtworkData, artworkId };
 
-                                    // save the resource id in the artwork data.
-                                    saveNewArtworkData(userId, newArtworkData, (artworkId) => {
-                                        // const newArtworkDataWithId = { ...newArtworkData, artworkId };
-
-                                        dispatch({
-                                            type: SAVING_ARTWORK_COMPLETE,
-                                            payload: artworkId
-                                        });
+                                    dispatch({
+                                        type: SAVING_ARTWORK_COMPLETE,
+                                        payload: artworkId
                                     });
-                                })
+                                });
                             });
                     });
             })
     }
 }
-
-/*export function addArtwork(userId, artworkData, imgFile, callback) {
-    return dispatch => {
-
-        saveImage(userId, imgFile, 3000,
-            progress => console.log("progress: ", progress)
-            ,
-            sourceUrl => {
-                // save thumb
-                saveImage(userId, imgFile, 250,
-                    progress => console.log("Thumb progress: ", progress)
-                    ,
-                    thumbUrl => {
-
-                        // save large image
-                        saveImage(userId, imgFile, 960,
-                            progress => console.log("large image progress: ", progress)
-                            ,
-                            largeUrl => {
-                                const { orientation, cropData, heightToWidthRatio, widthToHeightRatio, ...rest } = artworkData;
-
-                                const resourceData = {
-                                    adminId: userId,
-                                    largeUrl,
-                                    sourceUrl,
-                                    thumbUrl,
-                                    orientation,
-                                    cropData, heightToWidthRatio, widthToHeightRatio
-                                };
-
-                                // Save the resource first to get the Id.
-                                saveNewResource(userId, resourceData, (resourceId) => {
-                                    const newArtworkData = {
-                                        ...rest,
-                                        resources: resourceId,
-                                        adminId: userId,
-                                        dateAdded: Date.now()
-                                    };
-
-                                    // save the resource id in the artwork data.
-                                    saveNewArtworkData(userId, newArtworkData, (artworkId) => {
-                                        const newArtworkDataWithId = { ...newArtworkData, artworkId };
-
-                                        dispatch({
-                                            type: ARTWORK_CHANGE,
-                                            payload: { [artworkId]: newArtworkDataWithId }
-                                        });
-
-                                        if (callback) callback(artworkId);
-                                    });
-                                })
-
-                            });
-                    });
-            })
-    }
-}*/
 
 function saveImage({ userId, source, orientation, cropData, maxSize }, onProgress, onComplete) {
     getImageBlob({ source, maxSize, orientation, cropData }, blobData => {
@@ -228,29 +146,6 @@ function fs_saveArtworkImage(blobData, onChangeCallback, onCompleteCallback) {
                 uploadTask.snapshot.ref.getDownloadURL()
                     .then(downloadURL => onCompleteCallback(downloadURL));
             })
-}
-
-// SAVE NEW RESOURCE
-function saveNewResource(userId, resourceData, callback) {
-    const resourceDatabaseRef = db.collection('resources').doc();
-    const resourceId = resourceDatabaseRef.id;
-
-    saveResourceChanges(resourceId, resourceData, callback);
-}
-
-// SAVE RESOURCE CHANGES
-function saveResourceChanges(resourceId, newData, callback) {
-    newData.lastUpdated = Date.now();
-
-    db.collection('resources')
-        .doc(resourceId)
-        .set(newData, { merge: true })
-        .then(() => {
-            if (callback) callback(resourceId);
-        })
-        .catch(function (error) {
-            console.log('Update resource failed: ', error);
-        })
 }
 
 // SAVE NEW ARTWORK

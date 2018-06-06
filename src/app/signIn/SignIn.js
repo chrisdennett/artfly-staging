@@ -21,13 +21,17 @@ const SignIn = ({ successRedirect = '/', providerId }) => {
             {
                 provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
                 requireDisplayName: true
-            },
-            {
-                provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
-                defaultCountry: 'GB'
             }
         ]
     }
+
+    /*
+ I've removed phone sign in as it costs $0.01 or $0.06 each time
+    {
+        provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+        defaultCountry: 'GB'
+    }
+    */
 
     const uiConfig = {
         signInSuccessUrl: successRedirect,

@@ -5,7 +5,6 @@ import UserReducer from './UserAuthReducer';
 import ArtworksReducer from './ArtworksReducer';
 import FormReducer from './FormReducer';
 import NotificationsReducer from "./NotificationsReducer";
-import ResourcesReducer from "./ResourcesReducer";
 import ErrorReducer from "./ErrorReducer";
 import ArtworkSavingReducer from "./ArtworkSavingReducer";
 
@@ -16,7 +15,6 @@ const rootReducer = combineReducers({
     paddle: PaddleReducer,
     user: UserReducer,
     artworks: ArtworksReducer,
-    resources: ResourcesReducer,
     form: FormReducer
 });
 

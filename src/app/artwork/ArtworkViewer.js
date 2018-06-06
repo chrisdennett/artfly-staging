@@ -383,12 +383,6 @@ const mapStateToProps = (state, props) => {
     if (currentArtworkData && Object.keys(currentArtworkData).length === 0) {
         currentArtworkData = null;
     }
-    else if (currentArtworkData) {
-        if (state.resources[currentArtworkData.resources]) {
-            const resources = state.resources[currentArtworkData.resources];
-            currentArtworkData = { ...currentArtworkData, ...resources };
-        }
-    }
 
     return {
         artworks: state.artworks,

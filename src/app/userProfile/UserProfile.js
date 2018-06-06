@@ -8,7 +8,7 @@ import './userProfile_styles.css';
 // actions
 import { updateUser } from "../../actions/UserDataActions";
 // selectors
-import { getUserArtworks, getUserResources } from "../../selectors/Selectors";
+import { getTotalUserArtworks } from "../../selectors/Selectors";
 // helpers
 import history from '../global/history';
 // comps
@@ -17,7 +17,7 @@ import SignIn from '../signIn/SignIn';
 import UserDetails from "../userDetails/UserDetails";
 import LoadingThing from "../loadingThing/LoadingThing";
 
-const UserProfile = ({ user, userArtworks, userResources, updateUser }) => {
+const UserProfile = ({ user, totalUserArtworks, updateUser }) => {
 
     if (user === 'pending') {
         return <LoadingThing/>
@@ -45,8 +45,7 @@ const UserProfile = ({ user, userArtworks, userResources, updateUser }) => {
             <div className={'userProfile'}>
                 <UserDetails
                     user={user}
-                    userArtworks={userArtworks}
-                    userResources={userResources}
+                    totalUserArtworks={totalUserArtworks}
                     updateUser={updateUser}
                 />
                 <div className={'userProfile--deleteSection'}>
@@ -64,8 +63,7 @@ const UserProfile = ({ user, userArtworks, userResources, updateUser }) => {
 const mapStateToProps = (state) => {
     return {
         user: state.user,
-        userArtworks: getUserArtworks(state.user.uid, state.artworks),
-        userResources: getUserResources(state.user.uid, state.resources),
+        totalUserArtworks: getTotalUserArtworks(state.user.uid, state.artworks),
     }
 };
 

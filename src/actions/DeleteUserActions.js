@@ -3,7 +3,6 @@ import { auth, firestoreDb as db, storage } from "../libs/firebaseConfig";
 export const USER_DELETED = "userDeleted";
 export const USER_DELETED_ERROR = "userDeletedError";
 
-// get resources and delete
 // get artworks and delete
 // delete user data
 export function deleteUser() {
@@ -13,7 +12,6 @@ export function deleteUser() {
 
         try {
             await deleteUserArtworks(uid);
-            await deleteUserResources(uid);
             await deleteUserData(uid);
             await deleteUserAuth();
 
@@ -38,8 +36,7 @@ function deleteUserData(uid) {
         .delete();
 }
 
-// returns a promise
-// get user artworks in order to delete them
+// DELETE ARTWORKS
 function getUserArtworks(uid) {
     return db.collection('artworks')
         .where('adminId', '==', uid)
@@ -50,51 +47,23 @@ function getUserArtworks(uid) {
 }
 
 async function deleteUserArtworks(uid) {
-    const userArtworkDocs = await getUserArtworks(uid);
+    const userArtworksDocs = await getUserArtworks(uid);
 
     // return will happen when all the artworks have been deleted
     // NB if there's an error with any it will fail
-    return Promise.all(userArtworkDocs.map(doc => {
+    return Promise.all(userArtworksDocs.map(doc => {
         const artworkId = doc.id;
-        return deleteUserArtwork(artworkId);
+        return deleteArtwork(artworkId);
     }));
 }
 
-// returns a promise do be dealt with in an async function
-export function deleteUserArtwork(artworkId) {
-    return db.collection('artworks')
-        .doc(artworkId)
-        .delete()
-}
-
-// DELETE RESOURCES
-function getUserResources(uid) {
-    return db.collection('resources')
-        .where('adminId', '==', uid)
-        .get()
-        .then(userResourcesSnapShot => {
-            return userResourcesSnapShot.docs
-        })
-}
-
-async function deleteUserResources(uid) {
-    const userResourcesDocs = await getUserResources(uid);
-
-    // return will happen when all the artworks have been deleted
-    // NB if there's an error with any it will fail
-    return Promise.all(userResourcesDocs.map(doc => {
-        const resourceId = doc.id;
-        return deleteResource(resourceId);
-    }));
-}
-
-export async function deleteResource(resourceId) {
-    // get resource doc
-    const resourceDoc = await getResource(resourceId);
-    // get resource data
-    const resourceData = resourceDoc.data();
-    // extract the resource urls
-    const { largeUrl, sourceUrl, thumbUrl } = resourceData;
+export async function deleteArtwork(artworkId) {
+    // get artwork doc
+    const artworkDoc = await getArtwork(artworkId);
+    // get artwork data
+    const artworkData = artworkDoc.data();
+    // extract the artwork urls
+    const { largeUrl, sourceUrl, thumbUrl } = artworkData;
 
     // create an array of file delete promises
     const promises = [largeUrl, sourceUrl, thumbUrl].map(url => {
@@ -103,7 +72,7 @@ export async function deleteResource(resourceId) {
 
     // add the data delete promise
     promises.push(
-        db.collection('resources').doc(resourceId).delete()
+        db.collection('artworks').doc(artworkId).delete()
     );
 
     // return the result of all promises
@@ -111,9 +80,9 @@ export async function deleteResource(resourceId) {
     return Promise.all(promises);
 }
 
-export function getResource(resourceId) {
-    return db.collection('resources')
-        .doc(resourceId)
+export function getArtwork(artworkId) {
+    return db.collection('artworks')
+        .doc(artworkId)
         .get();
 }
 

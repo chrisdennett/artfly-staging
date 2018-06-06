@@ -4,7 +4,7 @@ import { Typography } from 'rmwc/Typography';
 // comps
 import UserEmailOptions from "../userEmailOptions/UserEmailOptions";
 
-const UserDetails = function ({ user, userArtworks, updateUser }) {
+const UserDetails = function ({ user, totalUserArtworks, updateUser }) {
 
     // get the smaller sized image if it's google
     let photoUrl = user.providerId === 'google.com' ? user.photoURL + '?sz=80' : user.photoURL;
@@ -35,7 +35,7 @@ const UserDetails = function ({ user, userArtworks, updateUser }) {
 
                 <div className={'userProfile--detail'}>
                     <div className={'userProfile--detail--type'}>Artworks:</div>
-                    <div className={'userProfile--detail--value'}>{Object.keys(userArtworks).length}</div>
+                    <div className={'userProfile--detail--value'}>{totalUserArtworks}</div>
                 </div>
 
             </div>

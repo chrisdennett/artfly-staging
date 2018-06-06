@@ -28,7 +28,7 @@ export default function () {
     const defaultTitlesData = null; //{ title, artist, description, date };
 
     // PEOPLE
-    const defaultPeopleData = {
+    /*const defaultPeopleData = {
         peopleSitting1: {
             id: "peopleSitting1",
             name: 'people sitting 1',
@@ -40,17 +40,17 @@ export default function () {
             y: 1.02,
             realLifeHeight: 1.2
         }
-    };
+    };*/
 
     // ROOM
-    const defaultRoomData = {
+    /*const defaultRoomData = {
         wallTileUrl: '/images/tiles-wall/Concrete-8.jpg',
         floorTileUrl: '/images/tiles-floor/floor-boards.png',
         audience: {},
         includeSkirting: true,
         includeGuardRail: true,
         includePeople: true
-    };
+    };*/
 
     return {
         cropData: defaultCropData,
@@ -59,7 +59,5 @@ export default function () {
         heightToWidthRatio: 1,
         widthToHeightRatio: 1,
         titlesData: defaultTitlesData,
-        roomData: defaultRoomData,
-        people: defaultPeopleData,
     };
 };

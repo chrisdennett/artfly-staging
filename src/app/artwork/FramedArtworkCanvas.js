@@ -87,8 +87,11 @@ const calculateDimensions = (maxWidth, maxHeight,
                              heightToWidthRatio, widthToHeightRatio,
                              frameThicknessDecimal, mountThicknessDecimal) => {
 
-    let frameThickness = Math.round(maxWidth * frameThicknessDecimal);
-    let mountThickness = Math.round(maxWidth * mountThicknessDecimal);
+    // * widthToHeightRatio to base everything on the height of the picture.
+    // if this isn't used and the picture sizes are recalculated because
+    // the proposedFrameHeight is too tall, the proportions jump dramatically.
+    let frameThickness = Math.round(maxWidth * frameThicknessDecimal * widthToHeightRatio);
+    let mountThickness = Math.round(maxWidth * mountThicknessDecimal * widthToHeightRatio);
     let totalFrameAndMountThickness = (frameThickness * 2) + (mountThickness * 2);
 
     // work out first as if fitting to width

@@ -16,7 +16,7 @@ import ArtworkThumb from "../artworkThumb/ArtworkThumb";
 import AppBar from "../appBar/AppBar";
 import history from "../global/history";
 
-const Home = ({ user, userArtworks }) => {
+const Home = ({ user, artworks }) => {
     const userLoggedIn = !!user.uid;
 
     const userPending = user === 'pending';
@@ -49,8 +49,8 @@ const Home = ({ user, userArtworks }) => {
 
                 <div className={'artworkThumbs'}>
                     {
-                        Object.keys(userArtworks).map(artworkId => {
-                            const artworkData = userArtworks[artworkId];
+                        Object.keys(artworks).map(artworkId => {
+                            const artworkData = artworks[artworkId];
                             return (
                                 <ArtworkThumb key={artworkId}
                                               artworkId={artworkId}
@@ -88,28 +88,12 @@ const Home = ({ user, userArtworks }) => {
     );
 };
 
-const mapStateToProps = (state) => {
-    const { user, artworks, resources } = state;
-    let userArtworks = {};
-
-    if (user && artworks) {
-        const artworkIds = Object.keys(artworks);
-        const userId = user.uid;
-        for (let id of artworkIds) {
-            let art = artworks[id];
-            if (art && art.adminId === userId) {
-                if (resources && art.resources) {
-                    art = { ...art, ...resources[art.resources] };
-                }
-
-                userArtworks[id] = art;
-            }
-        }
+const mapStateToProps = (state) => (
+    {
+        user: state.user,
+        artworks: state.artworks
     }
+);
 
-    return {
-        user,
-        userArtworks
-    }
-};
+
 export default connect(mapStateToProps)(Home)

@@ -41,7 +41,7 @@ const ArtworkAdderComplete = ({ newArtworkId, addAnotherArtwork, currentArtwork 
 const mapStateToProps = (state, props) => {
     let currentArtwork = null;
     if (state && props.newArtworkId) {
-        currentArtwork = selectCurrentArtwork(state.artworks, state.resources, props.newArtworkId)
+        currentArtwork = selectCurrentArtwork(state.artworks, props.newArtworkId)
     }
 
     return {
@@ -51,10 +51,9 @@ const mapStateToProps = (state, props) => {
 
 export default connect(mapStateToProps)(ArtworkAdderComplete);
 
-const selectCurrentArtwork = (artworks, resources, artworkId) => {
+const selectCurrentArtwork = (artworks, artworkId) => {
     const artwork = artworks[artworkId];
     if (!artwork) return null;
-    const resourceId = artwork.resources;
 
-    return { ...artwork, ...resources[resourceId] }
+    return artwork
 };
