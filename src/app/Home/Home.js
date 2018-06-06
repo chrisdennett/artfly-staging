@@ -2,7 +2,6 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { Typography } from 'rmwc/Typography';
-import { Button, ButtonIcon } from 'rmwc/Button';
 // styles
 import './homeStyles.css';
 // components
@@ -12,60 +11,52 @@ import Footer from "./Footer/Footer";
 import SocialMediaStuff from "./socialMediaStuff/SocialMediaStuff";
 import ArtFlyLab from "./artflyLab/ArtFlyLab";
 import ArtFlyIntro from "./artFlyIntro/ArtFlyIntro";
-import ArtworkThumb from "../artworkThumb/ArtworkThumb";
 import AppBar from "../appBar/AppBar";
-import history from "../global/history";
+import GalleryHome from "../gallery/GalleryHome";
 
-const Home = ({ user, artworks }) => {
+const Home = ({ user }) => {
     const userLoggedIn = !!user.uid;
 
     const userPending = user === 'pending';
-    if (userPending) {
+    /*if (userPending) {
         return <LoadingThing/>
-    }
+    }*/
 
     return (
         <div className={'home'}>
 
-            <AppBar title={'ArtFLY'} fixed={!userLoggedIn}/>
+            <AppBar fixed={!userLoggedIn}/>
 
-            {!userLoggedIn &&
             <div className='home--heading'>
                 <div>
                     <Title/>
                 </div>
+                {!userLoggedIn &&
                 <div className='home--tagLine'>Forget about what others think and let the Art Fly.
                 </div>
+                }
 
             </div>
+
+            {userPending &&
+            <LoadingThing/>
             }
 
             {userLoggedIn &&
-            <div className={'home--artworks'}>
-
-                <Button raised theme={'secondary-bg'} onClick={() => history.push('/artworkAdder')}>
-                    <ButtonIcon use="add"/> Add New Artwork
-                </Button>
-
-                <div className={'artworkThumbs'}>
-                    {
-                        Object.keys(artworks).map(artworkId => {
-                            const artworkData = artworks[artworkId];
-                            return (
-                                <ArtworkThumb key={artworkId}
-                                              artworkId={artworkId}
-                                              artworkData={artworkData}
-                                />
-                            )
-                        })
-                    }
+            <div>
+                <Typography use="headline4">
+                    Your Galleries
+                </Typography>
+                <div className={'home--artworks'}>
+                    <GalleryHome/>
                 </div>
             </div>
             }
 
-            {!userLoggedIn &&
             <div>
+                {!userLoggedIn &&
                 <ArtFlyIntro/>
+                }
                 <ArtFlyLab/>
                 <SocialMediaStuff/>
                 <Footer/>
@@ -81,8 +72,6 @@ const Home = ({ user, artworks }) => {
                     </Typography>
                 </div>
             </div>
-            }
-
 
         </div>
     );
@@ -90,10 +79,8 @@ const Home = ({ user, artworks }) => {
 
 const mapStateToProps = (state) => (
     {
-        user: state.user,
-        artworks: state.artworks
+        user: state.user
     }
 );
-
 
 export default connect(mapStateToProps)(Home)

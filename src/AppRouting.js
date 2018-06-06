@@ -26,7 +26,7 @@ const routes = {
     artworkAdder: { component: ArtworkAdder },
     artworkEditor: { component: ArtworkEditor },
 
-    TESTING: {component: TestPage}
+    TESTING: { component: TestPage }
 };
 
 class ArtflyRouting extends Component {
@@ -46,7 +46,7 @@ class ArtflyRouting extends Component {
 
         // fetch global data
         const sections = location.pathname.split('/').slice(1);
-        if(sections.length > 1){
+        if (sections.length > 1) {
             // if there's an artwork param listen get that data first
             this.props.listenForIndividualArtworkChanged(sections[1]);
         }
@@ -73,10 +73,28 @@ class ArtflyRouting extends Component {
         this.props.stopListeningForUserAuthChanges();
     }
 
+    getParams(url) {
+        const paramKeys = ['artworkId', 'galleryId'];
+        const params = {};
 
+        for (let key of paramKeys) {
+            if (url.indexOf(`${key}_`) !== -1) {
+                const startTag = `${key}_`;
+                const endTag = `_${key}`;
+                const startIndex = url.indexOf(startTag) + startTag.length;
+                const endIndex = url.indexOf(endTag);
+
+                params[key] = url.slice(startIndex, endIndex);
+            }
+        }
+
+        return params;
+    }
 
     setPageData(fullPath) {
-        let page, params = {};
+        let page;
+        const params = this.getParams(fullPath);
+        console.log("params: ", params);
 
         if (fullPath === '/') {
             page = 'home';
@@ -84,24 +102,6 @@ class ArtflyRouting extends Component {
         else {
             const sections = fullPath.split('/').slice(1);
             page = sections[0];
-
-            switch (page) {
-
-                case 'artworkEditor':
-                    params.artworkId = sections[1];
-                    break;
-
-                case 'gallery':
-                    params.artworkId = sections[1];
-                    break;
-
-                case 'delete':
-                    params.step = sections[1];
-                    break;
-
-                default:
-                    break;
-            }
         }
 
         this.setState(() => {

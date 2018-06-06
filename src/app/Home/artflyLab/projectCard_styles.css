@@ -3,12 +3,10 @@
     margin: 10px;
     padding: 1.5em;
     background: white;
-    min-width: 300px;
     display: flex;
     flex-direction: column;
     border-radius: 4px;
     color: #565656;
-    /*height: 100%;*/
 }
 
 .projectCard--info--title {
@@ -18,8 +16,6 @@
 .projectCard--info--description {
     margin: 0 0 10px 0;
     flex: 1;
-    /*padding-top: 10px;*/
-    /*border-top: 1px solid rgba(0, 0, 0, 0.31);*/
 }
 
 .projectCard--links {
