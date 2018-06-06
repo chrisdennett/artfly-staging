@@ -12,7 +12,7 @@ const ProgressItem = ({ progress, label }) => {
             {progress < 1 &&
             <Typography use={'body1'}>
                 <p>Saving: {label}</p>
-                <LinearProgress progress={progress}/>
+                <LinearProgress progress={progress} determinate={progress > 0 && progress < 1}/>
             </Typography>
             }
 

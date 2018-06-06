@@ -10,7 +10,7 @@ const ArtworkThumb = ({ artworkData, artworkId }) => {
         <div style={{ lineHeight: 0, padding: 10 }}
              onClick={() => {history.push(`gallery/${artworkId}`)}}>
 
-            <FramedArtworkCanvas artworkData={artworkData} maxHeight={300} maxWidth={300}/>
+            <FramedArtworkCanvas artworkData={artworkData} maxHeight={260} maxWidth={260}/>
 
         </div>
     );
