@@ -24,10 +24,10 @@ const ArtworkAdderComplete = ({ newArtworkId, addAnotherArtwork, currentArtwork 
             </div>
 
             <div className={'artworkAdderComplete--buttHolder'}>
-                <Button outlined onClick={() => history.push(`/artworkEditor/${newArtworkId}`)}>
+                <Button outlined onClick={() => history.push(`/artworkEditor/artworkId_${newArtworkId}_artworkId`)}>
                     Edit
                 </Button>
-                <Button outlined onClick={() => history.push(`/gallery/${newArtworkId}`)}>
+                <Button outlined onClick={() => history.push(`/gallery/artworkId_${newArtworkId}_artworkId`)}>
                     View
                 </Button>
                 <Button outlined onClick={addAnotherArtwork}>

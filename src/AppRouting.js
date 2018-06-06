@@ -94,7 +94,6 @@ class ArtflyRouting extends Component {
     setPageData(fullPath) {
         let page;
         const params = this.getParams(fullPath);
-        console.log("params: ", params);
 
         if (fullPath === '/') {
             page = 'home';

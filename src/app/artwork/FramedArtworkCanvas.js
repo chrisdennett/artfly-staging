@@ -87,7 +87,7 @@ const calculateDimensions = (maxWidth, maxHeight,
                              heightToWidthRatio, widthToHeightRatio,
                              frameThicknessDecimal, mountThicknessDecimal) => {
 
-    const totalFrameAndMountProportion = (frameThicknessDecimal * 2) + (mountThicknessDecimal * 2);
+    const totalFrameAndMountProportion = frameThicknessDecimal + mountThicknessDecimal * 2;
     const maxImageAreaDecimal = 1 - totalFrameAndMountProportion;
 
     const maxImgWidth = Math.round(maxWidth * maxImageAreaDecimal);
@@ -96,10 +96,10 @@ const calculateDimensions = (maxWidth, maxHeight,
     const imgWidth = Math.round(Math.min(maxImgWidth, maxImgHeight * heightToWidthRatio));
     const imgHeight = Math.round(imgWidth * widthToHeightRatio);
 
-    const smallestSide = Math.min(imgWidth, imgHeight);
+    const largestSide = Math.max(imgWidth, imgHeight);
 
-    let frameThickness = Math.round(smallestSide * frameThicknessDecimal);
-    let mountThickness = Math.round(smallestSide * mountThicknessDecimal);
+    let frameThickness = Math.round(largestSide * frameThicknessDecimal);
+    let mountThickness = Math.round(largestSide * mountThicknessDecimal);
 
     const mountWidth = imgWidth + (mountThickness * 2);
     const mountHeight = imgHeight + (mountThickness * 2);

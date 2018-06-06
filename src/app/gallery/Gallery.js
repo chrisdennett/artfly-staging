@@ -1,8 +1,14 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import Measure from 'react-measure'; //https://www.npmjs.com/package/react-measure
-//
+// ui
+import { Button, ButtonIcon } from 'rmwc/Button';
+import { Icon } from 'rmwc/Icon';
+// styles
+import './gallery_styles.css';
+// comps
 import FramedArtworkCanvas from "../artwork/FramedArtworkCanvas";
+import AppBar from "../appBar/AppBar";
 
 class Gallery extends Component {
 
@@ -20,29 +26,48 @@ class Gallery extends Component {
 
     render() {
         const { currentArtwork } = this.props;
-        if(!currentArtwork) return null;
+        if (!currentArtwork) return null;
 
         const { dimensions } = this.state;
-        const galleryStyle = {display:'flex', backgroundColor: '#FF0000', overflow: 'hidden', flexDirection: 'column', height: '100vh'};
+        let maxFrameWidth, maxFrameHeight;
+
+        if (dimensions) {
+            maxFrameWidth = Math.min(dimensions.width - 20, 1000);
+            maxFrameHeight = Math.min(dimensions.height - 100);
+        }
 
         return (
-            <Measure
-                bounds
-                onResize={this.onResize}>
+            <div className={'gallery'}>
 
-                {({ measureRef }) =>
-                    <div ref={measureRef} style={galleryStyle}>
-                        <h1>Gallery</h1>
+                <AppBar title={'Gallery'} fixed={false}/>
 
-                        {currentArtwork && dimensions &&
-                        <FramedArtworkCanvas
-                            maxWidth={Math.min(dimensions.width - 20, 1000)}
-                            maxHeight={Math.min(dimensions.height - 150, 1000)}
-                            artworkData={currentArtwork}/>
-                        }
-                    </div>
-                }
-            </Measure>
+                <Measure
+                    bounds
+                    onResize={this.onResize}>
+
+                    {({ measureRef }) =>
+                        <div ref={measureRef} className={'gallery--sizePlaceholder'}>
+
+                            <div className={'gallery--framedArtwork'}>
+                                {currentArtwork && dimensions &&
+                                <FramedArtworkCanvas
+                                    maxWidth={maxFrameWidth}
+                                    maxHeight={maxFrameHeight}
+                                    artworkData={currentArtwork}/>
+                                }
+                            </div>
+                        </div>
+                    }
+                </Measure>
+
+
+                <div className={'gallery--controls'}>
+                    <Button><Icon use={'arrow_back'}/></Button>
+                    <Button className={'gallery--controls--backToGalleryButt'}><Icon use={'dashboard'}/></Button>
+                    <Button><Icon use={'arrow_forward'}/></Button>
+                </div>
+
+            </div>
         );
     }
 }

@@ -1,0 +1,40 @@
+.gallery{
+    display:flex;
+    background: url("../../app/images/brickwall.png");
+    overflow: hidden;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.gallery--sizePlaceholder{
+    flex: 1;
+    background-color: red;
+    position: relative;
+}
+
+.gallery--controls{
+    height: 60px;
+    background-color: whitesmoke;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gallery--controls--backToGalleryButt{
+    /*align-self: left;*/
+}
+
+
+.gallery--framedArtwork{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #6cdfea;
+}

@@ -26,7 +26,9 @@ class ArtworkThumb extends Component {
                     onMouseOut={() => this.setState({ elevation: 0 })}>
                     <Ripple>
 
-                        <FramedArtworkCanvas artworkData={artworkData} maxHeight={260} maxWidth={260}/>
+                        <FramedArtworkCanvas artworkData={artworkData}
+                                             maxHeight={260}
+                                             maxWidth={260}/>
                     </Ripple>
                 </Elevation>
             </div>
