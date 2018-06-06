@@ -1,8 +1,8 @@
 .gallery{
     display:flex;
     background: url("../../app/images/brickwall.png");
-    overflow: hidden;
-    height: 100vh;
+    /*overflow: hidden;*/
+    min-height: 100vh;
     flex-direction: column;
 }
 

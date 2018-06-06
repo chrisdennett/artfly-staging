@@ -45,10 +45,10 @@ class ArtflyRouting extends Component {
         this.setState({ unlisten: unlisten });
 
         // fetch global data
-        const sections = location.pathname.split('/').slice(1);
-        if (sections.length > 1) {
+        const params = this.getParams(location.pathname);
+        if (params.artworkId) {
             // if there's an artwork param listen get that data first
-            this.props.listenForIndividualArtworkChanged(sections[1]);
+            this.props.listenForIndividualArtworkChanged(params.artworkId);
         }
 
         // listen out for logging in and out

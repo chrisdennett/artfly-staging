@@ -12,7 +12,8 @@ import SocialMediaStuff from "./socialMediaStuff/SocialMediaStuff";
 import ArtFlyLab from "./artflyLab/ArtFlyLab";
 import ArtFlyIntro from "./artFlyIntro/ArtFlyIntro";
 import AppBar from "../appBar/AppBar";
-import GalleryHome from "../gallery/GalleryHome";
+// import GalleryHome from "../gallery/GalleryHome";
+import history from "../global/history";
 
 const Home = ({ user }) => {
     const userLoggedIn = !!user.uid;
@@ -48,7 +49,7 @@ const Home = ({ user }) => {
                     Your Galleries
                 </Typography>
                 <div className={'home--artworks'}>
-                    <GalleryHome/>
+                    <button onClick={() => history.push(`/gallery/`)}>GO to your gallery</button>
                 </div>
             </div>
             }

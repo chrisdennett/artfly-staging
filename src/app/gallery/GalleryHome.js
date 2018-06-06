@@ -10,7 +10,8 @@ import ArtworkThumb from "../artworkThumb/ArtworkThumb";
 class GalleryHome extends Component {
 
     render() {
-        const {artworks} = this.props;
+        const {galleryArtworks, artworkId} = this.props;
+        console.log("artworkId: ", artworkId);
 
         return (
             <div>
@@ -20,11 +21,11 @@ class GalleryHome extends Component {
 
                 <div className={'artworkThumbs'}>
                     {
-                        Object.keys(artworks).map(artworkId => {
-                            const artworkData = artworks[artworkId];
+                        galleryArtworks.map(artworkData => {
+                            // const artworkData = artworks[artworkId];
                             return (
-                                <ArtworkThumb key={artworkId}
-                                              artworkId={artworkId}
+                                <ArtworkThumb key={artworkData.artworkId}
+                                              artworkId={artworkData.artworkId}
                                               artworkData={artworkData}
                                 />
                             )
@@ -40,9 +41,21 @@ class GalleryHome extends Component {
 const mapStateToProps = (state) => (
     {
         user: state.user,
-        artworks: state.artworks
+        galleryArtworks: getArtworksByDate(state.artworks)
     }
 );
 
+export default connect(mapStateToProps)(GalleryHome);
 
-export default connect(mapStateToProps)(GalleryHome)
+const getArtworksByDate = (artworks) => {
+
+    const arr = Object.keys(artworks).map(id => {
+        return artworks[id];
+    });
+
+    arr.sort((a, b) => {
+        return b.lastUpdated - a.lastUpdated;
+    });
+
+    return arr;
+};
