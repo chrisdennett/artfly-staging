@@ -87,32 +87,25 @@ const calculateDimensions = (maxWidth, maxHeight,
                              heightToWidthRatio, widthToHeightRatio,
                              frameThicknessDecimal, mountThicknessDecimal) => {
 
-    // * widthToHeightRatio to base everything on the height of the picture.
-    // if this isn't used and the picture sizes are recalculated because
-    // the proposedFrameHeight is too tall, the proportions jump dramatically.
-    let frameThickness = Math.round(maxWidth * frameThicknessDecimal * widthToHeightRatio);
-    let mountThickness = Math.round(maxWidth * mountThicknessDecimal * widthToHeightRatio);
-    let totalFrameAndMountThickness = (frameThickness * 2) + (mountThickness * 2);
+    const totalFrameAndMountProportion = (frameThicknessDecimal * 2) + (mountThicknessDecimal * 2);
+    const maxImageAreaDecimal = 1 - totalFrameAndMountProportion;
 
-    // work out first as if fitting to width
-    let imgWidth = maxWidth - totalFrameAndMountThickness;
-    let imgHeight = imgWidth * widthToHeightRatio;
-    let proposedFrameHeight = Math.round(imgHeight + totalFrameAndMountThickness);
+    const maxImgWidth = Math.round(maxWidth * maxImageAreaDecimal);
+    const maxImgHeight = Math.round(maxHeight * maxImageAreaDecimal);
 
-    // if it doesn't fit the height, fit to height instead
-    if (proposedFrameHeight > maxHeight) {
-        frameThickness = Math.round(maxHeight * frameThicknessDecimal);
-        mountThickness = Math.round(maxHeight * mountThicknessDecimal);
-        totalFrameAndMountThickness = (frameThickness * 2) + (mountThickness * 2);
-        imgHeight = Math.round(maxHeight - totalFrameAndMountThickness);
-        imgWidth = Math.round(imgHeight * heightToWidthRatio);
-    }
+    const imgWidth = Math.round(Math.min(maxImgWidth, maxImgHeight * heightToWidthRatio));
+    const imgHeight = Math.round(imgWidth * widthToHeightRatio);
 
-    const frameHeight = Math.round(imgHeight + totalFrameAndMountThickness);
-    const frameWidth = Math.round(imgWidth + totalFrameAndMountThickness);
+    const smallestSide = Math.min(imgWidth, imgHeight);
 
-    const mountWidth = Math.round(frameWidth - (frameThickness * 2));
-    const mountHeight = Math.round(frameHeight - (frameThickness * 2));
+    let frameThickness = Math.round(smallestSide * frameThicknessDecimal);
+    let mountThickness = Math.round(smallestSide * mountThicknessDecimal);
+
+    const mountWidth = imgWidth + (mountThickness * 2);
+    const mountHeight = imgHeight + (mountThickness * 2);
+
+    const frameWidth = mountWidth + (frameThickness * 2);
+    const frameHeight = mountHeight + (frameThickness * 2);
 
     return { frameWidth, frameHeight, frameThickness, mountWidth, mountHeight, mountThickness, imgWidth, imgHeight }
 };

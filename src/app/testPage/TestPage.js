@@ -17,7 +17,7 @@ const TestArtworkAdderComplete = () => {
         <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
             <AppBar title={'Artwork Added'} fixed={false} showUserMenu={false} showCloseButt={true}/>
 
-            <ArtworkAdderComplete newArtworkId={'4GxyBhbqAbooducLCelF'}/>
+            <ArtworkAdderComplete newArtworkId={'qMnIiHfbu5avgjZ5dhjM'}/>
         </div>
     )
 };
