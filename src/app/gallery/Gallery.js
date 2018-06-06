@@ -15,12 +15,13 @@ import AppBar from "../appBar/AppBar";
 class Gallery extends Component {
 
     render() {
-        const { galleryArtworks, currentArtwork } = this.props;
+        const { galleryArtworks, galleryNavData } = this.props;
+        const {currentArtwork, nextArtwork, previousArtwork} = galleryNavData;
 
         return (
             <div className={'gallery'}>
 
-                <AppBar title={'Gallery'} fixed={true}/>
+                <AppBar title={'Gallery'} fixed={!currentArtwork}/>
 
                 {currentArtwork &&
                     <GalleryArtwork currentArtwork={currentArtwork} />
@@ -51,9 +52,20 @@ class Gallery extends Component {
 
                 {currentArtwork &&
                 <div className={'gallery--controls'}>
-                    <Button><Icon use={'arrow_back'}/></Button>
-                    <Button className={'gallery--controls--backToGalleryButt'}><Icon use={'dashboard'}/></Button>
-                    <Button><Icon use={'arrow_forward'}/></Button>
+                    <Button disabled={!previousArtwork}
+                            onClick={() => history.replace(`/gallery/artworkId_${previousArtwork.artworkId}_artworkId`)}>
+                        <Icon use={'arrow_back'}/>
+                    </Button>
+
+                    <Button className={'gallery--controls--backToGalleryButt'}
+                    onClick={() => history.replace(`/gallery`)}>
+                        <Icon use={'dashboard'}/>
+                    </Button>
+
+                    <Button disabled={!nextArtwork}
+                            onClick={() => history.replace(`/gallery/artworkId_${nextArtwork.artworkId}_artworkId`)}>
+                        <Icon use={'arrow_forward'}/>
+                    </Button>
                 </div>
                 }
             </div>
@@ -65,19 +77,45 @@ class Gallery extends Component {
 const mapStateToProps = (state, props) => (
     {
         user: state.user,
-        currentArtwork: selectCurrentArtwork(state.artworks, props.artworkId),
-        galleryArtworks: getArtworksByDate(state.artworks)
+        galleryArtworks: getArtworksByDate(state.artworks),
+        galleryNavData: getGalleryNavigation(state.artworks, props.artworkId)
     }
 );
 
 export default connect(mapStateToProps)(Gallery);
 
-const selectCurrentArtwork = (artworks, artworkId) => {
+// return current index, total, previous and next
+const getGalleryNavigation = (artworks, artworkId) => {
+    const galleryArtworks = getArtworksByDate(artworks);
+    const totalArtworks = galleryArtworks.length;
+    let currentArtwork, nextArtwork, previousArtwork;
+
+    for(let i=0; i<totalArtworks; i++){
+        const artwork = galleryArtworks[i];
+        if(artwork.artworkId === artworkId){
+            currentArtwork = artwork;
+
+            if(i > 0){
+                previousArtwork = galleryArtworks[i-1];
+            }
+
+            if(i < totalArtworks-1){
+                nextArtwork = galleryArtworks[i+1]
+            }
+
+            break;
+        }
+    }
+
+    return {currentArtwork, nextArtwork, previousArtwork};
+};
+
+/*const selectCurrentArtwork = (artworks, artworkId) => {
     const artwork = artworks[artworkId];
     if (!artwork) return null;
 
     return artwork
-};
+};*/
 
 const getArtworksByDate = (artworks) => {
     const arr = Object.keys(artworks).map(id => {
