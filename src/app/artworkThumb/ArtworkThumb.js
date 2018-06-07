@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Elevation } from 'rmwc/Elevation';
 import { Ripple } from 'rmwc/Ripple';
 // helpers
-import history from "../global/history";
 import FramedArtworkCanvas from "../artwork/FramedArtworkCanvas";
 
 class ArtworkThumb extends Component {
@@ -14,11 +13,11 @@ class ArtworkThumb extends Component {
     }
 
     render() {
-        const { artworkData, artworkId } = this.props;
+        const { artworkData, onClick } = this.props;
 
         return (
             <div style={{ lineHeight: 0, padding: 10 }}
-                 onClick={() => {history.push(`gallery/artworkId_${artworkId}_artworkId`)}}>
+                 onClick={onClick}>
                 <Elevation
                     z={this.state.elevation || 0}
                     transition

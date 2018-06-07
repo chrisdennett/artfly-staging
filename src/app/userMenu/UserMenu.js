@@ -24,10 +24,11 @@ class UserMenu extends Component {
 
     render() {
         const { menuIsOpen } = this.state;
-        const { userSignedIn, signOutUser } = this.props;
+        const { userSignedIn, signOutUser, userPending } = this.props;
 
         return (
             <div>
+                {!userPending &&
                 <MenuAnchor>
                     <Menu
                         open={menuIsOpen}
@@ -56,15 +57,16 @@ class UserMenu extends Component {
                                  onClick={() => this.setState({ menuIsOpen: true })}/>
                     }
                 </MenuAnchor>
+                }
             </div>
         );
     }
 }
 
 const mapStateToProps = (state) => {
-    // just care about a 
     return {
+        userPending: state.user === 'pending',
         userSignedIn: !!state.user.uid
     }
 };
-export default connect(mapStateToProps, {signOutUser})(UserMenu);
+export default connect(mapStateToProps, { signOutUser })(UserMenu);

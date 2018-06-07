@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 // ui
 import { Button, ButtonIcon } from 'rmwc/Button';
 import { Icon } from 'rmwc/Icon';
+import { ToolbarIcon } from 'rmwc/Toolbar';
 // styles
 import './gallery_styles.css';
 // helper
@@ -15,16 +16,26 @@ import AppBar from "../appBar/AppBar";
 class Gallery extends Component {
 
     render() {
-        const { galleryArtworks, galleryNavData } = this.props;
-        const {currentArtwork, nextArtwork, previousArtwork} = galleryNavData;
+        const { galleryArtworks, galleryNavData, artworkId } = this.props;
+        const { currentArtwork, nextArtwork, previousArtwork } = galleryNavData;
+        const urlEndsInSlash = history.location.pathname.slice(-1) === '/';
+        const urlPrefix = urlEndsInSlash ? '' : '/gallery/';
+        let editButt;
+        if (artworkId) {
+            editButt = (<ToolbarIcon use="edit"
+                                     theme={'text-primary-on-background'}
+                                     onClick={() => history.push(`/artworkEditor/artworkId_${artworkId}_artworkId`)}/>);
+        }
 
         return (
             <div className={'gallery'}>
 
-                <AppBar title={'Gallery'} fixed={!currentArtwork}/>
+                <AppBar title={'Gallery'}
+                        fixed={!currentArtwork}
+                        butts={editButt}/>
 
                 {currentArtwork &&
-                    <GalleryArtwork currentArtwork={currentArtwork} />
+                <GalleryArtwork currentArtwork={currentArtwork}/>
                 }
 
                 {!currentArtwork &&
@@ -40,7 +51,7 @@ class Gallery extends Component {
                                 // const artworkData = artworks[artworkId];
                                 return (
                                     <ArtworkThumb key={artworkData.artworkId}
-                                                  artworkId={artworkData.artworkId}
+                                                  onClick={() => history.push(`${urlPrefix}artworkId_${artworkData.artworkId}_artworkId`)}
                                                   artworkData={artworkData}
                                     />
                                 )
@@ -53,17 +64,17 @@ class Gallery extends Component {
                 {currentArtwork &&
                 <div className={'gallery--controls'}>
                     <Button disabled={!previousArtwork}
-                            onClick={() => history.replace(`/gallery/artworkId_${previousArtwork.artworkId}_artworkId`)}>
+                            onClick={() => history.push(`${urlPrefix}artworkId_${previousArtwork.artworkId}_artworkId`)}>
                         <Icon use={'arrow_back'}/>
                     </Button>
 
                     <Button className={'gallery--controls--backToGalleryButt'}
-                    onClick={() => history.replace(`/gallery`)}>
+                            onClick={() => history.push(`/gallery`)}>
                         <Icon use={'dashboard'}/>
                     </Button>
 
                     <Button disabled={!nextArtwork}
-                            onClick={() => history.replace(`/gallery/artworkId_${nextArtwork.artworkId}_artworkId`)}>
+                            onClick={() => history.replace(`${urlPrefix}artworkId_${nextArtwork.artworkId}_artworkId`)}>
                         <Icon use={'arrow_forward'}/>
                     </Button>
                 </div>
@@ -72,7 +83,6 @@ class Gallery extends Component {
         );
     }
 }
-
 
 const mapStateToProps = (state, props) => (
     {
@@ -90,32 +100,25 @@ const getGalleryNavigation = (artworks, artworkId) => {
     const totalArtworks = galleryArtworks.length;
     let currentArtwork, nextArtwork, previousArtwork;
 
-    for(let i=0; i<totalArtworks; i++){
+    for (let i = 0; i < totalArtworks; i++) {
         const artwork = galleryArtworks[i];
-        if(artwork.artworkId === artworkId){
+        if (artwork.artworkId === artworkId) {
             currentArtwork = artwork;
 
-            if(i > 0){
-                previousArtwork = galleryArtworks[i-1];
+            if (i > 0) {
+                previousArtwork = galleryArtworks[i - 1];
             }
 
-            if(i < totalArtworks-1){
-                nextArtwork = galleryArtworks[i+1]
+            if (i < totalArtworks - 1) {
+                nextArtwork = galleryArtworks[i + 1]
             }
 
             break;
         }
     }
 
-    return {currentArtwork, nextArtwork, previousArtwork};
+    return { currentArtwork, nextArtwork, previousArtwork };
 };
-
-/*const selectCurrentArtwork = (artworks, artworkId) => {
-    const artwork = artworks[artworkId];
-    if (!artwork) return null;
-
-    return artwork
-};*/
 
 const getArtworksByDate = (artworks) => {
     const arr = Object.keys(artworks).map(id => {

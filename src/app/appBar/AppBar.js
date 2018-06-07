@@ -5,7 +5,7 @@ import {
     ToolbarSection,
     ToolbarFixedAdjust,
     ToolbarTitle,
-    ToolbarIcon,
+    ToolbarIcon
 } from 'rmwc/Toolbar';
 //
 import history from "../global/history";
@@ -13,9 +13,9 @@ import history from "../global/history";
 import UserMenu from "../userMenu/UserMenu";
 import HomeIconButton from "../../homeIconButton/HomeIconButton";
 
-const AppBar = function ({title, showUserMenu=true, showCloseButt=false, fixed=true}) {
+const AppBar = function ({ title, showUserMenu = true, showCloseButt = false, fixed = true, butts = null }) {
 
-    const style = { borderBottom: '1px solid rgba(0,0,0,0.2)'};
+    const style = { borderBottom: '1px solid rgba(0,0,0,0.2)' };
 
     return (
         <div>
@@ -23,13 +23,20 @@ const AppBar = function ({title, showUserMenu=true, showCloseButt=false, fixed=t
                 <ToolbarRow style={style} theme={'background text-primary-on-background'}>
                     {title &&
                     <ToolbarSection alignStart>
+
                         <HomeIconButton/>
+
                         <ToolbarTitle>{title}</ToolbarTitle>
                     </ToolbarSection>
                     }
                     <ToolbarSection alignEnd>
+
+                        {butts &&
+                        butts
+                        }
+
                         {showUserMenu &&
-                        <UserMenu />
+                        <UserMenu/>
                         }
 
                         {showCloseButt &&

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import AppBar from "../appBar/AppBar";
 
 class ArtworkEditor extends Component {
 
@@ -6,7 +7,8 @@ class ArtworkEditor extends Component {
 
         return (
             <div>
-                <h1>ArtworkEditor</h1>
+                <AppBar title={'Artwork Editor'}
+                        fixed={false}/>
             </div>
         );
     }
