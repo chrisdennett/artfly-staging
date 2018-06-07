@@ -5,22 +5,41 @@ import {
     ToolbarSection,
     ToolbarFixedAdjust,
     ToolbarTitle,
-    ToolbarIcon
+    ToolbarIcon,
+    ToolbarMenuIcon
 } from 'rmwc/Toolbar';
-//
+// styles
+import './appBar_styles.css';
+// helpers
 import history from "../global/history";
-//
+// comps
 import UserMenu from "../userMenu/UserMenu";
 import HomeIconButton from "../../homeIconButton/HomeIconButton";
 
-const AppBar = function ({ title, showUserMenu = true, showCloseButt = false, fixed = true, butts = null }) {
+export const ArtworkEditorAppBar = ({onClose, onClick}) => (
+        <Toolbar theme={'background'}>
+            <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
+                <ToolbarSection alignStart>
+                    <ToolbarMenuIcon use="menu"
+                                     onClick={onClick}/>
+                    <ToolbarTitle>Artwork Editor</ToolbarTitle>
+                </ToolbarSection>
 
-    const style = { borderBottom: '1px solid rgba(0,0,0,0.2)' };
+                <ToolbarSection alignEnd>
+                    <UserMenu/>
+                    <ToolbarIcon use="close"
+                                 theme={'text-primary-on-background'}
+                                 onClick={onClose}/>
+                </ToolbarSection>
+            </ToolbarRow>
+        </Toolbar>
+    );
 
+const AppBar = function ({ title, navigation, showUserMenu = true, showCloseButt = false, fixed = true, butts = null }) {
     return (
         <div>
             <Toolbar fixed={fixed} theme={'background'}>
-                <ToolbarRow style={style} theme={'background text-primary-on-background'}>
+                <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
                     {title &&
                     <ToolbarSection alignStart>
 
