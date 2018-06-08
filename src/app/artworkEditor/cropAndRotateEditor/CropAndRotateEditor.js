@@ -67,9 +67,7 @@ class CropAndRotateEditor extends Component {
 
     onRotateClick(){
         const currentRotation = this.props.orientation;
-        // const nextRotations = { 1: 6, 6: 3, 3: 8, 8: 1 }; // order of rotations by 90° clockwise increments
-        const nextRotations = { 1: 8, 8: 3, 3: 6, 6: 1 }; // order of rotations by 90° anticlockwise increments
-        const newOrientation = nextRotations[currentRotation] || 6;
+        const newOrientation = getNextOrientation(currentRotation);
 
         let { leftPercent, rightPercent, topPercent, bottomPercent } = this.props.cropData;
 
@@ -133,4 +131,30 @@ const getSizeRatios = (cropDecimals, width, height) => {
     const widthToHeightRatio = croppedHeight / croppedWidth;
 
     return {widthToHeightRatio, heightToWidthRatio};
+};
+
+const getNextOrientation = (currentOrientation) =>{
+    // const nextRotations = { 1: 6, 6: 3, 3: 8, 8: 1 }; // order of rotations by 90° clockwise increments
+    // const nextRotations = { 1: 8, 8: 3, 3: 6, 6: 1 }; // order of rotations by 90° anticlockwise increments
+    // const newOrientation = nextRotations[currentRotation] || 6;
+    let nextOrientation;
+
+    switch (currentOrientation){
+        case 1: nextOrientation = 8; break;
+        case 8: nextOrientation = 3; break;
+        case 3: nextOrientation = 6; break;
+        case 6: nextOrientation = 1; break;
+
+        case 2: nextOrientation = 5; break;
+        case 5: nextOrientation = 4; break;
+        case 4: nextOrientation = 7; break;
+        case 7: nextOrientation = 2; break;
+
+        default: nextOrientation = 8;
+    }
+
+    console.log("currentOrientation: ", currentOrientation);
+    console.log("nextOrientation: ", nextOrientation);
+
+    return nextOrientation;
 };

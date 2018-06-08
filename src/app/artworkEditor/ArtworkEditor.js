@@ -32,7 +32,6 @@ class ArtworkEditor extends Component {
         const { currentArtwork } = props;
         if (!currentArtwork || this.state.sourceImg) return;
 
-
         let sourceImg = new Image();
         sourceImg.setAttribute('crossOrigin', 'anonymous'); //
         sourceImg.src = currentArtwork.sourceUrl;
@@ -44,7 +43,6 @@ class ArtworkEditor extends Component {
     }
 
     onCropAndRotateChange(cropAndOrientationData) {
-        console.log("cropAndOrientationData: ", cropAndOrientationData);
         this.setState({unsavedArtworkData:{...cropAndOrientationData}});
     }
 
