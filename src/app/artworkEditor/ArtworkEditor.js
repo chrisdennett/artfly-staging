@@ -51,7 +51,7 @@ class ArtworkEditor extends Component {
     }
 
     onCancel() {
-        history.goBack();
+        history.push(`/gallery/${this.props.artworkId}`);
     }
 
     render() {

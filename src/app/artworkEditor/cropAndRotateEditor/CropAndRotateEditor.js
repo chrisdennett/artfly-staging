@@ -54,7 +54,6 @@ class CropAndRotateEditor extends Component {
     }
 
     onCropChange(cropData){
-        // this.props.onDataChange({cropData});
         this.sendUpdatedData({cropData});
     }
 
@@ -79,13 +78,11 @@ class CropAndRotateEditor extends Component {
         const newCropData = {leftPercent:newL, rightPercent:newR, topPercent:newT, bottomPercent:newB};
 
         this.sendUpdatedData({orientation:newOrientation, cropData:newCropData})
-        // this.props.onDataChange({orientation:newOrientation, cropData:newCropData});
     }
     
     render() {
         const { cropData } = this.props;
         const { canvasWidth=100, canvasHeight=100 } = this.state;
-        // const buttStyle = { color: 'rgba(255,255,255,0.7)', marginRight: 10 };
 
         return (
             <Measure
@@ -134,9 +131,7 @@ const getSizeRatios = (cropDecimals, width, height) => {
 };
 
 const getNextOrientation = (currentOrientation) =>{
-    // const nextRotations = { 1: 6, 6: 3, 3: 8, 8: 1 }; // order of rotations by 90° clockwise increments
-    // const nextRotations = { 1: 8, 8: 3, 3: 6, 6: 1 }; // order of rotations by 90° anticlockwise increments
-    // const newOrientation = nextRotations[currentRotation] || 6;
+    // https://www.daveperrett.com/articles/2012/07/28/exif-orientation-handling-is-a-ghetto/
     let nextOrientation;
 
     switch (currentOrientation){
@@ -152,9 +147,6 @@ const getNextOrientation = (currentOrientation) =>{
 
         default: nextOrientation = 8;
     }
-
-    console.log("currentOrientation: ", currentOrientation);
-    console.log("nextOrientation: ", nextOrientation);
 
     return nextOrientation;
 };

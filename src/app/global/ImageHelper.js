@@ -185,8 +185,6 @@ export function drawToCanvas({ sourceCanvas, outputCanvas, orientation, cropData
 
     const isPortrait = orientation > 4 && orientation < 9;
 
-    console.log("isPortrait: ", isPortrait);
-
     // switch height and width if it's portrait
     let imgW = isPortrait ? sourceCanvas.height : sourceCanvas.width;
     let imgH = isPortrait ? sourceCanvas.width : sourceCanvas.height;
