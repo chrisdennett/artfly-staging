@@ -26,6 +26,17 @@ class ArtworkAdder extends Component {
         this.onAddAnother = this.onAddAnother.bind(this);
     }
 
+    componentWillUnmount() {
+        this.props.resetArtworkSavingProgress();
+        this.setState = (
+            {
+                img: null,
+                orientation: 1,
+                cropData: { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 }
+            }
+        );
+    }
+
     onPhotoSelected(imgFile) {
         GetImage(imgFile, (img, orientation, widthToHeightRatio, heightToWidthRatio) => {
             this.setState({ img, orientation, widthToHeightRatio, heightToWidthRatio });
@@ -62,8 +73,8 @@ class ArtworkAdder extends Component {
         const savedArtworkId = artworkSavingProgress.artworkId;
 
         let title = 'Add Art';
-        if(showPhotoSavingProgress) title = 'Saving...';
-        if(saveComplete) title = 'Artwork Added';
+        if (showPhotoSavingProgress) title = 'Saving...';
+        if (saveComplete) title = 'Artwork Added';
 
         return (
             <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
