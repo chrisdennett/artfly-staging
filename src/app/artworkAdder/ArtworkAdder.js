@@ -45,6 +45,10 @@ class ArtworkAdder extends Component {
 
     onCropAndRotateChange(newData) {
         const { orientation = this.state.orientation, cropData, widthToHeightRatio, heightToWidthRatio } = newData;
+
+        console.log("widthToHeightRatio: ", widthToHeightRatio);
+        console.log("heightToWidthRatio: ", heightToWidthRatio);
+
         this.setState({ orientation, cropData, widthToHeightRatio, heightToWidthRatio })
     }
 

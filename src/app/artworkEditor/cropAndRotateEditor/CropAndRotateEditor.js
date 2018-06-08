@@ -19,10 +19,10 @@ class CropAndRotateEditor extends Component {
         this.onCropChange = this.onCropChange.bind(this);
         this.onRotateClick = this.onRotateClick.bind(this);
         this.sendUpdatedData = this.sendUpdatedData.bind(this);
-
     }
 
     componentWillReceiveProps(newProps) {
+        console.log("newProps: ", newProps);
         this.drawCuttingBoardCanvas(newProps);
     }
 
@@ -59,8 +59,15 @@ class CropAndRotateEditor extends Component {
 
     // default to props so can overwrite single values without error
     sendUpdatedData({orientation=this.props.orientation, cropData=this.props.cropData}){
-        const {canvasWidth, canvasHeight} = this.state;
-        const {widthToHeightRatio, heightToWidthRatio} = getSizeRatios(cropData, canvasWidth, canvasHeight);
+
+        // NB: can't use canvas width and height here because that updates as a result of
+        // calling onDataChange.
+        const {width, height} = this.props.sourceImg;
+        const isPortrait = orientation > 4 && orientation < 9;
+        const w = isPortrait ? height : width;
+        const h = isPortrait ? width : height;
+
+        const {widthToHeightRatio, heightToWidthRatio} = getSizeRatios(cropData, w, h);
         this.props.onDataChange({orientation, cropData, widthToHeightRatio, heightToWidthRatio});
     }
 
@@ -113,6 +120,9 @@ class CropAndRotateEditor extends Component {
 export default CropAndRotateEditor;
 
 const getSizeRatios = (cropDecimals, width, height) => {
+    console.log("width: ", width);
+    console.log("height: ", height);
+
     const {leftPercent, rightPercent, topPercent, bottomPercent} = cropDecimals;
 
     const totalCropWidthPercentage = leftPercent + (1-rightPercent);
