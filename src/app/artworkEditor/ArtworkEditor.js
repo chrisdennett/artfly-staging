@@ -1,92 +1,79 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-// ui
-import {
-    Drawer,
-    DrawerHeader,
-    DrawerContent
-} from 'rmwc/Drawer';
-
-import {
-    ListItem,
-    ListItemText
-} from 'rmwc/List';
 // styles
 import './artworkEditor_styles.css';
-// images
-import IconFrameSize from './../images/icons/frame-size.png';
-import IconFrameColour from './../images/icons/frame-colour.png';
-import IconCropRotate from './../images/icons/crop-rotate.png';
-// helpers
-import history from "../global/history";
 // comps
-import {ArtworkEditorAppBar} from "../appBar/AppBar";
-import GalleryArtwork from "../gallery/GalleryArtwork";
-import ArtworkOptionsToolBar from "../artworkOptions/artworkOptionsToolBar/ArtworkOptionsToolBar";
-
-const artworkOptions = {
-    frame: {
-        index: 0,
-        name: 'Frame Size',
-        icon: IconFrameSize
-    },
-    frameColour: {
-        index: 1,
-        name: 'Frame Colour',
-        icon: IconFrameColour
-    },
-    crop: {
-        index: 3,
-        name: 'Crop & Rotate',
-        useFullPage: true,
-        icon: IconCropRotate
-    }
-};
+import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
+import SaveOrCancelControls from "../artworkAdder/SaveOrCancelControls";
+import history from "../global/history";
 
 class ArtworkEditor extends Component {
 
     constructor(props) {
         super(props);
 
-        this.state = {tempOpen:false}
+        this.state = { sourceImg:null, unsavedArtworkData:{}};
+
+        this.onCropAndRotateChange = this.onCropAndRotateChange.bind(this);
+        this.onSave = this.onSave.bind(this);
+        this.onCancel = this.onCancel.bind(this);
+        this.loadSourceImg = this.loadSourceImg.bind(this);
+    }
+
+    componentWillMount(){
+        this.loadSourceImg(this.props)
+    }
+
+    componentWillReceiveProps(props) {
+        this.loadSourceImg(props)
+    }
+
+    loadSourceImg(props) {
+        const { currentArtwork } = props;
+        if (!currentArtwork || this.state.sourceImg) return;
+
+
+        let sourceImg = new Image();
+        sourceImg.setAttribute('crossOrigin', 'anonymous'); //
+        sourceImg.src = currentArtwork.sourceUrl;
+        sourceImg.onload = () => {
+            this.setState({
+                sourceImg
+            });
+        }
+    }
+
+    onCropAndRotateChange(cropAndOrientationData) {
+        console.log("cropAndOrientationData: ", cropAndOrientationData);
+        this.setState({unsavedArtworkData:{...cropAndOrientationData}});
+    }
+
+    onSave() {
+
+    }
+
+    onCancel() {
+        history.goBack();
     }
 
     render() {
-        const { currentArtwork, artworkId } = this.props;
+        const { currentArtwork } = this.props;
+        const { sourceImg, unsavedArtworkData } = this.state;
+        const mergedData = {...currentArtwork, ...unsavedArtworkData};
 
         return (
             <div className={'artworkEditor'}>
-                <ArtworkEditorAppBar
-                    onClick={() => this.setState({tempOpen: true})}
-                    onClose={() => history.push(`/gallery/artworkId_${artworkId}_artworkId`)} />
 
-                <Drawer
-                    temporary
-                    open={this.state.tempOpen}
-                    onClose={() => this.setState({tempOpen: false})}
-                >
-                    <DrawerHeader>
-                        DrawerHeader
-                    </DrawerHeader>
-                    <DrawerContent>
-                        <ListItem>
-                            <ListItemText>Cookies</ListItemText>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText>Pizza</ListItemText>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText>Icecream</ListItemText>
-                        </ListItem>
-                    </DrawerContent>
-                </Drawer>
-
-
-                <GalleryArtwork currentArtwork={currentArtwork}/>
-
-                <ArtworkOptionsToolBar options={artworkOptions}
-                                       onOptionSelect={(value) => console.log("value: ", value)}
-                                       onChange={(value) => console.log("value: ", value)}/>
+                {sourceImg &&
+                <CropAndRotateEditor sourceImg={sourceImg}
+                                     key={1}
+                                     orientation={mergedData.orientation}
+                                     cropData={mergedData.cropData}
+                                     onDataChange={this.onCropAndRotateChange}/>
+                }
+                <SaveOrCancelControls onSave={this.onSave}
+                                      key={2}
+                                      onCancel={this.onCancel}/>
             </div>
         );
     }

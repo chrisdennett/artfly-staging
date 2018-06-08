@@ -4,7 +4,7 @@ import './artworkOptions_styles.css';
 // actions
 // import { addArtwork, getArtworkDataOnce } from "../../actions/UserDataActions";
 // comps
-import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
+import CropAndRotateEditor from "../artworkEditor/cropAndRotateEditor/CropAndRotateEditor";
 import FrameSizeOptions from "./frameEditor/FrameSizeOptions";
 import FrameColourOptions from "./frameEditor/FrameColourOptions";
 import PeopleOptions from "./peopleOptions/PeoplesOptions";

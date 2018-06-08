@@ -12,13 +12,14 @@ import GalleryArtwork from "./GalleryArtwork";
 class GalleryArtworkViewer extends Component {
 
     render() {
-        const { currentArtwork, previousArtwork, nextArtwork } = this.props;
+        const { currentArtwork, previousArtwork, nextArtwork, onEditClick } = this.props;
         const urlEndsInSlash = history.location.pathname.slice(-1) === '/';
         const urlPrefix = urlEndsInSlash ? '' : '/gallery/';
 
         const editButt = (<ToolbarIcon use="edit"
                                        theme={'text-primary-on-background'}
-                                       onClick={() => history.push(`/artworkEditor/artworkId_${currentArtwork.artworkId}_artworkId`)}/>);
+                                       onClick={onEditClick}/>);
+                                       // onClick={() => history.push(`/artworkEditor/artworkId_${currentArtwork.artworkId}_artworkId`)}/>);
 
         return (
             <div className={'gallery'}>

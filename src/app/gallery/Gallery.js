@@ -7,17 +7,32 @@ import './gallery_styles.css';
 // comps
 import GalleryHome from './GalleryHome';
 import GalleryArtworkViewer from "./GalleryArtworkViewer";
+import ArtworkEditMenu from "./ArtworkEditMenu";
 
 class Gallery extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = { editMenuIsOpen: true };
+    }
+
     render() {
+        const { editMenuIsOpen } = this.state;
         const { galleryNavData, galleryArtworks, artworkId } = this.props;
 
         return (
             <div className={'gallery'}>
 
                 {artworkId &&
-                <GalleryArtworkViewer {...galleryNavData} />
+                <ArtworkEditMenu isOpen={editMenuIsOpen}
+                                 artworkId={artworkId}
+                                 onClose={() => this.setState({ editMenuIsOpen: false })}/>
+                }
+
+                {artworkId &&
+                <GalleryArtworkViewer {...galleryNavData}
+                                      onEditClick={() => this.setState({ editMenuIsOpen: true })}/>
                 }
 
                 {!artworkId &&

@@ -8,7 +8,7 @@ import { GetImage } from "../global/ImageHelper";
 // comps
 import AppBar from "../appBar/AppBar";
 import PhotoSelector from "../photoSelector/PhotoSelector";
-import CropAndRotateEditor from "../artworkOptions/cropAndRotateEditor/CropAndRotateEditor";
+import CropAndRotateEditor from "../artworkEditor/cropAndRotateEditor/CropAndRotateEditor";
 import SaveOrCancelControls from "./SaveOrCancelControls";
 import ArtworkAdderSavingProgress from "./ArtworkAdderSavingProgress";
 import ArtworkAdderComplete from "./ArtworkAdderComplete";
