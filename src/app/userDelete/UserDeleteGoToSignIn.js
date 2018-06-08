@@ -10,7 +10,7 @@ const UserDeleteGoToSignIn = function () {
                 You need to be signed in to delete an account. If you want to delete your account:
             </p>
 
-            <Button raised onClick={() => history.push('/delete/2')}>
+            <Button raised onClick={() => history.push('/delete/step_2_step')}>
                 Sign in here first
             </Button>
         </Typography>

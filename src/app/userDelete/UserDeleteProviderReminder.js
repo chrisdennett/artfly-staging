@@ -32,7 +32,7 @@ const UserDeleteProviderReminder = function ({userProviderId}) {
                 {logInMessage}
             </p>
 
-            <SignIn successRedirect={'/delete/3'}/>
+            <SignIn successRedirect={'/delete/step_3_step'}/>
 
         </Typography>
     )

@@ -3,18 +3,10 @@ import {
     fs_updateUser
 } from './FirestoreActions';
 
-export const IMAGE_UPLOAD_PROGRESS = 'imageUploadProgress';
-export const ADD_ARTWORK_COMPLETE = 'addArtworkComplete';
-export const CLEAR_IMAGE_UPLOAD = 'clearImageUpload';
 export const USER_UPDATED = 'userUpdated';
 
 export const NOTIFICATION = "notification";
 export const NOTIFICATION_COMPLETE = "notification_complete";
-
-
-// AUTH ************************************************************
-
-
 
 // USER ************************************************************
 

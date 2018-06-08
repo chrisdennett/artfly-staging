@@ -106,6 +106,78 @@ export function addNewArtwork(imgFile, artworkData) {
     }
 }
 
+export function saveArtworkWithImage(imgFile, artworkData, artworkId) {
+    return dispatch => {
+
+        const { uid: userId } = auth.currentUser;
+        const { orientation, cropData } = artworkData;
+
+        dispatch({
+            type: SAVING_ARTWORK_TRIGGERED
+        });
+
+        saveImage({ userId, source: imgFile, maxSize: 3000 },
+            progress => {
+                dispatch({
+                    type: SAVING_ARTWORK_PROGRESS,
+                    payload: {
+                        key: 'source',
+                        progress
+                    }
+                });
+            }
+            ,
+            sourceUrl => {
+                // save thumb
+                saveImage({ userId, source: imgFile, maxSize: 250, orientation, cropData },
+                    progress => {
+                        dispatch({
+                            type: SAVING_ARTWORK_PROGRESS,
+                            payload: {
+                                key: 'thumb',
+                                progress
+                            }
+                        });
+                    }
+                    ,
+                    thumbUrl => {
+
+                        // save large image
+                        saveImage({ userId, source: imgFile, maxSize: 960, orientation, cropData },
+                            progress => {
+                                dispatch({
+                                    type: SAVING_ARTWORK_PROGRESS,
+                                    payload: {
+                                        key: 'large',
+                                        progress
+                                    }
+                                });
+                            }
+                            ,
+                            largeUrl => {
+                                // const { orientation, cropData, heightToWidthRatio, widthToHeightRatio, ...rest } = artworkData;
+
+                                const fullArtworkData = {
+                                    adminId: userId,
+                                    largeUrl,
+                                    sourceUrl,
+                                    thumbUrl,
+                                    ...artworkData
+                                };
+
+                                // This the only difference with adding new artwork.
+                                saveArtworkChanges(artworkId, fullArtworkData, () => {
+                                    dispatch({
+                                        type: SAVING_ARTWORK_COMPLETE,
+                                        payload: artworkId
+                                    });
+                                });
+                            });
+                    });
+            })
+    }
+}
+
 function saveImage({ userId, source, orientation, cropData, maxSize }, onProgress, onComplete) {
     getImageBlob({ source, maxSize, orientation, cropData }, blobData => {
         fs_saveArtworkImage(

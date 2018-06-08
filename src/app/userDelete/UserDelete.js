@@ -36,12 +36,12 @@ class UserDelete extends Component {
 
     onConfirmStep1() {
         this.props.signOutUser(() => {
-            history.push('/delete/2')
+            history.push('/delete/step_3_step')
         });
     }
 
     onConfirmAccountDelete() {
-        history.push('/delete/4');
+        history.push('/delete/step_4_step');
         this.props.deleteUser();
     }
 
@@ -49,6 +49,7 @@ class UserDelete extends Component {
         const { userProviderId } = this.state;
         const { userDeleteError, userDeleted, step, userIsSignedIn, totalUserArtworks } = this.props;
         let currentStep = step ? step : '1';
+
 
         if (userDeleted) {
             return <Redirect to={'/'}/>
