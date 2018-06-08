@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 // styles
 import './artworkEditor_styles.css';
 // actions
-import {saveArtworkWithImage} from '../../actions/SaveArtworkActions';
+import {updateArtworkAndImage} from '../../actions/SaveArtworkActions';
 // comps
 import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
 import SaveOrCancelControls from "../artworkAdder/SaveOrCancelControls";
@@ -53,7 +53,7 @@ class ArtworkEditor extends Component {
         const { sourceImg, unsavedArtworkData } = this.state;
 
         const mergedData = {...currentArtwork, ...unsavedArtworkData};
-        this.props.saveArtworkWithImage(sourceImg, mergedData, artworkId);
+        this.props.updateArtworkAndImage(sourceImg, mergedData, artworkId);
     }
 
     onCancel() {
@@ -88,7 +88,7 @@ const mapStateToProps = (state, props) => {
         currentArtwork: getCurrentArtwork(state.artworks, props.artworkId)
     }
 };
-export default connect(mapStateToProps, {saveArtworkWithImage})(ArtworkEditor);
+export default connect(mapStateToProps, {updateArtworkAndImage})(ArtworkEditor);
 
 const getCurrentArtwork = (artworks, artworkId) => {
     return artworks[artworkId];

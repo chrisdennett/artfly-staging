@@ -1,4 +1,4 @@
-import { auth, firestoreDb as db, storageEvent, storageRef as store } from "../libs/firebaseConfig";
+import { auth, firestoreDb as db, storage, storageEvent, storageRef as store } from "../libs/firebaseConfig";
 // helpers
 import { getImageBlob, generateUUID } from "../app/global/ImageHelper";
 // constants
@@ -106,99 +106,94 @@ export function addNewArtwork(imgFile, artworkData) {
     }
 }
 
-export function saveArtworkWithImage(imgFile, artworkData, artworkId) {
+export function updateArtworkAndImage(imgFile, artworkData, artworkId) {
     return dispatch => {
 
         const { uid: userId } = auth.currentUser;
         const { orientation, cropData } = artworkData;
 
+        console.log("artworkData.thumbUrl: ", artworkData.thumbUrl);
+
         dispatch({
             type: SAVING_ARTWORK_TRIGGERED
         });
 
-        saveImage({ userId, source: imgFile, maxSize: 3000 },
+        // save thumb
+        saveImage({ url: artworkData.thumbUrl, userId, source: imgFile, maxSize: 250, orientation, cropData },
             progress => {
                 dispatch({
                     type: SAVING_ARTWORK_PROGRESS,
                     payload: {
-                        key: 'source',
+                        key: 'thumb',
                         progress
                     }
                 });
             }
             ,
-            sourceUrl => {
-                // save thumb
-                saveImage({ userId, source: imgFile, maxSize: 250, orientation, cropData },
+            thumbUrl => {
+
+                // save large image
+                saveImage({ url: artworkData.largeUrl, userId, source: imgFile, maxSize: 960, orientation, cropData },
                     progress => {
                         dispatch({
                             type: SAVING_ARTWORK_PROGRESS,
                             payload: {
-                                key: 'thumb',
+                                key: 'large',
                                 progress
                             }
                         });
                     }
                     ,
-                    thumbUrl => {
+                    largeUrl => {
+                        // const { orientation, cropData, heightToWidthRatio, widthToHeightRatio, ...rest } = artworkData;
 
-                        // save large image
-                        saveImage({ userId, source: imgFile, maxSize: 960, orientation, cropData },
-                            progress => {
-                                dispatch({
-                                    type: SAVING_ARTWORK_PROGRESS,
-                                    payload: {
-                                        key: 'large',
-                                        progress
-                                    }
-                                });
-                            }
-                            ,
-                            largeUrl => {
-                                // const { orientation, cropData, heightToWidthRatio, widthToHeightRatio, ...rest } = artworkData;
+                        const fullArtworkData = {
+                            ...artworkData,
+                            largeUrl,
+                            thumbUrl,
+                        };
 
-                                const fullArtworkData = {
-                                    adminId: userId,
-                                    largeUrl,
-                                    sourceUrl,
-                                    thumbUrl,
-                                    ...artworkData
-                                };
-
-                                // This the only difference with adding new artwork.
-                                saveArtworkChanges(artworkId, fullArtworkData, () => {
-                                    dispatch({
-                                        type: SAVING_ARTWORK_COMPLETE,
-                                        payload: artworkId
-                                    });
-                                });
+                        // This the only difference with adding new artwork.
+                        saveArtworkChanges(artworkId, fullArtworkData, () => {
+                            dispatch({
+                                type: SAVING_ARTWORK_COMPLETE,
+                                payload: artworkId
                             });
+                        });
                     });
-            })
+            });
     }
 }
 
-function saveImage({ userId, source, orientation, cropData, maxSize }, onProgress, onComplete) {
+function saveImage({ userId, source, orientation, cropData, maxSize, url = null }, onProgress, onComplete) {
     getImageBlob({ source, maxSize, orientation, cropData }, blobData => {
         fs_saveArtworkImage(
-            blobData
+            blobData,
+            url
             ,
             (progressData) => {
                 if (onProgress) onProgress(progressData);
             }
             ,
-            (url) => {
-                if (onComplete) onComplete(url)
+            (returnUrl) => {
+                if (onComplete) onComplete(returnUrl)
             }
         )
     });
 }
 
-function fs_saveArtworkImage(blobData, onChangeCallback, onCompleteCallback) {
-    // generate random unique name
-    const fileName = generateUUID();
-    // create the reference
-    const userPicturesRef = store.child(`userContent/${fileName}`);
+function fs_saveArtworkImage(blobData, url, onChangeCallback, onCompleteCallback) {
+    let userPicturesRef;
+    if (url) {
+        userPicturesRef = storage.refFromURL(url);
+    }
+    else {
+        // generate random unique name
+        const fileName = generateUUID();
+        // create the reference
+        userPicturesRef = store.child(`userContent/${fileName}`);
+    }
+
     // start the upload
     const uploadTask = userPicturesRef.put(blobData);
     // listen for upload events
@@ -326,7 +321,6 @@ export function fs_updateArtworkImage(artworkId, artistId, newImage, widthToHeig
             url_large: fb.firestore.FieldValue.delete(),
             url_med: fb.firestore.FieldValue.delete()
         })
-        // delete the source image
         .then(() => {
             int_saveImage(artworkId, artistId, newImage, '',
                 (onChangeData) => {
