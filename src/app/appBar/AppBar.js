@@ -16,26 +16,26 @@ import history from "../global/history";
 import UserMenu from "../userMenu/UserMenu";
 import HomeIconButton from "../../homeIconButton/HomeIconButton";
 
-export const ArtworkAppBar = ({onCloseClick, onMenuClick}) => (
-        <Toolbar theme={'background'}>
-            <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
-                <ToolbarSection alignStart>
-                    <ToolbarMenuIcon use="menu"
-                                     onClick={onMenuClick}/>
-                    <ToolbarTitle>Artwork</ToolbarTitle>
-                </ToolbarSection>
+export const ArtworkAppBar = ({ onCloseClick, onMenuClick }) => (
+    <Toolbar theme={'background'}>
+        <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
+            <ToolbarSection alignStart>
+                <ToolbarMenuIcon use="menu"
+                                 onClick={onMenuClick}/>
+                <ToolbarTitle>Artwork</ToolbarTitle>
+            </ToolbarSection>
 
-                <ToolbarSection alignEnd>
-                    <UserMenu/>
-                    <ToolbarIcon use="close"
-                                 theme={'text-primary-on-background'}
-                                 onClick={onCloseClick}/>
-                </ToolbarSection>
-            </ToolbarRow>
-        </Toolbar>
-    );
+            <ToolbarSection alignEnd>
+                <UserMenu/>
+                <ToolbarIcon use="close"
+                             theme={'text-primary-on-background'}
+                             onClick={onCloseClick}/>
+            </ToolbarSection>
+        </ToolbarRow>
+    </Toolbar>
+);
 
-const AppBar = function ({ title, navigation, showUserMenu = true, showCloseButt = false, fixed = true, butts = null }) {
+const AppBar = function ({ title, navigation, onCloseClick, showHomeIcon = true, showUserMenu = true, showCloseButt = false, fixed = true, butts = null }) {
     return (
         <div>
             <Toolbar fixed={fixed} theme={'background'}>
@@ -43,7 +43,9 @@ const AppBar = function ({ title, navigation, showUserMenu = true, showCloseButt
                     {title &&
                     <ToolbarSection alignStart>
 
+                        {showHomeIcon &&
                         <HomeIconButton/>
+                        }
 
                         <ToolbarTitle>{title}</ToolbarTitle>
                     </ToolbarSection>
@@ -61,7 +63,7 @@ const AppBar = function ({ title, navigation, showUserMenu = true, showCloseButt
                         {showCloseButt &&
                         <ToolbarIcon use="close"
                                      theme={'text-primary-on-background'}
-                                     onClick={() => history.push('/')}/>
+                                     onClick={onCloseClick}/>
                         }
                     </ToolbarSection>
                 </ToolbarRow>

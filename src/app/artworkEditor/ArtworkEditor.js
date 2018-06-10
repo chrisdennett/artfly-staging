@@ -3,18 +3,20 @@ import { connect } from 'react-redux';
 // styles
 import './artworkEditor_styles.css';
 // actions
-import {updateArtworkAndImage} from '../../actions/SaveArtworkActions';
+import { updateArtworkAndImage } from '../../actions/SaveArtworkActions';
 // comps
 import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
 import SaveOrCancelControls from "../artworkAdder/SaveOrCancelControls";
 import history from "../global/history";
+import { ArtworkAppBar } from "../appBar/AppBar";
+import AppBar from "../appBar/AppBar";
 
 class ArtworkEditor extends Component {
 
     constructor(props) {
         super(props);
 
-        this.state = { sourceImg:null, unsavedArtworkData:{}};
+        this.state = { sourceImg: null, unsavedArtworkData: {} };
 
         this.onCropAndRotateChange = this.onCropAndRotateChange.bind(this);
         this.onSave = this.onSave.bind(this);
@@ -22,7 +24,7 @@ class ArtworkEditor extends Component {
         this.loadSourceImg = this.loadSourceImg.bind(this);
     }
 
-    componentWillMount(){
+    componentWillMount() {
         this.loadSourceImg(this.props)
     }
 
@@ -45,28 +47,34 @@ class ArtworkEditor extends Component {
     }
 
     onCropAndRotateChange(cropAndOrientationData) {
-        this.setState({unsavedArtworkData:{...cropAndOrientationData}});
+        this.setState({ unsavedArtworkData: { ...cropAndOrientationData } });
     }
 
     onSave() {
         const { currentArtwork, artworkId } = this.props;
         const { sourceImg, unsavedArtworkData } = this.state;
 
-        const mergedData = {...currentArtwork, ...unsavedArtworkData};
+        const mergedData = { ...currentArtwork, ...unsavedArtworkData };
         this.props.updateArtworkAndImage(sourceImg, mergedData, artworkId);
     }
 
     onCancel() {
-        history.push(`/gallery/${this.props.artworkId}`);
+        history.push(`/gallery/artworkId_${this.props.artworkId}_artworkId`);
     }
 
     render() {
         const { currentArtwork } = this.props;
         const { sourceImg, unsavedArtworkData } = this.state;
-        const mergedData = {...currentArtwork, ...unsavedArtworkData};
+        const mergedData = { ...currentArtwork, ...unsavedArtworkData };
 
         return (
             <div className={'artworkEditor'}>
+
+                <AppBar title={'Crop & Rotate'}
+                        showHomeIcon={false}
+                        showUserMenu={false}
+                        showCloseButt={true}
+                        onCloseClick={this.onCancel}/>
 
                 {sourceImg &&
                 <CropAndRotateEditor sourceImg={sourceImg}
@@ -88,7 +96,7 @@ const mapStateToProps = (state, props) => {
         currentArtwork: getCurrentArtwork(state.artworks, props.artworkId)
     }
 };
-export default connect(mapStateToProps, {updateArtworkAndImage})(ArtworkEditor);
+export default connect(mapStateToProps, { updateArtworkAndImage })(ArtworkEditor);
 
 const getCurrentArtwork = (artworks, artworkId) => {
     return artworks[artworkId];

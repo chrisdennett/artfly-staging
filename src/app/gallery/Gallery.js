@@ -14,7 +14,7 @@ class Gallery extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { editMenuIsOpen: true };
+        this.state = { editMenuIsOpen: false };
     }
 
     render() {
