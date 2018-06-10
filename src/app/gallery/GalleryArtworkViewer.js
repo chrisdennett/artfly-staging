@@ -7,6 +7,7 @@ import { ToolbarIcon } from 'rmwc/Toolbar';
 import history from "../global/history";
 // comps
 import AppBar from "../appBar/AppBar";
+import {ArtworkAppBar} from "../appBar/AppBar";
 import GalleryArtwork from "./GalleryArtwork";
 
 class GalleryArtworkViewer extends Component {
@@ -15,16 +16,13 @@ class GalleryArtworkViewer extends Component {
         const { currentArtwork, previousArtwork, nextArtwork, onEditClick } = this.props;
         const urlEndsInSlash = history.location.pathname.slice(-1) === '/';
         const urlPrefix = urlEndsInSlash ? '' : '/gallery/';
-
-        const editButt = (<ToolbarIcon use="edit"
-                                       theme={'text-primary-on-background'}
-                                       onClick={onEditClick}/>);
-                                       // onClick={() => history.push(`/artworkEditor/artworkId_${currentArtwork.artworkId}_artworkId`)}/>);
+        const goBackToGallery = () => history.push(`/gallery`);
 
         return (
             <div className={'gallery'}>
-                <AppBar title={'Artworks'}
-                        butts={editButt}/>
+                <ArtworkAppBar title={'Artworks'}
+                               onCloseClick={goBackToGallery}
+                               onMenuClick={onEditClick}/>
 
                 <GalleryArtwork currentArtwork={currentArtwork}/>
 
@@ -35,7 +33,7 @@ class GalleryArtworkViewer extends Component {
                     </Button>
 
                     <Button className={'gallery--controls--backToGalleryButt'}
-                            onClick={() => history.push(`/gallery`)}>
+                            onClick={goBackToGallery}>
                         <Icon use={'dashboard'}/>
                     </Button>
 

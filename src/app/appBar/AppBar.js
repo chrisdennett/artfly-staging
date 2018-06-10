@@ -16,20 +16,20 @@ import history from "../global/history";
 import UserMenu from "../userMenu/UserMenu";
 import HomeIconButton from "../../homeIconButton/HomeIconButton";
 
-export const ArtworkEditorAppBar = ({onClose, onClick}) => (
+export const ArtworkAppBar = ({onCloseClick, onMenuClick}) => (
         <Toolbar theme={'background'}>
             <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
                 <ToolbarSection alignStart>
                     <ToolbarMenuIcon use="menu"
-                                     onClick={onClick}/>
-                    <ToolbarTitle>Artwork Editor</ToolbarTitle>
+                                     onClick={onMenuClick}/>
+                    <ToolbarTitle>Artwork</ToolbarTitle>
                 </ToolbarSection>
 
                 <ToolbarSection alignEnd>
                     <UserMenu/>
                     <ToolbarIcon use="close"
                                  theme={'text-primary-on-background'}
-                                 onClick={onClose}/>
+                                 onClick={onCloseClick}/>
                 </ToolbarSection>
             </ToolbarRow>
         </Toolbar>
