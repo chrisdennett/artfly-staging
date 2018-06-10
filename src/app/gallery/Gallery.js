@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 // ui
-
+import { Fab } from 'rmwc/Fab'
 // styles
 import './gallery_styles.css';
 // comps
@@ -20,9 +20,14 @@ class Gallery extends Component {
     render() {
         const { editMenuIsOpen } = this.state;
         const { galleryNavData, galleryArtworks, artworkId } = this.props;
+        const editFabStyle = {position:'fixed', zIndex:10000, bottom:40, right:10};
 
         return (
             <div className={'gallery'}>
+
+                <Fab theme={'primary-bg'} mini style={editFabStyle} onClick={() => this.setState({ editMenuIsOpen: true })}>
+                    edit
+                </Fab>
 
                 {artworkId &&
                 <ArtworkEditMenu isOpen={editMenuIsOpen}
