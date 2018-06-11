@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Measure from 'react-measure'; //https://www.npmjs.com/package/react-measure
 // comps
 import FramedArtworkCanvas from "../artwork/FramedArtworkCanvas";
+import LoadingThing from "../loadingThing/LoadingThing";
 
 class GalleryArtwork extends Component {
 
@@ -19,7 +20,7 @@ class GalleryArtwork extends Component {
 
     render() {
         const { currentArtwork } = this.props;
-        if (!currentArtwork) return null;
+        // if (!currentArtwork) return null;
 
         const { dimensions } = this.state;
         let maxFrameWidth, maxFrameHeight;
@@ -44,7 +45,12 @@ class GalleryArtwork extends Component {
                                 maxHeight={maxFrameHeight}
                                 artworkData={currentArtwork}/>
                             }
+                        {!currentArtwork &&
+                        <LoadingThing label={'Loading artwork'} style={{flex:1, margin:20}}/>
+                        }
                         </div>
+
+
                     </div>
                 }
             </Measure>

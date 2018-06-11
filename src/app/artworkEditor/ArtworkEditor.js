@@ -74,7 +74,6 @@ class ArtworkEditor extends Component {
         const { sourceImg, unsavedArtworkData } = this.state;
         const mergedData = { ...currentArtwork, ...unsavedArtworkData };
         const hasChanges = !isEqual(mergedData, currentArtwork);
-        const isSaving = artworkSavingProgress.status === 'saving';
 
         return (
             <div className={'artworkEditor'}>

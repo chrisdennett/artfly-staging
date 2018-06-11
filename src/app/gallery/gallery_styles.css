@@ -8,11 +8,12 @@
 
 .gallery--sizePlaceholder{
     flex: 1;
-    background-color: red;
+    /*background-color: red;*/
     position: relative;
 }
 
 .gallery--controls{
+    border-top: 1px solid rgba(0,0,0,0.2);
     height: 60px;
     background-color: whitesmoke;
     display: flex;
@@ -36,5 +37,5 @@
     align-items: center;
     justify-content: center;
 
-    background-color: #6cdfea;
+    /*background-color: #6cdfea;*/
 }
