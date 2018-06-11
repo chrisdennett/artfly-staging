@@ -44,7 +44,6 @@ class QuickCuttingBoard extends Component {
         const currCropData = this.getCropData(width, height);
 
         return (
-
             <QuickCuttingOverlay
                 onRotateClick={onRotateClick}
                 onChange={this.onCuttingOverlayChange}

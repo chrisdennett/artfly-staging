@@ -1,5 +1,6 @@
 .quickCropAndRotate--holder {
     flex: 1;
+    flex-direction: column;
     background: #fff url("../../images/bg/cuttingMat.png");
     display: flex;
     align-items: center;

@@ -81,13 +81,11 @@ class ArtworkEditor extends Component {
                                    onSaveClick={this.onSave}
                                    onCancelClick={this.onCancel}/>
 
-                {sourceImg &&
                 <CropAndRotateEditor sourceImg={sourceImg}
                                      key={1}
                                      orientation={mergedData.orientation}
                                      cropData={mergedData.cropData}
                                      onDataChange={this.onCropAndRotateChange}/>
-                }
             </div>
         );
     }

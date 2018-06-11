@@ -7,6 +7,7 @@ import './cropAndRotate_styles.css';
 import * as ImageHelper from "../../global/ImageHelper";
 // components
 import QuickCuttingBoard from "./QuickCuttingBoard";
+import LoadingThing from "../../loadingThing/LoadingThing";
 
 class CropAndRotateEditor extends Component {
     constructor(props) {
@@ -25,7 +26,7 @@ class CropAndRotateEditor extends Component {
         this.drawCuttingBoardCanvas(newProps);
     }
 
-    drawCuttingBoardCanvas(props=this.props) {
+    drawCuttingBoardCanvas(props = this.props) {
         const { sourceImg, orientation } = props;
         const { dimensions } = this.state;
         const { width, height } = dimensions ? dimensions : { width: null, height: null };
@@ -45,32 +46,32 @@ class CropAndRotateEditor extends Component {
         });
 
         // this isn't needed for any other reason than to trigger a redraw
-        this.setState({ canvasWidth:this.canvas.width, canvasHeight:this.canvas.height });
+        this.setState({ canvasWidth: this.canvas.width, canvasHeight: this.canvas.height });
     }
 
-    onResize(contentRect){
-        this.setState({dimensions:contentRect.bounds}, this.drawCuttingBoardCanvas);
+    onResize(contentRect) {
+        this.setState({ dimensions: contentRect.bounds }, this.drawCuttingBoardCanvas);
     }
 
-    onCropChange(cropData){
-        this.sendUpdatedData({cropData});
+    onCropChange(cropData) {
+        this.sendUpdatedData({ cropData });
     }
 
     // default to props so can overwrite single values without error
-    sendUpdatedData({orientation=this.props.orientation, cropData=this.props.cropData}){
+    sendUpdatedData({ orientation = this.props.orientation, cropData = this.props.cropData }) {
 
         // NB: can't use canvas width and height here because that updates as a result of
         // calling onDataChange.
-        const {width, height} = this.props.sourceImg;
+        const { width, height } = this.props.sourceImg;
         const isPortrait = orientation > 4 && orientation < 9;
         const w = isPortrait ? height : width;
         const h = isPortrait ? width : height;
 
-        const {widthToHeightRatio, heightToWidthRatio} = getSizeRatios(cropData, w, h);
-        this.props.onDataChange({orientation, cropData, widthToHeightRatio, heightToWidthRatio});
+        const { widthToHeightRatio, heightToWidthRatio } = getSizeRatios(cropData, w, h);
+        this.props.onDataChange({ orientation, cropData, widthToHeightRatio, heightToWidthRatio });
     }
 
-    onRotateClick(){
+    onRotateClick() {
         const currentRotation = this.props.orientation;
         const newOrientation = getNextOrientation(currentRotation);
 
@@ -79,16 +80,16 @@ class CropAndRotateEditor extends Component {
         const newL = topPercent;
         const newR = bottomPercent;
         const newT = 1 - rightPercent;
-        const newB = 1- leftPercent;
+        const newB = 1 - leftPercent;
 
-        const newCropData = {leftPercent:newL, rightPercent:newR, topPercent:newT, bottomPercent:newB};
+        const newCropData = { leftPercent: newL, rightPercent: newR, topPercent: newT, bottomPercent: newB };
 
-        this.sendUpdatedData({orientation:newOrientation, cropData:newCropData})
+        this.sendUpdatedData({ orientation: newOrientation, cropData: newCropData })
     }
-    
+
     render() {
-        const { cropData } = this.props;
-        const { canvasWidth=100, canvasHeight=100 } = this.state;
+        const { cropData, sourceImg } = this.props;
+        const { canvasWidth = 100, canvasHeight = 100 } = this.state;
 
         return (
             <Measure
@@ -98,7 +99,12 @@ class CropAndRotateEditor extends Component {
                 {({ measureRef }) =>
                     <div ref={measureRef} className={'quickCropAndRotate--holder'}>
 
+                        {!sourceImg &&
+                        <LoadingThing label={'Loading Source Image'} style={{color:'#fff'}}/>
+                        }
+
                         <div className='quickCropAndRotate--cuttingBoardHolder'>
+                            {sourceImg &&
                             <QuickCuttingBoard
                                 width={canvasWidth}
                                 height={canvasHeight}
@@ -106,6 +112,7 @@ class CropAndRotateEditor extends Component {
                                 onRotateClick={this.onRotateClick}
                                 onCropUpdate={this.onCropChange}
                             />
+                            }
 
                             <canvas ref={c => this.canvas = c}/>
                         </div>
@@ -119,10 +126,10 @@ class CropAndRotateEditor extends Component {
 export default CropAndRotateEditor;
 
 const getSizeRatios = (cropDecimals, width, height) => {
-    const {leftPercent, rightPercent, topPercent, bottomPercent} = cropDecimals;
+    const { leftPercent, rightPercent, topPercent, bottomPercent } = cropDecimals;
 
-    const totalCropWidthPercentage = leftPercent + (1-rightPercent);
-    const totalCropHeightPercentage = topPercent + (1-bottomPercent);
+    const totalCropWidthPercentage = leftPercent + (1 - rightPercent);
+    const totalCropHeightPercentage = topPercent + (1 - bottomPercent);
 
     const cropWidth = width * totalCropWidthPercentage;
     const cropHeight = height * totalCropHeightPercentage;
@@ -133,25 +140,42 @@ const getSizeRatios = (cropDecimals, width, height) => {
     const heightToWidthRatio = croppedWidth / croppedHeight;
     const widthToHeightRatio = croppedHeight / croppedWidth;
 
-    return {widthToHeightRatio, heightToWidthRatio};
+    return { widthToHeightRatio, heightToWidthRatio };
 };
 
-const getNextOrientation = (currentOrientation) =>{
+const getNextOrientation = (currentOrientation) => {
     // https://www.daveperrett.com/articles/2012/07/28/exif-orientation-handling-is-a-ghetto/
     let nextOrientation;
 
-    switch (currentOrientation){
-        case 1: nextOrientation = 8; break;
-        case 8: nextOrientation = 3; break;
-        case 3: nextOrientation = 6; break;
-        case 6: nextOrientation = 1; break;
+    switch (currentOrientation) {
+        case 1:
+            nextOrientation = 8;
+            break;
+        case 8:
+            nextOrientation = 3;
+            break;
+        case 3:
+            nextOrientation = 6;
+            break;
+        case 6:
+            nextOrientation = 1;
+            break;
 
-        case 2: nextOrientation = 5; break;
-        case 5: nextOrientation = 4; break;
-        case 4: nextOrientation = 7; break;
-        case 7: nextOrientation = 2; break;
+        case 2:
+            nextOrientation = 5;
+            break;
+        case 5:
+            nextOrientation = 4;
+            break;
+        case 4:
+            nextOrientation = 7;
+            break;
+        case 7:
+            nextOrientation = 2;
+            break;
 
-        default: nextOrientation = 8;
+        default:
+            nextOrientation = 8;
     }
 
     return nextOrientation;
