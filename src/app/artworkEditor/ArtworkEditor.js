@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import isEqual from 'lodash/isEqual';
 // styles
 import './artworkEditor_styles.css';
 // actions
@@ -70,7 +71,7 @@ class ArtworkEditor extends Component {
         const { currentArtwork } = this.props;
         const { sourceImg, unsavedArtworkData } = this.state;
         const mergedData = { ...currentArtwork, ...unsavedArtworkData };
-        const hasChanges = Object.keys(unsavedArtworkData).length > 0;
+        const hasChanges = !isEqual(mergedData, currentArtwork);
 
         return (
             <div className={'artworkEditor'}>
