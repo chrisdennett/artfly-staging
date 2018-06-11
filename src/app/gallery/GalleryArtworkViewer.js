@@ -7,7 +7,6 @@ import history from "../global/history";
 // comps
 import {ArtworkAppBar} from "../appBar/AppBar";
 import GalleryArtwork from "./GalleryArtwork";
-// import LoadingThing from "../loadingThing/LoadingThing";
 
 class GalleryArtworkViewer extends Component {
 

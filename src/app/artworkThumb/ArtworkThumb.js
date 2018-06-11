@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Elevation } from 'rmwc/Elevation';
 import { Ripple } from 'rmwc/Ripple';
+// const
+import {THUMB_SIZE} from "../global/GLOBAL_CONSTANTS";
 // helpers
 import FramedArtworkCanvas from "../artwork/FramedArtworkCanvas";
 
@@ -24,10 +26,9 @@ class ArtworkThumb extends Component {
                     onMouseOver={() => this.setState({ elevation: 14 })}
                     onMouseOut={() => this.setState({ elevation: 0 })}>
                     <Ripple>
-
                         <FramedArtworkCanvas artworkData={artworkData}
-                                             maxHeight={260}
-                                             maxWidth={260}/>
+                                             maxHeight={THUMB_SIZE}
+                                             maxWidth={THUMB_SIZE}/>
                     </Ripple>
                 </Elevation>
             </div>

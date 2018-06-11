@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // import { connect } from 'react-redux';
 // ui
-import { Button, ButtonIcon } from 'rmwc/Button';
+// import { Button, ButtonIcon } from 'rmwc/Button';
 // helper
 import history from "../global/history";
 // comps
@@ -20,14 +20,13 @@ class GalleryHome extends Component {
                 <AppBar title={'Gallery'}
                         fixed={true}/>
 
-                <Button raised theme={'secondary-bg'} onClick={() => history.push('/artworkAdder')}>
+                {/*<Button raised theme={'secondary-bg'} onClick={() => history.push('/artworkAdder')}>
                     <ButtonIcon use="add"/> Add New Artwork
-                </Button>
+                </Button>*/}
 
                 <div className={'artworkThumbs'}>
                     {
                         galleryArtworks.map(artworkData => {
-                            // const artworkData = artworks[artworkId];
                             return (
                                 <ArtworkThumb key={artworkData.artworkId}
                                               onClick={() => history.push(`${urlPrefix}artworkId_${artworkData.artworkId}_artworkId`)}

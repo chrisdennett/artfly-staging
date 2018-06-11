@@ -2,6 +2,7 @@ import { auth, firestoreDb as db, storage, storageEvent, storageRef as store } f
 // helpers
 import { getImageBlob, generateUUID } from "../app/global/ImageHelper";
 // constants
+import { THUMB_SIZE, LARGE_IMG_SIZE, MAX_IMG_SIZE } from '../app/global/GLOBAL_CONSTANTS';
 import { ARTWORK_CHANGE } from "./GetArtworkActions";
 
 export const SAVING_ARTWORK_TRIGGERED = 'saving_artwork_triggered';
@@ -43,7 +44,7 @@ export function addNewArtwork(imgFile, artworkData) {
             type: SAVING_ARTWORK_TRIGGERED
         });
 
-        saveImage({ userId, source: imgFile, maxSize: 3000 },
+        saveImage({ userId, source: imgFile, maxSize: MAX_IMG_SIZE },
             progress => {
                 dispatch({
                     type: SAVING_ARTWORK_PROGRESS,
@@ -56,7 +57,7 @@ export function addNewArtwork(imgFile, artworkData) {
             ,
             sourceUrl => {
                 // save thumb
-                saveImage({ userId, source: imgFile, maxSize: 250, orientation, cropData },
+                saveImage({ userId, source: imgFile, maxSize: THUMB_SIZE, orientation, cropData },
                     progress => {
                         dispatch({
                             type: SAVING_ARTWORK_PROGRESS,
@@ -70,7 +71,7 @@ export function addNewArtwork(imgFile, artworkData) {
                     thumbUrl => {
 
                         // save large image
-                        saveImage({ userId, source: imgFile, maxSize: 960, orientation, cropData },
+                        saveImage({ userId, source: imgFile, maxSize: LARGE_IMG_SIZE, orientation, cropData },
                             progress => {
                                 dispatch({
                                     type: SAVING_ARTWORK_PROGRESS,
@@ -117,7 +118,7 @@ export function updateArtworkAndImage(imgFile, artworkData, artworkId) {
         });
 
         // save thumb
-        saveImage({ url: artworkData.thumbUrl, userId, source: imgFile, maxSize: 250, orientation, cropData },
+        saveImage({ url: artworkData.thumbUrl, userId, source: imgFile, maxSize: THUMB_SIZE, orientation, cropData },
             progress => {
                 dispatch({
                     type: SAVING_ARTWORK_PROGRESS,
@@ -131,7 +132,7 @@ export function updateArtworkAndImage(imgFile, artworkData, artworkId) {
             thumbUrl => {
 
                 // save large image
-                saveImage({ url: artworkData.largeUrl, userId, source: imgFile, maxSize: 960, orientation, cropData },
+                saveImage({ url: artworkData.largeUrl, userId, source: imgFile, maxSize: LARGE_IMG_SIZE, orientation, cropData },
                     progress => {
                         dispatch({
                             type: SAVING_ARTWORK_PROGRESS,
@@ -148,7 +149,7 @@ export function updateArtworkAndImage(imgFile, artworkData, artworkId) {
                         const fullArtworkData = {
                             ...artworkData,
                             largeUrl,
-                            thumbUrl,
+                            thumbUrl
                         };
 
                         // This the only difference with adding new artwork.

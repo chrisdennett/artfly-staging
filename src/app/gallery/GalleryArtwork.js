@@ -20,7 +20,6 @@ class GalleryArtwork extends Component {
 
     render() {
         const { currentArtwork } = this.props;
-        // if (!currentArtwork) return null;
 
         const { dimensions } = this.state;
         let maxFrameWidth, maxFrameHeight;

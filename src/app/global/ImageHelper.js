@@ -1,5 +1,4 @@
-const maxImageWidth = 3000;
-const maxImageHeight = 3000;
+import {MAX_IMG_SIZE} from "./GLOBAL_CONSTANTS";
 
 // Returns an image element given a file
 export function GetImage(imgFile, callback) {
@@ -119,7 +118,7 @@ function GetPhotoOrientation(file, callback) {
 
 
 // Draws an image to a canvas restricting to a specific size
-export function drawImageToCanvas({ sourceImg, outputCanvas, orientation, maxOutputCanvasWidth = maxImageWidth, maxOutputCanvasHeight = maxImageHeight }, callback) {
+export function drawImageToCanvas({ sourceImg, outputCanvas, orientation, maxOutputCanvasWidth = MAX_IMG_SIZE, maxOutputCanvasHeight = MAX_IMG_SIZE }, callback) {
     const isPortrait = orientation > 4 && orientation < 9;
 
     // if portrait the final canvas dimensions will be the other way round
@@ -178,7 +177,7 @@ export function drawImageToCanvas({ sourceImg, outputCanvas, orientation, maxOut
 
 
 // Draws one canvas to another restricting to a specific size
-export function drawToCanvas({ sourceCanvas, outputCanvas, orientation, cropData, maxOutputCanvasWidth = maxImageWidth, maxOutputCanvasHeight = maxImageHeight }, callback) {
+export function drawToCanvas({ sourceCanvas, outputCanvas, orientation, cropData, maxOutputCanvasWidth = MAX_IMG_SIZE, maxOutputCanvasHeight = MAX_IMG_SIZE }, callback) {
 
     const { topPercent, rightPercent, bottomPercent, leftPercent } = cropData ?
         cropData : { topPercent: 0, rightPercent: 1, bottomPercent: 1, leftPercent: 0 };
@@ -286,8 +285,8 @@ export function drawToCanvas({ sourceCanvas, outputCanvas, orientation, cropData
     const imgH = isPortrait ? img.width : img.height;
 
     // Restrict to maximum image size allowed or img size, whichever is smaller
-    const maxW = imgW >= maxImageWidth ? maxImageWidth : imgW;
-    const maxH = imgH >= maxImageHeight ? maxImageHeight : imgH;
+    const maxW = imgW >= MAX_IMG_SIZE ? MAX_IMG_SIZE : imgW;
+    const maxH = imgH >= MAX_IMG_SIZE ? MAX_IMG_SIZE : imgH;
 
     const widthToHeightRatio = imgH / imgW;
     const heightToWidthRatio = imgW / imgH;
