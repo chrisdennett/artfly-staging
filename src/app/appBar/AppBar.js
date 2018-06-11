@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'rmwc/Button';
 import {
     Toolbar,
     ToolbarRow,
@@ -10,26 +11,55 @@ import {
 } from 'rmwc/Toolbar';
 // styles
 import './appBar_styles.css';
-// helpers
-import history from "../global/history";
 // comps
 import UserMenu from "../userMenu/UserMenu";
 import HomeIconButton from "../../homeIconButton/HomeIconButton";
+
+
+export const ArtworkEditAppBar = ({ title, onSaveClick, onCancelClick, hasChanges,onCloseClick }) => (
+    <Toolbar theme={'background'}>
+        <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
+            <ToolbarTitle>{title}</ToolbarTitle>
+
+            {hasChanges &&
+            <ToolbarSection alignEnd>
+                <div style={{ height: 48, display: 'flex', alignItems: 'center', marginRight: 5 }}>
+                    <Button onClick={onSaveClick} dense unelevated>
+                        Save
+                    </Button>
+                </div>
+                <div style={{ height: 48, display: 'flex', alignItems: 'center' }}>
+                    <Button onClick={onCancelClick} dense>
+                        Cancel
+                    </Button>
+                </div>
+            </ToolbarSection>
+            }
+
+            {!hasChanges &&
+            <ToolbarSection alignEnd>
+                <ToolbarIcon use={'close'}
+                             theme={'text-primary-on-background'}
+                             onClick={onCloseClick}/>
+            </ToolbarSection>
+            }
+
+        </ToolbarRow>
+    </Toolbar>
+);
+
 
 export const ArtworkAppBar = ({ onCloseClick, onMenuClick }) => (
     <Toolbar theme={'background'}>
         <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
             <ToolbarSection alignStart>
-                <ToolbarMenuIcon use="menu"
+                <ToolbarMenuIcon use="dashboard"
                                  onClick={onMenuClick}/>
                 <ToolbarTitle>Artwork</ToolbarTitle>
             </ToolbarSection>
 
             <ToolbarSection alignEnd>
                 <UserMenu/>
-                <ToolbarIcon use="close"
-                             theme={'text-primary-on-background'}
-                             onClick={onCloseClick}/>
             </ToolbarSection>
         </ToolbarRow>
     </Toolbar>

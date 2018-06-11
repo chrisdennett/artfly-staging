@@ -20,12 +20,12 @@ class Gallery extends Component {
     render() {
         const { editMenuIsOpen } = this.state;
         const { galleryNavData, galleryArtworks, artworkId } = this.props;
-        const editFabStyle = {position:'fixed', zIndex:10000, bottom:40, right:10};
+        const editFabStyle = {position:'fixed', zIndex:10000, bottom:30, right:10};
 
         return (
             <div className={'gallery'}>
 
-                <Fab theme={'primary-bg'} mini style={editFabStyle} onClick={() => this.setState({ editMenuIsOpen: true })}>
+                <Fab theme={'primary-bg'} style={editFabStyle} onClick={() => this.setState({ editMenuIsOpen: true })}>
                     edit
                 </Fab>
 

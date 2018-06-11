@@ -6,10 +6,9 @@ import './artworkEditor_styles.css';
 import { updateArtworkAndImage } from '../../actions/SaveArtworkActions';
 // comps
 import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
-import SaveOrCancelControls from "../artworkAdder/SaveOrCancelControls";
+// import SaveOrCancelControls from "../artworkAdder/SaveOrCancelControls";
 import history from "../global/history";
-import { ArtworkAppBar } from "../appBar/AppBar";
-import AppBar from "../appBar/AppBar";
+import {ArtworkEditAppBar} from "../appBar/AppBar";
 
 class ArtworkEditor extends Component {
 
@@ -21,6 +20,7 @@ class ArtworkEditor extends Component {
         this.onCropAndRotateChange = this.onCropAndRotateChange.bind(this);
         this.onSave = this.onSave.bind(this);
         this.onCancel = this.onCancel.bind(this);
+        this.onClose = this.onClose.bind(this);
         this.loadSourceImg = this.loadSourceImg.bind(this);
     }
 
@@ -59,6 +59,10 @@ class ArtworkEditor extends Component {
     }
 
     onCancel() {
+        this.setState({ unsavedArtworkData: {} });
+    }
+
+    onClose() {
         history.push(`/gallery/artworkId_${this.props.artworkId}_artworkId`);
     }
 
@@ -66,15 +70,15 @@ class ArtworkEditor extends Component {
         const { currentArtwork } = this.props;
         const { sourceImg, unsavedArtworkData } = this.state;
         const mergedData = { ...currentArtwork, ...unsavedArtworkData };
+        const hasChanges = Object.keys(unsavedArtworkData).length > 0;
 
         return (
             <div className={'artworkEditor'}>
-
-                <AppBar title={'Crop & Rotate'}
-                        showHomeIcon={false}
-                        showUserMenu={false}
-                        showCloseButt={true}
-                        onCloseClick={this.onCancel}/>
+                <ArtworkEditAppBar title={'Crop & Rotate'}
+                                   hasChanges={hasChanges}
+                                   onCloseClick={this.onClose}
+                                   onSaveClick={this.onSave}
+                                   onCancelClick={this.onCancel}/>
 
                 {sourceImg &&
                 <CropAndRotateEditor sourceImg={sourceImg}
@@ -83,9 +87,6 @@ class ArtworkEditor extends Component {
                                      cropData={mergedData.cropData}
                                      onDataChange={this.onCropAndRotateChange}/>
                 }
-                <SaveOrCancelControls onSave={this.onSave}
-                                      key={2}
-                                      onCancel={this.onCancel}/>
             </div>
         );
     }

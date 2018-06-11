@@ -22,7 +22,6 @@ class CropAndRotateEditor extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        console.log("newProps: ", newProps);
         this.drawCuttingBoardCanvas(newProps);
     }
 
@@ -120,9 +119,6 @@ class CropAndRotateEditor extends Component {
 export default CropAndRotateEditor;
 
 const getSizeRatios = (cropDecimals, width, height) => {
-    console.log("width: ", width);
-    console.log("height: ", height);
-
     const {leftPercent, rightPercent, topPercent, bottomPercent} = cropDecimals;
 
     const totalCropWidthPercentage = leftPercent + (1-rightPercent);
