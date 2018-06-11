@@ -112,8 +112,6 @@ export function updateArtworkAndImage(imgFile, artworkData, artworkId) {
         const { uid: userId } = auth.currentUser;
         const { orientation, cropData } = artworkData;
 
-        console.log("artworkData.thumbUrl: ", artworkData.thumbUrl);
-
         dispatch({
             type: SAVING_ARTWORK_TRIGGERED
         });

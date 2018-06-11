@@ -4,12 +4,13 @@ import isEqual from 'lodash/isEqual';
 // styles
 import './artworkEditor_styles.css';
 // actions
-import { updateArtworkAndImage } from '../../actions/SaveArtworkActions';
+import { updateArtworkAndImage, resetArtworkSavingProgress } from '../../actions/SaveArtworkActions';
 // comps
 import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
 // import SaveOrCancelControls from "../artworkAdder/SaveOrCancelControls";
 import history from "../global/history";
-import {ArtworkEditAppBar} from "../appBar/AppBar";
+import { ArtworkEditAppBar } from "../appBar/AppBar";
+import ArtworkEditorSavingProgress from "./ArtworkEditorSavingProgress";
 
 class ArtworkEditor extends Component {
 
@@ -25,12 +26,13 @@ class ArtworkEditor extends Component {
         this.loadSourceImg = this.loadSourceImg.bind(this);
     }
 
-    componentWillMount() {
-        this.loadSourceImg(this.props)
+    componentDidMount() {
+        this.loadSourceImg(this.props);
+        this.props.resetArtworkSavingProgress();
     }
 
-    componentWillReceiveProps(props) {
-        this.loadSourceImg(props)
+    componentDidUpdate() {
+        this.loadSourceImg(this.props)
     }
 
     loadSourceImg(props) {
@@ -68,18 +70,25 @@ class ArtworkEditor extends Component {
     }
 
     render() {
-        const { currentArtwork } = this.props;
+        const { currentArtwork, artworkSavingProgress, artworkId, resetArtworkSavingProgress } = this.props;
         const { sourceImg, unsavedArtworkData } = this.state;
         const mergedData = { ...currentArtwork, ...unsavedArtworkData };
         const hasChanges = !isEqual(mergedData, currentArtwork);
+        const isSaving = artworkSavingProgress.status === 'saving';
 
         return (
             <div className={'artworkEditor'}>
+
                 <ArtworkEditAppBar title={'Crop & Rotate'}
                                    hasChanges={hasChanges}
                                    onCloseClick={this.onClose}
                                    onSaveClick={this.onSave}
                                    onCancelClick={this.onCancel}/>
+
+                <ArtworkEditorSavingProgress artworkSavingProgress={artworkSavingProgress}
+                                             resetArtworkSavingProgress={resetArtworkSavingProgress}
+                                             label={'Saving Artwork and Thumbnail'}
+                                             redirectTo={`/gallery/artworkId_${artworkId}_artworkId`}/>
 
                 <CropAndRotateEditor sourceImg={sourceImg}
                                      key={1}
@@ -93,10 +102,11 @@ class ArtworkEditor extends Component {
 
 const mapStateToProps = (state, props) => {
     return {
-        currentArtwork: getCurrentArtwork(state.artworks, props.artworkId)
+        currentArtwork: getCurrentArtwork(state.artworks, props.artworkId),
+        artworkSavingProgress: state.artworkSavingProgress
     }
 };
-export default connect(mapStateToProps, { updateArtworkAndImage })(ArtworkEditor);
+export default connect(mapStateToProps, { updateArtworkAndImage, resetArtworkSavingProgress })(ArtworkEditor);
 
 const getCurrentArtwork = (artworks, artworkId) => {
     return artworks[artworkId];
