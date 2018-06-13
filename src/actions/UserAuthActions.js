@@ -8,15 +8,16 @@ export const USER_SIGNED_IN = "userSignedIn";
 export const USER_SIGNED_OUT = "userSignedOut";
 
 // store listener and export function to stop it
-let unregisterUserAuthListener;
+/*let unregisterUserAuthListener;
 export function stopListeningForUserAuthChanges(){
     if (unregisterUserAuthListener) unregisterUserAuthListener();
-}
+    return{}
+}*/
 
 // LISTEN FOR USER DATA CHANGES
 export function listenForUserAuthChanges() {
     // ensure only set up once
-    if (unregisterUserAuthListener) return {};
+    // if (unregisterUserAuthListener) return {};
 
     return (dispatch) => {
 
@@ -24,8 +25,8 @@ export function listenForUserAuthChanges() {
             type: USER_REQUESTED
         });
 
-        unregisterUserAuthListener = auth
-            .onAuthStateChanged(user => {
+        // unregisterUserAuthListener = auth
+        auth.onAuthStateChanged(user => {
                 if (user) {
                     const { photoURL, displayName, email, emailVerified, uid, providerData } = user;
                     const { providerId } = providerData[0];

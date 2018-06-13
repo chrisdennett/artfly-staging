@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import ga from './libs/googleAnalyticsConfig';
 // actions
-import { listenForUserAuthChanges, stopListeningForUserAuthChanges } from './actions/UserAuthActions';
+import { listenForUserAuthChanges } from './actions/UserAuthActions';
 import { fetchUserArtworks, getArtworkDataOnce } from './actions/GetArtworkActions';
 import { fetchUserGalleries, fetchGalleryData } from './actions/GalleryDataActions';
 // helpers
@@ -63,19 +63,15 @@ class ArtflyRouting extends Component {
         const { uid: newUid } = nextProps.user;
         const { uid: currentUid } = this.props.user;
 
-        if (nextProps.user) {
-            if (newUid !== currentUid) {
-                this.props.fetchUserArtworks(newUid);
-                this.props.fetchUserGalleries(newUid);
-            }
+        if (newUid && newUid !== currentUid) {
+            this.props.fetchUserArtworks(newUid);
+            this.props.fetchUserGalleries(newUid);
         }
     }
 
     componentWillUnmount() {
         // stop listening for route changes
         this.state.unlisten();
-        // remove the auth listener
-        this.props.stopListeningForUserAuthChanges();
     }
 
     getParams(url) {
@@ -141,7 +137,6 @@ const mapStateToProps = (state) => {
 };
 const mapActionsToProps = {
     listenForUserAuthChanges,
-    stopListeningForUserAuthChanges,
     fetchUserArtworks,
     getArtworkDataOnce,
     fetchUserGalleries,

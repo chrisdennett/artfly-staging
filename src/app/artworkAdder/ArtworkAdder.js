@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { addNewArtwork, resetArtworkSavingProgress } from '../../actions/SaveArtworkActions';
 // helper
 import GenerateDefaultArtworkData from '../artwork/DefaultArtworkDataGenerator';
-import { GetImage } from "../global/ImageHelper";
+// import { GetImage } from "../global/ImageHelper";
 // comps
 import AppBar from "../appBar/AppBar";
-import PhotoSelector from "../photoSelector/PhotoSelector";
+// import PhotoSelector from "../photoSelector/PhotoSelector";
 import CropAndRotateEditor from "../artworkEditor/cropAndRotateEditor/CropAndRotateEditor";
 import SaveOrCancelControls from "./SaveOrCancelControls";
 import ArtworkAdderSavingProgress from "./ArtworkAdderSavingProgress";

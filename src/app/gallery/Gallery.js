@@ -29,7 +29,7 @@ class Gallery extends Component {
 
     render() {
         const {showArtworkAdder, newArtworkSetupData} = this.state;
-        const { galleryNavData, galleryArtworks, artworkId } = this.props;
+        const { galleryNavData, galleryArtworks, artworkId, gallery } = this.props;
         const showGalleryHome = !artworkId && !showArtworkAdder;
         const showGalleryArtworkViewer = !!artworkId && !showArtworkAdder;
 
@@ -48,6 +48,7 @@ class Gallery extends Component {
 
                 {showGalleryHome &&
                 <GalleryHome galleryArtworks={galleryArtworks}
+                             gallery={gallery}
                              onPhotoSelected={img => this.onPhotoSelected(img)}
                 />
                 }
@@ -59,6 +60,7 @@ class Gallery extends Component {
 const mapStateToProps = (state, props) => (
     {
         user: state.user,
+        gallery: state.galleries[props.galleryId],
         galleryArtworks: getArtworksByDate(state.artworks),
         galleryNavData: getGalleryNavigation(state.artworks, props.artworkId, state.user.uid)
     }

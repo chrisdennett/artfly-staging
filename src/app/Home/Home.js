@@ -53,10 +53,10 @@ const Home = ({ user, userGalleries }) => {
 
                 <div className={'home--yourGalleries--galleries'}>
                     {
-                        Object.keys(userGalleries).map(galleryId =>
-                            <GalleryCard galleryData={userGalleries[galleryId]}
-                                         key={galleryId}
-                                         onClick={() => history.push(`/gallery/galleryId_${galleryId}_galleryId`)}/>
+                        userGalleries.map(gallery =>
+                            <GalleryCard galleryData={gallery}
+                                         key={gallery.galleryId}
+                                         onClick={() => history.push(`/gallery/galleryId_${gallery.galleryId}_galleryId`)}/>
                         )
                     }
                 </div>
