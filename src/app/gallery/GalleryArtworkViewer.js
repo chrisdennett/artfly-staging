@@ -25,13 +25,13 @@ class GalleryArtworkViewer extends Component {
         const urlEndsInSlash = history.location.pathname.slice(-1) === '/';
         const urlPrefix = urlEndsInSlash ? '' : '/gallery/';
         const goBackToGallery = () => history.push(`/gallery`);
-        const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 30, right: 10 };
+        const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 40, right: 10 };
 
         return (
             <div className={'gallery'}>
 
                 {isEditable &&
-                <Fab theme={'primary-bg'} style={editFabStyle} onClick={() => this.setState({ editMenuIsOpen: true })}>
+                <Fab mini theme={'primary-bg'} style={editFabStyle} onClick={() => this.setState({ editMenuIsOpen: true })}>
                     edit
                 </Fab>
                 }

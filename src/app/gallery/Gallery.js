@@ -1,47 +1,23 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-// ui
 // styles
 import './gallery_styles.css';
 // comps
 import GalleryHome from './GalleryHome';
 import GalleryArtworkViewer from "./GalleryArtworkViewer";
-import { GetImage } from "../global/ImageHelper";
-import ArtworkAdder from "../artworkAdder/ArtworkAdder";
 
 class Gallery extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = { showArtworkAdder: false };
-
-        this.onPhotoSelected = this.onPhotoSelected.bind(this);
-
-    }
-
-    onPhotoSelected(imgFile) {
-        GetImage(imgFile, (img, orientation, widthToHeightRatio, heightToWidthRatio) => {
-            const newArtworkSetupData = { img, orientation, widthToHeightRatio, heightToWidthRatio };
-            this.setState({ showArtworkAdder: true, newArtworkSetupData });
-        })
-    }
 
     render() {
-        const { showArtworkAdder, newArtworkSetupData } = this.state;
         const { galleryNavData, galleryArtworks, artworkId, gallery, currentGalleryData } = this.props;
-        const showGalleryHome = !artworkId && !showArtworkAdder;
-        const showGalleryArtworkViewer = !!artworkId && !showArtworkAdder;
+        const showGalleryHome = !artworkId;
+        const showGalleryArtworkViewer = !!artworkId;
 
         console.log("currentGalleryData: ", currentGalleryData);
 
         return (
             <div className={'gallery'}>
-
-                {showArtworkAdder &&
-                <ArtworkAdder setupData={newArtworkSetupData}/>
-                }
-
 
                 {showGalleryArtworkViewer &&
                 <GalleryArtworkViewer {...galleryNavData}
@@ -78,7 +54,6 @@ const getCurrentGalleryData = (user, galleries, artworks, galleryId, artworkId) 
 
     const galleryIsEditable = user && user.uid === gallery.adminId;
     const galleryArtworks = getGalleryArtworks(gallery, artworks);
-
 
     return { galleryIsEditable, galleryArtworks };
 };

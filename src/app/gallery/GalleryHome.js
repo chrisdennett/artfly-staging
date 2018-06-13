@@ -1,25 +1,32 @@
 import React, { Component } from "react";
+// ui
+import { Fab } from 'rmwc/Fab';
 // helper
 import history from "../global/history";
 // comps
 import ArtworkThumb from "../artworkThumb/ArtworkThumb";
 import AppBar from "../appBar/AppBar";
 import BottomBar from "../bottomBar/BottomBar";
-import PhotoSelector from "../photoSelector/PhotoSelector";
 import LoadingThing from "../loadingThing/LoadingThing";
 
 class GalleryHome extends Component {
 
     render() {
-        const { galleryArtworks, onPhotoSelected, gallery } = this.props;
+        const { galleryArtworks, gallery } = this.props;
         const urlEndsInSlash = history.location.pathname.slice(-1) === '/';
         const urlPrefix = urlEndsInSlash ? '' : '/gallery/';
         const firstArtworkId = galleryArtworks.length > 0 ? galleryArtworks[0].artworkId : null;
+        const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 40, right: 10 };
 
         return (
             <div className={'galleryHome'}>
                 <AppBar title={'Gallery'}
                         fixed={false}/>
+
+
+                <Fab mini theme={'primary-bg'} style={editFabStyle} onClick={() => history.push('/artworkAdder')}>
+                    add
+                </Fab>
 
                 {!gallery &&
                 <LoadingThing/>
@@ -35,8 +42,6 @@ class GalleryHome extends Component {
                         {gallery.subtitle}
                     </h2>
                     <div className={'artworkThumbs'}>
-                        <PhotoSelector onPhotoSelected={onPhotoSelected}/>
-
                         {
                             galleryArtworks.map(artworkData => {
                                 return (

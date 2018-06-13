@@ -1,15 +1,12 @@
 // externals
 import React, { Component } from "react";
-import { connect } from 'react-redux';
 import ga from './libs/googleAnalyticsConfig';
-// actions
-import { listenForUserAuthChanges } from './actions/UserAuthActions';
-import { fetchUserArtworks, getArtworkDataOnce } from './actions/GetArtworkActions';
-import { fetchUserGalleries, fetchGalleryData, fetchUserGalleryArtworks } from './actions/GalleryDataActions';
+// app styles
+import 'material-components-web/dist/material-components-web.min.css';
+import './appStyles.css';
 // helpers
 import history from './app/global/history';
 // route components
-import App from "./app/App";
 import Home from './app/Home/Home';
 import FourOhFour from "./app/FourOhFour/FourOhFour";
 import UserProfile from "./app/userProfile/UserProfile";
@@ -18,6 +15,7 @@ import ArtworkAdder from "./app/artworkAdder/ArtworkAdder";
 import TestPage from "./app/testPage/TestPage";
 import Gallery from "./app/gallery/Gallery";
 import ArtworkEditor from "./app/artworkEditor/ArtworkEditor";
+import AppDataFetching from "./AppDataFetching";
 
 const routes = {
     home: { component: Home },
@@ -44,31 +42,6 @@ class ArtflyRouting extends Component {
             this.setPageData(location.pathname);
         });
         this.setState({ unlisten: unlisten });
-
-        // fetch global data
-        const params = this.getParams(location.pathname);
-        if (params.artworkId) {
-            // if there's an artwork param listen get that data first
-            this.props.getArtworkDataOnce(params.artworkId);
-        }
-        if (params.galleryId) {
-            this.props.fetchGalleryData(params.galleryId, (gallery) => {
-                this.props.fetchUserGalleryArtworks(gallery);
-            });
-        }
-
-        // listen out for logging in and out
-        this.props.listenForUserAuthChanges();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const { uid: newUid } = nextProps.user;
-        const { uid: currentUid } = this.props.user;
-
-        if (newUid && newUid !== currentUid) {
-            this.props.fetchUserArtworks(newUid);
-            this.props.fetchUserGalleries(newUid);
-        }
     }
 
     componentWillUnmount() {
@@ -124,26 +97,11 @@ class ArtflyRouting extends Component {
         const PageComponentWithProps = <PageComponent {...params} page={page}/>;
 
         return (
-            <App params={params} page={page}>
+            <AppDataFetching params={params} page={page}>
                 {PageComponentWithProps}
-            </App>
+            </AppDataFetching>
         );
     }
 }
 
-
-const mapStateToProps = (state) => {
-    return {
-        user: state.user
-    }
-};
-const mapActionsToProps = {
-    listenForUserAuthChanges,
-    fetchUserArtworks,
-    getArtworkDataOnce,
-    fetchUserGalleries,
-    fetchGalleryData,
-    fetchUserGalleryArtworks
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(ArtflyRouting);
+export default ArtflyRouting;
