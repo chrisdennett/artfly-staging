@@ -1,10 +1,12 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 // ui
 import { Button } from 'rmwc/Button';
 import { Icon } from 'rmwc/Icon';
 import { Fab } from 'rmwc/Fab'
 // helper
 import history from "../global/history";
+import {goToGallery, goToArtwork} from "../../AppNavigation";
 // comps
 import {ArtworkAppBar} from "../appBar/AppBar";
 import GalleryArtwork from "./GalleryArtwork";
@@ -18,13 +20,10 @@ class GalleryArtworkViewer extends Component {
         this.state = { editMenuIsOpen: false };
     }
 
-
     render() {
         const { editMenuIsOpen } = this.state;
-        const { currentArtwork, previousArtwork, nextArtwork, isEditable } = this.props;
-        const urlEndsInSlash = history.location.pathname.slice(-1) === '/';
-        const urlPrefix = urlEndsInSlash ? '' : '/gallery/';
-        const goBackToGallery = () => history.push(`/gallery`);
+        const { galleryNavData, galleryId } = this.props;
+        const { currentArtwork, previousArtwork, nextArtwork, isEditable } = galleryNavData;
         const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 40, right: 10 };
 
         return (
@@ -43,24 +42,23 @@ class GalleryArtworkViewer extends Component {
                 }
 
                 <ArtworkAppBar title={'Artworks'}
-                               onCloseClick={goBackToGallery}
-                               onMenuClick={goBackToGallery}/>
+                               onMenuClick={() => goToGallery(galleryId)}/>
 
                 <GalleryArtwork currentArtwork={currentArtwork}/>
 
                 <div className={'gallery--controls'}>
                     <Button disabled={!previousArtwork}
-                            onClick={() => history.push(`${urlPrefix}artworkId_${previousArtwork.artworkId}_artworkId`)}>
+                            onClick={() => goToArtwork(galleryId, previousArtwork.artworkId)}>
                         <Icon use={'arrow_back'}/>
                     </Button>
 
                     <Button className={'gallery--controls--backToGalleryButt'}
-                            onClick={goBackToGallery}>
+                            onClick={() => goToGallery(galleryId)}>
                         <Icon use={'dashboard'}/>
                     </Button>
 
                     <Button disabled={!nextArtwork}
-                            onClick={() => history.replace(`${urlPrefix}artworkId_${nextArtwork.artworkId}_artworkId`)}>
+                            onClick={() => goToArtwork(galleryId, nextArtwork.artworkId)}>
                         <Icon use={'arrow_forward'}/>
                     </Button>
                 </div>
@@ -69,4 +67,50 @@ class GalleryArtworkViewer extends Component {
     }
 }
 
-export default GalleryArtworkViewer;
+const mapStateToProps = (state, props) => (
+    {
+        galleryNavData: getGalleryNavigation(state.artworks, props.artworkId, state.user.uid),
+    }
+);
+export default connect(mapStateToProps)(GalleryArtworkViewer);
+
+
+
+const getGalleryNavigation = (artworks, artworkId, userId) => {
+    const galleryArtworks = getArtworksByDate(artworks);
+    const totalArtworks = galleryArtworks.length;
+    let currentArtwork, nextArtwork, previousArtwork;
+
+    for (let i = 0; i < totalArtworks; i++) {
+        const artwork = galleryArtworks[i];
+        if (artwork.artworkId === artworkId) {
+            currentArtwork = artwork;
+
+            if (i > 0) {
+                previousArtwork = galleryArtworks[i - 1];
+            }
+
+            if (i < totalArtworks - 1) {
+                nextArtwork = galleryArtworks[i + 1]
+            }
+
+            break;
+        }
+    }
+
+    const isEditable = !currentArtwork ? false : currentArtwork.adminId === userId;
+
+    return { currentArtwork, isEditable, nextArtwork, previousArtwork };
+};
+
+const getArtworksByDate = (artworks) => {
+    const arr = Object.keys(artworks).map(id => {
+        return artworks[id];
+    });
+
+    arr.sort((a, b) => {
+        return b.lastUpdated - a.lastUpdated;
+    });
+
+    return arr;
+};

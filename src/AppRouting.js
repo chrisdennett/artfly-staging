@@ -13,25 +13,16 @@ import UserProfile from "./app/userProfile/UserProfile";
 import UserDelete from "./app/userDelete/UserDelete";
 import ArtworkAdder from "./app/artworkAdder/ArtworkAdder";
 import TestPage from "./app/testPage/TestPage";
-import Gallery from "./app/gallery/Gallery";
 import ArtworkEditor from "./app/artworkEditor/ArtworkEditor";
 import AppDataFetching from "./AppDataFetching";
+import GalleryArtworkViewer from "./app/gallery/GalleryArtworkViewer";
+import GalleryHome from "./app/gallery/GalleryHome";
 
-const routes = {
-    home: { component: Home },
-    profile: { component: UserProfile },
-    delete: { component: UserDelete },
-    gallery: { component: Gallery },
-    artworkAdder: { component: ArtworkAdder },
-    artworkEditor: { component: ArtworkEditor },
-
-    TESTING: { component: TestPage }
-};
 
 class ArtflyRouting extends Component {
     constructor(props) {
         super(props);
-        this.state = { unlisten: null, params: null };
+        this.state = { unlisten: null, params: {} };
     }
 
     componentDidMount() {
@@ -68,23 +59,10 @@ class ArtflyRouting extends Component {
     }
 
     setPageData(fullPath) {
-        let page;
+        const page = fullPath === '/' ? 'home' : fullPath.split('/').slice(1)[0];
         const params = this.getParams(fullPath);
 
-        if (fullPath === '/') {
-            page = 'home';
-        }
-        else {
-            const sections = fullPath.split('/').slice(1);
-            page = sections[0];
-        }
-
-        this.setState(() => {
-            return {
-                page: page,
-                params: params
-            }
-        });
+        this.setState({ page, params });
 
         ga.set({ page: page });
         ga.pageview(fullPath);
@@ -93,11 +71,13 @@ class ArtflyRouting extends Component {
     render() {
         const { page, params } = this.state;
 
-        const PageComponent = routes[page] ? routes[page].component : FourOhFour;
-        const PageComponentWithProps = <PageComponent {...params} page={page}/>;
+        // const PageComponent = routes[page] ? routes[page].component : FourOhFour;
+
+
+        const PageComponentWithProps = getPageComponent(page, params);
 
         return (
-            <AppDataFetching params={params} page={page}>
+            <AppDataFetching params={params}>
                 {PageComponentWithProps}
             </AppDataFetching>
         );
@@ -105,3 +85,28 @@ class ArtflyRouting extends Component {
 }
 
 export default ArtflyRouting;
+
+function getPageComponent(page, params) {
+
+    const {artworkId, galleryId} = params;
+    let PageComponent;
+
+
+    switch (page) {
+        case 'home':
+            PageComponent = Home;
+            break;
+
+        case 'gallery':
+
+            if(galleryId && artworkId) PageComponent = GalleryArtworkViewer;
+            else if(galleryId) PageComponent = GalleryHome;
+
+            break;
+
+        default:
+            PageComponent = FourOhFour;
+    }
+
+    return <PageComponent {...params} />;
+}
