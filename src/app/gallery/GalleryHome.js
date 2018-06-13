@@ -7,6 +7,8 @@ import './gallery_styles.css';
 // helper
 import history from "../global/history";
 import {goToArtwork} from "../../AppNavigation";
+// selectors
+import {getArtworksByDate, getCurrentGalleryData} from '../../selectors/Selectors';
 // comps
 import ArtworkThumb from "../artworkThumb/ArtworkThumb";
 import AppBar from "../appBar/AppBar";
@@ -74,39 +76,3 @@ const mapStateToProps = (state, props) => (
 );
 
 export default connect(mapStateToProps)(GalleryHome);
-
-const getCurrentGalleryData = (user, galleries, artworks, galleryId) => {
-
-    const gallery = galleries[galleryId];
-    if (!gallery) return null;
-
-    const galleryIsEditable = user && user.uid === gallery.adminId;
-    const galleryArtworks = getGalleryArtworks(gallery, artworks);
-
-    return { galleryIsEditable, galleryArtworks };
-};
-
-const getGalleryArtworks = (gallery, artworks) => {
-    const { type, key } = gallery;
-    let galleryArtworks = [];
-    if (type === 'user') {
-        const galleryArtworkIds = Object.keys(artworks).filter(artworkId => {
-            return artworks.adminId === key;
-        });
-        console.log("galleryArtworkIds: ", galleryArtworkIds);
-    }
-
-    return galleryArtworks
-};
-
-const getArtworksByDate = (artworks) => {
-    const arr = Object.keys(artworks).map(id => {
-        return artworks[id];
-    });
-
-    arr.sort((a, b) => {
-        return b.lastUpdated - a.lastUpdated;
-    });
-
-    return arr;
-};

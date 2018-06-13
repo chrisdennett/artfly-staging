@@ -1,13 +1,17 @@
 .gallery {
-    display: flex;
     background: url("../../app/images/brickwall.png");
     overflow: hidden;
     min-height: 100vh;
+    display: flex;
     flex-direction: column;
 }
 
 .galleryHome{
     padding-bottom: 80px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: url("../../app/images/brickwall.png");
 }
 
 .gallery--title {

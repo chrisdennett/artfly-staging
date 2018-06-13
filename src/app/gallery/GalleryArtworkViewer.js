@@ -5,10 +5,11 @@ import { Button } from 'rmwc/Button';
 import { Icon } from 'rmwc/Icon';
 import { Fab } from 'rmwc/Fab'
 // helper
-import history from "../global/history";
-import {goToGallery, goToArtwork} from "../../AppNavigation";
+import { goToGallery, goToArtwork } from "../../AppNavigation";
+// selectors
+import {getGalleryNavigation} from '../../selectors/Selectors';
 // comps
-import {ArtworkAppBar} from "../appBar/AppBar";
+import { ArtworkAppBar } from "../appBar/AppBar";
 import GalleryArtwork from "./GalleryArtwork";
 import ArtworkEditMenu from "./ArtworkEditMenu";
 
@@ -30,7 +31,8 @@ class GalleryArtworkViewer extends Component {
             <div className={'gallery'}>
 
                 {isEditable &&
-                <Fab mini theme={'primary-bg'} style={editFabStyle} onClick={() => this.setState({ editMenuIsOpen: true })}>
+                <Fab mini theme={'primary-bg'} style={editFabStyle}
+                     onClick={() => this.setState({ editMenuIsOpen: true })}>
                     edit
                 </Fab>
                 }
@@ -69,48 +71,7 @@ class GalleryArtworkViewer extends Component {
 
 const mapStateToProps = (state, props) => (
     {
-        galleryNavData: getGalleryNavigation(state.artworks, props.artworkId, state.user.uid),
+        galleryNavData: getGalleryNavigation(state.artworks, props.artworkId, state.user.uid)
     }
 );
 export default connect(mapStateToProps)(GalleryArtworkViewer);
-
-
-
-const getGalleryNavigation = (artworks, artworkId, userId) => {
-    const galleryArtworks = getArtworksByDate(artworks);
-    const totalArtworks = galleryArtworks.length;
-    let currentArtwork, nextArtwork, previousArtwork;
-
-    for (let i = 0; i < totalArtworks; i++) {
-        const artwork = galleryArtworks[i];
-        if (artwork.artworkId === artworkId) {
-            currentArtwork = artwork;
-
-            if (i > 0) {
-                previousArtwork = galleryArtworks[i - 1];
-            }
-
-            if (i < totalArtworks - 1) {
-                nextArtwork = galleryArtworks[i + 1]
-            }
-
-            break;
-        }
-    }
-
-    const isEditable = !currentArtwork ? false : currentArtwork.adminId === userId;
-
-    return { currentArtwork, isEditable, nextArtwork, previousArtwork };
-};
-
-const getArtworksByDate = (artworks) => {
-    const arr = Object.keys(artworks).map(id => {
-        return artworks[id];
-    });
-
-    arr.sort((a, b) => {
-        return b.lastUpdated - a.lastUpdated;
-    });
-
-    return arr;
-};

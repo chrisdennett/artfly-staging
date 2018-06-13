@@ -1,5 +1,6 @@
 import history from "./app/global/history";
 
+// TODO: Move history logic here and remove separate history file.
 function getRoutePrefix(){
     const urlEndsInSlash = history.location.pathname.slice(-1) === '/';
     return urlEndsInSlash ? '' : '/';
