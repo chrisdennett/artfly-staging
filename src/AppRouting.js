@@ -18,7 +18,6 @@ import AppDataFetching from "./AppDataFetching";
 import GalleryArtworkViewer from "./app/gallery/GalleryArtworkViewer";
 import GalleryHome from "./app/gallery/GalleryHome";
 
-
 class ArtflyRouting extends Component {
     constructor(props) {
         super(props);
@@ -88,7 +87,7 @@ export default ArtflyRouting;
 
 function getPageComponent(page, params) {
 
-    const {artworkId, galleryId} = params;
+    const { artworkId, galleryId } = params;
     let PageComponent;
 
 
@@ -98,10 +97,32 @@ function getPageComponent(page, params) {
             break;
 
         case 'gallery':
+            // gallery can either be showing an artwork
+            if (galleryId && artworkId) PageComponent = GalleryArtworkViewer;
+            // or showing the gallery home page
+            else if (galleryId) PageComponent = GalleryHome;
+            // or if missing params go home
+            else PageComponent = Home;
+            break;
 
-            if(galleryId && artworkId) PageComponent = GalleryArtworkViewer;
-            else if(galleryId) PageComponent = GalleryHome;
+        case 'profile':
+            PageComponent = UserProfile;
+            break;
 
+        case 'delete':
+            PageComponent = UserDelete;
+            break;
+
+        case 'artworkAdder':
+            PageComponent = ArtworkAdder;
+            break;
+
+        case 'artworkEditor':
+            PageComponent = ArtworkEditor;
+            break;
+
+        case 'TESTING':
+            PageComponent = TestPage;
             break;
 
         default:
