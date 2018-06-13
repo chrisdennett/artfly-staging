@@ -1,19 +1,54 @@
-.gallery{
-    display:flex;
+.gallery {
+    display: flex;
     background: url("../../app/images/brickwall.png");
     overflow: hidden;
     min-height: 100vh;
     flex-direction: column;
 }
 
-.gallery--sizePlaceholder{
+.galleryHome{
+    padding-bottom: 80px;
+}
+
+.gallery--title {
+    /*background-color: rgba(255, 255, 0, 0.5);*/
+    font-size: 4rem;
+    padding: 10px;
+    line-height: 4rem;
+    margin: 42px 0 10px 0;
+    text-align: center;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.7);
+    font-family: 'Stardos Stencil', cursive;
+    /*
+    font-family: 'Rubik', sans-serif;
+    font-weight: 900;
+    */
+    /*font-family: 'Black Ops One', cursive;
+    font-weight: normal;
+    */
+}
+
+.gallery--subtitle {
+    background-color: rgba(255, 255, 0, 0.5);
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+    padding: 5px 0;
+    margin-top: 0;
+    text-align: center;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.6);
+    font-family: 'Stardos Stencil', cursive
+}
+
+.gallery--sizePlaceholder {
     flex: 1;
     /*background-color: red;*/
     position: relative;
 }
 
-.gallery--controls{
-    border-top: 1px solid rgba(0,0,0,0.2);
+.gallery--controls {
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
     height: 60px;
     background-color: whitesmoke;
     display: flex;
@@ -21,12 +56,11 @@
     align-items: center;
 }
 
-.gallery--controls--backToGalleryButt{
+.gallery--controls--backToGalleryButt {
     /*align-self: left;*/
 }
 
-
-.gallery--framedArtwork{
+.gallery--framedArtwork {
     position: absolute;
     top: 0;
     left: 0;
@@ -39,3 +73,16 @@
 
     /*background-color: #6cdfea;*/
 }
+
+@media only screen and (max-width: 600px) {
+    .gallery--title {
+        font-size: 3rem;
+        line-height: 3rem;
+    }
+
+    .gallery--subtitle {
+        font-size: 1.5rem;
+        line-height: 2rem;
+    }
+}
+

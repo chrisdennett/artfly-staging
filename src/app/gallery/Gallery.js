@@ -1,56 +1,56 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 // ui
-import { Fab } from 'rmwc/Fab'
 // styles
 import './gallery_styles.css';
 // comps
 import GalleryHome from './GalleryHome';
 import GalleryArtworkViewer from "./GalleryArtworkViewer";
-import ArtworkEditMenu from "./ArtworkEditMenu";
-import history from "../global/history";
+import { GetImage } from "../global/ImageHelper";
+import ArtworkAdder from "../artworkAdder/ArtworkAdder";
 
 class Gallery extends Component {
 
     constructor(props) {
         super(props);
 
-        this.state = { editMenuIsOpen: false };
+        this.state = {showArtworkAdder: false};
+
+        this.onPhotoSelected = this.onPhotoSelected.bind(this);
+
+    }
+
+    onPhotoSelected(imgFile) {
+        GetImage(imgFile, (img, orientation, widthToHeightRatio, heightToWidthRatio) => {
+            const newArtworkSetupData = {img, orientation, widthToHeightRatio, heightToWidthRatio};
+            this.setState({showArtworkAdder:true, newArtworkSetupData });
+        })
     }
 
     render() {
-        const { editMenuIsOpen } = this.state;
+        const {showArtworkAdder, newArtworkSetupData} = this.state;
         const { galleryNavData, galleryArtworks, artworkId } = this.props;
-        const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 30, right: 10 };
+        const showGalleryHome = !artworkId && !showArtworkAdder;
+        const showGalleryArtworkViewer = !!artworkId && !showArtworkAdder;
 
         return (
             <div className={'gallery'}>
 
-                {artworkId &&
-                <span>
-                <Fab theme={'primary-bg'} style={editFabStyle} onClick={() => this.setState({ editMenuIsOpen: true })}>
-                    edit
-                </Fab>
+                {showArtworkAdder&&
+                    <ArtworkAdder setupData={newArtworkSetupData}/>
+                }
 
-                <ArtworkEditMenu isOpen={editMenuIsOpen}
-                                 artworkId={artworkId}
-                                 onClose={() => this.setState({ editMenuIsOpen: false })}/>
 
+                {showGalleryArtworkViewer &&
                 <GalleryArtworkViewer {...galleryNavData}
                                       onEditClick={() => this.setState({ editMenuIsOpen: true })}/>
-                </span>
                 }
 
-                {!artworkId &&
-                <span>
-                    <GalleryHome galleryArtworks={galleryArtworks}/>
-                    <Fab theme={'primary-bg'} style={editFabStyle}
-                         onClick={() => history.push('/artworkAdder')}>
-                        add
-                    </Fab>
-                </span>
+                {showGalleryHome &&
+                <GalleryHome galleryArtworks={galleryArtworks}
+                             onPhotoSelected={img => this.onPhotoSelected(img)}
+                />
                 }
-
             </div>
         );
     }
@@ -60,14 +60,14 @@ const mapStateToProps = (state, props) => (
     {
         user: state.user,
         galleryArtworks: getArtworksByDate(state.artworks),
-        galleryNavData: getGalleryNavigation(state.artworks, props.artworkId)
+        galleryNavData: getGalleryNavigation(state.artworks, props.artworkId, state.user.uid)
     }
 );
 
 export default connect(mapStateToProps)(Gallery);
 
 // return current index, total, previous and next
-const getGalleryNavigation = (artworks, artworkId) => {
+const getGalleryNavigation = (artworks, artworkId, userId) => {
     const galleryArtworks = getArtworksByDate(artworks);
     const totalArtworks = galleryArtworks.length;
     let currentArtwork, nextArtwork, previousArtwork;
@@ -89,7 +89,9 @@ const getGalleryNavigation = (artworks, artworkId) => {
         }
     }
 
-    return { currentArtwork, nextArtwork, previousArtwork };
+    const isEditable = !currentArtwork ? false : currentArtwork.adminId === userId;
+
+    return { currentArtwork, isEditable, nextArtwork, previousArtwork };
 };
 
 const getArtworksByDate = (artworks) => {

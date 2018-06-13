@@ -1,0 +1,12 @@
+.bottomBar{
+    background-color: whitesmoke;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top: 1px solid rgba(0,0,0,0.2);
+    display: flex;
+    height: 60px;
+    justify-content: center;
+    align-items: center;
+}

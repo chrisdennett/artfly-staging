@@ -5,9 +5,28 @@ export const ARTWORK_CHANGE = "artworkChange";
 let artworkListeners = {};
 let userArtworkListenerUnsubscriber;
 
-export function listenForIndividualArtworkChanged(artworkId){
+export function listenForIndividualArtworkChanged(artworkId) {
     return (dispatch) => {
         listenForArtworkChanges(artworkId, dispatch);
+    }
+}
+
+export function fetchUserArtworks(userId) {
+    return (dispatch) => {
+        db.collection('artworks')
+            .where('adminId', '==', userId)
+            .get()
+            .then(querySnapshot => {
+                    querySnapshot.forEach(doc => {
+                        dispatch({
+                            type: ARTWORK_CHANGE,
+                            payload: { [doc.id]: doc.data() }
+                        });
+                    });
+                },
+                error => {
+                    console.log("user artworks listener error: ", error);
+                })
     }
 }
 
@@ -61,43 +80,29 @@ function listenForArtworkChanges(artworkId, dispatch) {
 }
 
 // Gets a single snapshot of the artwork data
-export function getArtworkDataOnce(artworkId, callback, noDocCallback) {
+export function getArtworkDataOnce(artworkId) {
     return dispatch => {
 
-        fs_getArtworkDataOnce(artworkId, (artworkData) => {
-            dispatch({
-                type: ARTWORK_CHANGE,
-                payload: { [artworkId]: artworkData }
+          db.collection('artworks').doc(artworkId)
+            .get()
+            .then((doc) => {
+                if (doc.exists) {
+                    let artworkData = doc.data();
+                    artworkData.artworkId = artworkId; // add id to data for ease of use};
+
+                    dispatch({
+                        type: ARTWORK_CHANGE,
+                        payload: { [artworkId]: artworkData }
+                    });
+                }
+                else {
+                    // doc.data() will be undefined in this case
+                }
+            })
+            .catch(function (error) {
+                console.log("Error getting document:", error);
             });
-            if (callback) callback(artworkData);
-        }, () => {
-            if (noDocCallback) noDocCallback();
-        });
     }
-}
-
-// GET ARTWORK DATA ONCE
-function fs_getArtworkDataOnce(artworkId, onComplete = null, onNotFound = null) {
-    const docRef = db.collection('artworks').doc(artworkId);
-
-    docRef
-        .get()
-        .then((doc) => {
-            if (doc.exists) {
-                let artworkData = doc.data();
-                artworkData.artworkId = artworkId; // add id to data for ease of use
-                const artworkDataWithId = { [artworkId]: artworkData };
-
-                onComplete(artworkDataWithId);
-            }
-            else {
-                // doc.data() will be undefined in this case
-                if (onNotFound) onNotFound(artworkId);
-            }
-        })
-        .catch(function (error) {
-            console.log("Error getting document:", error);
-        });
 }
 
 /*export function listenForArtworkChanges(artworkId, callback, errorCallback) {

@@ -2,22 +2,46 @@ import React, { Component } from "react";
 // ui
 import { Button } from 'rmwc/Button';
 import { Icon } from 'rmwc/Icon';
+import { Fab } from 'rmwc/Fab'
 // helper
 import history from "../global/history";
 // comps
 import {ArtworkAppBar} from "../appBar/AppBar";
 import GalleryArtwork from "./GalleryArtwork";
+import ArtworkEditMenu from "./ArtworkEditMenu";
 
 class GalleryArtworkViewer extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = { editMenuIsOpen: false };
+    }
+
+
     render() {
-        const { currentArtwork, previousArtwork, nextArtwork } = this.props;
+        const { editMenuIsOpen } = this.state;
+        const { currentArtwork, previousArtwork, nextArtwork, isEditable } = this.props;
         const urlEndsInSlash = history.location.pathname.slice(-1) === '/';
         const urlPrefix = urlEndsInSlash ? '' : '/gallery/';
         const goBackToGallery = () => history.push(`/gallery`);
+        const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 30, right: 10 };
 
         return (
             <div className={'gallery'}>
+
+                {isEditable &&
+                <Fab theme={'primary-bg'} style={editFabStyle} onClick={() => this.setState({ editMenuIsOpen: true })}>
+                    edit
+                </Fab>
+                }
+
+                {isEditable &&
+                <ArtworkEditMenu isOpen={editMenuIsOpen}
+                                 artworkId={currentArtwork.artworkId}
+                                 onClose={() => this.setState({ editMenuIsOpen: false })}/>
+                }
+
                 <ArtworkAppBar title={'Artworks'}
                                onCloseClick={goBackToGallery}
                                onMenuClick={goBackToGallery}/>

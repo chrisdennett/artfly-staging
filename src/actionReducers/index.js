@@ -7,6 +7,7 @@ import FormReducer from './FormReducer';
 import NotificationsReducer from "./NotificationsReducer";
 import ErrorReducer from "./ErrorReducer";
 import ArtworkSavingReducer from "./ArtworkSavingReducer";
+import GalleryReducer from './GalleryReducer';
 
 const rootReducer = combineReducers({
     artworkSavingProgress: ArtworkSavingReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     paddle: PaddleReducer,
     user: UserReducer,
     artworks: ArtworksReducer,
+    galleries: GalleryReducer,
     form: FormReducer
 });
 

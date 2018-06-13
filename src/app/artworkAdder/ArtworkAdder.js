@@ -18,9 +18,9 @@ class ArtworkAdder extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { img: null, orientation: 1, cropData: { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 } };
+        this.state = { cropData: { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 } };
 
-        this.onPhotoSelected = this.onPhotoSelected.bind(this);
+        // this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.onSaveNewArtwork = this.onSaveNewArtwork.bind(this);
         this.onCropAndRotateChange = this.onCropAndRotateChange.bind(this);
         this.onAddAnother = this.onAddAnother.bind(this);
@@ -30,24 +30,19 @@ class ArtworkAdder extends Component {
         this.props.resetArtworkSavingProgress();
         this.setState = (
             {
-                img: null,
-                orientation: 1,
                 cropData: { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 }
             }
         );
     }
 
-    onPhotoSelected(imgFile) {
+    /*onPhotoSelected(imgFile) {
         GetImage(imgFile, (img, orientation, widthToHeightRatio, heightToWidthRatio) => {
             this.setState({ img, orientation, widthToHeightRatio, heightToWidthRatio });
         })
-    }
+    }*/
 
     onCropAndRotateChange(newData) {
         const { orientation = this.state.orientation, cropData, widthToHeightRatio, heightToWidthRatio } = newData;
-
-        console.log("widthToHeightRatio: ", widthToHeightRatio);
-        console.log("heightToWidthRatio: ", heightToWidthRatio);
 
         this.setState({ orientation, cropData, widthToHeightRatio, heightToWidthRatio })
     }
@@ -66,10 +61,11 @@ class ArtworkAdder extends Component {
     }
 
     render() {
-        const { img, cropData, orientation } = this.state;
-        const { artworkSavingProgress } = this.props;
+        const { artworkSavingProgress, setupData } = this.props;
+        const { img, orientation: initialOrientation } = setupData;
+        const { cropData, orientation: updatedOrientation } = this.state;
 
-        const showPhotoSelector = !img && artworkSavingProgress.status === 'dormant';
+        const orientation = updatedOrientation ? updatedOrientation : initialOrientation;
         const showPhotoCropper = img && artworkSavingProgress.status === 'dormant';
         const saveComplete = artworkSavingProgress.status === 'complete';
         const showPhotoSavingProgress = artworkSavingProgress.status !== 'dormant' && !saveComplete;
@@ -94,9 +90,9 @@ class ArtworkAdder extends Component {
                 <ArtworkAdderSavingProgress artworkSavingProgress={artworkSavingProgress}/>
                 }
 
-                {showPhotoSelector &&
+                {/*{showPhotoSelector &&
                 <PhotoSelector onPhotoSelected={(img) => this.onPhotoSelected(img)}/>
-                }
+                }*/}
 
                 {showPhotoCropper &&
                 [

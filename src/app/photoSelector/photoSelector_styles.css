@@ -1,19 +1,6 @@
-.quickPhotoSelectorPage{
-    background: url("../../app/images/brickwall.png");
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
 .quickPhotoSelector{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    flex: 1;
-    max-width: 420px;
+    width: 150px;
+    height: 150px;
 }
 
 .quickPhotoSelector--input{
@@ -27,12 +14,15 @@
 
 .quickPhotoSelector--customInputButton{
     cursor: pointer;
-    max-width: 600px;
-    padding: 60px;
-    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    height: 140px;
     outline: none;
     text-align: center;
-    border: rgba(0, 0, 0, 0.4) 10px dashed;
+    border: rgba(0, 0, 0, 0.4) 5px dashed;
 }
 
 .quickPhotoSelector--iconBg{
@@ -52,9 +42,10 @@
     line-height: 2rem;
 }
 
+/*
 @media screen and (max-height: 480px) {
     .quickPhotoSelector--customInputButton {
         padding: 20px 60px;
         margin-top: 10px;
     }
-}
+}*/

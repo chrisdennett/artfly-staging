@@ -1,30 +1,41 @@
 import React, { Component } from "react";
-// import { connect } from 'react-redux';
-// ui
-// import { Button, ButtonIcon } from 'rmwc/Button';
 // helper
 import history from "../global/history";
 // comps
 import ArtworkThumb from "../artworkThumb/ArtworkThumb";
 import AppBar from "../appBar/AppBar";
+import BottomBar from "../bottomBar/BottomBar";
+import PhotoSelector from "../photoSelector/PhotoSelector";
+import GalleryHomeEditor from './GalleryHomeEditor';
 
 class GalleryHome extends Component {
 
     render() {
-        const { galleryArtworks } = this.props;
+        const { galleryArtworks, onPhotoSelected } = this.props;
         const urlEndsInSlash = history.location.pathname.slice(-1) === '/';
         const urlPrefix = urlEndsInSlash ? '' : '/gallery/';
+        const firstArtworkId = galleryArtworks.length > 0 ? galleryArtworks[0].artworkId : null;
 
         return (
-            <div>
+            <div className={'galleryHome'}>
                 <AppBar title={'Gallery'}
-                        fixed={true}/>
+                        fixed={false}/>
 
-                {/*<Button raised theme={'secondary-bg'} onClick={() => history.push('/artworkAdder')}>
-                    <ButtonIcon use="add"/> Add New Artwork
-                </Button>*/}
+                {/*<GalleryHomeEditor/>*/}
+
+                <div>
+                    <h1 className={'gallery--title'}>
+                        Chris Dennett's
+                    </h1>
+
+                    <h2 className={'gallery--subtitle'}>
+                        Awesome Gallery of Awesomeness
+                    </h2>
+                </div>
 
                 <div className={'artworkThumbs'}>
+                    <PhotoSelector onPhotoSelected={onPhotoSelected}/>
+
                     {
                         galleryArtworks.map(artworkData => {
                             return (
@@ -36,31 +47,12 @@ class GalleryHome extends Component {
                         })
                     }
                 </div>
+
+                <BottomBar disabled={!firstArtworkId}
+                           onEnterGallery={() => history.push(`${urlPrefix}artworkId_${firstArtworkId}_artworkId`)}/>
             </div>
         );
     }
 }
 
 export default GalleryHome;
-/*
-const mapStateToProps = (state) => (
-    {
-        user: state.user,
-        galleryArtworks: getArtworksByDate(state.artworks)
-    }
-);
-
-export default connect(mapStateToProps)(GalleryHome);
-
-const getArtworksByDate = (artworks) => {
-
-    const arr = Object.keys(artworks).map(id => {
-        return artworks[id];
-    });
-
-    arr.sort((a, b) => {
-        return b.lastUpdated - a.lastUpdated;
-    });
-
-    return arr;
-};*/

@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import ga from './libs/googleAnalyticsConfig';
 // actions
 import { listenForUserAuthChanges, stopListeningForUserAuthChanges } from './actions/UserAuthActions';
-import { listenForUserArtworkChanges, listenForIndividualArtworkChanged } from './actions/GetArtworkActions';
+import { fetchUserArtworks, getArtworkDataOnce } from './actions/GetArtworkActions';
+import { fetchUserGalleries, fetchGalleryData } from './actions/GalleryDataActions';
 // helpers
 import history from './app/global/history';
 // route components
@@ -48,7 +49,10 @@ class ArtflyRouting extends Component {
         const params = this.getParams(location.pathname);
         if (params.artworkId) {
             // if there's an artwork param listen get that data first
-            this.props.listenForIndividualArtworkChanged(params.artworkId);
+            this.props.getArtworkDataOnce(params.artworkId);
+        }
+        if (params.galleryId) {
+            this.props.fetchGalleryData(params.galleryId);
         }
 
         // listen out for logging in and out
@@ -61,7 +65,8 @@ class ArtflyRouting extends Component {
 
         if (nextProps.user) {
             if (newUid !== currentUid) {
-                this.props.listenForUserArtworkChanges(newUid);
+                this.props.fetchUserArtworks(newUid);
+                this.props.fetchUserGalleries(newUid);
             }
         }
     }
@@ -121,11 +126,9 @@ class ArtflyRouting extends Component {
         const PageComponentWithProps = <PageComponent {...params} page={page}/>;
 
         return (
-            <div>
-                <App params={params} page={page}>
-                    {PageComponentWithProps}
-                </App>
-            </div>
+            <App params={params} page={page}>
+                {PageComponentWithProps}
+            </App>
         );
     }
 }
@@ -136,6 +139,13 @@ const mapStateToProps = (state) => {
         user: state.user
     }
 };
-const mapActionsToProps = { listenForUserAuthChanges, stopListeningForUserAuthChanges, listenForUserArtworkChanges, listenForIndividualArtworkChanged };
+const mapActionsToProps = {
+    listenForUserAuthChanges,
+    stopListeningForUserAuthChanges,
+    fetchUserArtworks,
+    getArtworkDataOnce,
+    fetchUserGalleries,
+    fetchGalleryData
+};
 
 export default connect(mapStateToProps, mapActionsToProps)(ArtflyRouting);

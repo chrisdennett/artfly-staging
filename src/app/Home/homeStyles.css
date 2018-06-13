@@ -44,8 +44,14 @@
     font-size: 2rem;
 }
 
-.home--artworks{
-    text-align: center;
+.home--yourGalleries{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 20px 0 20px;
+}
+
+.home--yourGalleries--galleries{
     margin-top: 2rem;
 }
 
