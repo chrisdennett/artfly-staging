@@ -14,7 +14,7 @@ class Gallery extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {showArtworkAdder: false};
+        this.state = { showArtworkAdder: false };
 
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
 
@@ -22,22 +22,24 @@ class Gallery extends Component {
 
     onPhotoSelected(imgFile) {
         GetImage(imgFile, (img, orientation, widthToHeightRatio, heightToWidthRatio) => {
-            const newArtworkSetupData = {img, orientation, widthToHeightRatio, heightToWidthRatio};
-            this.setState({showArtworkAdder:true, newArtworkSetupData });
+            const newArtworkSetupData = { img, orientation, widthToHeightRatio, heightToWidthRatio };
+            this.setState({ showArtworkAdder: true, newArtworkSetupData });
         })
     }
 
     render() {
-        const {showArtworkAdder, newArtworkSetupData} = this.state;
-        const { galleryNavData, galleryArtworks, artworkId, gallery } = this.props;
+        const { showArtworkAdder, newArtworkSetupData } = this.state;
+        const { galleryNavData, galleryArtworks, artworkId, gallery, currentGalleryData } = this.props;
         const showGalleryHome = !artworkId && !showArtworkAdder;
         const showGalleryArtworkViewer = !!artworkId && !showArtworkAdder;
+
+        console.log("currentGalleryData: ", currentGalleryData);
 
         return (
             <div className={'gallery'}>
 
-                {showArtworkAdder&&
-                    <ArtworkAdder setupData={newArtworkSetupData}/>
+                {showArtworkAdder &&
+                <ArtworkAdder setupData={newArtworkSetupData}/>
                 }
 
 
@@ -62,11 +64,39 @@ const mapStateToProps = (state, props) => (
         user: state.user,
         gallery: state.galleries[props.galleryId],
         galleryArtworks: getArtworksByDate(state.artworks),
-        galleryNavData: getGalleryNavigation(state.artworks, props.artworkId, state.user.uid)
+        galleryNavData: getGalleryNavigation(state.artworks, props.artworkId, state.user.uid),
+        currentGalleryData: getCurrentGalleryData(state.user, state.galleries, state.artworks, props.galleryId, props.artworkId)
     }
 );
 
 export default connect(mapStateToProps)(Gallery);
+
+const getCurrentGalleryData = (user, galleries, artworks, galleryId, artworkId) => {
+
+    const gallery = galleries[galleryId];
+    if (!gallery) return null;
+
+    const galleryIsEditable = user && user.uid === gallery.adminId;
+    const galleryArtworks = getGalleryArtworks(gallery, artworks);
+
+
+    return { galleryIsEditable, galleryArtworks };
+};
+
+const getGalleryArtworks = (gallery, artworks) => {
+    const { type, key } = gallery;
+    let galleryArtworks = [];
+    if (type === 'user') {
+        const galleryArtworkIds = Object.keys(artworks).filter(artworkId => {
+            return artworks.adminId === key;
+        });
+        console.log("galleryArtworkIds: ", galleryArtworkIds);
+    }
+
+
+    return galleryArtworks
+};
+
 
 // return current index, total, previous and next
 const getGalleryNavigation = (artworks, artworkId, userId) => {

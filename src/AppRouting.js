@@ -5,7 +5,7 @@ import ga from './libs/googleAnalyticsConfig';
 // actions
 import { listenForUserAuthChanges } from './actions/UserAuthActions';
 import { fetchUserArtworks, getArtworkDataOnce } from './actions/GetArtworkActions';
-import { fetchUserGalleries, fetchGalleryData } from './actions/GalleryDataActions';
+import { fetchUserGalleries, fetchGalleryData, fetchUserGalleryArtworks } from './actions/GalleryDataActions';
 // helpers
 import history from './app/global/history';
 // route components
@@ -52,7 +52,9 @@ class ArtflyRouting extends Component {
             this.props.getArtworkDataOnce(params.artworkId);
         }
         if (params.galleryId) {
-            this.props.fetchGalleryData(params.galleryId);
+            this.props.fetchGalleryData(params.galleryId, (gallery) => {
+                this.props.fetchUserGalleryArtworks(gallery);
+            });
         }
 
         // listen out for logging in and out
@@ -140,7 +142,8 @@ const mapActionsToProps = {
     fetchUserArtworks,
     getArtworkDataOnce,
     fetchUserGalleries,
-    fetchGalleryData
+    fetchGalleryData,
+    fetchUserGalleryArtworks
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(ArtflyRouting);
