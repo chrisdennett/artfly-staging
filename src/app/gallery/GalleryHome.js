@@ -8,7 +8,7 @@ import './gallery_styles.css';
 import history from "../global/history";
 import { goToArtwork } from "../../AppNavigation";
 // selectors
-import { getArtworksByDate, getCurrentGalleryData } from '../../selectors/Selectors';
+import { getCurrentGalleryData } from '../../selectors/Selectors';
 // comps
 import ArtworkThumb from "../artworkThumb/ArtworkThumb";
 import AppBar from "../appBar/AppBar";
@@ -18,8 +18,7 @@ import LoadingThing from "../loadingThing/LoadingThing";
 class GalleryHome extends Component {
 
     render() {
-        const { galleryArtworks, gallery } = this.props;
-        const firstArtworkId = galleryArtworks.length > 0 ? galleryArtworks[0].artworkId : null;
+        const { currentGalleryData } = this.props;;
         const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 40, right: 10 };
 
         return (
@@ -27,33 +26,32 @@ class GalleryHome extends Component {
                 <AppBar title={'Gallery'}
                         fixed={false}/>
 
-
-                <Fab mini theme={'primary-bg'} style={editFabStyle} onClick={() => history.push('/artworkAdder')}>
-                    add
-                </Fab>
-
-                {!gallery &&
+                {!currentGalleryData &&
                 <LoadingThing/>
                 }
 
-                {gallery &&
+                {currentGalleryData &&
                 <div>
-
+                    {currentGalleryData.isEditable &&
+                    <Fab mini theme={'primary-bg'} style={editFabStyle} onClick={() => history.push('/artworkAdder')}>
+                        add
+                    </Fab>
+                    }
                     <div className={'gallery--header'}>
                         <h1 className={'gallery--title'}>
-                            {gallery.title}
+                            {currentGalleryData.title}
                         </h1>
 
                         <h2 className={'gallery--subtitle'}>
-                            {gallery.subtitle}
+                            {currentGalleryData.subtitle}
                         </h2>
                     </div>
                     <div className={'gallery--artworkThumbs'}>
                         {
-                            galleryArtworks.map(artworkData => {
+                            currentGalleryData.galleryArtworks.map(artworkData => {
                                 return (
                                     <ArtworkThumb key={artworkData.artworkId}
-                                                  onClick={() => goToArtwork(gallery.galleryId, artworkData.artworkId)}
+                                                  onClick={() => goToArtwork(currentGalleryData.galleryId, artworkData.artworkId)}
                                                   artworkData={artworkData}
                                     />
                                 )
@@ -63,8 +61,8 @@ class GalleryHome extends Component {
                 </div>
                 }
 
-                <BottomBar disabled={!firstArtworkId}
-                           onEnterGallery={() => goToArtwork(gallery.galleryId, firstArtworkId)}/>
+                <BottomBar disabled={!currentGalleryData || !currentGalleryData.firstArtworkId}
+                           onEnterGallery={() => goToArtwork(currentGalleryData.galleryId, currentGalleryData.firstArtworkId)}/>
             </div>
         );
     }
@@ -72,8 +70,6 @@ class GalleryHome extends Component {
 
 const mapStateToProps = (state, props) => (
     {
-        gallery: state.galleries[props.galleryId],
-        galleryArtworks: getArtworksByDate(state.artworks),
         currentGalleryData: getCurrentGalleryData(state.user, state.galleries, state.artworks, props.galleryId)
     }
 );

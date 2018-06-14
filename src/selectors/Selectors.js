@@ -16,23 +16,26 @@ export const getCurrentGalleryData = (user, galleries, artworks, galleryId) => {
     const gallery = galleries[galleryId];
     if (!gallery) return null;
 
-    const galleryIsEditable = user && user.uid === gallery.adminId;
+    const isEditable = user && user.uid === gallery.adminId;
     const galleryArtworks = getGalleryArtworks(gallery, artworks);
+    const firstArtworkId = galleryArtworks.length > 0 ? galleryArtworks[0].artworkId : null;
 
-    return { galleryIsEditable, galleryArtworks };
+    return {...gallery, isEditable, galleryArtworks, firstArtworkId };
 };
 
 export const getGalleryArtworks = (gallery, artworks) => {
     const { type, key } = gallery;
+
     let galleryArtworks = [];
     if (type === 'user') {
-        const galleryArtworkIds = Object.keys(artworks).filter(artworkId => {
-            return artworks.adminId === key;
-        });
-        console.log("galleryArtworkIds: ", galleryArtworkIds);
+        galleryArtworks = Object.keys(artworks)
+            .filter(artworkId => artworks[artworkId].adminId === key)
+            .reduce((obj, key) => {
+                obj[key] = artworks[key];
+                return obj
+            }, {});
     }
-
-    return galleryArtworks
+    return getArtworksByDate(galleryArtworks);
 };
 
 export const getArtworksByDate = (artworks) => {
