@@ -46,7 +46,7 @@ const Home = ({ user, userGalleries }) => {
 
             {userLoggedIn &&
             <div className={'home--yourGalleries'}>
-                <Typography className={'home--sectionTitle'} use="headline4">
+                <Typography className={'sectionTitle'} use="headline4">
                     Your Galleries
                 </Typography>
                 {userGalleries.length === 0 &&

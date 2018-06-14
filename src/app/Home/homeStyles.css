@@ -55,16 +55,6 @@
     margin-top: 2rem;
 }
 
-.home--sectionTitle{
-    width: 100%;
-    text-align: center;
-    padding: 20px 0 15px 0;
-    background-color: rgba(152, 78, 172, 0.1);
-    font-weight: 700;
-    color: rgba(152, 78, 172, 1);
-    font-family: 'Stardos Stencil', cursive
-}
-
 .home--footer{
     margin-top: 4rem;
     border-top: 20px solid white;

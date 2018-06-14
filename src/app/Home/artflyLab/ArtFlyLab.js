@@ -9,7 +9,7 @@ const ArtFlyLab = function () {
     return (
         <div className={'artFlyLab'}>
 
-            <Typography className={'artFlyLab--sectionTitle'} use="headline4">
+            <Typography className={'sectionTitle'} use="headline4">
                 ArtFly Lab
             </Typography>
 
