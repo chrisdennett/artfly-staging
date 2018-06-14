@@ -6,9 +6,9 @@ import { Fab } from 'rmwc/Fab';
 import './gallery_styles.css';
 // helper
 import history from "../global/history";
-import {goToArtwork} from "../../AppNavigation";
+import { goToArtwork } from "../../AppNavigation";
 // selectors
-import {getArtworksByDate, getCurrentGalleryData} from '../../selectors/Selectors';
+import { getArtworksByDate, getCurrentGalleryData } from '../../selectors/Selectors';
 // comps
 import ArtworkThumb from "../artworkThumb/ArtworkThumb";
 import AppBar from "../appBar/AppBar";
@@ -38,13 +38,16 @@ class GalleryHome extends Component {
 
                 {gallery &&
                 <div>
-                    <h1 className={'gallery--title'}>
-                        {gallery.title}
-                    </h1>
 
-                    <h2 className={'gallery--subtitle'}>
-                        {gallery.subtitle}
-                    </h2>
+                    <div className={'gallery--header'}>
+                        <h1 className={'gallery--title'}>
+                            {gallery.title}
+                        </h1>
+
+                        <h2 className={'gallery--subtitle'}>
+                            {gallery.subtitle}
+                        </h2>
+                    </div>
                     <div className={'gallery--artworkThumbs'}>
                         {
                             galleryArtworks.map(artworkData => {
