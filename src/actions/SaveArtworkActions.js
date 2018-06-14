@@ -94,11 +94,11 @@ export function addNewArtwork(imgFile, artworkData) {
                                 };
 
                                 saveNewArtworkData(userId, fullArtworkData, (artworkId) => {
-                                    // const newArtworkDataWithId = { ...newArtworkData, artworkId };
+                                    const newArtworkDataWithId = { ...fullArtworkData, artworkId };
 
                                     dispatch({
                                         type: SAVING_ARTWORK_COMPLETE,
-                                        payload: artworkId
+                                        payload: {[artworkId]:newArtworkDataWithId}
                                     });
                                 });
                             });

@@ -7,10 +7,9 @@ import './artworkEditor_styles.css';
 import { updateArtworkAndImage, resetArtworkSavingProgress } from '../../actions/SaveArtworkActions';
 // comps
 import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
-// import SaveOrCancelControls from "../artworkAdder/SaveOrCancelControls";
-import history from "../global/history";
 import { ArtworkEditAppBar } from "../appBar/AppBar";
 import ArtworkEditorSavingProgress from "./ArtworkEditorSavingProgress";
+import { goToArtwork } from "../../AppNavigation";
 
 class ArtworkEditor extends Component {
 
@@ -66,18 +65,19 @@ class ArtworkEditor extends Component {
     }
 
     onClose() {
-        history.push(`/gallery/artworkId_${this.props.artworkId}_artworkId`);
+        const {galleryId, artworkId} = this.props;
+        goToArtwork(galleryId, artworkId);
+        // history.push(`/gallery/artworkId_${this.props.artworkId}_artworkId`);
     }
 
     render() {
-        const { currentArtwork, artworkSavingProgress, artworkId, resetArtworkSavingProgress } = this.props;
+        const { currentArtwork, artworkSavingProgress, artworkId, galleryId, resetArtworkSavingProgress } = this.props;
         const { sourceImg, unsavedArtworkData } = this.state;
         const mergedData = { ...currentArtwork, ...unsavedArtworkData };
         const hasChanges = !isEqual(mergedData, currentArtwork);
 
         return (
             <div className={'artworkEditor'}>
-
                 <ArtworkEditAppBar title={'Crop & Rotate'}
                                    hasChanges={hasChanges}
                                    onCloseClick={this.onClose}
@@ -87,7 +87,7 @@ class ArtworkEditor extends Component {
                 <ArtworkEditorSavingProgress artworkSavingProgress={artworkSavingProgress}
                                              resetArtworkSavingProgress={resetArtworkSavingProgress}
                                              label={'Saving Artwork and Thumbnail'}
-                                             redirectTo={`/gallery/artworkId_${artworkId}_artworkId`}/>
+                                             redirectTo={`/gallery/galleryId_${galleryId}_galleryId/artworkId_${artworkId}_artworkId`}/>
 
                 <CropAndRotateEditor sourceImg={sourceImg}
                                      key={1}

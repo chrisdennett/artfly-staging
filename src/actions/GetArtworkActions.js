@@ -18,9 +18,11 @@ export function fetchUserArtworks(userId) {
             .get()
             .then(querySnapshot => {
                     querySnapshot.forEach(doc => {
+                        const artworkWidthId = {...doc.data(), artworkId:doc.id};
+
                         dispatch({
                             type: ARTWORK_CHANGE,
-                            payload: { [doc.id]: doc.data() }
+                            payload: { [doc.id]: artworkWidthId }
                         });
                     });
                 },

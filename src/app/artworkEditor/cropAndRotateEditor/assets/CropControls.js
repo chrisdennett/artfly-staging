@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import DragHandle from "./DragHandle";
 import DragRectangle from "./DragRectangle";
 
-class QuickCuttingOverlay extends Component {
+class CropControls extends Component {
 
     constructor() {
         super();
@@ -166,4 +166,4 @@ class QuickCuttingOverlay extends Component {
     }
 }
 
-export default QuickCuttingOverlay;
+export default CropControls;

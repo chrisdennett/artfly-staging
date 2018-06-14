@@ -61,7 +61,13 @@ class ArtflyRouting extends Component {
         const page = fullPath === '/' ? 'home' : fullPath.split('/').slice(1)[0];
         const params = this.getParams(fullPath);
 
+        // document.body.scrollTop = 0;
+
         this.setState({ page, params });
+        /* setTimeout(() => {
+             console.log("page: ", page);
+             window.scrollTo(0,0);
+         }, 1);*/
 
         ga.set({ page: page });
         ga.pageview(fullPath);
@@ -69,10 +75,6 @@ class ArtflyRouting extends Component {
 
     render() {
         const { page, params } = this.state;
-
-        // const PageComponent = routes[page] ? routes[page].component : FourOhFour;
-
-
         const PageComponentWithProps = getPageComponent(page, params);
 
         return (
@@ -89,7 +91,6 @@ function getPageComponent(page, params) {
 
     const { artworkId, galleryId } = params;
     let PageComponent;
-
 
     switch (page) {
         case 'home':

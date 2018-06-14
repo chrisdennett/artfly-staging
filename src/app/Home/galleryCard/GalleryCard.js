@@ -34,7 +34,9 @@ const GalleryCard = ({galleryData, onClick}) => {
             <CardMedia
                 sixteenByNine
                 style={{
-                    backgroundImage:`url(${thumbUrl})`
+                    backgroundImage:`url(${thumbUrl})`,
+                    backgroundRepeat: 'repeat',
+                    backgroundSize: 'auto'
                 }}
             />
             <div style={{ padding: '0 1rem 1rem 1rem' }}>

@@ -8,8 +8,9 @@ import { Button } from 'rmwc/Button';
 // helper
 import history from "../global/history";
 import ArtworkThumb from "../artworkThumb/ArtworkThumb";
+import {goToArtwork} from "../../AppNavigation";
 
-const ArtworkAdderComplete = ({ newArtworkId, addAnotherArtwork, currentArtwork }) => {
+const ArtworkAdderComplete = ({ newArtworkId, addAnotherArtwork, currentArtwork, galleryId }) => {
 
     return (
         <div className={'artworkAdderComplete'}>
@@ -27,7 +28,7 @@ const ArtworkAdderComplete = ({ newArtworkId, addAnotherArtwork, currentArtwork 
                 <Button outlined onClick={() => history.push(`/artworkEditor/artworkId_${newArtworkId}_artworkId`)}>
                     Edit
                 </Button>
-                <Button outlined onClick={() => history.push(`/gallery/artworkId_${newArtworkId}_artworkId`)}>
+                <Button outlined onClick={() => goToArtwork(galleryId, newArtworkId)}>
                     View
                 </Button>
                 <Button outlined onClick={addAnotherArtwork}>

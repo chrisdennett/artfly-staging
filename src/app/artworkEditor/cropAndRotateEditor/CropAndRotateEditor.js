@@ -6,7 +6,7 @@ import './cropAndRotate_styles.css';
 // helpers
 import * as ImageHelper from "../../global/ImageHelper";
 // components
-import QuickCuttingBoard from "./QuickCuttingBoard";
+import CropControlsContainer from "./assets/CropControlsContainer";
 import LoadingThing from "../../loadingThing/LoadingThing";
 
 class CropAndRotateEditor extends Component {
@@ -105,7 +105,7 @@ class CropAndRotateEditor extends Component {
 
                         <div className='quickCropAndRotate--cuttingBoardHolder'>
                             {sourceImg &&
-                            <QuickCuttingBoard
+                            <CropControlsContainer
                                 width={canvasWidth}
                                 height={canvasHeight}
                                 cropData={cropData}

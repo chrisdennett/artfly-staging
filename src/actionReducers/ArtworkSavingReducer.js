@@ -22,7 +22,9 @@ export default function (state = initialData, action) {
             return { ...state, [key]: progress, status: 'saving' };
 
         case SAVING_ARTWORK_COMPLETE:
-            return { ...state, status: 'complete', artworkId: action.payload };
+            const artworkId = Object.keys(action.payload)[0];
+
+            return { ...state, status: 'complete', artworkId};
 
         case SAVING_ARTWORK_CLEAR_PROGRESS:
             return initialData;

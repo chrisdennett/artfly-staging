@@ -1,11 +1,11 @@
 // externals
 import React, { Component } from "react";
 // Helpers
-import {ROUND_TO} from '../../global/UTILS';
+import {ROUND_TO} from '../../../global/UTILS';
 // components
-import QuickCuttingOverlay from "./assets/QuickCuttingOverlay";
+import CropControls from "./CropControls";
 
-class QuickCuttingBoard extends Component {
+class CropControlsContainer extends Component {
     constructor(props) {
         super(props);
 
@@ -44,13 +44,12 @@ class QuickCuttingBoard extends Component {
         const currCropData = this.getCropData(width, height);
 
         return (
-            <QuickCuttingOverlay
+            <CropControls
                 onRotateClick={onRotateClick}
                 onChange={this.onCuttingOverlayChange}
                 {...currCropData}/>
-
         );
     }
 }
 
-export default QuickCuttingBoard;
+export default CropControlsContainer;

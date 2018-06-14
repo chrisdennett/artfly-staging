@@ -25,13 +25,13 @@ class GalleryArtworkViewer extends Component {
         const { editMenuIsOpen } = this.state;
         const { galleryNavData, galleryId } = this.props;
         const { currentArtwork, previousArtwork, nextArtwork, isEditable } = galleryNavData;
-        const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 40, right: 10 };
+        const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 30, right: 10 };
 
         return (
             <div className={'gallery'}>
 
                 {isEditable &&
-                <Fab mini theme={'primary-bg'} style={editFabStyle}
+                <Fab theme={'primary-bg'} style={editFabStyle}
                      onClick={() => this.setState({ editMenuIsOpen: true })}>
                     edit
                 </Fab>

@@ -5,8 +5,7 @@ import { Fab } from 'rmwc/Fab';
 // styles
 import './gallery_styles.css';
 // helper
-import history from "../global/history";
-import { goToArtwork } from "../../AppNavigation";
+import { goToArtwork, goToArtworkAdder } from "../../AppNavigation";
 // selectors
 import { getCurrentGalleryData } from '../../selectors/Selectors';
 // comps
@@ -18,8 +17,8 @@ import LoadingThing from "../loadingThing/LoadingThing";
 class GalleryHome extends Component {
 
     render() {
-        const { currentGalleryData } = this.props;;
-        const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 40, right: 10 };
+        const { currentGalleryData } = this.props;
+        const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 30, right: 10 };
 
         return (
             <div className={'galleryHome'}>
@@ -33,7 +32,7 @@ class GalleryHome extends Component {
                 {currentGalleryData &&
                 <div>
                     {currentGalleryData.isEditable &&
-                    <Fab mini theme={'primary-bg'} style={editFabStyle} onClick={() => history.push('/artworkAdder')}>
+                    <Fab theme={'primary-bg'} style={editFabStyle} onClick={() => goToArtworkAdder(currentGalleryData.galleryId)}>
                         add
                     </Fab>
                     }
@@ -68,10 +67,7 @@ class GalleryHome extends Component {
     }
 }
 
-const mapStateToProps = (state, props) => (
-    {
-        currentGalleryData: getCurrentGalleryData(state.user, state.galleries, state.artworks, props.galleryId)
-    }
-);
-
+const mapStateToProps = (state, props) => ({
+    currentGalleryData: getCurrentGalleryData(state.user, state.galleries, state.artworks, props.galleryId)
+});
 export default connect(mapStateToProps)(GalleryHome);

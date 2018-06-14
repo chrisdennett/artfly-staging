@@ -64,7 +64,7 @@ export function fetchUserGalleryArtworks(gallery) {
             .then(querySnapshot => {
                     querySnapshot.forEach(doc => {
 
-                        const artworkDataWithId = { ...doc.data(), galleryId: doc.id };
+                        const artworkDataWithId = { ...doc.data(), artworkId: doc.id };
 
                         dispatch({
                             type: ARTWORK_CHANGE,
