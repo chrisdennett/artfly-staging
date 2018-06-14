@@ -18,6 +18,7 @@
 }
 
 .socialMediaStuff--iFrame{
+    margin-top: 20px;
     width: 100%;
     border: none;
     max-width: 600px;

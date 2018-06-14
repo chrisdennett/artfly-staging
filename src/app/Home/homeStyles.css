@@ -9,7 +9,7 @@
 }
 
 .home--heading {
-    padding: 0 10px 0 10px;
+    padding: 10px 10px 0 10px;
 }
 
 .home--title{
@@ -45,6 +45,7 @@
 }
 
 .home--yourGalleries{
+    margin-top: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
