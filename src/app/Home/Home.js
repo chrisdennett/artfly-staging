@@ -1,13 +1,14 @@
 // externals
 import React from "react";
 import { connect } from 'react-redux';
+// ui
 import { Typography } from 'rmwc/Typography';
 // styles
 import './homeStyles.css';
 // components
 import LoadingThing from "../loadingThing/LoadingThing";
 import Title from "./Title";
-import Footer from "./Footer/Footer";
+import AboutUs from "./aboutUs/AboutUs";
 import SocialMediaStuff from "./socialMediaStuff/SocialMediaStuff";
 import ArtFlyLab from "./artflyLab/ArtFlyLab";
 import ArtFlyIntro from "./artFlyIntro/ArtFlyIntro";
@@ -15,6 +16,7 @@ import AppBar from "../appBar/AppBar";
 // import GalleryHome from "../gallery/GalleryHome";
 import history from "../global/history";
 import GalleryCard from "./galleryCard/GalleryCard";
+import JumpingVictorianLady from './JumpingVictorianLady';
 
 const Home = ({ user, userGalleries }) => {
     const userLoggedIn = !!user.uid;
@@ -44,7 +46,7 @@ const Home = ({ user, userGalleries }) => {
 
             {userLoggedIn &&
             <div className={'home--yourGalleries'}>
-                <Typography use="headline4">
+                <Typography className={'home--sectionTitle'} use="headline4">
                     Your Galleries
                 </Typography>
                 {userGalleries.length === 0 &&
@@ -69,18 +71,8 @@ const Home = ({ user, userGalleries }) => {
                 }
                 <ArtFlyLab/>
                 <SocialMediaStuff/>
-                <Footer/>
-                <div style={{
-                    backgroundColor: '#000',
-                    color: '#fff',
-                    border: '10px solid #555', padding: 42, textAlign: 'center'
-                }}>
-                    <img style={{ background: '#fff', padding: 10 }} src={'images/lab/Rotoscoping.gif'}
-                         alt={'rotoscoping gif'}/>
-                    <Typography use={'body1'}>
-                        <p>You know it's all over when the victorian lady jumps the stool...</p>
-                    </Typography>
-                </div>
+                <AboutUs/>
+                <JumpingVictorianLady />
             </div>
 
         </div>

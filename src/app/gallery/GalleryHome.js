@@ -45,7 +45,7 @@ class GalleryHome extends Component {
                     <h2 className={'gallery--subtitle'}>
                         {gallery.subtitle}
                     </h2>
-                    <div className={'artworkThumbs'}>
+                    <div className={'gallery--artworkThumbs'}>
                         {
                             galleryArtworks.map(artworkData => {
                                 return (

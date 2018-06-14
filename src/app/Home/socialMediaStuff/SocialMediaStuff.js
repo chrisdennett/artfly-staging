@@ -1,45 +1,29 @@
 import React from 'react';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import * as faTwitterSquare from "@fortawesome/fontawesome-free-brands/faTwitterSquare";
-import * as faFacebookSquare from "@fortawesome/fontawesome-free-brands/faFacebookSquare";
-import * as faInstagram from "@fortawesome/fontawesome-free-brands/faInstagram";
-import * as faLinkedin from "@fortawesome/fontawesome-free-brands/faLinkedin";
-import * as faGooglePlus from "@fortawesome/fontawesome-free-brands/faGooglePlus";
+// ui
+import { Typography } from 'rmwc/Typography';
 // styles
 import './socialMediaStuff_styles.css';
+// comps
+import SocialMediaLinks from './SocialMediaLinks';
 
-const SocialMediaStuff = function (props) {
+const SocialMediaStuff = function () {
     return (
         <div className={'socialMediaStuff'}>
-            <div className={'socialMediaStuff--intro'}>
-                <h2>Social media stuff</h2>
-                <div className={'socialMediaStuff--socialIcons'}>
-                    <a href='https://twitter.com/artflychris'
-                       target="_blank"
-                       rel="noopener noreferrer"><FontAwesomeIcon icon={faTwitterSquare}/></a>
 
-                    <a href='https://www.facebook.com/artfly.io/'
-                       target="_blank"
-                       rel="noopener noreferrer">
-                        <FontAwesomeIcon icon={faFacebookSquare}/></a>
+            <Typography className={'socialMediaStuff--sectionTitle'} use="headline4">
+                Social Media Stuff
+            </Typography>
 
-                    <a href='https://www.instagram.com/artfly.io/'
-                       target="_blank"
-                       rel="noopener noreferrer">
-                        <FontAwesomeIcon icon={faInstagram}/></a>
+            <Typography use="body1">
+                I post pretty much the same things everywhere:
+            </Typography>
 
-                    <a href='https://www.linkedin.com/in/chris-dennett-1b69aa47/'
-                       target="_blank"
-                       rel="noopener noreferrer">
-                        <FontAwesomeIcon icon={faLinkedin}/></a>
+            <SocialMediaLinks color={'#000'} />
 
-                    <a href='https://plus.google.com/u/0/112775399489784880343'
-                       target="_blank"
-                       rel="noopener noreferrer">
-                        <FontAwesomeIcon icon={faGooglePlus}/></a>
-                </div>
-                <p>I post pretty much the same things everywhere. Stuff like this:</p>
-            </div>
+            <Typography use="body1">
+                Stuff like this:
+            </Typography>
+
             <iframe className={'socialMediaStuff--iFrame'}
                     title={'@ArtFlyChris Twitter Feed'}
                     src="/twitter-feed.html"/>

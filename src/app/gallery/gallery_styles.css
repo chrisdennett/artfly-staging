@@ -7,7 +7,7 @@
 }
 
 .galleryHome{
-    padding-bottom: 80px;
+    /*padding-bottom: 80px;*/
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -31,6 +31,14 @@
     /*font-family: 'Black Ops One', cursive;
     font-weight: normal;
     */
+}
+
+.gallery--artworkThumbs{
+    margin: 1rem 0 85px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 }
 
 .gallery--subtitle {
@@ -89,4 +97,5 @@
         line-height: 2rem;
     }
 }
+
 

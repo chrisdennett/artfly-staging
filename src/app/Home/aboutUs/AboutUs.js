@@ -1,21 +1,24 @@
 import React from 'react';
+import { Typography } from 'rmwc/Typography';
 // styles
-import './footer_styles.css';
+import './aboutUs_styles.css';
 // comps
 import Flooring from "../../global/flooring/Flooring";
 
-const Footer = function () {
+const AboutUs = function () {
 
     return (
         <Flooring>
             <div className={'footer'}>
                 <div className={'footer--content'}>
 
-                    <h3>About us</h3>
-                    <div className={'footer--intro'}>
+                    <Typography use={'headline6'}>About us</Typography>
+
+                    <Typography use="body1" className={'footer--intro'}>
                         <p>Based in the sprawling metropolis of Ulverston, Cumbria, UK.</p>
                         <p>ArtFly is a massive corporate monster run by these high-powered business types:</p>
-                    </div>
+                    </Typography>
+
                     <div className='footer--personTiles'>
                         <div className='footer--personTile'>
                             <img src={'./images/about-us/chris_100.png'} alt={'Chris'}/>
@@ -70,4 +73,4 @@ const Footer = function () {
     )
 };
 
-export default Footer;
+export default AboutUs;
