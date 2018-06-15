@@ -16,7 +16,7 @@ import UserMenu from "../userMenu/UserMenu";
 import HomeIconButton from "../../homeIconButton/HomeIconButton";
 
 
-export const ArtworkEditAppBar = ({ title, onSaveClick, onCancelClick, hasChanges,onCloseClick }) => (
+export const ArtworkEditAppBar = ({ title, onSaveClick, onCancelClick, hasChanges, onCloseClick }) => (
     <Toolbar theme={'background'}>
         <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
             <ToolbarTitle>{title}</ToolbarTitle>
@@ -49,7 +49,7 @@ export const ArtworkEditAppBar = ({ title, onSaveClick, onCancelClick, hasChange
 );
 
 
-export const ArtworkAppBar = ({ onCloseClick, onMenuClick }) => (
+export const ArtworkAppBar = ({ onCloseClick, onMenuClick, isEditable, onDeleteClick }) => (
     <Toolbar theme={'background'}>
         <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
             <ToolbarSection alignStart>
@@ -59,6 +59,11 @@ export const ArtworkAppBar = ({ onCloseClick, onMenuClick }) => (
             </ToolbarSection>
 
             <ToolbarSection alignEnd>
+                {isEditable &&
+                    <ToolbarMenuIcon use="delete"
+                                     onClick={onDeleteClick}/>
+                }
+
                 <UserMenu/>
             </ToolbarSection>
         </ToolbarRow>

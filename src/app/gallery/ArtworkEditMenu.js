@@ -1,7 +1,7 @@
 import React from 'react';
 // ui
 import { Drawer, DrawerContent } from 'rmwc/Drawer';
-import { ListDivider, ListItem, ListItemText, ListItemGraphic } from 'rmwc/List';
+import { ListItem, ListItemText, ListItemGraphic } from 'rmwc/List';
 // images
 import IconFrameSize from './../images/icons/frame-size.png';
 import IconFrameColour from './../images/icons/frame-colour.png';
@@ -11,7 +11,7 @@ import { goToArtworkEditor } from "../../AppNavigation";
 const ArtworkEditMenu = ({ isOpen, onClose, artworkId, galleryId }) => {
 
     const imgStyle = { width: 22 };
-    const iconStyle = { color: 'black' };
+    // const iconStyle = { color: 'black' };
 
     return (
         <Drawer
@@ -47,14 +47,14 @@ const ArtworkEditMenu = ({ isOpen, onClose, artworkId, galleryId }) => {
                     </ListItemText>
                 </ListItem>
 
-                <ListDivider/>
+                {/*<ListDivider/>*/}
 
-                <ListItem>
+               {/* <ListItem onClick={() => console.log("hello: ")}>
                     <ListItemGraphic style={iconStyle}>delete</ListItemGraphic>
                     <ListItemText>
                         Delete
                     </ListItemText>
-                </ListItem>
+                </ListItem>*/}
             </DrawerContent>
         </Drawer>
     )

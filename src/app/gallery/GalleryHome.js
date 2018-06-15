@@ -18,7 +18,7 @@ class GalleryHome extends Component {
 
     render() {
         const { currentGalleryData } = this.props;
-        const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 30, right: 10 };
+        const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 35, right: 10 };
 
         return (
             <div className={'galleryHome'}>

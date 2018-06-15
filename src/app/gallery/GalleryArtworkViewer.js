@@ -4,8 +4,11 @@ import { connect } from 'react-redux';
 import { Button } from 'rmwc/Button';
 import { Icon } from 'rmwc/Icon';
 import { Fab } from 'rmwc/Fab'
+import { SimpleDialog } from 'rmwc/Dialog';
 // helper
 import { goToGallery, goToArtwork } from "../../AppNavigation";
+// actions
+import { deleteArtwork } from "../../actions/DeleteArtworkActions";
 // selectors
 import {getGalleryNavigation} from '../../selectors/Selectors';
 // comps
@@ -18,17 +21,28 @@ class GalleryArtworkViewer extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { editMenuIsOpen: false };
+        this.state = { editMenuIsOpen: false, deleteConfirmOpen:false };
     }
 
     render() {
-        const { editMenuIsOpen } = this.state;
-        const { galleryNavData, galleryId } = this.props;
+        const { editMenuIsOpen, deleteConfirmOpen } = this.state;
+        const { galleryNavData, galleryId, deleteArtwork } = this.props;
         const { currentArtwork, previousArtwork, nextArtwork, isEditable } = galleryNavData;
-        const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 30, right: 10 };
+        const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 35, right: 10 };
 
         return (
             <div className={'gallery'}>
+
+                <SimpleDialog
+                    title="Confirm delete"
+                    body="Are you sure you want to delete this?"
+                    open={deleteConfirmOpen}
+                    onClose={() => this.setState({deleteConfirmOpen: false})}
+                    acceptLabel={'Yes Delete'}
+                    cancelLabel={'Cancel'}
+                    onAccept={() => deleteArtwork(currentArtwork)}
+                    onCancel={() => console.log('Cancel')}
+                />
 
                 {isEditable &&
                 <Fab theme={'primary-bg'} style={editFabStyle}
@@ -45,7 +59,10 @@ class GalleryArtworkViewer extends Component {
                 }
 
                 <ArtworkAppBar title={'Artworks'}
-                               onMenuClick={() => goToGallery(galleryId)}/>
+                               isEditable={isEditable}
+                               onDeleteClick={() => this.setState({deleteConfirmOpen: true})}
+                               onMenuClick={() => goToGallery(galleryId)}
+                />
 
                 <GalleryArtwork currentArtwork={currentArtwork}/>
 
@@ -75,4 +92,4 @@ const mapStateToProps = (state, props) => (
         galleryNavData: getGalleryNavigation(state.artworks, props.artworkId, state.user.uid)
     }
 );
-export default connect(mapStateToProps)(GalleryArtworkViewer);
+export default connect(mapStateToProps, {deleteArtwork})(GalleryArtworkViewer);
