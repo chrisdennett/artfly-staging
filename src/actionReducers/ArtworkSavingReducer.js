@@ -15,7 +15,7 @@ export default function (state = initialData, action) {
     switch (action.type) {
 
         case SAVING_ARTWORK_TRIGGERED:
-            return { ...state, status: 'triggered' };
+            return { ...initialData, status: 'triggered' };
 
         case SAVING_ARTWORK_PROGRESS:
             const { key, progress } = action.payload;

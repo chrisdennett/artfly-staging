@@ -7,7 +7,7 @@ import Redirect from "../global/Redirect";
 
 const ArtworkEditorSavingProgress = ({ label = 'Saving changes:', artworkSavingProgress, redirectTo }) => {
 
-    const { status, large, thumb } = artworkSavingProgress;
+    const { status, large, thumb, source } = artworkSavingProgress;
     if (status === 'dormant') {
         return null;
     }
@@ -32,6 +32,10 @@ const ArtworkEditorSavingProgress = ({ label = 'Saving changes:', artworkSavingP
             <Typography use={'body1'} style={{ color: '#fff' }}>
                 {label}
             </Typography>
+
+            {source < 1 &&
+            <LinearProgress style={processBarStyle} determinate={source > 0} progress={source}/>
+            }
 
             {large < 1 &&
             <LinearProgress style={processBarStyle} determinate={large > 0} progress={large}/>
