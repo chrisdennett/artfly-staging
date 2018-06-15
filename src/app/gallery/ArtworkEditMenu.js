@@ -6,9 +6,9 @@ import { ListDivider, ListItem, ListItemText, ListItemGraphic } from 'rmwc/List'
 import IconFrameSize from './../images/icons/frame-size.png';
 import IconFrameColour from './../images/icons/frame-colour.png';
 import IconCropRotate from './../images/icons/crop-rotate.png';
-import history from "../global/history";
+import { goToArtworkEditor } from "../../AppNavigation";
 
-const ArtworkEditMenu = ({ isOpen, onClose, artworkId }) => {
+const ArtworkEditMenu = ({ isOpen, onClose, artworkId, galleryId }) => {
 
     const imgStyle = { width: 22 };
     const iconStyle = { color: 'black' };
@@ -38,7 +38,7 @@ const ArtworkEditMenu = ({ isOpen, onClose, artworkId }) => {
                     </ListItemText>
                 </ListItem>
 
-                <ListItem onClick={() => history.push(`/artworkEditor/artworkId_${artworkId}_artworkId`)}>
+                <ListItem onClick={() => goToArtworkEditor(galleryId, artworkId, 'crop')}>
                     <ListItemGraphic>
                         <img style={imgStyle} src={IconCropRotate} alt={'crop and rotate icon'}/>
                     </ListItemGraphic>

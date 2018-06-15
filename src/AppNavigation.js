@@ -1,19 +1,37 @@
 import history from "./app/global/history";
 
-// TODO: Move history logic here and remove separate history file.
 /*function getRoutePrefix(){
     const urlEndsInSlash = history.location.pathname.slice(-1) === '/';
     return urlEndsInSlash ? '' : '/';
 }*/
 
-export function goToGallery(galleryId){
-    history.push(`/gallery/galleryId_${galleryId}_galleryId`);
+const param = (key, value) => {
+    return `${key}_${value}_${key}`
+};
+
+export function goToGallery(galleryId) {
+    const gallery = param('galleryId', galleryId);
+
+    history.push(`/gallery/${gallery}`);
 }
 
-export function goToArtwork(galleryId, artworkId){
-    history.push(`/gallery/galleryId_${galleryId}_galleryId/artworkId_${artworkId}_artworkId`);
+export function goToArtwork(galleryId, artworkId) {
+    const gallery = param('galleryId', galleryId);
+    const artwork = param('artworkId', artworkId);
+
+    history.push(`/gallery/${gallery}/${artwork}`);
 }
 
-export function goToArtworkAdder(galleryId){
-    history.push(`/artworkAdder/galleryId_${galleryId}_galleryId`);
+export function goToArtworkAdder(galleryId) {
+    const gallery = param('galleryId', galleryId);
+
+    history.push(`/artworkAdder/${gallery}`);
+}
+
+export function goToArtworkEditor(galleryId, artworkId, editor) {
+    const gallery = param('galleryId', galleryId);
+    const artwork = param('artworkId', artworkId);
+    const edit = param('editor', editor);
+
+    history.push(`/artworkEditor/${gallery}/${artwork}/${edit}`);
 }
