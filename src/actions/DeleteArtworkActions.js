@@ -1,6 +1,5 @@
 // import { firestoreDb as db, storage } from "../libs/firebaseConfig";
 import { firestoreDb as db, storage } from "../libs/firebaseConfig";
-import { USER_DELETED_ERROR } from "./DeleteUserActions";
 // constants
 export const ARTWORK_DELETED = 'artworkDeleted';
 export const ARTWORK_DELETE_ERROR = 'artworkDeleteError';
@@ -34,8 +33,6 @@ export function deleteArtwork(artworkData, callback = null) {
     return async dispatch => {
         // const { artworkId, url, sourceUrl, thumbUrl, largeUrl, largeImgUrl, mediumUrl } = artworkData;
         const { artworkId, largeUrl, sourceUrl, thumbUrl } = artworkData;
-
-        console.log("DELETE: artworkId: ", artworkId);
 
         try{
             await deleteImages([largeUrl, sourceUrl, thumbUrl]);

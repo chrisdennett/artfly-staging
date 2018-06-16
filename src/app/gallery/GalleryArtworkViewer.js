@@ -15,6 +15,7 @@ import {getGalleryNavigation} from '../../selectors/Selectors';
 import { ArtworkAppBar } from "../appBar/AppBar";
 import GalleryArtwork from "./GalleryArtwork";
 import ArtworkEditMenu from "./ArtworkEditMenu";
+import Redirect from "../global/Redirect";
 
 class GalleryArtworkViewer extends Component {
 
@@ -29,6 +30,10 @@ class GalleryArtworkViewer extends Component {
         const { galleryNavData, galleryId, deleteArtwork } = this.props;
         const { currentArtwork, previousArtwork, nextArtwork, isEditable } = galleryNavData;
         const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 35, right: 10 };
+
+        if(currentArtwork && currentArtwork.isDeleted){
+            return <Redirect to={`/gallery/galleryId_${galleryId}_galleryId`}/>
+        }
 
         return (
             <div className={'gallery'}>

@@ -6,10 +6,9 @@ export default function (state = {}, action) {
     switch (action.type) {
 
         case ARTWORK_DELETED:
-            const newState = { ...state };
-            delete newState[action.payload];
-
-            return newState;
+            const artworkId = action.payload;
+            const deletedData = {isDeleted:true, artworkId };
+            return { ...state, [artworkId]:deletedData};
 
         case ARTWORK_CHANGE:
             return { ...state, ...action.payload };
