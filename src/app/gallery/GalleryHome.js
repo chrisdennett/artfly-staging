@@ -20,7 +20,8 @@ class GalleryHome extends Component {
     render() {
         const { currentGalleryData } = this.props;
         const addFabStyle = { position: 'fixed', zIndex: 10000, bottom: 35, right: 10 };
-        const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 100, right: 10 };
+        const editFabStyle = { position: 'absolute', zIndex: 10000, bottom: -30, right: 10 };
+        const titlesHolderStyle = {position:'relative'};
 
         return (
             <div className={'galleryHome'}>
@@ -33,21 +34,24 @@ class GalleryHome extends Component {
 
                 {currentGalleryData &&
                 <div>
-
                     {currentGalleryData.isEditable &&
-                    <Fab theme={'primary-bg'} style={addFabStyle} onClick={() => goToArtworkAdder(currentGalleryData.galleryId)}>
+                    <Fab theme={'primary-bg'} style={addFabStyle}
+                         onClick={() => goToArtworkAdder(currentGalleryData.galleryId)}>
                         add
                     </Fab>
                     }
 
-                    {currentGalleryData.isEditable &&
-                    <Fab theme={'secondary-bg'} style={editFabStyle} onClick={() => goToGalleryEditor(currentGalleryData.galleryId)}>
-                        edit
-                    </Fab>
-                    }
+                    <div style={titlesHolderStyle}>
+                        <GalleryTitles title={currentGalleryData.title}
+                                       subtitle={currentGalleryData.subtitle}/>
 
-                    <GalleryTitles title={currentGalleryData.title}
-                                   subtitle={currentGalleryData.subtitle}/>
+                        {currentGalleryData.isEditable &&
+                        <Fab theme={'secondary-bg'} style={editFabStyle}
+                             onClick={() => goToGalleryEditor(currentGalleryData.galleryId)}>
+                            edit
+                        </Fab>
+                        }
+                    </div>
 
                     <div className={'gallery--artworkThumbs'}>
                         {

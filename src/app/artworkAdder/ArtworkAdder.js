@@ -87,7 +87,7 @@ class ArtworkAdder extends Component {
                             onCancelClick={() => this.setState({ img: null })}/>
 
                 <ArtworkEditorSavingProgress artworkSavingProgress={artworkSavingProgress}
-                                             label={'Saving Artwork and Thumbnail'}
+                                             label={'Saving source image, artwork and thumbnail'}
                                              redirectTo={`/gallery/galleryId_${galleryId}_galleryId/artworkId_${savedArtworkId}_artworkId`}/>
 
 

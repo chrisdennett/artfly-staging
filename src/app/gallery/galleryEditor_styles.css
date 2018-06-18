@@ -1,5 +1,7 @@
 .galleryEditor {
-    background: url("../../app/images/brickwall.png");
+    /*background: url("../../app/images/brickwall.png");*/
+    /*background-color: #bbdfff;*/
+    background: #fff url("../images/bg/cuttingMat.png");
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -20,8 +22,10 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding-bottom: 10px;
-    background-color: #FFFFFF;
+    padding: 10px;
+    /*border-radius: 10px;*/
+    /*background-color: #FFFFFF;*/
+    background-color: #ededed;
 }
 
 
@@ -42,10 +46,11 @@
 
 .galleryEditor--textFieldHolder {
     margin-top: 5px;
-    /*background-color: #ededed;*/
+    background-color: #fff;
     padding: 0 10px 5px 10px;
     display: flex;
     align-items: center;
+    border-radius: 5px;
 }
 
 .galleryEditor--textFieldHolder i{

@@ -16,6 +16,8 @@ import LoadingThing from "../loadingThing/LoadingThing";
 import GalleryTitles from "./GalleryTitles";
 import { goToGallery } from "../../AppNavigation";
 import GalleryEditorSavingProgress from "./GalleryEditorSavingProgress";
+// constants
+import { MAX_GALLERY_TITLE_LENGTH, MAX_GALLERY_SUBTITLE_LENGTH } from '../global/GLOBAL_CONSTANTS';
 
 class GalleryEditor extends Component {
 
@@ -24,23 +26,32 @@ class GalleryEditor extends Component {
 
         this.state = { unsavedGalleryData: {} };
 
-        this.onGalleryDataChange = this.onGalleryDataChange.bind(this);
+        this.onGalleryTitleChange = this.onGalleryTitleChange.bind(this);
+        this.onGallerySubtitleChange = this.onGallerySubtitleChange.bind(this);
         this.onSave = this.onSave.bind(this);
     }
 
-    onGalleryDataChange(newdata) {
-        const updatedData = { ...this.state.unsavedGalleryData, ...newdata };
-        this.setState({ unsavedGalleryData: updatedData });
+    onGalleryTitleChange(newTitle) {
+        if (newTitle.length > 0 && newTitle.length <= MAX_GALLERY_TITLE_LENGTH) {
+            let updatedData = { ...this.state.unsavedGalleryData, title: newTitle };
+            this.setState({ unsavedGalleryData: updatedData });
+        }
+    }
+
+    onGallerySubtitleChange(newSubtitle) {
+        if (newSubtitle.length > 0 && newSubtitle.length <= MAX_GALLERY_SUBTITLE_LENGTH) {
+            let updatedData = { ...this.state.unsavedGalleryData, subtitle: newSubtitle };
+            this.setState({ unsavedGalleryData: updatedData });
+        }
     }
 
     onSave() {
-        const {currentGallery, updateGallery} = this.props;
-        const {unsavedGalleryData} = this.state;
+        const { currentGallery, updateGallery } = this.props;
+        const { unsavedGalleryData } = this.state;
         const newGalleryData = { ...currentGallery, ...unsavedGalleryData };
 
         updateGallery(currentGallery.galleryId, newGalleryData);
     }
-
 
     render() {
         const { currentGallery } = this.props;
@@ -49,7 +60,10 @@ class GalleryEditor extends Component {
         const hasChanges = currentGallery && !isEqual(mergedData, currentGallery);
 
         const titleCharacters = mergedData.title ? mergedData.title.length : '...';
-        const titleHelperText = `${titleCharacters} of 42 chars`;
+        const titleHelperText = `${titleCharacters} of ${MAX_GALLERY_TITLE_LENGTH}`;
+
+        const subtitleCharacters = mergedData.subtitle ? mergedData.subtitle.length : '...';
+        const subtitleHelperText = `${subtitleCharacters} of ${MAX_GALLERY_SUBTITLE_LENGTH}`;
 
         return (
             <div className={'galleryEditor'}>
@@ -90,7 +104,7 @@ class GalleryEditor extends Component {
                                    required
                                    fullwidth
                                    value={mergedData.title}
-                                   onChange={(e) => this.onGalleryDataChange({ title: e.target.value })}
+                                   onChange={(e) => this.onGalleryTitleChange(e.target.value)}
                         />
                     </div>
                     <TextFieldHelperText persistent
@@ -103,23 +117,21 @@ class GalleryEditor extends Component {
                         <TextField placeholder="Subtitle..."
                                    fullwidth
                                    value={mergedData.subtitle}
-                                   onChange={(e) => this.onGalleryDataChange({ subtitle: e.target.value })}
+                                   onChange={(e) => this.onGallerySubtitleChange(e.target.value)}
                         />
                     </div>
                     <TextFieldHelperText persistent
                                          className={'galleryEditor--textFieldHelper'}
                     >
-                        Optional help text.
+                        {subtitleHelperText}
                     </TextFieldHelperText>
 
                 </div>
                 }
-
-
             </div>
         )
     }
-};
+}
 
 const mapStateToProps = (state, props) => {
     return {
