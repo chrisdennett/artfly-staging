@@ -73,7 +73,7 @@ export const getGalleryNavigation = (artworks, artworkId, userId) => {
                 previousArtwork = galleryArtworks[i - 1];
             }
 
-            if (i < totalArtworks - 1) {
+            if (i <= totalArtworks - 1) {
                 nextArtwork = galleryArtworks[i + 1]
             }
 
