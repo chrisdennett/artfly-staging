@@ -5,7 +5,7 @@ import { Fab } from 'rmwc/Fab';
 // styles
 import './gallery_styles.css';
 // helper
-import { goToArtwork, goToArtworkAdder } from "../../AppNavigation";
+import { goToArtwork, goToArtworkAdder, goToGalleryEditor } from "../../AppNavigation";
 // selectors
 import { getCurrentGalleryData } from '../../selectors/Selectors';
 // comps
@@ -13,12 +13,14 @@ import ArtworkThumb from "../artworkThumb/ArtworkThumb";
 import AppBar from "../appBar/AppBar";
 import BottomBar from "../bottomBar/BottomBar";
 import LoadingThing from "../loadingThing/LoadingThing";
+import GalleryTitles from "./GalleryTitles";
 
 class GalleryHome extends Component {
 
     render() {
         const { currentGalleryData } = this.props;
-        const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 35, right: 10 };
+        const addFabStyle = { position: 'fixed', zIndex: 10000, bottom: 35, right: 10 };
+        const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 100, right: 10 };
 
         return (
             <div className={'galleryHome'}>
@@ -31,20 +33,22 @@ class GalleryHome extends Component {
 
                 {currentGalleryData &&
                 <div>
+
                     {currentGalleryData.isEditable &&
-                    <Fab theme={'primary-bg'} style={editFabStyle} onClick={() => goToArtworkAdder(currentGalleryData.galleryId)}>
+                    <Fab theme={'primary-bg'} style={addFabStyle} onClick={() => goToArtworkAdder(currentGalleryData.galleryId)}>
                         add
                     </Fab>
                     }
-                    <div className={'gallery--header'}>
-                        <h1 className={'gallery--title'}>
-                            {currentGalleryData.title}
-                        </h1>
 
-                        <h2 className={'gallery--subtitle'}>
-                            {currentGalleryData.subtitle}
-                        </h2>
-                    </div>
+                    {currentGalleryData.isEditable &&
+                    <Fab theme={'secondary-bg'} style={editFabStyle} onClick={() => goToGalleryEditor(currentGalleryData.galleryId)}>
+                        edit
+                    </Fab>
+                    }
+
+                    <GalleryTitles title={currentGalleryData.title}
+                                   subtitle={currentGalleryData.subtitle}/>
+
                     <div className={'gallery--artworkThumbs'}>
                         {
                             currentGalleryData.galleryArtworks.map(artworkData => {

@@ -35,3 +35,8 @@ export function goToArtworkEditor(galleryId, artworkId, editor) {
 
     history.push(`/artworkEditor/${gallery}/${artwork}/${edit}`);
 }
+
+export function goToGalleryEditor(galleryId) {
+    const gallery = param('galleryId', galleryId);
+    history.push(`/galleryEditor/${gallery}`);
+}

@@ -21,6 +21,12 @@
     font-family: 'Stardos Stencil', cursive;
     padding: 40px 10px 20px 10px;
     text-align: center;
+
+    /*padding: 20px 0 15px 0;*/
+    /*margin-top: 42px;*/
+    border-top: 1px solid rgba(255, 255, 255,0.6);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    background-color: rgba(255, 255, 255, 0.4);
 }
 
 .gallery--title {

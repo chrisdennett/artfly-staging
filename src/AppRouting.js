@@ -17,6 +17,7 @@ import ArtworkEditor from "./app/artworkEditor/ArtworkEditor";
 import AppDataFetching from "./AppDataFetching";
 import GalleryArtworkViewer from "./app/gallery/GalleryArtworkViewer";
 import GalleryHome from "./app/gallery/GalleryHome";
+import GalleryEditor from "./app/gallery/GalleryEditor";
 
 class ArtflyRouting extends Component {
     constructor(props) {
@@ -104,6 +105,10 @@ function getPageComponent(page, params) {
             else if (galleryId) PageComponent = GalleryHome;
             // or if missing params go home
             else PageComponent = Home;
+            break;
+
+        case 'galleryEditor':
+            PageComponent = GalleryEditor;
             break;
 
         case 'profile':

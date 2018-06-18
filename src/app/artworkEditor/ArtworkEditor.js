@@ -7,7 +7,7 @@ import './artworkEditor_styles.css';
 import { updateArtworkAndImage, resetArtworkSavingProgress } from '../../actions/SaveArtworkActions';
 // comps
 import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
-import { ArtworkEditAppBar } from "../appBar/AppBar";
+import { EditAppBar } from "../appBar/AppBar";
 import ArtworkEditorSavingProgress from "./ArtworkEditorSavingProgress";
 import { goToArtwork } from "../../AppNavigation";
 
@@ -78,11 +78,11 @@ class ArtworkEditor extends Component {
 
         return (
             <div className={'artworkEditor'}>
-                <ArtworkEditAppBar title={'Crop & Rotate'}
-                                   hasChanges={hasChanges}
-                                   onCloseClick={this.onClose}
-                                   onSaveClick={this.onSave}
-                                   onCancelClick={this.onCancel}/>
+                <EditAppBar title={'Crop & Rotate'}
+                            hasChanges={hasChanges}
+                            onCloseClick={this.onClose}
+                            onSaveClick={this.onSave}
+                            onCancelClick={this.onCancel}/>
 
                 <ArtworkEditorSavingProgress artworkSavingProgress={artworkSavingProgress}
                                              resetArtworkSavingProgress={resetArtworkSavingProgress}

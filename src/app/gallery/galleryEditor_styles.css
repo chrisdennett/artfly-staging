@@ -1,0 +1,63 @@
+.galleryEditor {
+    background: url("../../app/images/brickwall.png");
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.galleryEditor--titlesHolder{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+    padding-bottom: 50%;
+}
+
+.galleryEditor--controls {
+    z-index: 1;
+    position: fixed;
+    border-top: 1px solid rgba(0,0,0,0.2);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-bottom: 10px;
+    background-color: #FFFFFF;
+}
+
+
+.galleryEditor--controls--title{
+    padding-left: 10px;
+    /*padding: 10px 10px;*/
+}
+
+.galleryEditor--controls--title i{
+    vertical-align: text-top;
+    font-size: 1rem;
+    margin-right: 10px;
+}
+
+.galleryEditor--controls--content {
+    padding: 10px 15px 10px 15px;
+}
+
+.galleryEditor--textFieldHolder {
+    margin-top: 5px;
+    /*background-color: #ededed;*/
+    padding: 0 10px 5px 10px;
+    display: flex;
+    align-items: center;
+}
+
+.galleryEditor--textFieldHolder i{
+    margin-right: 10px;
+}
+
+.galleryEditor--textFieldHolder .mdc-text-field--fullwidth {
+    height: 2.5rem;
+}
+
+.galleryEditor--textFieldHelper{
+    text-align: right;
+    margin-right: 10px;
+    color: #5d5d5d;
+}

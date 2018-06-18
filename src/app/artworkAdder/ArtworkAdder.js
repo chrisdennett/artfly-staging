@@ -8,7 +8,7 @@ import { addNewArtwork, resetArtworkSavingProgress } from '../../actions/SaveArt
 import GenerateDefaultArtworkData from '../artwork/DefaultArtworkDataGenerator';
 import { GetImage } from "../global/ImageHelper";
 // comps
-import { ArtworkEditAppBar } from "../appBar/AppBar";
+import { EditAppBar } from "../appBar/AppBar";
 import PhotoSelector from "../photoSelector/PhotoSelector";
 import CropAndRotateEditor from "../artworkEditor/cropAndRotateEditor/CropAndRotateEditor";
 import { goToGallery } from "../../AppNavigation";
@@ -80,11 +80,11 @@ class ArtworkAdder extends Component {
         return (
             <div className={'artworkAdder'}>
 
-                <ArtworkEditAppBar title={title}
-                                   hasChanges={showPhotoCropper}
-                                   onCloseClick={() => goToGallery(galleryId)}
-                                   onSaveClick={this.onSaveNewArtwork}
-                                   onCancelClick={() => this.setState({ img: null })}/>
+                <EditAppBar title={title}
+                            hasChanges={showPhotoCropper}
+                            onCloseClick={() => goToGallery(galleryId)}
+                            onSaveClick={this.onSaveNewArtwork}
+                            onCancelClick={() => this.setState({ img: null })}/>
 
                 <ArtworkEditorSavingProgress artworkSavingProgress={artworkSavingProgress}
                                              label={'Saving Artwork and Thumbnail'}

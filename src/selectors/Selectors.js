@@ -7,6 +7,15 @@ export const getUserArtworks = (userId, artworks) => {
         }, {});
 };
 
+export const getGallery = (state, props) => {
+    const {galleries} = state;
+    const {galleryId} = props;
+
+    if(!galleries || !galleryId) return null;
+
+    return galleries[galleryId];
+};
+
 export const getTotalUserArtworks = (userId, artworks) => {
     return Object.keys(getUserArtworks(userId, artworks)).length;
 };

@@ -3,7 +3,6 @@ import { combineReducers } from 'redux';
 import PaddleReducer from './PaddleReducer';
 import UserReducer from './UserAuthReducer';
 import ArtworksReducer from './ArtworksReducer';
-import FormReducer from './FormReducer';
 import NotificationsReducer from "./NotificationsReducer";
 import ErrorReducer from "./ErrorReducer";
 import ArtworkSavingReducer from "./ArtworkSavingReducer";
@@ -16,8 +15,7 @@ const rootReducer = combineReducers({
     paddle: PaddleReducer,
     user: UserReducer,
     artworks: ArtworksReducer,
-    galleries: GalleryReducer,
-    form: FormReducer
+    galleries: GalleryReducer
 });
 
 export default rootReducer;

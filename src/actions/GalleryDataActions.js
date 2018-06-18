@@ -1,7 +1,9 @@
 import { firestoreDb as db } from "../libs/firebaseConfig";
 import { ARTWORK_CHANGE } from "./GetArtworkActions";
 
-export const GALLERY_FETCHED = "memberRequested";
+export const GALLERY_FETCHED = "galleryFetched";
+export const GALLERY_UPDATED = "galleryUpdated";
+export const GALLERY_UPDATE_TRIGGERED = "galleryUpdateTriggers";
 
 export function fetchUserGalleries(userId) {
     return (dispatch) => {
@@ -75,5 +77,28 @@ export function fetchUserGalleryArtworks(gallery) {
                 error => {
                     console.log("user artworks listener error: ", error);
                 })
+    }
+}
+
+
+export function updateGallery(galleryId, newGalleryData) {
+
+    return dispatch => {
+
+        const galleryDataWithId = { ...newGalleryData, galleryId: galleryId, status:'updating' };
+        dispatch({
+            type: GALLERY_UPDATE_TRIGGERED,
+            payload: { [galleryId]: galleryDataWithId }
+        });
+
+        db.collection('galleries').doc(galleryId)
+            .set(newGalleryData)
+            .then(() => {
+                const galleryDataWithId = { ...newGalleryData, galleryId: galleryId, status:'updated' };
+                dispatch({
+                    type: GALLERY_UPDATED,
+                    payload: { [galleryId]: galleryDataWithId }
+                });
+            })
     }
 }
