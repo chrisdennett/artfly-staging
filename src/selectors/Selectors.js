@@ -17,6 +17,10 @@ export const getGallery = (state, props) => {
 };
 
 export const getTotalUserArtworks = (state) => {
+    const {user, artworks} = state;
+
+    if(!user || !artworks) return null;
+
     return Object.keys(getUserArtworks(state.user.uid, state.artworks)).length;
 };
 

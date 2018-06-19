@@ -125,7 +125,7 @@ class UserDelete extends Component {
 
 const mapStateToProps = (state) => (
     {
-        totalUserArtworks: getTotalUserArtworks(state.user.uid, state.artworks),
+        totalUserArtworks: getTotalUserArtworks(state),
         userIsSignedIn: state.user.uid,
         userDeleted: state.user === 'deleted',
         userProviderId: state.user.providerId,

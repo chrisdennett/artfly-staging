@@ -18,8 +18,6 @@ function addUserGallery(userId, dispatch){
     const newGalleryRef =  db.collection('galleries').doc();
     const newGalleryId = newGalleryRef.id;
 
-    console.log("newGalleryId: ", newGalleryId);
-
     newGalleryRef.set(newGalleryData)
         .then(() => {
             const galleryDataWithId = { ...newGalleryData, galleryId: newGalleryId };

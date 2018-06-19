@@ -1,5 +1,5 @@
 import React from 'react';
-import './hoverLogo_styles.css';
+import '../hoverLogo_styles.css';
 
 const HoverLogo = function () {
     return (

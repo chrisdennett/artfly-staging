@@ -37,7 +37,22 @@ const SignIn = ({ providerId }) => {
 
     const uiConfig = {
         signInFlow: 'popup',
-        signInOptions: signInOptions
+        signInOptions: signInOptions,
+        callbacks: {
+            signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+                // const user = authResult.user;
+                // const credential = authResult.credential;
+                const isNewUser = authResult.additionalUserInfo.isNewUser;
+                // const providerId = authResult.additionalUserInfo.providerId;
+                // const operationType = authResult.operationType;
+
+                console.log("isNewUser: ", isNewUser);
+                // Do something with the returned AuthResult.
+                // Return type determines whether we continue the redirect automatically
+                // or whether we leave that to developer to handle.
+                return false;
+            }
+        }
     };
 
     return (

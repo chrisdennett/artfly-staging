@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 // actions
 import { fetchUserArtworks, getArtworkDataOnce } from "./actions/GetArtworkActions";
 import { listenForUserAuthChanges } from "./actions/UserAuthActions";
+import { fetchUserAccount } from "./actions/UserAccountActions";
 import { fetchGalleryData, fetchUserGallery, fetchUserGalleryArtworks } from "./actions/GalleryDataActions";
 
 class AppDataFetching extends Component {
@@ -20,8 +21,9 @@ class AppDataFetching extends Component {
         const { uid: currentUid } = prevProps.user;
 
         if (newUid && newUid !== currentUid) {
+            this.props.fetchUserAccount(newUid);
             this.props.fetchUserArtworks(newUid);
-            this.props.fetchUserGalleries(newUid);
+            this.props.fetchUserGallery(newUid);
         }
 
         // if there's an artwork or gallery id, fetch it
@@ -61,7 +63,8 @@ const mapActionsToProps = {
     listenForUserAuthChanges,
     fetchUserArtworks,
     getArtworkDataOnce,
-    fetchUserGalleries: fetchUserGallery,
+    fetchUserAccount,
+    fetchUserGallery,
     fetchGalleryData,
     fetchUserGalleryArtworks
 };
