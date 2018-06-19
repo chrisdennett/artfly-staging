@@ -10,7 +10,7 @@ import { updateUser } from "../../actions/UserDataActions";
 // selectors
 import { getTotalUserArtworks } from "../../selectors/Selectors";
 // helpers
-import history from '../global/history';
+import {goHome, goToAccountDelete} from "../../AppNavigation";
 // comps
 import AppBar from "../appBar/AppBar";
 import SignIn from '../signIn/SignIn';
@@ -27,10 +27,11 @@ const UserProfile = ({ user, totalUserArtworks, updateUser }) => {
     const appBarTitle = userIsSignedIn ? 'Profile' : 'Sign in / up';
 
     return (
-        <div>
+        <div className={'userProfilePage'}>
             <AppBar title={appBarTitle}
-                       showUserMenu={userIsSignedIn}
-                       showCloseButt={!userIsSignedIn}/>
+                    onCloseClick={goHome}
+                    showUserMenu={userIsSignedIn}
+                    showCloseButt={!userIsSignedIn}/>
 
             {!userIsSignedIn &&
             <div className={'signIn-intro'}>
@@ -49,7 +50,7 @@ const UserProfile = ({ user, totalUserArtworks, updateUser }) => {
                     updateUser={updateUser}
                 />
                 <div className={'userProfile--deleteSection'}>
-                    <Button outlined onClick={() => history.push('/delete')}>
+                    <Button outlined onClick={goToAccountDelete}>
                         <ButtonIcon use="delete_forever"/>
                         Delete Account
                     </Button>
@@ -63,7 +64,7 @@ const UserProfile = ({ user, totalUserArtworks, updateUser }) => {
 const mapStateToProps = (state) => {
     return {
         user: state.user,
-        totalUserArtworks: getTotalUserArtworks(state.user.uid, state.artworks),
+        totalUserArtworks: getTotalUserArtworks(state.user.uid, state.artworks)
     }
 };
 

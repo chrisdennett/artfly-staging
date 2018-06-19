@@ -1,10 +1,18 @@
+.userProfilePage {
+    background: #969caa;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #969caa, #d6dcef);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #969caa, #d6dcef); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    min-height: 100vh;
+}
+
 .userProfile {
     margin: 0 auto;
     padding: 20px;
     max-width: 500px;
 }
 
-.userProfile--deleteSection{
+.userProfile--deleteSection {
     border-top: rgba(0, 0, 0, 0.3) 1px solid;
     margin-top: 40px;
     padding-top: 20px;
@@ -23,7 +31,7 @@
     align-items: center;
 }
 
-.userProfile--detail--col{
+.userProfile--detail--col {
     display: flex;
     flex-direction: column;
     justify-content: stretch;
@@ -42,16 +50,16 @@
     flex: 1;
 }
 
-.userProfile--detail--buttons{
+.userProfile--detail--buttons {
     display: flex;
     justify-content: flex-end;
 }
 
-.mood-icon{
+.mood-icon {
     font-size: 2rem;
 }
 
-.userProfile--detailsList--avatarHolder{
+.userProfile--detailsList--avatarHolder {
     margin: 0 auto 20px auto;
     background-color: white;
     padding: 5px;

@@ -60,8 +60,8 @@ export const ArtworkAppBar = ({ onCloseClick, onMenuClick, isEditable, onDeleteC
 
             <ToolbarSection alignEnd>
                 {isEditable &&
-                    <ToolbarMenuIcon use="delete"
-                                     onClick={onDeleteClick}/>
+                <ToolbarMenuIcon use="delete"
+                                 onClick={onDeleteClick}/>
                 }
                 <UserMenu/>
             </ToolbarSection>
@@ -71,41 +71,36 @@ export const ArtworkAppBar = ({ onCloseClick, onMenuClick, isEditable, onDeleteC
 
 const AppBar = function ({ title, navigation, onCloseClick, showHomeIcon = true, showUserMenu = true, showCloseButt = false, fixed = true, butts = null }) {
     return (
-        <div>
-            <Toolbar fixed={fixed} theme={'background'}>
-                <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
-                    {title &&
-                    <ToolbarSection alignStart>
+        <Toolbar fixed={fixed} theme={'background'}>
+            <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
+                {title &&
+                <ToolbarSection alignStart>
 
-                        {showHomeIcon &&
-                        <HomeIconButton/>
-                        }
-
-                        <ToolbarTitle>{title}</ToolbarTitle>
-                    </ToolbarSection>
+                    {showHomeIcon &&
+                    <HomeIconButton/>
                     }
-                    <ToolbarSection alignEnd>
 
-                        {butts &&
-                        butts
-                        }
+                    <ToolbarTitle>{title}</ToolbarTitle>
+                </ToolbarSection>
+                }
+                <ToolbarSection alignEnd>
 
-                        {showUserMenu &&
-                        <UserMenu/>
-                        }
+                    {butts &&
+                    butts
+                    }
 
-                        {showCloseButt &&
-                        <ToolbarIcon use="close"
-                                     theme={'text-primary-on-background'}
-                                     onClick={onCloseClick}/>
-                        }
-                    </ToolbarSection>
-                </ToolbarRow>
-            </Toolbar>
-            {fixed &&
-            <ToolbarFixedAdjust/>
-            }
-        </div>
+                    {showUserMenu &&
+                    <UserMenu/>
+                    }
+
+                    {showCloseButt &&
+                    <ToolbarIcon use="close"
+                                 theme={'text-primary-on-background'}
+                                 onClick={onCloseClick}/>
+                    }
+                </ToolbarSection>
+            </ToolbarRow>
+        </Toolbar>
     )
 };
 
