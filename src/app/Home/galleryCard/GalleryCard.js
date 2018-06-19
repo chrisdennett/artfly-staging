@@ -11,9 +11,9 @@ import {
     CardActionIcons
 } from 'rmwc/Card';
 
-const GalleryCard = ({galleryData, onClick}) => {
+const GalleryCard = ({galleryData, onClick, totalArtworks, latestArtwork}) => {
 
-    const {title, subtitle, totalArtworks, latestArtwork} = galleryData;
+    const {title, subtitle} = galleryData;
 
     const thumbUrl = latestArtwork ? latestArtwork.thumbUrl : 'https://material-components-web.appspot.com/images/16-9.jpg';
     const galleryInfo1 =  `Total artworks: ${totalArtworks}`;
@@ -71,7 +71,7 @@ const GalleryCard = ({galleryData, onClick}) => {
                     off={{ label: 'Add to favorites', content: 'favorite_border' }}
                 />*/}
                 <CardAction icon use="edit"/>
-                {/*<CardAction icon use="add"/>*/}
+                <CardAction icon use="add"/>
                 {/*<CardAction icon use="more_vert"/>*/}
             </CardActionIcons>
         </CardActions>

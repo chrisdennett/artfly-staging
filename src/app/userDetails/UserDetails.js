@@ -1,20 +1,22 @@
 import React from 'react';
-// material ui
-// import { Typography } from 'rmwc/Typography';
-// comps
-import UserEmailOptions from "../userEmailOptions/UserEmailOptions";
 
-const UserDetails = function ({ user, totalUserArtworks, updateUser }) {
+const UserDetails = function ({ user, userSignInMethod, totalUserArtworks }) {
 
     // get the smaller sized image if it's google
-    let photoUrl = user.providerId === 'google.com' ? user.photoURL + '?sz=80' : user.photoURL;
+    let photoUrl;
+
+    if(userSignInMethod === 'GOOGLE') {
+        photoUrl = user.photoURL + '?sz=80';
+    }
+    else if(userSignInMethod === 'EMAIL / PASSWORD'){
+        photoUrl = null;
+    }
+    else {
+        photoUrl = user.photoURL;
+    }
 
     return (
         <div>
-            {/*<Typography use="body1">
-                Apologies this screen being such a bore-fest! It's on my list to improve.
-            </Typography>
-*/}
             <div className={'userProfile--detailsList'}>
                 {photoUrl &&
                 <div className={'userProfile--detailsList--avatarHolder'}>
@@ -27,11 +29,10 @@ const UserDetails = function ({ user, totalUserArtworks, updateUser }) {
                     <div className={'userProfile--detail--value'}>{user.displayName}</div>
                 </div>
 
-                <UserEmailOptions userEmail={user.email}
-                                  userId={user.uid}
-                                  allowEmailUpdates={user.allowEmailUpdates}
-                                  updateUser={updateUser}
-                />
+                <div className={'userProfile--detail'}>
+                    <div className={'userProfile--detail--type'}>Sign in:</div>
+                    <div className={'userProfile--detail--value'}>{userSignInMethod}</div>
+                </div>
 
                 <div className={'userProfile--detail'}>
                     <div className={'userProfile--detail--type'}>Artworks:</div>

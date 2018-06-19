@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { Typography } from 'rmwc/Typography';
 // styles
 import './homeStyles.css';
+// selectors
+import { getLatestUserArtwork, getTotalUserArtworks, getUserGallery } from '../../selectors/Selectors'
 // components
 import LoadingThing from "../loadingThing/LoadingThing";
 import Title from "./Title";
@@ -13,24 +15,21 @@ import SocialMediaStuff from "./socialMediaStuff/SocialMediaStuff";
 import ArtFlyLab from "./artflyLab/ArtFlyLab";
 import ArtFlyIntro from "./artFlyIntro/ArtFlyIntro";
 import AppBar from "../appBar/AppBar";
-// import GalleryHome from "../gallery/GalleryHome";
 import history from "../global/history";
 import GalleryCard from "./galleryCard/GalleryCard";
 import JumpingVictorianLady from './JumpingVictorianLady';
 
-const Home = ({ user, userGalleries }) => {
+const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork }) => {
     const userLoggedIn = !!user.uid;
     const userPending = user === 'pending';
 
     return (
         <div className={'home'}>
-
             <AppBar fixed={!userLoggedIn}/>
 
             {userPending &&
             <LoadingThing/>
             }
-
 
             <div className='home--heading'>
                 <div>
@@ -49,19 +48,19 @@ const Home = ({ user, userGalleries }) => {
                 <Typography className={'sectionTitle'} use="headline4">
                     Your Galleries
                 </Typography>
-                {userGalleries.length === 0 &&
-                    <LoadingThing label={'Loading your galleries'}/>
+                {!userGallery &&
+                <LoadingThing label={'Loading your galleries'}/>
                 }
 
+                {userGallery &&
                 <div className={'home--yourGalleries--galleries'}>
-                    {
-                        userGalleries.map(gallery =>
-                            <GalleryCard galleryData={gallery}
-                                         key={gallery.galleryId}
-                                         onClick={() => history.push(`/gallery/galleryId_${gallery.galleryId}_galleryId`)}/>
-                        )
-                    }
+                    <GalleryCard galleryData={userGallery}
+                                 latestArtwork={latestUserArtwork}
+                                 totalArtworks={totalUserArtworks}
+                                 key={userGallery.galleryId}
+                                 onClick={() => history.push(`/gallery/galleryId_${userGallery.galleryId}_galleryId`)}/>
                 </div>
+                }
             </div>
             }
 
@@ -72,7 +71,7 @@ const Home = ({ user, userGalleries }) => {
                 <ArtFlyLab/>
                 <SocialMediaStuff/>
                 <AboutUs/>
-                <JumpingVictorianLady />
+                <JumpingVictorianLady/>
             </div>
 
         </div>
@@ -82,47 +81,10 @@ const Home = ({ user, userGalleries }) => {
 const mapStateToProps = (state) => (
     {
         user: state.user,
-        userGalleries: getUserGalleriesData(state.galleries, state.user.uid, state.artworks)
+        latestUserArtwork: getLatestUserArtwork(state),
+        totalUserArtworks: getTotalUserArtworks(state),
+        userGallery: getUserGallery(state)
     }
 );
 
 export default connect(mapStateToProps)(Home);
-
-const getUserGalleriesData = (galleries, userId, artworks) => {
-    const userGalleries = getUserGalleries(galleries, userId);
-
-    let userGalleriesData = [];
-
-    for(let gallery of userGalleries){
-        const galleryArtworks = getArtworksByDate(artworks);
-        const latestArtwork = galleryArtworks[0];
-        const totalArtworks = galleryArtworks.length;
-
-        userGalleriesData.push({...gallery, latestArtwork, totalArtworks})
-    }
-
-    return userGalleriesData;
-};
-
-const getArtworksByDate = (artworks) => {
-    const arr = Object.keys(artworks).map(id => {
-        return artworks[id];
-    });
-
-    arr.sort((a, b) => {
-        return b.lastUpdated - a.lastUpdated;
-    });
-
-    return arr;
-};
-
-const getUserGalleries = (galleries, userId) => {
-    // use filter to find user gallery Ids
-    const userGalleryIds = Object.keys(galleries).filter(galleryId => {
-        return galleries[galleryId].adminId === userId
-    });
-    // return the galleries matching the filtered Ids
-    return userGalleryIds.map(id => {
-        return galleries[id]
-    });
-}

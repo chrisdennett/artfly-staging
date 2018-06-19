@@ -1,27 +1,40 @@
-export const getUserArtworks = (userId, artworks) => {
-    return Object.keys(artworks)
-        .filter(artworkId => artworks[artworkId].adminId === userId)
-        .reduce((obj, key) => {
-            obj[key] = artworks[key];
-            return obj
-        }, {});
-};
+import firebase from 'firebase/app';
 
 export const getGallery = (state, props) => {
-    const {galleries} = state;
-    const {galleryId} = props;
+    const { galleries } = state;
+    const { galleryId } = props;
 
-    if(!galleries || !galleryId) return null;
+    if (!galleries || !galleryId) return null;
 
     return galleries[galleryId];
 };
 
+export const getUserArtworks = (state) => {
+    const { user, artworks } = state;
+
+    if (!user || !artworks) return null;
+
+    const { uid } = user;
+
+    const userArtworks = Object.keys(artworks)
+        .filter(artworkId => artworks[artworkId].adminId === uid)
+        .reduce((obj, key) => {
+            obj[key] = artworks[key];
+            return obj
+        }, {});
+
+    return getArtworksByDate(userArtworks);
+};
+
 export const getTotalUserArtworks = (state) => {
-    const {user, artworks} = state;
+    const userArtworks = getUserArtworks(state);
+    return userArtworks.length;
+};
 
-    if(!user || !artworks) return null;
-
-    return Object.keys(getUserArtworks(state.user.uid, state.artworks)).length;
+export const getLatestUserArtwork = state => {
+    const userArtworks = getUserArtworks(state);
+    if (userArtworks.length === 0) return null;
+    return userArtworks[0];
 };
 
 export const getCurrentGalleryData = (user, galleries, artworks, galleryId) => {
@@ -32,7 +45,7 @@ export const getCurrentGalleryData = (user, galleries, artworks, galleryId) => {
     const galleryArtworks = getGalleryArtworks(gallery, artworks);
     const firstArtworkId = galleryArtworks.length > 0 ? galleryArtworks[0].artworkId : null;
 
-    return {...gallery, isEditable, galleryArtworks, firstArtworkId };
+    return { ...gallery, isEditable, galleryArtworks, firstArtworkId };
 };
 
 export const getGalleryArtworks = (gallery, artworks) => {
@@ -90,7 +103,37 @@ export const getGalleryNavigation = (artworks, artworkId, userId) => {
 };
 
 export const getUserGalleryId = (state) => {
-    const {galleries, user} = state;
-    if(!galleries || !user) return null;
+    const { galleries, user } = state;
+    if (!galleries || !user) return null;
     return Object.keys(galleries).filter(galleryId => galleries[galleryId].adminId === user.uid);
+};
+
+export const getUserGallery = (state) => {
+    const { galleries } = state;
+    const userGalleryId = getUserGalleryId(state);
+
+    if (!userGalleryId) return null;
+
+    return galleries[userGalleryId];
+
+};
+
+export const getSignInProvider = (state) => {
+    const { user } = state;
+
+    if (!user) return null;
+
+    switch (user.providerId) {
+        case firebase.auth.GoogleAuthProvider.PROVIDER_ID:
+            return 'GOOGLE';
+        case firebase.auth.FacebookAuthProvider.PROVIDER_ID:
+            return 'FACEBOOK';
+        case firebase.auth.TwitterAuthProvider.PROVIDER_ID:
+            return 'TWITTER';
+        case firebase.auth.EmailAuthProvider.PROVIDER_ID:
+            break;
+
+        default:
+            return null;
+    }
 };

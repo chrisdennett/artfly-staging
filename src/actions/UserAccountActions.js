@@ -1,6 +1,7 @@
 import { firestoreDb as db } from "../libs/firebaseConfig";
 
-const  ACCOUNT_FETCHED = 'accountFetched';
+export const ACCOUNT_FETCHED = 'accountFetched';
+export const  ACCOUNT_UPDATED = 'accountUpdated';
 
 function addUserAccount(userId, dispatch){
     const newAccountData = {
@@ -15,11 +16,11 @@ function addUserAccount(userId, dispatch){
     newAccountRef
         .set(newAccountData)
         .then(() => {
-            const accountDataWithId = { ...newAccountData, accountId: newAccountId };
+            const accountDataWithId = { ...newAccountData, accountId: newAccountId, isNew:true };
 
             dispatch({
                 type: ACCOUNT_FETCHED,
-                payload: { [newAccountId]: accountDataWithId }
+                payload: accountDataWithId
             });
         })
 }
@@ -30,7 +31,6 @@ export function fetchUserAccount(userId) {
             .where('adminId', '==', userId)
             .get()
             .then(querySnapshot => {
-                console.log("querySnapshot: ", querySnapshot);
                     // If there's no user gallery yet return default data
                     if (querySnapshot.size === 0) {
                         addUserAccount(userId, dispatch);
@@ -42,7 +42,7 @@ export function fetchUserAccount(userId) {
 
                             dispatch({
                                 type: ACCOUNT_FETCHED,
-                                payload: { [doc.id]: accountDataWithId }
+                                payload: accountDataWithId
                             });
                         });
                     }
@@ -50,5 +50,24 @@ export function fetchUserAccount(userId) {
                 error => {
                     console.log("user artworks listener error: ", error);
                 })
+    }
+}
+
+export function updateUserAccount(accountId, newAccountData) {
+    return (dispatch) => {
+        db.collection('accounts')
+            .doc(accountId)
+            .set(newAccountData, { merge: true })
+            .then(() => {
+                const accountDataWithId = { ...newAccountData, accountId: accountId };
+
+                dispatch({
+                    type: ACCOUNT_UPDATED,
+                    payload: accountDataWithId
+                });
+            })
+            .catch(function (error) {
+                console.log('Update artwork failed: ', error);
+            })
     }
 }

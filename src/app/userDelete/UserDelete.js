@@ -57,6 +57,7 @@ class UserDelete extends Component {
 
         return (
             <div className={'userProfile'}>
+
                 <AppBar title={'Delete Account'}
                            showUserMenu={false}
                            showCloseButt={true}/>

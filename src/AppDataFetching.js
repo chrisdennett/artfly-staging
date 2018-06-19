@@ -22,8 +22,8 @@ class AppDataFetching extends Component {
 
         if (newUid && newUid !== currentUid) {
             this.props.fetchUserAccount(newUid);
-            this.props.fetchUserArtworks(newUid);
             this.props.fetchUserGallery(newUid);
+            this.props.fetchUserArtworks(newUid);
         }
 
         // if there's an artwork or gallery id, fetch it

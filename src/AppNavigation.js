@@ -44,7 +44,3 @@ export function goToGalleryEditor(galleryId) {
     const gallery = param('galleryId', galleryId);
     history.push(`/galleryEditor/${gallery}`);
 }
-
-export function goToAccountDelete() {
-    history.push('/delete');
-}

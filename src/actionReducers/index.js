@@ -3,17 +3,17 @@ import { combineReducers } from 'redux';
 import PaddleReducer from './PaddleReducer';
 import UserReducer from './UserAuthReducer';
 import ArtworksReducer from './ArtworksReducer';
-import NotificationsReducer from "./NotificationsReducer";
 import ErrorReducer from "./ErrorReducer";
 import ArtworkSavingReducer from "./ArtworkSavingReducer";
 import GalleryReducer from './GalleryReducer';
+import AccountReducer from "./AccountReducer";
 
 const rootReducer = combineReducers({
+    user: UserReducer,
+    account: AccountReducer,
     artworkSavingProgress: ArtworkSavingReducer,
     errors: ErrorReducer,
-    notifications: NotificationsReducer,
     paddle: PaddleReducer,
-    user: UserReducer,
     artworks: ArtworksReducer,
     galleries: GalleryReducer
 });

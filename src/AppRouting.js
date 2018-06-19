@@ -10,7 +10,6 @@ import history from './app/global/history';
 import Home from './app/Home/Home';
 import FourOhFour from "./app/FourOhFour/FourOhFour";
 import UserProfile from "./app/userProfile/UserProfile";
-import UserDelete from "./app/userDelete/UserDelete";
 import ArtworkAdder from "./app/artworkAdder/ArtworkAdder";
 import TestPage from "./app/testPage/TestPage";
 import ArtworkEditor from "./app/artworkEditor/ArtworkEditor";
@@ -113,10 +112,6 @@ function getPageComponent(page, params) {
 
         case 'profile':
             PageComponent = UserProfile;
-            break;
-
-        case 'delete':
-            PageComponent = UserDelete;
             break;
 
         case 'artworkAdder':

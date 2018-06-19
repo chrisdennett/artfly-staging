@@ -1,16 +1,13 @@
-import { GALLERY_FETCHED, GALLERY_UPDATE_TRIGGERED, GALLERY_UPDATED } from '../actions/GalleryDataActions';
+import { ACCOUNT_FETCHED, ACCOUNT_UPDATED } from '../actions/UserAccountActions';
 import { USER_SIGNED_OUT } from "../actions/UserAuthActions";
 
 export default function (state = {}, action) {
     switch (action.type) {
 
-        case GALLERY_UPDATE_TRIGGERED:
+        case ACCOUNT_FETCHED:
             return { ...state, ...action.payload };
 
-        case GALLERY_UPDATED:
-            return { ...state, ...action.payload };
-
-        case GALLERY_FETCHED:
+        case ACCOUNT_UPDATED:
             return { ...state, ...action.payload };
 
         case USER_SIGNED_OUT:
