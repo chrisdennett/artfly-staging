@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 // material ui
+import { Elevation } from 'rmwc/Elevation';
 import { Button, ButtonIcon } from 'rmwc/Button';
 import { Typography } from 'rmwc/Typography';
 // styles
@@ -8,16 +9,16 @@ import './userProfile_styles.css';
 // actions
 import { updateUser } from "../../actions/UserDataActions";
 // selectors
-import { getTotalUserArtworks } from "../../selectors/Selectors";
+import { getTotalUserArtworks, getUserGalleryId } from "../../selectors/Selectors";
 // helpers
-import {goHome, goToAccountDelete} from "../../AppNavigation";
+import { goHome, goToAccountDelete, goToGallery } from "../../AppNavigation";
 // comps
 import AppBar from "../appBar/AppBar";
 import SignIn from '../signIn/SignIn';
 import UserDetails from "../userDetails/UserDetails";
 import LoadingThing from "../loadingThing/LoadingThing";
 
-const UserProfile = ({ user, totalUserArtworks, updateUser }) => {
+const UserProfile = ({ user, totalUserArtworks, updateUser, userGalleryId }) => {
 
     if (user === 'pending') {
         return <LoadingThing/>
@@ -38,24 +39,32 @@ const UserProfile = ({ user, totalUserArtworks, updateUser }) => {
                 <Typography use={'body1'}>
                     <p>Sign in OR sign up for the first time.</p>
                 </Typography>
-                <SignIn/>
+                <SignIn />
             </div>
             }
 
             {userIsSignedIn &&
-            <div className={'userProfile'}>
+            <Elevation z={1} className={'userProfile'}>
                 <UserDetails
                     user={user}
                     totalUserArtworks={totalUserArtworks}
                     updateUser={updateUser}
                 />
+                <div className={'userProfile--actions'}>
+                    {userGalleryId &&
+                    <Button raised onClick={() => goToGallery(userGalleryId)}>
+                        <ButtonIcon use="dashboard"/>
+                        Your Gallery
+                    </Button>
+                    }
+                </div>
                 <div className={'userProfile--deleteSection'}>
                     <Button outlined onClick={goToAccountDelete}>
                         <ButtonIcon use="delete_forever"/>
                         Delete Account
                     </Button>
                 </div>
-            </div>
+            </Elevation>
             }
         </div>
     )
@@ -64,7 +73,8 @@ const UserProfile = ({ user, totalUserArtworks, updateUser }) => {
 const mapStateToProps = (state) => {
     return {
         user: state.user,
-        totalUserArtworks: getTotalUserArtworks(state.user.uid, state.artworks)
+        userGalleryId: getUserGalleryId(state),
+        totalUserArtworks: getTotalUserArtworks(state)
     }
 };
 

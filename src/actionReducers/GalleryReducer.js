@@ -1,5 +1,11 @@
 import { GALLERY_FETCHED, GALLERY_UPDATE_TRIGGERED, GALLERY_UPDATED } from '../actions/GalleryDataActions';
 
+/*const defaultGalleryData = {
+    type: 'user',
+    title: 'My Amazing',
+    subtitle: 'Gallery of Awesome'
+};*/
+
 export default function (state = {}, action) {
     switch (action.type) {
 

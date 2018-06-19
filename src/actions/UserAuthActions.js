@@ -16,16 +16,12 @@ export function stopListeningForUserAuthChanges(){
 
 // LISTEN FOR USER DATA CHANGES
 export function listenForUserAuthChanges() {
-    // ensure only set up once
-    // if (unregisterUserAuthListener) return {};
 
     return (dispatch) => {
-
         dispatch({
             type: USER_REQUESTED
         });
 
-        // unregisterUserAuthListener = auth
         auth.onAuthStateChanged(user => {
                 if (user) {
                     const { photoURL, displayName, email, emailVerified, uid, providerData } = user;

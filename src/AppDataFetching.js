@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 // actions
 import { fetchUserArtworks, getArtworkDataOnce } from "./actions/GetArtworkActions";
 import { listenForUserAuthChanges } from "./actions/UserAuthActions";
-import { fetchGalleryData, fetchUserGalleries, fetchUserGalleryArtworks } from "./actions/GalleryDataActions";
+import { fetchGalleryData, fetchUserGallery, fetchUserGalleryArtworks } from "./actions/GalleryDataActions";
 
 class AppDataFetching extends Component {
 
@@ -61,7 +61,7 @@ const mapActionsToProps = {
     listenForUserAuthChanges,
     fetchUserArtworks,
     getArtworkDataOnce,
-    fetchUserGalleries,
+    fetchUserGalleries: fetchUserGallery,
     fetchGalleryData,
     fetchUserGalleryArtworks
 };

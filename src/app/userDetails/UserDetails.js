@@ -1,6 +1,6 @@
 import React from 'react';
 // material ui
-import { Typography } from 'rmwc/Typography';
+// import { Typography } from 'rmwc/Typography';
 // comps
 import UserEmailOptions from "../userEmailOptions/UserEmailOptions";
 
@@ -11,10 +11,10 @@ const UserDetails = function ({ user, totalUserArtworks, updateUser }) {
 
     return (
         <div>
-            <Typography use="body1">
+            {/*<Typography use="body1">
                 Apologies this screen being such a bore-fest! It's on my list to improve.
             </Typography>
-
+*/}
             <div className={'userProfile--detailsList'}>
                 {photoUrl &&
                 <div className={'userProfile--detailsList--avatarHolder'}>

@@ -16,12 +16,11 @@ export const getGallery = (state, props) => {
     return galleries[galleryId];
 };
 
-export const getTotalUserArtworks = (userId, artworks) => {
-    return Object.keys(getUserArtworks(userId, artworks)).length;
+export const getTotalUserArtworks = (state) => {
+    return Object.keys(getUserArtworks(state.user.uid, state.artworks)).length;
 };
 
 export const getCurrentGalleryData = (user, galleries, artworks, galleryId) => {
-
     const gallery = galleries[galleryId];
     if (!gallery) return null;
 
@@ -84,4 +83,10 @@ export const getGalleryNavigation = (artworks, artworkId, userId) => {
     const isEditable = !currentArtwork ? false : currentArtwork.adminId === userId;
 
     return { currentArtwork, isEditable, nextArtwork, previousArtwork };
+};
+
+export const getUserGalleryId = (state) => {
+    const {galleries, user} = state;
+    if(!galleries || !user) return null;
+    return Object.keys(galleries).filter(galleryId => galleries[galleryId].adminId === user.uid);
 };

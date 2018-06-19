@@ -4,7 +4,6 @@ import {
     Toolbar,
     ToolbarRow,
     ToolbarSection,
-    ToolbarFixedAdjust,
     ToolbarTitle,
     ToolbarIcon,
     ToolbarMenuIcon

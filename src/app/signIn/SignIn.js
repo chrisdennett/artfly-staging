@@ -7,7 +7,7 @@ import './signIn_styles.css';
 // Configure FirebaseUI.
 // https://github.com/firebase/firebaseui-web
 // https://github.com/firebase/firebaseui-web-react
-const SignIn = ({ successRedirect = '/', providerId }) => {
+const SignIn = ({ providerId }) => {
 
     let signInOptions;
     if (providerId) {
@@ -26,21 +26,24 @@ const SignIn = ({ successRedirect = '/', providerId }) => {
     }
 
     /*
- I've removed phone sign in as it costs $0.01 or $0.06 each time
+    I've removed phone sign in as it costs $0.01 or $0.06 each time
     {
         provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
         defaultCountry: 'GB'
     }
     */
 
+    // signInSuccessUrl: '/',
+
     const uiConfig = {
-        signInSuccessUrl: successRedirect,
         signInFlow: 'popup',
         signInOptions: signInOptions
     };
 
     return (
-        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
+        <StyledFirebaseAuth uiConfig={uiConfig}
+                            firebaseAuth={firebase.auth()}
+        />
     )
 };
 

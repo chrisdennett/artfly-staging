@@ -5,21 +5,54 @@ export const GALLERY_FETCHED = "galleryFetched";
 export const GALLERY_UPDATED = "galleryUpdated";
 export const GALLERY_UPDATE_TRIGGERED = "galleryUpdateTriggers";
 
-export function fetchUserGalleries(userId) {
+
+function addUserGallery(userId, dispatch){
+    const newGalleryData = {
+        type: 'user',
+        adminId: userId,
+        key: userId,
+        title: 'My Gallery',
+        subtitle: 'Of Awesome Art'
+    };
+
+    const newGalleryRef =  db.collection('galleries').doc();
+    const newGalleryId = newGalleryRef.id;
+
+    console.log("newGalleryId: ", newGalleryId);
+
+    newGalleryRef.set(newGalleryData)
+        .then(() => {
+            const galleryDataWithId = { ...newGalleryData, galleryId: newGalleryId };
+
+            dispatch({
+                type: GALLERY_FETCHED,
+                payload: { [newGalleryId]: galleryDataWithId }
+            });
+        })
+}
+
+export function fetchUserGallery(userId) {
     return (dispatch) => {
         db.collection('galleries')
             .where('adminId', '==', userId)
             .get()
             .then(querySnapshot => {
-                    querySnapshot.forEach(doc => {
 
-                        const galleryDataWithId = { ...doc.data(), galleryId: doc.id };
+                    // If there's no user gallery yet return default data
+                    if (querySnapshot.size === 0) {
+                        addUserGallery(userId, dispatch);
+                    }
+                    // otherwise return the user gallery (may b
+                    else {
+                        querySnapshot.forEach(doc => {
+                            const galleryDataWithId = { ...doc.data(), galleryId: doc.id };
 
-                        dispatch({
-                            type: GALLERY_FETCHED,
-                            payload: { [doc.id]: galleryDataWithId }
+                            dispatch({
+                                type: GALLERY_FETCHED,
+                                payload: { [doc.id]: galleryDataWithId }
+                            });
                         });
-                    });
+                    }
                 },
                 error => {
                     console.log("user artworks listener error: ", error);
@@ -34,7 +67,7 @@ export function fetchGalleryData(galleryId, callback) {
 
         db.collection('galleries').doc(galleryId)
             .get()
-            .then((doc) => {
+            .then(doc => {
                 if (doc.exists) {
                     const galleryDataWithId = { ...doc.data(), galleryId: doc.id };
                     dispatch({
@@ -80,12 +113,9 @@ export function fetchUserGalleryArtworks(gallery) {
     }
 }
 
-
 export function updateGallery(galleryId, newGalleryData) {
-
     return dispatch => {
-
-        const galleryDataWithId = { ...newGalleryData, galleryId: galleryId, status:'updating' };
+        const galleryDataWithId = { ...newGalleryData, galleryId: galleryId, status: 'updating' };
         dispatch({
             type: GALLERY_UPDATE_TRIGGERED,
             payload: { [galleryId]: galleryDataWithId }
@@ -94,7 +124,7 @@ export function updateGallery(galleryId, newGalleryData) {
         db.collection('galleries').doc(galleryId)
             .set(newGalleryData)
             .then(() => {
-                const galleryDataWithId = { ...newGalleryData, galleryId: galleryId, status:'updated' };
+                const galleryDataWithId = { ...newGalleryData, galleryId: galleryId, status: 'updated' };
                 dispatch({
                     type: GALLERY_UPDATED,
                     payload: { [galleryId]: galleryDataWithId }
