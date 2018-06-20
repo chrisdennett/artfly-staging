@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, ButtonIcon } from 'rmwc/Button';
-import history from "../global/history";
+import history from "../../../global/history";
 
 const SignInButt = function () {
     return (

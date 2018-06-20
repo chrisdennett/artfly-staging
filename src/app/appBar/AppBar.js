@@ -14,7 +14,7 @@ import './appBar_styles.css';
 import UserMenu from "../userMenu/UserMenu";
 import HomeIconButton from "../../homeIconButton/HomeIconButton";
 
-
+// Includes save and cancel options
 export const EditAppBar = ({ title, onSaveClick, onCancelClick, hasChanges, onCloseClick }) => (
     <Toolbar theme={'background'}>
         <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
@@ -47,7 +47,7 @@ export const EditAppBar = ({ title, onSaveClick, onCancelClick, hasChanges, onCl
     </Toolbar>
 );
 
-
+// Includes artwork delete option
 export const ArtworkAppBar = ({ onCloseClick, onMenuClick, isEditable, onDeleteClick }) => (
     <Toolbar theme={'background'}>
         <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
@@ -64,6 +64,22 @@ export const ArtworkAppBar = ({ onCloseClick, onMenuClick, isEditable, onDeleteC
                 }
                 <UserMenu/>
             </ToolbarSection>
+        </ToolbarRow>
+    </Toolbar>
+);
+
+// Just a title and a close option
+export const TempScreenAppBar = ({title, onCloseClick}) => (
+    <Toolbar theme={'background'}>
+        <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
+            <ToolbarTitle>{title}</ToolbarTitle>
+
+            <ToolbarSection alignEnd>
+                <ToolbarIcon use={'close'}
+                             theme={'text-primary-on-background'}
+                             onClick={onCloseClick}/>
+            </ToolbarSection>
+
         </ToolbarRow>
     </Toolbar>
 );

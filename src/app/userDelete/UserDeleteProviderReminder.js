@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography } from 'rmwc/Typography';
 import firebase from 'firebase/app';
-import SignIn from "../signIn/SignIn";
+import SignIn from "../userAccountScreens/userSignIn/signIn/SignIn";
 
 const UserDeleteProviderReminder = function ({userProviderId}) {
 

@@ -11,7 +11,7 @@ import {
 // actions
 import { signOutUser } from "../../actions/UserAuthActions";
 // comps
-import SignInButt from '../signIn/SignInButt';
+import SignInButt from '../userAccountScreens/userSignIn/signIn/SignInButt';
 import history from "../global/history";
 
 class UserMenu extends Component {

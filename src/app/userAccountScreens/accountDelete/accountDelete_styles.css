@@ -1,0 +1,22 @@
+.accountDelete{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.accountDelete--step{
+    padding: 15px 15px 15px 15px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid rgba(0,0,0,0.2);
+}
+
+.accountDelete--step--button{
+
+}
+
+.accountDelete--step--label{
+    flex: 1;
+}

@@ -9,7 +9,7 @@ import history from './app/global/history';
 // route components
 import Home from './app/Home/Home';
 import FourOhFour from "./app/FourOhFour/FourOhFour";
-import UserProfile from "./app/userProfile/UserProfile";
+import UserProfile from "./app/userAccountScreens/UserAccountScreens";
 import ArtworkAdder from "./app/artworkAdder/ArtworkAdder";
 import TestPage from "./app/testPage/TestPage";
 import ArtworkEditor from "./app/artworkEditor/ArtworkEditor";
