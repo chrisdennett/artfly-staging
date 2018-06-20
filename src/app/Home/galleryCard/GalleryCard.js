@@ -10,10 +10,12 @@ import {
     CardActionButtons,
     CardActionIcons
 } from 'rmwc/Card';
+// helpers
+import {goToGalleryEditor, goToArtworkAdder} from '../../../AppNavigation';
 
 const GalleryCard = ({galleryData, onClick, totalArtworks, latestArtwork}) => {
 
-    const {title, subtitle} = galleryData;
+    const {title, subtitle, galleryId} = galleryData;
 
     const thumbUrl = latestArtwork ? latestArtwork.thumbUrl : 'https://material-components-web.appspot.com/images/16-9.jpg';
     const galleryInfo1 =  `Total artworks: ${totalArtworks}`;
@@ -70,8 +72,8 @@ const GalleryCard = ({galleryData, onClick, totalArtworks, latestArtwork}) => {
                     on={{ label: 'Remove from favorites', content: 'favorite' }}
                     off={{ label: 'Add to favorites', content: 'favorite_border' }}
                 />*/}
-                <CardAction icon use="edit"/>
-                <CardAction icon use="add"/>
+                <CardAction icon use="edit" onClick={() => goToGalleryEditor(galleryId)}/>
+                <CardAction icon use="add" onClick={() => goToArtworkAdder(galleryId)}/>
                 {/*<CardAction icon use="more_vert"/>*/}
             </CardActionIcons>
         </CardActions>

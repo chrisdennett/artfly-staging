@@ -3,7 +3,7 @@ import { firestoreDb as db } from "../libs/firebaseConfig";
 export const ARTWORK_CHANGE = "artworkChange";
 
 let artworkListeners = {};
-let userArtworkListenerUnsubscriber;
+// let userArtworkListenerUnsubscriber;
 
 export function listenForIndividualArtworkChanged(artworkId) {
     return (dispatch) => {
@@ -12,13 +12,14 @@ export function listenForIndividualArtworkChanged(artworkId) {
 }
 
 export function fetchUserArtworks(userId) {
+
     return (dispatch) => {
         db.collection('artworks')
             .where('adminId', '==', userId)
             .get()
             .then(querySnapshot => {
                     querySnapshot.forEach(doc => {
-                        const artworkWidthId = {...doc.data(), artworkId:doc.id};
+                        const artworkWidthId = { ...doc.data(), artworkId: doc.id };
 
                         dispatch({
                             type: ARTWORK_CHANGE,
@@ -32,7 +33,7 @@ export function fetchUserArtworks(userId) {
     }
 }
 
-export function listenForUserArtworkChanges(userId) {
+/*export function listenForUserArtworkChanges(userId) {
     return (dispatch) => {
 
         if (!userId) {
@@ -52,7 +53,7 @@ export function listenForUserArtworkChanges(userId) {
                     console.log("user artworks listener error: ", error);
                 })
     }
-}
+}*/
 
 function listenForArtworkChanges(artworkId, dispatch) {
     if (artworkListeners[artworkId]) {
@@ -85,7 +86,7 @@ function listenForArtworkChanges(artworkId, dispatch) {
 export function getArtworkDataOnce(artworkId) {
     return dispatch => {
 
-          db.collection('artworks').doc(artworkId)
+        db.collection('artworks').doc(artworkId)
             .get()
             .then((doc) => {
                 if (doc.exists) {
