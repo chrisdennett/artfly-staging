@@ -1,8 +1,8 @@
 // ADD USER AUTH LISTENER
 // const fbui = new firebaseui.auth.AuthUI(firebase.auth());
-
 import { auth } from "../libs/firebaseConfig";
 
+export const LAST_MANUAL_USER_SIGN_IN_UPDATED = "lastManualUserSignInUpdated";
 export const USER_REQUESTED = "userRequested";
 export const USER_SIGNED_IN = "userSignedIn";
 export const USER_SIGNED_OUT = "userSignedOut";
@@ -14,6 +14,15 @@ export function stopListeningForUserAuthChanges(){
     return{}
 }*/
 
+export function setLastManualUserSignIn(signInTimeStamp) {
+    return (dispatch) => {
+        dispatch({
+            type: LAST_MANUAL_USER_SIGN_IN_UPDATED,
+            payload: signInTimeStamp
+        });
+    }
+}
+
 // LISTEN FOR USER DATA CHANGES
 export function listenForUserAuthChanges() {
 
@@ -23,29 +32,29 @@ export function listenForUserAuthChanges() {
         });
 
         auth.onAuthStateChanged(user => {
-                if (user) {
-                    const { photoURL, displayName, email, emailVerified, uid, providerData } = user;
-                    const { providerId } = providerData[0];
-                    const authData = { providerId, photoURL, displayName, email, emailVerified, uid };
+            if (user) {
+                const { photoURL, displayName, email, emailVerified, uid, providerData } = user;
+                const { providerId } = providerData[0];
+                const authData = { providerId, photoURL, displayName, email, emailVerified, uid };
 
-                    dispatch({
-                        type: USER_SIGNED_IN,
-                        payload: { ...authData }
-                    });
-                }
-                else{
-                    dispatch({
-                        type: USER_SIGNED_OUT
-                    })
-                }
-            }, (error) => {
-                console.log("auth error: ", error);
-            });
+                dispatch({
+                    type: USER_SIGNED_IN,
+                    payload: { ...authData }
+                });
+            }
+            else {
+                dispatch({
+                    type: USER_SIGNED_OUT
+                })
+            }
+        }, (error) => {
+            console.log("auth error: ", error);
+        });
     }
 }
 
 // SIGN OUT
-export function signOutUser( callback) {
+export function signOutUser(callback) {
     return dispatch => {
         auth
             .signOut()
@@ -54,7 +63,7 @@ export function signOutUser( callback) {
                     type: USER_SIGNED_OUT
                 });
 
-                if(callback) callback();
+                if (callback) callback();
             })
             .catch((error) => {
                 console.log("sign out error: ", error);

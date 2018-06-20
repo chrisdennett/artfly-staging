@@ -1,11 +1,18 @@
 import { auth, firestoreDb as db, storage } from "../libs/firebaseConfig";
+import { ARTWORK_DELETED } from "./DeleteArtworkActions";
+// import { ARTWORK_DELETE_ERROR } from "./DeleteArtworkActions";
 
-export const USER_DELETED = "userDeleted";
+export const USER_ARTWORKS_DELETED = "userArtworksDeleted";
+export const USER_DATA_DELETED = "userDataDeleted";
+export const USER_AUTH_DELETED = "userAuthDeleted";
 export const USER_DELETED_ERROR = "userDeletedError";
+export const USER_DATA_DELETE_ERROR = "userDataDeleteError";
+export const USER_AUTH_DELETE_ERROR = "userAuthDeleteError";
+export const USER_ARTWORKS_DELETE_ERROR = "userArtworksDeleteError";
 
 // get artworks and delete
 // delete user data
-export function deleteUser() {
+/*export function deleteUser() {
     const { uid } = auth.currentUser;
 
     return async dispatch => {
@@ -28,12 +35,30 @@ export function deleteUser() {
             })
         }
     }
-}
+}*/
 
-function deleteUserData(uid) {
-    return db.collection('users')
-        .doc(uid)
-        .delete();
+export function deleteUserData(uid, accountId, galleryId) {
+    return async dispatch => {
+
+        try {
+            // store a record of the deleted account
+            await db.collection('accounts').doc(accountId).set({ adminId: uid, status: 'deleted' });
+            // bin the gallery data
+            await db.collection('galleries').doc(galleryId).delete();
+
+            dispatch({
+                type: USER_DATA_DELETED
+            })
+        }
+        catch (error) {
+            console.log('USER_DATA_DELETE_ERROR: ', error);
+
+            dispatch({
+                type: USER_DATA_DELETE_ERROR,
+                payload: error
+            })
+        }
+    }
 }
 
 // DELETE ARTWORKS
@@ -46,15 +71,48 @@ function getUserArtworks(uid) {
         })
 }
 
-async function deleteUserArtworks(uid) {
-    const userArtworksDocs = await getUserArtworks(uid);
+export function deleteUserArtworks() {
+
+    const { uid } = auth.currentUser;
+
+    return async dispatch => {
+
+        try {
+            const userArtworksDocs = await getUserArtworks(uid);
+
+            await userArtworksDocs.map(doc => {
+                const artworkId = doc.id;
+                deleteArtwork(artworkId)
+                    .then(() => {
+                        dispatch({
+                            type: ARTWORK_DELETED,
+                            payload: artworkId
+                        })
+                    });
+            });
+
+            dispatch({
+                type: USER_ARTWORKS_DELETED
+            })
+        }
+        catch (error) {
+            console.log(error);
+
+            dispatch({
+                type: USER_ARTWORKS_DELETE_ERROR,
+                payload: error
+            })
+        }
+    }
+
+
+
+
+
 
     // return will happen when all the artworks have been deleted
     // NB if there's an error with any it will fail
-    return Promise.all(userArtworksDocs.map(doc => {
-        const artworkId = doc.id;
-        return deleteArtwork(artworkId);
-    }));
+
 }
 
 export async function deleteArtwork(artworkId) {
@@ -87,6 +145,20 @@ export function getArtwork(artworkId) {
 }
 
 export function deleteUserAuth() {
-    const currentUser = auth.currentUser;
-    return currentUser.delete();
+    return dispatch => {
+        const currentUser = auth.currentUser;
+        currentUser
+            .delete()
+            .then(() => {
+                dispatch({
+                    type: USER_AUTH_DELETED
+                })
+            })
+            .catch(function (error) {
+                console.log("deleteUserAuth Error:", error);
+                dispatch({
+                    type: USER_AUTH_DELETE_ERROR
+                })
+            });
+    }
 }

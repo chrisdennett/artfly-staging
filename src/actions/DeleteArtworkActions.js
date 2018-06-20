@@ -59,8 +59,6 @@ export function deleteArtwork(artworkData, callback = null) {
                         payload: error
                     })
                 })
-
-
         }
     }
 }

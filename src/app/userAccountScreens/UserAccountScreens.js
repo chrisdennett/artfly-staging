@@ -27,14 +27,14 @@ class UserAccountScreens extends Component {
     }
 
     render() {
-        const { user, totalUserArtworks, userGalleryId, account, userSignInMethod } = this.props;
+        const { user, totalUserArtworks, userGalleryId, userSignInMethod, account } = this.props;
         const { showAccountDelete } = this.state;
+        const showDeletePage = showAccountDelete || account.status === 'deleted';
 
-        const showUserProfile = user.uid && !showAccountDelete;
-        const showSignIn = !showUserProfile && !showAccountDelete;
-        const waitingForAccountData = user.uid && !account.status;
+        const showUserProfile = user.uid && !showDeletePage;
+        const showSignIn = !showUserProfile && !showDeletePage;
 
-        if (user === 'pending' || waitingForAccountData) {
+        if (user === 'pending') {
             return <LoadingThing/>
         }
 
@@ -54,7 +54,7 @@ class UserAccountScreens extends Component {
                 />
                 }
 
-                {showAccountDelete &&
+                {showDeletePage &&
                 <AccountDelete totalArtworks={totalUserArtworks}
                                userSignInMethod={userSignInMethod}
                                onCancelDelete={() => this.setState({ showAccountDelete: false })}/>

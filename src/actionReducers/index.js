@@ -1,15 +1,17 @@
 import { combineReducers } from 'redux';
 //
 import PaddleReducer from './PaddleReducer';
-import UserReducer from './UserAuthReducer';
+import UserAuthReducer from './UserAuthReducer';
 import ArtworksReducer from './ArtworksReducer';
 import ErrorReducer from "./ErrorReducer";
 import ArtworkSavingReducer from "./ArtworkSavingReducer";
 import GalleryReducer from './GalleryReducer';
 import AccountReducer from "./AccountReducer";
+import LastManualSignInReducer from './LastManualSignInReducer';
 
 const rootReducer = combineReducers({
-    user: UserReducer,
+    lastManualSignIn: LastManualSignInReducer,
+    user: UserAuthReducer,
     account: AccountReducer,
     artworkSavingProgress: ArtworkSavingReducer,
     errors: ErrorReducer,

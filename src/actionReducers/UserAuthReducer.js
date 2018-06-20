@@ -3,7 +3,6 @@ import {
     USER_SIGNED_OUT,
     USER_REQUESTED
 } from '../actions/UserAuthActions';
-import { USER_DELETED } from "../actions/DeleteUserActions";
 // import ArtflyAccountTypes from '../app/global/ArtflyAccountTypes';
 
 export default function (state = 'pending', action) {
@@ -17,9 +16,6 @@ export default function (state = 'pending', action) {
 
         case USER_SIGNED_OUT:
             return 'signed-out';
-
-        case USER_DELETED:
-            return 'deleted';
 
         default:
             return state;

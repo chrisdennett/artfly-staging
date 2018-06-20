@@ -18,7 +18,7 @@ const UserProfile = ({user, userSignInMethod, totalUserArtworks, userGalleryId, 
             <Elevation z={1} className={'userProfile'}>
                 <UserDetails
                     user={user}
-                    userSignInMethod={userSignInMethod}
+                    userSignInMethod={userSignInMethod.label}
                     totalUserArtworks={totalUserArtworks}
                 />
                 <div className={'userProfile--actions'}>

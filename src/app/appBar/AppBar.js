@@ -69,8 +69,8 @@ export const ArtworkAppBar = ({ onCloseClick, onMenuClick, isEditable, onDeleteC
 );
 
 // Just a title and a close option
-export const TempScreenAppBar = ({title, onCloseClick}) => (
-    <Toolbar theme={'background'}>
+export const TempScreenAppBar = ({title, onCloseClick, isFixed=false}) => (
+    <Toolbar theme={'background'} fixed={isFixed}>
         <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
             <ToolbarTitle>{title}</ToolbarTitle>
 

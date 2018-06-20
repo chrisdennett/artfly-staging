@@ -3,14 +3,29 @@
     display: flex;
     flex-direction: column;
     max-width: 600px;
+    padding-top: 95px;
     margin: 0 auto;
+}
+
+.accountDelete--step--holder{
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    /*border-bottom: 1px solid rgba(0,0,0,0.2);*/
 }
 
 .accountDelete--step{
     padding: 15px 15px 15px 15px;
     display: flex;
     align-items: center;
-    border-top: 1px solid rgba(0,0,0,0.2);
+}
+
+.accountDelete--step--completed{
+    font-size: small;
+    color: #6c6c6c;
+}
+
+.accountDelete--totalArtworks{
+    font-weight: bold;
 }
 
 .accountDelete--step--button{
@@ -19,4 +34,18 @@
 
 .accountDelete--step--label{
     flex: 1;
+}
+
+.accountDelete--step--info{
+    background-color: #e3e3e3;
+    padding: 5px 10px;
+    font-size: small;
+    margin: 0;
+}
+
+.accountDelete--step--warning{
+    background-color: #e3ac72;
+    padding: 5px 10px;
+    font-size: small;
+    margin: 0;
 }

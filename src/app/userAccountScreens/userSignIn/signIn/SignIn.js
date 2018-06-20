@@ -1,13 +1,16 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from 'firebase/app';
+// actions
+import {setLastManualUserSignIn} from "../../../../actions/UserAuthActions";
 // styles
 import './signIn_styles.css';
 
 // Configure FirebaseUI.
 // https://github.com/firebase/firebaseui-web
 // https://github.com/firebase/firebaseui-web-react
-const SignIn = ({ providerId }) => {
+const SignIn = ({ providerId, successRedirect = false, setLastManualUserSignIn }) => {
 
     let signInOptions;
     if (providerId) {
@@ -42,15 +45,16 @@ const SignIn = ({ providerId }) => {
             signInSuccessWithAuthResult: function (authResult, redirectUrl) {
                 // const user = authResult.user;
                 // const credential = authResult.credential;
-                const isNewUser = authResult.additionalUserInfo.isNewUser;
+                // const isNewUser = authResult.additionalUserInfo.isNewUser;
                 // const providerId = authResult.additionalUserInfo.providerId;
                 // const operationType = authResult.operationType;
 
-                console.log("isNewUser: ", isNewUser);
+                const lastSignIn = Date.now();
+                setLastManualUserSignIn(lastSignIn);
                 // Do something with the returned AuthResult.
                 // Return type determines whether we continue the redirect automatically
                 // or whether we leave that to developer to handle.
-                return false;
+                return successRedirect;
             }
         }
     };
@@ -62,4 +66,11 @@ const SignIn = ({ providerId }) => {
     )
 };
 
-export default SignIn;
+const mapStateToProps = (state) => (
+    {
+        lastManualSignIn: state.lastManualSignIn
+    }
+)
+
+
+export default connect(mapStateToProps, {setLastManualUserSignIn})(SignIn);

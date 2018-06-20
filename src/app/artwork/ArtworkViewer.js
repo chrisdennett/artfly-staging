@@ -6,7 +6,6 @@ import './artworkViewer_styles.css';
 import DefaultArtworkDataGenerator from "./DefaultArtworkDataGenerator";
 import * as ImageHelper from "../global/ImageHelper";
 //actions
-import { sendNotification, endNotification } from "../../actions/UserDataActions";
 import { listenForIndividualArtworkChanged } from '../../actions/GetArtworkActions';
 import { deleteArtwork } from '../../actions/DeleteArtworkActions';
 // import { addArtwork, updateArtwork } from '../../actions/SaveArtworkActions';
@@ -260,8 +259,8 @@ class ArtworkViewer extends Component {
     // saved in the data.
     onArtworkEditorSave() {
         // combined saved and unsaved data and update artwork.
-        const { unsavedArtworkData, sourceImg } = this.state;
-        const { artworkId, user, currentArtworkData } = this.props;
+        const { unsavedArtworkData } = this.state;
+        const { artworkId, currentArtworkData } = this.props;
         const newArtworkData = { ...currentArtworkData, ...unsavedArtworkData };
 
         // if editing an artwork, just update the data

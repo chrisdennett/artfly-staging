@@ -1,5 +1,24 @@
 import firebase from 'firebase/app';
 
+export const getUserId = (state) => {
+  const {user} = state;
+  if(!user) return null;
+
+  return user.uid;
+};
+
+export const getUserAccountId = (state) => {
+    const {user, account} = state;
+    if(!user || !account) return null;
+
+    if(account.adminId === user.uid){
+        return account.accountId;
+    }
+    else{
+        return null;
+    }
+};
+
 export const getGallery = (state, props) => {
     const { galleries } = state;
     const { galleryId } = props;
@@ -105,7 +124,15 @@ export const getGalleryNavigation = (artworks, artworkId, userId) => {
 export const getUserGalleryId = (state) => {
     const { galleries, user } = state;
     if (!galleries || !user) return null;
-    return Object.keys(galleries).filter(galleryId => galleries[galleryId].adminId === user.uid);
+
+    const userGalleryArr = Object.keys(galleries).filter(galleryId => galleries[galleryId].adminId === user.uid);
+
+    if(userGalleryArr.length === 0){
+        return null;
+    }
+    else{
+        return userGalleryArr[0];
+    }
 };
 
 export const getUserGallery = (state) => {
@@ -123,17 +150,23 @@ export const getSignInProvider = (state) => {
 
     if (!user) return null;
 
+    let label = '';
+
     switch (user.providerId) {
         case firebase.auth.GoogleAuthProvider.PROVIDER_ID:
-            return 'GOOGLE';
+            label = 'GOOGLE'; break;
         case firebase.auth.FacebookAuthProvider.PROVIDER_ID:
-            return 'FACEBOOK';
+            label = 'FACEBOOK'; break;
         case firebase.auth.TwitterAuthProvider.PROVIDER_ID:
-            return 'TWITTER';
+            label = 'TWITTER'; break;
         case firebase.auth.EmailAuthProvider.PROVIDER_ID:
             break;
 
         default:
             return null;
+    }
+
+    return {
+        label, id:user.providerId
     }
 };
