@@ -10,7 +10,7 @@ import './signIn_styles.css';
 // Configure FirebaseUI.
 // https://github.com/firebase/firebaseui-web
 // https://github.com/firebase/firebaseui-web-react
-const SignIn = ({ providerId, successRedirect = false, setLastManualUserSignIn }) => {
+const SignIn = ({ providerId, successRedirect = '/', setLastManualUserSignIn }) => {
 
     let signInOptions;
     if (providerId) {
@@ -39,24 +39,8 @@ const SignIn = ({ providerId, successRedirect = false, setLastManualUserSignIn }
     // signInSuccessUrl: '/',
 
     const uiConfig = {
-        signInFlow: 'popup',
         signInOptions: signInOptions,
-        callbacks: {
-            signInSuccessWithAuthResult: function (authResult, redirectUrl) {
-                // const user = authResult.user;
-                // const credential = authResult.credential;
-                // const isNewUser = authResult.additionalUserInfo.isNewUser;
-                // const providerId = authResult.additionalUserInfo.providerId;
-                // const operationType = authResult.operationType;
-
-                const lastSignIn = Date.now();
-                setLastManualUserSignIn(lastSignIn);
-                // Do something with the returned AuthResult.
-                // Return type determines whether we continue the redirect automatically
-                // or whether we leave that to developer to handle.
-                return successRedirect;
-            }
-        }
+        signInSuccessUrl: successRedirect,
     };
 
     return (

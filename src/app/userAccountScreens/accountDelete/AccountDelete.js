@@ -9,8 +9,16 @@ import './accountDelete_styles.css';
 import { deleteUserArtworks, deleteUserData, deleteUserAuth } from '../../../actions/DeleteUserActions';
 // comps
 import { TempScreenAppBar } from "../../appBar/AppBar";
-import { getUserGalleryId, getUserId } from "../../../selectors/Selectors";
+import {
+    getDeleteAuthError,
+    getSignInProvider,
+    getTotalUserArtworks,
+    getUserGalleryId,
+    getUserId
+} from "../../../selectors/Selectors";
 import SignIn from "../userSignIn/signIn/SignIn";
+// import Redirect from "../../global/Redirect";
+import { goHome } from "../../../AppNavigation";
 import Redirect from "../../global/Redirect";
 
 class AccountDelete extends Component {
@@ -18,50 +26,35 @@ class AccountDelete extends Component {
     render() {
         const {
                   userId,
+                  user,
                   userAccount,
                   userGalleryId,
-                  onCancelDelete,
                   totalArtworks,
                   userSignInMethod,
                   deleteUserData,
                   deleteUserAuth,
                   deleteUserArtworks,
-                  lastManualSignIn
+                  deleteAuthError
               } = this.props;
 
         const step1Completed = totalArtworks === 0;
         const step2Completed = userAccount === 'deleted' || Object.keys(userAccount).length === 0;
 
         const authStepEnabled = step1Completed && step2Completed;
-        const secondsSinceSignIn = (Date.now() - lastManualSignIn) / 1000;
-        const showAuthDeleteButton = authStepEnabled && lastManualSignIn > -1 && secondsSinceSignIn < 240;
-        const showSignInButton = authStepEnabled && !showAuthDeleteButton;
+        const showAuthDeleteButton = authStepEnabled && !deleteAuthError;
+        const showSignInButton = authStepEnabled && deleteAuthError;
         const completedStyle = { textDecoration: 'line-through' };
 
-        if(!userId) return <Redirect to={'/'}/>;
+        if(user === 'signed-out') return <Redirect to={'/'}/>;
+        console.log("deleteAuthError: ", deleteAuthError);
 
         return (
             <div className={'accountDeletePage'}>
                 <TempScreenAppBar title={'Delete account'}
                                   isFixed={true}
-                                  onCloseClick={onCancelDelete}/>
+                                  onCloseClick={goHome}/>
 
                 <Typography tag={'div'} use={'body1'} className={'accountDelete'}>
-
-                    {/*
-                    <div className={'accountDelete--step--holder'}>
-                        <div className={'accountDelete--step'}>
-                            <div className={'accountDelete--step--label'}>
-                                Step 1: Cancel subscription
-                            </div>
-                            <Button raised primary
-                                    className={'accountDelete--step--button'}
-                                    onClick={onCancelDelete}>
-                                confirm
-                            </Button>
-                        </div>
-                    </div>
-                    */}
 
                     <div className={'accountDelete--step--holder'}>
                         <div className={'accountDelete--step'}>
@@ -88,7 +81,6 @@ class AccountDelete extends Component {
                         <p className={'accountDelete--step--info'}>This will permanently delete
                             all <strong>images</strong> and other <strong>artwork</strong> data.</p>
                     </div>
-
 
                     <div className={'accountDelete--step--holder'}>
                         <div className={'accountDelete--step'}>
@@ -121,7 +113,7 @@ class AccountDelete extends Component {
                                 Step 3: Remove {userSignInMethod ? userSignInMethod.label : ''} sign in
                             </div>
 
-                            {authStepEnabled && showAuthDeleteButton &&
+                            {showAuthDeleteButton &&
                             <Button raised primary
                                     disabled={!authStepEnabled}
                                     className={'accountDelete--step--button'}
@@ -130,11 +122,17 @@ class AccountDelete extends Component {
                             </Button>
                             }
 
-                            {authStepEnabled && showSignInButton && userSignInMethod &&
-                            <SignIn providerId={userSignInMethod.id}
-                                    successRedirect={'/profile/temp_auth_temp'}/>
-                            }
+
                         </div>
+
+                        {showSignInButton &&
+                        <div>
+                            <p>There was an error removing your sign in data because it needs a recent sign in.  Please sign in and then try again.</p>
+                            <SignIn providerId={userSignInMethod.id}
+                                    successRedirect={'/deleteAccount'}/>
+                        </div>
+                        }
+
 
                         {!authStepEnabled &&
                         <p className={'accountDelete--step--warning'}>
@@ -152,12 +150,22 @@ class AccountDelete extends Component {
     }
 }
 
+/*
+{authStepEnabled && showSignInButton && userSignInMethod &&
+                            <SignIn providerId={userSignInMethod.id}
+                                    successRedirect={'/deleteAccount/subPath_delete_subPath'}/>
+                            }
+*/
+
 const mapStateToProps = (state) => (
     {
-        lastManualSignIn: state.lastManualSignIn,
+        user: state.user,
         userId: getUserId(state),
         userAccount: state.account,
-        userGalleryId: getUserGalleryId(state)
+        userGalleryId: getUserGalleryId(state),
+        userSignInMethod: getSignInProvider(state),
+        totalArtworks: getTotalUserArtworks(state),
+        deleteAuthError: getDeleteAuthError(state)
     }
 );
 

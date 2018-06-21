@@ -72,7 +72,6 @@ function getUserArtworks(uid) {
             return userArtworksSnapShot.docs
         })
 }
-
 export function deleteUserArtworks() {
 
     const { uid } = auth.currentUser;
@@ -116,7 +115,6 @@ export function deleteUserArtworks() {
     // NB if there's an error with any it will fail
 
 }
-
 export async function deleteArtwork(artworkId) {
     // get artwork doc
     const artworkDoc = await getArtwork(artworkId);
@@ -157,9 +155,9 @@ export function deleteUserAuth() {
                 })
             })
             .catch(function (error) {
-                console.log("deleteUserAuth Error:", error);
                 dispatch({
-                    type: USER_AUTH_DELETE_ERROR
+                    type: USER_AUTH_DELETE_ERROR,
+                    payload:error
                 })
             });
     }

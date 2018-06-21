@@ -7,7 +7,14 @@ export const getUserId = (state) => {
   return user.uid;
 };
 
-export const getUserAccountId = (state) => {
+export const getDeleteAuthError = (state) => {
+    const {errors} = state;
+    if(!errors) return null;
+
+    return errors.userAuthDeleteError;
+};
+
+/*export const getUserAccountId = (state) => {
     const {user, account} = state;
     if(!user || !account) return null;
 
@@ -17,7 +24,7 @@ export const getUserAccountId = (state) => {
     else{
         return null;
     }
-};
+};*/
 
 export const getGallery = (state, props) => {
     const { galleries } = state;

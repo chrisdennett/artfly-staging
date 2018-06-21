@@ -9,7 +9,7 @@ import history from './app/global/history';
 // route components
 import Home from './app/Home/Home';
 import FourOhFour from "./app/FourOhFour/FourOhFour";
-import UserProfile from "./app/userAccountScreens/UserAccountScreens";
+import UserAccountScreens from "./app/userAccountScreens/UserAccountScreens";
 import ArtworkAdder from "./app/artworkAdder/ArtworkAdder";
 import TestPage from "./app/testPage/TestPage";
 import ArtworkEditor from "./app/artworkEditor/ArtworkEditor";
@@ -17,6 +17,7 @@ import AppDataFetching from "./AppDataFetching";
 import GalleryArtworkViewer from "./app/gallery/GalleryArtworkViewer";
 import GalleryHome from "./app/gallery/GalleryHome";
 import GalleryEditor from "./app/gallery/GalleryEditor";
+import AccountDelete from "./app/userAccountScreens/accountDelete/AccountDelete";
 
 class ArtflyRouting extends Component {
     constructor(props) {
@@ -40,7 +41,7 @@ class ArtflyRouting extends Component {
     }
 
     getParams(url) {
-        const paramKeys = ['artworkId', 'galleryId', 'temp'];
+        const paramKeys = ['artworkId', 'galleryId', 'subPath'];
         const params = {};
 
         for (let key of paramKeys) {
@@ -111,7 +112,11 @@ function getPageComponent(page, params) {
             break;
 
         case 'profile':
-            PageComponent = UserProfile;
+            PageComponent = UserAccountScreens;
+            break;
+
+        case 'accountDelete':
+            PageComponent = AccountDelete;
             break;
 
         case 'artworkAdder':
