@@ -10,7 +10,7 @@ import { goToArtwork, goToArtworkAdder, goToGalleryEditor } from "../../AppNavig
 import { getCurrentGalleryData } from '../../selectors/Selectors';
 // comps
 import ArtworkThumb from "../artworkThumb/ArtworkThumb";
-import AppBar from "../appBar/AppBar";
+import { GalleryHomeAppBar } from "../appBar/AppBar";
 import BottomBar from "../bottomBar/BottomBar";
 import LoadingThing from "../loadingThing/LoadingThing";
 import GalleryTitles from "./GalleryTitles";
@@ -19,14 +19,14 @@ class GalleryHome extends Component {
 
     render() {
         const { currentGalleryData } = this.props;
-        const addFabStyle = { position: 'fixed', zIndex: 10000, bottom: 35, right: 10 };
-        const editFabStyle = { position: 'absolute', zIndex: 10000, bottom: -30, right: 10 };
-        const titlesHolderStyle = {position:'relative'};
+        const addFabStyle = { position: 'absolute', zIndex: 10000, bottom: -25, left: '50%', marginLeft: -20 };
+        const titlesHolderStyle = { position: 'relative' };
 
         return (
             <div className={'galleryHome'}>
-                <AppBar title={'Gallery'}
-                        fixed={false}/>
+                <GalleryHomeAppBar title={'Gallery'}
+                                   onAddClick={() => goToArtworkAdder(currentGalleryData.galleryId)}
+                                   onEditClick={() => goToGalleryEditor(currentGalleryData.galleryId)}/>
 
                 {!currentGalleryData &&
                 <LoadingThing/>
@@ -34,21 +34,14 @@ class GalleryHome extends Component {
 
                 {currentGalleryData &&
                 <div>
-                    {currentGalleryData.isEditable &&
-                    <Fab theme={'primary-bg'} style={addFabStyle}
-                         onClick={() => goToArtworkAdder(currentGalleryData.galleryId)}>
-                        add
-                    </Fab>
-                    }
-
                     <div style={titlesHolderStyle}>
                         <GalleryTitles title={currentGalleryData.title}
                                        subtitle={currentGalleryData.subtitle}/>
 
                         {currentGalleryData.isEditable &&
-                        <Fab theme={'secondary-bg'} style={editFabStyle}
-                             onClick={() => goToGalleryEditor(currentGalleryData.galleryId)}>
-                            edit
+                        <Fab theme={'primary-bg'} style={addFabStyle}
+                             onClick={() => goToArtworkAdder(currentGalleryData.galleryId)}>
+                            add
                         </Fab>
                         }
                     </div>

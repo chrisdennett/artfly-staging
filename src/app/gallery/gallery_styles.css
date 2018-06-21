@@ -19,7 +19,7 @@
     font-weight: 700;
     color: rgba(0, 0, 0, 0.7);
     font-family: 'Stardos Stencil', cursive;
-    padding: 40px 10px 20px 10px;
+    padding: 110px 10px 40px 10px;
     text-align: center;
 
     /*padding: 20px 0 15px 0;*/
@@ -50,7 +50,7 @@
 }
 
 .gallery--artworkThumbs{
-    margin: 1rem 0 85px 0;
+    margin: 2rem 0 85px 0;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;

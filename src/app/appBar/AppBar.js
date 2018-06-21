@@ -84,6 +84,32 @@ export const TempScreenAppBar = ({title, onCloseClick, isFixed=false}) => (
     </Toolbar>
 );
 
+export const GalleryHomeAppBar = function ({ title, onEditClick,onAddClick, onCloseClick, showUserMenu = true, fixed = true }) {
+    return (
+        <Toolbar fixed={fixed} theme={'background'}>
+            <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
+
+                <ToolbarSection alignStart>
+                    <HomeIconButton/>
+                    <ToolbarTitle>{title}</ToolbarTitle>
+                </ToolbarSection>
+
+                <ToolbarSection alignEnd>
+                    <ToolbarIcon use="add"
+                                 theme={'text-primary-on-background'}
+                                 onClick={onAddClick}/>
+                    <ToolbarIcon use="edit"
+                                 theme={'text-primary-on-background'}
+                                 onClick={onEditClick}/>
+                    <UserMenu/>
+                </ToolbarSection>
+
+            </ToolbarRow>
+        </Toolbar>
+    )
+};
+
+
 const AppBar = function ({ title, navigation, onCloseClick, showHomeIcon = true, showUserMenu = true, showCloseButt = false, fixed = true, butts = null }) {
     return (
         <Toolbar fixed={fixed} theme={'background'}>
