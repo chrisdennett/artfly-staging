@@ -42,7 +42,9 @@ export function deleteUserData(uid, accountId, galleryId) {
 
         try {
             // store a record of the deleted account
-            await db.collection('accounts').doc(accountId).set({ adminId: uid, status: 'deleted' });
+            await db.collection('deleted-accounts').doc(accountId).set({ adminId: uid, status: 'deleted' });
+            // bin the account data
+            await db.collection('accounts').doc(accountId).delete();
             // bin the gallery data
             await db.collection('galleries').doc(galleryId).delete();
 

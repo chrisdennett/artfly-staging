@@ -15,7 +15,7 @@ export default function (state = {}, action) {
             return {};
 
         case USER_DATA_DELETED:
-            return action.payload;
+            return 'deleted';
 
         default:
             return state;

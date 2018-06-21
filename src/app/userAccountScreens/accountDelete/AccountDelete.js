@@ -11,6 +11,7 @@ import { deleteUserArtworks, deleteUserData, deleteUserAuth } from '../../../act
 import { TempScreenAppBar } from "../../appBar/AppBar";
 import { getUserGalleryId, getUserId } from "../../../selectors/Selectors";
 import SignIn from "../userSignIn/signIn/SignIn";
+import Redirect from "../../global/Redirect";
 
 class AccountDelete extends Component {
 
@@ -28,15 +29,16 @@ class AccountDelete extends Component {
                   lastManualSignIn
               } = this.props;
 
-
         const step1Completed = totalArtworks === 0;
-        const step2Completed = userAccount.status === 'deleted';
+        const step2Completed = userAccount === 'deleted' || Object.keys(userAccount).length === 0;
+
         const authStepEnabled = step1Completed && step2Completed;
         const secondsSinceSignIn = (Date.now() - lastManualSignIn) / 1000;
         const showAuthDeleteButton = authStepEnabled && lastManualSignIn > -1 && secondsSinceSignIn < 240;
         const showSignInButton = authStepEnabled && !showAuthDeleteButton;
         const completedStyle = { textDecoration: 'line-through' };
 
+        if(!userId) return <Redirect to={'/'}/>;
 
         return (
             <div className={'accountDeletePage'}>
@@ -116,7 +118,7 @@ class AccountDelete extends Component {
                     <div className={'accountDelete--step--holder'}>
                         <div className={'accountDelete--step'}>
                             <div className={'accountDelete--step--label'}>
-                                Step 3: Remove {userSignInMethod.label} sign in
+                                Step 3: Remove {userSignInMethod ? userSignInMethod.label : ''} sign in
                             </div>
 
                             {authStepEnabled && showAuthDeleteButton &&
@@ -128,7 +130,7 @@ class AccountDelete extends Component {
                             </Button>
                             }
 
-                            {authStepEnabled && showSignInButton &&
+                            {authStepEnabled && showSignInButton && userSignInMethod &&
                             <SignIn providerId={userSignInMethod.id}
                                     successRedirect={'/profile/temp_auth_temp'}/>
                             }

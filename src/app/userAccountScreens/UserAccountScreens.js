@@ -27,9 +27,9 @@ class UserAccountScreens extends Component {
     }
 
     render() {
-        const { user, totalUserArtworks, userGalleryId, userSignInMethod, account } = this.props;
+        const { user, totalUserArtworks, userGalleryId, userSignInMethod } = this.props;
         const { showAccountDelete } = this.state;
-        const showDeletePage = showAccountDelete || account.status === 'deleted';
+        const showDeletePage = showAccountDelete;
 
         const showUserProfile = user.uid && !showDeletePage;
         const showSignIn = !showUserProfile && !showDeletePage;
@@ -67,7 +67,6 @@ class UserAccountScreens extends Component {
 const mapStateToProps = (state) => {
     return {
         user: state.user,
-        account: state.account,
         userSignInMethod: getSignInProvider(state),
         userGalleryId: getUserGalleryId(state),
         totalUserArtworks: getTotalUserArtworks(state)
