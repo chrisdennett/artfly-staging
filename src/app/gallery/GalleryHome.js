@@ -19,7 +19,7 @@ class GalleryHome extends Component {
 
     render() {
         const { currentGalleryData } = this.props;
-        const addFabStyle = { position: 'absolute', zIndex: 10000, bottom: -25, left: '50%', marginLeft: -20 };
+        const addFabStyle = { position: 'absolute', bottom: -25, left: '50%', marginLeft: -20 };
         const titlesHolderStyle = { position: 'relative' };
 
         return (
