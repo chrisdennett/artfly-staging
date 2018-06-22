@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // comps
 import ArtworkCanvas from "./ArtworkCanvas";
 import LoadingThing from "../loadingThing/LoadingThing";
+import Shadow from "../gallery/Shadow";
 
 class FramedArtworkCanvas extends Component {
 
@@ -66,11 +67,17 @@ class FramedArtworkCanvas extends Component {
 
         if (!heightToWidthRatio || !widthToHeightRatio) return null;
 
-        const { imgWidth, imgHeight, frameThickness, mountThickness } = calculateDimensions(maxWidth, maxHeight, heightToWidthRatio, widthToHeightRatio, frameThicknessDecimal, mountThicknessDecimal);
+        const { imgWidth, imgHeight, frameThickness, mountThickness, frameHeight, frameWidth } = calculateDimensions(maxWidth, maxHeight, heightToWidthRatio, widthToHeightRatio, frameThicknessDecimal, mountThicknessDecimal);
         const totalFrameThickness = frameThickness + mountThickness;
 
         const holderStyle = { position: 'relative', display: 'inline-block' };
         const artworkCanvasStyle = { position: 'absolute', left: totalFrameThickness, top: totalFrameThickness };
+
+        const shadowHeight = Math.min(frameHeight, frameWidth) * 0.05;
+        // const shadowStyle = {position:'absolute', height:shadowHeight, width:'100%', top:frameHeight, zIndex:999999, backgroundColor:'rgba(0,0,0,0.1)'};
+        // const shadowStyle2 = {position:'absolute', height:shadowHeight/2, width:'98%', left:'1%', top:frameHeight, zIndex:999999, backgroundColor:'rgba(0,0,0,0.1)'};
+
+        const calcFrameHeight = imgHeight + (frameThickness + mountThickness) + (frameThickness + mountThickness);
 
         return (
             <div style={holderStyle}>
@@ -79,6 +86,12 @@ class FramedArtworkCanvas extends Component {
                 <ArtworkCanvas artworkData={artworkData}
                                style={artworkCanvasStyle}
                                height={imgHeight} width={imgWidth}/>
+
+                {/*<div style={shadowStyle}/>*/}
+                {/*<div style={shadowStyle2}/>*/}
+
+                <Shadow height={shadowHeight} width={frameWidth} y={calcFrameHeight}/>
+
             </div>
         )
     }
@@ -117,7 +130,7 @@ const calculateDimensions = (maxWidth, maxHeight,
 const drawCanvasFrame = (ctx, startX, startY, width, height, thickness, frameColour) => {
     const { hue, saturation, lightness } = frameColour;
 
-    if(thickness === 0) return;
+    if (thickness === 0) return;
 
     // if you don't draw a rectangle behind you get seams see:https://stackoverflow.com/questions/19319963/how-to-avoid-seams-between-filled-areas-in-canvas
     // ctx.fillStyle = '#4c4c4c';
@@ -200,7 +213,7 @@ const drawCanvasFrame = (ctx, startX, startY, width, height, thickness, frameCol
 const drawCanvasMount = (ctx, startX, startY, width, height, thickness, mountColour) => {
     const { hue, saturation, lightness } = mountColour;
 
-    if(thickness === 0) return;
+    if (thickness === 0) return;
 
     // draw basic mount rect
     ctx.beginPath();
