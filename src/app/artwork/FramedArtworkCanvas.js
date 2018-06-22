@@ -117,6 +117,8 @@ const calculateDimensions = (maxWidth, maxHeight,
 const drawCanvasFrame = (ctx, startX, startY, width, height, thickness, frameColour) => {
     const { hue, saturation, lightness } = frameColour;
 
+    if(thickness === 0) return;
+
     // if you don't draw a rectangle behind you get seams see:https://stackoverflow.com/questions/19319963/how-to-avoid-seams-between-filled-areas-in-canvas
     // ctx.fillStyle = '#4c4c4c';
     ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, 1)`;
@@ -197,6 +199,8 @@ const drawCanvasFrame = (ctx, startX, startY, width, height, thickness, frameCol
 
 const drawCanvasMount = (ctx, startX, startY, width, height, thickness, mountColour) => {
     const { hue, saturation, lightness } = mountColour;
+
+    if(thickness === 0) return;
 
     // draw basic mount rect
     ctx.beginPath();
