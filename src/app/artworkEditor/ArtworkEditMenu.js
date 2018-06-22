@@ -4,7 +4,7 @@ import { Drawer, DrawerContent } from 'rmwc/Drawer';
 import { ListItem, ListItemText, ListItemGraphic } from 'rmwc/List';
 // images
 import IconFrameSize from '../images/icons/frame-size.png';
-import IconFrameColour from '../images/icons/frame-colour.png';
+// import IconFrameColour from '../images/icons/frame-colour.png';
 import IconCropRotate from '../images/icons/crop-rotate.png';
 import { goToArtworkEditor } from "../../AppNavigation";
 

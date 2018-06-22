@@ -54,6 +54,7 @@ const rgbToHsl = (color) => {
             case b:
                 h = (r - g) / d + 4;
                 break;
+            default: break;
         }
         h /= 6;
     }

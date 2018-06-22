@@ -82,7 +82,9 @@ export function deleteUserArtworks() {
 
             await userArtworksDocs.map(doc => {
                 const artworkId = doc.id;
-                deleteArtwork(artworkId)
+
+                // NB return added and not retested
+                return deleteArtwork(artworkId)
                     .then(() => {
                         dispatch({
                             type: ARTWORK_DELETED,
