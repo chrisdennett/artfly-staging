@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual';
 // styles
 import './artworkEditor_styles.css';
 // actions
-import { updateArtworkAndImage, resetArtworkSavingProgress } from '../../actions/SaveArtworkActions';
+import { updateArtworkAndImage, updateArtwork, resetArtworkSavingProgress } from '../../actions/SaveArtworkActions';
 // comps
 import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
 import { EditAppBar } from "../appBar/AppBar";
@@ -28,12 +28,16 @@ class ArtworkEditor extends Component {
     }
 
     componentDidMount() {
-        this.loadSourceImg(this.props);
+        if (this.props.editor && this.props.editor === 'crop') {
+            this.loadSourceImg(this.props);
+        }
         this.props.resetArtworkSavingProgress();
     }
 
     componentDidUpdate() {
-        this.loadSourceImg(this.props)
+        if (this.props.editor && this.props.editor === 'crop') {
+            this.loadSourceImg(this.props);
+        }
     }
 
     loadSourceImg(props) {
@@ -55,11 +59,17 @@ class ArtworkEditor extends Component {
     }
 
     onSave() {
-        const { currentArtwork, artworkId } = this.props;
+        const { currentArtwork, artworkId, editor } = this.props;
         const { sourceImg, unsavedArtworkData } = this.state;
 
         const mergedData = { ...currentArtwork, ...unsavedArtworkData };
-        this.props.updateArtworkAndImage(sourceImg, mergedData, artworkId);
+
+        if (editor === 'crop') {
+            this.props.updateArtworkAndImage(sourceImg, mergedData, artworkId);
+        }
+        else{
+            this.props.updateArtwork(mergedData.artworkId, mergedData);
+        }
     }
 
     onCancel() {
@@ -67,7 +77,7 @@ class ArtworkEditor extends Component {
     }
 
     onClose() {
-        const {galleryId, artworkId} = this.props;
+        const { galleryId, artworkId } = this.props;
         goToArtwork(galleryId, artworkId);
     }
 
@@ -114,4 +124,4 @@ const mapStateToProps = (state, props) => {
         artworkSavingProgress: state.artworkSavingProgress
     }
 };
-export default connect(mapStateToProps, { updateArtworkAndImage, resetArtworkSavingProgress })(ArtworkEditor);
+export default connect(mapStateToProps, { updateArtworkAndImage, updateArtwork, resetArtworkSavingProgress })(ArtworkEditor);
