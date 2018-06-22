@@ -1,6 +1,5 @@
 import { auth, firestoreDb as db, storage } from "../libs/firebaseConfig";
 import { ARTWORK_DELETED } from "./DeleteArtworkActions";
-// import { ARTWORK_DELETE_ERROR } from "./DeleteArtworkActions";
 
 export const USER_ARTWORKS_DELETED = "userArtworksDeleted";
 export const USER_DATA_DELETED = "userDataDeleted";

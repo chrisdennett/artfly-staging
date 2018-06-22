@@ -264,6 +264,10 @@ export function drawToCanvas({ sourceCanvas, outputCanvas, orientation, cropData
     const transformedImgW = isPortrait ? imgH : imgW;
     const transformedImgH = isPortrait ? imgW : imgH;
 
+    // fill with white first so transparent pngs have white rather than black bg
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, transformedImgW, transformedImgH);
+
     // draw image: context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
     ctx.drawImage(sourceCanvas, xCropStart, yCropStart, transformedImgW, transformedImgH, 0, 0, transformedCanvasW, transformedCanvasH);
     // restore ensures resets transform in case another image is added
