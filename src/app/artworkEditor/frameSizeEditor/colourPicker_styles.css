@@ -1,0 +1,38 @@
+.colourPicker--holder{
+    /*display: inline-block;*/
+}
+
+.colourPicker {
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/*.colourPicker::after {
+     content: '';
+     width: 0;
+     height: 0;
+     border-style: solid;
+     border-width: 10px 5px 0 5px;
+     border-color: black transparent transparent transparent;
+     position: absolute;
+     right: 10px;
+     top: 17px;
+ }*/
+
+.colourPicker--circle {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.colourPicker--input--hidden {
+    position: absolute;
+    left: 0;
+    opacity: 0;
+}
