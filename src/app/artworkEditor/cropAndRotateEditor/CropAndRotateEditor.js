@@ -27,7 +27,8 @@ class CropAndRotateEditor extends Component {
     }
 
     drawCuttingBoardCanvas(props = this.props) {
-        const { sourceImg, orientation } = props;
+        const { sourceImg, artworkData } = props;
+        const { orientation } = artworkData;
         const { dimensions } = this.state;
         const { width, height } = dimensions ? dimensions : { width: null, height: null };
 
@@ -58,7 +59,7 @@ class CropAndRotateEditor extends Component {
     }
 
     // default to props so can overwrite single values without error
-    sendUpdatedData({ orientation = this.props.orientation, cropData = this.props.cropData }) {
+    sendUpdatedData({ orientation = this.props.artworkData.orientation, cropData = this.props.artworkData.cropData }) {
 
         // NB: can't use canvas width and height here because that updates as a result of
         // calling onDataChange.
@@ -72,10 +73,10 @@ class CropAndRotateEditor extends Component {
     }
 
     onRotateClick() {
-        const currentRotation = this.props.orientation;
+        const currentRotation = this.props.artworkData.orientation;
         const newOrientation = getNextOrientation(currentRotation);
 
-        let { leftPercent, rightPercent, topPercent, bottomPercent } = this.props.cropData;
+        let { leftPercent, rightPercent, topPercent, bottomPercent } = this.props.artworkData.cropData;
 
         const newL = topPercent;
         const newR = bottomPercent;
@@ -88,7 +89,8 @@ class CropAndRotateEditor extends Component {
     }
 
     render() {
-        const { cropData, sourceImg } = this.props;
+        const { artworkData, sourceImg } = this.props;
+        const { cropData } = artworkData;
         const { canvasWidth = 100, canvasHeight = 100 } = this.state;
 
         return (
@@ -100,7 +102,7 @@ class CropAndRotateEditor extends Component {
                     <div ref={measureRef} className={'quickCropAndRotate--holder'}>
 
                         {!sourceImg &&
-                        <LoadingThing label={'Loading Source Image'} style={{color:'#fff'}}/>
+                        <LoadingThing label={'Loading Source Image'} style={{ color: '#fff' }}/>
                         }
 
                         <div className='quickCropAndRotate--cuttingBoardHolder'>

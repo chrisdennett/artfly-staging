@@ -3,9 +3,9 @@ import React from 'react';
 import { Drawer, DrawerContent } from 'rmwc/Drawer';
 import { ListItem, ListItemText, ListItemGraphic } from 'rmwc/List';
 // images
-import IconFrameSize from './../images/icons/frame-size.png';
-import IconFrameColour from './../images/icons/frame-colour.png';
-import IconCropRotate from './../images/icons/crop-rotate.png';
+import IconFrameSize from '../images/icons/frame-size.png';
+import IconFrameColour from '../images/icons/frame-colour.png';
+import IconCropRotate from '../images/icons/crop-rotate.png';
 import { goToArtworkEditor } from "../../AppNavigation";
 
 const ArtworkEditMenu = ({ isOpen, onClose, artworkId, galleryId }) => {
@@ -20,7 +20,7 @@ const ArtworkEditMenu = ({ isOpen, onClose, artworkId, galleryId }) => {
             onClose={onClose}
         >
             <DrawerContent>
-                <ListItem>
+                <ListItem onClick={() => goToArtworkEditor(galleryId, artworkId, 'frameSize')}>
                     <ListItemGraphic>
                         <img style={imgStyle} src={IconFrameSize} alt={'frame size icon'}/>
                     </ListItemGraphic>
@@ -31,7 +31,7 @@ const ArtworkEditMenu = ({ isOpen, onClose, artworkId, galleryId }) => {
 
                 <ListItem>
                     <ListItemGraphic>
-                        <img style={imgStyle} src={IconFrameColour} alt={'frame size icon'}/>
+                        <img style={imgStyle} src={IconFrameColour} alt={'frame colour icon'}/>
                     </ListItemGraphic>
                     <ListItemText>
                         Frame Colour

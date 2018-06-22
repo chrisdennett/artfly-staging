@@ -10,6 +10,8 @@ import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
 import { EditAppBar } from "../appBar/AppBar";
 import ArtworkEditorSavingProgress from "./ArtworkEditorSavingProgress";
 import { goToArtwork } from "../../AppNavigation";
+import { getArtwork } from "../../selectors/Selectors";
+import FrameSizeEditor from "./frameSizeEditor/FrameSizeEditor";
 
 class ArtworkEditor extends Component {
 
@@ -48,8 +50,8 @@ class ArtworkEditor extends Component {
         }
     }
 
-    onCropAndRotateChange(cropAndOrientationData) {
-        this.setState({ unsavedArtworkData: { ...cropAndOrientationData } });
+    onCropAndRotateChange(newData) {
+        this.setState({ unsavedArtworkData: { ...newData } });
     }
 
     onSave() {
@@ -67,18 +69,19 @@ class ArtworkEditor extends Component {
     onClose() {
         const {galleryId, artworkId} = this.props;
         goToArtwork(galleryId, artworkId);
-        // history.push(`/gallery/artworkId_${this.props.artworkId}_artworkId`);
     }
 
     render() {
-        const { currentArtwork, artworkSavingProgress, artworkId, galleryId, resetArtworkSavingProgress } = this.props;
+        const { currentArtwork, artworkSavingProgress, artworkId, galleryId, resetArtworkSavingProgress, editor } = this.props;
         const { sourceImg, unsavedArtworkData } = this.state;
         const mergedData = { ...currentArtwork, ...unsavedArtworkData };
-        const hasChanges = !isEqual(mergedData, currentArtwork);
+        const hasChanges = !isEqual(mergedData, currentArtwork) && !!currentArtwork;
+
+        const editorTitle = editor === 'crop' ? 'Crop & Rotate' : 'Frame Size';
 
         return (
             <div className={'artworkEditor'}>
-                <EditAppBar title={'Crop & Rotate'}
+                <EditAppBar title={editorTitle}
                             hasChanges={hasChanges}
                             onCloseClick={this.onClose}
                             onSaveClick={this.onSave}
@@ -89,11 +92,17 @@ class ArtworkEditor extends Component {
                                              label={'Saving Artwork and Thumbnail'}
                                              redirectTo={`/gallery/galleryId_${galleryId}_galleryId/artworkId_${artworkId}_artworkId`}/>
 
+                {editor === 'crop' &&
                 <CropAndRotateEditor sourceImg={sourceImg}
-                                     key={1}
-                                     orientation={mergedData.orientation}
-                                     cropData={mergedData.cropData}
+                                     artworkData={mergedData}
                                      onDataChange={this.onCropAndRotateChange}/>
+                }
+
+                {editor === 'frameSize' &&
+                <FrameSizeEditor artworkData={mergedData}
+                                 onDataChange={this.onCropAndRotateChange}
+                />
+                }
             </div>
         );
     }
@@ -101,12 +110,8 @@ class ArtworkEditor extends Component {
 
 const mapStateToProps = (state, props) => {
     return {
-        currentArtwork: getCurrentArtwork(state.artworks, props.artworkId),
+        currentArtwork: getArtwork(state, props),
         artworkSavingProgress: state.artworkSavingProgress
     }
 };
 export default connect(mapStateToProps, { updateArtworkAndImage, resetArtworkSavingProgress })(ArtworkEditor);
-
-const getCurrentArtwork = (artworks, artworkId) => {
-    return artworks[artworkId];
-};

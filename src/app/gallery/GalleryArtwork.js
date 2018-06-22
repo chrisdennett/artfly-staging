@@ -19,7 +19,7 @@ class GalleryArtwork extends Component {
     }
 
     render() {
-        const { currentArtwork } = this.props;
+        const { artworkData } = this.props;
 
         const { dimensions } = this.state;
         let maxFrameWidth, maxFrameHeight;
@@ -38,13 +38,13 @@ class GalleryArtwork extends Component {
                     <div ref={measureRef} className={'gallery--sizePlaceholder'}>
 
                         <div className={'gallery--framedArtwork'}>
-                            {currentArtwork && dimensions &&
+                            {artworkData && dimensions &&
                             <FramedArtworkCanvas
                                 maxWidth={maxFrameWidth}
                                 maxHeight={maxFrameHeight}
-                                artworkData={currentArtwork}/>
+                                artworkData={artworkData}/>
                             }
-                        {!currentArtwork &&
+                        {!artworkData &&
                         <LoadingThing label={'Loading artwork'} style={{flex:1, margin:20}}/>
                         }
                         </div>

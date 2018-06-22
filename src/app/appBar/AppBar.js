@@ -15,7 +15,7 @@ import UserMenu from "../userMenu/UserMenu";
 import HomeIconButton from "../../homeIconButton/HomeIconButton";
 
 // Includes save and cancel options
-export const EditAppBar = ({ title, onSaveClick, onCancelClick, hasChanges, onCloseClick }) => (
+export const EditAppBar = ({ title, onSaveClick, onCancelClick, fixed=false, hasChanges, onCloseClick }) => (
     <Toolbar theme={'background'}>
         <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
             <ToolbarTitle>{title}</ToolbarTitle>

@@ -177,3 +177,12 @@ export const getSignInProvider = (state) => {
         label, id:user.providerId
     }
 };
+
+export const getArtwork = (state, props) => {
+    const {artworks} = state;
+    const {artworkId} = props;
+
+    if(!artworks || !artworkId) return null;
+
+    return artworks[artworkId];
+}

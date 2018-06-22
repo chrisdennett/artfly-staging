@@ -14,7 +14,7 @@ import {getGalleryNavigation} from '../../selectors/Selectors';
 // comps
 import { ArtworkAppBar } from "../appBar/AppBar";
 import GalleryArtwork from "./GalleryArtwork";
-import ArtworkEditMenu from "./ArtworkEditMenu";
+import ArtworkEditMenu from "../artworkEditor/ArtworkEditMenu";
 import Redirect from "../global/Redirect";
 
 class GalleryArtworkViewer extends Component {
@@ -69,7 +69,7 @@ class GalleryArtworkViewer extends Component {
                                onMenuClick={() => goToGallery(galleryId)}
                 />
 
-                <GalleryArtwork currentArtwork={currentArtwork}/>
+                <GalleryArtwork artworkData={currentArtwork}/>
 
                 <div className={'gallery--controls'}>
                     <Button disabled={!previousArtwork}

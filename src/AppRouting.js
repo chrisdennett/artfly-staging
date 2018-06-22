@@ -41,7 +41,7 @@ class ArtflyRouting extends Component {
     }
 
     getParams(url) {
-        const paramKeys = ['artworkId', 'galleryId', 'subPath'];
+        const paramKeys = ['artworkId', 'galleryId', 'editor'];
         const params = {};
 
         for (let key of paramKeys) {
