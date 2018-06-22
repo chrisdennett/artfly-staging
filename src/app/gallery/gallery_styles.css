@@ -6,6 +6,10 @@
     flex-direction: column;
 }
 
+.gallery--loader{
+    margin-top: 100px;
+}
+
 .galleryHome{
     /*padding-bottom: 80px;*/
     min-height: 100vh;

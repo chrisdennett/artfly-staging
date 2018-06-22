@@ -69,7 +69,7 @@ export const ArtworkAppBar = ({ onCloseClick, onMenuClick, isEditable, onDeleteC
 );
 
 // Just a title and a close option
-export const TempScreenAppBar = ({title, onCloseClick, isFixed=false}) => (
+export const TempScreenAppBar = ({ title, onCloseClick, isFixed = false }) => (
     <Toolbar theme={'background'} fixed={isFixed}>
         <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
             <ToolbarTitle>{title}</ToolbarTitle>
@@ -84,7 +84,7 @@ export const TempScreenAppBar = ({title, onCloseClick, isFixed=false}) => (
     </Toolbar>
 );
 
-export const GalleryHomeAppBar = function ({ title, onEditClick,onAddClick, onCloseClick, showUserMenu = true, fixed = true }) {
+export const GalleryHomeAppBar = function ({ title, isEditable, onEditClick, onAddClick, onCloseClick, showUserMenu = true, fixed = true }) {
     return (
         <Toolbar fixed={fixed} theme={'background'}>
             <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
@@ -95,12 +95,16 @@ export const GalleryHomeAppBar = function ({ title, onEditClick,onAddClick, onCl
                 </ToolbarSection>
 
                 <ToolbarSection alignEnd>
+                    {isEditable &&
                     <ToolbarIcon use="add"
                                  theme={'text-primary-on-background'}
                                  onClick={onAddClick}/>
+                    }
+                    {isEditable &&
                     <ToolbarIcon use="edit"
                                  theme={'text-primary-on-background'}
                                  onClick={onEditClick}/>
+                    }
                     <UserMenu/>
                 </ToolbarSection>
 

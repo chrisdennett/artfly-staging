@@ -65,7 +65,7 @@ export const getLatestUserArtwork = state => {
 
 export const getCurrentGalleryData = (user, galleries, artworks, galleryId) => {
     const gallery = galleries[galleryId];
-    if (!gallery) return null;
+    if (!gallery) return {};
 
     const isEditable = user && user.uid === gallery.adminId;
     const galleryArtworks = getGalleryArtworks(gallery, artworks);

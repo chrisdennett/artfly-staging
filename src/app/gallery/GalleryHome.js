@@ -19,50 +19,56 @@ class GalleryHome extends Component {
 
     render() {
         const { currentGalleryData } = this.props;
+        const { isEditable, title, subtitle, galleryId, galleryArtworks, firstArtworkId } = currentGalleryData;
         const addFabStyle = { position: 'absolute', bottom: -25, left: '50%', marginLeft: -20 };
         const titlesHolderStyle = { position: 'relative' };
 
         return (
             <div className={'galleryHome'}>
                 <GalleryHomeAppBar title={'Gallery'}
-                                   onAddClick={() => goToArtworkAdder(currentGalleryData.galleryId)}
-                                   onEditClick={() => goToGalleryEditor(currentGalleryData.galleryId)}/>
+                                   isEditable={isEditable}
+                                   onAddClick={() => goToArtworkAdder(galleryId)}
+                                   onEditClick={() => goToGalleryEditor(galleryId)}/>
 
-                {!currentGalleryData &&
-                <LoadingThing/>
+                {!title &&
+                <div className={'gallery--loader'}>
+                    <LoadingThing/>
+                </div>
                 }
 
                 {currentGalleryData &&
                 <div>
                     <div style={titlesHolderStyle}>
-                        <GalleryTitles title={currentGalleryData.title}
-                                       subtitle={currentGalleryData.subtitle}/>
+                        <GalleryTitles title={title}
+                                       subtitle={subtitle}/>
 
-                        {currentGalleryData.isEditable &&
+                        {isEditable &&
                         <Fab theme={'primary-bg'} style={addFabStyle}
-                             onClick={() => goToArtworkAdder(currentGalleryData.galleryId)}>
+                             onClick={() => goToArtworkAdder(galleryId)}>
                             add
                         </Fab>
                         }
                     </div>
 
+                    {galleryArtworks &&
                     <div className={'gallery--artworkThumbs'}>
                         {
-                            currentGalleryData.galleryArtworks.map(artworkData => {
+                            galleryArtworks.map(artworkData => {
                                 return (
                                     <ArtworkThumb key={artworkData.artworkId}
-                                                  onClick={() => goToArtwork(currentGalleryData.galleryId, artworkData.artworkId)}
+                                                  onClick={() => goToArtwork(galleryId, artworkData.artworkId)}
                                                   artworkData={artworkData}
                                     />
                                 )
                             })
                         }
                     </div>
+                    }
                 </div>
                 }
 
                 <BottomBar disabled={!currentGalleryData || !currentGalleryData.firstArtworkId}
-                           onEnterGallery={() => goToArtwork(currentGalleryData.galleryId, currentGalleryData.firstArtworkId)}/>
+                           onEnterGallery={() => goToArtwork(galleryId, firstArtworkId)}/>
             </div>
         );
     }
