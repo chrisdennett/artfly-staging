@@ -20,3 +20,12 @@
     padding: 10px;
     /*height: 180px;*/
 }
+
+.frameEditor--controls--set{
+    display: flex;
+    align-items: center;
+}
+
+.frameEditor--controls--set--label{
+    width: 105px;
+}

@@ -20,23 +20,23 @@ const ArtworkEditMenu = ({ isOpen, onClose, artworkId, galleryId }) => {
             onClose={onClose}
         >
             <DrawerContent>
-                <ListItem onClick={() => goToArtworkEditor(galleryId, artworkId, 'frameSize')}>
+                <ListItem onClick={() => goToArtworkEditor(galleryId, artworkId, 'frame')}>
                     <ListItemGraphic>
                         <img style={imgStyle} src={IconFrameSize} alt={'frame size icon'}/>
                     </ListItemGraphic>
                     <ListItemText>
-                        Frame Size
+                        Frame Editor
                     </ListItemText>
                 </ListItem>
 
-                <ListItem>
+                {/*<ListItem>
                     <ListItemGraphic>
                         <img style={imgStyle} src={IconFrameColour} alt={'frame colour icon'}/>
                     </ListItemGraphic>
                     <ListItemText>
                         Frame Colour
                     </ListItemText>
-                </ListItem>
+                </ListItem>*/}
 
                 <ListItem onClick={() => goToArtworkEditor(galleryId, artworkId, 'crop')}>
                     <ListItemGraphic>

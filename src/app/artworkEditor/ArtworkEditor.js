@@ -11,7 +11,7 @@ import { EditAppBar } from "../appBar/AppBar";
 import ArtworkEditorSavingProgress from "./ArtworkEditorSavingProgress";
 import { goToArtwork } from "../../AppNavigation";
 import { getArtwork } from "../../selectors/Selectors";
-import FrameSizeEditor from "./frameSizeEditor/FrameSizeEditor";
+import FrameEditor from "./frameEditor/FrameEditor";
 
 class ArtworkEditor extends Component {
 
@@ -77,7 +77,7 @@ class ArtworkEditor extends Component {
         const mergedData = { ...currentArtwork, ...unsavedArtworkData };
         const hasChanges = !isEqual(mergedData, currentArtwork) && !!currentArtwork;
 
-        const editorTitle = editor === 'crop' ? 'Crop & Rotate' : 'Frame Size';
+        const editorTitle = editor === 'crop' ? 'Crop & Rotate' : 'Frame Editor';
 
         return (
             <div className={'artworkEditor'}>
@@ -98,9 +98,9 @@ class ArtworkEditor extends Component {
                                      onDataChange={this.onCropAndRotateChange}/>
                 }
 
-                {editor === 'frameSize' &&
-                <FrameSizeEditor artworkData={mergedData}
-                                 onDataChange={this.onCropAndRotateChange}
+                {editor === 'frame' &&
+                <FrameEditor artworkData={mergedData}
+                             onDataChange={this.onCropAndRotateChange}
                 />
                 }
             </div>
