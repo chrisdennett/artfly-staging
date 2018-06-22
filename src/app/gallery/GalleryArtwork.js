@@ -25,8 +25,11 @@ class GalleryArtwork extends Component {
         let maxFrameWidth, maxFrameHeight;
 
         if (dimensions) {
-            maxFrameWidth = Math.min(dimensions.width - 20, 1000);
-            maxFrameHeight = Math.min(dimensions.height - 100);
+            const verticalPadding = dimensions.height * 0.15;
+            const horizontalPadding = dimensions.width * 0.15;
+
+            maxFrameWidth = Math.min(dimensions.width - horizontalPadding, 1000);
+            maxFrameHeight = Math.min(dimensions.height - verticalPadding, 1000);
         }
 
         return (

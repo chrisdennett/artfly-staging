@@ -22,7 +22,7 @@ class FrameSizeEditor extends Component {
     render() {
         const { artworkData } = this.props;
 
-        if(!artworkData || !artworkData.frameData){
+        if (!artworkData || !artworkData.frameData) {
             return <LoadingThing/>
         }
 
