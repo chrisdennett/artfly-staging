@@ -56,6 +56,7 @@ class GalleryArtworkViewer extends Component {
                 </Fab>
                 }
 
+
                 {isEditable &&
                 <ArtworkEditMenu isOpen={editMenuIsOpen}
                                  galleryId={galleryId}

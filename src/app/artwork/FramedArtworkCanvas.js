@@ -67,15 +67,15 @@ class FramedArtworkCanvas extends Component {
 
         if (!heightToWidthRatio || !widthToHeightRatio) return null;
 
-        const { imgWidth, imgHeight, frameThickness, mountThickness, frameHeight, frameWidth } = calculateDimensions(maxWidth, maxHeight, heightToWidthRatio, widthToHeightRatio, frameThicknessDecimal, mountThicknessDecimal);
+        const { imgWidth, imgHeight, frameThickness, mountThickness, frameHeight, frameWidth, mountWidth } = calculateDimensions(maxWidth, maxHeight, heightToWidthRatio, widthToHeightRatio, frameThicknessDecimal, mountThicknessDecimal);
         const totalFrameThickness = frameThickness + mountThickness;
 
         const holderStyle = { position: 'relative', display: 'inline-block' };
         const artworkCanvasStyle = { position: 'absolute', left: totalFrameThickness, top: totalFrameThickness };
 
-        const shadowHeight = Math.min(frameHeight, frameWidth) * 0.05;
-        // const shadowStyle = {position:'absolute', height:shadowHeight, width:'100%', top:frameHeight, zIndex:999999, backgroundColor:'rgba(0,0,0,0.1)'};
-        // const shadowStyle2 = {position:'absolute', height:shadowHeight/2, width:'98%', left:'1%', top:frameHeight, zIndex:999999, backgroundColor:'rgba(0,0,0,0.1)'};
+        const shadowHeightBelowBottomFrame = Math.min(frameHeight, frameWidth) * 0.03;
+        const shadowHeightBelowBottomMount = Math.min(frameHeight, frameWidth) * 0.004;
+        const shadowHeightBelowTopFrame = Math.min(frameHeight, frameWidth) * 0.008;
 
         const calcFrameHeight = imgHeight + (frameThickness + mountThickness) + (frameThickness + mountThickness);
 
@@ -87,11 +87,26 @@ class FramedArtworkCanvas extends Component {
                                style={artworkCanvasStyle}
                                height={imgHeight} width={imgWidth}/>
 
-                {/*<div style={shadowStyle}/>*/}
-                {/*<div style={shadowStyle2}/>*/}
+                {frameThickness > 0 &&
+                <Shadow height={shadowHeightBelowTopFrame}
+                        width={mountWidth}
+                        x={frameThickness}
+                        y={frameThickness}/>
+                }
 
-                <Shadow height={shadowHeight} width={frameWidth} y={calcFrameHeight}/>
+                {mountThickness > 0 &&
+                <Shadow height={shadowHeightBelowBottomMount}
+                        width={imgWidth}
+                        opacity={0.3}
+                        x={frameThickness+mountThickness}
+                        y={frameThickness+mountThickness}/>
+                }
 
+                <Shadow height={shadowHeightBelowBottomFrame}
+                        width={frameWidth}
+                        y={calcFrameHeight}
+                        doubled={true}
+                        angled={true}/>
             </div>
         )
     }

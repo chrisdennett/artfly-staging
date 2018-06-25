@@ -25,7 +25,7 @@ export default function () {
     // const year = now.getFullYear();
 
     // const date = month + " " + year;
-    const defaultTitlesData = null; //{ title, artist, description, date };
+    // const defaultTitlesData = null; //{ title, artist, description, date };
 
     // PEOPLE
     /*const defaultPeopleData = {
@@ -58,6 +58,5 @@ export default function () {
         orientation: 1,
         heightToWidthRatio: 1,
         widthToHeightRatio: 1,
-        titlesData: defaultTitlesData,
     };
 };

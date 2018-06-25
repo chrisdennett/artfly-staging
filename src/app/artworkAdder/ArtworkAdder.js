@@ -19,23 +19,17 @@ class ArtworkAdder extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { img: null, orientation: 1, cropData: { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 } };
+        this.state = { img: null, artworkData: GenerateDefaultArtworkData() };
 
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.onSaveNewArtwork = this.onSaveNewArtwork.bind(this);
         this.onCropAndRotateChange = this.onCropAndRotateChange.bind(this);
-        this.onAddAnother = this.onAddAnother.bind(this);
+        // this.onAddAnother = this.onAddAnother.bind(this);
     }
 
     componentWillUnmount() {
         this.props.resetArtworkSavingProgress();
-        this.setState = (
-            {
-                img: null,
-                orientation: 1,
-                cropData: { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 }
-            }
-        );
+        this.setState = ({ img: null, artworkData: GenerateDefaultArtworkData() }  );
     }
 
     onPhotoSelected(imgFile) {
@@ -45,26 +39,27 @@ class ArtworkAdder extends Component {
     }
 
     onCropAndRotateChange(newData) {
-        const { orientation = this.state.orientation, cropData, widthToHeightRatio, heightToWidthRatio } = newData;
+        // const { orientation = this.state.orientation, cropData, widthToHeightRatio, heightToWidthRatio } = newData;
 
-        this.setState({ orientation, cropData, widthToHeightRatio, heightToWidthRatio })
+        const newArtworkData = {...this.state.artworkData, ...newData};
+
+        this.setState({ artworkData:newArtworkData })
     }
 
     onSaveNewArtwork() {
-        const defaultArtworkData = GenerateDefaultArtworkData();
-        const { orientation, cropData, widthToHeightRatio, heightToWidthRatio } = this.state;
-
-        const newArtworkData = { ...defaultArtworkData, orientation, cropData, widthToHeightRatio, heightToWidthRatio };
-        this.props.addNewArtwork(this.state.img, newArtworkData);
+        // const defaultArtworkData = GenerateDefaultArtworkData();
+        // const { orientation, cropData, widthToHeightRatio, heightToWidthRatio } = this.state;
+        // const newArtworkData = { ...defaultArtworkData, orientation, cropData, widthToHeightRatio, heightToWidthRatio };
+        this.props.addNewArtwork(this.state.img, this.state.artworkData);
     }
 
-    onAddAnother() {
+    /*onAddAnother() {
         this.props.resetArtworkSavingProgress();
         this.setState({ img: null, orientation: 1, cropData: { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 } });
-    }
+    }*/
 
     render() {
-        const { img, cropData, orientation } = this.state;
+        const { img, artworkData } = this.state;
         const { artworkSavingProgress, galleryId } = this.props;
 
         const showPhotoSelector = !img;
@@ -100,8 +95,7 @@ class ArtworkAdder extends Component {
                 {showPhotoCropper &&
                 <CropAndRotateEditor sourceImg={img}
                                      key={1}
-                                     orientation={orientation}
-                                     cropData={cropData}
+                                     artworkData={artworkData}
                                      onDataChange={this.onCropAndRotateChange}/>
                 }
 

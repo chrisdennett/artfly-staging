@@ -25,7 +25,7 @@ const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork }) => {
 
     return (
         <div className={'home'}>
-            <AppBar fixed={!userLoggedIn}/>
+            <AppBar fixed={true}/>
 
             {userPending &&
             <LoadingThing/>
