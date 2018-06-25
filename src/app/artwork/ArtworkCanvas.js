@@ -3,7 +3,7 @@ import LoadingThing from "../loadingThing/LoadingThing";
 
 const ArtworkCanvas = function ({artworkData, width='100%', height, style}) {
 
-    const src = width < 250 ? artworkData.thumbUrl : artworkData.largeUrl;
+    const src = width < 150 ? artworkData.thumbUrl : artworkData.largeUrl;
 
     const containerStyle = {width:width, height:height, ...style};
     const imgStyle = {width:width, height:height};
