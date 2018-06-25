@@ -85,12 +85,16 @@
     /*align-self: left;*/
 }
 
+.gallery--framedArtwork--spacer{
+    height: 60px;
+}
+
 .gallery--framedArtwork {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 70px;
+    bottom: 0;
 
     display: flex;
     align-items: center;

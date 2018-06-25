@@ -71,6 +71,7 @@ class GalleryArtworkViewer extends Component {
                 />
 
                 <GalleryArtwork artworkData={currentArtwork}/>
+                <div className={'gallery--framedArtwork--spacer'} />
 
                 <div className={'gallery--controls'}>
                     <Button disabled={!previousArtwork}
