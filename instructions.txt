@@ -1,13 +1,15 @@
-Upgrading npm.  Follow the instructions here:
+
+// npm undate not working
+https://github.com/npm/npm/issues/20954
+
+// Upgrading npm.  Follow the instructions here:
 https://github.com/felixrieseberg/npm-windows-upgrade
 
-google version control repo
+// google version control repo
 https://console.cloud.google.com/code/develop/browse/main/master?project=artfly-blog
 When following the instructions got add a repo the command over two lines isn't correct
 there's an extra \ in the middle to separate the lines.  If you run this, to change it open
 VLC > GIT > Remotes
-
-
 
 ********************************************************************************
 FIREBASE SDK

@@ -57,6 +57,18 @@ export const getTotalUserArtworks = (state) => {
     return userArtworks.length;
 };
 
+export const getMaxArtworksAllowed = (state) => {
+    const {account} = state;
+    if(!account) return null;
+
+    if(account.type && account.type === 'family'){
+        return 500;
+    }
+    else{
+        return 7;
+    }
+};
+
 export const getLatestUserArtwork = state => {
     const userArtworks = getUserArtworks(state);
     if (userArtworks.length === 0) return null;

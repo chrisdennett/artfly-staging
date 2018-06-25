@@ -1,5 +1,5 @@
 import { ARTWORK_DELETED } from '../actions/DeleteArtworkActions';
-import { ARTWORK_CHANGE } from '../actions/GetArtworkActions';
+import { ARTWORK_CHANGE, USER_ARTWORKS_FETCHED } from '../actions/GetArtworkActions';
 import { SAVING_ARTWORK_COMPLETE } from "../actions/SaveArtworkActions";
 
 export default function (state = {}, action) {
@@ -9,6 +9,9 @@ export default function (state = {}, action) {
             const artworkId = action.payload;
             const deletedData = {isDeleted:true, artworkId };
             return { ...state, [artworkId]:deletedData};
+
+        case USER_ARTWORKS_FETCHED:
+            return { ...state, ...action.payload };
 
         case ARTWORK_CHANGE:
             return { ...state, ...action.payload };

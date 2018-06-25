@@ -7,10 +7,10 @@ import ErrorReducer from "./ErrorReducer";
 import ArtworkSavingReducer from "./ArtworkSavingReducer";
 import GalleryReducer from './GalleryReducer';
 import AccountReducer from "./AccountReducer";
-import LastManualSignInReducer from './LastManualSignInReducer';
+import DataFetchingReducer from "./DataFetchingReducer";
 
 const rootReducer = combineReducers({
-    lastManualSignIn: LastManualSignInReducer,
+    dataFetching: DataFetchingReducer,
     user: UserAuthReducer,
     account: AccountReducer,
     artworkSavingProgress: ArtworkSavingReducer,

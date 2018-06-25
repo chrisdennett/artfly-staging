@@ -13,6 +13,8 @@ import PhotoSelector from "../photoSelector/PhotoSelector";
 import CropAndRotateEditor from "../artworkEditor/cropAndRotateEditor/CropAndRotateEditor";
 import { goToGallery } from "../../AppNavigation";
 import ArtworkEditorSavingProgress from "../artworkEditor/ArtworkEditorSavingProgress";
+import { getMaxArtworksAllowed, getTotalUserArtworks } from "../../selectors/Selectors";
+import LoadingThing from "../loadingThing/LoadingThing";
 
 class ArtworkAdder extends Component {
 
@@ -24,46 +26,39 @@ class ArtworkAdder extends Component {
         this.onPhotoSelected = this.onPhotoSelected.bind(this);
         this.onSaveNewArtwork = this.onSaveNewArtwork.bind(this);
         this.onCropAndRotateChange = this.onCropAndRotateChange.bind(this);
-        // this.onAddAnother = this.onAddAnother.bind(this);
     }
 
     componentWillUnmount() {
         this.props.resetArtworkSavingProgress();
-        this.setState = ({ img: null, artworkData: GenerateDefaultArtworkData() }  );
+        this.setState = ({ img: null, artworkData: GenerateDefaultArtworkData() });
     }
 
     onPhotoSelected(imgFile) {
         GetImage(imgFile, (img, orientation, widthToHeightRatio, heightToWidthRatio) => {
-            this.setState({ img, orientation, widthToHeightRatio, heightToWidthRatio });
+
+            const newArtworkData = { ...this.state.artworkData, orientation, widthToHeightRatio, heightToWidthRatio };
+
+            this.setState({ img, artworkData: newArtworkData });
         })
     }
 
     onCropAndRotateChange(newData) {
-        // const { orientation = this.state.orientation, cropData, widthToHeightRatio, heightToWidthRatio } = newData;
+        const newArtworkData = { ...this.state.artworkData, ...newData };
 
-        const newArtworkData = {...this.state.artworkData, ...newData};
-
-        this.setState({ artworkData:newArtworkData })
+        this.setState({ artworkData: newArtworkData })
     }
 
     onSaveNewArtwork() {
-        // const defaultArtworkData = GenerateDefaultArtworkData();
-        // const { orientation, cropData, widthToHeightRatio, heightToWidthRatio } = this.state;
-        // const newArtworkData = { ...defaultArtworkData, orientation, cropData, widthToHeightRatio, heightToWidthRatio };
         this.props.addNewArtwork(this.state.img, this.state.artworkData);
     }
 
-    /*onAddAnother() {
-        this.props.resetArtworkSavingProgress();
-        this.setState({ img: null, orientation: 1, cropData: { leftPercent: 0, rightPercent: 1, topPercent: 0, bottomPercent: 1 } });
-    }*/
-
     render() {
         const { img, artworkData } = this.state;
-        const { artworkSavingProgress, galleryId } = this.props;
+        const { artworkSavingProgress, totalArtworksFetchProgress, galleryId, totalUserArtworks, maxArtworksAllowed } = this.props;
 
-        const showPhotoSelector = !img;
-        const showPhotoCropper = img;
+        const maximumArtworkLimitReached = totalUserArtworks >= maxArtworksAllowed;
+        const showPhotoSelector = !img && !maximumArtworkLimitReached;
+        const showPhotoCropper = img && !maximumArtworkLimitReached;
         // const saveComplete = artworkSavingProgress.status === 'complete';
         const showPhotoSavingProgress = artworkSavingProgress.status === 'saving';
 
@@ -71,6 +66,10 @@ class ArtworkAdder extends Component {
 
         let title = 'Add Artwork';
         if (showPhotoSavingProgress) title = 'Saving...';
+
+        if (totalArtworksFetchProgress !== 'fetched') {
+            return <LoadingThing/>
+        }
 
         return (
             <div className={'artworkAdder'}>
@@ -80,6 +79,13 @@ class ArtworkAdder extends Component {
                             onCloseClick={() => goToGallery(galleryId)}
                             onSaveClick={this.onSaveNewArtwork}
                             onCancelClick={() => this.setState({ img: null })}/>
+
+                {maximumArtworkLimitReached &&
+                <div>
+                    you have {totalUserArtworks} artworks out of {maxArtworksAllowed}.
+                    If you want to add another artworks you'll either have to delete an existing artwork or sign up for ArtFly Club membership.
+                </div>
+                }
 
                 <ArtworkEditorSavingProgress artworkSavingProgress={artworkSavingProgress}
                                              label={'Saving source image, artwork and thumbnail'}
@@ -106,6 +112,9 @@ class ArtworkAdder extends Component {
 
 const mapStateToProps = (state) => (
     {
+        totalArtworksFetchProgress: state.dataFetching.userArtworks,
+        totalUserArtworks: getTotalUserArtworks(state),
+        maxArtworksAllowed: getMaxArtworksAllowed(state),
         artworkSavingProgress: state.artworkSavingProgress
     }
 );

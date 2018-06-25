@@ -1,6 +1,8 @@
 import { firestoreDb as db } from "../libs/firebaseConfig";
 
 export const ARTWORK_CHANGE = "artworkChange";
+export const USER_ARTWORKS_FETCHED = "userArtworksFetched";
+export const USER_ARTWORKS_FETCH_TRIGGERED = "userArtworksFetchTriggered";
 
 let artworkListeners = {};
 // let userArtworkListenerUnsubscriber;
@@ -14,17 +16,26 @@ export function listenForIndividualArtworkChanged(artworkId) {
 export function fetchUserArtworks(userId) {
 
     return (dispatch) => {
+
+        dispatch({
+            type: USER_ARTWORKS_FETCH_TRIGGERED
+        });
+
+
         db.collection('artworks')
             .where('adminId', '==', userId)
             .get()
             .then(querySnapshot => {
-                    querySnapshot.forEach(doc => {
-                        const artworkWidthId = { ...doc.data(), artworkId: doc.id };
+                    const userArtworks = {};
 
-                        dispatch({
-                            type: ARTWORK_CHANGE,
-                            payload: { [doc.id]: artworkWidthId }
-                        });
+                    querySnapshot.forEach(doc => {
+                        // add id to artworkData
+                        userArtworks[doc.id] = { ...doc.data(), artworkId: doc.id };
+                    });
+
+                    dispatch({
+                        type: USER_ARTWORKS_FETCHED,
+                        payload: userArtworks
                     });
                 },
                 error => {
