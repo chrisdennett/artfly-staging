@@ -35,7 +35,6 @@ export function fetchUserGallery(userId) {
             .where('adminId', '==', userId)
             .get()
             .then(querySnapshot => {
-
                     // If there's no user gallery yet return default data
                     if (querySnapshot.size === 0) {
                         addUserGallery(userId, dispatch);
@@ -96,7 +95,6 @@ export function fetchUserGalleryArtworks(gallery) {
             .get()
             .then(querySnapshot => {
                     querySnapshot.forEach(doc => {
-
                         const artworkDataWithId = { ...doc.data(), artworkId: doc.id };
 
                         dispatch({

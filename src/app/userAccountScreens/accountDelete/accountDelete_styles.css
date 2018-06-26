@@ -16,6 +16,7 @@
 .accountDelete--step{
     padding: 15px 15px 15px 15px;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
 }
 

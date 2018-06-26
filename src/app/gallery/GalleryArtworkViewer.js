@@ -10,7 +10,7 @@ import { goToGallery, goToArtwork } from "../../AppNavigation";
 // actions
 import { deleteArtwork } from "../../actions/DeleteArtworkActions";
 // selectors
-import {getGalleryNavigation} from '../../selectors/Selectors';
+import { getGalleryNavigation } from '../../selectors/Selectors';
 // comps
 import { ArtworkAppBar } from "../appBar/AppBar";
 import GalleryArtwork from "./GalleryArtwork";
@@ -22,7 +22,7 @@ class GalleryArtworkViewer extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { editMenuIsOpen: false, deleteConfirmOpen:false };
+        this.state = { editMenuIsOpen: false, deleteConfirmOpen: false };
     }
 
     render() {
@@ -31,7 +31,7 @@ class GalleryArtworkViewer extends Component {
         const { currentArtwork, previousArtwork, nextArtwork, isEditable } = galleryNavData;
         const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 35, right: 10 };
 
-        if(currentArtwork && currentArtwork.isDeleted){
+        if (currentArtwork && currentArtwork.isDeleted) {
             return <Redirect to={`/gallery/galleryId_${galleryId}_galleryId`}/>
         }
 
@@ -42,7 +42,7 @@ class GalleryArtworkViewer extends Component {
                     title="Confirm delete"
                     body="Are you sure you want to delete this?"
                     open={deleteConfirmOpen}
-                    onClose={() => this.setState({deleteConfirmOpen: false})}
+                    onClose={() => this.setState({ deleteConfirmOpen: false })}
                     acceptLabel={'Yes Delete'}
                     cancelLabel={'Cancel'}
                     onAccept={() => deleteArtwork(currentArtwork)}
@@ -65,12 +65,16 @@ class GalleryArtworkViewer extends Component {
 
                 <ArtworkAppBar title={'Artworks'}
                                isEditable={isEditable}
-                               onDeleteClick={() => this.setState({deleteConfirmOpen: true})}
+                               onDeleteClick={() => this.setState({ deleteConfirmOpen: true })}
                                onMenuClick={() => goToGallery(galleryId)}
                 />
 
-                <GalleryArtwork artworkData={currentArtwork}/>
-                <div className={'gallery--framedArtwork--spacer'} />
+                <GalleryArtwork artworkData={currentArtwork}
+                                onSwipeLeft={() => nextArtwork && goToArtwork(galleryId, nextArtwork.artworkId)}
+                                onSwipeRight={() => previousArtwork && goToArtwork(galleryId, previousArtwork.artworkId)}
+                />
+
+                <div className={'gallery--framedArtwork--spacer'}/>
 
                 <div className={'gallery--controls'}>
                     <Button disabled={!previousArtwork}
@@ -98,4 +102,4 @@ const mapStateToProps = (state, props) => (
         galleryNavData: getGalleryNavigation(state.artworks, props.artworkId, state.user.uid)
     }
 );
-export default connect(mapStateToProps, {deleteArtwork})(GalleryArtworkViewer);
+export default connect(mapStateToProps, { deleteArtwork })(GalleryArtworkViewer);

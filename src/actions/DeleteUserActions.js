@@ -1,6 +1,7 @@
 import { auth, firestoreDb as db, storage } from "../libs/firebaseConfig";
 import { ARTWORK_DELETED } from "./DeleteArtworkActions";
 
+export const USER_ARTWORKS_DELETE_TRIGGERED = "userArtworksDeleteTriggered";
 export const USER_ARTWORKS_DELETED = "userArtworksDeleted";
 export const USER_DATA_DELETED = "userDataDeleted";
 export const USER_AUTH_DELETED = "userAuthDeleted";
@@ -36,31 +37,7 @@ export const USER_ARTWORKS_DELETE_ERROR = "userArtworksDeleteError";
     }
 }*/
 
-export function deleteUserData(uid, accountId, galleryId) {
-    return async dispatch => {
 
-        try {
-            // store a record of the deleted account
-            await db.collection('deleted-accounts').doc(accountId).set({ adminId: uid, status: 'deleted' });
-            // bin the account data
-            await db.collection('accounts').doc(accountId).delete();
-            // bin the gallery data
-            await db.collection('galleries').doc(galleryId).delete();
-
-            dispatch({
-                type: USER_DATA_DELETED
-            })
-        }
-        catch (error) {
-            console.log('USER_DATA_DELETE_ERROR: ', error);
-
-            dispatch({
-                type: USER_DATA_DELETE_ERROR,
-                payload: error
-            })
-        }
-    }
-}
 
 // DELETE ARTWORKS
 function getUserArtworks(uid) {
@@ -76,6 +53,10 @@ export function deleteUserArtworks() {
     const { uid } = auth.currentUser;
 
     return async dispatch => {
+
+        dispatch({
+            type: USER_ARTWORKS_DELETE_TRIGGERED
+        });
 
         try {
             const userArtworksDocs = await getUserArtworks(uid);
@@ -106,11 +87,6 @@ export function deleteUserArtworks() {
             })
         }
     }
-
-
-
-
-
 
     // return will happen when all the artworks have been deleted
     // NB if there's an error with any it will fail
@@ -161,5 +137,30 @@ export function deleteUserAuth() {
                     payload:error
                 })
             });
+    }
+}
+
+export function deleteUserData(uid, accountId, galleryId) {
+    return async dispatch => {
+
+        try {
+            // set the user account to deleted
+            await db.collection('accounts').doc(accountId).set({ adminId: uid, status: 'deleted' });
+            // bin the gallery data
+            await db.collection('galleries').doc(galleryId).delete();
+
+            dispatch({
+                type: USER_DATA_DELETED,
+                payload: { status: 'deleted' }
+            })
+        }
+        catch (error) {
+            console.log('USER_DATA_DELETE_ERROR: ', error);
+
+            dispatch({
+                type: USER_DATA_DELETE_ERROR,
+                payload: error
+            })
+        }
     }
 }

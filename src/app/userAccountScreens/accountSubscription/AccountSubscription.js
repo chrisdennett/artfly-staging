@@ -6,6 +6,7 @@ import { Typography } from 'rmwc/Typography';
 import './accountSubscription_styles.css';
 // comps
 import { TempScreenAppBar } from "../../appBar/AppBar";
+import SubscribeButton from '../../global/SubscribeButton';
 
 class AccountSubscription extends Component {
 
@@ -23,6 +24,7 @@ class AccountSubscription extends Component {
                     <Typography use={'body1'}>
                         I've disabled this for now until testing is complete.
                     </Typography>
+                    <SubscribeButton/>
                 </div>
             </div>
         );

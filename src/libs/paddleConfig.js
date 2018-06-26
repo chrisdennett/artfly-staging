@@ -5,6 +5,8 @@ Paddle.Setup({
     vendor: 14276
 });
 
-export const ProductId = "516947";
+export const ProductId = "516947"; // artist membership
+// export const ProductIdFamily = "533578"; // family membership
+// export const ProductIdSchool = "518909"; // school membership
 
 export default Paddle;

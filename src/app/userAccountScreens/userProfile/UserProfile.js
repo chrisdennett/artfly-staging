@@ -5,7 +5,7 @@ import { Button, ButtonIcon } from 'rmwc/Button';
 // styles
 import './userProfile_styles.css';
 // helper
-import { goToGallery } from "../../../AppNavigation";
+import { goToAccountSubscription, goToGallery } from "../../../AppNavigation";
 // comps
 import UserDetails from "./UserDetails";
 import AppBar from "../../appBar/AppBar";
@@ -21,6 +21,13 @@ const UserProfile = ({user, userSignInMethod, totalUserArtworks, userGalleryId, 
                     userSignInMethod={userSignInMethod.label}
                     totalUserArtworks={totalUserArtworks}
                 />
+
+                <div>
+                    Membership: free
+                    <Button raised theme={'secondary-bg'}
+                    onClick={() => goToAccountSubscription()}>Subscription options</Button>
+                </div>
+
                 <div className={'userProfile--actions'}>
                     {userGalleryId &&
                     <Button raised onClick={() => goToGallery(userGalleryId)}>

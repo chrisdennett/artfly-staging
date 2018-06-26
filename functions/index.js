@@ -9,15 +9,15 @@ const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
 // const SDKFile = 'art-blam-firebase-adminsdk-zebo2-cc2250b8ef.json';
-const stagingSDKFile = 'artfly-staging-firebase-adminsdk-eiano-9702287a36.json';
+// const stagingSDKFile = 'artfly-staging-firebase-adminsdk-eiano-9702287a36.json';
 
 // CHANGE FOR DEV / PRODUCTION
-const gcs = require('@google-cloud/storage')({  keyFilename: stagingSDKFile });
-const spawn = require(`child-process-promise`).spawn;
+// const gcs = require('@google-cloud/storage')({  keyFilename: stagingSDKFile });
+// const spawn = require(`child-process-promise`).spawn;
 
 const firestore = new Firestore();
 
-exports.removeImagesOnDelete = functions.storage.object()
+/*exports.removeImagesOnDelete = functions.storage.object()
     .onChange(event => {
         const object = event.data;
         const fileBucket = object.bucket;
@@ -62,9 +62,9 @@ exports.removeImagesOnDelete = functions.storage.object()
                 mediumFile.delete();
             }
         });
-    });
+    });*/
 
-exports.generateDifferentImageSizes = functions.storage.object()
+/*exports.generateDifferentImageSizes = functions.storage.object()
     .onChange(event => {
         const object = event.data;
         const filePath = object.name;
@@ -188,9 +188,9 @@ exports.generateDifferentImageSizes = functions.storage.object()
                 console.log("error catch: ", error);
                 return error;
             })
-    });
+    });*/
 
-// listen for Paddle subsription events
+// listen for Paddle subscription events
 exports.subscriptionEvent = functions.https.onRequest((request, response) => {
     // const ref = admin.database().ref();
     const alertName = request.body.alert_name;
@@ -204,36 +204,54 @@ exports.subscriptionEvent = functions.https.onRequest((request, response) => {
     subscriptionObject.email = request.body.email;
     subscriptionObject.planId = request.body.subscription_plan_id;
 
+    let updateDatabase = false;
+
     // TODO: return a success response if data has correctly been updated otherwise send a different response.
 
     switch (alertName) {
         case 'subscription_created':
+            updateDatabase = true;
             subscriptionObject.cancelUrl = request.body.cancel_url;
             subscriptionObject.updateUrl = request.body.update_url;
             subscriptionObject.paidUntil = request.body.next_bill_date;
             break;
+
         case 'subscription_cancelled':
+            updateDatabase = true;
             subscriptionObject.cancellationEffectiveDate = request.body.cancellation_effective_date;
             break;
+
         case 'subscription_updated':
+            updateDatabase = true;
             subscriptionObject.paidUntil = request.body.next_bill_date;
             break;
+
         case 'subscription_payment_succeeded':
+            updateDatabase = true;
             subscriptionObject.paidUntil = request.body.next_bill_date;
             break;
+
         case 'subscription_payment_failed':
+            updateDatabase = true;
+            subscriptionObject.paymentFailed = true;
             break;
+
+        default:
+            updateDatabase = false;
     }
 
-    firestore
-        .doc(`users/${userId}`)
-        .set({ subscription: subscriptionObject }, { merge: true })
-        .then(() => {
-            console.log('Update subscription success');
-        })
-        .catch(function (error) {
-            console.log('Update subscription failed: ', error);
-        });
+    // save the new subscription data to the user account object
+    if (updateDatabase) {
+        firestore
+            .doc(`accounts/${userId}`)
+            .set({ subscription: subscriptionObject }, { merge: true })
+            .then(() => {
+                console.log('Update subscription success');
+            })
+            .catch(function (error) {
+                console.log('Update subscription failed: ', error);
+            });
+    }
 
     response.send("update success");
 });

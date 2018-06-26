@@ -5,7 +5,7 @@ export const SUBSCRIBE_USER = "subscribeUser";
 export const UPDATE_SUBSCRIPTION = "updateSubscription";
 export const CANCEL_SUBSCRIPTION = "cancelSubscription";
 
-export function subscribeUser(userId) {
+export function subscribeUser(userId, email) {
     return (dispatch) => {
 
         dispatch({
@@ -16,6 +16,43 @@ export function subscribeUser(userId) {
         let checkoutSetupData = {};
         checkoutSetupData.product = ProductId;
         checkoutSetupData.passthrough = userId;
+        // removed to allow users to chose their own email.
+        // checkoutSetupData.email = email;
+
+        //Paddle success data is like this:
+        /*
+        {
+            "checkout": {
+                "completed": true,
+                "id": "4451433-chrd10623c1cbd5-c8d37ad479",
+                "coupon": null,
+                "prices": {
+                    "customer": {
+                        "currency": "USD",
+                        "unit": "9.99",
+                        "total": "9.99"
+                    },
+                    "vendor": {
+                        "currency": "USD",
+                        "unit": "9.99",
+                        "total": "9.99"
+                    }
+                },
+                "passthrough": null,
+                "redirect_url": null
+            },
+            "product": {
+                "quantity": 1,
+                "id": "1234567",
+                "name": "My Product"
+            },
+            "user": {
+                "country": "GB",
+                "email": "christian@paddle.com",
+                "id": "29777"
+            }
+        }
+        */
 
         checkoutSetupData.successCallback = (data) => {
             dispatch({
@@ -24,7 +61,7 @@ export function subscribeUser(userId) {
             })
         };
 
-        checkoutSetupData.closeCallback = (data) => {
+        checkoutSetupData.closeCallback = () => {
             dispatch({
                 type: SUBSCRIBE_USER,
                 payload: "cancelled"

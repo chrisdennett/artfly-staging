@@ -1,22 +1,21 @@
 import { firestoreDb as db } from "../libs/firebaseConfig";
 
 export const ACCOUNT_FETCHED = 'accountFetched';
-export const  ACCOUNT_UPDATED = 'accountUpdated';
+export const ACCOUNT_UPDATED = 'accountUpdated';
 
-function addUserAccount(userId, dispatch){
+function addUserAccount(userId, dispatch) {
     const newAccountData = {
-        status:'active',
+        status: 'active',
         dateJoined: Date.now(),
         adminId: userId
     };
 
-    const newAccountRef =  db.collection('accounts').doc();
-    const newAccountId = newAccountRef.id;
+    const newAccountRef = db.collection('accounts').doc(userId);
 
     newAccountRef
         .set(newAccountData)
         .then(() => {
-            const accountDataWithId = { ...newAccountData, accountId: newAccountId, isNew:true };
+            const accountDataWithId = { ...newAccountData, accountId: userId, isNew: true };
 
             dispatch({
                 type: ACCOUNT_FETCHED,
@@ -25,30 +24,29 @@ function addUserAccount(userId, dispatch){
         })
 }
 
+// Setting up an account if one doesn't exist feels a bit wrong.
 export function fetchUserAccount(userId) {
     return (dispatch) => {
         db.collection('accounts')
-            .where('adminId', '==', userId)
+            .doc(userId)
             .get()
-            .then(querySnapshot => {
-                    // If there's no user gallery yet return default data
-                    if (querySnapshot.size === 0) {
-                        addUserAccount(userId, dispatch);
+            .then(doc => {
+                    if (doc.exists) {
+
+                        const accountDataWithId = { ...doc.data(), accountId: doc.id };
+
+                        dispatch({
+                            type: ACCOUNT_FETCHED,
+                            payload: accountDataWithId
+                        });
                     }
                     // otherwise return the user gallery (may b
                     else {
-                        querySnapshot.forEach(doc => {
-                            const accountDataWithId = { ...doc.data(), accountId: doc.id };
-
-                            dispatch({
-                                type: ACCOUNT_FETCHED,
-                                payload: accountDataWithId
-                            });
-                        });
+                        addUserAccount(userId, dispatch);
                     }
                 },
                 error => {
-                    console.log("user artworks listener error: ", error);
+                    console.log("user accounts fetch error: ", error);
                 })
     }
 }
@@ -67,7 +65,7 @@ export function updateUserAccount(accountId, newAccountData) {
                 });
             })
             .catch(function (error) {
-                console.log('Update artwork failed: ', error);
+                console.log('updateUserAccount failed: ', error);
             })
     }
 }

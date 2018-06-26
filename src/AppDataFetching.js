@@ -22,12 +22,16 @@ class AppDataFetching extends Component {
 
         if (newUid && newUid !== currentUid) {
             this.props.fetchUserAccount(newUid);
-            this.props.fetchUserGallery(newUid);
-            this.props.fetchUserArtworks(newUid);
+        }
+        else if (this.props.account.status !== prevProps.account.status) {
+            if (this.props.account.status !== 'deleted') {
+                this.props.fetchUserGallery(newUid);
+                this.props.fetchUserArtworks(newUid);
+            }
         }
 
         // if there's an artwork or gallery id, fetch it
-        const {artworkId, galleryId} = this.props.params;
+        const { artworkId, galleryId } = this.props.params;
 
         // fetch global data
         if (artworkId) {
@@ -44,7 +48,7 @@ class AppDataFetching extends Component {
     }
 
     render() {
-        const {children} = this.props;
+        const { children } = this.props;
 
         return (
             <div>
@@ -56,7 +60,8 @@ class AppDataFetching extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        user: state.user
+        user: state.user,
+        account: state.account
     }
 };
 const mapActionsToProps = {

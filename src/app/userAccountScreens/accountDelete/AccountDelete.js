@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 // ui
 import { Button } from 'rmwc/Button';
 import { Typography } from 'rmwc/Typography';
+import { SimpleDialog } from 'rmwc/Dialog';
 // styles
 import './accountDelete_styles.css';
 // actions
@@ -20,8 +21,15 @@ import SignIn from "../userSignIn/signIn/SignIn";
 // import Redirect from "../../global/Redirect";
 import { goHome } from "../../../AppNavigation";
 import Redirect from "../../global/Redirect";
+import LoadingThing from "../../loadingThing/LoadingThing";
 
 class AccountDelete extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = { deleteConfirmDialogIsOpen: false };
+    }
 
     render() {
         const {
@@ -38,14 +46,26 @@ class AccountDelete extends Component {
               } = this.props;
 
         const step1Completed = totalArtworks === 0;
-        const step2Completed = userAccount === 'deleted' || Object.keys(userAccount).length === 0;
+        const step2Completed = userAccount.status === 'deleted';
 
         const authStepEnabled = step1Completed && step2Completed;
         const showAuthDeleteButton = authStepEnabled && !deleteAuthError;
         const showSignInButton = authStepEnabled && deleteAuthError;
         const completedStyle = { textDecoration: 'line-through' };
 
-        if(user === 'signed-out') return <Redirect to={'/'}/>;
+        if (user === 'signed-out') return <Redirect to={'/'}/>;
+
+        let dialogTitle, dialogBody;
+        if (step1Completed) {
+            dialogTitle = 'Delete all data and sign in?';
+            dialogBody = 'All of your gallery data will be permanently deleted and your sign-in will be removed.';
+        }
+        else {
+            dialogTitle = 'Delete all artworks?';
+            dialogBody = 'All of your artworks will be permanently deleted. There is no undo.';
+        }
+
+        console.log("userGalleryId: ", userGalleryId);
 
         return (
             <div className={'accountDeletePage'}>
@@ -53,6 +73,23 @@ class AccountDelete extends Component {
                                   isFixed={true}
                                   onCloseClick={goHome}/>
 
+
+                <SimpleDialog
+                    title={dialogTitle}
+                    body={dialogBody}
+                    open={this.state.deleteConfirmDialogIsOpen}
+                    onClose={() => this.setState({ deleteConfirmDialogIsOpen: false })}
+                    onAccept={() => console.log('Accepted')}
+                    onCancel={() => console.log('Cancelled')}
+                />
+
+                {!userAccount.status &&
+                <div style={{ marginTop: 65 }}>
+                    <LoadingThing/>
+                </div>
+                }
+
+                {userAccount.status &&
                 <Typography tag={'div'} use={'body1'} className={'accountDelete'}>
 
                     <div className={'accountDelete--step--holder'}>
@@ -109,7 +146,7 @@ class AccountDelete extends Component {
                     <div className={'accountDelete--step--holder'}>
                         <div className={'accountDelete--step'}>
                             <div className={'accountDelete--step--label'}>
-                                Step 3: Remove {userSignInMethod ? userSignInMethod.label : ''} sign in
+                                Step 3: Delete {userSignInMethod ? userSignInMethod.label : ''} sign in
                             </div>
 
                             {showAuthDeleteButton &&
@@ -120,13 +157,12 @@ class AccountDelete extends Component {
                                 confirm
                             </Button>
                             }
-
-
                         </div>
 
                         {showSignInButton &&
-                        <div>
-                            <p>There was an error removing your sign in data because it needs a recent sign in.  Please sign in and then try again.</p>
+                        <div className={'accountDelete--step'}>
+                            <p>There was an error removing your sign in data because it needs a recent sign in. Please
+                                sign in and then try again.</p>
                             <SignIn providerId={userSignInMethod.id}
                                     successRedirect={'/deleteAccount'}/>
                         </div>
@@ -144,6 +180,7 @@ class AccountDelete extends Component {
                         </p>
                     </div>
                 </Typography>
+                }
             </div>
         );
     }

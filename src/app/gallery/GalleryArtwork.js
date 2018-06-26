@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Measure from 'react-measure'; //https://www.npmjs.com/package/react-measure
+import Swipeable from 'react-swipeable'; //https://github.com/dogfessional/react-swipeable
 // comps
 import FramedArtworkCanvas from "../artwork/FramedArtworkCanvas";
 import LoadingThing from "../loadingThing/LoadingThing";
@@ -19,7 +20,7 @@ class GalleryArtwork extends Component {
     }
 
     render() {
-        const { artworkData } = this.props;
+        const { artworkData, onSwipeRight, onSwipeLeft } = this.props;
 
         const { dimensions } = this.state;
         let maxFrameWidth, maxFrameHeight;
@@ -40,7 +41,10 @@ class GalleryArtwork extends Component {
                 {({ measureRef }) =>
                     <div ref={measureRef} className={'gallery--sizePlaceholder'}>
 
-                        <div className={'gallery--framedArtwork'}>
+                        <Swipeable className={'gallery--framedArtwork'}
+                                   onSwipedRight={onSwipeRight}
+                                   onSwipedLeft={onSwipeLeft}
+                        >
                             {artworkData && dimensions &&
                             <FramedArtworkCanvas
                                 maxWidth={maxFrameWidth}
@@ -50,7 +54,7 @@ class GalleryArtwork extends Component {
                         {!artworkData &&
                         <LoadingThing label={'Loading artwork'} style={{flex:1, margin:20}}/>
                         }
-                        </div>
+                        </Swipeable>
 
 
                     </div>

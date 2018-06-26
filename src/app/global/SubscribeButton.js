@@ -1,10 +1,10 @@
 // externals
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+// ui
+import { Button } from 'rmwc/Button';
 // actions
 import { subscribeUser } from '../../actions/PaddleActions';
-// components
-import Butt from "./Butt/Butt";
 
 class SubscribeButton extends Component {
 
@@ -17,7 +17,9 @@ class SubscribeButton extends Component {
         const buttonTxt = this.props.label || 'Subscribe';
 
         return (
-            <Butt green inline size={'small'} label={buttonTxt} onClick={this.onSubscribe}/>
+            <Button onClick={this.onSubscribe}>
+                {buttonTxt}
+            </Button>
         );
     }
 }
@@ -29,6 +31,4 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(
-    mapStateToProps, { subscribeUser }
-)(SubscribeButton);
+export default connect(mapStateToProps, { subscribeUser })(SubscribeButton);

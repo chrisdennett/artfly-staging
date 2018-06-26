@@ -20,17 +20,24 @@ import { goToAccountDelete } from "../../AppNavigation";
 class UserAccountScreens extends Component {
 
     render() {
-        const { user, totalUserArtworks, userGalleryId, userSignInMethod } = this.props;
+        const { user, totalUserArtworks, userGalleryId, userSignInMethod, account } = this.props;
 
-        const showUserProfile = user.uid;
-        const showSignIn = !showUserProfile;
-
-        if (user === 'pending') {
+        if (user === 'pending' || !account.status) {
             return <LoadingThing/>
         }
 
+        const showAccountDeleted = account.status === 'deleted';
+        const showUserProfile = user.uid && !showAccountDeleted;
+        const showSignIn = !showUserProfile && !showAccountDeleted;
+
         return (
             <div>
+                {showAccountDeleted &&
+                <div>
+                    You deleted your account
+                </div>
+                }
+
                 {showSignIn &&
                 <UserSignIn/>
                 }
@@ -51,6 +58,7 @@ class UserAccountScreens extends Component {
 const mapStateToProps = (state) => {
     return {
         user: state.user,
+        account: state.account,
         userSignInMethod: getSignInProvider(state),
         userGalleryId: getUserGalleryId(state),
         totalUserArtworks: getTotalUserArtworks(state)
