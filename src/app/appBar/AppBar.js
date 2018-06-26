@@ -1,13 +1,6 @@
 import React from 'react';
 import { Button } from 'rmwc/Button';
-import {
-    Toolbar,
-    ToolbarRow,
-    ToolbarSection,
-    ToolbarTitle,
-    ToolbarIcon,
-    ToolbarMenuIcon
-} from 'rmwc/Toolbar';
+import { Toolbar, ToolbarRow, ToolbarSection, ToolbarTitle, ToolbarIcon, ToolbarMenuIcon } from 'rmwc/Toolbar';
 // styles
 import './appBar_styles.css';
 // comps
@@ -15,7 +8,7 @@ import UserMenu from "../userMenu/UserMenu";
 import HomeIconButton from "../../homeIconButton/HomeIconButton";
 
 // Includes save and cancel options
-export const EditAppBar = ({ title, onSaveClick, onCancelClick, fixed=false, hasChanges, onCloseClick }) => (
+export const EditAppBar = ({ title, onSaveClick, onCancelClick, fixed = false, hasChanges, onCloseClick }) => (
     <Toolbar theme={'background'}>
         <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
             <ToolbarTitle>{title}</ToolbarTitle>
@@ -72,9 +65,14 @@ export const ArtworkAppBar = ({ onCloseClick, onMenuClick, isEditable, onDeleteC
 export const TempScreenAppBar = ({ title, onCloseClick, isFixed = false }) => (
     <Toolbar theme={'background'} fixed={isFixed}>
         <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
-            <ToolbarTitle>{title}</ToolbarTitle>
+
+            <ToolbarSection alignStart>
+                <HomeIconButton/>
+                <ToolbarTitle>{title}</ToolbarTitle>
+            </ToolbarSection>
 
             <ToolbarSection alignEnd>
+                <UserMenu/>
                 <ToolbarIcon use={'close'}
                              theme={'text-primary-on-background'}
                              onClick={onCloseClick}/>

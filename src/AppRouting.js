@@ -18,6 +18,7 @@ import GalleryArtworkViewer from "./app/gallery/GalleryArtworkViewer";
 import GalleryHome from "./app/gallery/GalleryHome";
 import GalleryEditor from "./app/gallery/GalleryEditor";
 import AccountDelete from "./app/userAccountScreens/accountDelete/AccountDelete";
+import AccountSubscription from "./app/userAccountScreens/accountSubscription/AccountSubscription";
 
 class ArtflyRouting extends Component {
     constructor(props) {
@@ -113,6 +114,10 @@ function getPageComponent(page, params) {
 
         case 'profile':
             PageComponent = UserAccountScreens;
+            break;
+
+        case 'accountSubscription':
+            PageComponent = AccountSubscription;
             break;
 
         case 'accountDelete':

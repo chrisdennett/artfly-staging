@@ -13,11 +13,6 @@ class FramedArtworkCanvas extends Component {
         this.onFrameCanvasInit = this.onFrameCanvasInit.bind(this);
     }
 
-    /*componentWillReceiveProps(newProps, props) {
-        console.log("this.props: ", this.props);
-        console.log("props: ", props);
-    }*/
-
     componentWillUpdate(newProps) {
         const { maxWidth: currMaxWidth, maxHeight: currMaxHeight, artworkData } = this.props;
         const { maxWidth: newMaxWidth, maxHeight: newMaxHeight } = newProps;

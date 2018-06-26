@@ -13,6 +13,10 @@ export function goHome(){
     history.push(`/`);
 }
 
+export function goToAccountSubscription() {
+    history.push(`/accountSubscription/`);
+}
+
 export function goToGallery(galleryId) {
     const gallery = param('galleryId', galleryId);
 

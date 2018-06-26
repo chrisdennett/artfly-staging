@@ -46,7 +46,6 @@ class AccountDelete extends Component {
         const completedStyle = { textDecoration: 'line-through' };
 
         if(user === 'signed-out') return <Redirect to={'/'}/>;
-        console.log("deleteAuthError: ", deleteAuthError);
 
         return (
             <div className={'accountDeletePage'}>

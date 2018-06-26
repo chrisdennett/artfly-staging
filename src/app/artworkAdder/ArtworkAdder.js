@@ -15,6 +15,7 @@ import { goToGallery } from "../../AppNavigation";
 import ArtworkEditorSavingProgress from "../artworkEditor/ArtworkEditorSavingProgress";
 import { getMaxArtworksAllowed, getTotalUserArtworks } from "../../selectors/Selectors";
 import LoadingThing from "../loadingThing/LoadingThing";
+import MaximumArtworksReached from "./maximumArtworksReached/MaximumArtworksReached";
 
 class ArtworkAdder extends Component {
 
@@ -81,10 +82,9 @@ class ArtworkAdder extends Component {
                             onCancelClick={() => this.setState({ img: null })}/>
 
                 {maximumArtworkLimitReached &&
-                <div>
-                    you have {totalUserArtworks} artworks out of {maxArtworksAllowed}.
-                    If you want to add another artworks you'll either have to delete an existing artwork or sign up for ArtFly Club membership.
-                </div>
+                <MaximumArtworksReached galleryId={galleryId}
+                                        totalUserArtworks={totalUserArtworks}
+                                        maxArtworksAllowed={maxArtworksAllowed}/>
                 }
 
                 <ArtworkEditorSavingProgress artworkSavingProgress={artworkSavingProgress}
