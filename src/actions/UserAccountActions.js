@@ -35,12 +35,14 @@ export function fetchUserAccount(userId) {
 
                         const accountDataWithId = { ...doc.data(), accountId: doc.id };
 
+                        console.log("doc: ", doc);
+
                         dispatch({
                             type: ACCOUNT_FETCHED,
                             payload: accountDataWithId
                         });
                     }
-                    // otherwise return the user gallery (may b
+                    // otherwise create a new account
                     else {
                         addUserAccount(userId, dispatch);
                     }

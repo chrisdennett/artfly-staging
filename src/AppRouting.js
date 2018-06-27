@@ -1,7 +1,7 @@
-// externals
 import React, { Component } from "react";
+import {connect} from 'react-redux';
 import ga from './libs/googleAnalyticsConfig';
-// app styles
+// styles
 import 'material-components-web/dist/material-components-web.min.css';
 import './appStyles.css';
 // helpers
@@ -63,13 +63,11 @@ class ArtflyRouting extends Component {
         const page = fullPath === '/' ? 'home' : fullPath.split('/').slice(1)[0];
         const params = this.getParams(fullPath);
 
-        // document.body.scrollTop = 0;
-
         this.setState({ page, params });
-        /* setTimeout(() => {
+         setTimeout(() => {
              console.log("page: ", page);
              window.scrollTo(0,0);
-         }, 1);*/
+         }, 1);
 
         ga.set({ page: page });
         ga.pageview(fullPath);
@@ -87,7 +85,8 @@ class ArtflyRouting extends Component {
     }
 }
 
-export default ArtflyRouting;
+
+export default connect()(ArtflyRouting);
 
 function getPageComponent(page, params) {
 

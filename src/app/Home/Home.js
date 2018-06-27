@@ -88,7 +88,7 @@ const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork, account
 const mapStateToProps = (state) => (
     {
         user: state.user,
-        accountDeleted: state.account.status,
+        accountDeleted: state.account.status === 'deleted',
         latestUserArtwork: getLatestUserArtwork(state),
         totalUserArtworks: getTotalUserArtworks(state),
         userGallery: getUserGallery(state)

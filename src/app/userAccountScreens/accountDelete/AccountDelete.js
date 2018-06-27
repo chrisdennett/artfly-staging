@@ -65,14 +65,11 @@ class AccountDelete extends Component {
             dialogBody = 'All of your artworks will be permanently deleted. There is no undo.';
         }
 
-        console.log("userGalleryId: ", userGalleryId);
-
         return (
             <div className={'accountDeletePage'}>
                 <TempScreenAppBar title={'Delete account'}
                                   isFixed={true}
                                   onCloseClick={goHome}/>
-
 
                 <SimpleDialog
                     title={dialogTitle}
@@ -83,13 +80,6 @@ class AccountDelete extends Component {
                     onCancel={() => console.log('Cancelled')}
                 />
 
-                {/*{!userAccount.status &&
-                <div style={{ marginTop: 65 }}>
-                    <LoadingThing/>
-                </div>
-                }*/}
-
-                {/*{userAccount.status &&*/}
                 <Typography tag={'div'} use={'body1'} className={'accountDelete'}>
 
                     <div className={'accountDelete--step--holder'}>
@@ -180,7 +170,6 @@ class AccountDelete extends Component {
                         </p>
                     </div>
                 </Typography>
-                // }
             </div>
         );
     }

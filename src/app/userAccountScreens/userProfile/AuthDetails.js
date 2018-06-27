@@ -1,6 +1,8 @@
 import React from 'react';
 
-const UserDetails = function ({ user, userSignInMethod, totalUserArtworks }) {
+const AuthDetails = function ({ user, userSignInMethod }) {
+
+    console.log("userSignInMethod: ", userSignInMethod);
 
     // get the smaller sized image if it's google
     let photoUrl;
@@ -34,14 +36,9 @@ const UserDetails = function ({ user, userSignInMethod, totalUserArtworks }) {
                     <div className={'userProfile--detail--value'}>{userSignInMethod}</div>
                 </div>
 
-                <div className={'userProfile--detail'}>
-                    <div className={'userProfile--detail--type'}>Artworks:</div>
-                    <div className={'userProfile--detail--value'}>{totalUserArtworks}</div>
-                </div>
-
             </div>
         </div>
     )
 };
 
-export default UserDetails;
+export default AuthDetails;

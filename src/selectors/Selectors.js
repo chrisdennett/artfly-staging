@@ -171,6 +171,8 @@ export const getSignInProvider = (state) => {
 
     let label = '';
 
+    console.log("user.providerId: ", user.providerId);
+
     switch (user.providerId) {
         case firebase.auth.GoogleAuthProvider.PROVIDER_ID:
             label = 'GOOGLE'; break;
@@ -179,7 +181,7 @@ export const getSignInProvider = (state) => {
         case firebase.auth.TwitterAuthProvider.PROVIDER_ID:
             label = 'TWITTER'; break;
         case firebase.auth.EmailAuthProvider.PROVIDER_ID:
-            break;
+            label = 'EMAIL / PASSWORD'; break;
 
         default:
             return null;
