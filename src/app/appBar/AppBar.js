@@ -72,7 +72,7 @@ export const TempScreenAppBar = ({ title, onCloseClick, isFixed = false }) => (
             </ToolbarSection>
 
             <ToolbarSection alignEnd>
-                <UserMenu/>
+                {/*<UserMenu/>*/}
                 <ToolbarIcon use={'close'}
                              theme={'text-primary-on-background'}
                              onClick={onCloseClick}/>

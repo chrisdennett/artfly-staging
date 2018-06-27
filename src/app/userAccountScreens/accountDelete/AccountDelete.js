@@ -83,13 +83,13 @@ class AccountDelete extends Component {
                     onCancel={() => console.log('Cancelled')}
                 />
 
-                {!userAccount.status &&
+                {/*{!userAccount.status &&
                 <div style={{ marginTop: 65 }}>
                     <LoadingThing/>
                 </div>
-                }
+                }*/}
 
-                {userAccount.status &&
+                {/*{userAccount.status &&*/}
                 <Typography tag={'div'} use={'body1'} className={'accountDelete'}>
 
                     <div className={'accountDelete--step--holder'}>
@@ -180,7 +180,7 @@ class AccountDelete extends Component {
                         </p>
                     </div>
                 </Typography>
-                }
+                // }
             </div>
         );
     }

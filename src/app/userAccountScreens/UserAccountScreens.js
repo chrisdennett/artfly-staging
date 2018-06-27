@@ -22,7 +22,7 @@ class UserAccountScreens extends Component {
     render() {
         const { user, totalUserArtworks, userGalleryId, userSignInMethod, account } = this.props;
 
-        if (user === 'pending' || !account.status) {
+        if (user === 'pending') {
             return <LoadingThing/>
         }
 
