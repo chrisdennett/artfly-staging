@@ -4,12 +4,12 @@ import isEqual from 'lodash/isEqual';
 // styles
 import './artworkEditor_styles.css';
 // actions
+import { UpdateUrl} from "../../actions/UrlActions";
 import { updateArtworkAndImage, updateArtwork, resetArtworkSavingProgress } from '../../actions/SaveArtworkActions';
 // comps
 import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
 import { EditAppBar } from "../appBar/AppBar";
 import ArtworkEditorSavingProgress from "./ArtworkEditorSavingProgress";
-import { goToArtwork } from "../../AppNavigation";
 import { getArtwork } from "../../selectors/Selectors";
 import FrameEditor from "./frameEditor/FrameEditor";
 
@@ -31,7 +31,6 @@ class ArtworkEditor extends Component {
         if (this.props.editor && this.props.editor === 'crop') {
             this.loadSourceImg(this.props);
         }
-        this.props.resetArtworkSavingProgress();
     }
 
     componentDidUpdate() {
@@ -78,7 +77,7 @@ class ArtworkEditor extends Component {
 
     onClose() {
         const { galleryId, artworkId } = this.props;
-        goToArtwork(galleryId, artworkId);
+        this.props.UpdateUrl(`/gallery/galleryId_${galleryId}_galleryId/artworkId_${artworkId}_artworkId`);
     }
 
     render() {
@@ -124,4 +123,4 @@ const mapStateToProps = (state, props) => {
         artworkSavingProgress: state.artworkSavingProgress
     }
 };
-export default connect(mapStateToProps, { updateArtworkAndImage, updateArtwork, resetArtworkSavingProgress })(ArtworkEditor);
+export default connect(mapStateToProps, { UpdateUrl, updateArtworkAndImage, updateArtwork, resetArtworkSavingProgress })(ArtworkEditor);

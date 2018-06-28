@@ -1,17 +1,21 @@
 import React from 'react';
+import { connect } from 'react-redux';
 // ui
 import { Drawer, DrawerContent } from 'rmwc/Drawer';
 import { ListItem, ListItemText, ListItemGraphic } from 'rmwc/List';
 // images
 import IconFrameSize from '../images/icons/frame-size.png';
-// import IconFrameColour from '../images/icons/frame-colour.png';
 import IconCropRotate from '../images/icons/crop-rotate.png';
-import { goToArtworkEditor } from "../../AppNavigation";
+// actions
+import {UpdateUrl} from "../../actions/UrlActions";;
 
-const ArtworkEditMenu = ({ isOpen, onClose, artworkId, galleryId }) => {
+const ArtworkEditMenu = ({ isOpen, onClose, artworkId, galleryId, UpdateUrl }) => {
 
     const imgStyle = { width: 22 };
-    // const iconStyle = { color: 'black' };
+
+    const path = (editor) => {
+      return `/artworkEditor/galleryId_${galleryId}_galleryId/artworkId_${artworkId}_artworkId/editor_${editor}_editor`;
+    };
 
     return (
         <Drawer
@@ -20,7 +24,7 @@ const ArtworkEditMenu = ({ isOpen, onClose, artworkId, galleryId }) => {
             onClose={onClose}
         >
             <DrawerContent>
-                <ListItem onClick={() => goToArtworkEditor(galleryId, artworkId, 'frame')}>
+                <ListItem onClick={() => UpdateUrl(path('frame'))}>
                     <ListItemGraphic>
                         <img style={imgStyle} src={IconFrameSize} alt={'frame size icon'}/>
                     </ListItemGraphic>
@@ -29,16 +33,7 @@ const ArtworkEditMenu = ({ isOpen, onClose, artworkId, galleryId }) => {
                     </ListItemText>
                 </ListItem>
 
-                {/*<ListItem>
-                    <ListItemGraphic>
-                        <img style={imgStyle} src={IconFrameColour} alt={'frame colour icon'}/>
-                    </ListItemGraphic>
-                    <ListItemText>
-                        Frame Colour
-                    </ListItemText>
-                </ListItem>*/}
-
-                <ListItem onClick={() => goToArtworkEditor(galleryId, artworkId, 'crop')}>
+                <ListItem onClick={() => UpdateUrl(path('crop'))}>
                     <ListItemGraphic>
                         <img style={imgStyle} src={IconCropRotate} alt={'crop and rotate icon'}/>
                     </ListItemGraphic>
@@ -47,17 +42,9 @@ const ArtworkEditMenu = ({ isOpen, onClose, artworkId, galleryId }) => {
                     </ListItemText>
                 </ListItem>
 
-                {/*<ListDivider/>*/}
-
-               {/* <ListItem onClick={() => console.log("hello: ")}>
-                    <ListItemGraphic style={iconStyle}>delete</ListItemGraphic>
-                    <ListItemText>
-                        Delete
-                    </ListItemText>
-                </ListItem>*/}
             </DrawerContent>
         </Drawer>
     )
 };
 
-export default ArtworkEditMenu;
+export default connect(null, {UpdateUrl})(ArtworkEditMenu);

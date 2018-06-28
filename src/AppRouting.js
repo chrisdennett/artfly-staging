@@ -4,11 +4,9 @@ import ga from './libs/googleAnalyticsConfig';
 // styles
 import 'material-components-web/dist/material-components-web.min.css';
 import './appStyles.css';
-// helpers
-import history from './app/global/history';
 // route components
-import Home from './app/Home/Home';
-import FourOhFour from "./app/FourOhFour/FourOhFour";
+import Home from './app/home/Home';
+import FourOhFour from "./app/fourOhFour/FourOhFour";
 import UserAccountScreens from "./app/userAccountScreens/UserAccountScreens";
 import ArtworkAdder from "./app/artworkAdder/ArtworkAdder";
 import TestPage from "./app/testPage/TestPage";
@@ -28,40 +26,22 @@ class ArtflyRouting extends Component {
 
     componentDidMount() {
         // set up routing
-        const location = history.location;
+        /*const location = history.location;
         this.setPageData(location.pathname);
         const unlisten = history.listen((location) => {
             this.setPageData(location.pathname);
         });
-        this.setState({ unlisten: unlisten });
+        this.setState({ unlisten: unlisten });*/
     }
 
     componentWillUnmount() {
         // stop listening for route changes
-        this.state.unlisten();
-    }
-
-    getParams(url) {
-        const paramKeys = ['artworkId', 'galleryId', 'editor'];
-        const params = {};
-
-        for (let key of paramKeys) {
-            if (url.indexOf(`${key}_`) !== -1) {
-                const startTag = `${key}_`;
-                const endTag = `_${key}`;
-                const startIndex = url.indexOf(startTag) + startTag.length;
-                const endIndex = url.indexOf(endTag);
-
-                params[key] = url.slice(startIndex, endIndex);
-            }
-        }
-
-        return params;
+        // this.state.unlisten();
     }
 
     setPageData(fullPath) {
-        const page = fullPath === '/' ? 'home' : fullPath.split('/').slice(1)[0];
-        const params = this.getParams(fullPath);
+        /*const page = fullPath === '/' ? 'home' : fullPath.split('/').slice(1)[0];
+        const params = getParams(fullPath);
 
         this.setState({ page, params });
          setTimeout(() => {
@@ -70,26 +50,62 @@ class ArtflyRouting extends Component {
          }, 1);
 
         ga.set({ page: page });
-        ga.pageview(fullPath);
+        ga.pageview(fullPath);*/
     }
 
     render() {
-        const { page, params } = this.state;
-        const PageComponentWithProps = getPageComponent(page, params);
+        const { params } = this.state;
+        const { currentPage } = this.props;
 
         return (
             <AppDataFetching params={params}>
-                {PageComponentWithProps}
+                {currentPage}
             </AppDataFetching>
         );
     }
 }
 
+const mapAppStateToProps = (state) => {
+  return {
+      currentPage: getCurrentPageComponent(state)
+  }
+};
 
-export default connect()(ArtflyRouting);
+export default connect(mapAppStateToProps)(ArtflyRouting);
+
+const getCurrentPageComponent = (state) => {
+  const {routing} = state;
+
+  if(!routing.pathname) return Home;
+
+    const page = routing.pathname === '/' ? 'home' : routing.pathname.split('/').slice(1)[0];
+    const params = getParams(routing.pathname);
+
+    console.log("page: ", page);
+    console.log("params: ", params);
+
+    return getPageComponent(page, params);
+};
+
+const getParams = (url) => {
+    const paramKeys = ['artworkId', 'galleryId', 'editor'];
+    const params = {};
+
+    for (let key of paramKeys) {
+        if (url.indexOf(`${key}_`) !== -1) {
+            const startTag = `${key}_`;
+            const endTag = `_${key}`;
+            const startIndex = url.indexOf(startTag) + startTag.length;
+            const endIndex = url.indexOf(endTag);
+
+            params[key] = url.slice(startIndex, endIndex);
+        }
+    }
+
+    return params;
+};
 
 function getPageComponent(page, params) {
-
     const { artworkId, galleryId } = params;
     let PageComponent;
 

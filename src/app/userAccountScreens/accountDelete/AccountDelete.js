@@ -7,6 +7,7 @@ import { SimpleDialog } from 'rmwc/Dialog';
 // styles
 import './accountDelete_styles.css';
 // actions
+import { UpdateUrl } from "../../../actions/UrlActions";
 import { deleteUserArtworks, deleteUserData, deleteUserAuth } from '../../../actions/DeleteUserActions';
 // comps
 import { TempScreenAppBar } from "../../appBar/AppBar";
@@ -18,10 +19,7 @@ import {
     getUserId
 } from "../../../selectors/Selectors";
 import SignIn from "../userSignIn/signIn/SignIn";
-// import Redirect from "../../global/Redirect";
-import { goHome } from "../../../AppNavigation";
 import Redirect from "../../global/Redirect";
-import LoadingThing from "../../loadingThing/LoadingThing";
 
 class AccountDelete extends Component {
 
@@ -42,7 +40,8 @@ class AccountDelete extends Component {
                   deleteUserData,
                   deleteUserAuth,
                   deleteUserArtworks,
-                  deleteAuthError
+                  deleteAuthError,
+                  UpdateUrl
               } = this.props;
 
         const step1Completed = totalArtworks === 0;
@@ -69,7 +68,7 @@ class AccountDelete extends Component {
             <div className={'accountDeletePage'}>
                 <TempScreenAppBar title={'Delete account'}
                                   isFixed={true}
-                                  onCloseClick={goHome}/>
+                                  onCloseClick={UpdateUrl('/')}/>
 
                 <SimpleDialog
                     title={dialogTitle}
@@ -194,4 +193,4 @@ const mapStateToProps = (state) => (
     }
 );
 
-export default connect(mapStateToProps, { deleteUserData, deleteUserAuth, deleteUserArtworks })(AccountDelete);
+export default connect(mapStateToProps, { UpdateUrl, deleteUserData, deleteUserAuth, deleteUserArtworks })(AccountDelete);

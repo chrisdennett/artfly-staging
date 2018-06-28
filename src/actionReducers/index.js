@@ -8,9 +8,11 @@ import ArtworkSavingReducer from "./ArtworkSavingReducer";
 import GalleryReducer from './GalleryReducer';
 import AccountReducer from "./AccountReducer";
 import DataFetchingReducer from "./DataFetchingReducer";
+import UrlReducer from "./UrlReducer";
 
 const rootReducer = combineReducers({
     dataFetching: DataFetchingReducer,
+    routing: UrlReducer,
     user: UserAuthReducer,
     account: AccountReducer,
     artworkSavingProgress: ArtworkSavingReducer,

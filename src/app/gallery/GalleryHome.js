@@ -4,21 +4,21 @@ import { connect } from 'react-redux';
 import { Fab } from 'rmwc/Fab';
 // styles
 import './gallery_styles.css';
-// helper
-import { goToArtwork, goToArtworkAdder, goToGalleryEditor } from "../../AppNavigation";
+// actions
+import {UpdateUrl} from "../../actions/UrlActions";
 // selectors
 import { getCurrentGalleryData } from '../../selectors/Selectors';
 // comps
 import ArtworkThumb from "../artworkThumb/ArtworkThumb";
 import { GalleryHomeAppBar } from "../appBar/AppBar";
-import BottomBar from "../bottomBar/BottomBar";
+import BottomBar from "./bottomBar/BottomBar";
 import LoadingThing from "../loadingThing/LoadingThing";
 import GalleryTitles from "./GalleryTitles";
 
 class GalleryHome extends Component {
 
     render() {
-        const { currentGalleryData } = this.props;
+        const { currentGalleryData, UpdateUrl } = this.props;
         const { isEditable, title, subtitle, galleryId, galleryArtworks, firstArtworkId } = currentGalleryData;
         const addFabStyle = { position: 'absolute', bottom: -25, left: '50%', marginLeft: -20 };
         const titlesHolderStyle = { position: 'relative' };
@@ -27,8 +27,8 @@ class GalleryHome extends Component {
             <div className={'galleryHome'}>
                 <GalleryHomeAppBar title={'Gallery'}
                                    isEditable={isEditable}
-                                   onAddClick={() => goToArtworkAdder(galleryId)}
-                                   onEditClick={() => goToGalleryEditor(galleryId)}/>
+                                   onAddClick={() => UpdateUrl(`/artworkAdder/galleryId_${galleryId}_galleryId`)}
+                                   onEditClick={() => UpdateUrl(`/galleryEditor/galleryId_${galleryId}_galleryId`)}/>
 
                 {!title &&
                 <div className={'gallery--loader'}>
@@ -44,7 +44,7 @@ class GalleryHome extends Component {
 
                         {isEditable &&
                         <Fab theme={'primary-bg'} style={addFabStyle}
-                             onClick={() => goToArtworkAdder(galleryId)}>
+                             onClick={() => UpdateUrl(`/artworkAdder/galleryId_${galleryId}_galleryId`)}>
                             add
                         </Fab>
                         }
@@ -56,7 +56,7 @@ class GalleryHome extends Component {
                             galleryArtworks.map(artworkData => {
                                 return (
                                     <ArtworkThumb key={artworkData.artworkId}
-                                                  onClick={() => goToArtwork(galleryId, artworkData.artworkId)}
+                                                  onClick={() => UpdateUrl(`/gallery/galleryId_${galleryId}_galleryId/artworkId_${artworkData.artworkId}_artworkId`)}
                                                   artworkData={artworkData}
                                     />
                                 )
@@ -67,8 +67,8 @@ class GalleryHome extends Component {
                 </div>
                 }
 
-                <BottomBar disabled={!currentGalleryData || !currentGalleryData.firstArtworkId}
-                           onEnterGallery={() => goToArtwork(galleryId, firstArtworkId)}/>
+                <BottomBar disabled={!currentGalleryData || !firstArtworkId}
+                           onEnterGallery={() => UpdateUrl(`/gallery/galleryId_${galleryId}_galleryId/artworkId_${firstArtworkId}_artworkId`)}/>
             </div>
         );
     }
@@ -77,4 +77,4 @@ class GalleryHome extends Component {
 const mapStateToProps = (state, props) => ({
     currentGalleryData: getCurrentGalleryData(state.user, state.galleries, state.artworks, props.galleryId)
 });
-export default connect(mapStateToProps)(GalleryHome);
+export default connect(mapStateToProps, {UpdateUrl})(GalleryHome);

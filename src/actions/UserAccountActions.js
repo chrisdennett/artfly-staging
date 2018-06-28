@@ -32,10 +32,7 @@ export function fetchUserAccount(userId) {
             .get()
             .then(doc => {
                     if (doc.exists) {
-
                         const accountDataWithId = { ...doc.data(), accountId: doc.id };
-
-                        console.log("doc: ", doc);
 
                         dispatch({
                             type: ACCOUNT_FETCHED,

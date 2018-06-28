@@ -1,12 +1,11 @@
 import React from 'react';
 import { Button, ButtonIcon } from 'rmwc/Button';
-import history from "../../../global/history";
 
-const SignInButt = function () {
+const SignInButt = ({onClick}) => {
     return (
         <Button raised
                 theme="secondary-bg on-secondary"
-                onClick={() => history.push('/profile')}
+                onClick={onClick}
         >
             <ButtonIcon use="input" />
             Sign in / up

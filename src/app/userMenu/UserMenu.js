@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+// ui
 import { ToolbarIcon } from 'rmwc/Toolbar';
 import { Menu, MenuAnchor } from 'rmwc/Menu';
 import {
@@ -10,9 +11,9 @@ import {
 } from 'rmwc/List';
 // actions
 import { signOutUser } from "../../actions/UserAuthActions";
+import { UpdateUrl } from "../../actions/UrlActions";
 // comps
 import SignInButt from '../userAccountScreens/userSignIn/signIn/SignInButt';
-import history from "../global/history";
 
 class UserMenu extends Component {
 
@@ -24,7 +25,7 @@ class UserMenu extends Component {
 
     render() {
         const { menuIsOpen } = this.state;
-        const { userSignedIn, signOutUser, userPending } = this.props;
+        const { userSignedIn, signOutUser, userPending, UpdateUrl } = this.props;
 
         return (
             <div>
@@ -37,7 +38,7 @@ class UserMenu extends Component {
                     >
                         {userSignedIn &&
                         <List>
-                            <ListItem onClick={() => history.push('/profile')}>
+                            <ListItem onClick={() => UpdateUrl('/profile')}>
                                 <ListItemGraphic>person</ListItemGraphic>
                                 <ListItemText>Profile</ListItemText>
                             </ListItem>
@@ -49,7 +50,9 @@ class UserMenu extends Component {
                         }
                     </Menu>
 
-                    {!userSignedIn && <SignInButt/>}
+                    {!userSignedIn &&
+                    <SignInButt onClick={() => UpdateUrl('/profile')}/>
+                    }
 
                     {userSignedIn &&
                     <ToolbarIcon use="person"
@@ -69,4 +72,4 @@ const mapStateToProps = (state) => {
         userSignedIn: !!state.user.uid
     }
 };
-export default connect(mapStateToProps, { signOutUser })(UserMenu);
+export default connect(mapStateToProps, { signOutUser, UpdateUrl })(UserMenu);

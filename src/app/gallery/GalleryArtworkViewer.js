@@ -5,10 +5,9 @@ import { Button } from 'rmwc/Button';
 import { Icon } from 'rmwc/Icon';
 import { Fab } from 'rmwc/Fab'
 import { SimpleDialog } from 'rmwc/Dialog';
-// helper
-import { goToGallery, goToArtwork } from "../../AppNavigation";
 // actions
 import { deleteArtwork } from "../../actions/DeleteArtworkActions";
+import { UpdateUrl } from '../../actions/UrlActions';
 // selectors
 import { getGalleryNavigation } from '../../selectors/Selectors';
 // comps
@@ -23,6 +22,36 @@ class GalleryArtworkViewer extends Component {
         super(props);
 
         this.state = { editMenuIsOpen: false, deleteConfirmOpen: false };
+
+        this.goToNextArtwork = this.goToNextArtwork.bind(this);
+        this.goToPreviousArtwork = this.goToPreviousArtwork.bind(this);
+        this.goToGallery = this.goToGallery.bind(this);
+    }
+
+    goToGallery(){
+        const {galleryId} = this.props;
+        const url = `/gallery/galleryId_${galleryId}_galleryId`;
+        this.props.UpdateUrl(url);
+    }
+
+    goToNextArtwork() {
+        const {galleryId, galleryNavData} = this.props;
+        const {nextArtwork} = galleryNavData;
+
+        if (nextArtwork) {
+            const url = `/gallery/galleryId_${galleryId}_galleryId/artworkId_${nextArtwork.artworkId}_artworkId`;
+            this.props.UpdateUrl(url);
+        }
+    }
+
+    goToPreviousArtwork() {
+        const {galleryId, galleryNavData} = this.props;
+        const {previousArtwork} = galleryNavData;
+
+        if (previousArtwork) {
+            const url = `/gallery/galleryId_${galleryId}_galleryId/artworkId_${previousArtwork.artworkId}_artworkId`;
+            this.props.UpdateUrl(url);
+        }
     }
 
     render() {
@@ -66,29 +95,29 @@ class GalleryArtworkViewer extends Component {
                 <ArtworkAppBar title={'Artworks'}
                                isEditable={isEditable}
                                onDeleteClick={() => this.setState({ deleteConfirmOpen: true })}
-                               onMenuClick={() => goToGallery(galleryId)}
+                               onMenuClick={this.goToGallery}
                 />
 
                 <GalleryArtwork artworkData={currentArtwork}
-                                onSwipeLeft={() => nextArtwork && goToArtwork(galleryId, nextArtwork.artworkId)}
-                                onSwipeRight={() => previousArtwork && goToArtwork(galleryId, previousArtwork.artworkId)}
+                                onSwipeLeft={this.goToNextArtwork}
+                                onSwipeRight={this.goToPreviousArtwork}
                 />
 
                 <div className={'gallery--framedArtwork--spacer'}/>
 
                 <div className={'gallery--controls'}>
                     <Button disabled={!previousArtwork}
-                            onClick={() => goToArtwork(galleryId, previousArtwork.artworkId)}>
+                            onClick={this.goToPreviousArtwork}>
                         <Icon use={'arrow_back'}/>
                     </Button>
 
                     <Button className={'gallery--controls--backToGalleryButt'}
-                            onClick={() => goToGallery(galleryId)}>
+                            onClick={this.goToGallery}>
                         <Icon use={'dashboard'}/>
                     </Button>
 
                     <Button disabled={!nextArtwork}
-                            onClick={() => goToArtwork(galleryId, nextArtwork.artworkId)}>
+                            onClick={this.goToNextArtwork}>
                         <Icon use={'arrow_forward'}/>
                     </Button>
                 </div>
@@ -102,4 +131,4 @@ const mapStateToProps = (state, props) => (
         galleryNavData: getGalleryNavigation(state.artworks, props.artworkId, state.user.uid)
     }
 );
-export default connect(mapStateToProps, { deleteArtwork })(GalleryArtworkViewer);
+export default connect(mapStateToProps, { deleteArtwork, UpdateUrl })(GalleryArtworkViewer);

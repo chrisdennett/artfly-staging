@@ -1,18 +1,20 @@
 import React from 'react';
+import {connect} from 'react-redux';
+// ui
 import { Ripple } from 'rmwc/Ripple';
-// helpers
-import history from '../app/global/history';
+// actions
+import {UpdateUrl} from "../actions/UrlActions";
 // comps
 import IconLogo from "../app/global/icon/icons/IconLogo";
 
-const HomeIconButton = function () {
+const HomeIconButton = ({UpdateUrl}) => {
     return (
         <Ripple unbounded>
-            <div onClick={() => history.push('/')} style={{ paddingTop: 7, cursor: 'pointer' }}>
+            <div onClick={() => UpdateUrl('/')} style={{ paddingTop: 7, cursor: 'pointer' }}>
                 <IconLogo width={30} height={30}/>
             </div>
         </Ripple>
     )
 };
 
-export default HomeIconButton;
+export default connect(null, {UpdateUrl})(HomeIconButton);

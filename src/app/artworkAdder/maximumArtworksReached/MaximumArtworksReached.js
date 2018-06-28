@@ -1,12 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
 // ui
 import { Typography } from 'rmwc/Typography';
 import { Button } from 'rmwc/Button';
+// actions
+import { UpdateUrl } from "../../../actions/UrlActions";
 // styles
 import './maximumArtworksReached_styles.css';
-import { goToGallery, goToAccountSubscription } from "../../../AppNavigation";
 
-const MaximumArtworksReached = ({ totalUserArtworks, maxArtworksAllowed, galleryId }) => {
+const MaximumArtworksReached = ({ UpdateUrl, totalUserArtworks, maxArtworksAllowed, galleryId }) => {
     return (
         <div className={'maxArtworksReached'}>
             <div className={'maxArtworksReached--message'}>
@@ -19,20 +21,20 @@ const MaximumArtworksReached = ({ totalUserArtworks, maxArtworksAllowed, gallery
                 </Typography>
                 <Typography tag={'p'} use={'body1'}>
                     If you want to add more you'll either have to delete an existing artwork
-                    from <Button dense onClick={() => goToGallery(galleryId)}>your gallery</Button> or sign up for
-                    <Button dense theme={'secondary'} onClick={() => goToGallery(galleryId)}>ArtFly Club
-                    membership</Button>.
+                    from <Button dense onClick={() => UpdateUrl(`/gallery/galleryId_${galleryId}_galleryId`)}>your gallery</Button> or sign up for
+                    <Button dense theme={'secondary'} onClick={() => UpdateUrl(`/accountSubscription`)}>ArtFly Club
+                        membership</Button>.
                 </Typography>
             </div>
 
             <div className={'maxArtworksReached--links'}>
                 <Button raised
-                        onClick={() => goToGallery(galleryId)}>
+                        onClick={() => UpdateUrl(`/gallery/galleryId_${galleryId}_galleryId`)}>
                     your gallery
                 </Button>
 
                 <Button raised theme={'secondary-bg'}
-                        onClick={() => goToAccountSubscription()}>
+                        onClick={() => UpdateUrl(`/accountSubscription`)}>
                     club membership
                 </Button>
             </div>
@@ -40,4 +42,4 @@ const MaximumArtworksReached = ({ totalUserArtworks, maxArtworksAllowed, gallery
     )
 };
 
-export default MaximumArtworksReached;
+export default connect(null, { UpdateUrl })(MaximumArtworksReached);

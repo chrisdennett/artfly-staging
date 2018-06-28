@@ -1,26 +1,15 @@
 import React from 'react';
 // import ArtworkAdderSavingProgress from "../artworkAdder/ArtworkAdderSavingProgress";
-import AppBar from "../appBar/AppBar";
-import ArtworkAdderComplete from "../artworkAdder/ArtworkAdderComplete";
+// import AppBar from "../appBar/AppBar";
 
 const TestPage = () => {
     return (
-        <TestArtworkAdderComplete />
+        <div>Test Page</div>
     )
 };
 
 export default TestPage;
 
-//<TestArtworkAdderComplete />
-const TestArtworkAdderComplete = () => {
-    return (
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-            <AppBar title={'Artwork Added'} fixed={false} showUserMenu={false} showCloseButt={true}/>
-
-            <ArtworkAdderComplete newArtworkId={'qMnIiHfbu5avgjZ5dhjM'}/>
-        </div>
-    )
-};
 
 
 //<TestArtworkAdderSavingProgress />

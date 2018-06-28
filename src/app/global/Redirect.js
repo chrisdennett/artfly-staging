@@ -1,14 +1,16 @@
 import { Component } from "react";
-import history from './history'
+import { connect } from 'react-redux';
+// actions
+import {UpdateUrl} from "../../actions/UrlActions";
 
 class Redirect extends Component {
     componentDidMount(){
         const redirectPath = this.props.to || '/';
-        history.push(redirectPath);
+        this.props.UpdateUrl(redirectPath);
     }
     render(){
         return null;
     }
 }
 
-export default Redirect;
+export default connect(null, {UpdateUrl})(Redirect);

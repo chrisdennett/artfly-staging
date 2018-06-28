@@ -4,12 +4,10 @@ import { connect } from 'react-redux';
 import { updateUserAccount } from "../../actions/UserAccountActions";
 // selectors
 import { getSignInProvider, getTotalUserArtworks, getUserGalleryId } from "../../selectors/Selectors";
-
 // comps
 import LoadingThing from "../loadingThing/LoadingThing";
 import UserProfile from "./userProfile/UserProfile";
 import UserSignIn from './userSignIn/UserSignIn';
-import { goToAccountDelete } from "../../AppNavigation";
 
 /*
 * Responsibility:
@@ -44,7 +42,6 @@ class UserAccountScreens extends Component {
 
                 {showUserProfile &&
                 <UserProfile user={user}
-                             onDeleteClick={goToAccountDelete}
                              userSignInMethod={userSignInMethod}
                              totalUserArtworks={totalUserArtworks}
                              userGalleryId={userGalleryId}

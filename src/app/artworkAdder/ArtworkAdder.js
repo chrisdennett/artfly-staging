@@ -3,7 +3,10 @@ import { connect } from 'react-redux';
 // styles
 import './artworkAdder_styles.css';
 // actions
-import { addNewArtwork, resetArtworkSavingProgress } from '../../actions/SaveArtworkActions';
+import { addNewArtwork } from '../../actions/SaveArtworkActions';
+import { UpdateUrl } from "../../actions/UrlActions";
+// selectors
+import { getMaxArtworksAllowed, getTotalUserArtworks } from "../../selectors/Selectors";
 // helper
 import GenerateDefaultArtworkData from '../artwork/DefaultArtworkDataGenerator';
 import { GetImage } from "../global/ImageHelper";
@@ -11,9 +14,7 @@ import { GetImage } from "../global/ImageHelper";
 import { EditAppBar } from "../appBar/AppBar";
 import PhotoSelector from "../photoSelector/PhotoSelector";
 import CropAndRotateEditor from "../artworkEditor/cropAndRotateEditor/CropAndRotateEditor";
-import { goToGallery } from "../../AppNavigation";
 import ArtworkEditorSavingProgress from "../artworkEditor/ArtworkEditorSavingProgress";
-import { getMaxArtworksAllowed, getTotalUserArtworks } from "../../selectors/Selectors";
 import LoadingThing from "../loadingThing/LoadingThing";
 import MaximumArtworksReached from "./maximumArtworksReached/MaximumArtworksReached";
 
@@ -30,7 +31,6 @@ class ArtworkAdder extends Component {
     }
 
     componentWillUnmount() {
-        this.props.resetArtworkSavingProgress();
         this.setState = ({ img: null, artworkData: GenerateDefaultArtworkData() });
     }
 
@@ -55,7 +55,7 @@ class ArtworkAdder extends Component {
 
     render() {
         const { img, artworkData } = this.state;
-        const { artworkSavingProgress, totalArtworksFetchProgress, galleryId, totalUserArtworks, maxArtworksAllowed } = this.props;
+        const { UpdateUrl, artworkSavingProgress, totalArtworksFetchProgress, galleryId, totalUserArtworks, maxArtworksAllowed } = this.props;
 
         const maximumArtworkLimitReached = totalUserArtworks >= maxArtworksAllowed;
         const showPhotoSelector = !img && !maximumArtworkLimitReached;
@@ -77,7 +77,7 @@ class ArtworkAdder extends Component {
 
                 <EditAppBar title={title}
                             hasChanges={showPhotoCropper}
-                            onCloseClick={() => goToGallery(galleryId)}
+                            onCloseClick={() => UpdateUrl(`/gallery/galleryId_${galleryId}_galleryId`)}
                             onSaveClick={this.onSaveNewArtwork}
                             onCancelClick={() => this.setState({ img: null })}/>
 
@@ -118,4 +118,4 @@ const mapStateToProps = (state) => (
         artworkSavingProgress: state.artworkSavingProgress
     }
 );
-export default connect(mapStateToProps, { addNewArtwork, resetArtworkSavingProgress })(ArtworkAdder);
+export default connect(mapStateToProps, { addNewArtwork, UpdateUrl })(ArtworkAdder);

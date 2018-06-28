@@ -9,12 +9,12 @@ import { Typography } from 'rmwc/Typography';
 import './galleryEditor_styles.css';
 // actions
 import { updateGallery } from '../../actions/GalleryDataActions';
+import { UpdateUrl } from "../../actions/UrlActions";
 // comps
 import { getGallery } from "../../selectors/Selectors";
 import { EditAppBar } from "../appBar/AppBar";
 import LoadingThing from "../loadingThing/LoadingThing";
 import GalleryTitles from "./GalleryTitles";
-import { goToGallery } from "../../AppNavigation";
 import GalleryEditorSavingProgress from "./GalleryEditorSavingProgress";
 // constants
 import { MAX_GALLERY_TITLE_LENGTH, MAX_GALLERY_SUBTITLE_LENGTH } from '../global/GLOBAL_CONSTANTS';
@@ -54,7 +54,7 @@ class GalleryEditor extends Component {
     }
 
     render() {
-        const { currentGallery } = this.props;
+        const { currentGallery, UpdateUrl } = this.props;
         const { unsavedGalleryData } = this.state;
         const mergedData = { ...currentGallery, ...unsavedGalleryData };
         const hasChanges = currentGallery && !isEqual(mergedData, currentGallery);
@@ -71,7 +71,7 @@ class GalleryEditor extends Component {
                             hasChanges={hasChanges}
                             onSaveClick={this.onSave}
                             onCancelClick={() => this.setState({ unsavedGalleryData: {} })}
-                            onCloseClick={() => goToGallery(currentGallery.galleryId)}
+                            onCloseClick={() => UpdateUrl(`/gallery/galleryId_${currentGallery.galleryId}_galleryId`)}
                 />
 
                 {currentGallery &&
@@ -138,4 +138,4 @@ const mapStateToProps = (state, props) => {
         currentGallery: getGallery(state, props)
     }
 };
-export default connect(mapStateToProps, { updateGallery })(GalleryEditor);
+export default connect(mapStateToProps, { updateGallery, UpdateUrl })(GalleryEditor);

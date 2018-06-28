@@ -1,15 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
 // material ui
 import { Button, ButtonIcon } from 'rmwc/Button';
+// actions
+import { UpdateUrl } from "../../../actions/UrlActions";
 // styles
 import './userProfile_styles.css';
-// helper
-import { goToAccountSubscription, goToGallery } from "../../../AppNavigation";
 // comps
 import AuthDetails from "./AuthDetails";
 import AppBar from "../../appBar/AppBar";
 
-const UserProfile = ({user, userSignInMethod, totalUserArtworks, userGalleryId, onDeleteClick}) => {
+const UserProfile = ({ user, UpdateUrl, userSignInMethod, totalUserArtworks, userGalleryId }) => {
     return (
         <div className={'userProfilePage'}>
             <AppBar title={'Profile'}/>
@@ -18,7 +19,7 @@ const UserProfile = ({user, userSignInMethod, totalUserArtworks, userGalleryId, 
 
                 <div className={'userProfile--actions'}>
                     {userGalleryId &&
-                    <Button raised onClick={() => goToGallery(userGalleryId)}>
+                    <Button raised onClick={() => UpdateUrl(`/gallery/galleryId_${userGalleryId}_galleryId`)}>
                         <ButtonIcon use="dashboard"/>
                         Gallery
                     </Button>
@@ -39,12 +40,12 @@ const UserProfile = ({user, userSignInMethod, totalUserArtworks, userGalleryId, 
                 <div>
                     Membership: free
                     <Button raised theme={'secondary-bg'}
-                    onClick={() => goToAccountSubscription()}>Upgrade</Button>
+                            onClick={() => UpdateUrl(`/accountSubscription`)}>Upgrade</Button>
                 </div>
 
 
                 <div className={'userProfile--deleteSection'}>
-                    <Button outlined onClick={onDeleteClick}>
+                    <Button outlined onClick={() => UpdateUrl(`/accountDelete`)}>
                         <ButtonIcon use="delete_forever"/>
                         Delete Account
                     </Button>
@@ -54,4 +55,4 @@ const UserProfile = ({user, userSignInMethod, totalUserArtworks, userGalleryId, 
     )
 };
 
-export default UserProfile;
+export default connect(null, { UpdateUrl })(UserProfile);
