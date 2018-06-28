@@ -36,9 +36,9 @@ export const connectRouteToStore = store => {
         window.history.replaceState(state, "");
     };
 
-// Update Redux if we navigated via browser's back/forward
-// capabilities. Scroll position of document.body will be maintained
-// automatically as long as our layout uses document.body for scrolling
+    // Update Redux if we navigated via browser's back/forward
+    // capabilities. Scroll position of document.body will be maintained
+    // automatically as long as our layout uses document.body for scrolling
     window.addEventListener("popstate", () => {
         store.dispatch(UpdateUrl(window.location.pathname));
         restoreScrollPosition();
@@ -49,8 +49,8 @@ export const connectRouteToStore = store => {
         passive: true
     });
 
-// update browser if we navigated via
-// changing state in redux
+    // update browser if we navigated via
+    // changing state in redux
     store.subscribe(() => {
         const { pathname } = store.getState().routing;
 

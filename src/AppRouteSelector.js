@@ -13,6 +13,30 @@ import UserAccountScreens from "./app/userAccountScreens/UserAccountScreens";
 import AccountSubscription from "./app/userAccountScreens/accountSubscription/AccountSubscription";
 import AccountDelete from "./app/userAccountScreens/accountDelete/AccountDelete";
 
+export const findMissingData = state => {
+    const { routing, artworks, galleries } = state;
+
+    if (!routing.pathname) return null;
+    const params = getParams(routing.pathname);
+    const {artworkId, galleryId} = params;
+
+    if(!artworkId && !galleryId) return null;
+
+    let missingData = {};
+
+    // ARTWORK
+    if(artworkId && !artworks[artworkId]){
+        missingData.artworkId = artworkId;
+    }
+
+    // GALLERY
+    if(galleryId && !galleries[galleryId]){
+        missingData.galleryId = galleryId;
+    }
+
+    return missingData;
+};
+
 export const getRouteParams = state => getParams(state.routing.pathname);
 
 export const getCurrentPageComponent = (state) => {

@@ -4,23 +4,21 @@ export const ARTWORK_CHANGE = "artworkChange";
 export const USER_ARTWORKS_FETCHED = "userArtworksFetched";
 export const USER_ARTWORKS_FETCH_TRIGGERED = "userArtworksFetchTriggered";
 
-let artworkListeners = {};
+// let artworkListeners = {};
 // let userArtworkListenerUnsubscriber;
 
-export function listenForIndividualArtworkChanged(artworkId) {
+/*export function listenForIndividualArtworkChanged(artworkId) {
     return (dispatch) => {
         listenForArtworkChanges(artworkId, dispatch);
     }
-}
+}*/
 
 export function fetchUserArtworks(userId) {
-
     return (dispatch) => {
 
         dispatch({
             type: USER_ARTWORKS_FETCH_TRIGGERED
         });
-
 
         db.collection('artworks')
             .where('adminId', '==', userId)
@@ -66,7 +64,7 @@ export function fetchUserArtworks(userId) {
     }
 }*/
 
-function listenForArtworkChanges(artworkId, dispatch) {
+/*function listenForArtworkChanges(artworkId, dispatch) {
     if (artworkListeners[artworkId]) {
         return "artwork already has listener";
     }
@@ -91,7 +89,7 @@ function listenForArtworkChanges(artworkId, dispatch) {
             (error) => {
                 console.log("artwork changes listener error: ", error);
             });
-}
+}*/
 
 // Gets a single snapshot of the artwork data
 export function getArtworkDataOnce(artworkId) {

@@ -111,7 +111,6 @@ export const GalleryHomeAppBar = function ({ title, isEditable, onEditClick, onA
     )
 };
 
-
 const AppBar = function ({ title, navigation, onCloseClick, showHomeIcon = true, showUserMenu = true, showCloseButt = false, fixed = true, butts = null }) {
     return (
         <Toolbar fixed={fixed} theme={'background'}>

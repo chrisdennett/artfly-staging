@@ -21,6 +21,14 @@ class UserMenu extends Component {
         super(props);
 
         this.state = { menuIsOpen: false };
+
+        this.onProfileClick = this.onProfileClick.bind(this);
+    }
+
+    onProfileClick(){
+        this.setState({menuIsOpen: false}, () => {
+            setTimeout(() => this.props.UpdateUrl('/profile'), 100);
+        });
     }
 
     render() {
@@ -38,7 +46,7 @@ class UserMenu extends Component {
                     >
                         {userSignedIn &&
                         <List>
-                            <ListItem onClick={() => UpdateUrl('/profile')}>
+                            <ListItem onClick={this.onProfileClick}>
                                 <ListItemGraphic>person</ListItemGraphic>
                                 <ListItemText>Profile</ListItemText>
                             </ListItem>
