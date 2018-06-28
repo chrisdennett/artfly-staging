@@ -2,8 +2,6 @@ import React from 'react';
 
 const AuthDetails = function ({ user, userSignInMethod }) {
 
-    console.log("userSignInMethod: ", userSignInMethod);
-
     // get the smaller sized image if it's google
     let photoUrl;
 

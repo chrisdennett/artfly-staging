@@ -9,7 +9,6 @@ import { fetchGalleryData, fetchUserGallery, fetchUserGalleryArtworks } from "./
 class AppDataFetching extends Component {
 
     componentDidMount() {
-
         // listen out for logging in and out
         this.props.listenForUserAuthChanges();
     }
@@ -33,7 +32,7 @@ class AppDataFetching extends Component {
         }*/
 
         // if there's an artwork or gallery id, fetch it
-        const { artworkId, galleryId } = this.props.params;
+        /*const { artworkId, galleryId } = this.props.params;
 
         // fetch global data
         if (artworkId) {
@@ -46,7 +45,7 @@ class AppDataFetching extends Component {
                 // this will still work if nobody is signed in
                 this.props.fetchUserGalleryArtworks(gallery);
             });
-        }
+        }*/
     }
 
     render() {

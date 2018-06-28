@@ -5,7 +5,7 @@ import { Ripple } from 'rmwc/Ripple';
 // actions
 import {UpdateUrl} from "../actions/UrlActions";
 // comps
-import IconLogo from "../app/global/icon/icons/IconLogo";
+import IconLogo from './IconLogo';
 
 const HomeIconButton = ({UpdateUrl}) => {
     return (

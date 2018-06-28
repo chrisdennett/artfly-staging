@@ -166,12 +166,9 @@ export const getUserGallery = (state) => {
 
 export const getSignInProvider = (state) => {
     const { user } = state;
-
     if (!user) return null;
 
     let label = '';
-
-    console.log("user.providerId: ", user.providerId);
 
     switch (user.providerId) {
         case firebase.auth.GoogleAuthProvider.PROVIDER_ID:
@@ -199,4 +196,4 @@ export const getArtwork = (state, props) => {
     if(!artworks || !artworkId) return null;
 
     return artworks[artworkId];
-}
+};

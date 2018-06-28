@@ -1,88 +1,54 @@
-import React, { Component } from "react";
-import {connect} from 'react-redux';
+import React from "react";
+import { connect } from 'react-redux';
 import ga from './libs/googleAnalyticsConfig';
 // styles
 import 'material-components-web/dist/material-components-web.min.css';
 import './appStyles.css';
-// route components
+// comps
+import AppDataFetching from "./AppDataFetching";
+// route comps
 import Home from './app/home/Home';
 import FourOhFour from "./app/fourOhFour/FourOhFour";
 import UserAccountScreens from "./app/userAccountScreens/UserAccountScreens";
 import ArtworkAdder from "./app/artworkAdder/ArtworkAdder";
 import TestPage from "./app/testPage/TestPage";
 import ArtworkEditor from "./app/artworkEditor/ArtworkEditor";
-import AppDataFetching from "./AppDataFetching";
 import GalleryArtworkViewer from "./app/gallery/GalleryArtworkViewer";
 import GalleryHome from "./app/gallery/GalleryHome";
 import GalleryEditor from "./app/gallery/GalleryEditor";
 import AccountDelete from "./app/userAccountScreens/accountDelete/AccountDelete";
 import AccountSubscription from "./app/userAccountScreens/accountSubscription/AccountSubscription";
 
-class ArtflyRouting extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { unlisten: null, params: {} };
-    }
-
-    componentDidMount() {
-        // set up routing
-        /*const location = history.location;
-        this.setPageData(location.pathname);
-        const unlisten = history.listen((location) => {
-            this.setPageData(location.pathname);
-        });
-        this.setState({ unlisten: unlisten });*/
-    }
-
-    componentWillUnmount() {
-        // stop listening for route changes
-        // this.state.unlisten();
-    }
-
-    setPageData(fullPath) {
-        /*const page = fullPath === '/' ? 'home' : fullPath.split('/').slice(1)[0];
-        const params = getParams(fullPath);
-
-        this.setState({ page, params });
-         setTimeout(() => {
-             console.log("page: ", page);
-             window.scrollTo(0,0);
-         }, 1);
-
-        ga.set({ page: page });
-        ga.pageview(fullPath);*/
-    }
-
-    render() {
-        const { params } = this.state;
-        const { currentPage } = this.props;
-
-        return (
-            <AppDataFetching params={params}>
-                {currentPage}
-            </AppDataFetching>
-        );
-    }
-}
+const ArtflyRouting = ({ currentPage, params }) => {
+    return (
+        <AppDataFetching params={params}>
+            {currentPage}
+        </AppDataFetching>
+    );
+};
 
 const mapAppStateToProps = (state) => {
-  return {
-      currentPage: getCurrentPageComponent(state)
-  }
+    return {
+        currentPage: getCurrentPageComponent(state),
+        params: getRouteParams(state)
+    }
 };
 
 export default connect(mapAppStateToProps)(ArtflyRouting);
 
-const getCurrentPageComponent = (state) => {
-  const {routing} = state;
+const getRouteParams = state => getParams(state.routing.pathname);
 
-  if(!routing.pathname) return Home;
+const getCurrentPageComponent = (state) => {
+    const { routing } = state;
+
+    if (!routing.pathname) return Home;
 
     const page = routing.pathname === '/' ? 'home' : routing.pathname.split('/').slice(1)[0];
     const params = getParams(routing.pathname);
 
-    console.log("page: ", page);
-    console.log("params: ", params);
+    // this should be called after any redirect manipulation
+    ga.set({ page: page });
+    ga.pageview(routing.pathname);
 
     return getPageComponent(page, params);
 };
