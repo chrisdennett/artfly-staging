@@ -43,11 +43,7 @@ class ArtflyRouting extends React.Component {
 
     render() {
         const { currentPage } = this.props;
-        return (
-            <div>
-                {currentPage}
-            </div>
-        )
+        return (currentPage)
     }
 }
 

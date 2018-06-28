@@ -9,12 +9,6 @@ import LoadingThing from "../loadingThing/LoadingThing";
 import UserProfile from "./userProfile/UserProfile";
 import UserSignIn from './userSignIn/UserSignIn';
 
-/*
-* Responsibility:
-* To display the correct account screen depending on state.
-* - sign in
-* - user profile
-* */
 class UserAccountScreens extends Component {
 
     render() {

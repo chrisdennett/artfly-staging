@@ -12,32 +12,31 @@ import Home from "./app/home/Home";
 import UserAccountScreens from "./app/userAccountScreens/UserAccountScreens";
 import AccountSubscription from "./app/userAccountScreens/accountSubscription/AccountSubscription";
 import AccountDelete from "./app/userAccountScreens/accountDelete/AccountDelete";
+import UserAccountDeleted from "./app/userAccountDeleted/UserAccountDeleted";
 
 export const findMissingData = state => {
     const { routing, artworks, galleries } = state;
 
     if (!routing.pathname) return null;
     const params = getParams(routing.pathname);
-    const {artworkId, galleryId} = params;
+    const { artworkId, galleryId } = params;
 
-    if(!artworkId && !galleryId) return null;
+    if (!artworkId && !galleryId) return null;
 
     let missingData = {};
 
     // ARTWORK
-    if(artworkId && !artworks[artworkId]){
+    if (artworkId && !artworks[artworkId]) {
         missingData.artworkId = artworkId;
     }
 
     // GALLERY
-    if(galleryId && !galleries[galleryId]){
+    if (galleryId && !galleries[galleryId]) {
         missingData.galleryId = galleryId;
     }
 
     return missingData;
 };
-
-export const getRouteParams = state => getParams(state.routing.pathname);
 
 export const getCurrentPageComponent = (state) => {
     const { routing } = state;
@@ -51,7 +50,53 @@ export const getCurrentPageComponent = (state) => {
     ga.set({ page: page });
     ga.pageview(routing.pathname);
 
-    return getPageComponent(page, params);
+    const { artworkId, galleryId, editor } = params;
+
+    if (state.account && state.account.status === 'deleted') {
+        return <UserAccountDeleted/>
+    }
+
+    if (page === 'home') {
+        return <Home/>;
+    }
+
+    if (page === 'gallery') {
+        // gallery can either be showing an artwork
+        if (galleryId && artworkId) return <GalleryArtworkViewer galleryId={galleryId} artworkId={artworkId}/>;
+        // or showing the gallery home page
+        else if (galleryId) return <GalleryHome galleryId={galleryId}/>;
+        // or if missing params go home
+        else return <Home/>;
+    }
+
+    if (page === 'galleryEditor') {
+        return <GalleryEditor galleryId={galleryId}/>;
+    }
+
+    if (page === 'profile') {
+        return <UserAccountScreens/>;
+    }
+
+    if (page === 'accountSubscription') {
+        return <AccountSubscription/>;
+    }
+
+    if (page === 'accountDelete') {
+        return <AccountDelete/>;
+    }
+
+    if (page === 'artworkAdder') {
+        return <ArtworkAdder galleryId={galleryId}/>;
+    }
+    if (page === 'artworkEditor') {
+        return <ArtworkEditor galleryId={galleryId} artworkId={artworkId} editor={editor}/>;
+    }
+    if (page === 'TESTING') {
+        return <TestPage/>;
+    }
+
+    // if got this far don't know what it is
+    return <FourOhFour/>;
 };
 
 const getParams = (url) => {
@@ -71,56 +116,3 @@ const getParams = (url) => {
 
     return params;
 };
-
-function getPageComponent(page, params) {
-    const { artworkId, galleryId } = params;
-    let PageComponent;
-
-    switch (page) {
-        case 'home':
-            PageComponent = Home;
-            break;
-
-        case 'gallery':
-            // gallery can either be showing an artwork
-            if (galleryId && artworkId) PageComponent = GalleryArtworkViewer;
-            // or showing the gallery home page
-            else if (galleryId) PageComponent = GalleryHome;
-            // or if missing params go home
-            else PageComponent = Home;
-            break;
-
-        case 'galleryEditor':
-            PageComponent = GalleryEditor;
-            break;
-
-        case 'profile':
-            PageComponent = UserAccountScreens;
-            break;
-
-        case 'accountSubscription':
-            PageComponent = AccountSubscription;
-            break;
-
-        case 'accountDelete':
-            PageComponent = AccountDelete;
-            break;
-
-        case 'artworkAdder':
-            PageComponent = ArtworkAdder;
-            break;
-
-        case 'artworkEditor':
-            PageComponent = ArtworkEditor;
-            break;
-
-        case 'TESTING':
-            PageComponent = TestPage;
-            break;
-
-        default:
-            PageComponent = FourOhFour;
-    }
-
-    return <PageComponent {...params} />;
-}
