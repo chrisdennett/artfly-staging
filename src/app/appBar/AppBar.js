@@ -5,7 +5,7 @@ import { Toolbar, ToolbarRow, ToolbarSection, ToolbarTitle, ToolbarIcon, Toolbar
 import './appBar_styles.css';
 // comps
 import UserMenu from "../userMenu/UserMenu";
-import HomeIconButton from "../../homeIconButton/HomeIconButton";
+import HomeIconButton from "../home/homeIconButton/HomeIconButton";
 
 // Includes save and cancel options
 export const EditAppBar = ({ title, onSaveClick, onCancelClick, fixed = false, hasChanges, onCloseClick }) => (

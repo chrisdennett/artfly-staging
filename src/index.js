@@ -9,7 +9,7 @@ import store from './store/store';
 // actions
 import { UpdateUrl} from "./actions/UrlActions";
 // homebrew routing
-import AppRouting from "./AppRouting";
+import AppRouting from "./App";
 
 
 const {history, location} = window;

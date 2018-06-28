@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 // ui
 import { Ripple } from 'rmwc/Ripple';
 // actions
-import {UpdateUrl} from "../actions/UrlActions";
+import {UpdateUrl} from "../../../actions/UrlActions";
 // comps
 import IconLogo from './IconLogo';
 

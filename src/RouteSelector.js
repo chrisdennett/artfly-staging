@@ -1,44 +1,21 @@
 import React from "react";
-import { connect } from 'react-redux';
 import ga from './libs/googleAnalyticsConfig';
-// styles
-import 'material-components-web/dist/material-components-web.min.css';
-import './appStyles.css';
-// comps
-import AppDataFetching from "./AppDataFetching";
-// route comps
-import Home from './app/home/Home';
-import FourOhFour from "./app/fourOhFour/FourOhFour";
-import UserAccountScreens from "./app/userAccountScreens/UserAccountScreens";
-import ArtworkAdder from "./app/artworkAdder/ArtworkAdder";
+//
 import TestPage from "./app/testPage/TestPage";
-import ArtworkEditor from "./app/artworkEditor/ArtworkEditor";
 import GalleryArtworkViewer from "./app/gallery/GalleryArtworkViewer";
 import GalleryHome from "./app/gallery/GalleryHome";
+import ArtworkAdder from "./app/artworkAdder/ArtworkAdder";
+import ArtworkEditor from "./app/artworkEditor/ArtworkEditor";
 import GalleryEditor from "./app/gallery/GalleryEditor";
-import AccountDelete from "./app/userAccountScreens/accountDelete/AccountDelete";
+import FourOhFour from "./app/fourOhFour/FourOhFour";
+import Home from "./app/home/Home";
+import UserAccountScreens from "./app/userAccountScreens/UserAccountScreens";
 import AccountSubscription from "./app/userAccountScreens/accountSubscription/AccountSubscription";
+import AccountDelete from "./app/userAccountScreens/accountDelete/AccountDelete";
 
-const ArtflyRouting = ({ currentPage, params }) => {
-    return (
-        <AppDataFetching params={params}>
-            {currentPage}
-        </AppDataFetching>
-    );
-};
+export const getRouteParams = state => getParams(state.routing.pathname);
 
-const mapAppStateToProps = (state) => {
-    return {
-        currentPage: getCurrentPageComponent(state),
-        params: getRouteParams(state)
-    }
-};
-
-export default connect(mapAppStateToProps)(ArtflyRouting);
-
-const getRouteParams = state => getParams(state.routing.pathname);
-
-const getCurrentPageComponent = (state) => {
+export const getCurrentPageComponent = (state) => {
     const { routing } = state;
 
     if (!routing.pathname) return Home;

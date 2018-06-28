@@ -1,8 +1,0 @@
-<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="65" width="67.44" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 67.437508 65.000001">
- <g>
-  <rect style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" ry="7.719" height="65" width="67.49" y="0" x="0" fill="#fff"/>
-  <text style="word-spacing:0px;letter-spacing:0px" xml:space="preserve" font-size="9.67px" y="56.825848" x="8.6173019" font-family="sans-serif" line-height="125%" fill="#000000"><tspan font-weight="900" font-size="11.86px" y="56.825848" x="8.6173019" font-family="&apos;Source Code Pro&apos;">add art</tspan></text>
-  <path d="m45.3 36.11h-23.16c-1.476 0-2.672-1.183-2.672-2.643v-15.86c0-1.46 1.196-2.643 2.672-2.643h23.16c1.476 0 2.672 1.183 2.672 2.643v15.86c0 1.46-1.196 2.643-2.672 2.643zm-19.6-18.06c-1.722 0-3.118 1.381-3.118 3.084s1.396 3.084 3.118 3.084 3.118-1.381 3.118-3.084-1.396-3.084-3.118-3.084zm-2.672 14.54h21.38v-6.167l-4.872-4.819c-.2609-.2580-.6839-.2580-.9448 0l-7.544 7.462-3.091-3.057c-.2609-.2580-.6839-.2580-.9448 0l-3.981 3.938v2.643z"/>
-  <rect stroke-linejoin="round" style="color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" ry="5.467" height="30.05" width="38.24" stroke="#000" stroke-linecap="round" y="10.51" x="14.6" stroke-width="6" fill="none"/>
- </g>
-</svg>
