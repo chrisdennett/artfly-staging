@@ -7,21 +7,21 @@ import { SimpleDialog } from 'rmwc/Dialog';
 // styles
 import './accountDelete_styles.css';
 // actions
-import { UpdateUrl } from "../../../actions/UrlActions";
-import { deleteUserArtworks, deleteUserData, deleteUserAuth } from '../../../actions/DeleteUserActions';
+import { UpdateUrl } from "../../actions/UrlActions";
+import { deleteUserArtworks, deleteUserData, deleteUserAuth } from '../../actions/DeleteUserActions';
 // comps
-import { TempScreenAppBar } from "../../appBar/AppBar";
+import { TempScreenAppBar } from "../appBar/AppBar";
 import {
     getDeleteAuthError,
     getSignInProvider,
     getTotalUserArtworks,
     getUserGalleryId,
     getUserId
-} from "../../../selectors/Selectors";
+} from "../../selectors/Selectors";
 import SignIn from "../userSignIn/signIn/SignIn";
-import Redirect from "../../global/Redirect";
+import Redirect from "../global/Redirect";
 
-class AccountDelete extends Component {
+class UserAccountDelete extends Component {
 
     constructor(props) {
         super(props);
@@ -68,7 +68,7 @@ class AccountDelete extends Component {
             <div className={'accountDeletePage'}>
                 <TempScreenAppBar title={'Delete account'}
                                   isFixed={true}
-                                  onCloseClick={UpdateUrl('/')}/>
+                                  onCloseClick={() => UpdateUrl('/')}/>
 
                 <SimpleDialog
                     title={dialogTitle}
@@ -193,4 +193,4 @@ const mapStateToProps = (state) => (
     }
 );
 
-export default connect(mapStateToProps, { UpdateUrl, deleteUserData, deleteUserAuth, deleteUserArtworks })(AccountDelete);
+export default connect(mapStateToProps, { UpdateUrl, deleteUserData, deleteUserAuth, deleteUserArtworks })(UserAccountDelete);

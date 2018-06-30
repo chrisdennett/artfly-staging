@@ -1,5 +1,7 @@
 import React from "react";
 import ga from './libs/googleAnalyticsConfig';
+// store - where the entire app state lives
+import store from './store/store';
 //
 import TestPage from "./app/testPage/TestPage";
 import GalleryArtworkViewer from "./app/gallery/GalleryArtworkViewer";
@@ -9,10 +11,12 @@ import ArtworkEditor from "./app/artworkEditor/ArtworkEditor";
 import GalleryEditor from "./app/gallery/GalleryEditor";
 import FourOhFour from "./app/fourOhFour/FourOhFour";
 import Home from "./app/home/Home";
-import UserAccountScreens from "./app/userAccountScreens/UserAccountScreens";
-import AccountSubscription from "./app/userAccountScreens/accountSubscription/AccountSubscription";
-import AccountDelete from "./app/userAccountScreens/accountDelete/AccountDelete";
+import UserSignIn from "./app/userSignIn/UserSignIn";
+import UserProfile from "./app/userProfile/UserProfile";
+import AccountSubscription from "./app/userAccountSubscription/UserAccountSubscription";
+import AccountDelete from "./app/userAccountDelete/UserAccountDelete";
 import UserAccountDeleted from "./app/userAccountDeleted/UserAccountDeleted";
+import { UpdateUrl } from "./actions/UrlActions";
 
 export const findMissingData = state => {
     const { routing, artworks, galleries } = state;
@@ -39,7 +43,7 @@ export const findMissingData = state => {
 };
 
 export const getCurrentPageComponent = (state) => {
-    const { routing } = state;
+    const { routing, user } = state;
 
     if (!routing.pathname) return Home;
 
@@ -73,8 +77,18 @@ export const getCurrentPageComponent = (state) => {
         return <GalleryEditor galleryId={galleryId}/>;
     }
 
+    if(page === 'signIn'){
+        return <UserSignIn/>
+    }
+
     if (page === 'profile') {
-        return <UserAccountScreens/>;
+        if (user.uid) {
+            return <UserProfile/>;
+        }
+        else{
+            store.dispatch(UpdateUrl('/'));
+            return <Home />
+        }
     }
 
     if (page === 'accountSubscription') {
@@ -82,6 +96,8 @@ export const getCurrentPageComponent = (state) => {
     }
 
     if (page === 'accountDelete') {
+        // store.dispatch(UpdateUrl('/'));
+        // return <Home />
         return <AccountDelete/>;
     }
 

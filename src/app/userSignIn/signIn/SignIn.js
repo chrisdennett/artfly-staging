@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from 'firebase/app';
 // actions
-import {setLastManualUserSignIn} from "../../../../actions/UserAuthActions";
+import {setLastManualUserSignIn} from "../../../actions/UserAuthActions";
 // styles
 import './signIn_styles.css';
 

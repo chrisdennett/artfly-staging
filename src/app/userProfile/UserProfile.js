@@ -3,18 +3,27 @@ import { connect } from 'react-redux';
 // material ui
 import { Button, ButtonIcon } from 'rmwc/Button';
 // actions
-import { UpdateUrl } from "../../../actions/UrlActions";
+import { UpdateUrl } from "../../actions/UrlActions";
 // styles
 import './userProfile_styles.css';
 // comps
 import AuthDetails from "./AuthDetails";
-import AppBar from "../../appBar/AppBar";
+import AppBar from "../appBar/AppBar";
+import { getSignInProvider, getTotalUserArtworks, getUserGalleryId } from "../../selectors/Selectors";
+import LoadingThing from "../loadingThing/LoadingThing";
 
 const UserProfile = ({ user, UpdateUrl, userSignInMethod, totalUserArtworks, userGalleryId }) => {
+
+
     return (
         <div className={'userProfilePage'}>
             <AppBar title={'Profile'}/>
 
+            {!userSignInMethod &&
+            <LoadingThing/>
+            }
+
+            {userSignInMethod &&
             <div className={'userProfile'}>
 
                 <div className={'userProfile--actions'}>
@@ -51,8 +60,17 @@ const UserProfile = ({ user, UpdateUrl, userSignInMethod, totalUserArtworks, use
                     </Button>
                 </div>
             </div>
+            }
         </div>
     )
 };
 
-export default connect(null, { UpdateUrl })(UserProfile);
+const mapStateToProps = (state) => {
+    return {
+        user: state.user,
+        userSignInMethod: getSignInProvider(state),
+        userGalleryId: getUserGalleryId(state),
+        totalUserArtworks: getTotalUserArtworks(state)
+    }
+};
+export default connect(mapStateToProps, { UpdateUrl })(UserProfile);

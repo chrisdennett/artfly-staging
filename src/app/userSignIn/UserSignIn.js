@@ -4,10 +4,10 @@ import { Typography } from 'rmwc/Typography';
 // styles
 import './userSignIn_styles.css';
 // actions
-import { UpdateUrl } from "../../../actions/UrlActions";
+import { UpdateUrl } from "../../actions/UrlActions";
 // comps
 import SignIn from './signIn/SignIn';
-import { TempScreenAppBar } from "../../appBar/AppBar";
+import { TempScreenAppBar } from "../appBar/AppBar";
 
 const UserSignIn = ({UpdateUrl}) => {
     return (

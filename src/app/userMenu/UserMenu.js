@@ -13,7 +13,7 @@ import {
 import { signOutUser } from "../../actions/UserAuthActions";
 import { UpdateUrl } from "../../actions/UrlActions";
 // comps
-import SignInButt from '../userAccountScreens/userSignIn/signIn/SignInButt';
+import SignInButt from '../userSignIn/signIn/SignInButt';
 
 class UserMenu extends Component {
 
@@ -59,7 +59,7 @@ class UserMenu extends Component {
                     </Menu>
 
                     {!userSignedIn &&
-                    <SignInButt onClick={() => UpdateUrl('/profile')}/>
+                    <SignInButt onClick={() => UpdateUrl('/signIn')}/>
                     }
 
                     {userSignedIn &&

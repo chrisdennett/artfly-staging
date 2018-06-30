@@ -5,12 +5,12 @@ import { Typography } from 'rmwc/Typography';
 // styles
 import './accountSubscription_styles.css';
 // actions
-import { UpdateUrl } from "../../../actions/UrlActions";
+import { UpdateUrl } from "../../actions/UrlActions";
 // comps
-import { TempScreenAppBar } from "../../appBar/AppBar";
-import SubscribeButton from '../../global/SubscribeButton';
+import { TempScreenAppBar } from "../appBar/AppBar";
+import SubscribeButton from '../global/SubscribeButton';
 
-class AccountSubscription extends Component {
+class UserAccountSubscription extends Component {
 
     render() {
         const { UpdateUrl } = this.props;
@@ -35,4 +35,4 @@ class AccountSubscription extends Component {
     }
 }
 
-export default connect(null, { UpdateUrl })(AccountSubscription);
+export default connect(null, { UpdateUrl })(UserAccountSubscription);
