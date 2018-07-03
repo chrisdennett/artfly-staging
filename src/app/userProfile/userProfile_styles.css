@@ -5,7 +5,7 @@
 
 .userProfile {
     margin: 0 auto;
-    padding: 20px;
+    padding: 10px 20px 20px 20px;
     max-width: 500px;
 }
 
@@ -36,6 +36,7 @@
 
 .userProfile--detail--type {
     width: 75px;
+    color: #8f8f8f;
 }
 
 .userProfile--detail--value {

@@ -31,7 +31,7 @@ const AuthDetails = function ({ user, userSignInMethod }) {
 
                 <div className={'userProfile--detail'}>
                     <div className={'userProfile--detail--type'}>Sign in:</div>
-                    <div className={'userProfile--detail--value'}>{userSignInMethod}</div>
+                    <div className={'userProfile--detail--value'}>with {userSignInMethod}</div>
                 </div>
 
             </div>

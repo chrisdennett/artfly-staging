@@ -12,6 +12,8 @@ export const connectRouteToStore = store => {
     const restoreScrollPosition = () => {
         const { state } = window.history;
         if (state) {
+            console.log("state: ", state);
+
             const newStyle = `height: ${state.height}px; width: ${state.width}px;`;
             document.body.setAttribute("style", newStyle);
             window.scrollTo(state.x, state.y);
@@ -54,14 +56,16 @@ export const connectRouteToStore = store => {
     store.subscribe(() => {
         const { pathname } = store.getState().routing;
 
-
         if (location.pathname !== pathname) {
             window.history.pushState(null, "", pathname);
             saveScrollPosition();
             // force scroll to top this is what browsers normally do when
             // navigating by clicking a link to a new page.
+
             document.body.scrollTop = 0;
             document.body.scrollLeft = 0;
+
+            window.scrollTo(0,0);
         }
     });
 };

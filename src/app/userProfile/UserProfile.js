@@ -9,11 +9,12 @@ import './userProfile_styles.css';
 // comps
 import AuthDetails from "./AuthDetails";
 import AppBar from "../appBar/AppBar";
-import { getSignInProvider, getTotalUserArtworks, getUserGalleryId } from "../../selectors/Selectors";
+import UserGalleryCard from './UserGalleryCard';
+import UserSubscriptionCard from './UserSubscriptionCard';
+import { getSignInProvider, getTotalUserArtworks, getUserGallery, getUserGalleryId } from "../../selectors/Selectors";
 import LoadingThing from "../loadingThing/LoadingThing";
 
-const UserProfile = ({ user, UpdateUrl, userSignInMethod, totalUserArtworks, userGalleryId }) => {
-
+const UserProfile = ({ user, UpdateUrl, userSignInMethod, totalUserArtworks, userGallery, account }) => {
 
     return (
         <div className={'userProfilePage'}>
@@ -26,32 +27,21 @@ const UserProfile = ({ user, UpdateUrl, userSignInMethod, totalUserArtworks, use
             {userSignInMethod &&
             <div className={'userProfile'}>
 
-                <div className={'userProfile--actions'}>
-                    {userGalleryId &&
-                    <Button raised onClick={() => UpdateUrl(`/gallery/galleryId_${userGalleryId}_galleryId`)}>
-                        <ButtonIcon use="dashboard"/>
-                        Gallery
-                    </Button>
-                    }
-                </div>
-
                 <AuthDetails
                     user={user}
                     userSignInMethod={userSignInMethod.label}
                     totalUserArtworks={totalUserArtworks}
                 />
 
-                <div className={'userProfile--detail'}>
-                    <div className={'userProfile--detail--type'}>Artworks:</div>
-                    <div className={'userProfile--detail--value'}>{totalUserArtworks}</div>
-                </div>
+                {account &&
+                <UserSubscriptionCard account={account}
+                                      totalArtworks={totalUserArtworks}
+                                      updateUrl={UpdateUrl}  />
+                }
 
-                <div>
-                    Membership: free
-                    <Button raised theme={'secondary-bg'}
-                            onClick={() => UpdateUrl(`/accountSubscription`)}>Upgrade</Button>
-                </div>
-
+                {userGallery &&
+                <UserGalleryCard userGallery={userGallery} updateUrl={UpdateUrl} />
+                }
 
                 <div className={'userProfile--deleteSection'}>
                     <Button outlined onClick={() => UpdateUrl(`/accountDelete`)}>
@@ -68,8 +58,10 @@ const UserProfile = ({ user, UpdateUrl, userSignInMethod, totalUserArtworks, use
 const mapStateToProps = (state) => {
     return {
         user: state.user,
+        account: state.account,
         userSignInMethod: getSignInProvider(state),
         userGalleryId: getUserGalleryId(state),
+        userGallery: getUserGallery(state),
         totalUserArtworks: getTotalUserArtworks(state)
     }
 };

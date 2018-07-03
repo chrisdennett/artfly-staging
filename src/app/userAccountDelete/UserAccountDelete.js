@@ -64,7 +64,7 @@ class UserAccountDelete extends Component {
             <div className={'accountDeletePage'}>
                 <TempScreenAppBar title={'Delete account'}
                                   isFixed={true}
-                                  onCloseClick={() => UpdateUrl('/')}/>
+                                  onCloseClick={() => UpdateUrl('/profile')}/>
 
                 <SimpleDialog
                     title={dialogTitle}

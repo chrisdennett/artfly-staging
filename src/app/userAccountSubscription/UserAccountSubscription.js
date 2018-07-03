@@ -19,7 +19,7 @@ class UserAccountSubscription extends Component {
             <div className={'accountSubscription'}>
                 <TempScreenAppBar title={'Membership'}
                                   isFixed={true}
-                                  onCloseClick={() => UpdateUrl('/')}/>
+                                  onCloseClick={() => UpdateUrl('/profile')}/>
 
                 <div className={'accountSubscription--content'}>
                     <Typography tag={'h1'} use={'headline6'}>
