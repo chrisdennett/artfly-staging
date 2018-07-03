@@ -109,6 +109,10 @@ export function getArtworkDataOnce(artworkId) {
                 }
                 else {
                     // doc.data() will be undefined in this case
+                    dispatch({
+                        type: ARTWORK_CHANGE,
+                        payload: { [artworkId]: 'missing' }
+                    });
                 }
             })
             .catch(function (error) {

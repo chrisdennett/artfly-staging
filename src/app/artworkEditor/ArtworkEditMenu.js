@@ -24,7 +24,7 @@ const ArtworkEditMenu = ({ isOpen, onClose, artworkId, galleryId, UpdateUrl }) =
             onClose={onClose}
         >
             <DrawerContent>
-                <ListItem onClick={() => UpdateUrl(path('frame'))}>
+                <ListItem onClick={() => UpdateUrl(path('frame'), 'ArtworkEditMenu > frame')}>
                     <ListItemGraphic>
                         <img style={imgStyle} src={IconFrameSize} alt={'frame size icon'}/>
                     </ListItemGraphic>
@@ -33,7 +33,7 @@ const ArtworkEditMenu = ({ isOpen, onClose, artworkId, galleryId, UpdateUrl }) =
                     </ListItemText>
                 </ListItem>
 
-                <ListItem onClick={() => UpdateUrl(path('crop'))}>
+                <ListItem onClick={() => UpdateUrl(path('crop'), 'ArtworkEditMenu > crop')}>
                     <ListItemGraphic>
                         <img style={imgStyle} src={IconCropRotate} alt={'crop and rotate icon'}/>
                     </ListItemGraphic>

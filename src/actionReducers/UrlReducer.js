@@ -9,6 +9,6 @@ export default function (state = initialState, action) {
         case UPDATE_URL:
             return { pathname: action.payload };
         default:
-            return initialState;
+            return state;
     }
 };

@@ -1,5 +1,5 @@
 import debounce from "debounce";
-import { UpdateUrl } from "./actions/UrlActions";
+import { UpdateUrl } from "../actions/UrlActions";
 
 export const connectRouteToStore = store => {
     const { history, location } = window;
@@ -53,6 +53,7 @@ export const connectRouteToStore = store => {
     // changing state in redux
     store.subscribe(() => {
         const { pathname } = store.getState().routing;
+
 
         if (location.pathname !== pathname) {
             window.history.pushState(null, "", pathname);

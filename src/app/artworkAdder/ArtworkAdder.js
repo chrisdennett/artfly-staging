@@ -14,7 +14,6 @@ import { GetImage } from "../global/ImageHelper";
 import { EditAppBar } from "../appBar/AppBar";
 import PhotoSelector from "../photoSelector/PhotoSelector";
 import CropAndRotateEditor from "../artworkEditor/cropAndRotateEditor/CropAndRotateEditor";
-import ArtworkEditorSavingProgress from "../artworkEditor/ArtworkEditorSavingProgress";
 import LoadingThing from "../loadingThing/LoadingThing";
 import MaximumArtworksReached from "./maximumArtworksReached/MaximumArtworksReached";
 
@@ -55,18 +54,11 @@ class ArtworkAdder extends Component {
 
     render() {
         const { img, artworkData } = this.state;
-        const { UpdateUrl, artworkSavingProgress, totalArtworksFetchProgress, galleryId, totalUserArtworks, maxArtworksAllowed } = this.props;
+        const { UpdateUrl, totalArtworksFetchProgress, galleryId, totalUserArtworks, maxArtworksAllowed } = this.props;
 
         const maximumArtworkLimitReached = totalUserArtworks >= maxArtworksAllowed;
         const showPhotoSelector = !img && !maximumArtworkLimitReached;
         const showPhotoCropper = img && !maximumArtworkLimitReached;
-        // const saveComplete = artworkSavingProgress.status === 'complete';
-        const showPhotoSavingProgress = artworkSavingProgress.status === 'saving';
-
-        const savedArtworkId = artworkSavingProgress.artworkId;
-
-        let title = 'Add Artwork';
-        if (showPhotoSavingProgress) title = 'Saving...';
 
         if (totalArtworksFetchProgress !== 'fetched') {
             return <LoadingThing/>
@@ -75,7 +67,7 @@ class ArtworkAdder extends Component {
         return (
             <div className={'artworkAdder'}>
 
-                <EditAppBar title={title}
+                <EditAppBar title={'Add Artwork'}
                             hasChanges={showPhotoCropper}
                             onCloseClick={() => UpdateUrl(`/gallery/galleryId_${galleryId}_galleryId`)}
                             onSaveClick={this.onSaveNewArtwork}
@@ -86,11 +78,6 @@ class ArtworkAdder extends Component {
                                         totalUserArtworks={totalUserArtworks}
                                         maxArtworksAllowed={maxArtworksAllowed}/>
                 }
-
-                <ArtworkEditorSavingProgress artworkSavingProgress={artworkSavingProgress}
-                                             label={'Saving source image, artwork and thumbnail'}
-                                             redirectTo={`/gallery/galleryId_${galleryId}_galleryId/artworkId_${savedArtworkId}_artworkId`}/>
-
 
                 {showPhotoSelector &&
                 <div className={'artworkAdder--photoSelectorHolder'}>
@@ -115,7 +102,6 @@ const mapStateToProps = (state) => (
         totalArtworksFetchProgress: state.dataFetching.userArtworks,
         totalUserArtworks: getTotalUserArtworks(state),
         maxArtworksAllowed: getMaxArtworksAllowed(state),
-        artworkSavingProgress: state.artworkSavingProgress
     }
 );
 export default connect(mapStateToProps, { addNewArtwork, UpdateUrl })(ArtworkAdder);

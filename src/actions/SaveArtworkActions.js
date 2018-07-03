@@ -3,35 +3,12 @@ import { auth, firestoreDb as db, storage, storageEvent, storageRef as store } f
 import { getImageBlob, generateUUID } from "../app/global/ImageHelper";
 // constants
 import { THUMB_SIZE, LARGE_IMG_SIZE, MAX_IMG_SIZE } from '../app/global/GLOBAL_CONSTANTS';
-import { ARTWORK_CHANGE } from "./GetArtworkActions";
+// import { ARTWORK_CHANGE } from "./GetArtworkActions";
 
 export const SAVING_ARTWORK_TRIGGERED = 'saving_artwork_triggered';
 export const SAVING_ARTWORK_COMPLETE = 'saving_artwork_complete';
 export const SAVING_ARTWORK_PROGRESS = 'saving_artwork_progress';
-export const SAVING_ARTWORK_CLEAR_PROGRESS = 'saving_artwork_clear_progress';
 
-export function resetArtworkSavingProgress() {
-    return dispatch => {
-        dispatch({
-            type: SAVING_ARTWORK_CLEAR_PROGRESS
-        });
-    }
-}
-
-// UPDATE ARTWORK
-export function updateArtwork(artworkId, newArtworkData, callback = null) {
-    return dispatch => {
-
-        saveArtworkChanges(artworkId, newArtworkData, () => {
-            dispatch({
-                type: ARTWORK_CHANGE,
-                payload: { [artworkId]: newArtworkData }
-            });
-
-            if (callback) callback();
-        });
-    }
-}
 
 // ADD ARTWORK
 export function addNewArtwork(imgFile, artworkData) {
@@ -156,7 +133,7 @@ export function updateArtworkAndImage(imgFile, artworkData, artworkId) {
                         saveArtworkChanges(artworkId, fullArtworkData, () => {
                             dispatch({
                                 type: SAVING_ARTWORK_COMPLETE,
-                                payload: artworkId
+                                payload:{ [artworkId]: fullArtworkData }
                             });
                         });
                     });
@@ -222,6 +199,23 @@ function saveNewArtworkData(userId, newArtworkData, callback) {
     saveArtworkChanges(artworkId, newArtworkData, () => {
         if (callback) callback(artworkId);
     });
+}
+
+// UPDATE ARTWORK
+export function updateArtwork(artworkId, newArtworkData) {
+    return dispatch => {
+
+        dispatch({
+            type: SAVING_ARTWORK_TRIGGERED
+        });
+
+        saveArtworkChanges(artworkId, newArtworkData, () => {
+            dispatch({
+                type: SAVING_ARTWORK_COMPLETE,
+                payload:{ [artworkId]: newArtworkData }
+            });
+        });
+    }
 }
 
 // SAVE ARTWORK CHANGES

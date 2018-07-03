@@ -23,6 +23,10 @@ html, body {
     font-family: 'Roboto', sans-serif;
 }
 
+.no-scroll-bars{
+    overflow: hidden;
+}
+
 .sectionTitle{
     width: 100%;
     text-align: center;

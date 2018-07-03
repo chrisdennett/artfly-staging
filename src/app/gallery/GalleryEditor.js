@@ -15,7 +15,6 @@ import { getGallery } from "../../selectors/Selectors";
 import { EditAppBar } from "../appBar/AppBar";
 import LoadingThing from "../loadingThing/LoadingThing";
 import GalleryTitles from "./GalleryTitles";
-import GalleryEditorSavingProgress from "./GalleryEditorSavingProgress";
 // constants
 import { MAX_GALLERY_TITLE_LENGTH, MAX_GALLERY_SUBTITLE_LENGTH } from '../global/GLOBAL_CONSTANTS';
 
@@ -73,11 +72,6 @@ class GalleryEditor extends Component {
                             onCancelClick={() => this.setState({ unsavedGalleryData: {} })}
                             onCloseClick={() => UpdateUrl(`/gallery/galleryId_${currentGallery.galleryId}_galleryId`)}
                 />
-
-                {currentGallery &&
-                <GalleryEditorSavingProgress status={currentGallery.status}
-                                             redirectTo={`/gallery/galleryId_${currentGallery.galleryId}_galleryId`}/>
-                }
 
                 {!currentGallery &&
                 <LoadingThing/>

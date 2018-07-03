@@ -1,6 +1,6 @@
 import {
     SAVING_ARTWORK_TRIGGERED, SAVING_ARTWORK_PROGRESS,
-    SAVING_ARTWORK_COMPLETE, SAVING_ARTWORK_CLEAR_PROGRESS
+    SAVING_ARTWORK_COMPLETE
 } from '../actions/SaveArtworkActions';
 
 const initialData = {
@@ -23,11 +23,17 @@ export default function (state = initialData, action) {
 
         case SAVING_ARTWORK_COMPLETE:
             const artworkId = Object.keys(action.payload)[0];
+            console.log("SAVING_ARTWORK_COMPLETE artworkId: ", artworkId);
 
-            return { ...state, status: 'complete', artworkId};
+            return {...initialData, lastIdSaved:artworkId};
+
+        /*case SAVING_ARTWORK_COMPLETE:
+            const artworkId = Object.keys(action.payload)[0];
+
+            return { ...state, status: 'complete', artworkId };
 
         case SAVING_ARTWORK_CLEAR_PROGRESS:
-            return initialData;
+            return initialData;*/
 
         default:
             return state;

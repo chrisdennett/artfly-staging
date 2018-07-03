@@ -1,6 +1,4 @@
 import React from 'react';
-// import ArtworkAdderSavingProgress from "../artworkAdder/ArtworkAdderSavingProgress";
-// import AppBar from "../appBar/AppBar";
 
 const TestPage = () => {
     return (
@@ -9,7 +7,6 @@ const TestPage = () => {
 };
 
 export default TestPage;
-
 
 
 //<TestArtworkAdderSavingProgress />

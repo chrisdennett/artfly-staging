@@ -19,7 +19,6 @@ import {
     getUserId
 } from "../../selectors/Selectors";
 import SignIn from "../userSignIn/signIn/SignIn";
-import Redirect from "../global/Redirect";
 
 class UserAccountDelete extends Component {
 
@@ -32,7 +31,6 @@ class UserAccountDelete extends Component {
     render() {
         const {
                   userId,
-                  user,
                   userAccount,
                   userGalleryId,
                   totalArtworks,
@@ -51,8 +49,6 @@ class UserAccountDelete extends Component {
         const showAuthDeleteButton = authStepEnabled && !deleteAuthError;
         const showSignInButton = authStepEnabled && deleteAuthError;
         const completedStyle = { textDecoration: 'line-through' };
-
-        if (user === 'signed-out') return <Redirect to={'/'}/>;
 
         let dialogTitle, dialogBody;
         if (step1Completed) {

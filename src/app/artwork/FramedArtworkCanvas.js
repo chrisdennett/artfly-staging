@@ -13,15 +13,15 @@ class FramedArtworkCanvas extends Component {
         this.onFrameCanvasInit = this.onFrameCanvasInit.bind(this);
     }
 
-    componentWillUpdate(newProps) {
-        const { maxWidth: currMaxWidth, maxHeight: currMaxHeight, artworkData } = this.props;
-        const { maxWidth: newMaxWidth, maxHeight: newMaxHeight } = newProps;
+    componentDidUpdate(prevProps) {
+        const { maxWidth: currMaxWidth, maxHeight: currMaxHeight, artworkData } = prevProps;
+        const { maxWidth: newMaxWidth, maxHeight: newMaxHeight } = this.props;
 
-        const newArtwork = artworkData !== newProps.artworkData;
+        const newArtwork = artworkData !== this.props.artworkData;
         const screenSizeChange = currMaxHeight !== newMaxHeight || currMaxWidth !== newMaxWidth;
 
         if (newArtwork || screenSizeChange) {
-            this.drawFrame(newProps);
+            this.drawFrame(this.props);
         }
     }
 

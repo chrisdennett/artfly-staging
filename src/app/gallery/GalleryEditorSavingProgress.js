@@ -2,16 +2,12 @@ import React from 'react';
 // material ui
 import { LinearProgress } from 'rmwc/LinearProgress';
 import { Typography } from 'rmwc/Typography';
-// comps
-import Redirect from "../global/Redirect";
 
-const GalleryEditorSavingProgress = ({ status, label = 'Updating gallery:', redirectTo }) => {
+const GalleryEditorSavingProgress = ({ status, label = 'Updating gallery:' }) => {
 
     if (!status) {
         return null;
     }
-
-    const doRedirect = redirectTo && status === 'updated';
 
     const holderStyle = {
         backgroundColor: 'rgba(0,0,0,0.6)',
@@ -34,10 +30,6 @@ const GalleryEditorSavingProgress = ({ status, label = 'Updating gallery:', redi
             </Typography>
 
             <LinearProgress style={processBarStyle} determinate={false}/>
-
-            {doRedirect &&
-            <Redirect to={redirectTo}/>
-            }
         </div>
     )
 };

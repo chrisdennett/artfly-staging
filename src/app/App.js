@@ -4,12 +4,14 @@ import { connect } from 'react-redux';
 import 'material-components-web/dist/material-components-web.min.css';
 import './appStyles.css';
 // actions
-import { fetchUserArtworks, getArtworkDataOnce } from "./actions/GetArtworkActions";
-import { listenForUserAuthChanges } from "./actions/UserAuthActions";
-import { fetchUserAccount } from "./actions/UserAccountActions";
-import { fetchGalleryData, fetchUserGallery, fetchUserGalleryArtworks } from "./actions/GalleryDataActions";
+import { fetchUserArtworks, getArtworkDataOnce } from "../actions/GetArtworkActions";
+import { listenForUserAuthChanges } from "../actions/UserAuthActions";
+import { fetchUserAccount } from "../actions/UserAccountActions";
+import { UpdateUrl } from "../actions/UrlActions";
+import { fetchGalleryData, fetchUserGallery, fetchUserGalleryArtworks } from "../actions/GalleryDataActions";
 // selectors
-import { getCurrentPageComponent, findMissingData } from "./AppRouteSelector";
+import { getCurrentPageComponent, findMissingData, getRedirectPath } from "./AppRouteSelector";
+import ArtworkEditorSavingProgress from "./artworkEditor/ArtworkEditorSavingProgress";
 
 class ArtflyRouting extends React.Component {
 
@@ -21,6 +23,14 @@ class ArtflyRouting extends React.Component {
     componentDidUpdate(prevProps) {
         const { uid: newUid } = this.props.user;
         const { uid: currentUid } = prevProps.user;
+        const { redirectPath } = this.props;
+
+        // call redirect if state determines it's needed
+        if (redirectPath) {
+            console.log("redirectPath: ", redirectPath);
+            this.props.UpdateUrl(redirectPath);
+            return;
+        }
 
         if (newUid && newUid !== currentUid) {
             this.props.fetchUserAccount(newUid);
@@ -43,13 +53,19 @@ class ArtflyRouting extends React.Component {
 
     render() {
         const { currentPage } = this.props;
-        return (currentPage)
+        return (
+            <div>
+                <ArtworkEditorSavingProgress/>
+                {currentPage}
+            </div>
+        );
     }
 }
 
 const mapAppStateToProps = (state) => {
     return {
         user: state.user,
+        redirectPath: getRedirectPath(state),
         missingData: findMissingData(state),
         currentPage: getCurrentPageComponent(state)
     }
@@ -61,6 +77,7 @@ const mapActionsToProps = {
     fetchUserAccount,
     fetchUserGallery,
     fetchGalleryData,
+    UpdateUrl,
     fetchUserGalleryArtworks
 };
 export default connect(mapAppStateToProps, mapActionsToProps)(ArtflyRouting);
