@@ -11,9 +11,7 @@ import {
 } from 'rmwc/Card';
 
 const UserSubscriptionCard = ({account,updateUrl, totalArtworks}) => {
-
     const {dateJoined} = account;
-    console.log("account: ", account);
 
     const d = new Date(dateJoined);
     const date = d.getDate();
