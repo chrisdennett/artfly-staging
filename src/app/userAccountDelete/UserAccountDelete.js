@@ -1,7 +1,5 @@
 import React from "react";
 import { connect } from 'react-redux';
-// ui
-import { Typography } from 'rmwc/Typography';
 // styles
 import './accountDelete_styles.css';
 // actions
@@ -18,6 +16,7 @@ import {
 } from "../../selectors/Selectors";
 import SignIn from "../userSignIn/signIn/SignIn";
 import AccountDeleteStep from "./AccountDeleteStep";
+import LoadingThing from "../loadingThing/LoadingThing";
 
 const UserAccountDelete = ({
                                userId,
@@ -32,6 +31,8 @@ const UserAccountDelete = ({
                                UpdateUrl
                            }) => {
 
+    console.log("userAccount: ", userAccount);
+
     const step1Completed = totalArtworks === 0;
     const step2Completed = userAccount.status === 'deleted';
 
@@ -44,7 +45,13 @@ const UserAccountDelete = ({
                               isFixed={true}
                               onCloseClick={() => UpdateUrl('/profile')}/>
 
-            <Typography tag={'div'} use={'body1'} className={'accountDelete'}>
+
+            {!userAccount.status &&
+            <LoadingThing/>
+            }
+
+            {userAccount.status &&
+            <div className={'accountDelete'}>
 
                 <AccountDeleteStep completed={step1Completed}
                                    number={1}
@@ -76,7 +83,8 @@ const UserAccountDelete = ({
                                    description={'This will remove your sign in authorisation.'}
                                    onDeleteConfirm={deleteUserAuth}
                 />
-            </Typography>
+            </div>
+            }
         </div>
     );
 }
