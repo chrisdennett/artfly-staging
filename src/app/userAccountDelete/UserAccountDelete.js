@@ -1,9 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from 'react-redux';
 // ui
-import { Button } from 'rmwc/Button';
 import { Typography } from 'rmwc/Typography';
-import { SimpleDialog } from 'rmwc/Dialog';
 // styles
 import './accountDelete_styles.css';
 // actions
@@ -19,155 +17,68 @@ import {
     getUserId
 } from "../../selectors/Selectors";
 import SignIn from "../userSignIn/signIn/SignIn";
+import AccountDeleteStep from "./AccountDeleteStep";
 
-class UserAccountDelete extends Component {
+const UserAccountDelete = ({
+                               userId,
+                               userAccount,
+                               userGalleryId,
+                               totalArtworks,
+                               userSignInMethod,
+                               deleteUserData,
+                               deleteUserAuth,
+                               deleteUserArtworks,
+                               deleteAuthError,
+                               UpdateUrl
+                           }) => {
 
-    constructor(props) {
-        super(props);
+    const step1Completed = totalArtworks === 0;
+    const step2Completed = userAccount.status === 'deleted';
 
-        this.state = { deleteConfirmDialogIsOpen: false };
-    }
+    const authStepEnabled = step1Completed && step2Completed;
+    const showSignInButton = authStepEnabled && deleteAuthError;
 
-    render() {
-        const {
-                  userId,
-                  userAccount,
-                  userGalleryId,
-                  totalArtworks,
-                  userSignInMethod,
-                  deleteUserData,
-                  deleteUserAuth,
-                  deleteUserArtworks,
-                  deleteAuthError,
-                  UpdateUrl
-              } = this.props;
+    return (
+        <div className={'accountDeletePage'}>
+            <TempScreenAppBar title={'Delete account'}
+                              isFixed={true}
+                              onCloseClick={() => UpdateUrl('/profile')}/>
 
-        const step1Completed = totalArtworks === 0;
-        const step2Completed = userAccount.status === 'deleted';
+            <Typography tag={'div'} use={'body1'} className={'accountDelete'}>
 
-        const authStepEnabled = step1Completed && step2Completed;
-        const showAuthDeleteButton = authStepEnabled && !deleteAuthError;
-        const showSignInButton = authStepEnabled && deleteAuthError;
-        const completedStyle = { textDecoration: 'line-through' };
-
-        let dialogTitle, dialogBody;
-        if (step1Completed) {
-            dialogTitle = 'Delete all data and sign in?';
-            dialogBody = 'All of your gallery data will be permanently deleted and your sign-in will be removed.';
-        }
-        else {
-            dialogTitle = 'Delete all artworks?';
-            dialogBody = 'All of your artworks will be permanently deleted. There is no undo.';
-        }
-
-        return (
-            <div className={'accountDeletePage'}>
-                <TempScreenAppBar title={'Delete account'}
-                                  isFixed={true}
-                                  onCloseClick={() => UpdateUrl('/profile')}/>
-
-                <SimpleDialog
-                    title={dialogTitle}
-                    body={dialogBody}
-                    open={this.state.deleteConfirmDialogIsOpen}
-                    onClose={() => this.setState({ deleteConfirmDialogIsOpen: false })}
-                    onAccept={() => console.log('Accepted')}
-                    onCancel={() => console.log('Cancelled')}
+                <AccountDeleteStep completed={step1Completed}
+                                   number={1}
+                                   title={`Delete ${totalArtworks} artworks`}
+                                   description={'This will permanently delete all images and other artwork data.'}
+                                   onDeleteConfirm={deleteUserArtworks}
                 />
 
-                <Typography tag={'div'} use={'body1'} className={'accountDelete'}>
+                <AccountDeleteStep completed={step2Completed}
+                                   number={2}
+                                   disabled={!step1Completed}
+                                   title={'Delete all user data'}
+                                   description={'This will permanently delete gallery data.'}
+                                   onDeleteConfirm={() => deleteUserData(userId, userAccount.accountId, userGalleryId)}
+                />
 
-                    <div className={'accountDelete--step--holder'}>
-                        <div className={'accountDelete--step'}>
-                            <div className={'accountDelete--step--label'}
-                                 style={step1Completed ? completedStyle : {}}>
-                                Step 1: Delete <span
-                                className={'accountDelete--totalArtworks'}>{totalArtworks}</span> artworks.
-                            </div>
+                {showSignInButton &&
+                <div className={'accountDelete--step'}>
+                    <p>There was an error removing your sign in data because it needs a recent sign in. Please
+                        sign in and then try again.</p>
+                    <SignIn providerId={userSignInMethod.id}
+                            successRedirect={'/deleteAccount'}/>
+                </div>
+                }
 
-                            {!step1Completed &&
-                            <Button raised primary
-                                    className={'accountDelete--step--button'}
-                                    onClick={deleteUserArtworks}>
-                                confirm delete
-                            </Button>
-                            }
-
-                            {step1Completed &&
-                            <div className={'accountDelete--step--completed'}>
-                                DONE
-                            </div>
-                            }
-                        </div>
-                        <p className={'accountDelete--step--info'}>This will permanently delete
-                            all <strong>images</strong> and other <strong>artwork</strong> data.</p>
-                    </div>
-
-                    <div className={'accountDelete--step--holder'}>
-                        <div className={'accountDelete--step'}>
-                            <div className={'accountDelete--step--label'}
-                                 style={step2Completed ? completedStyle : {}}>
-                                Step 2: Delete all user data.
-                            </div>
-
-                            {!step2Completed &&
-                            <Button raised primary
-                                    className={'accountDelete--step--button'}
-                                    onClick={() => deleteUserData(userId, userAccount.accountId, userGalleryId)}>
-                                confirm delete
-                            </Button>
-                            }
-
-                            {step2Completed &&
-                            <div className={'accountDelete--step--completed'}>
-                                DONE
-                            </div>
-                            }
-                        </div>
-                        <p className={'accountDelete--step--info'}>This will permanently
-                            delete <strong>gallery</strong> data.</p>
-                    </div>
-
-                    <div className={'accountDelete--step--holder'}>
-                        <div className={'accountDelete--step'}>
-                            <div className={'accountDelete--step--label'}>
-                                Step 3: Delete {userSignInMethod ? userSignInMethod.label : ''} sign in
-                            </div>
-
-                            {showAuthDeleteButton &&
-                            <Button raised primary
-                                    disabled={!authStepEnabled}
-                                    className={'accountDelete--step--button'}
-                                    onClick={() => deleteUserAuth()}>
-                                confirm
-                            </Button>
-                            }
-                        </div>
-
-                        {showSignInButton &&
-                        <div className={'accountDelete--step'}>
-                            <p>There was an error removing your sign in data because it needs a recent sign in. Please
-                                sign in and then try again.</p>
-                            <SignIn providerId={userSignInMethod.id}
-                                    successRedirect={'/deleteAccount'}/>
-                        </div>
-                        }
-
-
-                        {!authStepEnabled &&
-                        <p className={'accountDelete--step--warning'}>
-                            Sign in data can only be removed after all other data has been deleted.
-                        </p>
-                        }
-
-                        <p className={'accountDelete--step--info'}>
-                            This will remove your sign in authorisation. <br/>
-                        </p>
-                    </div>
-                </Typography>
-            </div>
-        );
-    }
+                <AccountDeleteStep number={3}
+                                   disabled={!step2Completed}
+                                   title={`Delete ${userSignInMethod ? userSignInMethod.label : ''} sign in`}
+                                   description={'This will remove your sign in authorisation.'}
+                                   onDeleteConfirm={deleteUserAuth}
+                />
+            </Typography>
+        </div>
+    );
 }
 
 /*

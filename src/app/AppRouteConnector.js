@@ -12,8 +12,6 @@ export const connectRouteToStore = store => {
     const restoreScrollPosition = () => {
         const { state } = window.history;
         if (state) {
-            console.log("state: ", state);
-
             const newStyle = `height: ${state.height}px; width: ${state.width}px;`;
             document.body.setAttribute("style", newStyle);
             window.scrollTo(state.x, state.y);

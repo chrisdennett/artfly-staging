@@ -1,9 +1,13 @@
+.accountDeletePage {
+    padding: 85px 0 0 0;
+    min-height: 100vh;
+    background-color: #f3f3f3;
+}
+
 .accountDelete{
-    background-color: white;
     display: flex;
     flex-direction: column;
     max-width: 600px;
-    padding-top: 95px;
     margin: 0 auto;
 }
 
