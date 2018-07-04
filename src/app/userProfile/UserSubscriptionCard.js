@@ -8,7 +8,6 @@ import {
     CardAction,
     CardActions,
     CardActionButtons,
-    CardActionIcons
 } from 'rmwc/Card';
 
 const UserSubscriptionCard = ({account,updateUrl, totalArtworks}) => {

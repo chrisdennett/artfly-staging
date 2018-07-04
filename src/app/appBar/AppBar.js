@@ -67,7 +67,7 @@ export const TempScreenAppBar = ({ title, onCloseClick, isFixed = false }) => (
         <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
 
             <ToolbarSection alignStart>
-                <HomeIconButton/>
+                {/*<HomeIconButton/>*/}
                 <ToolbarTitle>{title}</ToolbarTitle>
             </ToolbarSection>
 

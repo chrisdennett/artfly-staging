@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import './accountDelete_styles.css';
 // actions
 import { UpdateUrl } from "../../actions/UrlActions";
+import { updateUserAccount } from '../../actions/UserAccountActions';
 import { deleteUserArtworks, deleteUserData, deleteUserAuth } from '../../actions/DeleteUserActions';
 // comps
 import { TempScreenAppBar } from "../appBar/AppBar";
@@ -17,6 +18,7 @@ import {
 import SignIn from "../userSignIn/signIn/SignIn";
 import AccountDeleteStep from "./AccountDeleteStep";
 import LoadingThing from "../loadingThing/LoadingThing";
+import AccountDeletedMessage from './AccountDeletedMessage';
 
 const UserAccountDelete = ({
                                userId,
@@ -28,10 +30,9 @@ const UserAccountDelete = ({
                                deleteUserAuth,
                                deleteUserArtworks,
                                deleteAuthError,
-                               UpdateUrl
+                               UpdateUrl,
+                               updateUserAccount
                            }) => {
-
-    console.log("userAccount: ", userAccount);
 
     const step1Completed = totalArtworks === 0;
     const step2Completed = userAccount.status === 'deleted';
@@ -48,6 +49,15 @@ const UserAccountDelete = ({
 
             {!userAccount.status &&
             <LoadingThing/>
+            }
+
+            {step2Completed &&
+            <AccountDeletedMessage
+                onNewAccountClick={() => updateUserAccount(userAccount.accountId, {
+                    status: 'active',
+                    dateJoined: Date.now()
+                })}
+            />
             }
 
             {userAccount.status &&
@@ -108,4 +118,4 @@ const mapStateToProps = (state) => (
     }
 );
 
-export default connect(mapStateToProps, { UpdateUrl, deleteUserData, deleteUserAuth, deleteUserArtworks })(UserAccountDelete);
+export default connect(mapStateToProps, { UpdateUrl, updateUserAccount, deleteUserData, deleteUserAuth, deleteUserArtworks })(UserAccountDelete);
