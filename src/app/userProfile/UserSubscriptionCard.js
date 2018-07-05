@@ -24,7 +24,10 @@ const UserSubscriptionCard = ({ account, updateUrl, totalArtworks }) => {
 
     const userJoinDate = `${date} ${month} ${year}`;
 
-    console.log("membershipPlans: ", membershipPlans);
+    let membershipPlan;
+    if(!account.subscription){
+        membershipPlan = membershipPlans['free'];
+    }
 
     return (
         <Card style={{ width: '100%', marginTop: 20 }}>
@@ -47,7 +50,7 @@ const UserSubscriptionCard = ({ account, updateUrl, totalArtworks }) => {
             <CardPrimaryAction>
                 <div style={{ padding: '0 1rem 0 1rem' }}>
                     <Typography use="headline6" tag="h2">
-                        Membership: FREE
+                        Membership: {membershipPlan.planName}
                     </Typography>
                     <Typography
                         use="subtitle2"
@@ -62,7 +65,7 @@ const UserSubscriptionCard = ({ account, updateUrl, totalArtworks }) => {
                         Total Artworks: {totalArtworks}
                     </Typography>
                     <Typography use="body1" tag="div" theme="text-secondary-on-background">
-                        Maximum Artworks: 7
+                        Maximum Artworks: {membershipPlan.maxArtworks}
                     </Typography>
                 </div>
             </CardPrimaryAction>

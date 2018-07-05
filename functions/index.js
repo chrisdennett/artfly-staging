@@ -229,11 +229,22 @@ exports.subscriptionEvent = functions.https.onRequest((request, response) => {
         case 'subscription_payment_succeeded':
             updateDatabase = true;
             subscriptionObject.paidUntil = request.body.next_bill_date;
+            subscriptionObject.orderId = request.body.order_id;
+            subscriptionObject.saleGross = request.body.sale_gross;
+            subscriptionObject.paddlePlanName = request.body.plan_name;
+            subscriptionObject.receiptUrl = request.body.receipt_url;
             break;
 
         case 'subscription_payment_failed':
             updateDatabase = true;
             subscriptionObject.paymentFailed = true;
+            subscriptionObject.nextRetryDate = request.body.next_retry_date;
+            break;
+
+        case 'subscription_payment_refunded':
+            updateDatabase = true;
+            subscriptionObject.paymentRefunded = request.body.event_time;
+            subscriptionObject.nextRetryDate = request.body.next_retry_date;
             break;
 
         default:
@@ -247,13 +258,15 @@ exports.subscriptionEvent = functions.https.onRequest((request, response) => {
             .set({ subscription: subscriptionObject }, { merge: true })
             .then(() => {
                 console.log('Update subscription success');
+                response.status(200).end();
             })
             .catch(function (error) {
                 console.log('Update subscription failed: ', error);
             });
     }
-
-    response.send("update success");
+    else {
+        response.status(200).end();
+    }
 });
 
 // SUBSCRIPTION CREATED
@@ -290,4 +303,14 @@ body = {
     user_id: '239588',
     p_signature: 'prtNXviDqm0bKeEdwDQgY+CeIDGsLZREqc3myHsbOyRi/1b5kjf/H51lnnZn6wmPCfr7OZQZpyKi8f9DZs94G+RHXsUp7YWh9TQQWJDUoHmJ+3IRokxtcWiU83I/7WbeHw3fOGJtO+dRO/Jqp9E63kgo8+BOX1eafIe3WwgyPGWYkB24UnMiQIKE1CRxQ2FLAY9Pzdp2czXgNU0RaPTR650FHOoHOBqzObqJgxGo1Op2BC27V6kum5gBT4YjGrypSERRuMoVlFAtjfHkOrhRcE4bFh6oxOxgcrmTfh2pgIXFHDZhR+B4/pJYvclVkRdobHYlw+230f9WnW9nUht7CvoTswDFtThsNciNaSqvOUiy6Ra2TngxUeLq/WZ5u3+fSUUkBOXIOvudgmSZ2OOSHZBIQ54xYeO8Dld2lqKiE7eKdw6woPWPGW+Mb/POIlH3criVx+jzerusaKVK8A5eAvGpxQ4iwv7ZnUMXfzsZp5y1LY2AsflqM81yq00yzwmOhpi71IthxYWyUDw4TyaefJk9XV8nApUBYibsLmbTQXepArUebJLt70QT8KQQotX3k0V6wknLPdW72IpwdIDA19haDkZgrj2RWz1D8/xJG0xg0m2e+5knRUD3O5TZGVg8O5lRU2qrIXzwJ6BNNSQbXy6k4LlTINILt2ph2x41PRI='
 };
+*/
+
+/*
+// https://paddle.com/docs/subscriptions-event-reference/
+subscription_created
+subscription_updated
+subscription_cancelled
+subscription_payment_succeeded
+subscription_payment_failed
+subscription_payment_refunded
 */

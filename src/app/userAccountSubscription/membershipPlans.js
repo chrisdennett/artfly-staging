@@ -2,7 +2,7 @@
 // https://vendors.paddle.com/subscriptions/plans
 
 const membershipPlans = {
-    0:{
+    free:{
         planName: 'Free',
         maxArtworks: 7,
         price: '£0',
