@@ -1,0 +1,31 @@
+// properties are the paddle subscription checkout product IDs
+// https://vendors.paddle.com/subscriptions/plans
+
+const membershipPlans = {
+    0:{
+        planName: 'Free',
+        maxArtworks: 7,
+        price: '£0',
+        maxArtists: 2
+    },
+    516947:{
+        planName:'Individual',
+        maxArtworks: 500,
+        price: '£1.85',
+        maxArtists: 1
+    },
+    533578:{
+        planName:'Family',
+        maxArtworks: 1000,
+        price: '£2.85',
+        maxArtists: 8
+    },
+    518909:{
+        planName:'School',
+        maxArtworks: 5000,
+        price: '£5.85',
+        maxArtists: 42
+    }
+};
+
+export default membershipPlans;

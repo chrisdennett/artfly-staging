@@ -7,11 +7,14 @@ import {
     CardPrimaryAction,
     CardAction,
     CardActions,
-    CardActionButtons,
+    CardActionButtons
 } from 'rmwc/Card';
+// data
+import membershipPlans from '../userAccountSubscription/membershipPlans';
+import LoadingThing from "../loadingThing/LoadingThing";
 
-const UserSubscriptionCard = ({account,updateUrl, totalArtworks}) => {
-    const {dateJoined} = account;
+const UserSubscriptionCard = ({ account, updateUrl, totalArtworks }) => {
+    const { dateJoined } = account;
 
     const d = new Date(dateJoined);
     const date = d.getDate();
@@ -20,6 +23,8 @@ const UserSubscriptionCard = ({account,updateUrl, totalArtworks}) => {
     const year = d.getFullYear();
 
     const userJoinDate = `${date} ${month} ${year}`;
+
+    console.log("membershipPlans: ", membershipPlans);
 
     return (
         <Card style={{ width: '100%', marginTop: 20 }}>
@@ -32,8 +37,13 @@ const UserSubscriptionCard = ({account,updateUrl, totalArtworks}) => {
                 Your membership
             </Typography>
 
-            <ListDivider />
+            <ListDivider/>
 
+            {!dateJoined &&
+            <LoadingThing/>
+            }
+
+            {dateJoined &&
             <CardPrimaryAction>
                 <div style={{ padding: '0 1rem 0 1rem' }}>
                     <Typography use="headline6" tag="h2">
@@ -56,7 +66,8 @@ const UserSubscriptionCard = ({account,updateUrl, totalArtworks}) => {
                     </Typography>
                 </div>
             </CardPrimaryAction>
-            <CardActions style={{justifyContent: 'flex-end'}}>
+            }
+            <CardActions style={{ justifyContent: 'flex-end' }}>
                 <CardActionButtons>
                     <CardAction theme={'secondary-bg on-secondary'}
                                 onClick={() => updateUrl(`/accountSubscription`)}>
