@@ -192,11 +192,8 @@ const firestore = new Firestore();
 
 // listen for Paddle subscription events
 exports.subscriptionEvent = functions.https.onRequest((request, response) => {
-    // const ref = admin.database().ref();
     const alertName = request.body.alert_name;
     const userId = request.body.passthrough;
-    // const ref = functions.firestore.collection('users').doc(userId);
-    // const ref = firestore.doc(`users/${userId}`);
 
     const subscriptionObject = {};
     subscriptionObject.status = request.body.status; // status can be active, trailing, past_due, deleted

@@ -11,6 +11,7 @@ import {
 } from 'rmwc/Card';
 // data
 import membershipPlans from '../userAccountSubscription/membershipPlans';
+// comps
 import LoadingThing from "../loadingThing/LoadingThing";
 
 const UserSubscriptionCard = ({ account, updateUrl, totalArtworks }) => {
@@ -27,6 +28,11 @@ const UserSubscriptionCard = ({ account, updateUrl, totalArtworks }) => {
     let membershipPlan;
     if(!account.subscription){
         membershipPlan = membershipPlans['free'];
+    }
+    else{
+        console.log("account.subscription: ", account.subscription);
+        const {planId} = account.subscription;
+        membershipPlan = membershipPlans[planId];
     }
 
     return (
@@ -74,7 +80,7 @@ const UserSubscriptionCard = ({ account, updateUrl, totalArtworks }) => {
                 <CardActionButtons>
                     <CardAction theme={'secondary-bg on-secondary'}
                                 onClick={() => updateUrl(`/accountSubscription`)}>
-                        upgrade
+                        change
                     </CardAction>
                 </CardActionButtons>
             </CardActions>
