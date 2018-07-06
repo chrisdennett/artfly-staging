@@ -53,7 +53,7 @@ const UserSubscriptionCard = ({ account, updateUrl, totalArtworks }) => {
             }
 
             {dateJoined &&
-            <CardPrimaryAction>
+            <CardPrimaryAction onClick={() => updateUrl(`/accountSubscription`)}>
                 <div style={{ padding: '0 1rem 0 1rem' }}>
                     <Typography use="headline6" tag="h2">
                         Membership: {membershipPlan.planName}

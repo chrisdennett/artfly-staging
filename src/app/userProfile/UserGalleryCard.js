@@ -25,7 +25,7 @@ const UserGalleryCard = ({ userGallery, updateUrl }) => {
 
             <ListDivider/>
 
-            <CardPrimaryAction>
+            <CardPrimaryAction onClick={() => updateUrl(`/gallery/galleryId_${userGallery.galleryId}_galleryId`)}>
                 <div style={{ padding: '0 1rem 0 1rem' }}>
                     <Typography use="headline6" tag="h2">
                         {userGallery.title}
