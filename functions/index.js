@@ -258,6 +258,7 @@ exports.subscriptionEvent = functions.https.onRequest((request, response) => {
                 response.status(200).end();
             })
             .catch(function (error) {
+                // if no response is sent it (Paddle) should send again later
                 console.log('Update subscription failed: ', error);
             });
     }
