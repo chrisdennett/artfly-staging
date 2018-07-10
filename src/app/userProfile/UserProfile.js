@@ -11,10 +11,16 @@ import AuthDetails from "./AuthDetails";
 import AppBar from "../appBar/AppBar";
 import UserGalleryCard from './UserGalleryCard';
 import UserSubscriptionCard from './UserSubscriptionCard';
-import { getSignInProvider, getTotalUserArtworks, getUserGallery, getUserGalleryId } from "../../selectors/Selectors";
+import {
+    getMembershipPlan,
+    getSignInProvider,
+    getTotalUserArtworks,
+    getUserGallery,
+    getUserGalleryId
+} from "../../selectors/Selectors";
 import LoadingThing from "../loadingThing/LoadingThing";
 
-const UserProfile = ({ user, UpdateUrl, userSignInMethod, totalUserArtworks, userGallery, account }) => {
+const UserProfile = ({ user, membershipPlan, UpdateUrl, userSignInMethod, totalUserArtworks, userGallery, account }) => {
 
     return (
         <div className={'userProfilePage'}>
@@ -35,6 +41,7 @@ const UserProfile = ({ user, UpdateUrl, userSignInMethod, totalUserArtworks, use
 
                 {account &&
                 <UserSubscriptionCard account={account}
+                                      membershipPlan={membershipPlan}
                                       totalArtworks={totalUserArtworks}
                                       updateUrl={UpdateUrl}  />
                 }
@@ -58,6 +65,7 @@ const UserProfile = ({ user, UpdateUrl, userSignInMethod, totalUserArtworks, use
 const mapStateToProps = (state) => {
     return {
         user: state.user,
+        membershipPlan: getMembershipPlan(state),
         account: state.account,
         userSignInMethod: getSignInProvider(state),
         userGalleryId: getUserGalleryId(state),

@@ -11,29 +11,13 @@ import {
 } from 'rmwc/Card';
 // data
 import membershipPlans from '../userAccountSubscription/membershipPlans';
+// helpers
+import { TO_DATE_TEXT } from '../global/UTILS';
 // comps
 import LoadingThing from "../loadingThing/LoadingThing";
 
-const UserSubscriptionCard = ({ account, updateUrl, totalArtworks }) => {
+const UserSubscriptionCard = ({ account, membershipPlan, updateUrl, totalArtworks }) => {
     const { dateJoined } = account;
-
-    const d = new Date(dateJoined);
-    const date = d.getDate();
-    const monthIndex = d.getMonth();
-    const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][monthIndex];
-    const year = d.getFullYear();
-
-    const userJoinDate = `${date} ${month} ${year}`;
-
-    let membershipPlan;
-    if(!account.subscription){
-        membershipPlan = membershipPlans['free'];
-    }
-    else{
-        console.log("account.subscription: ", account.subscription);
-        const {planId} = account.subscription;
-        membershipPlan = membershipPlans[planId];
-    }
 
     return (
         <Card style={{ width: '100%', marginTop: 20 }}>
@@ -64,14 +48,14 @@ const UserSubscriptionCard = ({ account, updateUrl, totalArtworks }) => {
                         theme="text-secondary-on-background"
                         style={{ marginTop: '-1rem' }}
                     >
-                        Date joined: {userJoinDate}
+                        Date joined: {TO_DATE_TEXT(dateJoined)}
                     </Typography>
 
                     <Typography use="body1" tag="div" theme="text-secondary-on-background">
                         Total Artworks: {totalArtworks}
                     </Typography>
                     <Typography use="body1" tag="div" theme="text-secondary-on-background">
-                        Maximum Artworks: {membershipPlan.maxArtworks}
+                        Max Artworks: {membershipPlan.maxArtworks}
                     </Typography>
                 </div>
             </CardPrimaryAction>
@@ -80,7 +64,7 @@ const UserSubscriptionCard = ({ account, updateUrl, totalArtworks }) => {
                 <CardActionButtons>
                     <CardAction theme={'secondary-bg on-secondary'}
                                 onClick={() => updateUrl(`/accountSubscription`)}>
-                        change
+                        view / update
                     </CardAction>
                 </CardActionButtons>
             </CardActions>

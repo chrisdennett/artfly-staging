@@ -1,4 +1,57 @@
 import firebase from 'firebase/app';
+import {createSelector} from 'reselect';
+// TODO: move this to a data folder
+import membershipPlans from '../app/userAccountSubscription/membershipPlans';
+
+export const getMembershipDetails = createSelector(
+    state => state.account,
+    state => state.paddle,
+    (account, paddle) => {
+        if(!account) return null;
+
+        let membershipPlan = {};
+        if (!account.subscription) {
+            membershipPlan = {...membershipPlans['free']};
+        }
+        else {
+            const { planId } = account.subscription;
+            membershipPlan = {...membershipPlans[planId], ...account.subscription};
+        }
+
+        if(paddle){
+            membershipPlan.localPrice = paddle.localPrice;
+        }
+
+        membershipPlan.dateJoined = account.dateJoined ? account.dateJoined : '...';
+        membershipPlan.totalUserArtworks = account.userArtworkIds ? account.userArtworkIds.length : '...';
+
+        return membershipPlan;
+    }
+);
+
+export const getMembershipPlan = (state) => {
+    const { account, paddle } = state;
+
+    if(!account) return null;
+
+    let membershipPlan;
+    if (!account.subscription) {
+        membershipPlan = membershipPlans['free'];
+        membershipPlan.status = 'trying out';
+    }
+    else {
+        const { planId } = account.subscription;
+        membershipPlan = {...membershipPlans[planId], ...account.subscription};
+    }
+
+    if(paddle){
+        membershipPlan.localPrice = paddle.localPrice;
+    }
+
+    membershipPlan.dateJoined = account.dateJoined;
+
+    return membershipPlan;
+};
 
 export const getUserId = (state) => {
   const {user} = state;
@@ -56,6 +109,8 @@ export const getTotalUserArtworks = (state) => {
     const userArtworks = getUserArtworks(state);
     return userArtworks.length;
 };
+
+
 
 export const getMaxArtworksAllowed = (state) => {
     const {account} = state;

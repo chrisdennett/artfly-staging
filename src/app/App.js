@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import 'material-components-web/dist/material-components-web.min.css';
 import './appStyles.css';
 // actions
+import {fetchLocalPrice} from "../actions/PaddleActions";
 import { fetchUserArtworks, getArtworkDataOnce } from "../actions/GetArtworkActions";
 import { listenForUserAuthChanges } from "../actions/UserAuthActions";
 import { fetchUserAccount } from "../actions/UserAccountActions";
@@ -36,6 +37,8 @@ class ArtflyRouting extends React.Component {
             this.props.fetchUserAccount(newUid);
             this.props.fetchUserGallery(newUid);
             this.props.fetchUserArtworks(newUid);
+            this.props.fetchLocalPrice();
+
         }
 
         const { missingData } = this.props;
@@ -78,6 +81,7 @@ const mapActionsToProps = {
     fetchUserGallery,
     fetchGalleryData,
     UpdateUrl,
-    fetchUserGalleryArtworks
+    fetchUserGalleryArtworks,
+    fetchLocalPrice
 };
 export default connect(mapAppStateToProps, mapActionsToProps)(ArtflyRouting);

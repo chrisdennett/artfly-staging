@@ -1,3 +1,5 @@
+//https://paddle.com/docs/paddlejs-localized-prices/
+
 import { FETCH_LOCAL_PRICE, SUBSCRIBE_USER, UPDATE_SUBSCRIPTION, CANCEL_SUBSCRIPTION } from '../actions/PaddleActions';
 
 export default function (state = {}, action) {

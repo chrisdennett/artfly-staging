@@ -1,5 +1,6 @@
 // properties are the paddle subscription checkout product IDs
 // https://vendors.paddle.com/subscriptions/plans
+// local price is retrieved from paddle.  These prices are here as a fallback if Paddle API doesn't break
 
 const membershipPlans = {
     free:{

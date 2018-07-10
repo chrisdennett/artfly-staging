@@ -1,3 +1,4 @@
+//https://paddle.com/docs/paddlejs-localized-prices/
 import Paddle, { ProductId } from '../libs/paddleConfig';
 
 export const FETCH_LOCAL_PRICE = "fetchLocalPrice";
@@ -5,7 +6,7 @@ export const SUBSCRIBE_USER = "subscribeUser";
 export const UPDATE_SUBSCRIPTION = "updateSubscription";
 export const CANCEL_SUBSCRIPTION = "cancelSubscription";
 
-export function subscribeUser(userId, email) {
+export function subscribeUser(userId) {
     return (dispatch) => {
 
         dispatch({
@@ -54,7 +55,7 @@ export function subscribeUser(userId, email) {
         }
         */
 
-        checkoutSetupData.successCallback = (data) => {
+        checkoutSetupData.successCallback = () => {
             dispatch({
                 type: SUBSCRIBE_USER,
                 payload: "success"
@@ -87,6 +88,7 @@ export function cancelSubscription(updateUrl) {
 }
 
 export function updateSubscription(updateUrl) {
+
     return (dispatch) => {
         dispatch({
             type: UPDATE_SUBSCRIPTION,
@@ -109,10 +111,11 @@ export function fetchLocalPrice() {
         });
 
         Paddle.Product.Prices(ProductId, (prices) => {
-            const localPrice = prices.price.gross || '[...]';
+            // console.log("prices: ", prices);
+            // const localPrice = prices.price.gross || '[...]';
             dispatch({
                 type: FETCH_LOCAL_PRICE,
-                payload: localPrice
+                payload: prices.price
             });
         });
     }

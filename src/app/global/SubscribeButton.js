@@ -10,7 +10,7 @@ class SubscribeButton extends Component {
 
     onSubscribe = () => {
         const { userId } = this.props;
-        this.props.subscribeUser(userId, this.props.userEmail);
+        this.props.subscribeUser(userId);
     };
 
     render() {
@@ -26,7 +26,6 @@ class SubscribeButton extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userEmail: state.user.email,
         userId: state.user.uid
     }
 };
