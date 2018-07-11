@@ -20,9 +20,11 @@ import MembershipOption from "./MembershipOption";
 
 const UserAccountSubscription = ({ userId, membershipPlan, subscribeUser, UpdateUrl, cancelSubscription }) => {
 
-    if (!membershipPlan) {
+    if (membershipPlan.totalUserArtworks === '...') {
         return <LoadingThing/>
     }
+
+    console.log("membershipPlan: ", membershipPlan);
 
     const { localPrice, planName } = membershipPlan;
 
