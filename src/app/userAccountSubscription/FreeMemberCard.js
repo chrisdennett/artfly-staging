@@ -3,11 +3,11 @@ import React from "react";
 import { Typography } from 'rmwc/Typography';
 import { Card } from 'rmwc/Card';
 // helpers
-import { TO_DATE_TEXT } from "../global/UTILS";
+import LabelValueItem from "../global/labelValueItem/LabelValueItem";
 
 const FreeMemberCard = ({membershipDetails}) => {
 
-    const {planName, dateJoined, maxArtworks, totalUserArtworks } = membershipDetails;
+    const {planName, maxArtworks, totalUserArtworks } = membershipDetails;
 
     return (
         <Card style={{ width: '100%', marginTop: 0 }}>
@@ -16,21 +16,8 @@ const FreeMemberCard = ({membershipDetails}) => {
                     Current Membership: {planName}
                 </Typography>
 
-                <Typography
-                    use="subtitle2"
-                    tag="h3"
-                    theme="text-secondary-on-background"
-                    style={{ marginTop: '-1rem' }}
-                >
-                    Date joined: {isNaN(dateJoined) ? '...' : TO_DATE_TEXT(dateJoined)}
-                </Typography>
-
-                <Typography use="body1" tag="div" theme="text-secondary-on-background">
-                    Total Artworks: {totalUserArtworks}
-                </Typography>
-                <Typography use="body1" tag="div" theme="text-secondary-on-background">
-                    Max Artworks: {maxArtworks}
-                </Typography>
+                <LabelValueItem label={'Total Artworks:'} value={totalUserArtworks}/>
+                <LabelValueItem label={'Max Artworks'} value={maxArtworks}/>
             </div>
         </Card>
     );

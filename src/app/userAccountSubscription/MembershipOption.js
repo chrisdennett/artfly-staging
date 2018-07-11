@@ -2,6 +2,8 @@ import React from 'react';
 // ui
 import { Typography } from 'rmwc/Typography';
 import { Button } from 'rmwc/Button';
+// comps
+import LabelValueItem from "../global/labelValueItem/LabelValueItem";
 
 const MembershipOption = ({ membershipPlan, localPrice, subscribeUser, userId }) => {
 
@@ -16,15 +18,16 @@ const MembershipOption = ({ membershipPlan, localPrice, subscribeUser, userId })
                 Membership: {planName}
             </Typography>
 
-            <Typography use="body1" tag="div" theme="text-secondary-on-background">
-                Max Artworks: {maxArtworks}
-            </Typography>
+            <LabelValueItem label={'Max Artworks'} value={maxArtworks}/>
 
             {isPaidPlan &&
-            <Typography use="body1" tag="div" theme="text-secondary-on-background">
-                Monthly cost: {grossPrice} <Typography use={'caption'}
-                                                       tag={'span'}>{vatText}</Typography>
-            </Typography>
+            <LabelValueItem label={'Monthly cost:'}
+                            value={
+                                <span>
+                                        {grossPrice} <Typography use={'caption'}
+                                                                 tag={'span'}>{vatText}</Typography>
+                                    </span>
+                            }/>
             }
             {isPaidPlan &&
             <div className={'membershipOption--subscribeSection'}>
