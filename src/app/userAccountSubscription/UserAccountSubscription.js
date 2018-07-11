@@ -9,7 +9,7 @@ import { Card, CardAction, CardActions, CardActionButtons, CardActionIcons } fro
 import { UpdateUrl } from "../../actions/UrlActions";
 import { subscribeUser, updateSubscription, cancelSubscription } from "../../actions/PaddleActions";
 // selectors
-// import membershipPlans from '../userAccountSubscription/membershipPlans';
+import membershipPlans from '../userAccountSubscription/membershipPlans';
 import { getMembershipDetails } from "../../selectors/Selectors";
 // helpers
 import { TO_DATE_TEXT } from "../global/UTILS";
@@ -17,6 +17,8 @@ import { TO_DATE_TEXT } from "../global/UTILS";
 import { TempScreenAppBar } from "../appBar/AppBar";
 // import SubscribeButton from '../global/SubscribeButton';
 import LoadingThing from "../loadingThing/LoadingThing";
+import PaidMemberCard from './PaidMemberCard';
+import FreeMemberCard from "./FreeMemberCard";
 
 const UserAccountSubscription = ({ userId, membershipPlan, subscribeUser, UpdateUrl, cancelSubscription }) => {
 
@@ -25,6 +27,8 @@ const UserAccountSubscription = ({ userId, membershipPlan, subscribeUser, Update
     }
 
     const { localPrice, price, totalUserArtworks, planName, dateJoined, maxArtworks, paidUntil } = membershipPlan;
+
+    console.log("localPrice: ", localPrice);
 
     const grossPrice = localPrice && localPrice.gross ? localPrice.gross : price;
     const vatText = localPrice && localPrice.tax ? `(includes ${localPrice.tax} VAT)` : '';
@@ -38,65 +42,29 @@ const UserAccountSubscription = ({ userId, membershipPlan, subscribeUser, Update
 
 
             <div className={'accountSubscription--content'}>
-                <Card style={{ width: '100%', marginTop: 0 }}>
-                    <div style={{ padding: '0 1rem 1rem 1rem' }}>
-                        <Typography use="headline6" tag="h2">
-                            Current Membership: {planName}
-                        </Typography>
+                <PaidMemberCard membershipDetails={membershipPlan}
+                                totalUserArtworks={totalUserArtworks}
+                                cancelSubscription={cancelSubscription}
+                                localPrice={localPrice} />
 
-                        <Typography
-                            use="subtitle2"
-                            tag="h3"
-                            theme="text-secondary-on-background"
-                            style={{ marginTop: '-1rem' }}
-                        >
-                            Date joined: {isNaN(dateJoined) ? '...' : TO_DATE_TEXT(dateJoined)}
-                        </Typography>
-
-                        {membershipPlan.paidUntil &&
-                        <div>
-                            <Typography use="body1" tag="div" theme="text-secondary-on-background">
-                                Monthly cost: {grossPrice} <Typography use={'caption'}
-                                                                       tag={'span'}>{vatText}</Typography>
-                            </Typography>
-                            <Typography use="body1" tag="div" theme="text-secondary-on-background">
-                                Next payment: {TO_DATE_TEXT(paidUntil)}
-                            </Typography>
-                        </div>
-                        }
-
-                        <Typography use="body1" tag="div" theme="text-secondary-on-background">
-                            Total Artworks: {totalUserArtworks}
-                        </Typography>
-                        <Typography use="body1" tag="div" theme="text-secondary-on-background">
-                            Max Artworks: {maxArtworks}
-                        </Typography>
-                    </div>
-
-                    <CardActions>
-                        {isFreePlan &&
-                        <CardActionButtons style={{ paddingLeft: 5, paddingBottom: 5 }}
-                                           onClick={() => subscribeUser()}>
-                            <CardAction theme={'secondary-bg on-secondary'}>subscribe</CardAction>
-                        </CardActionButtons>
-                        }
-
-                        <CardActionIcons>
-                            {!isFreePlan &&
-                            <div>
-                                {/*<CardAction icon use="receipt"
-                                            onClick={() => cancelSubscription(membershipPlan.cancelUrl)}/>*/}
-                                <CardAction icon use="delete"
-                                            onClick={() => cancelSubscription(membershipPlan.cancelUrl)}/>
-                            </div>
-                            }
-                        </CardActionIcons>
-                    </CardActions>
-                </Card>
+                <FreeMemberCard membershipDetails={membershipPlan}
+                                totalUserArtworks={totalUserArtworks}/>
 
                 <div className={'accountSubscription--allOptions'}>
                     <Typography use={'headline6'}>All membership options</Typography>
                 </div>
+            </div>
+
+            <div className={'accountSubscription--plan'}>
+                <h2>Membership: {membershipPlans['free'].planName}</h2>
+                <p>Max Artworks: {membershipPlans['free'].maxArtworks}</p>
+                <p>Price per month: 0</p>
+            </div>
+
+            <div className={'accountSubscription--plan'}>
+                <h2>Membership: {membershipPlans['516947'].planName}</h2>
+                <p>Max Artworks: {membershipPlans['516947'].maxArtworks}</p>
+                <p>Price per month:{grossPrice} {vatText}</p>
             </div>
         </div>
     );
@@ -106,7 +74,7 @@ const UserAccountSubscription = ({ userId, membershipPlan, subscribeUser, Update
 const mapStateToProps = (state) => {
     return {
         membershipPlan: getMembershipDetails(state),
-        userId: state.user.uid,
+        userId: state.user.uid
     }
 };
 export default connect(mapStateToProps, { UpdateUrl, subscribeUser, updateSubscription, cancelSubscription })(UserAccountSubscription);

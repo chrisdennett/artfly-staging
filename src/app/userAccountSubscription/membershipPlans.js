@@ -10,11 +10,16 @@ const membershipPlans = {
         maxArtists: 2
     },
     516947:{
-        planName:'Individual',
-        maxArtworks: 500,
+        planName:'Club member',
+        maxArtworks: 250,
         price: '£1.85',
         maxArtists: 1
-    },
+    }
+};
+
+export default membershipPlans;
+
+/*
     533578:{
         planName:'Family',
         maxArtworks: 1000,
@@ -27,6 +32,4 @@ const membershipPlans = {
         price: '£5.85',
         maxArtists: 42
     }
-};
-
-export default membershipPlans;
+*/
