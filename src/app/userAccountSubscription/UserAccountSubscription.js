@@ -52,7 +52,8 @@ const UserAccountSubscription = ({ userId, membershipPlan, subscribeUser, Update
                     </Typography>
 
                     {!userIsOnFreePlan &&
-                    <MembershipOption membershipPlan={membershipPlans['free']}/>
+                    <MembershipOption membershipPlan={membershipPlans['free']}
+                                      message={"You'll automatically switch to this membership if you cancel your current subscription."}/>
                     }
 
                     {userIsOnFreePlan &&
