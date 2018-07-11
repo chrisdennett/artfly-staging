@@ -5,12 +5,14 @@
 const membershipPlans = {
     free:{
         planName: 'Free',
+        isPaidPlan: false,
         maxArtworks: 7,
         price: '£0',
         maxArtists: 2
     },
     516947:{
         planName:'Club member',
+        isPaidPlan: true,
         maxArtworks: 250,
         price: '£1.85',
         maxArtists: 1
@@ -22,12 +24,14 @@ export default membershipPlans;
 /*
     533578:{
         planName:'Family',
+        isPaidPlan: true,
         maxArtworks: 1000,
         price: '£2.85',
         maxArtists: 8
     },
     518909:{
         planName:'School',
+        isPaidPlan: true,
         maxArtworks: 5000,
         price: '£5.85',
         maxArtists: 42

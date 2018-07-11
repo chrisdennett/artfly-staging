@@ -1,21 +1,30 @@
-.accountSubscription{
-    padding: 75px 0 0 0;
+.accountSubscription {
+    padding: 95px 0 0 0;
     min-height: 100vh;
     background-color: #f3f3f3;
 }
 
-.accountSubscription--content{
+.accountSubscription--content {
     margin: 0 auto;
     padding: 10px 20px 20px 20px;
     max-width: 500px;
 }
 
-.accountSubscription--allOptions{
+.accountSubscription--membershipOptions {
     margin-top: 32px;
 }
+.accountSubscription--membershipOption--title {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
 
-.accountSubscription--plan{
+.accountSubscription--plan {
     margin: 0 auto;
     padding: 10px 20px 20px 20px;
     max-width: 500px;
+}
+
+.membershipOption--subscribeSection{
+    margin-top: 20px;
+    display: flex;
+    justify-content: right;
 }

@@ -1,13 +1,13 @@
 import React from 'react';
 // ui
 import { Typography } from 'rmwc/Typography';
-import { Card, CardAction, CardActions, CardActionButtons, CardActionIcons } from 'rmwc/Card';
+import { Card, CardAction, CardActions, CardActionButtons } from 'rmwc/Card';
 // helpers
 import { TO_DATE_TEXT } from "../global/UTILS";
 
-const PaidMemberCard = ({ membershipDetails, localPrice, totalUserArtworks, cancelSubscription }) => {
+const PaidMemberCard = ({ membershipDetails, cancelSubscription }) => {
 
-    const { planName, dateJoined, paidUntil, price, maxArtworks, cancelUrl } = membershipDetails;
+    const { planName, dateJoined, paidUntil, price, localPrice, maxArtworks, totalUserArtworks, cancelUrl } = membershipDetails;
 
     const grossPrice = localPrice && localPrice.gross ? localPrice.gross : price;
     const vatText = localPrice && localPrice.tax ? `(includes ${localPrice.tax} VAT)` : '';
@@ -46,9 +46,8 @@ const PaidMemberCard = ({ membershipDetails, localPrice, totalUserArtworks, canc
                 </Typography>
             </div>
 
-            <CardActions>
-                <CardActionButtons style={{ paddingLeft: 5, paddingBottom: 5 }}
-                                   onClick={() => cancelSubscription(cancelUrl)}>
+            <CardActions style={{ justifyContent:'flex-end' }}>
+                <CardActionButtons onClick={() => cancelSubscription(cancelUrl)}>
                     <CardAction>Cancel subscription</CardAction>
                 </CardActionButtons>
             </CardActions>

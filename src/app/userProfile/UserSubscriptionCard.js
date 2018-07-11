@@ -9,8 +9,6 @@ import {
     CardActions,
     CardActionButtons
 } from 'rmwc/Card';
-// data
-import membershipPlans from '../userAccountSubscription/membershipPlans';
 // helpers
 import { TO_DATE_TEXT } from '../global/UTILS';
 // comps

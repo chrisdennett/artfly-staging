@@ -1,13 +1,13 @@
 import React from "react";
 // ui
 import { Typography } from 'rmwc/Typography';
-import { Card, CardAction, CardActions, CardActionButtons } from 'rmwc/Card';
+import { Card } from 'rmwc/Card';
 // helpers
 import { TO_DATE_TEXT } from "../global/UTILS";
 
-const FreeMemberCard = ({membershipDetails, localPrice, totalUserArtworks}) => {
+const FreeMemberCard = ({membershipDetails}) => {
 
-    const {planName, dateJoined, maxArtworks } = membershipDetails;
+    const {planName, dateJoined, maxArtworks, totalUserArtworks } = membershipDetails;
 
     return (
         <Card style={{ width: '100%', marginTop: 0 }}>
@@ -32,15 +32,8 @@ const FreeMemberCard = ({membershipDetails, localPrice, totalUserArtworks}) => {
                     Max Artworks: {maxArtworks}
                 </Typography>
             </div>
-
-            {/*<CardActions>
-                <CardActionButtons style={{ paddingLeft: 5, paddingBottom: 5 }}
-                                   onClick={() => subscribeUser()}>
-                    <CardAction theme={'secondary-bg on-secondary'}>subscribe</CardAction>
-                </CardActionButtons>
-            </CardActions>*/}
         </Card>
     );
-}
+};
 
 export default FreeMemberCard;
