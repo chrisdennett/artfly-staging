@@ -38,6 +38,7 @@ const UserAccountSubscription = ({ userId, membershipPlan, subscribeUser, Update
             <div className={'accountSubscription--content'}>
                 {!userIsOnFreePlan &&
                 <PaidMemberCard membershipDetails={membershipPlan}
+                                freePlanMaxArtworks={membershipPlans['free'].maxArtworks}
                                 cancelSubscription={cancelSubscription}/>
                 }
 

@@ -5,7 +5,7 @@ import { Button } from 'rmwc/Button';
 // comps
 import LabelValueItem from "../global/labelValueItem/LabelValueItem";
 
-const MembershipOption = ({ membershipPlan, localPrice, subscribeUser, userId }) => {
+const MembershipOption = ({ membershipPlan, localPrice, subscribeUser, userId, message }) => {
 
     const { planName, maxArtworks, price, isPaidPlan } = membershipPlan;
 
@@ -18,7 +18,8 @@ const MembershipOption = ({ membershipPlan, localPrice, subscribeUser, userId })
                 Membership: {planName}
             </Typography>
 
-            <LabelValueItem label={'Max Artworks'} value={maxArtworks}/>
+            <LabelValueItem label={'Max Artworks'}
+                            value={maxArtworks}/>
 
             {isPaidPlan &&
             <LabelValueItem label={'Monthly cost:'}
@@ -34,6 +35,12 @@ const MembershipOption = ({ membershipPlan, localPrice, subscribeUser, userId })
                 <Button theme={'primary-bg on-primary'}
                         onClick={() => subscribeUser(userId)}>Subscribe</Button>
             </div>
+            }
+
+            {message &&
+            <Typography use="body1" tag="p">
+                {message}
+            </Typography>
             }
         </div>
     )
