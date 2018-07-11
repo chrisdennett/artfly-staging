@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // ui
 import { Typography } from 'rmwc/Typography';
-import { Button } from 'rmwc/Button';
+import { Button, ButtonIcon } from 'rmwc/Button';
 import { Card, CardAction, CardActions, CardActionButtons } from 'rmwc/Card';
 // helpers
 import { TO_DATE_TEXT } from "../global/UTILS";
@@ -20,10 +20,11 @@ class PaidMemberCard extends Component {
         const { confirmDeleteIsShowing } = this.state;
         const { membershipDetails, freePlanMaxArtworks, cancelSubscription } = this.props;
 
-        const { planName, paidUntil, price, localPrice, maxArtworks, totalUserArtworks, cancelUrl } = membershipDetails;
+        const { planName, paidUntil, price, localPrice, maxArtworks, totalUserArtworks, cancelUrl, receiptUrl } = membershipDetails;
 
         const grossPrice = localPrice && localPrice.gross ? localPrice.gross : price;
         const vatText = localPrice && localPrice.tax ? `(includes ${localPrice.tax} VAT)` : '';
+
 
         return (
             <Card style={{ width: '100%', marginTop: 0 }}>
@@ -40,7 +41,17 @@ class PaidMemberCard extends Component {
                                     </span>
                                     }/>
                     <LabelValueItem label={'Next payment:'} value={TO_DATE_TEXT(paidUntil)}/>
+
+                    {receiptUrl &&
+                    <LabelValueItem label={'Latest Receipt:'} value={
+                        <Button unelevated dense tag={'a'} href={receiptUrl} target={'_blank'}>
+                            <ButtonIcon use={'receipt'} /> receipt
+                        </Button>
+                    }/>
+                    }
+
                     <LabelValueListDivider/>
+
                     <LabelValueItem label={'Total Artworks:'} value={totalUserArtworks}/>
                     <LabelValueItem label={'Max Artworks'} value={maxArtworks}/>
 
@@ -63,14 +74,14 @@ class PaidMemberCard extends Component {
                     </Typography>
                     }
 
-                    <div style={{display:'flex', justifyContent:'flex-end'}}>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
 
                         <Button outlined onClick={() => cancelSubscription(cancelUrl)}>
                             Yes, cancel subscription
                         </Button>
 
                         <Button raised
-                                style={{marginLeft:10}}
+                                style={{ marginLeft: 10 }}
                                 onClick={() => this.setState({ confirmDeleteIsShowing: false })}>
                             No
                         </Button>

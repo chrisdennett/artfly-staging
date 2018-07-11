@@ -24,8 +24,6 @@ const UserAccountSubscription = ({ userId, membershipPlan, subscribeUser, Update
         return <LoadingThing/>
     }
 
-    console.log("membershipPlan: ", membershipPlan);
-
     const { localPrice, planName } = membershipPlan;
 
     const userIsOnFreePlan = planName === 'Free';
