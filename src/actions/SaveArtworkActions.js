@@ -86,7 +86,27 @@ export function addNewArtwork(imgFile, artworkData, callback) {
     }
 }
 
-export function updateArtworkAndImage(imgFile, artworkData, artworkId) {
+// UPDATE ARTWORK DATA ONLY
+export function updateArtwork(artworkId, newArtworkData, callback) {
+    return dispatch => {
+
+        dispatch({
+            type: SAVING_ARTWORK_TRIGGERED
+        });
+
+        saveArtworkChanges(artworkId, newArtworkData, () => {
+            dispatch({
+                type: SAVING_ARTWORK_COMPLETE,
+                payload:{ [artworkId]: newArtworkData }
+            });
+
+            if(callback) callback(artworkId);
+        });
+    }
+}
+
+// UPDATE ARTWORK & IMAGE
+export function updateArtworkAndImage(imgFile, artworkData, artworkId, callback) {
     return dispatch => {
 
         const { uid: userId } = auth.currentUser;
@@ -137,6 +157,8 @@ export function updateArtworkAndImage(imgFile, artworkData, artworkId) {
                                 type: SAVING_ARTWORK_COMPLETE,
                                 payload:{ [artworkId]: fullArtworkData }
                             });
+
+                            if(callback) callback(artworkId);
                         });
                     });
             });
@@ -193,7 +215,7 @@ function fs_saveArtworkImage(blobData, url, onChangeCallback, onCompleteCallback
             })
 }
 
-// SAVE NEW ARTWORK
+// SAVE NEW ARTWORK DATA
 function saveNewArtworkData(userId, newArtworkData, callback) {
     const artworkDatabaseRef = db.collection('artworks').doc();
     const artworkId = artworkDatabaseRef.id;
@@ -201,23 +223,6 @@ function saveNewArtworkData(userId, newArtworkData, callback) {
     saveArtworkChanges(artworkId, newArtworkData, () => {
         if (callback) callback(artworkId);
     });
-}
-
-// UPDATE ARTWORK
-export function updateArtwork(artworkId, newArtworkData) {
-    return dispatch => {
-
-        dispatch({
-            type: SAVING_ARTWORK_TRIGGERED
-        });
-
-        saveArtworkChanges(artworkId, newArtworkData, () => {
-            dispatch({
-                type: SAVING_ARTWORK_COMPLETE,
-                payload:{ [artworkId]: newArtworkData }
-            });
-        });
-    }
 }
 
 // SAVE ARTWORK CHANGES

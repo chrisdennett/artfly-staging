@@ -68,10 +68,14 @@ class ArtworkEditor extends Component {
         const mergedData = { ...currentArtwork, ...unsavedArtworkData };
 
         if (editor === 'crop') {
-            this.props.updateArtworkAndImage(sourceImg, mergedData, artworkId);
+            this.props.updateArtworkAndImage(sourceImg, mergedData, artworkId, () => {
+                this.props.UpdateUrl(`/gallery/galleryId_${this.props.galleryId}_galleryId/artworkId_${this.props.artworkId}_artworkId`);
+            });
         }
         else {
-            this.props.updateArtwork(mergedData.artworkId, mergedData);
+            this.props.updateArtwork(mergedData.artworkId, mergedData, () => {
+                this.props.UpdateUrl(`/gallery/galleryId_${this.props.galleryId}_galleryId/artworkId_${this.props.artworkId}_artworkId`);
+            });
         }
     }
 
