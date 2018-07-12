@@ -3,31 +3,7 @@ import {createSelector} from 'reselect';
 // TODO: move this to a data folder
 import membershipPlans from '../app/userAccountSubscription/membershipPlans';
 
-export const getMembershipDetails = createSelector(
-    state => state.account,
-    state => state.paddle,
-    (account, paddle) => {
-        if(!account) return null;
 
-        let membershipPlan = {};
-        if (!account.subscription) {
-            membershipPlan = {...membershipPlans['free']};
-        }
-        else {
-            const { planId } = account.subscription;
-            membershipPlan = {...membershipPlans[planId], ...account.subscription};
-        }
-
-        if(paddle){
-            membershipPlan.localPrice = paddle.localPrice;
-        }
-
-        membershipPlan.dateJoined = account.dateJoined ? account.dateJoined : '...';
-        membershipPlan.totalUserArtworks = account.userArtworkIds ? account.userArtworkIds.length : '...';
-
-        return membershipPlan;
-    }
-);
 
 export const getMembershipPlan = (state) => {
     const { account, paddle } = state;
@@ -246,3 +222,30 @@ export const getArtwork = (state, props) => {
 
     return artworks[artworkId];
 };
+
+export const getMembershipDetails = createSelector(
+    state => state.account,
+    state => state.paddle,
+    getTotalUserArtworks,
+    (account, paddle,totalUserArtworks) => {
+        if(!account) return null;
+
+        let membershipPlan = {};
+        if (!account.subscription) {
+            membershipPlan = {...membershipPlans['free']};
+        }
+        else {
+            const { planId } = account.subscription;
+            membershipPlan = {...membershipPlans[planId], ...account.subscription};
+        }
+
+        if(paddle){
+            membershipPlan.localPrice = paddle.localPrice;
+        }
+
+        membershipPlan.dateJoined = account.dateJoined ? account.dateJoined : '...';
+        membershipPlan.totalUserArtworks = totalUserArtworks ? totalUserArtworks : '...';
+
+        return membershipPlan;
+    }
+);
