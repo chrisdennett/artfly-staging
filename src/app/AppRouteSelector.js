@@ -65,12 +65,17 @@ export const getRedirectPath = (state) => {
     }
 
     // if an artwork is missing go to the gallery if available or home if not
-    if (params.artworkId && artworks[params.artworkId] === 'missing') {
-        if (params.galleryId) {
-            return `/gallery/galleryId_${params.galleryId}_galleryId`;
-        }
-        else {
-            return '/';
+    if (params.artworkId && artworks[params.artworkId]) {
+        const isMissing = artworks[params.artworkId] === 'missing';
+        const isDeleted = artworks[params.artworkId].isDeleted;
+
+        if (isMissing || isDeleted) {
+            if (params.galleryId) {
+                return `/gallery/galleryId_${params.galleryId}_galleryId`;
+            }
+            else {
+                return '/';
+            }
         }
     }
 

@@ -28,7 +28,6 @@ class ArtflyRouting extends React.Component {
 
         // call redirect if state determines it's needed
         if (redirectPath) {
-            console.log("redirectPath: ", redirectPath);
             this.props.UpdateUrl(redirectPath);
             return;
         }

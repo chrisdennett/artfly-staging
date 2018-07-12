@@ -20,7 +20,7 @@ class FramedArtworkCanvas extends Component {
         const newArtwork = artworkData !== this.props.artworkData;
         const screenSizeChange = currMaxHeight !== newMaxHeight || currMaxWidth !== newMaxWidth;
 
-        if (newArtwork || screenSizeChange) {
+        if ((newArtwork || screenSizeChange) && newArtwork.isDeleted !== true) {
             this.drawFrame(this.props);
         }
     }
@@ -37,7 +37,7 @@ class FramedArtworkCanvas extends Component {
         const ctx = this.frameCanvas.getContext('2d');
 
         const { artworkData, maxWidth, maxHeight } = props;
-        if (!artworkData || !maxWidth || !maxHeight) return;
+        if (!artworkData || !maxWidth || !maxHeight || artworkData.isDeleted) return;
 
         const { frameData, heightToWidthRatio, widthToHeightRatio } = artworkData;
         const { frameThicknessDecimal, mountThicknessDecimal, frameColour, mountColour } = frameData;
@@ -53,7 +53,7 @@ class FramedArtworkCanvas extends Component {
     render() {
         const { artworkData, maxWidth = 300, maxHeight = 300 } = this.props;
 
-        if (!artworkData) return (
+        if (!artworkData || artworkData.isDeleted) return (
             <LoadingThing/>
         );
 
