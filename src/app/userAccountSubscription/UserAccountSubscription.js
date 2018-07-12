@@ -36,6 +36,10 @@ const UserAccountSubscription = ({ userId, membershipPlan, subscribeUser, Update
 
 
             <div className={'accountSubscription--content'}>
+                <Typography use={'overline'} tag={'div'} className={'accountSubscription--membershipOption--title'}>
+                    Current membership:
+                </Typography>
+
                 {!userIsOnFreePlan &&
                 <PaidMemberCard membershipDetails={membershipPlan}
                                 freePlanMaxArtworks={membershipPlans['free'].maxArtworks}

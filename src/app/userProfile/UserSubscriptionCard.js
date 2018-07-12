@@ -38,7 +38,7 @@ const UserSubscriptionCard = ({ account, membershipPlan, updateUrl, totalArtwork
             <CardPrimaryAction onClick={() => updateUrl(`/accountSubscription`)}>
                 <div style={{ padding: '0 1rem 0 1rem' }}>
                     <Typography use="headline6" tag="h2">
-                        Membership: {membershipPlan.planName}
+                        Type: {membershipPlan.planName}
                     </Typography>
                     <Typography
                         use="subtitle2"

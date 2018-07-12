@@ -11,7 +11,7 @@ const membershipPlans = {
         maxArtists: 2
     },
     516947:{
-        planName:'Club member',
+        planName:'Artfly Creator',
         isPaidPlan: true,
         maxArtworks: 250,
         price: '£1.85',

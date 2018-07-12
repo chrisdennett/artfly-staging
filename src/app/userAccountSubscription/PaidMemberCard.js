@@ -31,7 +31,7 @@ class PaidMemberCard extends Component {
             <Card style={{ width: '100%', marginTop: 0 }}>
                 <div style={{ padding: '0 1rem 0 1rem' }}>
                     <Typography use="headline6" tag="h2">
-                        Current Membership: {planName}
+                        Type: {planName}
                     </Typography>
 
                     <LabelValueItem label={'Monthly cost:'}
