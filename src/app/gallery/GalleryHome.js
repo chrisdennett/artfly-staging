@@ -20,7 +20,7 @@ class GalleryHome extends Component {
     render() {
         const { currentGalleryData, UpdateUrl } = this.props;
         const { isEditable, title, subtitle, galleryId, galleryArtworks, firstArtworkId } = currentGalleryData;
-        const addFabStyle = { position: 'absolute', bottom: -25, left: '50%', marginLeft: -20 };
+        const addFabStyle = { position: 'absolute', bottom: -25, left: '50%', marginLeft: -67 };
         const titlesHolderStyle = { position: 'relative' };
 
         return (
@@ -43,10 +43,11 @@ class GalleryHome extends Component {
                                        subtitle={subtitle}/>
 
                         {isEditable &&
-                        <Fab theme={'primary-bg'} style={addFabStyle}
-                             onClick={() => UpdateUrl(`/artworkAdder/galleryId_${galleryId}_galleryId`)}>
-                            add
-                        </Fab>
+                        <Fab style={addFabStyle}
+                             theme={'primary-bg'}
+                             label={'Add art'}
+                             icon={'add'}
+                             onClick={() => UpdateUrl(`/artworkAdder/galleryId_${galleryId}_galleryId`)}/>
                         }
                     </div>
 
