@@ -11,7 +11,7 @@ export const SAVING_ARTWORK_PROGRESS = 'saving_artwork_progress';
 
 
 // ADD ARTWORK
-export function addNewArtwork(imgFile, artworkData) {
+export function addNewArtwork(imgFile, artworkData, callback) {
     return dispatch => {
 
         const { uid: userId } = auth.currentUser;
@@ -77,6 +77,8 @@ export function addNewArtwork(imgFile, artworkData) {
                                         type: SAVING_ARTWORK_COMPLETE,
                                         payload: {[artworkId]:newArtworkDataWithId}
                                     });
+
+                                    if(callback) callback(artworkId);
                                 });
                             });
                     });

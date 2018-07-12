@@ -49,7 +49,9 @@ class ArtworkAdder extends Component {
     }
 
     onSaveNewArtwork() {
-        this.props.addNewArtwork(this.state.img, this.state.artworkData);
+        this.props.addNewArtwork(this.state.img, this.state.artworkData, () => {
+            this.props.UpdateUrl(`/gallery/galleryId_${this.props.galleryId}_galleryId`);
+        });
     }
 
     render() {

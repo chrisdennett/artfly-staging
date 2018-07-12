@@ -23,8 +23,6 @@ export default function (state = initialData, action) {
 
         case SAVING_ARTWORK_COMPLETE:
             const artworkId = Object.keys(action.payload)[0];
-            console.log("SAVING_ARTWORK_COMPLETE artworkId: ", artworkId);
-
             return {...initialData, lastIdSaved:artworkId};
 
         /*case SAVING_ARTWORK_COMPLETE:
