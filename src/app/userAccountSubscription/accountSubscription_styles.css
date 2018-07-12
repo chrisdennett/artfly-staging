@@ -28,3 +28,14 @@
     display: flex;
     justify-content: right;
 }
+
+@media only screen and (max-width: 600px) {
+
+    .accountSubscription{
+        padding-top: 65px;
+    }
+
+    .accountSubscription--content {
+        padding: 5px;
+    }
+}

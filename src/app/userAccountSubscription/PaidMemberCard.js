@@ -7,6 +7,7 @@ import { Card, CardAction, CardActions, CardActionButtons } from 'rmwc/Card';
 import { TO_DATE_TEXT } from "../global/UTILS";
 import LabelValueItem from "../global/labelValueItem/LabelValueItem";
 import LabelValueListDivider from "../global/labelValueItem/LabelValueListDivider";
+import CircularProgressBar from "../global/CircularProgressBar";
 
 class PaidMemberCard extends Component {
 
@@ -28,7 +29,7 @@ class PaidMemberCard extends Component {
 
         return (
             <Card style={{ width: '100%', marginTop: 0 }}>
-                <div style={{ padding: '0 1rem 1rem 1rem' }}>
+                <div style={{ padding: '0 1rem 0 1rem' }}>
                     <Typography use="headline6" tag="h2">
                         Current Membership: {planName}
                     </Typography>
@@ -45,16 +46,21 @@ class PaidMemberCard extends Component {
                     {receiptUrl &&
                     <LabelValueItem label={'Latest Receipt:'} value={
                         <Button unelevated dense tag={'a'} href={receiptUrl} target={'_blank'}>
-                            <ButtonIcon use={'receipt'} /> receipt
+                            <ButtonIcon use={'receipt'}/> receipt
                         </Button>
                     }/>
                     }
 
                     <LabelValueListDivider/>
 
+                    <div style={{textAlign: 'center', margin: '20px 0 20px 0'}}>
+                        <CircularProgressBar max={maxArtworks} progress={totalUserArtworks}/>
+                    </div>
+
                     <LabelValueItem label={'Total Artworks:'} value={totalUserArtworks}/>
                     <LabelValueItem label={'Max Artworks'} value={maxArtworks}/>
 
+                    <LabelValueListDivider/>
                 </div>
 
                 {confirmDeleteIsShowing &&

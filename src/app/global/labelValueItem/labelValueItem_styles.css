@@ -1,12 +1,12 @@
 .labelValueItem {
     padding: 5px 5px;
+    display: flex;
 }
 
 .labelValueItem--label {
-    display: inline-block;
-    width: 150px;
+    width: 140px;
 }
 
 .labelValueItem--value {
-    display: inline-block;
+    flex: 1;
 }
