@@ -13,7 +13,7 @@ const MembershipOption = ({ membershipPlan, localPrice, subscribeUser, userId, m
     const vatText = localPrice && localPrice.tax ? `(includes ${localPrice.tax} VAT)` : '';
 
     return (
-        <div style={{ marginTop: 10, border: '1px solid rgba(0,0,0,0.1)', padding: '0 20px 20px 20px' }}>
+        <div style={{ border: '1px solid rgba(0,0,0,0.1)', padding: '0 20px 20px 20px' }}>
             <Typography use="headline6" tag="h2">
                 Membership: {planName}
             </Typography>

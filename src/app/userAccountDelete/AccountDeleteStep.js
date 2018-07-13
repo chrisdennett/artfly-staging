@@ -21,7 +21,7 @@ class AccountDeleteStep extends Component {
 
     render() {
 
-        const { completed, number, title, description, onDeleteConfirm, disabled } = this.props;
+        const { completed, number, title, description, onDeleteConfirm, disabled, actionLabel='Delete' } = this.props;
         const completedStyle = { textDecoration: 'line-through' };
         const showDeleteButt = !disabled && !completed;
 
@@ -30,7 +30,7 @@ class AccountDeleteStep extends Component {
                 <SimpleDialog
                     title={title}
                     body={description}
-                    acceptLabel={'confirm delete'}
+                    acceptLabel={`confirm ${actionLabel}`}
                     open={this.state.deleteConfirmDialogIsOpen}
                     onClose={() => this.setState({ deleteConfirmDialogIsOpen: false })}
                     onAccept={onDeleteConfirm}
@@ -70,7 +70,7 @@ class AccountDeleteStep extends Component {
                             {showDeleteButt &&
                             <CardAction theme={'secondary-bg on-secondary'}
                                         onClick={() => this.setState({ deleteConfirmDialogIsOpen: true })}>
-                                delete
+                                {actionLabel}
                             </CardAction>
                             }
 

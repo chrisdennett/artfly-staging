@@ -19,13 +19,14 @@ class PaidMemberCard extends Component {
 
     render() {
         const { confirmDeleteIsShowing } = this.state;
-        const { membershipDetails, freePlanMaxArtworks, cancelSubscription } = this.props;
+        const { membershipDetails, freePlanMaxArtworks, cancelSubscription, updateSubscription } = this.props;
 
-        const { planName, paidUntil, price, localPrice, maxArtworks, totalUserArtworks, cancelUrl, receiptUrl } = membershipDetails;
+        const { planName, paidUntil, price, localPrice, maxArtworks, totalUserArtworks, cancelUrl, receiptUrl, cancellationEffectiveDate } = membershipDetails;
 
         const grossPrice = localPrice && localPrice.gross ? localPrice.gross : price;
         const vatText = localPrice && localPrice.tax ? `(includes ${localPrice.tax} VAT)` : '';
 
+        console.log("membershipDetails: ", membershipDetails);
 
         return (
             <Card style={{ width: '100%', marginTop: 0 }}>
@@ -95,12 +96,20 @@ class PaidMemberCard extends Component {
                 </div>
                 }
 
-                {!confirmDeleteIsShowing &&
+                {!confirmDeleteIsShowing && !cancellationEffectiveDate  &&
                 <CardActions style={{ justifyContent: 'flex-end' }}>
                     <CardActionButtons onClick={() => this.setState({ confirmDeleteIsShowing: true })}>
                         <CardAction>Cancel subscription</CardAction>
                     </CardActionButtons>
                 </CardActions>
+                }
+
+                {cancellationEffectiveDate &&
+                <Typography use="body1"
+                            tag="div"
+                            className={'userSubscriptionCard--warning'}>
+                    Subscription cancelled: ends {TO_DATE_TEXT(cancellationEffectiveDate)}
+                </Typography>
                 }
 
             </Card>

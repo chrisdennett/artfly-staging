@@ -73,7 +73,7 @@ export function subscribeUser(userId) {
     }
 }
 
-export function cancelSubscription(updateUrl) {
+export function cancelSubscription(cancelUrl) {
     return (dispatch) => {
         dispatch({
             type: CANCEL_SUBSCRIPTION,
@@ -81,7 +81,7 @@ export function cancelSubscription(updateUrl) {
         });
 
         let checkoutSetupData = {};
-        checkoutSetupData.override = updateUrl;
+        checkoutSetupData.override = cancelUrl;
 
         Paddle.Checkout.open(checkoutSetupData);
     }

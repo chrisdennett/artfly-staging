@@ -14,6 +14,7 @@ export default function (state = {}, action) {
             return {...state, updateSubscriptionStatus:action.payload};
 
         case CANCEL_SUBSCRIPTION:
+            // initially triggered
             return {...state, cancelSubscriptionStatus:action.payload};
         default:
             return state;

@@ -25,7 +25,6 @@ const UserAccountSubscription = ({ userId, membershipPlan, subscribeUser, Update
     }
 
     const { localPrice, planName } = membershipPlan;
-
     const userIsOnFreePlan = planName === 'Free';
 
     return (

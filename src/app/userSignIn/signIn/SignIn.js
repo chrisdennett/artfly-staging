@@ -10,7 +10,7 @@ import './signIn_styles.css';
 // Configure FirebaseUI.
 // https://github.com/firebase/firebaseui-web
 // https://github.com/firebase/firebaseui-web-react
-const SignIn = ({ providerId, successRedirect = '/', setLastManualUserSignIn }) => {
+const SignIn = ({ providerId, successRedirect = '/' }) => {
 
     let signInOptions;
     if (providerId) {
@@ -35,10 +35,11 @@ const SignIn = ({ providerId, successRedirect = '/', setLastManualUserSignIn }) 
         defaultCountry: 'GB'
     }
     */
-
     // signInSuccessUrl: '/',
 
     const uiConfig = {
+        // Popup signin flow rather than redirect flow.
+        signInFlow: 'popup',
         signInOptions: signInOptions,
         signInSuccessUrl: successRedirect,
     };
@@ -54,7 +55,5 @@ const mapStateToProps = (state) => (
     {
         lastManualSignIn: state.lastManualSignIn
     }
-)
-
-
+);
 export default connect(mapStateToProps, {setLastManualUserSignIn})(SignIn);

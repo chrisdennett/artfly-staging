@@ -48,12 +48,10 @@ const UserGalleryCard = ({ userGallery, updateUrl }) => {
                     </CardAction>
                 </CardActionButtons>
                 <CardActionIcons>
-                    <CardAction icon
-                                use="add"
+                    <CardAction use="add"
                                 onClick={() => updateUrl(`/artworkAdder/galleryId_${userGallery.galleryId}_galleryId`)}
                     />
-                    <CardAction icon
-                                use="edit"
+                    <CardAction use="edit"
                                 onClick={() => updateUrl(`/galleryEditor/galleryId_${userGallery.galleryId}_galleryId`)}
                     />
                 </CardActionIcons>

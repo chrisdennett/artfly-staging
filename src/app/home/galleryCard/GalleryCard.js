@@ -64,8 +64,8 @@ const GalleryCard = ({ galleryData, onClick, onAddClick, onEditClick, totalArtwo
                 <CardAction onClick={onClick}>View</CardAction>
             </CardActionButtons>
             <CardActionIcons>
-                <CardAction icon use="edit" onClick={onEditClick}/>
-                <CardAction icon use="add" onClick={onAddClick}/>
+                <CardAction use="edit" onClick={onEditClick}/>
+                <CardAction use="add" onClick={onAddClick}/>
             </CardActionIcons>
         </CardActions>
     </Card>

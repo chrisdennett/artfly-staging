@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 // styles
 import './accountDelete_styles.css';
 // actions
+import { cancelSubscription } from '../../actions/PaddleActions';
 import { UpdateUrl } from "../../actions/UrlActions";
 import { updateUserAccount } from '../../actions/UserAccountActions';
 import { deleteUserArtworks, deleteUserData, deleteUserAuth } from '../../actions/DeleteUserActions';
 // comps
 import { TempScreenAppBar } from "../appBar/AppBar";
 import {
-    getDeleteAuthError,
+    getDeleteAuthError, getMembershipDetails,
     getSignInProvider,
     getTotalUserArtworks,
     getUserGalleryId,
@@ -26,18 +27,23 @@ const UserAccountDelete = ({
                                userGalleryId,
                                totalArtworks,
                                userSignInMethod,
+                               cancelSubscription,
                                deleteUserData,
                                deleteUserAuth,
                                deleteUserArtworks,
                                deleteAuthError,
                                UpdateUrl,
-                               updateUserAccount
+                               updateUserAccount,
+                               membershipPlan
                            }) => {
 
-    const step1Completed = totalArtworks === 0;
-    const step2Completed = userAccount.status === 'deleted';
+    const { planName, cancelUrl, cancellationEffectiveDate } = membershipPlan;
 
-    const authStepEnabled = step1Completed && step2Completed;
+    const paidSubscriptionCancelled = planName === 'Free' || cancellationEffectiveDate;
+    const deleteArtworkdsCompleted = totalArtworks === 0;
+    const userAccountSetAsDeleted = userAccount.status === 'deleted';
+
+    const authStepEnabled = deleteArtworkdsCompleted && userAccountSetAsDeleted;
     const showSignInButton = authStepEnabled && deleteAuthError;
 
     return (
@@ -51,7 +57,7 @@ const UserAccountDelete = ({
             <LoadingThing/>
             }
 
-            {step2Completed &&
+            {userAccountSetAsDeleted &&
             <AccountDeletedMessage
                 onNewAccountClick={() => updateUserAccount(userAccount.accountId, {
                     status: 'active',
@@ -63,16 +69,25 @@ const UserAccountDelete = ({
             {userAccount.status &&
             <div className={'accountDelete'}>
 
-                <AccountDeleteStep completed={step1Completed}
+                <AccountDeleteStep completed={paidSubscriptionCancelled}
                                    number={1}
+                                   title={`Cancel paid subscription`}
+                                   description={'Stop your monthly payments so you are no longer charged after deleting your account.'}
+                                   actionLabel={'Cancel Subscription'}
+                                   onDeleteConfirm={() => cancelSubscription(cancelUrl)}
+                />
+
+                <AccountDeleteStep completed={deleteArtworkdsCompleted}
+                                   number={2}
+                                   disabled={!paidSubscriptionCancelled}
                                    title={`Delete ${totalArtworks} artworks`}
                                    description={'This will permanently delete all images and other artwork data.'}
                                    onDeleteConfirm={deleteUserArtworks}
                 />
 
-                <AccountDeleteStep completed={step2Completed}
-                                   number={2}
-                                   disabled={!step1Completed}
+                <AccountDeleteStep completed={userAccountSetAsDeleted}
+                                   number={3}
+                                   disabled={!deleteArtworkdsCompleted}
                                    title={'Delete all user data'}
                                    description={'This will permanently delete gallery data.'}
                                    onDeleteConfirm={() => deleteUserData(userId, userAccount.accountId, userGalleryId)}
@@ -87,8 +102,8 @@ const UserAccountDelete = ({
                 </div>
                 }
 
-                <AccountDeleteStep number={3}
-                                   disabled={!step2Completed}
+                <AccountDeleteStep number={4}
+                                   disabled={!userAccountSetAsDeleted}
                                    title={`Delete ${userSignInMethod ? userSignInMethod.label : ''} sign in`}
                                    description={'This will remove your sign in authorisation.'}
                                    onDeleteConfirm={deleteUserAuth}
@@ -97,7 +112,7 @@ const UserAccountDelete = ({
             }
         </div>
     );
-}
+};
 
 /*
 {authStepEnabled && showSignInButton && userSignInMethod &&
@@ -114,8 +129,9 @@ const mapStateToProps = (state) => (
         userGalleryId: getUserGalleryId(state),
         userSignInMethod: getSignInProvider(state),
         totalArtworks: getTotalUserArtworks(state),
-        deleteAuthError: getDeleteAuthError(state)
+        deleteAuthError: getDeleteAuthError(state),
+        membershipPlan: getMembershipDetails(state)
     }
 );
 
-export default connect(mapStateToProps, { UpdateUrl, updateUserAccount, deleteUserData, deleteUserAuth, deleteUserArtworks })(UserAccountDelete);
+export default connect(mapStateToProps, { cancelSubscription, UpdateUrl, updateUserAccount, deleteUserData, deleteUserAuth, deleteUserArtworks })(UserAccountDelete);

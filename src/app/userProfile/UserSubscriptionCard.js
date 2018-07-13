@@ -9,6 +9,8 @@ import {
     CardActions,
     CardActionButtons
 } from 'rmwc/Card';
+// styles
+import './userSubscriptionCard_styles.css';
 // helpers
 import { TO_DATE_TEXT } from '../global/UTILS';
 // comps
@@ -16,6 +18,7 @@ import LoadingThing from "../loadingThing/LoadingThing";
 
 const UserSubscriptionCard = ({ account, membershipPlan, updateUrl, totalArtworks }) => {
     const { dateJoined } = account;
+    const {cancellationEffectiveDate} = membershipPlan;
 
     return (
         <Card style={{ width: '100%', marginTop: 20 }}>
@@ -55,6 +58,14 @@ const UserSubscriptionCard = ({ account, membershipPlan, updateUrl, totalArtwork
                     <Typography use="body1" tag="div" theme="text-secondary-on-background">
                         Max Artworks: {membershipPlan.maxArtworks}
                     </Typography>
+
+                    {cancellationEffectiveDate &&
+                    <Typography use="body1"
+                                tag="div"
+                                className={'userSubscriptionCard--warning'}>
+                        Subscription cancelled: ends {TO_DATE_TEXT(cancellationEffectiveDate)}
+                    </Typography>
+                    }
                 </div>
             </CardPrimaryAction>
             }
