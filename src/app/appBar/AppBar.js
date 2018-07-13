@@ -41,7 +41,7 @@ export const EditAppBar = ({ title, onSaveClick, onCancelClick, fixed = false, h
 );
 
 // Includes artwork delete option
-export const ArtworkAppBar = ({ onCloseClick, onMenuClick, isEditable, onDeleteClick }) => (
+export const ArtworkAppBar = ({ onCloseClick, onMenuClick, isEditable, onAddClick, onDeleteClick }) => (
     <Toolbar theme={'background'}>
         <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
             <ToolbarSection alignStart>
@@ -51,6 +51,11 @@ export const ArtworkAppBar = ({ onCloseClick, onMenuClick, isEditable, onDeleteC
             </ToolbarSection>
 
             <ToolbarSection alignEnd>
+                {isEditable &&
+                <ToolbarIcon use="add"
+                             theme={'text-primary-on-background'}
+                             onClick={onAddClick}/>
+                }
                 {isEditable &&
                 <ToolbarMenuIcon use="delete"
                                  onClick={onDeleteClick}/>

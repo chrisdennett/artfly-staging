@@ -55,7 +55,7 @@ class GalleryArtworkViewer extends Component {
 
     render() {
         const { editMenuIsOpen, deleteConfirmOpen } = this.state;
-        const { galleryNavData, galleryId, deleteArtwork } = this.props;
+        const { galleryNavData, galleryId, deleteArtwork, UpdateUrl } = this.props;
         const { currentArtwork, previousArtwork, nextArtwork, isEditable } = galleryNavData;
         const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 35, right: 10 };
 
@@ -91,6 +91,7 @@ class GalleryArtworkViewer extends Component {
 
                 <ArtworkAppBar title={'Artworks'}
                                isEditable={isEditable}
+                               onAddClick={() => UpdateUrl(`/artworkAdder/galleryId_${galleryId}_galleryId`)}
                                onDeleteClick={() => this.setState({ deleteConfirmOpen: true })}
                                onMenuClick={this.goToGallery}
                 />
