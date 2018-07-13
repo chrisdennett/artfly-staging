@@ -13,14 +13,16 @@ import UserGalleryCard from './UserGalleryCard';
 import UserSubscriptionCard from './UserSubscriptionCard';
 import {
     getMembershipPlan,
+    getRecentUserArtworks,
     getSignInProvider,
     getTotalUserArtworks,
     getUserGallery,
     getUserGalleryId
 } from "../../selectors/Selectors";
 import LoadingThing from "../loadingThing/LoadingThing";
+import RecentArtworksCard from "./RecentArtworksCard";
 
-const UserProfile = ({ user, membershipPlan, UpdateUrl, userSignInMethod, totalUserArtworks, userGallery, account }) => {
+const UserProfile = ({ user, membershipPlan, latestUserArtworks, UpdateUrl, userSignInMethod, totalUserArtworks, userGallery, account }) => {
 
     return (
         <div className={'userProfilePage'}>
@@ -43,15 +45,21 @@ const UserProfile = ({ user, membershipPlan, UpdateUrl, userSignInMethod, totalU
                 <UserSubscriptionCard account={account}
                                       membershipPlan={membershipPlan}
                                       totalArtworks={totalUserArtworks}
-                                      updateUrl={UpdateUrl}  />
+                                      updateUrl={UpdateUrl}/>
                 }
 
                 {userGallery &&
-                <UserGalleryCard userGallery={userGallery} updateUrl={UpdateUrl} />
+                <UserGalleryCard userGallery={userGallery} updateUrl={UpdateUrl}/>
+                }
+
+                {latestUserArtworks &&
+                <RecentArtworksCard artworks={latestUserArtworks}
+                                    galleryId={userGallery.galleryId}
+                                    updateUrl={UpdateUrl}/>
                 }
 
                 <div className={'userProfile--deleteSection'}>
-                    <Button outlined onClick={() => UpdateUrl(`/accountDelete`)}>
+                    <Button theme={'primary'} onClick={() => UpdateUrl(`/accountDelete`)}>
                         <ButtonIcon use="delete_forever"/>
                         Delete Account
                     </Button>
@@ -70,7 +78,8 @@ const mapStateToProps = (state) => {
         userSignInMethod: getSignInProvider(state),
         userGalleryId: getUserGalleryId(state),
         userGallery: getUserGallery(state),
-        totalUserArtworks: getTotalUserArtworks(state)
+        totalUserArtworks: getTotalUserArtworks(state),
+        latestUserArtworks: getRecentUserArtworks(state)
     }
 };
 export default connect(mapStateToProps, { UpdateUrl })(UserProfile);

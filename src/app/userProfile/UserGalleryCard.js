@@ -42,7 +42,8 @@ const UserGalleryCard = ({ userGallery, updateUrl }) => {
             </CardPrimaryAction>
             <CardActions style={{ paddingTop: 0 }}>
                 <CardActionButtons>
-                    <CardAction theme={'secondary'}
+                    <CardAction theme={'primary-bg on-primary'}
+                                style={{marginLeft:5}}
                                 onClick={() => updateUrl(`/gallery/galleryId_${userGallery.galleryId}_galleryId`)}>
                         Enter
                     </CardAction>

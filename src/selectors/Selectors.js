@@ -100,6 +100,13 @@ export const getLatestUserArtwork = state => {
     return userArtworks[0];
 };
 
+export const getRecentUserArtworks = state => {
+    const userArtworks = getUserArtworks(state);
+    if (userArtworks.length === 0) return null;
+
+    return userArtworks.slice(0, 3);
+};
+
 export const getCurrentGalleryData = (user, galleries, artworks, galleryId) => {
     const gallery = galleries[galleryId];
     if (!gallery) return {};

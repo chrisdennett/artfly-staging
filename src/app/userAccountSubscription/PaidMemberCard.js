@@ -19,14 +19,12 @@ class PaidMemberCard extends Component {
 
     render() {
         const { confirmDeleteIsShowing } = this.state;
-        const { membershipDetails, freePlanMaxArtworks, cancelSubscription, updateSubscription } = this.props;
+        const { membershipDetails, freePlanMaxArtworks, cancelSubscription } = this.props;
 
         const { planName, paidUntil, price, localPrice, maxArtworks, totalUserArtworks, cancelUrl, receiptUrl, cancellationEffectiveDate } = membershipDetails;
 
         const grossPrice = localPrice && localPrice.gross ? localPrice.gross : price;
         const vatText = localPrice && localPrice.tax ? `(includes ${localPrice.tax} VAT)` : '';
-
-        console.log("membershipDetails: ", membershipDetails);
 
         return (
             <Card style={{ width: '100%', marginTop: 0 }}>
@@ -60,8 +58,6 @@ class PaidMemberCard extends Component {
 
                     <LabelValueItem label={'Total Artworks:'} value={totalUserArtworks}/>
                     <LabelValueItem label={'Max Artworks'} value={maxArtworks}/>
-
-                    <LabelValueListDivider/>
                 </div>
 
                 {confirmDeleteIsShowing &&

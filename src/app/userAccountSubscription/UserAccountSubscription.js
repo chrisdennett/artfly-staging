@@ -12,7 +12,6 @@ import membershipPlans from '../userAccountSubscription/membershipPlans';
 import { getMembershipDetails } from "../../selectors/Selectors";
 // comps
 import { TempScreenAppBar } from "../appBar/AppBar";
-// import SubscribeButton from '../global/SubscribeButton';
 import LoadingThing from "../loadingThing/LoadingThing";
 import PaidMemberCard from './PaidMemberCard';
 import FreeMemberCard from "./FreeMemberCard";

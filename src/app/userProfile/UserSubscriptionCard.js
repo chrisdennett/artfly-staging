@@ -71,7 +71,7 @@ const UserSubscriptionCard = ({ account, membershipPlan, updateUrl, totalArtwork
             }
             <CardActions style={{ justifyContent: 'flex-end' }}>
                 <CardActionButtons>
-                    <CardAction theme={'secondary-bg on-secondary'}
+                    <CardAction theme={'primary-bg on-primary'}
                                 onClick={() => updateUrl(`/accountSubscription`)}>
                         view / update
                     </CardAction>
