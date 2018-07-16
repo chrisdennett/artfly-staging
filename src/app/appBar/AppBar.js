@@ -151,4 +151,23 @@ const AppBar = function ({ title, navigation, onCloseClick, showHomeIcon = true,
     )
 };
 
+export const HomeAppBar = function ({ title, navigation, onCloseClick, showHomeIcon = true, showUserMenu = true, showCloseButt = false, fixed = true, butts = null }) {
+    return (
+        <Toolbar fixed={fixed} theme={'background'}>
+            <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
+                <ToolbarSection alignStart>
+                    <HomeIconButton/>
+                    <ToolbarTitle style={{marginLeft: 15, letterSpacing: '0.3rem'}}>
+                        ARTFLY
+                    </ToolbarTitle>
+                </ToolbarSection>
+
+                <ToolbarSection alignEnd>
+                    <UserMenu/>
+                </ToolbarSection>
+            </ToolbarRow>
+        </Toolbar>
+    )
+};
+
 export default AppBar;

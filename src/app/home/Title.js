@@ -3,28 +3,18 @@ import HoverLogo from "./animatedIcons/HoverLogo";
 
 const Title = function () {
     return (
-        <div className={'home--title'}>
+        <div style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap'}}>
 
             <HoverLogo/>
 
-            <svg className={'home--artflyNameSvg'} viewBox="0 0 399 103">
-                <text style={{ textAlign: "center" }} strokeWidth="0" fontFamily="'Source Code Pro'" fontSize="109.7"
-                      y="82.714" x="203.309" fontWeight="900" color="#000" textAnchor="middle">
-                    <tspan fontSize="110" y="82.714" x="203.309">ArtFly</tspan>
-                </text>
-                <text style={{ textAlign: "center" }} strokeWidth="3.001" fontFamily="'Source Code Pro'"
-                      fontSize="109.7" stroke="#000" y="78.624" x="198.392" fontWeight="900" fill="none" color="#000"
-                      textAnchor="middle">
-                    <tspan fontSize="110" y="78.624" x="198.392" fontWeight="bold">
-                        <tspan fill="red">A</tspan>
-                        <tspan fill="#f60">r</tspan>
-                        <tspan fill="#fc0">t</tspan>
-                        <tspan fill="#abc837">F</tspan>
-                        <tspan fill="#37abc8">l</tspan>
-                        <tspan fill="#aa00d4">y</tspan>
-                    </tspan>
-                </text>
-            </svg>
+            <h1 style={{fontSize: '4rem', fontWeight: 'bold', color:'#fff', marginLeft: 15, marginTop:42}}>
+                <span style={{padding: '2px 7px', backgroundColor:"#ff0000", border:'3px solid rgba(0,0,0,0.2)'}}>A</span>
+                <span style={{padding: '2px 7px', backgroundColor:"#ff6600", border:'3px solid rgba(0,0,0,0.2)'}}>R</span>
+                <span style={{padding: '2px 7px', backgroundColor:"#ffcc00", border:'3px solid rgba(0,0,0,0.2)'}}>T</span>
+                <span style={{padding: '2px 7px', backgroundColor:"#abc837", border:'3px solid rgba(0,0,0,0.2)'}}>F</span>
+                <span style={{padding: '2px 7px', backgroundColor:"#37abc8", border:'3px solid rgba(0,0,0,0.2)'}}>L</span>
+                <span style={{padding: '2px 7px', backgroundColor:"#aa00d4", border:'3px solid rgba(0,0,0,0.2)'}}>Y</span>
+            </h1>
         </div>
     )
 };

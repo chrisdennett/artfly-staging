@@ -16,7 +16,7 @@ import AboutUs from "./aboutUs/AboutUs";
 import SocialMediaStuff from "./socialMediaStuff/SocialMediaStuff";
 import ArtFlyLab from "./artflyLab/ArtFlyLab";
 import ArtFlyIntro from "./artFlyIntro/ArtFlyIntro";
-import AppBar from "../appBar/AppBar";
+import {HomeAppBar} from "../appBar/AppBar";
 import GalleryCard from "./galleryCard/GalleryCard";
 import JumpingVictorianLady from './JumpingVictorianLady';
 
@@ -26,7 +26,7 @@ const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork, account
 
     return (
         <div className={'home'}>
-            <AppBar fixed={true}/>
+            <HomeAppBar/>
 
             {userPending &&
             <LoadingThing/>
@@ -38,7 +38,7 @@ const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork, account
                 </div>
                 {!userLoggedIn &&
                 <div className='home--tagLine'>
-                    Forget about what others think and let the Art Fly.
+                    Let your Art Fly.
                 </div>
                 }
 
