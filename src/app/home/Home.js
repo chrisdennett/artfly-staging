@@ -11,7 +11,7 @@ import { UpdateUrl } from "../../actions/UrlActions";
 import { getLatestUserArtwork, getTotalUserArtworks, getUserGallery } from '../../selectors/Selectors'
 // components
 import LoadingThing from "../loadingThing/LoadingThing";
-import Title from "./Title";
+import Title from "./title/Title";
 import AboutUs from "./aboutUs/AboutUs";
 import SocialMediaStuff from "./socialMediaStuff/SocialMediaStuff";
 import ArtFlyLab from "./artflyLab/ArtFlyLab";
