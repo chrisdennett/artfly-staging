@@ -16,8 +16,19 @@ export function GetImage(imgFile, callback) {
                 const w = img.width;
                 const h = img.height;
 
-                const widthToHeightRatio = Math.round(100 * (h / w)) / 100;
-                const heightToWidthRatio = Math.round(100 * (w / h)) / 100;
+                // if portrait these need to be reversed
+                const isPortrait = orientation > 4 && orientation < 9;
+                let widthToHeightRatio, heightToWidthRatio;
+
+                if(isPortrait){
+                    widthToHeightRatio = Math.round(100 * (w / h)) / 100;
+                    heightToWidthRatio = Math.round(100 * (h / w)) / 100;
+                }
+                else{
+                    widthToHeightRatio = Math.round(100 * (h / w)) / 100;
+                    heightToWidthRatio = Math.round(100 * (w / h)) / 100;
+                }
+
 
                 callback(img, orientation, widthToHeightRatio, heightToWidthRatio);
             }
