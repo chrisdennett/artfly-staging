@@ -1,18 +1,26 @@
 import React from 'react';
+import {connect} from 'react-redux';
+// ui
 import { Typography } from 'rmwc/Typography';
-import { Icon } from 'rmwc/Icon';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import * as faDesktopAlt from '@fortawesome/fontawesome-pro-regular/faDesktopAlt'
-import * as faPaintBrush from '@fortawesome/fontawesome-pro-regular/faPaintBrush'
-import * as faChild from '@fortawesome/fontawesome-pro-solid/faChild'
-import * as faVial from '@fortawesome/fontawesome-pro-solid/faVial'
+import { Button } from 'rmwc/Button';
 //
 import './artFlyIntro_styles.css';
+import { UpdateUrl } from "../../../actions/UrlActions";
 
-const ArtFlyIntro = function () {
+const ArtFlyIntro = function ({UpdateUrl}) {
+
     return (
         <div className={'artFlyIntro'}>
-            <div className={'artFlyIntro--content'}>
+
+            <Typography use="headline5">
+                A gallery for your kid's endless creativity.
+            </Typography>
+
+            <Typography>
+                <Button onClick={() => UpdateUrl('/gallery/galleryId_t5jiytWNhsnQYnajlggt_galleryId')}>here's our gallery</Button>
+            </Typography>
+
+            {/*<div className={'artFlyIntro--content'}>
                 <Typography use="headline4">What is ArtFly?</Typography>
                 <Typography use="body1">
                     <p>A website for you to store and create artworks for yourself, your kids or for anyone.</p>
@@ -39,9 +47,9 @@ const ArtFlyIntro = function () {
                     </Typography>
 
                 </a>
-            </div>
+            </div>*/}
         </div>
     )
 };
 
-export default ArtFlyIntro;
+export default connect(null, {UpdateUrl})(ArtFlyIntro);

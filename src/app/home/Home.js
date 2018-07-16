@@ -16,7 +16,7 @@ import AboutUs from "./aboutUs/AboutUs";
 import SocialMediaStuff from "./socialMediaStuff/SocialMediaStuff";
 import ArtFlyLab from "./artflyLab/ArtFlyLab";
 import ArtFlyIntro from "./artFlyIntro/ArtFlyIntro";
-import {HomeAppBar} from "../appBar/AppBar";
+import { HomeAppBar } from "../appBar/AppBar";
 import GalleryCard from "./galleryCard/GalleryCard";
 import JumpingVictorianLady from './JumpingVictorianLady';
 
@@ -33,20 +33,18 @@ const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork, account
             }
 
             <div className='home--heading'>
-                <div>
-                    <Title/>
-                </div>
+
+                <Title/>
+
                 {!userLoggedIn &&
-                <div className='home--tagLine'>
-                    Let your Art Fly.
-                </div>
+                <ArtFlyIntro/>
                 }
 
             </div>
 
             {accountDeleted &&
             <div>
-                You deleted your account.  Set up a new account here.
+                You deleted your account. Set up a new account here.
             </div>
             }
 
@@ -75,9 +73,6 @@ const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork, account
             }
 
             <div>
-                {!userLoggedIn &&
-                <ArtFlyIntro/>
-                }
                 <ArtFlyLab/>
                 <SocialMediaStuff/>
                 <AboutUs/>
@@ -98,4 +93,4 @@ const mapStateToProps = (state) => (
     }
 );
 
-export default connect(mapStateToProps, {UpdateUrl})(Home);
+export default connect(mapStateToProps, { UpdateUrl })(Home);

@@ -39,7 +39,6 @@ class ArtflyRouting extends React.Component {
             // listening for account changes because it can be changed
             // externally by the Paddle API
             this.props.listenForUserAccountChanges(newUid);
-
         }
 
         const { missingData } = this.props;
