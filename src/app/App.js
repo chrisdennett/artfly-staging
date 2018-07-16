@@ -49,7 +49,9 @@ class ArtflyRouting extends React.Component {
             }
 
             if (galleryId) {
-                this.props.fetchGalleryData(galleryId);
+                this.props.fetchGalleryData(galleryId, (galleryData) => {
+                    this.props.fetchUserGalleryArtworks(galleryData.key)
+                });
             }
         }
     }

@@ -1,7 +1,7 @@
 import { firestoreDb as db } from "../libs/firebaseConfig";
-import { ARTWORK_CHANGE } from "./GetArtworkActions";
 
 export const GALLERY_FETCHED = "galleryFetched";
+export const GALLERY_ARTWORKS_FETCHED = "galleryArtworksFetched";
 export const GALLERY_UPDATED = "galleryUpdated";
 export const GALLERY_UPDATE_TRIGGERED = "galleryUpdateTriggers";
 
@@ -88,19 +88,22 @@ export function fetchGalleryData(galleryId, callback) {
 // A user gallery contains all the artworks that user is admin for
 // Is public so the gallery key is set to the user uid so it can
 // be loaded when nobody logged in if key is in url
-export function fetchUserGalleryArtworks(gallery) {
+export function fetchUserGalleryArtworks(galleryKey) {
     return (dispatch) => {
         db.collection('artworks')
-            .where('adminId', '==', gallery.key)
+            .where('adminId', '==', galleryKey)
             .get()
             .then(querySnapshot => {
-                    querySnapshot.forEach(doc => {
-                        const artworkDataWithId = { ...doc.data(), artworkId: doc.id };
+                    const galleryArtworks = {};
 
-                        dispatch({
-                            type: ARTWORK_CHANGE,
-                            payload: { [doc.id]: artworkDataWithId }
-                        });
+                    querySnapshot.forEach(doc => {
+                        // add id to artworkData
+                        galleryArtworks[doc.id] = { ...doc.data(), artworkId: doc.id };
+                    });
+
+                    dispatch({
+                        type: GALLERY_ARTWORKS_FETCHED,
+                        payload: galleryArtworks
                     });
                 },
                 error => {
