@@ -8,6 +8,7 @@ import {fetchLocalPrice} from "../actions/PaddleActions";
 import { fetchUserArtworks, getArtworkDataOnce } from "../actions/GetArtworkActions";
 import { listenForUserAuthChanges } from "../actions/UserAuthActions";
 import { listenForUserAccountChanges } from "../actions/UserAccountActions";
+import { listenForUserSubscriptionChanges } from "../actions/UserSubscriptionActions";
 import { UpdateUrl } from "../actions/UrlActions";
 import { fetchGalleryData, fetchUserGallery, fetchUserGalleryArtworks } from "../actions/GalleryDataActions";
 // selectors
@@ -38,6 +39,7 @@ class ArtflyRouting extends React.Component {
             this.props.fetchLocalPrice();
             // listening for account changes because it can be changed
             // externally by the Paddle API
+            this.props.listenForUserSubscriptionChanges(newUid);
             this.props.listenForUserAccountChanges(newUid);
         }
 
@@ -84,6 +86,7 @@ const mapActionsToProps = {
     fetchGalleryData,
     UpdateUrl,
     fetchUserGalleryArtworks,
-    fetchLocalPrice
+    fetchLocalPrice,
+    listenForUserSubscriptionChanges
 };
 export default connect(mapAppStateToProps, mapActionsToProps)(ArtflyRouting);

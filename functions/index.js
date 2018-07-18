@@ -208,6 +208,7 @@ exports.subscriptionEvent = functions.https.onRequest((request, response) => {
     switch (alertName) {
         case 'subscription_created':
             updateDatabase = true;
+            subscriptionObject.cancellationEffectiveDate = null;  // removes any previous cancellation date
             subscriptionObject.cancelUrl = request.body.cancel_url;
             subscriptionObject.updateUrl = request.body.update_url;
             subscriptionObject.paidUntil = request.body.next_bill_date;
@@ -251,15 +252,15 @@ exports.subscriptionEvent = functions.https.onRequest((request, response) => {
     // save the new subscription data to the user account object
     if (updateDatabase) {
         firestore
-            .doc(`accounts/${userId}`)
+            .doc(`memberships/${userId}`)
             .set({ subscription: subscriptionObject }, { merge: true })
             .then(() => {
-                console.log('Update subscription success');
+                console.log('Update subscription success', userId);
                 response.status(200).end();
             })
             .catch(function (error) {
                 // if no response is sent it (Paddle) should send again later
-                console.log('Update subscription failed: ', error);
+                console.log('Update subscription failed: '+userId, error);
             });
     }
     else {

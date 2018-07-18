@@ -12,7 +12,7 @@ import AppBar from "../appBar/AppBar";
 import UserGalleryCard from './UserGalleryCard';
 import UserSubscriptionCard from './UserSubscriptionCard';
 import {
-    getMembershipPlan,
+    getMembershipDetails,
     getRecentUserArtworks,
     getSignInProvider,
     getTotalUserArtworks,
@@ -22,7 +22,7 @@ import {
 import LoadingThing from "../loadingThing/LoadingThing";
 import RecentArtworksCard from "./RecentArtworksCard";
 
-const UserProfile = ({ user, membershipPlan, latestUserArtworks, UpdateUrl, userSignInMethod, totalUserArtworks, userGallery, account }) => {
+const UserProfile = ({ user, membershipPlan, latestUserArtworks, UpdateUrl, userSignInMethod, totalUserArtworks, userGallery }) => {
 
     return (
         <div className={'userProfilePage'}>
@@ -41,9 +41,8 @@ const UserProfile = ({ user, membershipPlan, latestUserArtworks, UpdateUrl, user
                     totalUserArtworks={totalUserArtworks}
                 />
 
-                {account &&
-                <UserSubscriptionCard account={account}
-                                      membershipPlan={membershipPlan}
+                {membershipPlan.dateJoined !== '...' &&
+                <UserSubscriptionCard membershipPlan={membershipPlan}
                                       totalArtworks={totalUserArtworks}
                                       updateUrl={UpdateUrl}/>
                 }
@@ -73,8 +72,7 @@ const UserProfile = ({ user, membershipPlan, latestUserArtworks, UpdateUrl, user
 const mapStateToProps = (state) => {
     return {
         user: state.user,
-        membershipPlan: getMembershipPlan(state),
-        account: state.account,
+        membershipPlan: getMembershipDetails(state),
         userSignInMethod: getSignInProvider(state),
         userGalleryId: getUserGalleryId(state),
         userGallery: getUserGallery(state),

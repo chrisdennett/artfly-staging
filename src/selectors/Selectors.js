@@ -1,59 +1,21 @@
 import firebase from 'firebase/app';
-import {createSelector} from 'reselect';
+import { createSelector } from 'reselect';
 // TODO: move this to a data folder
 import membershipPlans from '../app/userAccountSubscription/membershipPlans';
 
-
-
-export const getMembershipPlan = (state) => {
-    const { account, paddle } = state;
-
-    if(!account) return null;
-
-    let membershipPlan;
-    if (!account.subscription) {
-        membershipPlan = membershipPlans['free'];
-        membershipPlan.status = 'trying out';
-    }
-    else {
-        const { planId } = account.subscription;
-        membershipPlan = {...membershipPlans[planId], ...account.subscription};
-    }
-
-    if(paddle){
-        membershipPlan.localPrice = paddle.localPrice;
-    }
-
-    membershipPlan.dateJoined = account.dateJoined;
-
-    return membershipPlan;
-};
-
 export const getUserId = (state) => {
-  const {user} = state;
-  if(!user) return null;
+    const { user } = state;
+    if (!user) return null;
 
-  return user.uid;
+    return user.uid;
 };
 
 export const getDeleteAuthError = (state) => {
-    const {errors} = state;
-    if(!errors) return null;
+    const { errors } = state;
+    if (!errors) return null;
 
     return errors.userAuthDeleteError;
 };
-
-/*export const getUserAccountId = (state) => {
-    const {user, account} = state;
-    if(!user || !account) return null;
-
-    if(account.adminId === user.uid){
-        return account.accountId;
-    }
-    else{
-        return null;
-    }
-};*/
 
 export const getGallery = (state, props) => {
     const { galleries } = state;
@@ -87,9 +49,9 @@ export const getTotalUserArtworks = (state) => {
 };
 
 export const getMaxArtworksAllowed = (state) => {
-    const membershipPlan = getMembershipPlan(state);
+    const membershipPlan = getMembershipDetails(state);
 
-    if(!membershipPlan) return null;
+    if (!membershipPlan) return null;
 
     return membershipPlan.maxArtworks;
 };
@@ -178,10 +140,10 @@ export const getUserGalleryId = (state) => {
 
     const userGalleryArr = Object.keys(galleries).filter(galleryId => galleries[galleryId].adminId === user.uid);
 
-    if(userGalleryArr.length === 0){
+    if (userGalleryArr.length === 0) {
         return null;
     }
-    else{
+    else {
         return userGalleryArr[0];
     }
 };
@@ -204,49 +166,54 @@ export const getSignInProvider = (state) => {
 
     switch (user.providerId) {
         case firebase.auth.GoogleAuthProvider.PROVIDER_ID:
-            label = 'GOOGLE'; break;
+            label = 'GOOGLE';
+            break;
         case firebase.auth.FacebookAuthProvider.PROVIDER_ID:
-            label = 'FACEBOOK'; break;
+            label = 'FACEBOOK';
+            break;
         case firebase.auth.TwitterAuthProvider.PROVIDER_ID:
-            label = 'TWITTER'; break;
+            label = 'TWITTER';
+            break;
         case firebase.auth.EmailAuthProvider.PROVIDER_ID:
-            label = 'EMAIL / PASSWORD'; break;
+            label = 'EMAIL / PASSWORD';
+            break;
 
         default:
             return null;
     }
 
     return {
-        label, id:user.providerId
+        label, id: user.providerId
     }
 };
 
 export const getArtwork = (state, props) => {
-    const {artworks} = state;
-    const {artworkId} = props;
+    const { artworks } = state;
+    const { artworkId } = props;
 
-    if(!artworks || !artworkId) return null;
+    if (!artworks || !artworkId) return null;
 
     return artworks[artworkId];
 };
 
 export const getMembershipDetails = createSelector(
+    state => state.subscription,
     state => state.account,
     state => state.paddle,
     getTotalUserArtworks,
-    (account, paddle, totalUserArtworks) => {
-        if(!account) return null;
+    (subscription, account, paddle, totalUserArtworks) => {
+        if (!subscription) return null;
 
         let membershipPlan = {};
-        if (!account.subscription) {
-            membershipPlan = {...membershipPlans['free']};
+        if (subscription.status === 'noSubscription') {
+            membershipPlan = { ...membershipPlans['free'] };
         }
         else {
-            const { planId } = account.subscription;
-            membershipPlan = {...membershipPlans[planId], ...account.subscription};
+            const { planId } = subscription;
+            membershipPlan = { ...membershipPlans[planId], ...subscription };
         }
 
-        if(paddle){
+        if (paddle) {
             membershipPlan.localPrice = paddle.localPrice;
         }
 

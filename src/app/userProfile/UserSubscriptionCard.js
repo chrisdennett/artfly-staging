@@ -16,9 +16,8 @@ import { TO_DATE_TEXT } from '../global/UTILS';
 // comps
 import LoadingThing from "../loadingThing/LoadingThing";
 
-const UserSubscriptionCard = ({ account, membershipPlan, updateUrl, totalArtworks }) => {
-    const { dateJoined } = account;
-    const {cancellationEffectiveDate, status} = membershipPlan;
+const UserSubscriptionCard = ({ membershipPlan, updateUrl, totalArtworks }) => {
+    const {cancellationEffectiveDate, status, dateJoined} = membershipPlan;
 
     return (
         <Card style={{ width: '100%', marginTop: 20 }}>
