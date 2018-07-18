@@ -234,7 +234,7 @@ export const getMembershipDetails = createSelector(
     state => state.account,
     state => state.paddle,
     getTotalUserArtworks,
-    (account, paddle,totalUserArtworks) => {
+    (account, paddle, totalUserArtworks) => {
         if(!account) return null;
 
         let membershipPlan = {};
@@ -251,7 +251,7 @@ export const getMembershipDetails = createSelector(
         }
 
         membershipPlan.dateJoined = account.dateJoined ? account.dateJoined : '...';
-        membershipPlan.totalUserArtworks = totalUserArtworks ? totalUserArtworks : '...';
+        membershipPlan.totalUserArtworks = isNaN(totalUserArtworks) ? '...' : totalUserArtworks;
 
         return membershipPlan;
     }
