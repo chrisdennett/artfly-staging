@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 // ui
 import { Typography } from 'rmwc/Typography';
 import { Button } from 'rmwc/Button';
@@ -7,7 +7,7 @@ import { Button } from 'rmwc/Button';
 import './artFlyIntro_styles.css';
 import { UpdateUrl } from "../../../actions/UrlActions";
 
-const ArtFlyIntro = function ({UpdateUrl}) {
+const ArtFlyIntro = function ({ UpdateUrl }) {
 
     return (
         <div className={'artFlyIntro'}>
@@ -16,10 +16,20 @@ const ArtFlyIntro = function ({UpdateUrl}) {
                 A gallery for your kid's endless creativity.
             </Typography>
 
-            <Typography>
-                <Button onClick={() => UpdateUrl('/gallery/galleryId_t5jiytWNhsnQYnajlggt_galleryId')}>here's our gallery</Button>
-            </Typography>
+            <div style={{ marginTop: 20 }}>
+                <Button raised onClick={() => UpdateUrl('/signIn')}>Get started for free</Button>
+            </div>
 
+            <Typography tag={'div'} use={'body1'} style={{ marginTop: 20, maxWidth: 500, lineHeight:'1.8rem', textAlign: 'center' }}>
+                ArtFly's just a simple gallery right now. <br/>
+                Here's my
+                <Button dense theme={'secondary'} onClick={() => UpdateUrl('/gallery/galleryId_t5jiytWNhsnQYnajlggt_galleryId')}>
+                    family gallery
+                </Button>
+                for example.  <br/>
+                But this is just the start. <br/>
+                Check out the ArtFly lab to see what I'm planning.
+            </Typography>
             {/*<div className={'artFlyIntro--content'}>
                 <Typography use="headline4">What is ArtFly?</Typography>
                 <Typography use="body1">
@@ -52,4 +62,4 @@ const ArtFlyIntro = function ({UpdateUrl}) {
     )
 };
 
-export default connect(null, {UpdateUrl})(ArtFlyIntro);
+export default connect(null, { UpdateUrl })(ArtFlyIntro);

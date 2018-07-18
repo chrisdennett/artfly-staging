@@ -18,7 +18,7 @@ import LoadingThing from "../loadingThing/LoadingThing";
 
 const UserSubscriptionCard = ({ account, membershipPlan, updateUrl, totalArtworks }) => {
     const { dateJoined } = account;
-    const {cancellationEffectiveDate} = membershipPlan;
+    const {cancellationEffectiveDate, status} = membershipPlan;
 
     return (
         <Card style={{ width: '100%', marginTop: 20 }}>
@@ -59,7 +59,7 @@ const UserSubscriptionCard = ({ account, membershipPlan, updateUrl, totalArtwork
                         Max Artworks: {membershipPlan.maxArtworks}
                     </Typography>
 
-                    {cancellationEffectiveDate &&
+                    {status === 'deleted' &&
                     <Typography use="body1"
                                 tag="div"
                                 className={'userSubscriptionCard--warning'}>

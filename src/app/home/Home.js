@@ -20,7 +20,7 @@ import { HomeAppBar } from "../appBar/AppBar";
 import GalleryCard from "./galleryCard/GalleryCard";
 import JumpingVictorianLady from './JumpingVictorianLady';
 
-const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork, accountDeleted, UpdateUrl }) => {
+const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork, UpdateUrl }) => {
     const userLoggedIn = !!user.uid;
     const userPending = user === 'pending';
 
@@ -42,13 +42,7 @@ const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork, account
 
             </div>
 
-            {accountDeleted &&
-            <div>
-                You deleted your account. Set up a new account here.
-            </div>
-            }
-
-            {userLoggedIn && !accountDeleted &&
+            {userLoggedIn &&
             <div className={'home--yourGalleries'}>
                 <Typography className={'sectionTitle'} use="headline4">
                     Your Galleries
@@ -86,7 +80,6 @@ const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork, account
 const mapStateToProps = (state) => (
     {
         user: state.user,
-        accountDeleted: state.account.status === 'deleted',
         latestUserArtwork: getLatestUserArtwork(state),
         totalUserArtworks: getTotalUserArtworks(state),
         userGallery: getUserGallery(state)

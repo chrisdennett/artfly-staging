@@ -15,13 +15,23 @@ class PaidMemberCard extends Component {
         super(props);
 
         this.state = { confirmDeleteIsShowing: false };
+
+        this.confirmCancelSubscription = this.confirmCancelSubscription.bind(this);
+
+    }
+
+    confirmCancelSubscription(){
+        this.setState({ confirmDeleteIsShowing: false }, () => {
+            const {cancelUrl} = this.props.membershipDetails;
+            this.props.cancelSubscription(cancelUrl);
+        })
     }
 
     render() {
         const { confirmDeleteIsShowing } = this.state;
-        const { membershipDetails, freePlanMaxArtworks, cancelSubscription } = this.props;
+        const { membershipDetails, freePlanMaxArtworks } = this.props;
 
-        const { planName, paidUntil, price, localPrice, maxArtworks, totalUserArtworks, cancelUrl, receiptUrl, cancellationEffectiveDate } = membershipDetails;
+        const { planName, status, paidUntil, price, localPrice, maxArtworks, totalUserArtworks, receiptUrl, cancellationEffectiveDate } = membershipDetails;
 
         const grossPrice = localPrice && localPrice.gross ? localPrice.gross : price;
         const vatText = localPrice && localPrice.tax ? `(includes ${localPrice.tax} VAT)` : '';
@@ -79,7 +89,7 @@ class PaidMemberCard extends Component {
 
                     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
 
-                        <Button outlined onClick={() => cancelSubscription(cancelUrl)}>
+                        <Button outlined onClick={this.confirmCancelSubscription}>
                             Yes, cancel subscription
                         </Button>
 
@@ -92,7 +102,7 @@ class PaidMemberCard extends Component {
                 </div>
                 }
 
-                {!confirmDeleteIsShowing && !cancellationEffectiveDate  &&
+                {!confirmDeleteIsShowing && status !== 'deleted'  &&
                 <CardActions style={{ justifyContent: 'flex-end' }}>
                     <CardActionButtons onClick={() => this.setState({ confirmDeleteIsShowing: true })}>
                         <CardAction>Cancel subscription</CardAction>
@@ -100,7 +110,7 @@ class PaidMemberCard extends Component {
                 </CardActions>
                 }
 
-                {cancellationEffectiveDate &&
+                {status === 'deleted' &&
                 <Typography use="body1"
                             tag="div"
                             className={'userSubscriptionCard--warning'}>
