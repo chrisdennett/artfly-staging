@@ -31,7 +31,7 @@ class PaidMemberCard extends Component {
         const { confirmDeleteIsShowing } = this.state;
         const { membershipDetails, freePlanMaxArtworks } = this.props;
 
-        const { planName, status, paidUntil, price, localPrice, maxArtworks, totalUserArtworks, receiptUrl, cancellationEffectiveDate } = membershipDetails;
+        const { planName, status, paidUntil, price, dateJoined, localPrice, maxArtworks, totalUserArtworks, receiptUrl, cancellationEffectiveDate } = membershipDetails;
 
         const grossPrice = localPrice && localPrice.gross ? localPrice.gross : price;
         const vatText = localPrice && localPrice.tax ? `(includes ${localPrice.tax} VAT)` : '';
@@ -41,6 +41,14 @@ class PaidMemberCard extends Component {
                 <div style={{ padding: '0 1rem 0 1rem' }}>
                     <Typography use="headline6" tag="h2">
                         Type: {planName}
+                    </Typography>
+                    <Typography
+                        use="subtitle2"
+                        tag="h3"
+                        theme="text-secondary-on-background"
+                        style={{ marginTop: '-1rem' }}
+                    >
+                        Date joined: {TO_DATE_TEXT(dateJoined)}
                     </Typography>
 
                     <LabelValueItem label={'Monthly cost:'}

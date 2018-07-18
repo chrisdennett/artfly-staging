@@ -32,7 +32,6 @@ const UserAccountSubscription = ({ userId, membershipPlan, subscribeUser, Update
                               isFixed={true}
                               onCloseClick={() => UpdateUrl('/profile')}/>
 
-
             <div className={'accountSubscription--content'}>
                 <Typography use={'overline'} tag={'div'} className={'accountSubscription--membershipOption--title'}>
                     Current membership:

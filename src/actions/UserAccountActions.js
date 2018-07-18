@@ -25,11 +25,13 @@ function addUserAccount(userId, dispatch) {
 }
 
 // Setting up an account if one doesn't exist feels a bit wrong.
-export function listenForUserAccountChanges(userId) {
+// But all they'd lose is date joined and possibly future props like artists.
+export function fetchUserAccount(userId) {
     return (dispatch) => {
         db.collection('accounts')
             .doc(userId)
-            .onSnapshot(doc => {
+            .get()
+            .then(doc => {
                     if (doc.exists) {
                         const accountDataWithId = { ...doc.data(), accountId: doc.id };
 

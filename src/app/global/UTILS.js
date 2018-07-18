@@ -5,8 +5,11 @@ export const ROUND_TO = (number, decimalPlaces) => {
 };
 
 export const TO_DATE_TEXT = (dateNumber) => {
+
     const d = new Date(dateNumber);
     const date = d.getDate();
+    if(isNaN(date)) return '...';
+
     const monthIndex = d.getMonth();
     const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][monthIndex];
     const year = d.getFullYear();
