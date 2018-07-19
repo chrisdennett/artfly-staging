@@ -8,6 +8,7 @@ import { TO_DATE_TEXT } from "../global/UTILS";
 import LabelValueItem from "../global/labelValueItem/LabelValueItem";
 import LabelValueListDivider from "../global/labelValueItem/LabelValueListDivider";
 import CircularProgressBar from "../global/CircularProgressBar";
+import SubscriptionCancelledWarning from "./SubscriptionCancelledWarning";
 
 class PaidMemberCard extends Component {
 
@@ -29,16 +30,11 @@ class PaidMemberCard extends Component {
     render() {
         const { confirmDeleteIsShowing } = this.state;
         const { membershipDetails, freePlanMaxArtworks, subscribeUser, userId } = this.props;
-
         const { planName, status, paidUntil, price, dateJoined, localPrice, maxArtworks, totalUserArtworks, receiptUrl, cancellationEffectiveDate } = membershipDetails;
 
         const grossPrice = localPrice && localPrice.gross ? localPrice.gross : price;
         const vatText = localPrice && localPrice.tax ? `(includes ${localPrice.tax} VAT)` : '';
-
         const nextPaymentText = status === 'deleted' ? 'cancelled' : TO_DATE_TEXT(paidUntil);
-
-        // only used if subscription set to delete
-        const totalArtworksToBeDeleted = totalUserArtworks - freePlanMaxArtworks >= 0 ? totalUserArtworks - freePlanMaxArtworks : 0;
 
         return (
             <Card style={{ width: '100%', marginTop: 0 }}>
@@ -123,23 +119,16 @@ class PaidMemberCard extends Component {
                 </CardActions>
                 }
 
+
                 {status === 'deleted' &&
-                <div className={'userSubscriptionCard--warning'}>
-                    <Typography use="body1">
-                        Subscription cancelled: Ends on {TO_DATE_TEXT(cancellationEffectiveDate)}
-                    </Typography>
-                    <Typography use="body1" tag="p">
-                        After that you'll move onto free membership which means the maximum artworks will decrease
-                        to {freePlanMaxArtworks}.
-                    </Typography>
-                    <Typography use="body1" tag="p">
-                        {totalArtworksToBeDeleted} artwork{totalArtworksToBeDeleted === 1 ? '' : 's'} will be deleted.
-                    </Typography>
+                <div style={{ padding: '0 1rem 0 1rem' }}>
+                    <SubscriptionCancelledWarning totalUserArtworks={totalUserArtworks}
+                                                  cancellationEffectiveDate={cancellationEffectiveDate}/>
                 </div>
                 }
 
                 {status === 'deleted' &&
-                <Typography use="body1" tag="p" style={{textAlign: 'center'}}>
+                <Typography use="body1" tag="p" style={{ textAlign: 'center' }}>
                     <Button raised onClick={() => subscribeUser(userId)}>
                         Start a new subscription
                     </Button>

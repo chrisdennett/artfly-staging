@@ -15,13 +15,10 @@ import './userSubscriptionCard_styles.css';
 import { TO_DATE_TEXT } from '../global/UTILS';
 // comps
 import LoadingThing from "../loadingThing/LoadingThing";
-import membershipPlans from "../userAccountSubscription/membershipPlans";
+import SubscriptionCancelledWarning from "../userAccountSubscription/SubscriptionCancelledWarning";
 
 const UserSubscriptionCard = ({ membershipPlan, updateUrl, totalArtworks }) => {
     const { cancellationEffectiveDate, status, dateJoined } = membershipPlan;
-    const maxArtworksOnFreePlan = membershipPlans['free'].maxArtworks;
-    const totalArtworksToBeDeleted = totalArtworks - maxArtworksOnFreePlan >= 0 ? totalArtworks - maxArtworksOnFreePlan : 0;
-
 
     return (
         <Card style={{ width: '100%', marginTop: 20 }}>
@@ -56,18 +53,9 @@ const UserSubscriptionCard = ({ membershipPlan, updateUrl, totalArtworks }) => {
                     </Typography>
 
                     {status === 'deleted' &&
-                    <div className={'userSubscriptionCard--warning'}>
-                        <Typography use="body1"                        >
-                            Subscription cancelled: ends {TO_DATE_TEXT(cancellationEffectiveDate)}
-                        </Typography>
-                        <Typography use="body1" tag="p">
-                            After that you'll move onto free membership which means the maximum artworks will decrease
-                            to {maxArtworksOnFreePlan}.
-                        </Typography>
-                        <Typography use="body1" tag="p">
-                            {totalArtworksToBeDeleted} artwork{totalArtworksToBeDeleted === 1 ? '' : 's'} will be deleted.
-                        </Typography>
-                    </div>
+                    <SubscriptionCancelledWarning totalUserArtworks={totalArtworks}
+                                                  cancellationEffectiveDate={cancellationEffectiveDate}/>
+
                     }
                 </div>
             </CardPrimaryAction>
