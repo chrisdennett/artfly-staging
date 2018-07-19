@@ -1,6 +1,7 @@
 .userSubscriptionCard--warning{
-    background-color: #ffcb96;
+    background-color: #ffdd73;
     margin-top: 10px;
-    padding: 10px;
+    padding: 20px;
+    border-radius: 5px;
     /*border-top: 1px solid rgba(0,0,0,0.2);*/
 }

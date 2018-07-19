@@ -28,7 +28,7 @@ class PaidMemberCard extends Component {
 
     render() {
         const { confirmDeleteIsShowing } = this.state;
-        const { membershipDetails, freePlanMaxArtworks } = this.props;
+        const { membershipDetails, freePlanMaxArtworks, subscribeUser, userId } = this.props;
 
         const { planName, status, paidUntil, price, dateJoined, localPrice, maxArtworks, totalUserArtworks, receiptUrl, cancellationEffectiveDate } = membershipDetails;
 
@@ -126,7 +126,7 @@ class PaidMemberCard extends Component {
                 {status === 'deleted' &&
                 <div className={'userSubscriptionCard--warning'}>
                     <Typography use="body1">
-                        Subscription cancelled: ends {TO_DATE_TEXT(cancellationEffectiveDate)}
+                        Subscription cancelled: Ends on {TO_DATE_TEXT(cancellationEffectiveDate)}
                     </Typography>
                     <Typography use="body1" tag="p">
                         After that you'll move onto free membership which means the maximum artworks will decrease
@@ -136,6 +136,14 @@ class PaidMemberCard extends Component {
                         {totalArtworksToBeDeleted} artwork{totalArtworksToBeDeleted === 1 ? '' : 's'} will be deleted.
                     </Typography>
                 </div>
+                }
+
+                {status === 'deleted' &&
+                <Typography use="body1" tag="p" style={{textAlign: 'center'}}>
+                    <Button raised onClick={() => subscribeUser(userId)}>
+                        Start a new subscription
+                    </Button>
+                </Typography>
                 }
 
             </Card>
