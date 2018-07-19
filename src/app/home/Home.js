@@ -59,7 +59,6 @@ const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork, UpdateU
                                  totalArtworks={totalUserArtworks}
                                  key={userGallery.galleryId}
                                  onAddClick={() => UpdateUrl(`/artworkAdder/galleryId_${userGallery.galleryId}_galleryId`)}
-                                 onEditClick={() => UpdateUrl(`/galleryEditor/galleryId_${userGallery.galleryId}_galleryId`)}
                                  onClick={() => UpdateUrl(`/gallery/galleryId_${userGallery.galleryId}_galleryId`)}/>
                 </div>
                 }

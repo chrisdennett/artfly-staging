@@ -9,8 +9,9 @@ import HomeIconButton from "../home/homeIconButton/HomeIconButton";
 
 // Includes save and cancel options
 export const EditAppBar = ({ title, onSaveClick, onCancelClick, fixed = false, hasChanges, onCloseClick }) => (
-    <Toolbar theme={'background'}>
-        <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
+    <Toolbar theme={'background'} fixed={fixed}>
+        <ToolbarRow className={'appBar'}
+                    theme={'background text-primary-on-background'}>
             <ToolbarTitle>{title}</ToolbarTitle>
 
             {hasChanges &&

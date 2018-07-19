@@ -52,9 +52,6 @@ const UserGalleryCard = ({ userGallery, updateUrl }) => {
                     <CardAction use="add"
                                 onClick={() => updateUrl(`/artworkAdder/galleryId_${userGallery.galleryId}_galleryId`)}
                     />
-                    <CardAction use="edit"
-                                onClick={() => updateUrl(`/galleryEditor/galleryId_${userGallery.galleryId}_galleryId`)}
-                    />
                 </CardActionIcons>
             </CardActions>
         </Card>

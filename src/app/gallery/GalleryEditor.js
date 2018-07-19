@@ -3,18 +3,14 @@ import { connect } from 'react-redux';
 import isEqual from "lodash/isEqual";
 // ui
 import { TextField, TextFieldHelperText } from 'rmwc/TextField';
-import { Icon } from 'rmwc/Icon';
-import { Typography } from 'rmwc/Typography';
 // styles
 import './galleryEditor_styles.css';
 // actions
 import { updateGallery } from '../../actions/GalleryDataActions';
 import { UpdateUrl } from "../../actions/UrlActions";
 // comps
-import { getGallery } from "../../selectors/Selectors";
 import { EditAppBar } from "../appBar/AppBar";
 import LoadingThing from "../loadingThing/LoadingThing";
-import GalleryTitles from "./GalleryTitles";
 // constants
 import { MAX_GALLERY_TITLE_LENGTH, MAX_GALLERY_SUBTITLE_LENGTH } from '../global/GLOBAL_CONSTANTS';
 
@@ -30,30 +26,37 @@ class GalleryEditor extends Component {
         this.onSave = this.onSave.bind(this);
     }
 
+    componentDidMount() {
+        if (this.textInput) this.textInput.focus();
+    }
+
     onGalleryTitleChange(newTitle) {
-        if (newTitle.length > 0 && newTitle.length <= MAX_GALLERY_TITLE_LENGTH) {
+        if (newTitle.length >= 0 && newTitle.length <= MAX_GALLERY_TITLE_LENGTH) {
             let updatedData = { ...this.state.unsavedGalleryData, title: newTitle };
             this.setState({ unsavedGalleryData: updatedData });
         }
     }
 
     onGallerySubtitleChange(newSubtitle) {
-        if (newSubtitle.length > 0 && newSubtitle.length <= MAX_GALLERY_SUBTITLE_LENGTH) {
+        if (newSubtitle.length >= 0 && newSubtitle.length <= MAX_GALLERY_SUBTITLE_LENGTH) {
             let updatedData = { ...this.state.unsavedGalleryData, subtitle: newSubtitle };
             this.setState({ unsavedGalleryData: updatedData });
         }
     }
 
     onSave() {
-        const { currentGallery, updateGallery } = this.props;
+        const { currentGallery, updateGallery, onClose } = this.props;
         const { unsavedGalleryData } = this.state;
         const newGalleryData = { ...currentGallery, ...unsavedGalleryData };
 
         updateGallery(currentGallery.galleryId, newGalleryData);
+
+        onClose();
     }
 
     render() {
-        const { currentGallery, UpdateUrl } = this.props;
+        const { currentGallery, onClose } = this.props;
+
         const { unsavedGalleryData } = this.state;
         const mergedData = { ...currentGallery, ...unsavedGalleryData };
         const hasChanges = currentGallery && !isEqual(mergedData, currentGallery);
@@ -64,62 +67,43 @@ class GalleryEditor extends Component {
         const subtitleCharacters = mergedData.subtitle ? mergedData.subtitle.length : '...';
         const subtitleHelperText = `${subtitleCharacters} of ${MAX_GALLERY_SUBTITLE_LENGTH}`;
 
+        const helperTextStyle = { margin: 0 };
+
         return (
-            <div className={'galleryEditor'}>
+            <div>
                 <EditAppBar title={'Edit Gallery'}
+                            fixed={true}
                             hasChanges={hasChanges}
                             onSaveClick={this.onSave}
                             onCancelClick={() => this.setState({ unsavedGalleryData: {} })}
-                            onCloseClick={() => UpdateUrl(`/gallery/galleryId_${currentGallery.galleryId}_galleryId`)}
+                            onCloseClick={onClose}
                 />
 
                 {!currentGallery &&
-                <LoadingThing/>
+                <div className={'gallery--loader'}>
+                    <LoadingThing/>
+                </div>
                 }
 
-                <div className={'galleryEditor--titlesHolder'}>
-                    <GalleryTitles title={mergedData.title}
-                                   subtitle={mergedData.subtitle}/>
-                </div>
-
                 {currentGallery &&
-                <div className={'galleryEditor--controls'}>
+                <div className={'gallery--header'} style={{ backgroundColor: 'white' }}>
 
-                    <Typography theme={'secondary'}
-                                use={'button'}
-                                tag={'div'}
-                                className={'galleryEditor--controls--title'}>
-                        <Icon use={'edit'}/>
-                        Edit Gallery titles:
-                    </Typography>
-
-                    <div className={'galleryEditor--textFieldHolder'}>
-                        <TextField placeholder="Title..."
-                                   required
-                                   fullwidth
-                                   value={mergedData.title}
-                                   onChange={(e) => this.onGalleryTitleChange(e.target.value)}
-                        />
-                    </div>
-                    <TextFieldHelperText persistent
-                                         className={'galleryEditor--textFieldHelper'}
-                    >
+                    <TextField className={'gallery--title'}
+                               inputRef={(input) => { this.textInput = input }}
+                               fullwidth
+                               onChange={(e) => this.onGalleryTitleChange(e.target.value)}
+                               value={mergedData.title}/>
+                    <TextFieldHelperText style={helperTextStyle}>
                         {titleHelperText}
                     </TextFieldHelperText>
 
-                    <div className={'galleryEditor--textFieldHolder'}>
-                        <TextField placeholder="Subtitle..."
-                                   fullwidth
-                                   value={mergedData.subtitle}
-                                   onChange={(e) => this.onGallerySubtitleChange(e.target.value)}
-                        />
-                    </div>
-                    <TextFieldHelperText persistent
-                                         className={'galleryEditor--textFieldHelper'}
-                    >
+                    <TextField className={'gallery--subtitle'}
+                               fullwidth
+                               value={mergedData.subtitle}
+                               onChange={(e) => this.onGallerySubtitleChange(e.target.value)}/>
+                    <TextFieldHelperText style={helperTextStyle}>
                         {subtitleHelperText}
                     </TextFieldHelperText>
-
                 </div>
                 }
             </div>
@@ -127,9 +111,4 @@ class GalleryEditor extends Component {
     }
 }
 
-const mapStateToProps = (state, props) => {
-    return {
-        currentGallery: getGallery(state, props)
-    }
-};
-export default connect(mapStateToProps, { updateGallery, UpdateUrl })(GalleryEditor);
+export default connect(null, { updateGallery, UpdateUrl })(GalleryEditor);

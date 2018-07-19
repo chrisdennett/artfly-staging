@@ -8,7 +8,6 @@ import GalleryArtworkViewer from "./gallery/GalleryArtworkViewer";
 import GalleryHome from "./gallery/GalleryHome";
 import ArtworkAdder from "./artworkAdder/ArtworkAdder";
 import ArtworkEditor from "./artworkEditor/ArtworkEditor";
-import GalleryEditor from "./gallery/GalleryEditor";
 import FourOhFour from "./fourOhFour/FourOhFour";
 import Home from "./home/Home";
 import UserSignIn from "./userSignIn/UserSignIn";
@@ -57,7 +56,7 @@ export const getRedirectPath = (state) => {
         return '/accountDelete';
     }
 
-    const adminOnlyPaths = ['/profile', '/galleryEditor', '/accountSubscription', '/accountDelete', '/artworkAdder', '/artworkEditor'];
+    const adminOnlyPaths = ['/profile', '/accountSubscription', '/accountDelete', '/artworkAdder', '/artworkEditor'];
     // if trying to go to an admin only page and user not logged in redirect to log in
     if (!user.uid && adminOnlyPaths.indexOf(routing.pathname) !== -1) {
         // redirect to home page
@@ -107,9 +106,6 @@ export const getCurrentPageComponent = (state) => {
             else if (galleryId) return <GalleryHome galleryId={galleryId}/>;
             // or if missing params go home
             else return <Home/>;
-
-        case 'galleryEditor':
-            return <GalleryEditor galleryId={galleryId}/>;
 
         case 'signIn':
             return <UserSignIn/>;
