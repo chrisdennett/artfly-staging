@@ -17,12 +17,11 @@ class PaidMemberCard extends Component {
         this.state = { confirmDeleteIsShowing: false };
 
         this.confirmCancelSubscription = this.confirmCancelSubscription.bind(this);
-
     }
 
-    confirmCancelSubscription(){
+    confirmCancelSubscription() {
         this.setState({ confirmDeleteIsShowing: false }, () => {
-            const {cancelUrl} = this.props.membershipDetails;
+            const { cancelUrl } = this.props.membershipDetails;
             this.props.cancelSubscription(cancelUrl);
         })
     }
@@ -35,6 +34,8 @@ class PaidMemberCard extends Component {
 
         const grossPrice = localPrice && localPrice.gross ? localPrice.gross : price;
         const vatText = localPrice && localPrice.tax ? `(includes ${localPrice.tax} VAT)` : '';
+
+        const totalArtworksToBeDeleted = totalUserArtworks - freePlanMaxArtworks >= 0 ? totalUserArtworks - freePlanMaxArtworks : 0;
 
         return (
             <Card style={{ width: '100%', marginTop: 0 }}>
@@ -70,7 +71,7 @@ class PaidMemberCard extends Component {
 
                     <LabelValueListDivider/>
 
-                    <div style={{textAlign: 'center', margin: '20px 0 20px 0'}}>
+                    <div style={{ textAlign: 'center', margin: '20px 0 20px 0' }}>
                         <CircularProgressBar max={maxArtworks} progress={totalUserArtworks}/>
                     </div>
 
@@ -110,7 +111,7 @@ class PaidMemberCard extends Component {
                 </div>
                 }
 
-                {!confirmDeleteIsShowing && status !== 'deleted'  &&
+                {!confirmDeleteIsShowing && status !== 'deleted' &&
                 <CardActions style={{ justifyContent: 'flex-end' }}>
                     <CardActionButtons onClick={() => this.setState({ confirmDeleteIsShowing: true })}>
                         <CardAction>Cancel subscription</CardAction>
@@ -119,11 +120,18 @@ class PaidMemberCard extends Component {
                 }
 
                 {status === 'deleted' &&
-                <Typography use="body1"
-                            tag="div"
-                            className={'userSubscriptionCard--warning'}>
-                    Subscription cancelled: ends {TO_DATE_TEXT(cancellationEffectiveDate)}
-                </Typography>
+                <div className={'userSubscriptionCard--warning'}>
+                    <Typography use="body1">
+                        Subscription cancelled: ends {TO_DATE_TEXT(cancellationEffectiveDate)}
+                    </Typography>
+                    <Typography use="body1" tag="p">
+                        After that you'll move onto free membership which means the maximum artworks will decrease
+                        to {freePlanMaxArtworks}.
+                    </Typography>
+                    <Typography use="body1" tag="p">
+                        {totalArtworksToBeDeleted} artwork{totalArtworksToBeDeleted === 1 ? '' : 's'} will be deleted.
+                    </Typography>
+                </div>
                 }
 
             </Card>
