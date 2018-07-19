@@ -55,13 +55,6 @@ const UserSubscriptionCard = ({ membershipPlan, updateUrl, totalArtworks }) => {
                         Date joined: {TO_DATE_TEXT(dateJoined)}
                     </Typography>
 
-                    <Typography use="body1" tag="div" theme="text-secondary-on-background">
-                        Total Artworks: {totalArtworks}
-                    </Typography>
-                    <Typography use="body1" tag="div" theme="text-secondary-on-background">
-                        Max Artworks: {membershipPlan.maxArtworks}
-                    </Typography>
-
                     {status === 'deleted' &&
                     <div className={'userSubscriptionCard--warning'}>
                         <Typography use="body1"                        >
