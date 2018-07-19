@@ -35,6 +35,9 @@ class PaidMemberCard extends Component {
         const grossPrice = localPrice && localPrice.gross ? localPrice.gross : price;
         const vatText = localPrice && localPrice.tax ? `(includes ${localPrice.tax} VAT)` : '';
 
+        const nextPaymentText = status === 'deleted' ? 'cancelled' : TO_DATE_TEXT(paidUntil);
+
+        // only used if subscription set to delete
         const totalArtworksToBeDeleted = totalUserArtworks - freePlanMaxArtworks >= 0 ? totalUserArtworks - freePlanMaxArtworks : 0;
 
         return (
@@ -59,7 +62,9 @@ class PaidMemberCard extends Component {
                                                                  tag={'span'}>{vatText}</Typography>
                                     </span>
                                     }/>
-                    <LabelValueItem label={'Next payment:'} value={TO_DATE_TEXT(paidUntil)}/>
+
+                    <LabelValueItem label={'Next payment:'}
+                                    value={nextPaymentText}/>
 
                     {receiptUrl &&
                     <LabelValueItem label={'Latest Receipt:'} value={
@@ -97,7 +102,6 @@ class PaidMemberCard extends Component {
                     }
 
                     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-
                         <Button outlined onClick={this.confirmCancelSubscription}>
                             Yes, cancel subscription
                         </Button>
