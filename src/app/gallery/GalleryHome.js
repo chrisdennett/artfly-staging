@@ -89,8 +89,10 @@ class GalleryHome extends Component {
                 </div>
                 }
 
+                {!inEditMode &&
                 <BottomBar disabled={!currentGalleryData || !firstArtworkId}
                            onEnterGallery={() => UpdateUrl(`/gallery/galleryId_${galleryId}_galleryId/artworkId_${firstArtworkId}_artworkId`)}/>
+                }
             </div>
         );
     }

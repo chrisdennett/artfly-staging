@@ -158,8 +158,13 @@ export const HomeAppBar = function ({ title, navigation, onCloseClick, showHomeI
             <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
                 <ToolbarSection alignStart>
                     <HomeIconButton/>
-                    <ToolbarTitle style={{marginLeft: 15, letterSpacing: '0.3rem'}}>
-                        ARTFLY
+                    <ToolbarTitle style={{marginLeft: 15, color:'#6a6a6a'}}>
+                        <span style={{padding: '0 0px', borderTop:'2px solid #ff0000', borderBottom:'2px solid #ff0000'}}>A</span>
+                        <span style={{padding: '0 0px', borderTop:'2px solid #ff6600', borderBottom:'2px solid #ff6600'}}>R</span>
+                        <span style={{padding: '0 0px', borderTop:'2px solid #ffcc00', borderBottom:'2px solid #ffcc00'}}>T</span>
+                        <span style={{padding: '0 0px', borderTop:'2px solid #abc837', borderBottom:'2px solid #abc837'}}>F</span>
+                        <span style={{padding: '0 0px', borderTop:'2px solid #37abc8', borderBottom:'2px solid #37abc8'}}>L</span>
+                        <span style={{padding: '0 0px', borderTop:'2px solid #aa00d4', borderBottom:'2px solid #aa00d4'}}>Y</span>
                     </ToolbarTitle>
                 </ToolbarSection>
 
