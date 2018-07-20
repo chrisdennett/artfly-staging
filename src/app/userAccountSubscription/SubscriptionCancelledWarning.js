@@ -3,12 +3,12 @@ import React from 'react';
 import { Typography } from 'rmwc/Typography';
 // helpers
 import { TO_DATE_TEXT } from "../global/UTILS";
-import membershipPlans from "./membershipPlans";
+import MEMBERSHIP_PLANS from "../global/MEMBERSHIP_PLANS";
 
 const SubscriptionCancelledWarning = ({totalUserArtworks, cancellationEffectiveDate}) => {
 
     // only used if subscription set to delete
-    const maxArtworksOnFreePlan = membershipPlans['free'].maxArtworks;
+    const maxArtworksOnFreePlan = MEMBERSHIP_PLANS['free'].maxArtworks;
     const totalArtworksToBeDeleted = totalUserArtworks - maxArtworksOnFreePlan >= 0 ? totalUserArtworks - maxArtworksOnFreePlan : 0;
 
     return (

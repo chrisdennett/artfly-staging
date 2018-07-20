@@ -3,7 +3,7 @@ import { firestoreDb as db } from "../libs/firebaseConfig";
 //
 export const SUBSCRIPTION_FETCHED = 'subscriptionFetched';
 
-export function listenForUserSubscriptionChanges(userId) {
+export function listenForUserSubscriptionChanges(userId, callback) {
     return (dispatch) => {
         db.collection('memberships')
             .doc(userId)
@@ -21,6 +21,8 @@ export function listenForUserSubscriptionChanges(userId) {
                         type: SUBSCRIPTION_FETCHED,
                         payload: subscriptionDataWithId
                     });
+
+                    if(callback)callback(subscriptionDataWithId);
                 },
                 error => {
                     console.log("user accounts fetch error: ", error);

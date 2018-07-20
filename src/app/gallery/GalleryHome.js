@@ -78,6 +78,7 @@ class GalleryHome extends Component {
                             galleryArtworks.map(artworkData => {
                                 return (
                                     <ArtworkThumb key={artworkData.artworkId}
+                                                  UpdateUrl={UpdateUrl}
                                                   onClick={() => UpdateUrl(`/gallery/galleryId_${galleryId}_galleryId/artworkId_${artworkData.artworkId}_artworkId`)}
                                                   artworkData={artworkData}
                                     />

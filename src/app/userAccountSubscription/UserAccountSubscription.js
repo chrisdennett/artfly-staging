@@ -8,7 +8,7 @@ import './accountSubscription_styles.css';
 import { UpdateUrl } from "../../actions/UrlActions";
 import { subscribeUser, updateSubscription, cancelSubscription } from "../../actions/PaddleActions";
 // selectors
-import membershipPlans from '../userAccountSubscription/membershipPlans';
+import MEMBERSHIP_PLANS from '../global/MEMBERSHIP_PLANS';
 import { getMembershipDetails } from "../../selectors/Selectors";
 // comps
 import { TempScreenAppBar } from "../appBar/AppBar";
@@ -41,7 +41,7 @@ const UserAccountSubscription = ({ userId, membershipPlan, subscribeUser, Update
                 <PaidMemberCard membershipDetails={membershipPlan}
                                 subscribeUser={subscribeUser}
                                 userId={userId}
-                                freePlanMaxArtworks={membershipPlans['free'].maxArtworks}
+                                freePlanMaxArtworks={MEMBERSHIP_PLANS['free'].maxArtworks}
                                 cancelSubscription={cancelSubscription}/>
                 }
 
@@ -55,12 +55,12 @@ const UserAccountSubscription = ({ userId, membershipPlan, subscribeUser, Update
                     </Typography>
 
                     {!userIsOnFreePlan &&
-                    <MembershipOption membershipPlan={membershipPlans['free']}
+                    <MembershipOption membershipPlan={MEMBERSHIP_PLANS['free']}
                                       message={"You'll automatically switch to this membership if you cancel your current subscription."}/>
                     }
 
                     {userIsOnFreePlan &&
-                    <MembershipOption membershipPlan={membershipPlans['516947']}
+                    <MembershipOption membershipPlan={MEMBERSHIP_PLANS['516947']}
                                       localPrice={localPrice}
                                       userId={userId}
                                       subscribeUser={subscribeUser}/>

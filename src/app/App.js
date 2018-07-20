@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import 'material-components-web/dist/material-components-web.min.css';
 import './appStyles.css';
 // actions
-import {fetchLocalPrice} from "../actions/PaddleActions";
+import { fetchLocalPrice } from "../actions/PaddleActions";
 import { fetchUserArtworks, getArtworkDataOnce } from "../actions/GetArtworkActions";
 import { listenForUserAuthChanges } from "../actions/UserAuthActions";
 import { fetchUserAccount } from "../actions/UserAccountActions";
@@ -35,9 +35,9 @@ class ArtflyRouting extends React.Component {
 
         if (newUid && newUid !== currentUid) {
             this.props.fetchUserGallery(newUid);
-            this.props.fetchUserArtworks(newUid);
             this.props.fetchLocalPrice();
             this.props.fetchUserAccount(newUid);
+            this.props.fetchUserArtworks(newUid);
             // listening for account changes because it can be changed
             // externally by the Paddle API
             this.props.listenForUserSubscriptionChanges(newUid);

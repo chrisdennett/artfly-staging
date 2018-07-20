@@ -2,7 +2,7 @@
 // https://vendors.paddle.com/subscriptions/plans
 // local price is retrieved from paddle.  These prices are here as a fallback if Paddle API doesn't break
 
-const membershipPlans = {
+const MEMBERSHIP_PLANS = {
     free:{
         planName: 'Free',
         isPaidPlan: false,
@@ -19,7 +19,7 @@ const membershipPlans = {
     }
 };
 
-export default membershipPlans;
+export default MEMBERSHIP_PLANS;
 
 /*
     533578:{

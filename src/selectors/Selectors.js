@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import { createSelector } from 'reselect';
 // TODO: move this to a data folder
-import membershipPlans from '../app/userAccountSubscription/membershipPlans';
+import MEMBERSHIP_PLANS from '../app/global/MEMBERSHIP_PLANS';
 
 export const getUserId = (state) => {
     const { user } = state;
@@ -206,11 +206,11 @@ export const getMembershipDetails = createSelector(
 
         let membershipPlan = {};
         if (subscription.status === 'noSubscription') {
-            membershipPlan = { ...membershipPlans['free'] };
+            membershipPlan = { ...MEMBERSHIP_PLANS['free'] };
         }
         else {
             const { planId } = subscription;
-            membershipPlan = { ...membershipPlans[planId], ...subscription };
+            membershipPlan = { ...MEMBERSHIP_PLANS[planId], ...subscription };
         }
 
         if (paddle) {
