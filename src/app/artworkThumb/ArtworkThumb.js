@@ -14,11 +14,11 @@ class ArtworkThumb extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {elevation: 0};
+        this.state = { elevation: 0 };
     }
 
     render() {
-        const { artworkData, onClick, UpdateUrl } = this.props;
+        const { artworkData, onClick, UpdateUrl, viewerIsAdmin } = this.props;
 
         return (
             <div style={{ lineHeight: 0, padding: 10, position: 'relative' }}>
@@ -37,16 +37,15 @@ class ArtworkThumb extends Component {
 
                 </Elevation>
 
-                {artworkData.deleteAfter &&
+                {viewerIsAdmin && artworkData.deleteAfter &&
                 <Button raised
                         onClick={() => UpdateUrl('/profile')}
-                        style={{ background: '#ffc325', position: 'absolute', borderRadius:5, minWidth:42, border:'2px solid rgba(0,0,0,1)', zIndex: 2, marginLeft:'-21px', left: '50%', bottom: 0, color: 'black', padding: 0 }}>
-                    <Icon strategy="ligature" use="warning" style={{padding:0}}/>
+                        style={{ background: '#ffc325', position: 'absolute', borderRadius: 5, minWidth: 42, border: '2px solid rgba(0,0,0,1)', zIndex: 2, marginLeft: '-21px', left: '50%', bottom: 0, color: 'black', padding: 0 }}>
+                    <Icon strategy="ligature" use="warning" style={{ padding: 0 }}/>
                 </Button>
                 }
             </div>
         )
-            ;
     }
 }
 

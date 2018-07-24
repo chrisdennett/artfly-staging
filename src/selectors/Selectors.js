@@ -26,26 +26,9 @@ export const getGallery = (state, props) => {
     return galleries[galleryId];
 };
 
-export const getUserArtworks = (state) => {
-    const { user, artworks } = state;
-
-    if (!user || !artworks) return null;
-
-    const { uid } = user;
-
-    const userArtworks = Object.keys(artworks)
-        .filter(artworkId => artworks[artworkId].adminId === uid)
-        .reduce((obj, key) => {
-            obj[key] = artworks[key];
-            return obj
-        }, {});
-
-    return getArtworksByDate(userArtworks);
-};
-
 export const getTotalUserArtworks = (state) => {
     const userArtworks = getUserArtworks(state);
-    return userArtworks.length;
+    return userArtworks ? userArtworks.length : 0;
 };
 
 export const getMaxArtworksAllowed = (state) => {
@@ -58,13 +41,13 @@ export const getMaxArtworksAllowed = (state) => {
 
 export const getLatestUserArtwork = state => {
     const userArtworks = getUserArtworks(state);
-    if (userArtworks.length === 0) return null;
+    if (!userArtworks || userArtworks.length === 0) return null;
     return userArtworks[0];
 };
 
 export const getRecentUserArtworks = state => {
     const userArtworks = getUserArtworks(state);
-    if (userArtworks.length === 0) return null;
+    if (!userArtworks || userArtworks.length === 0) return null;
 
     return userArtworks.slice(0, 3);
 };
@@ -196,12 +179,9 @@ export const getArtwork = (state, props) => {
     return artworks[artworkId];
 };
 
-export const getMembershipDetails = createSelector(
+export const getUserMembership = createSelector(
     state => state.subscription,
-    state => state.account,
-    state => state.paddle,
-    getTotalUserArtworks,
-    (subscription, account, paddle, totalUserArtworks) => {
+    (subscription) => {
         if (!subscription) return null;
 
         let membershipPlan = {};
@@ -213,6 +193,18 @@ export const getMembershipDetails = createSelector(
             membershipPlan = { ...MEMBERSHIP_PLANS[planId], ...subscription };
         }
 
+        return membershipPlan;
+    }
+);
+
+
+export const getMembershipDetails = createSelector(
+    state => state.account,
+    state => state.paddle,
+    getUserMembership,
+    getTotalUserArtworks,
+    (account, paddle, membershipPlan, totalUserArtworks) => {
+
         if (paddle) {
             membershipPlan.localPrice = paddle.localPrice;
         }
@@ -221,5 +213,63 @@ export const getMembershipDetails = createSelector(
         membershipPlan.totalUserArtworks = isNaN(totalUserArtworks) ? '...' : totalUserArtworks;
 
         return membershipPlan;
+    }
+);
+
+export const getUserArtworksOld = (state) => {
+    const { user, artworks } = state;
+
+    if (!user || !artworks) return null;
+
+    const { uid } = user;
+
+    const userArtworks = Object.keys(artworks)
+        .filter(artworkId => artworks[artworkId].adminId === uid)
+        .reduce((obj, key) => {
+            obj[key] = artworks[key];
+            return obj
+        }, {});
+
+    return getArtworksByDate(userArtworks);
+};
+
+export const getUserArtworks = createSelector(
+    state => state.user,
+    state => state.artworks,
+    getUserMembership,
+    (user, artworks, membership) => {
+        if (!user.uid || !artworks) return null;
+
+        const { uid } = user;
+
+        // const { maxArtworks } = membership;
+        //2018-08-13
+
+        const userArtworks = Object.keys(artworks)
+            .filter(artworkId => {
+                return artworks[artworkId].adminId === uid;
+            })
+            .filter((artworkId, index) => {
+
+                let includeArtwork = true;
+                const { deleteAfter } = artworks[artworkId];
+                if (deleteAfter) {
+                    const now = Date.now();
+                    const deleteDate = new Date(deleteAfter);
+
+                    // includeArtwork = index < maxArtworks || deleteAfter - now > 0;
+                    includeArtwork = deleteDate - now > 0;
+                }
+
+                return includeArtwork;
+            })
+            .reduce((obj, key) => {
+                obj[key] = artworks[key];
+                return obj
+            }, {});
+
+        if (userArtworks.length < 1) return userArtworks;
+
+        return getArtworksByDate(userArtworks);
     }
 );

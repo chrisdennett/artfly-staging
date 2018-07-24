@@ -79,6 +79,7 @@ class GalleryHome extends Component {
                                 return (
                                     <ArtworkThumb key={artworkData.artworkId}
                                                   UpdateUrl={UpdateUrl}
+                                                  viewerIsAdmin={isEditable}
                                                   onClick={() => UpdateUrl(`/gallery/galleryId_${galleryId}_galleryId/artworkId_${artworkData.artworkId}_artworkId`)}
                                                   artworkData={artworkData}
                                     />
