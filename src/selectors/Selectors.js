@@ -17,15 +17,6 @@ export const getDeleteAuthError = (state) => {
     return errors.userAuthDeleteError;
 };
 
-export const getGallery = (state, props) => {
-    const { galleries } = state;
-    const { galleryId } = props;
-
-    if (!galleries || !galleryId) return null;
-
-    return galleries[galleryId];
-};
-
 export const getTotalUserArtworks = (state) => {
     const userArtworks = getUserArtworks(state);
     return userArtworks ? userArtworks.length : 0;
@@ -64,6 +55,11 @@ export const getCurrentGalleryData = (user, galleries, artworks, galleryId) => {
     return { ...gallery, isEditable, galleryArtworks, firstArtworkId };
 };
 
+/*
+* Get artworks based on gallery type.  If it's a user gallery
+* the gallery key is the adminId.  Future gallery types
+* may include artworks from all over.
+* */
 export const getGalleryArtworks = (gallery, artworks) => {
     const { type, key } = gallery;
 
@@ -177,6 +173,10 @@ export const getArtwork = (state, props) => {
     return artworks[artworkId];
 };
 
+/*
+* Helper function to determine if a date is in the past
+* used to determine the out-of-date-ness of subscription
+* */
 const dateIsInTheFuture = (date) => {
     const testDate = new Date(date);
     const now = Date.now();
@@ -185,6 +185,11 @@ const dateIsInTheFuture = (date) => {
     return testDate > now;
 };
 
+/*
+* Helper function to determine if subscription exists
+* and isn't out of date (i.e. has a cancellationEffectiveDate
+* in the past)
+* */
 const hasInDateSubscription = (subscription) => {
     // no subscription
     if (subscription.status === 'noSubscription') {
@@ -202,6 +207,12 @@ const hasInDateSubscription = (subscription) => {
     return true;
 };
 
+/*
+* Gets the current subscription data, and matches to the
+* correct membership plan from local data.
+* Also determines if subscription is cancelled and out of date
+* If so it returns the free membership instead
+* */
 export const getUserMembership = createSelector(
     state => state.subscription,
     (subscription) => {
@@ -223,7 +234,11 @@ export const getUserMembership = createSelector(
     }
 );
 
-
+/*
+* Adds paddle local price and total artworks to membership details
+* so the profile pages only need to call this one function rather
+* than three
+* */
 export const getMembershipDetails = createSelector(
     state => state.account,
     state => state.paddle,
@@ -242,24 +257,13 @@ export const getMembershipDetails = createSelector(
     }
 );
 
-export const getUserArtworksOld = (state) => {
-    const { user, artworks } = state;
-
-    if (!user || !artworks) return null;
-
-    const { uid } = user;
-
-    const userArtworks = Object.keys(artworks)
-        .filter(artworkId => artworks[artworkId].adminId === uid)
-        .reduce((obj, key) => {
-            obj[key] = artworks[key];
-            return obj
-        }, {});
-
-    return getArtworksByDate(userArtworks);
-};
-
-
+/*
+ * Retrieve all artworks with the given admin id
+ * This is a separate function because it is shared
+ * by the private getUserArtworks and the public
+ * getGalleryArtworks which uses the adminId as an
+ * identifier
+  * */
 const getArtworksWithAdminId = (artworks, adminId) => {
     return Object.keys(artworks)
         .filter(artworkId => {
