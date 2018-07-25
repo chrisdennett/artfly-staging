@@ -107,7 +107,8 @@ class GalleryHome extends Component {
     }
 }
 
+    // currentGalleryData: getCurrentGalleryData(state.user, state.galleries, state.artworks, props.galleryId)
 const mapStateToProps = (state, props) => ({
-    currentGalleryData: getCurrentGalleryData(state.user, state.galleries, state.artworks, props.galleryId)
+    currentGalleryData: getCurrentGalleryData(state, props.galleryId)
 });
 export default connect(mapStateToProps, { UpdateUrl, updateGallery })(GalleryHome);

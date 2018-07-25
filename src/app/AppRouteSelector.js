@@ -133,7 +133,7 @@ export const getCurrentPageComponent = (state) => {
     }
 };
 
-const getParams = (url) => {
+export const getParams = (url) => {
     const paramKeys = ['artworkId', 'galleryId', 'editor'];
     const params = {};
 

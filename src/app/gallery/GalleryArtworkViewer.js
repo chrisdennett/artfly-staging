@@ -124,9 +124,9 @@ class GalleryArtworkViewer extends Component {
     }
 }
 
-const mapStateToProps = (state, props) => (
+const mapStateToProps = (state) => (
     {
-        galleryNavData: getGalleryNavigation(state.artworks, props.artworkId, state.user.uid)
+        galleryNavData: getGalleryNavigation(state)
     }
 );
 export default connect(mapStateToProps, { deleteArtwork, UpdateUrl })(GalleryArtworkViewer);

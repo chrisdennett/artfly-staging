@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import { createSelector } from 'reselect';
 // TODO: move this to a data folder
 import MEMBERSHIP_PLANS from '../app/global/MEMBERSHIP_PLANS';
+import { getParams } from "../app/AppRouteSelector";
 
 export const getUserId = (state) => {
     const { user } = state;
@@ -43,24 +44,57 @@ export const getRecentUserArtworks = state => {
     return userArtworks.slice(0, 3);
 };
 
-export const getCurrentGalleryData = (user, galleries, artworks, galleryId) => {
-    const gallery = galleries[galleryId];
-    if (!gallery) return {};
+const getCurrentParams = createSelector(
+    state => state.routing,
+    (route) => {
+        if (!route || !route.pathname) return null;
 
-    const isEditable = user && user.uid === gallery.adminId;
-    const galleryArtworks = getGalleryArtworks(gallery, artworks);
+        return getParams(route.pathname);
+    }
+);
 
-    const firstArtworkId = galleryArtworks.length > 0 ? galleryArtworks[0].artworkId : null;
+const getCurrentGalleryIdParam = createSelector(
+    state => getCurrentParams(state),
+    (params) => {
+        if (!params || !params.galleryId) return null;
+        return params.galleryId;
+    }
+);
 
-    return { ...gallery, isEditable, galleryArtworks, firstArtworkId };
-};
+const getCurrentArtworkIdParam = createSelector(
+    state => getCurrentParams(state),
+    (params) => {
+        if (!params || !params.artworkId) return null;
+        return params.artworkId;
+    }
+);
+
+export const getCurrentGalleryData = createSelector(
+    state => state.user,
+    state => state.galleries,
+    state => state.artworks,
+    state => getCurrentGalleryIdParam(state),
+    (user, galleries, artworks, galleryId) => {
+        if (!galleries || !galleryId) return {};
+
+        const gallery = galleries[galleryId];
+        if(!gallery) return {};
+
+        const isEditable = user && user.uid === gallery.adminId;
+        const galleryArtworks = getGalleryArtworks(gallery, artworks);
+        const totalArtworks = galleryArtworks.length;
+        const firstArtworkId = galleryArtworks.length > 0 ? galleryArtworks[0].artworkId : null;
+
+        return { ...gallery, isEditable, galleryArtworks, totalArtworks, firstArtworkId };
+    }
+);
 
 /*
 * Get artworks based on gallery type.  If it's a user gallery
 * the gallery key is the adminId.  Future gallery types
 * may include artworks from all over.
 * */
-export const getGalleryArtworks = (gallery, artworks) => {
+const getGalleryArtworks = (gallery, artworks) => {
     const { type, key } = gallery;
 
     let galleryArtworks = [];
@@ -73,10 +107,12 @@ export const getGalleryArtworks = (gallery, artworks) => {
 };
 
 export const getArtworksByDate = (artworks) => {
+    // create array
     const arr = Object.keys(artworks).map(id => {
         return artworks[id];
     });
 
+    // sort by last updated
     arr.sort((a, b) => {
         return b.lastUpdated - a.lastUpdated;
     });
@@ -84,7 +120,40 @@ export const getArtworksByDate = (artworks) => {
     return arr;
 };
 
-export const getGalleryNavigation = (artworks, artworkId, userId) => {
+export const getGalleryNavigation = createSelector(
+    state => state.user,
+    state => getCurrentGalleryData(state),
+    state => getCurrentArtworkIdParam(state),
+    (user, gallery, artworkId) => {
+        if (!gallery) return null;
+        let currentArtwork, nextArtwork, previousArtwork;
+        const {galleryArtworks, totalArtworks} = gallery;
+
+        for (let i = 0; i < totalArtworks; i++) {
+            const artwork = galleryArtworks[i];
+            if (artwork.artworkId === artworkId) {
+                currentArtwork = artwork;
+
+                if (i > 0) {
+                    previousArtwork = galleryArtworks[i - 1];
+                }
+
+                if (i <= totalArtworks - 1) {
+                    nextArtwork = galleryArtworks[i + 1]
+                }
+
+                break;
+            }
+        }
+
+        const userId = user ? user.uid : '';
+        const isEditable = !currentArtwork ? false : currentArtwork.adminId === userId;
+
+        return { currentArtwork, isEditable, nextArtwork, previousArtwork };
+    }
+);
+
+export const getGalleryNavigation2 = (artworks, artworkId, userId) => {
     const galleryArtworks = getArtworksByDate(artworks);
     const totalArtworks = galleryArtworks.length;
     let currentArtwork, nextArtwork, previousArtwork;
