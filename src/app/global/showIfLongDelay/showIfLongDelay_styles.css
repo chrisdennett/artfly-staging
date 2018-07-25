@@ -1,0 +1,7 @@
+.showIfLongDelay{
+    background-color: #f5dd8e;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    align-items: center;
+}

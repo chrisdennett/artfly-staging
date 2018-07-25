@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 // ui
+import { Typography } from 'rmwc/Typography';
 import { Button } from 'rmwc/Button';
 import { Icon } from 'rmwc/Icon';
 import { Fab } from 'rmwc/Fab'
@@ -14,8 +15,8 @@ import { getGalleryNavigation } from '../../selectors/Selectors';
 import { ArtworkAppBar } from "../appBar/AppBar";
 import GalleryArtwork from "./GalleryArtwork";
 import ArtworkEditMenu from "../artworkEditor/ArtworkEditMenu";
-import Redirect from "../global/Redirect";
 import { ARTWORK_PATH, GALLERY_PATH } from "../global/UTILS";
+import ShowIfLongDelay from "../global/showIfLongDelay/ShowIfLongDelay";
 
 class GalleryArtworkViewer extends Component {
 
@@ -29,15 +30,15 @@ class GalleryArtworkViewer extends Component {
         this.goToGallery = this.goToGallery.bind(this);
     }
 
-    goToGallery(){
-        const {galleryId} = this.props;
+    goToGallery() {
+        const { galleryId } = this.props;
         const url = `/gallery/galleryId_${galleryId}_galleryId`;
         this.props.UpdateUrl(url, 'GalleryArtworkViewer > goToGallery');
     }
 
     goToNextArtwork() {
-        const {galleryId, galleryNavData} = this.props;
-        const {nextArtwork} = galleryNavData;
+        const { galleryId, galleryNavData } = this.props;
+        const { nextArtwork } = galleryNavData;
 
         if (nextArtwork) {
             const url = ARTWORK_PATH(galleryId, nextArtwork.artworkId);
@@ -46,8 +47,8 @@ class GalleryArtworkViewer extends Component {
     }
 
     goToPreviousArtwork() {
-        const {galleryId, galleryNavData} = this.props;
-        const {previousArtwork} = galleryNavData;
+        const { galleryId, galleryNavData } = this.props;
+        const { previousArtwork } = galleryNavData;
 
         if (previousArtwork) {
             const url = ARTWORK_PATH(galleryId, previousArtwork.artworkId);
@@ -60,10 +61,6 @@ class GalleryArtworkViewer extends Component {
         const { galleryNavData, galleryId, deleteArtwork, UpdateUrl } = this.props;
         const { currentArtwork, previousArtwork, nextArtwork, isEditable } = galleryNavData;
         const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 35, right: 10 };
-
-        if(currentArtwork === 'missing'){
-            return <Redirect to={GALLERY_PATH(galleryId)}/>;
-        }
 
         return (
             <div className={'gallery'}>
@@ -97,10 +94,21 @@ class GalleryArtworkViewer extends Component {
 
                 <ArtworkAppBar title={'Artworks'}
                                isEditable={isEditable}
-                               onAddClick={() => UpdateUrl(`/artworkAdder/galleryId_${galleryId}_galleryId`)}
+                               onAddClick={() => UpdateUrl(GALLERY_PATH(galleryId))}
                                onDeleteClick={() => this.setState({ deleteConfirmOpen: true })}
                                onMenuClick={this.goToGallery}
                 />
+
+                {!currentArtwork &&
+                <ShowIfLongDelay>
+                    <Typography use={'body1'} tag={'p'}>
+                        This is taking a long time to load. It may no longer exist.
+                    </Typography>
+                    <Button raised onClick={() => UpdateUrl(GALLERY_PATH(galleryId))}>
+                        GO TO GALLERY?
+                    </Button>
+                </ShowIfLongDelay>
+                }
 
                 <GalleryArtwork artworkData={currentArtwork}
                                 onSwipeLeft={this.goToNextArtwork}
