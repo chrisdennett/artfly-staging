@@ -1,4 +1,5 @@
 import { firestoreDb as db } from "../libs/firebaseConfig";
+import { saveArtworkChanges } from "./SaveArtworkActions";
 
 export const ARTWORK_CHANGE = "artworkChange";
 export const USER_ARTWORKS_FETCHED = "userArtworksFetched";
@@ -12,6 +13,26 @@ export const USER_ARTWORKS_FETCH_TRIGGERED = "userArtworksFetchTriggered";
         listenForArtworkChanges(artworkId, dispatch);
     }
 }*/
+
+export function updateUserArtworks(userId){
+    return (dispatch) => {
+
+        db.collection('artworks')
+            .where('adminId', '==', userId)
+            .get()
+            .then(querySnapshot => {
+                    querySnapshot.forEach(doc => {
+                        // add id to artworkData
+                        const artworkId = doc.id;
+                        saveArtworkChanges(artworkId, {deleteAfter:'2018-09-02'})
+                    });
+                },
+                error => {
+                    console.log("user artworks listener error: ", error);
+                })
+    }
+}
+
 
 export function fetchUserArtworks(userId) {
     return (dispatch) => {

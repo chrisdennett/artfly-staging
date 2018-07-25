@@ -179,18 +179,41 @@ export const getArtwork = (state, props) => {
     return artworks[artworkId];
 };
 
+const hasInDateSubscription = (subscription) => {
+    // no subscription
+    if (subscription.status === 'noSubscription') {
+        return false;
+    }
+
+    // subscription, but needs checking
+    if (subscription.cancellationEffectiveDate) {
+        // if set to be cancelled check the date against today
+        const cancelDate = new Date(subscription.cancellationEffectiveDate)
+        const now = Date.now();
+
+        // still valid if cancellation in the future
+        return cancelDate > now;
+    }
+
+    // valid if subscription, but no cancellation date
+    return true;
+};
+
 export const getUserMembership = createSelector(
     state => state.subscription,
     (subscription) => {
         if (!subscription) return null;
 
         let membershipPlan = {};
-        if (subscription.status === 'noSubscription') {
-            membershipPlan = { ...MEMBERSHIP_PLANS['free'] };
-        }
-        else {
-            const { planId } = subscription;
+        const { planId } = subscription;
+        const isValid = hasInDateSubscription(subscription);
+
+        if (isValid) {
             membershipPlan = { ...MEMBERSHIP_PLANS[planId], ...subscription };
+        }
+        // if no valid subscription return the free plan
+        else {
+            membershipPlan = { ...MEMBERSHIP_PLANS['free'] };
         }
 
         return membershipPlan;
@@ -236,28 +259,22 @@ export const getUserArtworksOld = (state) => {
 export const getUserArtworks = createSelector(
     state => state.user,
     state => state.artworks,
-    getUserMembership,
-    (user, artworks, membership) => {
+    (user, artworks) => {
         if (!user.uid || !artworks) return null;
 
         const { uid } = user;
-
-        // const { maxArtworks } = membership;
-        //2018-08-13
 
         const userArtworks = Object.keys(artworks)
             .filter(artworkId => {
                 return artworks[artworkId].adminId === uid;
             })
-            .filter((artworkId, index) => {
-
+            .filter((artworkId) => {
                 let includeArtwork = true;
                 const { deleteAfter } = artworks[artworkId];
                 if (deleteAfter) {
                     const now = Date.now();
                     const deleteDate = new Date(deleteAfter);
 
-                    // includeArtwork = index < maxArtworks || deleteAfter - now > 0;
                     includeArtwork = deleteDate - now > 0;
                 }
 

@@ -226,7 +226,7 @@ function saveNewArtworkData(userId, newArtworkData, callback) {
 }
 
 // SAVE ARTWORK CHANGES
-function saveArtworkChanges(artworkId, newData, onChangeCallback = null) {
+export function saveArtworkChanges(artworkId, newData, onChangeCallback = null) {
     newData.lastUpdated = Date.now();
 
     db.collection('artworks')

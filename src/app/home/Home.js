@@ -6,6 +6,7 @@ import { Typography } from 'rmwc/Typography';
 // styles
 import './homeStyles.css';
 // actions
+import { updateUserArtworks } from '../../actions/GetArtworkActions';
 import { UpdateUrl } from "../../actions/UrlActions";
 // selectors
 import { getLatestUserArtwork, getTotalUserArtworks, getUserGallery } from '../../selectors/Selectors'
@@ -20,7 +21,7 @@ import { HomeAppBar } from "../appBar/AppBar";
 import GalleryCard from "./galleryCard/GalleryCard";
 import JumpingVictorianLady from './JumpingVictorianLady';
 
-const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork, UpdateUrl }) => {
+const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork, UpdateUrl, updateUserArtworks }) => {
     const userLoggedIn = !!user.uid;
     const userPending = user === 'pending';
 
@@ -47,6 +48,8 @@ const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork, UpdateU
                 <Typography className={'sectionTitle'} use="headline4">
                     Your Galleries
                 </Typography>
+
+                <button onClick={() => updateUserArtworks(user.uid)}>UPDATE USER ARTWORKS TEST</button>
 
                 {!userGallery &&
                 <LoadingThing label={'Loading your galleries'}/>
@@ -85,4 +88,4 @@ const mapStateToProps = (state) => (
     }
 );
 
-export default connect(mapStateToProps, { UpdateUrl })(Home);
+export default connect(mapStateToProps, { UpdateUrl, updateUserArtworks })(Home);

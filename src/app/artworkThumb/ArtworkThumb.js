@@ -40,7 +40,7 @@ class ArtworkThumb extends Component {
                 {viewerIsAdmin && artworkData.deleteAfter &&
                 <Button raised
                         onClick={() => UpdateUrl('/profile')}
-                        style={{ background: '#ffc325', position: 'absolute', borderRadius: 5, minWidth: 42, border: '2px solid rgba(0,0,0,1)', zIndex: 2, marginLeft: '-21px', left: '50%', bottom: 0, color: 'black', padding: 0 }}>
+                        style={{ background: '#ffc325', position: 'absolute', minWidth: 42, border: '2px solid rgba(0,0,0,0.2)', zIndex: 2, marginLeft: '-21px', left: '50%', bottom: 0, color: 'rgba(0,0,0,0.6)', padding: 0 }}>
                     <Icon strategy="ligature" use="warning" style={{ padding: 0 }}/>
                 </Button>
                 }
