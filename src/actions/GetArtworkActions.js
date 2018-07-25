@@ -24,7 +24,7 @@ export function updateUserArtworks(userId){
                     querySnapshot.forEach(doc => {
                         // add id to artworkData
                         const artworkId = doc.id;
-                        saveArtworkChanges(artworkId, {deleteAfter:'2018-09-02'})
+                        saveArtworkChanges(artworkId, {deleteAfter:'2017-09-02'})
                     });
                 },
                 error => {

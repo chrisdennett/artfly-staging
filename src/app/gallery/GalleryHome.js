@@ -28,6 +28,13 @@ class GalleryHome extends Component {
     render() {
         const { currentGalleryData, UpdateUrl } = this.props;
         const { inEditMode } = this.state;
+
+        if (!currentGalleryData) {
+            return <div className={'gallery--loader'}>
+                <LoadingThing/>
+            </div>
+        }
+
         const { isEditable, title, subtitle, galleryId, galleryArtworks, firstArtworkId } = currentGalleryData;
         const addFabStyle = { position: 'absolute', bottom: -25, left: '50%', marginLeft: -67 };
         const titlesHolderStyle = { position: 'relative' };

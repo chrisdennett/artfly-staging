@@ -58,6 +58,7 @@ export const getCurrentGalleryData = (user, galleries, artworks, galleryId) => {
 
     const isEditable = user && user.uid === gallery.adminId;
     const galleryArtworks = getGalleryArtworks(gallery, artworks);
+
     const firstArtworkId = galleryArtworks.length > 0 ? galleryArtworks[0].artworkId : null;
 
     return { ...gallery, isEditable, galleryArtworks, firstArtworkId };
@@ -68,13 +69,10 @@ export const getGalleryArtworks = (gallery, artworks) => {
 
     let galleryArtworks = [];
     if (type === 'user') {
-        galleryArtworks = Object.keys(artworks)
-            .filter(artworkId => artworks[artworkId].adminId === key)
-            .reduce((obj, key) => {
-                obj[key] = artworks[key];
-                return obj
-            }, {});
+        galleryArtworks = getArtworksWithAdminId(artworks, key);
     }
+    if(!galleryArtworks) return [];
+
     return getArtworksByDate(galleryArtworks);
 };
 
@@ -179,6 +177,14 @@ export const getArtwork = (state, props) => {
     return artworks[artworkId];
 };
 
+const dateIsInTheFuture = (date) => {
+    const testDate = new Date(date);
+    const now = Date.now();
+
+    // a future date is bigger than now
+    return testDate > now;
+};
+
 const hasInDateSubscription = (subscription) => {
     // no subscription
     if (subscription.status === 'noSubscription') {
@@ -188,11 +194,8 @@ const hasInDateSubscription = (subscription) => {
     // subscription, but needs checking
     if (subscription.cancellationEffectiveDate) {
         // if set to be cancelled check the date against today
-        const cancelDate = new Date(subscription.cancellationEffectiveDate)
-        const now = Date.now();
-
         // still valid if cancellation in the future
-        return cancelDate > now;
+        return dateIsInTheFuture(subscription.cancellationEffectiveDate);
     }
 
     // valid if subscription, but no cancellation date
@@ -256,34 +259,38 @@ export const getUserArtworksOld = (state) => {
     return getArtworksByDate(userArtworks);
 };
 
+
+const getArtworksWithAdminId = (artworks, adminId) => {
+    return Object.keys(artworks)
+        .filter(artworkId => {
+            return artworks[artworkId].adminId === adminId;
+        })
+        .filter((artworkId) => {
+            // check to see if it has a deleteAfter date in the past
+            let includeArtwork = true;
+            const { deleteAfter } = artworks[artworkId];
+            if (deleteAfter) {
+                // if so don't include it
+                includeArtwork = dateIsInTheFuture(deleteAfter);
+            }
+
+            return includeArtwork;
+        })
+        .reduce((obj, key) => {
+            obj[key] = artworks[key];
+            return obj
+        }, {});
+};
+
 export const getUserArtworks = createSelector(
     state => state.user,
     state => state.artworks,
     (user, artworks) => {
         if (!user.uid || !artworks) return null;
 
-        const { uid } = user;
+        const userArtworks = getArtworksWithAdminId(artworks, user.uid);
 
-        const userArtworks = Object.keys(artworks)
-            .filter(artworkId => {
-                return artworks[artworkId].adminId === uid;
-            })
-            .filter((artworkId) => {
-                let includeArtwork = true;
-                const { deleteAfter } = artworks[artworkId];
-                if (deleteAfter) {
-                    const now = Date.now();
-                    const deleteDate = new Date(deleteAfter);
-
-                    includeArtwork = deleteDate - now > 0;
-                }
-
-                return includeArtwork;
-            })
-            .reduce((obj, key) => {
-                obj[key] = artworks[key];
-                return obj
-            }, {});
+        if (!userArtworks) return null;
 
         if (userArtworks.length < 1) return userArtworks;
 
