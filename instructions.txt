@@ -47,6 +47,7 @@ firebase deploy --only functions
 // can restrict to individual functions and other stuff...
 // https://firebase.google.com/docs/cli/
 firebase deploy --only functions:subscriptionEvent
+firebase deploy --only functions:subscriptionEvent
 
 // open some other part of the firebase project using
 firebase open

@@ -1,12 +1,26 @@
 'use strict';
 
-// SAMPLE THUMBNAIL FUNCTION
-//https://github.com/firebase/functions-samples/blob/master/generate-thumbnail/functions/index.js
-
 const functions = require(`firebase-functions`);
 const Firestore = require('@google-cloud/firestore');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
+
+const firestore = new Firestore();
+const settings = { timestampsInSnapshots: true};
+firestore.settings(settings);
+
+// Create and Deploy Your First Cloud Functions
+// https://firebase.google.com/docs/functions/write-firebase-functions
+//https://us-central1-art-blam.cloudfunctions.net/helloWorld
+/*
+exports.helloWorld = functions.https.onRequest((request, response) => {
+    response.send("Hello from Firebase!");
+});
+*/
+
+
+// SAMPLE THUMBNAIL FUNCTION
+//https://github.com/firebase/functions-samples/blob/master/generate-thumbnail/functions/index.js
 
 // const SDKFile = 'art-blam-firebase-adminsdk-zebo2-cc2250b8ef.json';
 // const stagingSDKFile = 'artfly-staging-firebase-adminsdk-eiano-9702287a36.json';
@@ -14,8 +28,6 @@ admin.initializeApp(functions.config().firebase);
 // CHANGE FOR DEV / PRODUCTION
 // const gcs = require('@google-cloud/storage')({  keyFilename: stagingSDKFile });
 // const spawn = require(`child-process-promise`).spawn;
-
-const firestore = new Firestore();
 
 /*exports.removeImagesOnDelete = functions.storage.object()
     .onChange(event => {
@@ -190,7 +202,37 @@ const firestore = new Firestore();
             })
     });*/
 
+const saveArtworkChanges = (artworkId, newData) => {
+    firestore.collection('artworks')
+        .doc(artworkId)
+        .set(newData, { merge: true })
+        .then(() => {
+            console.log('SUCCESS > add artwork delete flag: ', artworkId);
+        })
+        .catch(function (error) {
+            console.log('ADD_DELETE_FLAG_FAILED: ' + artworkId, error);
+        })
+};
+
+const addDeleteFlagsToArtworks = (userId, cancellationEffectiveDate) => {
+//const ref = firestore.doc(`artworks/${fileName}`);
+    firestore.collection('artworks')
+        .where('adminId', '==', userId)
+        .get()
+        .then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    // add id to artworkData
+                    const artworkId = doc.id;
+                    saveArtworkChanges(artworkId, { deleteAfter: cancellationEffectiveDate })
+                });
+            },
+            error => {
+                console.log("user artworks GET error: ", error);
+            })
+};
+
 // listen for Paddle subscription events
+// https://us-central1-art-blam.cloudfunctions.net/subscriptionEvent
 exports.subscriptionEvent = functions.https.onRequest((request, response) => {
     const alertName = request.body.alert_name;
     const userId = request.body.passthrough;
@@ -202,8 +244,6 @@ exports.subscriptionEvent = functions.https.onRequest((request, response) => {
     subscriptionObject.planId = request.body.subscription_plan_id;
 
     let updateDatabase = false;
-
-    // TODO: return a success response if data has correctly been updated otherwise send a different response.
 
     switch (alertName) {
         case 'subscription_created':
@@ -249,6 +289,11 @@ exports.subscriptionEvent = functions.https.onRequest((request, response) => {
             updateDatabase = false;
     }
 
+    // add delete date to any artworks higher than the free amount
+    if (alertName === 'subscription_cancelled') {
+        addDeleteFlagsToArtworks(userId, subscriptionObject.cancellationEffectiveDate);
+    }
+
     // save the new subscription data to the user account object
     if (updateDatabase) {
         firestore
@@ -260,7 +305,7 @@ exports.subscriptionEvent = functions.https.onRequest((request, response) => {
             })
             .catch(function (error) {
                 // if no response is sent it (Paddle) should send again later
-                console.log('Update subscription failed: '+userId, error);
+                console.log('Update subscription failed: ' + userId, error);
             });
     }
     else {

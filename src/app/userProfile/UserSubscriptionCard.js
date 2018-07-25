@@ -19,8 +19,6 @@ import SubscriptionCancelledWarning from "../userAccountSubscription/Subscriptio
 
 const UserSubscriptionCard = ({ membershipPlan, updateUrl, totalArtworks }) => {
     const { cancellationEffectiveDate, status, dateJoined } = membershipPlan;
-    
-    console.log("cancellationEffectiveDate: ", cancellationEffectiveDate);
 
     return (
         <Card style={{ width: '100%', marginTop: 20 }}>
