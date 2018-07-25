@@ -14,6 +14,8 @@ import { getGalleryNavigation } from '../../selectors/Selectors';
 import { ArtworkAppBar } from "../appBar/AppBar";
 import GalleryArtwork from "./GalleryArtwork";
 import ArtworkEditMenu from "../artworkEditor/ArtworkEditMenu";
+import Redirect from "../global/Redirect";
+import { ARTWORK_PATH, GALLERY_PATH } from "../global/UTILS";
 
 class GalleryArtworkViewer extends Component {
 
@@ -38,7 +40,7 @@ class GalleryArtworkViewer extends Component {
         const {nextArtwork} = galleryNavData;
 
         if (nextArtwork) {
-            const url = `/gallery/galleryId_${galleryId}_galleryId/artworkId_${nextArtwork.artworkId}_artworkId`;
+            const url = ARTWORK_PATH(galleryId, nextArtwork.artworkId);
             this.props.UpdateUrl(url, 'GalleryArtworkViewer > goToNextArtwork');
         }
     }
@@ -48,7 +50,7 @@ class GalleryArtworkViewer extends Component {
         const {previousArtwork} = galleryNavData;
 
         if (previousArtwork) {
-            const url = `/gallery/galleryId_${galleryId}_galleryId/artworkId_${previousArtwork.artworkId}_artworkId`;
+            const url = ARTWORK_PATH(galleryId, previousArtwork.artworkId);
             this.props.UpdateUrl(url);
         }
     }
@@ -58,6 +60,10 @@ class GalleryArtworkViewer extends Component {
         const { galleryNavData, galleryId, deleteArtwork, UpdateUrl } = this.props;
         const { currentArtwork, previousArtwork, nextArtwork, isEditable } = galleryNavData;
         const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 35, right: 10 };
+
+        if(currentArtwork === 'missing'){
+            return <Redirect to={GALLERY_PATH(galleryId)}/>;
+        }
 
         return (
             <div className={'gallery'}>

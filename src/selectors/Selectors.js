@@ -75,10 +75,10 @@ export const getCurrentGalleryData = createSelector(
     state => state.artworks,
     state => getCurrentGalleryIdParam(state),
     (user, galleries, artworks, galleryId) => {
-        if (!galleries || !galleryId) return {};
+        if (!galleries || !galleryId) return [];
 
         const gallery = galleries[galleryId];
-        if(!gallery) return {};
+        if(!gallery) return [];
 
         const isEditable = user && user.uid === gallery.adminId;
         const galleryArtworks = getGalleryArtworks(gallery, artworks);
@@ -149,36 +149,11 @@ export const getGalleryNavigation = createSelector(
         const userId = user ? user.uid : '';
         const isEditable = !currentArtwork ? false : currentArtwork.adminId === userId;
 
+        //http://localhost:3000/gallery/galleryId_dPFQjQdkX1bJBjYWtXQ5_galleryId/artworkId_sPdffDuVZToteQedU1bL_artworkId
+
         return { currentArtwork, isEditable, nextArtwork, previousArtwork };
     }
 );
-
-export const getGalleryNavigation2 = (artworks, artworkId, userId) => {
-    const galleryArtworks = getArtworksByDate(artworks);
-    const totalArtworks = galleryArtworks.length;
-    let currentArtwork, nextArtwork, previousArtwork;
-
-    for (let i = 0; i < totalArtworks; i++) {
-        const artwork = galleryArtworks[i];
-        if (artwork.artworkId === artworkId) {
-            currentArtwork = artwork;
-
-            if (i > 0) {
-                previousArtwork = galleryArtworks[i - 1];
-            }
-
-            if (i <= totalArtworks - 1) {
-                nextArtwork = galleryArtworks[i + 1]
-            }
-
-            break;
-        }
-    }
-
-    const isEditable = !currentArtwork ? false : currentArtwork.adminId === userId;
-
-    return { currentArtwork, isEditable, nextArtwork, previousArtwork };
-};
 
 export const getUserGalleryId = (state) => {
     const { galleries, user } = state;

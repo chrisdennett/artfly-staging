@@ -4,8 +4,15 @@ export const ROUND_TO = (number, decimalPlaces) => {
     return Math.round(number * multiplier) /  multiplier;
 };
 
-export const TO_DATE_TEXT = (dateNumber) => {
+export const GALLERY_PATH = (galleryId) => {
+    return `/gallery/galleryId_${galleryId}_galleryId`;
+};
 
+export const ARTWORK_PATH = (galleryId, artworkId) => {
+    return `/gallery/galleryId_${galleryId}_galleryId/artworkId_${artworkId}_artworkId`;
+};
+
+export const TO_DATE_TEXT = (dateNumber) => {
     const d = new Date(dateNumber);
     const date = d.getDate();
     if(isNaN(date)) return '...';

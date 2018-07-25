@@ -130,6 +130,7 @@ export function getArtworkDataOnce(artworkId) {
                 }
                 else {
                     // doc.data() will be undefined in this case
+                    console.log("'missing': ", 'missing');
                     dispatch({
                         type: ARTWORK_CHANGE,
                         payload: { [artworkId]: 'missing' }
