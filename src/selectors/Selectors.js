@@ -18,11 +18,6 @@ export const getDeleteAuthError = (state) => {
     return errors.userAuthDeleteError;
 };
 
-export const getTotalUserArtworks = (state) => {
-    const userArtworks = getUserArtworks(state);
-    return userArtworks ? userArtworks.length : 0;
-};
-
 export const getMaxArtworksAllowed = (state) => {
     const membershipPlan = getMembershipDetails(state);
 
@@ -78,7 +73,7 @@ export const getCurrentGalleryData = createSelector(
         if (!galleries || !galleryId) return [];
 
         const gallery = galleries[galleryId];
-        if(!gallery) return [];
+        if (!gallery) return [];
 
         const isEditable = user && user.uid === gallery.adminId;
         const galleryArtworks = getGalleryArtworks(gallery, artworks);
@@ -101,7 +96,7 @@ const getGalleryArtworks = (gallery, artworks) => {
     if (type === 'user') {
         galleryArtworks = getArtworksWithAdminId(artworks, key);
     }
-    if(!galleryArtworks) return [];
+    if (!galleryArtworks) return [];
 
     return getArtworksByDate(galleryArtworks);
 };
@@ -127,7 +122,7 @@ export const getGalleryNavigation = createSelector(
     (user, gallery, artworkId) => {
         if (!gallery) return null;
         let currentArtwork, nextArtwork, previousArtwork;
-        const {galleryArtworks, totalArtworks} = gallery;
+        const { galleryArtworks, totalArtworks } = gallery;
 
         for (let i = 0; i < totalArtworks; i++) {
             const artwork = galleryArtworks[i];
@@ -286,10 +281,9 @@ export const getUserMembership = createSelector(
 export const getMembershipDetails = createSelector(
     state => state.account,
     state => state.paddle,
+    state => getTotalUserArtworks(state),
     getUserMembership,
-    getTotalUserArtworks,
-    (account, paddle, membershipPlan, totalUserArtworks) => {
-
+    (account, paddle, totalUserArtworks, membershipPlan) => {
         if (paddle) {
             membershipPlan.localPrice = paddle.localPrice;
         }
@@ -343,5 +337,20 @@ export const getUserArtworks = createSelector(
         if (userArtworks.length < 1) return userArtworks;
 
         return getArtworksByDate(userArtworks);
+    }
+);
+
+export const getTotalUserArtworks = createSelector(
+    state => getUserArtworks(state),
+    (userArtworks) => {
+        return userArtworks ? userArtworks.length : 0;
+    }
+);
+
+export const getDeleteAfterDate = createSelector(
+    state => getUserMembership(state),
+    (membershipDetails) => {
+        const { status, cancellationEffectiveDate } = membershipDetails;
+        return status === 'deleted' ? cancellationEffectiveDate : null;
     }
 );

@@ -6,7 +6,7 @@ import './artworkAdder_styles.css';
 import { addNewArtwork } from '../../actions/SaveArtworkActions';
 import { UpdateUrl } from "../../actions/UrlActions";
 // selectors
-import { getMaxArtworksAllowed, getTotalUserArtworks } from "../../selectors/Selectors";
+import { getMaxArtworksAllowed, getTotalUserArtworks, getDeleteAfterDate } from "../../selectors/Selectors";
 // helper
 import GenerateDefaultArtworkData from '../artwork/DefaultArtworkDataGenerator';
 import { GetImage } from "../global/ImageHelper";
@@ -16,6 +16,7 @@ import PhotoSelector from "../photoSelector/PhotoSelector";
 import CropAndRotateEditor from "../artworkEditor/cropAndRotateEditor/CropAndRotateEditor";
 import LoadingThing from "../loadingThing/LoadingThing";
 import MaximumArtworksReached from "./maximumArtworksReached/MaximumArtworksReached";
+import MEMBERSHIP_PLANS from "../global/MEMBERSHIP_PLANS";
 
 class ArtworkAdder extends Component {
 
@@ -49,7 +50,14 @@ class ArtworkAdder extends Component {
     }
 
     onSaveNewArtwork() {
-        this.props.addNewArtwork(this.state.img, this.state.artworkData, () => {
+        const {deleteAfterDate, totalUserArtworks} = this.props;
+        const {artworkData} = this.state;
+        const maxArtworksOnFreePlan = MEMBERSHIP_PLANS.free.maxArtworks;
+        const includeDeleteDate = deleteAfterDate && totalUserArtworks >= maxArtworksOnFreePlan;
+
+        const newArtworkData = includeDeleteDate ? {...artworkData, deleteAfter:deleteAfterDate} : artworkData;
+
+        this.props.addNewArtwork(this.state.img, newArtworkData, () => {
             this.props.UpdateUrl(`/gallery/galleryId_${this.props.galleryId}_galleryId`);
         });
     }
@@ -101,6 +109,7 @@ class ArtworkAdder extends Component {
 
 const mapStateToProps = (state) => (
     {
+        deleteAfterDate: getDeleteAfterDate(state),
         totalArtworksFetchProgress: state.dataFetching.userArtworks,
         totalUserArtworks: getTotalUserArtworks(state),
         maxArtworksAllowed: getMaxArtworksAllowed(state),
