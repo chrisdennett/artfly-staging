@@ -19,6 +19,7 @@ export function updateUserArtworks(userId){
 
         db.collection('artworks')
             .where('adminId', '==', userId)
+            .orderBy('dateAdded', 'desc')
             .get()
             .then(querySnapshot => {
                     querySnapshot.forEach(doc => {
@@ -32,7 +33,6 @@ export function updateUserArtworks(userId){
                 })
     }
 }
-
 
 export function fetchUserArtworks(userId) {
     return (dispatch) => {

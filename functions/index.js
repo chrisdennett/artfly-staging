@@ -6,7 +6,7 @@ const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
 const firestore = new Firestore();
-const settings = { timestampsInSnapshots: true};
+const settings = { timestampsInSnapshots: true };
 firestore.settings(settings);
 
 // Create and Deploy Your First Cloud Functions
@@ -214,16 +214,30 @@ const saveArtworkChanges = (artworkId, newData) => {
         })
 };
 
+/*
+* When a subscription is cancelled fewer artworks are allowed so need to delete any
+* over the allocation for free accounts.
+* */
 const addDeleteFlagsToArtworks = (userId, cancellationEffectiveDate) => {
-//const ref = firestore.doc(`artworks/${fileName}`);
+
+    const MAX_ALLOWED_ON_FREE_PLAN = 7;
+
     firestore.collection('artworks')
         .where('adminId', '==', userId)
+        .orderBy('dateAdded', 'desc')
         .get()
         .then(querySnapshot => {
+            let count = 1;
                 querySnapshot.forEach(doc => {
-                    // add id to artworkData
-                    const artworkId = doc.id;
-                    saveArtworkChanges(artworkId, { deleteAfter: cancellationEffectiveDate })
+                    /*
+                    * Only set deleteAfter on
+                    * */
+                    if (count > MAX_ALLOWED_ON_FREE_PLAN) {
+                        const artworkId = doc.id;
+                        saveArtworkChanges(artworkId, { deleteAfter: cancellationEffectiveDate })
+                    }
+                    // console.log("count: ", count);
+                    count ++;
                 });
             },
             error => {

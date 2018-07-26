@@ -64,6 +64,7 @@ export function addNewArtwork(imgFile, artworkData, callback) {
 
                                 const fullArtworkData = {
                                     adminId: userId,
+                                    dateAdded: Date.now(),
                                     largeUrl,
                                     sourceUrl,
                                     thumbUrl,
