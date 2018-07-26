@@ -6,7 +6,7 @@ import { Typography } from 'rmwc/Typography';
 // styles
 import './homeStyles.css';
 // actions
-import { updateUserArtworks } from '../../actions/GetArtworkActions';
+// import { updateUserArtworks } from '../../actions/GetArtworkActions';
 import { UpdateUrl } from "../../actions/UrlActions";
 // selectors
 import { getLatestUserArtwork, getTotalUserArtworks, getUserGallery } from '../../selectors/Selectors'
@@ -49,7 +49,7 @@ const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork, UpdateU
                     Your Galleries
                 </Typography>
 
-                <button onClick={() => updateUserArtworks(user.uid)}>UPDATE USER ARTWORKS TEST</button>
+                {/*<button onClick={() => updateUserArtworks(user.uid)}>UPDATE USER ARTWORKS TEST</button>*/}
 
                 {!userGallery &&
                 <LoadingThing label={'Loading your galleries'}/>
@@ -88,4 +88,4 @@ const mapStateToProps = (state) => (
     }
 );
 
-export default connect(mapStateToProps, { UpdateUrl, updateUserArtworks })(Home);
+export default connect(mapStateToProps, { UpdateUrl })(Home);
