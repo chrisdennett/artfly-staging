@@ -92,8 +92,7 @@ class GalleryArtworkViewer extends Component {
                                  onClose={() => this.setState({ editMenuIsOpen: false })}/>
                 }
 
-                <ArtworkAppBar title={'Artworks'}
-                               isEditable={isEditable}
+                <ArtworkAppBar isEditable={isEditable}
                                onAddClick={() => UpdateUrl(GALLERY_PATH(galleryId))}
                                onDeleteClick={() => this.setState({ deleteConfirmOpen: true })}
                                onMenuClick={this.goToGallery}

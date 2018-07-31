@@ -17,6 +17,7 @@
     "firebase-functions": "^2.0.0",
     "lodash": "^4.17.10",
     "react": "^16.4.1",
+    "react-cookie-consent": "^1.7.0",
     "react-dom": "^16.4.1",
     "react-draggable": "^3.0.5",
     "react-firebaseui": "^3.0.4",

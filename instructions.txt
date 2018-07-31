@@ -1,3 +1,16 @@
+// to fake a subscription on staging
+// send a test webhook from paddle
+// go here
+
+// fill in like this
+Alert to Simulate: Subscription Created
+Test URL:               https://us-central1-artfly-staging.cloudfunctions.net/subscriptionEvent
+email:                  chrisdennett@googlemail.com (buyers email address)
+subscription_plan_id:   516947
+passthrough:            EXS9OFRuWEWWJIBR8W35IStTjuk1 (this is the user uid from firebase)
+currency:               GBP
+
+********************************************************************************
 
 // npm undate not working
 https://github.com/npm/npm/issues/20954
@@ -12,6 +25,7 @@ there's an extra \ in the middle to separate the lines.  If you run this, to cha
 VLC > GIT > Remotes
 
 ********************************************************************************
+
 FIREBASE SDK
 https://firebase.google.com/docs/functions/get-started#set_up_and_initialize_functions_sdk
 

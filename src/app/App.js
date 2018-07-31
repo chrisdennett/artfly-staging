@@ -1,5 +1,8 @@
 import React from "react";
 import { connect } from 'react-redux';
+import CookieConsent from "react-cookie-consent"; // cookie consent
+// ui
+import { Button } from 'rmwc/Button';
 // styles
 import 'material-components-web/dist/material-components-web.min.css';
 import './appStyles.css';
@@ -59,11 +62,20 @@ class ArtflyRouting extends React.Component {
     }
 
     render() {
-        const { currentPage } = this.props;
+        const { currentPage, UpdateUrl } = this.props;
+
         return (
             <div>
                 <ArtworkEditorSavingProgress/>
                 {currentPage}
+
+                <CookieConsent debug={true} buttonText="Okay, got it" buttonStyle={{ fontSize: 18 }}>
+                    This website uses cookies. Check our <Button dense
+                                                                 tag={'a'}
+                                                                 style={{ color: '#fff', textDecoration: 'underline' }}
+                                                                 onClick={() => UpdateUrl('/privacyPolicy')}>
+                    privacy policy</Button> for more detail.
+                </CookieConsent>
             </div>
         );
     }

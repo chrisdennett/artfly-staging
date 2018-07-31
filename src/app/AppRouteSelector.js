@@ -14,6 +14,8 @@ import UserSignIn from "./userSignIn/UserSignIn";
 import UserProfile from "./userProfile/UserProfile";
 import AccountSubscription from "./userAccountSubscription/UserAccountSubscription";
 import AccountDelete from "./userAccountDelete/UserAccountDelete";
+import PrivacyPolicy from "./privacyPolicy/PrivacyPolicy";
+import TermsOfService from "./termsOfService/TermsOfService";
 // import UserAccountDeleted from "./userAccountDeleted/UserAccountDeleted";
 // import { UpdateUrl } from "../actions/UrlActions";
 
@@ -124,6 +126,12 @@ export const getCurrentPageComponent = (state) => {
 
         case 'artworkEditor':
             return <ArtworkEditor galleryId={galleryId} artworkId={artworkId} editor={editor}/>;
+
+        case 'privacyPolicy':
+            return <PrivacyPolicy/>;
+
+        case 'termsOfService':
+            return <TermsOfService/>;
 
         case 'TESTING':
             return <TestPage/>;

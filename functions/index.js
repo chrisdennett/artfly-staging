@@ -11,12 +11,8 @@ firestore.settings(settings);
 
 // Create and Deploy Your First Cloud Functions
 // https://firebase.google.com/docs/functions/write-firebase-functions
+//https://us-central1-artfly-staging.cloudfunctions.net/helloWorld
 //https://us-central1-art-blam.cloudfunctions.net/helloWorld
-/*
-exports.helloWorld = functions.https.onRequest((request, response) => {
-    response.send("Hello from Firebase!");
-});
-*/
 
 
 // SAMPLE THUMBNAIL FUNCTION
@@ -230,7 +226,7 @@ const addDeleteFlagsToArtworks = (userId, cancellationEffectiveDate) => {
             let count = 1;
                 querySnapshot.forEach(doc => {
                     /*
-                    * Only set deleteAfter on
+                    * Only set deleteAfter for artworks
                     * */
                     if (count > MAX_ALLOWED_ON_FREE_PLAN) {
                         const artworkId = doc.id;
@@ -280,6 +276,7 @@ exports.subscriptionEvent = functions.https.onRequest((request, response) => {
 
         case 'subscription_payment_succeeded':
             updateDatabase = true;
+            subscriptionObject.cancellationEffectiveDate = null;  // removes any previous cancellation date
             subscriptionObject.paidUntil = request.body.next_bill_date;
             subscriptionObject.orderId = request.body.order_id;
             subscriptionObject.saleGross = request.body.sale_gross;

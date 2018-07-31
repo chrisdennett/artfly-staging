@@ -48,7 +48,6 @@ export const ArtworkAppBar = ({ onCloseClick, onMenuClick, isEditable, onAddClic
             <ToolbarSection alignStart>
                 <ToolbarMenuIcon use="dashboard"
                                  onClick={onMenuClick}/>
-                <ToolbarTitle>Artwork</ToolbarTitle>
             </ToolbarSection>
 
             <ToolbarSection alignEnd>
