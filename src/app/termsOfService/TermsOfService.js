@@ -101,11 +101,6 @@ const TermsOfService = ({ UpdateUrl }) => {
                     </div>
                 </section>
                 <section>
-                    <div className='terms--legalBit'>
-                        Your galleries and Artworks are public.
-                    </div>
-                </section>
-                <section>
                     <div className='terms--plainEnglishBit'>
                         Don't put nasty or copyright-infringing things on ArtFly.
                     </div>
@@ -300,6 +295,9 @@ const TermsOfService = ({ UpdateUrl }) => {
                     </div>
                 </section>
                 <section>
+                    <div className='terms--plainEnglishBit'>
+                        Don't attack the site with viruses.
+                    </div>
                     <div className='terms--legalBit'>
                         interfere with or disrupt the ArtFly Site, or any servers or networks connected to the
                         ArtFly
@@ -311,9 +309,6 @@ const TermsOfService = ({ UpdateUrl }) => {
                         viruses or any other computer code, files or programs designed to interrupt, destroy or
                         limit
                         the functionality of any computer software or hardware or telecommunications equipment;
-                    </div>
-                    <div className='terms--plainEnglishBit'>
-                        Don't attack the site with viruses.
                     </div>
                 </section>
                 <section>
@@ -401,22 +396,19 @@ const TermsOfService = ({ UpdateUrl }) => {
 
                 <section>
                     <div className='terms--plainEnglishBit'>
+                        VAT is included..
                         If you are on a paid plan, Paddle will re-bill automatically every 30 days.
-                    </div>
-
-                    <div className='terms--plainEnglishBit'>
-                        VAT is included
                     </div>
                 </section>
                 <section>
+                    <div className='terms--plainEnglishBit'>
+                        If you downgrade from a paid to free plan, the maximum artworks allowed will decrease so
+                        artworks will be deleted.
+                    </div>
                     <div className='terms--legalBit'>
                         DOWNGRADING YOUR ARTFLY PLAN MAY CAUSE THE LOSS OF CONTENT (ARTWORKS), FEATURES, OR CAPACITY
                         OF
                         YOUR ACCOUNT. ARTFLY DOES NOT ACCEPT ANY LIABILITY FOR SUCH LOSS.`
-                    </div>
-                    <div className='terms--plainEnglishBit'>
-                        If you downgrade from a paid to free plan, the maximum artworks allowed will decrease so
-                        artworks will be deleted.
                     </div>
                 </section>
 
@@ -744,6 +736,9 @@ const TermsOfService = ({ UpdateUrl }) => {
 
                 </section>
                 <section>
+                    <div className='terms--plainEnglishBit'>
+                        The apocalypse may delay play
+                    </div>
                     <div className='terms--legalBit'>
                         Without limiting the foregoing, under no circumstances shall ArtFly or its licensors be held
                         liable for any delay or failure in performance resulting directly or indirectly from acts of
@@ -755,9 +750,7 @@ const TermsOfService = ({ UpdateUrl }) => {
                         non-performance of third parties, or loss of or fluctuations in heat, light, or air
                         conditioning.
                     </div>
-                    <div className='terms--plainEnglishBit'>
-                        Should a meteor strike the Earth right at our data center, we might go down.
-                    </div>
+
                 </section>
 
                 <h3>Indemnification</h3>
