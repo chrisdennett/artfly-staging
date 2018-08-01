@@ -21,6 +21,7 @@ import {
 } from "../../selectors/Selectors";
 import LoadingThing from "../loadingThing/LoadingThing";
 import RecentArtworksCard from "./RecentArtworksCard";
+import Footer from "../footer/Footer";
 
 const UserProfile = ({ user, membershipPlan, latestUserArtworks, UpdateUrl, userSignInMethod, totalUserArtworks, userGallery }) => {
 
@@ -65,6 +66,9 @@ const UserProfile = ({ user, membershipPlan, latestUserArtworks, UpdateUrl, user
                 </div>
             </div>
             }
+
+
+            <Footer/>
         </div>
     )
 };

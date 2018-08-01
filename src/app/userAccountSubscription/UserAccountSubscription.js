@@ -16,6 +16,7 @@ import LoadingThing from "../loadingThing/LoadingThing";
 import PaidMemberCard from './PaidMemberCard';
 import FreeMemberCard from "./FreeMemberCard";
 import MembershipOption from "./MembershipOption";
+import Footer from "../footer/Footer";
 
 const UserAccountSubscription = ({ userId, membershipPlan, subscribeUser, UpdateUrl, cancelSubscription }) => {
 
@@ -67,6 +68,8 @@ const UserAccountSubscription = ({ userId, membershipPlan, subscribeUser, Update
                     }
                 </div>
             </div>
+
+            <Footer/>
         </div>
     );
 };
