@@ -1383,7 +1383,7 @@ For more information see [Add Firebase to your JavaScript Project](https://fireb
 Open your `package.json` and add a `homepage` field:
 
 ```js
-  "homepage": "https://myusername.github.io/my-app",
+  "homepage": components,
 ```
 
 Create React App uses the `homepage` field to determine the root URL in the built HTML file.

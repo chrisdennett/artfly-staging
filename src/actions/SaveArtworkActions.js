@@ -1,8 +1,8 @@
 import { auth, firestoreDb as db, storage, storageEvent, storageRef as store } from "../libs/firebaseConfig";
 // helpers
-import { getImageBlob, generateUUID } from "../app/global/ImageHelper";
+import { getImageBlob, generateUUID } from "../components/global/ImageHelper";
 // constants
-import { THUMB_SIZE, LARGE_IMG_SIZE, MAX_IMG_SIZE } from '../app/global/GLOBAL_CONSTANTS';
+import { THUMB_SIZE, LARGE_IMG_SIZE, MAX_IMG_SIZE } from '../components/global/GLOBAL_CONSTANTS';
 // import { ARTWORK_CHANGE } from "./GetArtworkActions";
 
 export const SAVING_ARTWORK_TRIGGERED = 'saving_artwork_triggered';

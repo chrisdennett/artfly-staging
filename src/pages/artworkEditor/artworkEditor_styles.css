@@ -1,0 +1,7 @@
+.artworkEditor{
+    display:flex;
+    /*background: url("../../components/images/brickwall.png");*/
+    /*overflow: hidden;*/
+    min-height: 100vh;
+    flex-direction: column;
+}

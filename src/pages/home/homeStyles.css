@@ -1,0 +1,94 @@
+.home{
+    background: url("../../components/images/brickwall.png");
+    min-height: 100vh;
+}
+
+.home-topBar{
+    text-align: right;
+    padding: 10px;
+}
+
+.home--heading {
+    padding: 70px 10px 0 10px;
+}
+
+.home--title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home--artflyNameSvg{
+    height:100px;
+    width:400px;
+    margin-left: 10px;
+}
+
+.home--tagLine {
+    text-align: center;
+    padding-top: 10px;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+}
+
+.home--signInOut{
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.home--subHeading{
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 2rem;
+}
+
+.home--yourGalleries{
+    margin-top: 40px;
+    margin-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.home--yourGalleries--galleries{
+    margin-top: 2rem;
+}
+
+.home--footer{
+    margin-top: 4rem;
+    border-top: 20px solid white;
+    padding: 1.5rem;
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.home--footer h3{
+    margin-top: 0;
+}
+
+.home--footer--p{
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+    .home--heading {
+        padding: 60px 10px 0 10px;
+    }
+
+    .home--tagLine {
+        padding: 0;
+        font-size: 1rem;
+    }
+
+    .homeToolBarLeft{
+        max-width: 50px;
+    }
+
+    .toolBarArtflyTitle{
+        display: none;
+    }
+}
+
+

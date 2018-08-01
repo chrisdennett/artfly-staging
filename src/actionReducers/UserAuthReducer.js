@@ -3,7 +3,7 @@ import {
     USER_SIGNED_OUT,
     USER_REQUESTED
 } from '../actions/UserAuthActions';
-// import ArtflyAccountTypes from '../app/global/ArtflyAccountTypes';
+// import ArtflyAccountTypes from '../components/global/ArtflyAccountTypes';
 
 export default function (state = 'pending', action) {
     switch (action.type) {

@@ -1,0 +1,16 @@
+.quickCropAndRotate--holder {
+    flex: 1;
+    flex-direction: column;
+    background: #fff url("../../../components/images/bg/cuttingMat.png");
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quickCropAndRotate--cuttingBoardHolder {
+    line-height: 0;
+}
+
+.cropAndRotate--cuttingOverlay{
+    position: absolute;
+}
