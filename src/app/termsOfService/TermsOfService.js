@@ -12,28 +12,70 @@ const TermsOfService = ({ UpdateUrl }) => {
                               isFixed={true}
                               onCloseClick={() => UpdateUrl('/')}/>
 
-            <div style={{ padding: 20, marginTop: 60, maxWidth: 650 }}>
+            <div style={{ padding: 20, margin: '60px auto', maxWidth: 650 }}>
 
-                <h2>Terms of Service</h2>
+                <div style={{ borderBottom: '1px solid rgba(0,0,0,0.5)', paddingBottom: 20 }}>
+                    <p>
+                        Apologies for another long terms page, I have honestly tried hard to cut it down.
+                    </p>
+                    <p>
+                        I've also used the terms like "we", "us" and "our" as if ArtFly is a bigger company. However
+                        it's really just me - Chris Dennett - but I do like to dream!
+                    </p>
+                    <p>
+                        Here are some bits I think are really important to note:
+                    </p>
+                    <ul>
+                        <li>
+                            Your Artworks and Galleries are public.
+                        </li>
+                        <li>
+                            Please don't upload any nasty or illegal photos to ArtFly.
+                        </li>
+                        <li>
+                            The things you create on ArtFly are yours, "ArtFly" itself is ours.
+                        </li>
+                        <li>
+                            ArtFly uses a service called Paddle for payments. See <a
+                            href={'https://paddle.com/legal-buyers/'}>Paddle terms</a> for details.
+                        </li>
+                    </ul>
+                </div>
+
+                <h3 style={{ marginBottom: 0 }}>Full Terms of Service</h3>
+                <p style={{ margin: 0, fontSize: 14, color: '#6a6a6a' }}>Last updated: 1st August 2018</p>
+                <p>
+                    I've attempted to summarize each legal bit as plain text in the boxes above each section.
+                </p>
                 <section>
                     <div className='terms--plainEnglishBit'>
-                        By being a member and using ArtFly, you agree to everything on this page. We have to do this
+                        By signing up and using ArtFly, you agree to everything on this page. We have to do this
                         to protect both you and us and make running this website possible. If you break these terms,
                         you can't use ArtFly anymore.
                     </div>
                     <div className='terms--legalBit'>
-                        These Terms of Service (the “<strong>Terms of Service</strong>”) are a contract between you,
-                        the user, and ArtFly run by Chris Dennett from 30 The Gill, Ulverston, Cumbria, LA12 7BP
-                        (“<strong>ArtFly</strong>”). ArtFly operates ArtFly.io (the
-                        “<strong>ArtFly Site</strong>”) and the Artwork creation services therein. By using the
-                        ArtFly Site and any services accessible from the ArtFly Site, you are agreeing to be bound by
-                        these Terms of Service. If you do not agree to these Terms of Service or any part thereof, your
-                        only remedy is to not use the ArtFly Site or any services or products offered on the ArtFly Site
-                        or on any other platform, including mobile applications, offered by ArtFly (collectively, the
-                        “Service” or “Services”). VIOLATION OF ANY OF THE TERMS OF SERVICE BELOW WILL RESULT IN THE
-                        TERMINATION OF YOUR RIGHT TO USE THE SERVICE, AND ANY ACCOUNT THAT YOU MAY HAVE CREATED AS PART
-                        OF THE SERVICE. YOU AGREE TO USE THE SERVICE AT YOUR OWN RISK. ArtFly reserves the right to
-                        refuse service to anyone for any reason at any time.
+                        <ul>
+                            <li>These Terms of Service (the “<strong>Terms of Service</strong>”) are a contract between
+                                you, the user, and ArtFly run by Chris Dennett from 30 The Gill, Ulverston, Cumbria,
+                                LA12 7BP (“<strong>ArtFly</strong>”).
+                            </li>
+                            <li>ArtFly operates ArtFly.io (the “<strong>ArtFly Site</strong>”) and the Artwork creation
+                                services therein.
+                            </li>
+                            <li>By using the ArtFly Site and any services accessible from the ArtFly Site, you are
+                                agreeing to be bound by these Terms of Service.
+                            </li>
+                            <li>If you do not agree to these Terms of Service or any part thereof, your
+                                only remedy is to not use the ArtFly Site or any services or products offered on the
+                                ArtFly Site or on any other platform, including mobile applications, offered by ArtFly
+                                (collectively, the “Service” or “Services”).
+                            </li>
+                            <li>VIOLATION OF ANY OF THE TERMS OF SERVICE BELOW WILL RESULT IN THE
+                                TERMINATION OF YOUR RIGHT TO USE THE SERVICE, AND ANY ACCOUNT THAT YOU MAY HAVE CREATED
+                                AS PART OF THE SERVICE. YOU AGREE TO USE THE SERVICE AT YOUR OWN RISK. ArtFly reserves
+                                the right to refuse service to anyone for any reason at any time.
+                            </li>
+                        </ul>
                     </div>
                 </section>
 
@@ -41,24 +83,41 @@ const TermsOfService = ({ UpdateUrl }) => {
                 <section>
                     <div className='terms--plainEnglishBit'>
                         Your account is your responsibility. If your account is compromised (e.g. someone uses the
-                        password you posted on Facebook!) we'll try to help, but we
-                        can't guarantee we can fix any damages.
+                        password you posted on Facebook!) we'll try to help, but we can't guarantee we can fix any
+                        damages.
                     </div>
                     <div className='terms--legalBit'>
-                        In order to open an account on the ArtFly Site (the “<strong>Account</strong>”), you must
-                        (i) agree to these Terms of Service, and (ii) provide any other information required by ArtFly
-                        during the registration process. You will update this information to maintain its accuracy
-                        during the time you are using the Service. You are responsible for maintaining the security
-                        of your account and password. ArtFly cannot and will not be liable for any loss or damage from
-                        your failure to comply with this security obligation. You are also responsible for all content,
-                        images, or text that you may post on the ArtFly Site (the “<strong>Content</strong>”) and
-                        activity that occurs under your Account (even when Content is posted by others who have access
-                        to your Account). Any information submitted by you shall be subject to ArtFly’s <a
-                        href="http://artfly.io/privacyPolicy/">Privacy Policy</a>. Accounts
-                        registered by “bots” or other
-                        automated methods are not permitted.
+                        <ul>
+                            <li>
+                                In order to open an account on the ArtFly Site (the “<strong>Account</strong>”), you
+                                must (i) agree to these Terms of Service, and (ii) provide any other information
+                                required by ArtFly during the registration process.
+                            </li>
+                            <li>
+                                You will update this information to maintain its accuracy during the time you are using
+                                the Service.
+                            </li>
+                            <li>
+                                You are responsible for maintaining the security of your account and password.
+                            </li>
+                            <li>
+                                ArtFly cannot and will not be liable for any loss or damage from
+                                your failure to comply with this security obligation.
+                            </li>
+                            <li>
+                                You are also responsible for all content, images, or text that you may post on the
+                                ArtFly Site (the “<strong>Content</strong>”) and activity that occurs under your Account
+                                (even when Content is posted by others who have access to your Account).
+                            </li>
+                            <li>
+                                Any information submitted by you shall be subject to ArtFly’s <a
+                                href="http://artfly.io/privacyPolicy/">Privacy Policy</a>.
+                            </li>
+                            <li>
+                                Accounts registered by “bots” or other automated methods are not permitted.
+                            </li>
+                        </ul>
                     </div>
-
                 </section>
 
                 <h3>Our License to You</h3>
@@ -67,24 +126,45 @@ const TermsOfService = ({ UpdateUrl }) => {
                         Don't copy ArtFly itself.
                     </div>
                     <div className='terms--legalBit'>
-                        ArtFly hereby grants you a non-exclusive, non-transferable, worldwide right to access and
-                        use
-                        the ArtFly Site, solely with supported browsers through the Internet for your own internal
-                        purposes, subject to these Terms of Service. You may not permit the ArtFly Site to be used
-                        by or
-                        for the benefit of unauthorized third parties. Nothing in the Terms of Service shall be
-                        construed to grant you any right to transfer or assign rights to access or use the ArtFly
-                        Site.
-                        All rights not expressly granted to you are reserved by ArtFly and its licensors. You shall
-                        not
-                        (i) modify or make derivative works based upon the ArtFly Site; (ii) reverse engineer or
-                        access
-                        the ArtFly Site in order to (a) build a competitive product or service, (b) build a product
-                        using similar features, functions or graphics of the ArtFly Site, or (c) copy any features,
-                        functions or graphics of the ArtFly Site. You further acknowledge and agree that, as between
-                        the
-                        parties, ArtFly owns all right, title, and interest in and to the ArtFly Site, including all
-                        intellectual property rights therein.
+                        <ul>
+                            <li>
+                                ArtFly hereby grants you a non-exclusive, non-transferable, worldwide right to access
+                                and use the ArtFly Site, solely with supported browsers through the Internet for your
+                                own internal purposes, subject to these Terms of Service.
+                            </li>
+                            <li>
+                                You may not permit the ArtFly
+                                Site to be used by or for the benefit of unauthorized third parties.
+                            </li>
+                            <li>
+                                Nothing in the
+                                Terms of Service shall be construed to grant you any right to transfer or assign rights
+                                to access or use the ArtFly Site.
+                            </li>
+                            <li>
+                                All rights not expressly granted to you are reserved
+                                by ArtFly and its licensors.
+                            </li>
+                            <li>
+                                You shall not
+                                <ol>
+                                    <li>
+                                        modify or make derivative works based upon the ArtFly Site;
+                                    </li>
+                                    <li>
+                                        reverse engineer or access the ArtFly Site in order to (a)
+                                        build a competitive product or service, (b) build a product using similar
+                                        features, functions or graphics of the ArtFly Site, or (c) copy any features,
+                                        functions or graphics of the ArtFly Site.
+                                    </li>
+                                </ol>
+                            </li>
+                            <li>
+                                You further acknowledge and agree that, as between the
+                                parties, ArtFly owns all right, title, and interest in and to the ArtFly Site, including
+                                all intellectual property rights therein.
+                            </li>
+                        </ul>
                     </div>
 
                 </section>
@@ -106,56 +186,73 @@ const TermsOfService = ({ UpdateUrl }) => {
                     </div>
                     <div className='terms--legalBit'>
                         Additionally, by uploading Content to the ArtFly Site, you warrant that you have not and
-                        will not contribute any Content that (a) infringes, violates or otherwise interferes with any
-                        copyright or trademark of another party, (b) reveals any trade secret, unless the trade secret
-                        belongs to you or you have the owner's permission to disclose it, (c) infringes any intellectual
-                        property right of another or the privacy or publicity rights of another, (d) is libelous,
-                        defamatory, abusive, threatening, harassing, hateful, offensive or otherwise violates any law or
-                        right of any third party, (e) creates an impression that you know is incorrect, misleading, or
-                        deceptive, including by impersonating others or otherwise misrepresenting your affiliation with
-                        a person or entity; (f) contains other people's private or personally identifiable information
-                        without their express authorization and permission, and/or
-                        (g) contains or links to a virus, trojan horse, worm, time bomb or other computer
-                        programming
-                        routine or engine that is intended to damage, detrimentally interfere with, surreptitiously
-                        intercept or expropriate any system, data or information. ArtFly reserves the right in its
-                        discretion to remove any Content from the ArtFly Site, suspend or terminate your account at
-                        any
-                        time, or pursue any other remedy or relief available under equity or law.
+                        will not contribute any Content that
+                        <ol>
+                            <li>
+                                infringes, violates or otherwise interferes with any copyright or trademark of
+                                another party,
+                            </li>
+                            <li>
+                                reveals any trade secret, unless the trade secret belongs to you or you have the
+                                owner's permission to disclose it,
+                            </li>
+                            <li>
+                                infringes any intellectual property right of another or the privacy or publicity
+                                rights of another,
+                            </li>
+                            <li>
+                                is libelous, defamatory, abusive, threatening, harassing, hateful, offensive or
+                                otherwise violates any law or right of any third party,
+                            </li>
+                            <li>
+                                contains other people's private or personally identifiable
+                                information without their express authorization and permission.
+                            </li>
+                        </ol>
                     </div>
                 </section>
                 <section>
                     <div className='terms--plainEnglishBit'>
                         Don't use ArtFly to do bad things. If you do, we'll remove your account and you personally
-                        are
-                        responsible for any trouble you cause.
+                        are responsible for any trouble you cause.
                     </div>
                     <div className='terms--legalBit'>
-                        You are responsible for your use of the Service, for any Content you provide, and for any
-                        consequences thereof, including the use of your Content by other users and third party
-                        partners.
-                        You understand that your Content may be republished and if you do not have the right to
-                        submit
-                        Content for such use, it may subject you to liability. ArtFly will not be responsible or
-                        liable
-                        for any use of your Content in accordance with these Terms of Service.
+                        <ul>
+                            <li>
+                                You are responsible for your use of the Service, for any Content you provide, and for
+                                any consequences thereof.
+                            </li>
+                            <li>
+                                You understand that your Content may be republished and if you do not have the right to
+                                submit Content for such use, it may subject you to liability. ArtFly will not be
+                                responsible or liable for any use of your Content in accordance with these Terms of
+                                Service.
+                            </li>
+                        </ul>
                     </div>
                 </section>
 
                 <h3>Your Responsibilities</h3>
-                <section>
+                {/*<section>
                     <div className='terms--plainEnglishBit'>
                         You need to be 18 or older to sign up for ArtFly. We need these rules to be legally binding
-                        and
-                        you have to be 18 or older for that to be possible.
+                        and you have to be 18 or older for that to be possible.
                     </div>
                     <div className='terms--legalBit'>
-                        The Services are available only to individuals who have the capacity to form legally binding
-                        contracts under the law applicable to these Terms of Service. Furthermore, our services are
-                        not
-                        available to minors (under 18 years of age). If you do not qualify as an authorized user,
-                        you
-                        are not permitted to use the Services and no contract will be formed between you and ArtFly.
+                        <ul>
+                            <li>
+                                The Services are available only to individuals who have the capacity to form legally
+                                binding
+                                contracts under the law applicable to these Terms of Service.
+                            </li>
+                            <li>
+                                Furthermore, our services are
+                                not available to minors (under 18 years of age). If you do not qualify as an authorized
+                                user,
+                                you are not permitted to use the Services and no contract will be formed between you and
+                                ArtFly.
+                            </li>
+                        </ul>
                     </div>
                 </section>
                 <section>
@@ -164,48 +261,64 @@ const TermsOfService = ({ UpdateUrl }) => {
                         If you are 13 or over but under 18, have your legal guardian sign up for you.
                     </div>
                     <div className='terms--legalBit'>
-                        ArtFly relies upon parents or guardians 18 years of age or older to determine if the ArtFly
-                        Site
-                        and Services are appropriate for the viewing, access, or participation by such individuals
-                        under
-                        the age of 18. We do not seek or knowingly collect any personal information about children
-                        under
-                        13 years of age. If we become aware that we have unknowingly collected personal information
-                        from
-                        a child under the age of 13, we will make commercially reasonable efforts to delete such
-                        information from our database.
+                        <ul>
+                            <li>
+                                ArtFly relies upon parents or guardians 18 years of age or older to determine if the
+                                ArtFly
+                                Site and Services are appropriate for the viewing, access, or participation by such
+                                individuals
+                                under the age of 18.
+                            </li>
+                            <li>We do not seek or knowingly collect any personal information about children
+                                under 13 years of age.
+                            </li>
+                            <li>If we become aware that we have unknowingly collected personal
+                                information from a child under the age of 13, we will make commercially reasonable
+                                efforts to
+                                delete such information from our database.
+                            </li>
+                        </ul>
                     </div>
-                </section>
+                </section>*/}
                 <section>
                     <div className='terms--plainEnglishBit'>
                         Follow all laws that apply to you, based on where you live or anything else.
                     </div>
                     <div className='terms--legalBit'>
-                        You are responsible for all activity occurring under your Accounts and are solely
-                        responsible
-                        for compliance with all applicable local, state, national and foreign laws, treaties and
-                        regulations relating to your use of the ArtFly Site, including those related to the
-                        protection
-                        of intellectual property, data privacy, international communications and the transmission of
-                        technical or personal data.
+                        <ul>
+                            <li>
+                                You are responsible for all activity occurring under your Accounts and are solely
+                                responsible for compliance with all applicable local, state, national and foreign laws,
+                                treaties and
+                                regulations relating to your use of the ArtFly Site, including those related to the
+                                protection
+                                of intellectual property, data privacy, international communications and the
+                                transmission of
+                                technical or personal data.
+                            </li>
+                        </ul>
                     </div>
-
                 </section>
                 <section>
                     <div className='terms--plainEnglishBit'>
                         If your account is hacked, <a href="mailto:chris@artfly.io">let us know</a> right away.
                     </div>
                     <div className='terms--legalBit'>
-                        You shall: (i) <a href='mailto:chris@artfly.io'>notify ArtFly</a> immediately of any
-                        unauthorized use of any password or account or any other known or suspected breach of
-                        security;
-                        and (ii) report to ArtFly immediately and use reasonable efforts to stop immediately any
-                        copying
-                        or distribution of Content that is known or suspected by you.
+                        You shall:
+                        <ul>
+                            <li>(i) <a href='mailto:chris@artfly.io'>notify ArtFly</a> immediately of any
+                                unauthorized use of any password or account or any other known or suspected breach of
+                                security;
+                                and
+                            </li>
+                            <li>(ii) report to ArtFly immediately and use reasonable efforts to stop immediately any
+                                copying or distribution of Content that is known or suspected by you.
+                            </li>
+                        </ul>
                     </div>
 
                 </section>
-                <section>
+                {/*<section>
                     <div className='terms--plainEnglishBit'>
                         BYO electricity, internet, computer, web browser, etc.
                     </div>
@@ -221,31 +334,32 @@ const TermsOfService = ({ UpdateUrl }) => {
                         the
                         security, of the Equipment.
                     </div>
-
-                </section>
+                </section>*/}
                 <section>
                     <div className='terms--plainEnglishBit'>
                         We don't monitor every single thing on ArtFly. It's up to you to do right.
                     </div>
                     <div className='terms--legalBit'>
-                        All Content, whether publicly posted or privately transmitted, is the sole responsibility of
-                        the
-                        person who originated such Content. We may not monitor or control the Content posted via the
-                        Services. Any use of or reliance on any Content or materials posted via the Services or
-                        obtained
-                        by you through the Services is at your own risk. We do not endorse, support, represent or
-                        guarantee the completeness, truthfulness, accuracy, or reliability of any Content or
-                        communications posted via the Services or endorse any opinions expressed via the Services.
-                        You
-                        understand that by using the Services, you may be exposed to Content that might be
-                        offensive,
-                        harmful, inaccurate or otherwise inappropriate. Under no circumstances will ArtFly be liable
-                        in
-                        any way for any Content, including, but not limited to, any errors or omissions in any
-                        Content,
-                        or any loss or damage of any kind incurred as a result of the use of any Content made
-                        available
-                        via the Services or broadcast elsewhere.
+                        <ul>
+                            <li>
+                                All Content, whether publicly posted or privately transmitted, is the sole
+                                responsibility of the person who originated such Content. We may not monitor or control
+                                the Content posted via the Services.
+                            </li>
+                            <li>Any use of or reliance on any Content or materials posted via the Services or
+                                obtained by you through the Services is at your own risk. We do not endorse, support,
+                                represent or guarantee the completeness, truthfulness, accuracy, or reliability of any
+                                Content or communications posted via the Services or endorse any opinions expressed via
+                                the Services.
+                            </li>
+                            <li>
+                                You understand that by using the Services, you may be exposed to Content that might be
+                                offensive, harmful, inaccurate or otherwise inappropriate. Under no circumstances will
+                                ArtFly be liable in any way for any Content, including, but not limited to, any errors
+                                or omissions in any Content, or any loss or damage of any kind incurred as a result of
+                                the use of any Content made available via the Services or broadcast elsewhere.
+                            </li>
+                        </ul>
                     </div>
                 </section>
 
@@ -253,18 +367,16 @@ const TermsOfService = ({ UpdateUrl }) => {
                 <p>As a condition to your use of the ArtFly Site, you agree not to:</p>
                 <section>
                     <div className='terms--plainEnglishBit'>
-                        Don't be nasty.
+                        Don't upload nasty or illegal things.
                     </div>
                     <div className='terms--legalBit'>
                         upload, post, email, transmit or otherwise make available any information, materials or
-                        other
-                        content that is illegal, harmful, threatening, abusive, harassing, defamatory, obscene,
+                        other content that is illegal, harmful, threatening, abusive, harassing, defamatory, obscene,
                         pornographic, offensive, invades another’s privacy, or promotes bigotry, racism, hatred or
-                        harm
-                        against any individual or group;
+                        harm against any individual or group;
                     </div>
                 </section>
-                <section>
+                {/*<section>
                     <div className='terms--plainEnglishBit'>
                         Don't be horrible.
                     </div>
@@ -283,7 +395,7 @@ const TermsOfService = ({ UpdateUrl }) => {
                         content
                         transmitted through the ArtFly Site;
                     </div>
-                </section>
+                </section>*/}
                 <section>
                     <div className='terms--plainEnglishBit'>
                         Don't break intellectual property rights.
@@ -299,16 +411,21 @@ const TermsOfService = ({ UpdateUrl }) => {
                         Don't attack the site with viruses.
                     </div>
                     <div className='terms--legalBit'>
-                        interfere with or disrupt the ArtFly Site, or any servers or networks connected to the
-                        ArtFly
-                        Site, or disobey any requirements, procedures, policies or regulations of networks connected
-                        to
-                        the ArtFly Site;
-                        upload, post, email, transmit or otherwise make available any material that contains
-                        software
-                        viruses or any other computer code, files or programs designed to interrupt, destroy or
-                        limit
-                        the functionality of any computer software or hardware or telecommunications equipment;
+                        <ul>
+                            <li>
+                                interfere with or disrupt the ArtFly Site, or any servers or networks connected to the
+                                ArtFly Site, or disobey any requirements, procedures, policies or regulations of
+                                networks
+                                connected to the ArtFly Site;
+                            </li>
+                            <li>
+                                upload, post, email, transmit or otherwise make available any material that contains
+                                software viruses or any other computer code, files or programs designed to interrupt,
+                                destroy or limit the functionality of any computer software or hardware or
+                                telecommunications
+                                equipment;
+                            </li>
+                        </ul>
                     </div>
                 </section>
                 <section>
@@ -334,8 +451,7 @@ const TermsOfService = ({ UpdateUrl }) => {
                     </div>
                     <div className='terms--legalBit'>
                         modify, adapt or hack the ArtFly Site or falsely imply that some other site is associated
-                        with
-                        the ArtFly Site or ArtFly; or
+                        with the ArtFly Site or ArtFly;
                     </div>
                 </section>
                 <section>
@@ -353,20 +469,46 @@ const TermsOfService = ({ UpdateUrl }) => {
                         We might pop into your account to help with a support request, but we otherwise don't go
                         snooping around.
                         If we are legally required to provide information to the government that they request, we
-                        will,
-                        but not otherwise.
+                        will, but not otherwise.
                     </div>
                     <div className='terms--legalBit'>
-                        We reserve the right at all times (but will not have an obligation) to remove or refuse to
-                        distribute any Content on the Service and to terminate users. We also
-                        reserve the right to access, read, preserve, and disclose any information as we reasonably
-                        believe is necessary to (i) satisfy any applicable law, regulation, legal process or
-                        governmental request, (ii) enforce the Terms of Service, including investigation of
-                        potential
-                        violations hereof, (iii) detect, prevent, or otherwise address fraud, security or technical
-                        issues, (iv) respond to user support requests, or (v) protect the rights, property or safety
-                        of
-                        ArtFly, its users and the public.
+                        <ul>
+                            <li>
+                                We reserve the right at all times (but will not have an obligation) to remove or refuse
+                                to
+                                distribute any Content on the Service and to terminate users.
+                            </li>
+                            <li>
+                                We also reserve the right to access, read, preserve, and disclose any information as we
+                                reasonably
+                                believe is necessary to
+                                <ul>
+                                    <li>
+                                        (i) satisfy any applicable law, regulation, legal process or
+                                        governmental request,
+                                    </li>
+                                    <li>
+                                        (ii) enforce the Terms of Service, including investigation of
+                                        potential
+                                        violations hereof,
+                                    </li>
+                                    <li>
+                                        (iii) detect, prevent, or otherwise address fraud, security or
+                                        technical
+                                        issues,
+                                    </li>
+                                    <li>
+                                        (iv) respond to user support requests, or
+                                    </li>
+                                    <li>
+                                        (v) protect the rights, property or
+                                        safety
+                                        of
+                                        ArtFly, its users and the public.
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
                 </section>
 
@@ -374,30 +516,48 @@ const TermsOfService = ({ UpdateUrl }) => {
                 <section>
                     <div className='terms--plainEnglishBit'>
                         If you send us an idea, we might use it, in which case it's protected by all the same rules
-                        on
-                        this page.
+                        on this page.
                     </div>
                     <div className='terms--legalBit'>
-                        In the course of using the ArtFly Site, you may provide ArtFly with feedback, including but
-                        not
-                        limited to suggestions, observations, errors, problems, and defects regarding the ArtFly
-                        Site
-                        (collectively “<strong>Feedback</strong>”). You hereby grant ArtFly a worldwide,
-                        irrevocable,
-                        perpetual, royalty-free, transferable and sub-licensable, non-exclusive right to use, copy,
-                        modify, distribute, display, perform, create derivative works from and otherwise exploit all
-                        such Feedback.
+                        <ul>
+                            <li>
+                                In the course of using the ArtFly Site, you may provide ArtFly with feedback, including
+                                but
+                                not limited to suggestions, observations, errors, problems, and defects regarding the
+                                ArtFly
+                                Site (collectively “<strong>Feedback</strong>”).
+                            </li>
+                            <li>
+                                You hereby grant ArtFly a worldwide,
+                                irrevocable, perpetual, royalty-free, transferable and sub-licensable, non-exclusive
+                                right to
+                                use, copy, modify, distribute, display, perform, create derivative works from and
+                                otherwise
+                                exploit all such Feedback.
+                            </li>
+                        </ul>
                     </div>
                 </section>
 
                 <h3>Payment, Refunds, Upgrading and Downgrading</h3>
                 Sales are done through Paddle so the legal terms are with them. Paddle's terms can be found here: <a
-                href={'https://paddle.com/legal-buyers/'}>Paddle terms</a>
+                href={'https://paddle.com/legal-buyers/'}>Paddle terms</a>.<br/>
+                Here's some key points:
 
                 <section>
                     <div className='terms--plainEnglishBit'>
-                        VAT is included..
-                        If you are on a paid plan, Paddle will re-bill automatically every 30 days.
+                        <ul>
+                            <li>
+                                VAT is included.
+                            </li>
+                            <li>
+                                If you are on a paid plan, Paddle will re-bill automatically every 30 days.
+                            </li>
+                            <li>
+                                If you cancel your subscription it won't actually finish until the end of current the
+                                paid period.
+                            </li>
+                        </ul>
                     </div>
                 </section>
                 <section>
@@ -407,8 +567,7 @@ const TermsOfService = ({ UpdateUrl }) => {
                     </div>
                     <div className='terms--legalBit'>
                         DOWNGRADING YOUR ARTFLY PLAN MAY CAUSE THE LOSS OF CONTENT (ARTWORKS), FEATURES, OR CAPACITY
-                        OF
-                        YOUR ACCOUNT. ARTFLY DOES NOT ACCEPT ANY LIABILITY FOR SUCH LOSS.`
+                        OF YOUR ACCOUNT. ARTFLY DOES NOT ACCEPT ANY LIABILITY FOR SUCH LOSS.`
                     </div>
                 </section>
 
@@ -419,35 +578,50 @@ const TermsOfService = ({ UpdateUrl }) => {
                         against violations of these rules.
                     </div>
                     <div className='terms--legalBit'>
-                        ArtFly reserves the right to investigate and prosecute violations of any of these Terms of
-                        Service to the fullest extent of the law. ArtFly may involve and cooperate with law
-                        enforcement
-                        authorities in prosecuting users who violate the Terms of Service. You acknowledge that
-                        ArtFly
-                        has no obligation to pre-screen or monitor your access to or use of the ArtFly Site or any
-                        information, materials or other content provided or made available through the ArtFly Site,
-                        but
-                        has the right to do so. You hereby agree that ArtFly may, in the exercise of ArtFly’s sole
-                        discretion, remove or delete any entries, information, materials or other content that
-                        violates
-                        these Terms of Service or that is otherwise objectionable.
+                        <ul>
+                            <li>
+                                ArtFly reserves the right to investigate and prosecute violations of any of these Terms
+                                of Service to the fullest extent of the law.
+                            </li>
+                            <li>
+                                ArtFly may involve and cooperate with law enforcement authorities in prosecuting users
+                                who violate the Terms of Service.
+                            </li>
+                            <li>
+                                You acknowledge that ArtFly has no obligation to pre-screen or monitor your access to or
+                                use of the ArtFly Site or any information, materials or other content provided or made
+                                available through the ArtFly Site, but has the right to do so.
+                            </li>
+                            <li>
+                                You hereby agree that ArtFly may, in the exercise of ArtFly’s sole discretion, remove or
+                                delete any entries, information, materials or other content that violates these Terms of
+                                Service or that is otherwise objectionable.
+                            </li>
+                        </ul>
                     </div>
                 </section>
 
                 <h3>Cancellation and Termination</h3>
                 <section>
                     <div className='terms--plainEnglishBit'>
-                        If you don't want a ArtFly account anymore, it's up to you to delete it. You can do it right
+                        If you don't want an ArtFly account anymore, it's up to you to delete it. You can do it right
                         from the profile page on the site.
                     </div>
                     <div className='terms--legalBit'>
-                        You are solely responsible for properly canceling your account. You can cancel your account
-                        at any time by logging in to your account and going to the Profile page,
-                        clicking the Delete Account button and following the steps. You may cancel your payment
-                        plan but keep your account by signing in, going to the Profile page, clicking your membership,
-                        and clicking the Cancel Subscription button. An email or phone request to cancel your account
-                        shall
-                        not result in cancellation.
+                        <ul>
+                            <li>
+                                You are solely responsible for properly canceling your account.
+                            </li>
+                            <li>
+                                You can cancel your account at any time by logging in to your account and going to the
+                                Profile page, clicking the Delete Account button and following the steps.
+                            </li>
+                            <li>
+                                You may cancel your payment plan but keep your account by signing in, going to the
+                                Profile page, clicking your membership, and clicking the Cancel Subscription button. An
+                                email or phone request to cancel your account shall not result in cancellation.
+                            </li>
+                        </ul>
                     </div>
                 </section>
                 <section>
@@ -455,13 +629,22 @@ const TermsOfService = ({ UpdateUrl }) => {
                         If you delete your account, everything in it is gone forever.
                     </div>
                     <div className='terms--legalBit'>
-                        Any cancellation of your Account will result in the deactivation or deletion of your Account
-                        or your access to your Account, and the forfeiture and relinquishment of all Content in your
-                        Account after any remaining subscription term ends.
-                        This information cannot be recovered from ArtFly once your Account is cancelled.
-                        Please be aware that ArtFly may for a time retain residual information in our backup and/or
-                        archival copies of our database. We will make reasonable commercial efforts to delete your
-                        information as soon as possible after you communicate that intention to us.
+                        <ul>
+                            <li>
+                                Any cancellation of your Account will result in the deactivation or deletion of your
+                                Account or your access to your Account, and the forfeiture and relinquishment of all
+                                Content in your Account after any remaining subscription term ends.
+                            </li>
+                            <li>
+                                This information cannot be recovered from ArtFly once your Account is cancelled.
+                                Please be aware that ArtFly may for a time retain residual information in our backup
+                                and/or archival copies of our database.
+                            </li>
+                            <li>
+                                We will make reasonable commercial efforts to delete your information as soon as
+                                possible after you communicate that intention to us.
+                            </li>
+                        </ul>
                     </div>
                 </section>
                 <section>
@@ -469,12 +652,16 @@ const TermsOfService = ({ UpdateUrl }) => {
                         If you are a paid user and delete your account, you will not be re-billed.
                     </div>
                     <div className='terms--legalBit'>
-                        Cancellations will take effect immediately. Upon the commencement of a new Service period
-                        the
-                        Service will terminate without additional notice, and you will not be charged for any
-                        subsequent
-                        Service periods. You will not be provided any refunds for unused time on your Service
-                        period.
+                        <ul>
+                            <li>
+                                Cancellations will take effect immediately. Upon the commencement of a new Service
+                                period the Service will terminate without additional notice, and you will not be charged
+                                for any subsequent Service periods.
+                            </li>
+                            <li>
+                                You will not be provided any refunds for unused time on your Service period.
+                            </li>
+                        </ul>
                     </div>
                 </section>
                 <section>
@@ -482,18 +669,30 @@ const TermsOfService = ({ UpdateUrl }) => {
                         Don't use ArtFly for asset storage for non-ArtFly things.
                     </div>
                     <div className='terms--legalBit'>
-                        ArtFly, in its sole discretion, has the right to suspend or terminate your Account if (1)
-                        you
-                        breach these Terms of Service or (2) your bandwidth usage significantly exceeds the average
-                        bandwidth of other users of the Service. In each such case ArtFly may refuse to provide you
-                        any
-                        current or future use of the ArtFly Site, or any other Service. Any termination of your
-                        Account
-                        will result in the deactivation or deletion of your Account or your access to your Account,
-                        and
-                        the forfeiture and relinquishment of all Content in your Account. This information cannot be
-                        recovered from ArtFly once your account is terminated; however ArtFly may for a time retain
-                        residual information in our backup and/or archival copies of our database.
+                        ArtFly, in its sole discretion, has the right to suspend or terminate your Account if:
+                        <ul>
+                            <li>
+                                (1) you breach these Terms of Service or
+                            </li>
+                            <li>
+                                (2) your bandwidth usage significantly exceeds the average bandwidth of other users of
+                                the Service.
+                            </li>
+                            <li>
+                                In each such case ArtFly may refuse to provide you any current or future use of the
+                                ArtFly Site, or any other Service.
+                            </li>
+                            <li>
+                                Any termination of your Account will result in the deactivation or deletion of your
+                                Account or your access to your Account, and the forfeiture and relinquishment of all
+                                Content in your Account.
+                            </li>
+                            <li>
+                                This information cannot be recovered from ArtFly once your account is terminated;
+                                however ArtFly may for a time retain residual information in our backup and/or archival
+                                copies of our database.
+                            </li>
+                        </ul>
                     </div>
                 </section>
 
@@ -541,14 +740,21 @@ const TermsOfService = ({ UpdateUrl }) => {
                         system of any major changes.
                     </div>
                     <div className='terms--legalBit'>
-                        ArtFly reserves the right to update and change the Terms of Service from time to time
-                        without
-                        notice. Any new features that augment or enhance the current ArtFly Site, including the
-                        release
-                        of new tools and resources, shall be subject to the Terms of Service. Continued use of the
-                        ArtFly Site after any such changes shall constitute your consent to such changes.
+                        <ul>
+                            <li>
+                                ArtFly reserves the right to update and change the Terms of Service from time to time
+                                without notice.
+                            </li>
+                            <li>
+                                Any new features that augment or enhance the current ArtFly Site, including the
+                                release of new tools and resources, shall be subject to the Terms of Service.
+                            </li>
+                            <li>
+                                Continued use of the ArtFly Site after any such changes shall constitute your consent to
+                                such changes.
+                            </li>
+                        </ul>
                     </div>
-
                 </section>
 
                 <h3>Copyright and Content Ownership</h3>
@@ -557,23 +763,30 @@ const TermsOfService = ({ UpdateUrl }) => {
                         The things you make on ArtFly are yours, "ArtFly" is ours.
                     </div>
                     <div className='terms--legalBit'>
-                        All right, title, and interest in and to the Services (excluding Content provided by you),
-                        are
-                        and will remain the exclusive property of ArtFly and its licensors. The Services are
-                        protected
-                        by copyright, trademark, and other laws of both the United States and foreign countries.
-                        Nothing
-                        in the Terms of Service gives you a right to use the ArtFly name or any of the ArtFly
-                        trademarks, logos, domain names, and other distinctive brand features. You acknowledge that
-                        the
-                        ownership in any intellectual property rights (including, for the avoidance of doubt,
-                        patents,
-                        copyright, rights in databases, trademarks and trade names whether registered or
-                        unregistered
-                        and subsisting anywhere in the world) in the Services belongs to ArtFly or its third party
-                        licensors. Accordingly, any part of the Services may not be used, transferred, copied or
-                        reproduced in whole or in part in any manner other than for the purposes of utilizing the
-                        Services.
+                        <ul>
+                            <li>
+                                All right, title, and interest in and to the Services (excluding Content provided by
+                                you), are and will remain the exclusive property of ArtFly and its licensors.
+                            </li>
+                            <li>
+                                The Services are protected by copyright, trademark, and other laws of both the United
+                                States and foreign countries. Nothing in the Terms of Service gives you a right to use
+                                the ArtFly name or any of the ArtFly trademarks, logos, domain names, and other
+                                distinctive brand
+                                features.
+                            </li>
+                            <li>
+                                You acknowledge that the ownership in any intellectual property rights (including, for
+                                the avoidance of doubt, patents, copyright, rights in databases, trademarks and trade
+                                names whether registered or unregistered and subsisting anywhere in the world) in the
+                                Services belongs to ArtFly or its third party licensors.
+                            </li>
+                            <li>
+                                Accordingly, any part of the Services may not be used, transferred, copied or
+                                reproduced in whole or in part in any manner other than for the purposes of utilizing
+                                the Services.
+                            </li>
+                        </ul>
                     </div>
 
                 </section>
@@ -595,10 +808,12 @@ const TermsOfService = ({ UpdateUrl }) => {
                             UK</p>
                         <p>Please provide us with a notice including:</p>
                         <ul>
-                            <li>Identification of the material on the ArtFly Site that you claim is infringing, with
+                            <li>
+                                Identification of the material on the ArtFly Site that you claim is infringing, with
                                 enough detail so that we may locate it on the ArtFly Site;
                             </li>
-                            <li>A statement by you that you have a good faith belief that the disputed use is not
+                            <li>
+                                A statement by you that you have a good faith belief that the disputed use is not
                                 authorized by the copyright owner, its agent, or the law;<br/>
                                 A statement by you declaring under penalty of perjury that (1) the above information
                                 in your notice is accurate, and (2) that you are the owner of the copyright interest
@@ -618,31 +833,50 @@ const TermsOfService = ({ UpdateUrl }) => {
                         needs.
                     </div>
                     <div className='terms--legalBit'>
-                        THE SERVICES, AND ALL MATERIALS, INFORMATION, AND SERVICES INCLUDED IN THE ARTFLY SITE ARE
-                        PROVIDED ON AN “AS IS” AND “AS AVAILABLE” BASIS, WITH NO WARRANTIES WHATSOEVER. ARTFLY AND
-                        ITS
-                        LICENSORS EXPRESSLY DISCLAIM TO THE FULLEST EXTENT PERMITTED BY LAW ALL EXPRESS, IMPLIED,
-                        AND
-                        STATUTORY WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE WARRANTIES OF MERCHANTABILITY,
-                        FITNESS
-                        FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT OF PROPRIETARY RIGHTS. ARTFLY AND ITS
-                        LICENSORS
-                        DISCLAIM ANY WARRANTIES REGARDING THE SECURITY, RELIABILITY, TIMELINESS, AND PERFORMANCE OF
-                        THE
-                        SERVICES. ARTFLY DOES NOT WARRANT THAT (I) THE SERVICE WILL MEET YOUR SPECIFIC
-                        REQUIREMENTS,
-                        (II) THE SERVICE WILL BE UNINTERRUPTED, TIMELY, SECURE OR ERROR-FREE, (III) THE RESULTS THAT
-                        MAY
-                        BE OBTAINED FROM THE USE OF THE SERVICE WILL BE ACCURATE OR RELIABLE, (IV) THE QUALITY OF
-                        ANY
-                        PRODUCTS, SERVICES, INFORMATION, OR OTHER MATERIAL PURCHASED OR OBTAINED BY YOU THROUGH THE
-                        SERVICE WILL MEET YOUR EXPECTATIONS, AND (V) ANY ERRORS IN THE ARTFLY SITE WILL BE
-                        CORRECTED.
-                        ARTFLY AND ITS LICENSORS DISCLAIM, ANY WARRANTIES FOR ANY INFORMATION, CONTENT OR ADVICE
-                        OBTAINED THROUGH THE SERVICES. ARTFLY AND ITS LICENSORS DISCLAIM ANY WARRANTIES FOR
-                        SERVICES OR
-                        GOODS RECEIVED THROUGH OR ADVERTISED ON THE ARTFLY SERVICES OR RECEIVED THROUGH ANY LINKS
-                        PROVIDED BY THE ARTFLY SITE.
+                        <ul>
+                            <li>
+                                THE SERVICES, AND ALL MATERIALS, INFORMATION, AND SERVICES INCLUDED IN THE ARTFLY SITE
+                                ARE
+                                PROVIDED ON AN “AS IS” AND “AS AVAILABLE” BASIS, WITH NO WARRANTIES WHATSOEVER.
+                            </li>
+                            <li>
+                                ARTFLY AND ITS LICENSORS EXPRESSLY DISCLAIM TO THE FULLEST EXTENT PERMITTED BY LAW ALL
+                                EXPRESS, IMPLIED, AND STATUTORY WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE
+                                WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT OF
+                                PROPRIETARY
+                                RIGHTS.
+                            </li>
+                            <li>ARTFLY AND ITS LICENSORS DISCLAIM ANY WARRANTIES REGARDING THE SECURITY, RELIABILITY,
+                                TIMELINESS, AND PERFORMANCE OF THE SERVICES.
+                            </li>
+                            <li>ARTFLY DOES NOT WARRANT THAT
+                                <ul>
+                                    <li>
+                                        (I) THE SERVICE WILL MEET YOUR SPECIFIC REQUIREMENTS,
+                                    </li>
+                                    <li>
+                                        (II) THE SERVICE WILL BE UNINTERRUPTED, TIMELY, SECURE OR ERROR-FREE,
+                                    </li>
+                                    <li>
+                                        (III) THE RESULTS THAT MAY BE OBTAINED FROM THE USE OF THE SERVICE WILL BE
+                                        ACCURATE
+                                        OR RELIABLE,
+                                    </li>
+                                    <li>
+                                        (IV) THE QUALITY OF ANY PRODUCTS, SERVICES, INFORMATION, OR OTHER MATERIAL
+                                        PURCHASED
+                                        OR OBTAINED BY YOU THROUGH THE SERVICE WILL MEET YOUR EXPECTATIONS, AND (V) ANY
+                                        ERRORS IN THE ARTFLY SITE WILL BE CORRECTED. ARTFLY AND ITS LICENSORS DISCLAIM,
+                                        ANY
+                                        WARRANTIES FOR ANY INFORMATION, CONTENT OR ADVICE OBTAINED THROUGH THE SERVICES.
+                                        ARTFLY AND ITS LICENSORS DISCLAIM ANY WARRANTIES FOR SERVICES OR GOODS RECEIVED
+                                        THROUGH OR ADVERTISED ON THE ARTFLY SERVICES OR RECEIVED THROUGH ANY LINKS
+                                        PROVIDED
+                                        BY THE ARTFLY SITE.
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
 
                 </section>
@@ -653,37 +887,32 @@ const TermsOfService = ({ UpdateUrl }) => {
                     <div className='terms--legalBit'>
                         YOU UNDERSTAND AND AGREE THAT YOUR USE OF THE FORMS AND CONTENT ON THE ARTFLY SITE AND THE
                         SERVICE IS AT YOUR OWN DISCRETION AND RISK AND THAT YOU WILL BE SOLELY RESPONSIBLE FOR LOSS
-                        OF
-                        DATA THAT RESULTS FROM THE SUBMISSION OR DOWNLOAD OF SUCH CONTENT.
+                        OF DATA THAT RESULTS FROM THE SUBMISSION OR DOWNLOAD OF SUCH CONTENT.
                     </div>
 
                 </section>
                 <section>
                     <div className='terms--plainEnglishBit'>
-                        We actually respond to emails from any user the best we can, but with priority given to PRO
+                        We actually respond to emails from any user the best we can, but with priority given to paid
                         users.
                     </div>
                     <div className='terms--legalBit'>
                         Technical support is only provided to paying Account holders and is only available via
-                        email. We
-                        will use commercially reasonable efforts to respond within a reasonable amount of time
-                        during
-                        regular business hours.
+                        email. We will use commercially reasonable efforts to respond within a reasonable amount of time
+                        during regular business hours.
                     </div>
 
                 </section>
-                <section>
+                {/* <section>
                     <div className='terms--plainEnglishBit'>
                         If you live somewhere where this doesn't apply, it doesn't apply.
                     </div>
                     <div className='terms--legalBit'>
                         SOME STATES OR OTHER JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF IMPLIED WARRANTIES, SO THE
                         ABOVE EXCLUSIONS MAY NOT APPLY TO YOU. YOU MAY ALSO HAVE OTHER RIGHTS THAT VARY FROM STATE
-                        TO
-                        STATE AND JURISDICTION TO JURISDICTION.
+                        TO STATE AND JURISDICTION TO JURISDICTION.
                     </div>
-
-                </section>
+                </section>*/}
 
                 <h3>Limitation of Liability</h3>
                 <section>
@@ -691,21 +920,25 @@ const TermsOfService = ({ UpdateUrl }) => {
                         We can't be liable for misuse of ArtFly or for ArtFly not meeting your needs.
                     </div>
                     <div className='terms--legalBit'>
-                        UNDER NO CIRCUMSTANCES SHALL ARTFLY OR ITS LICENSORS BE LIABLE TO YOU ON ACCOUNT OF THAT
-                        USER’S
-                        USE OR MISUSE OF OR RELIANCE ON THE SERVICES OR ARTFLY SITE ARISING FROM ANY CLAIM RELATING
-                        TO
-                        THIS AGREEMENT OR THE SUBJECT MATTER HEREOF. SUCH LIMITATION OF LIABILITY SHALL APPLY TO
-                        PREVENT
-                        RECOVERY OF DIRECT, INDIRECT, INCIDENTAL, CONSEQUENTIAL, SPECIAL, EXEMPLARY, AND PUNITIVE
-                        DAMAGES WHETHER SUCH CLAIM IS BASED ON WARRANTY, CONTRACT, TORT (INCLUDING NEGLIGENCE), OR
-                        OTHERWISE, (EVEN IF ARTFLY OR ITS LICENSORS HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH
-                        DAMAGES). SUCH LIMITATION OF LIABILITY SHALL APPLY WHETHER THE DAMAGES ARISE FROM USE OR
-                        MISUSE
-                        OF AND RELIANCE ON THE SERVICES OR ARTFLY SITE, FROM INABILITY TO USE THE SERVICES OR
-                        ARTFLY
-                        SITE, OR FROM THE INTERRUPTION, SUSPENSION, OR TERMINATION OF THE SERVICES OR ARTFLY SITE
-                        (INCLUDING SUCH DAMAGES INCURRED BY THIRD PARTIES).
+                        <ul>
+                            <li>
+                                UNDER NO CIRCUMSTANCES SHALL ARTFLY OR ITS LICENSORS BE LIABLE TO YOU ON ACCOUNT OF THAT
+                                USER’S USE OR MISUSE OF OR RELIANCE ON THE SERVICES OR ARTFLY SITE ARISING FROM ANY
+                                CLAIM RELATING TO THIS AGREEMENT OR THE SUBJECT MATTER HEREOF.
+                            </li>
+                            <li>
+                                SUCH LIMITATION OF LIABILITY SHALL APPLY TO PREVENT RECOVERY OF DIRECT, INDIRECT,
+                                INCIDENTAL, CONSEQUENTIAL, SPECIAL, EXEMPLARY, AND PUNITIVE DAMAGES WHETHER SUCH CLAIM
+                                IS BASED ON WARRANTY, CONTRACT, TORT (INCLUDING NEGLIGENCE), OR OTHERWISE, (EVEN IF
+                                ARTFLY OR ITS LICENSORS HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES).
+                            </li>
+                            <li>
+                                SUCH LIMITATION OF LIABILITY SHALL APPLY WHETHER THE DAMAGES ARISE FROM USE OR
+                                MISUSE OF AND RELIANCE ON THE SERVICES OR ARTFLY SITE, FROM INABILITY TO USE THE
+                                SERVICES OR ARTFLY SITE, OR FROM THE INTERRUPTION, SUSPENSION, OR TERMINATION OF THE
+                                SERVICES OR ARTFLY SITE (INCLUDING SUCH DAMAGES INCURRED BY THIRD PARTIES).
+                            </li>
+                        </ul>
                     </div>
 
                 </section>
@@ -715,16 +948,24 @@ const TermsOfService = ({ UpdateUrl }) => {
                         we can't be responsible for your loss of profit.
                     </div>
                     <div className='terms--legalBit'>
-                        THIS LIMITATION SHALL ALSO APPLY, WITHOUT LIMITATION, TO THE COSTS OF PROCUREMENT OF
-                        SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, OR LOST DATA. SUCH LIMITATION SHALL FURTHER APPLY
-                        WITH RESPECT TO THE PERFORMANCE OR NON-PERFORMANCE OF THE SERVICES OR ARTFLY SITE OR ANY
-                        INFORMATION OR MERCHANDISE THAT APPEARS ON, OR IS LINKED OR RELATED IN ANY WAY TO, THE ARTFLY
-                        SERVICES. SUCH LIMITATION SHALL APPLY NOTWITHSTANDING ANY FAILURE OF ESSENTIAL PURPOSE OF ANY
-                        LIMITED REMEDY AND TO THE FULLEST EXTENT PERMITTED BY LAW.
+                        <ul>
+                            <li>
+                                THIS LIMITATION SHALL ALSO APPLY, WITHOUT LIMITATION, TO THE COSTS OF PROCUREMENT OF
+                                SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, OR LOST DATA.
+                            </li>
+                            <li>
+                                SUCH LIMITATION SHALL FURTHER APPLY WITH RESPECT TO THE PERFORMANCE OR NON-PERFORMANCE
+                                OF THE SERVICES OR ARTFLY SITE OR ANY INFORMATION OR MERCHANDISE THAT APPEARS ON, OR IS
+                                LINKED OR RELATED IN ANY WAY TO, THE ARTFLY SERVICES.
+                            </li>
+                            <li>
+                                SUCH LIMITATION SHALL APPLY NOTWITHSTANDING ANY FAILURE OF ESSENTIAL PURPOSE OF ANY
+                                LIMITED REMEDY AND TO THE FULLEST EXTENT PERMITTED BY LAW.
+                            </li>
+                        </ul>
                     </div>
-
                 </section>
-                <section>
+                {/*<section>
                     <div className='terms--plainEnglishBit'>
                         If this doesn't apply to you because of where you live, it doesn't apply to you.
                     </div>
@@ -733,11 +974,10 @@ const TermsOfService = ({ UpdateUrl }) => {
                         INCIDENTAL OR CONSEQUENTIAL DAMAGES, SO THE ABOVE LIMITATIONS AND EXCLUSIONS MAY NOT APPLY
                         TO YOU.
                     </div>
-
-                </section>
+                </section>*/}
                 <section>
                     <div className='terms--plainEnglishBit'>
-                        The apocalypse may delay play
+                        The apocalypse may stop play
                     </div>
                     <div className='terms--legalBit'>
                         Without limiting the foregoing, under no circumstances shall ArtFly or its licensors be held
@@ -753,7 +993,7 @@ const TermsOfService = ({ UpdateUrl }) => {
 
                 </section>
 
-                <h3>Indemnification</h3>
+                {/*<h3>Indemnification</h3>
                 <section>
                     <div className='terms--plainEnglishBit'>
                         If you get in trouble with the law for something you did on ArtFly, that's on you and you
@@ -761,21 +1001,33 @@ const TermsOfService = ({ UpdateUrl }) => {
                         we'll pass it along to you.
                     </div>
                     <div className='terms--legalBit'>
-                        You acknowledge that you will be solely and fully responsible for all liabilities incurred
-                        through the use of the Services. To the maximum extent permitted by applicable law, you
-                        agree to hold harmless and indemnify ArtFly and its employees, officers, agents, or other
-                        partners from and against any third party claim arising from or in any way related to your use
-                        of the Services, including any liability or expense arising from all claims, losses, damages
-                        (actual and/or consequential), suits, judgments, litigation costs and attorneys' fees, of every
-                        kind and nature including but not limited to any liability arising from or resulting by your
-                        data imputed into ArtFly including infringement of intellectual property laws or civil or
-                        criminal claims. ArtFly shall use good faith efforts to provide you with written notice of such
-                        claim, suit or action. In addition, you expressly waive and relinquish any and all rights and
-                        benefits which you may have under any other state or federal statute or common law principle of
-                        similar effect, to the fullest extent permitted by law.
+                        <ul>
+                            <li>
+                                You acknowledge that you will be solely and fully responsible for all liabilities
+                                incurred through the use of the Services.
+                            </li>
+                            <li>
+                                To the maximum extent permitted by applicable law, you
+                                agree to hold harmless and indemnify ArtFly and its employees, officers, agents, or
+                                other partners from and against any third party claim arising from or in any way related
+                                to your use of the Services, including any liability or expense arising from all claims,
+                                losses, damages (actual and/or consequential), suits, judgments, litigation costs and
+                                attorneys' fees, of every kind and nature including but not limited to any liability
+                                arising from or resulting by your data imputed into ArtFly including infringement of
+                                intellectual property laws or civil or criminal claims.
+                            </li>
+                            <li>
+                                ArtFly shall use good faith efforts to provide you with written notice of such
+                                claim, suit or action. In addition, you expressly waive and relinquish any and all
+                                rights and
+                                benefits which you may have under any other state or federal statute or common law
+                                principle of
+                                similar effect, to the fullest extent permitted by law.
+                            </li>
+                        </ul>
                     </div>
 
-                </section>
+                </section>*/}
             </div>
 
         </div>
