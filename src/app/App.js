@@ -69,7 +69,7 @@ class ArtflyRouting extends React.Component {
                 <ArtworkEditorSavingProgress/>
                 {currentPage}
 
-                <CookieConsent debug={true} buttonText="Okay, got it" buttonStyle={{ fontSize: 18 }}>
+                <CookieConsent debug={false} buttonText="Okay, got it" buttonStyle={{ fontSize: 18 }}>
                     This website uses cookies. Check our <Button dense
                                                                  tag={'a'}
                                                                  style={{ color: '#fff', textDecoration: 'underline' }}

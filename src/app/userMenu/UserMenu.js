@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 // ui
+import { Button } from 'rmwc/Button';
 import { ToolbarIcon } from 'rmwc/Toolbar';
 import { Menu, MenuAnchor } from 'rmwc/Menu';
 import {
@@ -25,8 +26,8 @@ class UserMenu extends Component {
         this.onProfileClick = this.onProfileClick.bind(this);
     }
 
-    onProfileClick(){
-        this.setState({menuIsOpen: false}, () => {
+    onProfileClick() {
+        this.setState({ menuIsOpen: false }, () => {
             setTimeout(() => this.props.UpdateUrl('/profile'), 100);
         });
     }
@@ -59,12 +60,15 @@ class UserMenu extends Component {
                     </Menu>
 
                     {!userSignedIn &&
-                    <SignInButt onClick={() => UpdateUrl('/signIn')}/>
+                    <div>
+                        <Button onClick={() => UpdateUrl('/signUp')} style={{marginRight:10}}>Sign up</Button>
+                        <SignInButt onClick={() => UpdateUrl('/signIn')}/>
+                    </div>
                     }
 
                     {userSignedIn &&
                     <ToolbarIcon use="person"
-                                 style={{userSelect:'none'}}
+                                 style={{ userSelect: 'none' }}
                                  theme={'text-primary-on-background'}
                                  onClick={() => this.setState({ menuIsOpen: true })}/>
                     }

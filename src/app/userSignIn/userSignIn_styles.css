@@ -1,15 +1,16 @@
 .userSignIn{
-    background: #969caa;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to bottom, #969caa, #d6dcef);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to bottom, #6e7482, #d6dcef); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    /*background: #969caa;  !* fallback for old browsers *!*/
+    /*background: -webkit-linear-gradient(to bottom, #969caa, #d6dcef);  !* Chrome 10-25, Safari 5.1-6 *!*/
+    /*background: linear-gradient(to bottom, #6e7482, #d6dcef); !* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ *!*/
     min-height: 100vh;
+    background: url("../../app/images/brickwall.png");
 }
 
 .signIn-intro{
     /*display: flex;*/
     text-align: center;
     padding-top: 20px;
-    max-width: 400px;
-    margin: 0 auto;
-    color: white;
+    max-width: 800px;
+    margin: 0 auto 10px auto;
+    /*color: white;*/
 }

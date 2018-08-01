@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import { Typography } from 'rmwc/Typography';
 // comps
 import SocialMediaLinks from './socialMediaStuff/SocialMediaLinks';

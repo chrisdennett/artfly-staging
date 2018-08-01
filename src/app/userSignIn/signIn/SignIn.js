@@ -10,7 +10,7 @@ import './signIn_styles.css';
 // Configure FirebaseUI.
 // https://github.com/firebase/firebaseui-web
 // https://github.com/firebase/firebaseui-web-react
-const SignIn = ({ providerId, successRedirect = '/' }) => {
+const SignIn = ({ providerId, successRedirect = '/', isSignUp=false }) => {
 
     let signInOptions;
     if (providerId) {
@@ -42,6 +42,8 @@ const SignIn = ({ providerId, successRedirect = '/' }) => {
         signInFlow: 'popup',
         signInOptions: signInOptions,
         signInSuccessUrl: successRedirect,
+        tosUrl: 'https://artfly.io/termsOfService',
+        privacyPolicyUrl: 'https://artfly.io/privacyPolicy'
     };
 
     return (

@@ -110,7 +110,10 @@ export const getCurrentPageComponent = (state) => {
             else return <Home/>;
 
         case 'signIn':
-            return <UserSignIn/>;
+            return <UserSignIn show={'signIn'}/>;
+
+        case 'signUp':
+            return <UserSignIn show={'signUp'}/>;
 
         case 'profile':
             return <UserProfile/>;
