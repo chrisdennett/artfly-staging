@@ -20,6 +20,7 @@ import ArtFlyIntro from "./artFlyIntro/ArtFlyIntro";
 import { HomeAppBar } from "../../components/appBar/AppBar";
 import GalleryCard from "./galleryCard/GalleryCard";
 import JumpingVictorianLady from './JumpingVictorianLady';
+import Footer from "../../components/footer/Footer";
 
 const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork, UpdateUrl, updateUserArtworks }) => {
     const userLoggedIn = !!user.uid;
@@ -73,6 +74,7 @@ const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork, UpdateU
                 <SocialMediaStuff/>
                 <AboutUs/>
                 <JumpingVictorianLady/>
+                <Footer/>
             </div>
 
         </div>

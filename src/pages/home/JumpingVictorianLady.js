@@ -1,26 +1,19 @@
 import React from 'react';
 // ui
 import { Typography } from 'rmwc/Typography';
-// comps
-import SocialMediaLinks from './socialMediaStuff/SocialMediaLinks';
-import Footer from "../../components/footer/Footer";
 
 const JumpingVictorianLady = () => {
     return (
         <div style={{
             backgroundColor: '#1b1b1b',
             color: '#fff',
-            padding: 42, textAlign: 'center'
+            padding: '20px 20px 0 20px', textAlign: 'center'
         }}>
+            <Typography use={'body1'} tag={'p'} style={{fontSize: 12, marginBottom:15, fontStyle:'italic'}}>
+                You know it's all over when the victorian lady jumps the stool...
+            </Typography>
             <img style={{ background: '#fff', padding: 10 }} src={'images/lab/Rotoscoping.gif'}
                  alt={'rotoscoping gif'}/>
-            <Typography use={'body1'}>
-                <p>You know it's all over when the victorian lady jumps the stool...</p>
-            </Typography>
-
-            <SocialMediaLinks/>
-
-            <Footer/>
         </div>
     )
 };
