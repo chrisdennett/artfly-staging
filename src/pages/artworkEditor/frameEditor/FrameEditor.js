@@ -18,7 +18,6 @@ class FrameEditor extends Component {
         this.onMountColourChange = this.onMountColourChange.bind(this);
         this.onFrameThicknessChange = this.onFrameThicknessChange.bind(this);
         this.onMountThicknessChange = this.onMountThicknessChange.bind(this);
-
     }
 
     onFrameColourChange({ hue, saturation, lightness }) {
