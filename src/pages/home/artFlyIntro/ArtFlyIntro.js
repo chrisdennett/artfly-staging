@@ -3,11 +3,18 @@ import { connect } from 'react-redux';
 // ui
 import { Typography } from 'rmwc/Typography';
 import { Button } from 'rmwc/Button';
-//
+// styles
 import './artFlyIntro_styles.css';
+// actions
 import { UpdateUrl } from "../../../actions/UrlActions";
+// constants
+import {IN_STAGING} from '../../../components/global/GLOBAL_CONSTANTS';
 
 const ArtFlyIntro = function ({ UpdateUrl }) {
+
+    console.log("IN_STAGING: ", IN_STAGING);
+
+    const demoGalleryId = IN_STAGING ? 'VcPVuv6chDoFZoYgsrnr' : 't5jiytWNhsnQYnajlggt';
 
     return (
         <div className={'artFlyIntro'}>
@@ -23,7 +30,7 @@ const ArtFlyIntro = function ({ UpdateUrl }) {
             <Typography tag={'div'} use={'body1'} style={{ marginTop: 20, maxWidth: 500, lineHeight:'1.8rem', textAlign: 'center' }}>
                 ArtFly's just a simple gallery right now. <br/>
                 Here's my
-                <Button dense theme={'secondary'} onClick={() => UpdateUrl('/gallery/galleryId_t5jiytWNhsnQYnajlggt_galleryId')}>
+                <Button dense theme={'secondary'} onClick={() => UpdateUrl(`/gallery/galleryId_${demoGalleryId}_galleryId`)}>
                     family gallery
                 </Button>
                 for example.  <br/>

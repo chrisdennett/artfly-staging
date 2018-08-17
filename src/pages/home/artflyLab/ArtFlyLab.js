@@ -20,22 +20,25 @@ const ArtFlyLab = function () {
             </div>
 
             <div className={'artFlyLab--projectCards'}>
-                <ProjectCard title={'Create your own art gallery'}
-                             description={'A very brief summary here...'}
-                             link={'/artwork'}
-                             blogLink={'https://blog.artfly.io/pixel-stretcher'}
+                <ProjectCard title={'Photo Sketcher'}
+                             image={'images/lab/draw-me-a-picture-288x257.jpg'}
+                             subtitle={'Turn a photo into a pencil sketch.'}
+                             description={'Upload a picture, fiddle with a slider, download and sign.'}
+                             link={'https://lab.artfly.io/draw-me-a-photo'}
                 />
 
-                <ProjectCard title={'Portrait Grids'}
-                             description={'A very brief summary here...'}
-                             labLink={'https://lab.artfly.io/colour-splitter'}
-                             blogLink={'https://blog.artfly.io/pixel-stretcher'}
+                <ProjectCard title={'Portrait Grid Maker'}
+                             image={'images/lab/portrait-grids-288x192.jpg'}
+                             subtitle={'Creates grids to help you draw.'}
+                             description={'Adds a grid and gives you outlines to help'}
+                             link={'https://lab.artfly.io/portrait-grids'}
                 />
 
-                <ProjectCard title={'Colour Splitting'}
-                             description={'A very brief summary here...'}
-                             labLink={'https://lab.artfly.io/colour-splitter'}
-                             blogLink={'https://blog.artfly.io/pixel-stretcher'}
+                <ProjectCard title={'Colour Splitter'}
+                             image={'images/lab/colour-splitter-288x210.jpg'}
+                             subtitle={'Splits photos into 3 separate colours'}
+                             description={'Move sliders to pull out the cyan, magenta and yellow colours that make up an image.'}
+                             link={'https://lab.artfly.io/colour-splitter'}
                 />
             </div>
 

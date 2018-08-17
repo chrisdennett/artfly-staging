@@ -6,7 +6,6 @@ import { Typography } from 'rmwc/Typography';
 // styles
 import './homeStyles.css';
 // actions
-// import { updateUserArtworks } from '../../actions/GetArtworkActions';
 import { UpdateUrl } from "../../actions/UrlActions";
 // selectors
 import { getLatestUserArtwork, getTotalUserArtworks, getUserGallery } from '../../selectors/Selectors'
@@ -21,6 +20,7 @@ import { HomeAppBar } from "../../components/appBar/AppBar";
 import GalleryCard from "./galleryCard/GalleryCard";
 import JumpingVictorianLady from './JumpingVictorianLady';
 import Footer from "../../components/footer/Footer";
+
 
 const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork, UpdateUrl, updateUserArtworks }) => {
     const userLoggedIn = !!user.uid;
@@ -39,7 +39,7 @@ const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork, UpdateU
                 <Title/>
 
                 {!userLoggedIn &&
-                <ArtFlyIntro/>
+                <ArtFlyIntro />
                 }
 
             </div>

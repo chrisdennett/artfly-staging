@@ -20,4 +20,5 @@
     flex-wrap: wrap;
     margin: 10px;
     justify-content: space-around;
+    align-items: flex-start;
 }

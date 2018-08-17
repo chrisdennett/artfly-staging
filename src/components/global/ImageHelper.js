@@ -46,7 +46,7 @@ export function generateUUID() {
     return d + '_' + Math.random().toString(36).substr(2, 9);
 }
 
-export function getImageBlob({source, maxSize, orientation=1, cropData}, callback) {
+export function getImageBlob({source, maxSize, orientation=1, cropData, quality=0.95}, callback) {
     const canvas = document.createElement('canvas');
 
     drawToCanvas({
@@ -59,7 +59,7 @@ export function getImageBlob({source, maxSize, orientation=1, cropData}, callbac
 
         canvas.toBlob((canvasBlobData) => {
             callback(canvasBlobData)
-        }, 'image/jpeg', 0.95);
+        }, 'image/jpeg', quality);
 
     });
 }
