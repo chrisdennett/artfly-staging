@@ -1,6 +1,6 @@
 import { auth, firestoreDb as db, storage, storageEvent, storageRef as store } from "../libs/firebaseConfig";
 // helpers
-import { getImageBlob, generateUUID } from "../components/global/ImageHelper";
+import { getImageBlob } from "../components/global/ImageHelper";
 // constants
 import { THUMB_SIZE, LARGE_IMG_SIZE, MAX_IMG_SIZE } from '../components/global/GLOBAL_CONSTANTS';
 // import { ARTWORK_CHANGE } from "./GetArtworkActions";
@@ -197,8 +197,6 @@ function fs_saveArtworkImage(blobData, userId, artworkId, directory, url, onChan
         userPicturesRef = storage.refFromURL(url);
     }
     else {
-        // generate random unique name
-        // const fileName = generateUUID();
         // create the reference
         userPicturesRef = store.child(`user/${userId}/${directory}/${artworkId}`);
     }
@@ -225,11 +223,11 @@ function fs_saveArtworkImage(blobData, userId, artworkId, directory, url, onChan
 }
 
 // SAVE NEW ARTWORK DATA
-function saveNewArtworkData(artworkId, newArtworkData, callback) {
+/*function saveNewArtworkData(artworkId, newArtworkData, callback) {
     saveArtworkChanges(artworkId, newArtworkData, () => {
         if (callback) callback();
     });
-}
+}*/
 
 // SAVE ARTWORK CHANGES
 export function saveArtworkChanges(artworkId, newData, onChangeCallback = null) {
@@ -245,7 +243,6 @@ export function saveArtworkChanges(artworkId, newData, onChangeCallback = null) 
             console.log('Update artwork failed: ', error);
         })
 }
-
 
 /*function int_saveImage(blobData, onChangeCallback, onCompleteCallback) {
     // generate random unique name
