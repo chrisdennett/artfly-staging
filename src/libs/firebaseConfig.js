@@ -3,7 +3,7 @@ import * as storage2 from 'firebase/storage';
 import * as auth2 from 'firebase/auth';
 import firestore from 'firebase/firestore';
 // constants
-import {IN_STAGING} from '../components/global/GLOBAL_CONSTANTS';
+import {IN_STAGING} from '../GLOBAL_CONSTANTS';
 
 // FOR STAGING
 const stagingOnlyConfig = {

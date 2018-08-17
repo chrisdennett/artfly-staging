@@ -8,11 +8,9 @@ import './artFlyIntro_styles.css';
 // actions
 import { UpdateUrl } from "../../../actions/UrlActions";
 // constants
-import {IN_STAGING} from '../../../components/global/GLOBAL_CONSTANTS';
+import {IN_STAGING} from '../../../GLOBAL_CONSTANTS';
 
 const ArtFlyIntro = function ({ UpdateUrl }) {
-
-    console.log("IN_STAGING: ", IN_STAGING);
 
     const demoGalleryId = IN_STAGING ? 'VcPVuv6chDoFZoYgsrnr' : 't5jiytWNhsnQYnajlggt';
 

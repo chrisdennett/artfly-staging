@@ -5,7 +5,7 @@ import { Ripple } from 'rmwc/Ripple';
 import { Icon } from 'rmwc/Icon';
 import { Button } from 'rmwc/Button';
 // const
-import { THUMB_SIZE } from "../global/GLOBAL_CONSTANTS";
+import { THUMB_SIZE } from "../../GLOBAL_CONSTANTS";
 // helpers
 import FramedArtworkCanvas from "../artwork/FramedArtworkCanvas";
 

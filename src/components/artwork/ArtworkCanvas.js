@@ -1,6 +1,6 @@
 import React from 'react';
 import LoadingThing from "../loadingThing/LoadingThing";
-import { THUMB_SIZE } from "../global/GLOBAL_CONSTANTS";
+import { THUMB_SIZE } from "../../GLOBAL_CONSTANTS";
 
 const ArtworkCanvas = function ({artworkData, width='100%', height, style}) {
 

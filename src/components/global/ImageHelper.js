@@ -1,4 +1,4 @@
-import {MAX_IMG_SIZE} from "./GLOBAL_CONSTANTS";
+import {MAX_IMG_SIZE} from "../../GLOBAL_CONSTANTS";
 
 // Returns an image element given a file
 export function GetImage(imgFile, callback) {

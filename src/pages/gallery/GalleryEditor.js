@@ -12,7 +12,7 @@ import { UpdateUrl } from "../../actions/UrlActions";
 import { EditAppBar } from "../../components/appBar/AppBar";
 import LoadingThing from "../../components/loadingThing/LoadingThing";
 // constants
-import { MAX_GALLERY_TITLE_LENGTH, MAX_GALLERY_SUBTITLE_LENGTH } from '../../components/global/GLOBAL_CONSTANTS';
+import { MAX_GALLERY_TITLE_LENGTH, MAX_GALLERY_SUBTITLE_LENGTH } from '../../GLOBAL_CONSTANTS';
 
 class GalleryEditor extends Component {
 
