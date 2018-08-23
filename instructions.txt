@@ -12,7 +12,7 @@ currency:               GBP
 
 ********************************************************************************
 
-// npm undate not working
+// npm update not working - try deleting package lock file.
 https://github.com/npm/npm/issues/20954
 
 // Upgrading npm.  Follow the instructions here:
@@ -78,6 +78,16 @@ CTRL K - use the version control panel to check changes - and push at the same t
 
 // then in terminal push the changes to google
 git push google master
+
+// or use
+CTRL SHIFT K
+
+// merge dev branch into master
+// first make sure everything is checked in, then
+git checkout master  //Switched to branch 'master'
+git merge dev
+
+// Then push master back up to google repo CTRL SHIFT K
 
 ********************************************************************************
 ********************************************************************************
