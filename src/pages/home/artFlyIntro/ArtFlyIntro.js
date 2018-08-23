@@ -12,7 +12,7 @@ import {IN_STAGING} from '../../../GLOBAL_CONSTANTS';
 
 const ArtFlyIntro = function ({ UpdateUrl }) {
 
-    const demoGalleryId = IN_STAGING ? 'VcPVuv6chDoFZoYgsrnr' : 't5jiytWNhsnQYnajlggt';
+    const demoGalleryId = IN_STAGING ? 'VcPVuv6chDoFZoYgsrnr' : 'sRCT2R2ILmwmASQla5Ej';
 
     return (
         <div className={'artFlyIntro'}>

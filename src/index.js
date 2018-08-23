@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 // store - where the entire components state lives
 import store from './store/store';
 // store and route connector
-import {connectRouteToStore} from "./AppRouteConnector";
+import { connectRouteToStore } from "./AppRouteConnector";
 // comp
 import App from "./App";
 

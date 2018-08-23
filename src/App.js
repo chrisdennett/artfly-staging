@@ -16,6 +16,7 @@ import { UpdateUrl } from "./actions/UrlActions";
 import { fetchGalleryData, fetchUserGallery, fetchUserGalleryArtworks } from "./actions/GalleryDataActions";
 // selectors
 import { getCurrentPageComponent, findMissingData, getRedirectPath } from "./AppRouteSelector";
+// comps
 import ArtworkEditorSavingProgress from "./pages/artworkEditor/ArtworkEditorSavingProgress";
 
 class ArtflyRouting extends React.Component {
