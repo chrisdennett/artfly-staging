@@ -56,6 +56,14 @@ firebase deploy
 // 6. open site
 firebase open hosting:site
 
+// 7. Merge dev branch into main
+// start on dev branch.  Check with 'git branch', set with 'git checkout dev'
+// make sure everything is checked into dev
+git merge master        //(resolve any merge conflicts if there are any)
+git checkout master
+git merge development
+git push -u origin master
+
 // DEPLOY FUNCTIONS
 firebase deploy --only functions
 // can restrict to individual functions and other stuff...
