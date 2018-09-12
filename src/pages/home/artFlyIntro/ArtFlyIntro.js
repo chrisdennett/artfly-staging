@@ -22,7 +22,7 @@ const ArtFlyIntro = function ({ UpdateUrl }) {
             </Typography>
 
             <div style={{ marginTop: 20 }}>
-                <Button raised onClick={() => UpdateUrl('/signIn')}>Get started for free</Button>
+                <Button raised onClick={() => UpdateUrl('/signUp')}>Get started for free</Button>
             </div>
 
             <Typography tag={'div'} use={'body1'} style={{ marginTop: 20, maxWidth: 500, lineHeight:'1.8rem', textAlign: 'center' }}>

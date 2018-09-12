@@ -8,7 +8,7 @@ import './accountSubscription_styles.css';
 import { UpdateUrl } from "../../actions/UrlActions";
 import { subscribeUser, updateSubscription, cancelSubscription } from "../../actions/PaddleActions";
 // selectors
-import MEMBERSHIP_PLANS from '../../components/global/MEMBERSHIP_PLANS';
+import MEMBERSHIP_PLANS from '../../MEMBERSHIP_PLANS';
 import { getMembershipDetails } from "../../selectors/Selectors";
 // comps
 import { TempScreenAppBar } from "../../components/appBar/AppBar";

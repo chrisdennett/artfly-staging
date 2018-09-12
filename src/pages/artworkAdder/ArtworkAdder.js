@@ -16,7 +16,7 @@ import PhotoSelector from "../../components/photoSelector/PhotoSelector";
 import CropAndRotateEditor from "../artworkEditor/cropAndRotateEditor/CropAndRotateEditor";
 import LoadingThing from "../../components/loadingThing/LoadingThing";
 import MaximumArtworksReached from "./maximumArtworksReached/MaximumArtworksReached";
-import MEMBERSHIP_PLANS from "../../components/global/MEMBERSHIP_PLANS";
+import MEMBERSHIP_PLANS from "../../MEMBERSHIP_PLANS";
 
 class ArtworkAdder extends Component {
 

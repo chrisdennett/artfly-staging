@@ -3,7 +3,7 @@ import React from 'react';
 import { Typography } from 'rmwc/Typography';
 // helpers
 import { TO_DATE_TEXT } from "../../components/global/UTILS";
-import MEMBERSHIP_PLANS from "../../components/global/MEMBERSHIP_PLANS";
+import MEMBERSHIP_PLANS from "../../MEMBERSHIP_PLANS";
 
 const SubscriptionCancelledWarning = ({totalUserArtworks, cancellationEffectiveDate}) => {
 

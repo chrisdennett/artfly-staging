@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import { createSelector } from 'reselect';
 // TODO: move this to a data folder
-import MEMBERSHIP_PLANS from '../components/global/MEMBERSHIP_PLANS';
+import MEMBERSHIP_PLANS from '../MEMBERSHIP_PLANS';
 import { getParams } from "../AppRouteSelector";
 
 export const getUserId = (state) => {
