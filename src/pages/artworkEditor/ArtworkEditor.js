@@ -11,6 +11,8 @@ import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
 import { EditAppBar } from "../../components/appBar/AppBar";
 import { getArtwork } from "../../selectors/Selectors";
 import FrameEditor from "./frameEditor/FrameEditor";
+import ColourSplitter from "./colourSplitterEditor/ColourSplitterEditor";
+import { getDimensionRatios } from "../../components/global/ImageHelper";
 
 class ArtworkEditor extends Component {
 
@@ -24,27 +26,29 @@ class ArtworkEditor extends Component {
         this.onCancel = this.onCancel.bind(this);
         this.onClose = this.onClose.bind(this);
         this.loadSourceImg = this.loadSourceImg.bind(this);
+        this.onSaveEditedImage = this.onSaveEditedImage.bind(this);
     }
 
     componentDidMount() {
         document.body.classList.toggle('no-scroll-bars', true);
-        if (this.props.editor && this.props.editor === 'crop') {
+        if (this.props.editor && (this.props.editor === 'crop' || this.props.editor === 'colourSplitter')) {
             this.loadSourceImg(this.props);
         }
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         document.body.classList.remove('no-scroll-bars');
     }
 
     componentDidUpdate() {
-        if (this.props.editor && this.props.editor === 'crop') {
+        if (this.props.editor && (this.props.editor === 'crop' || this.props.editor === 'colourSplitter')) {
             this.loadSourceImg(this.props);
         }
     }
 
     loadSourceImg(props) {
         const { currentArtwork } = props;
+
         if (!currentArtwork || this.state.sourceImg) return;
 
         let sourceImg = new Image();
@@ -61,14 +65,29 @@ class ArtworkEditor extends Component {
         this.setState({ unsavedArtworkData: { ...newData } });
     }
 
+    onSaveEditedImage(canvas) {
+        const { currentArtwork, artworkId } = this.props;
+        const { unsavedArtworkData } = this.state;
+
+        // need to add editedOrientation and editedWidthToHeightRatio and editedHeightToWidthRatio
+        const editedOrientation = 1;
+        const { widthToHeightRatio: editedWidthToHeightRatio, heightToWidthRatio: editedHeightToWidthRatio } = getDimensionRatios(canvas.width, canvas.height);
+
+        const mergedData = { ...currentArtwork, ...unsavedArtworkData, editedOrientation, editedWidthToHeightRatio, editedHeightToWidthRatio };
+
+        this.props.updateArtworkAndImage(canvas, mergedData, artworkId, true, () => {
+            this.props.UpdateUrl(`/gallery/galleryId_${this.props.galleryId}_galleryId/artworkId_${this.props.artworkId}_artworkId`);
+        });
+    }
+
     onSave() {
         const { currentArtwork, artworkId, editor } = this.props;
         const { sourceImg, unsavedArtworkData } = this.state;
 
         const mergedData = { ...currentArtwork, ...unsavedArtworkData };
 
-        if (editor === 'crop') {
-            this.props.updateArtworkAndImage(sourceImg, mergedData, artworkId, () => {
+        if (editor === 'crop' || editor === 'colourSplitter') {
+            this.props.updateArtworkAndImage(sourceImg, mergedData, artworkId, false, () => {
                 this.props.UpdateUrl(`/gallery/galleryId_${this.props.galleryId}_galleryId/artworkId_${this.props.artworkId}_artworkId`);
             });
         }
@@ -94,7 +113,21 @@ class ArtworkEditor extends Component {
         const mergedData = { ...currentArtwork, ...unsavedArtworkData };
         const hasChanges = !isEqual(mergedData, currentArtwork) && !!currentArtwork;
 
-        const editorTitle = editor === 'crop' ? 'Crop & Rotate' : 'Frame Editor';
+        let editorTitle = '';
+        if (editor === 'crop') editorTitle = 'Crop & Rotate';
+        else if (editor === 'frame') editorTitle = 'Frame Editor';
+        else if (editor === 'colourSplitter') editorTitle = 'Colour Splitter';
+
+
+        if (editor === 'colourSplitter') {
+            return <ColourSplitter sourceImg={sourceImg}
+                                   hasChanges={hasChanges}
+                                   artworkData={mergedData}
+                                   onCloseClick={this.onClose}
+                                   onSaveClick={this.onSaveEditedImage}
+                                   onCancelClick={this.onCancel}
+                                   onDataChange={this.onArtworkEdit}/>
+        }
 
         return (
             <div className={'artworkEditor'}>

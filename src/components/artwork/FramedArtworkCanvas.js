@@ -39,7 +39,12 @@ class FramedArtworkCanvas extends Component {
         const { artworkData, maxWidth, maxHeight } = props;
         if (!artworkData || !maxWidth || !maxHeight || artworkData.isDeleted) return;
 
-        const { frameData, heightToWidthRatio, widthToHeightRatio } = artworkData;
+        const { frameData, widthToHeightRatio:sourceWidthToHeightRatio, heightToWidthRatio:sourceHeightToWidthRatio, editedWidthToHeightRatio, editedHeightToWidthRatio } = artworkData;
+
+        // use the edited values if set, otherwise use the values from the source image.
+        const widthToHeightRatio = editedWidthToHeightRatio ? editedWidthToHeightRatio : sourceWidthToHeightRatio;
+        const heightToWidthRatio = editedHeightToWidthRatio ? editedHeightToWidthRatio : sourceHeightToWidthRatio;
+
         const { frameThicknessDecimal, mountThicknessDecimal, frameColour, mountColour } = frameData;
         const { frameWidth, frameHeight, frameThickness, mountWidth, mountHeight, mountThickness } = calculateDimensions(maxWidth, maxHeight, heightToWidthRatio, widthToHeightRatio, frameThicknessDecimal, mountThicknessDecimal);
 
@@ -57,7 +62,14 @@ class FramedArtworkCanvas extends Component {
             <LoadingThing/>
         );
 
-        const { frameData, heightToWidthRatio, widthToHeightRatio } = artworkData;
+        // use the edited values if set, otherwise use the values from the source image.
+        const { frameData, widthToHeightRatio:sourceWidthToHeightRatio, heightToWidthRatio:sourceHeightToWidthRatio, editedWidthToHeightRatio, editedHeightToWidthRatio } = artworkData;
+
+        // use the edited values if set, otherwise use the values from the source image.
+        const widthToHeightRatio = editedWidthToHeightRatio ? editedWidthToHeightRatio : sourceWidthToHeightRatio;
+        const heightToWidthRatio = editedHeightToWidthRatio ? editedHeightToWidthRatio : sourceHeightToWidthRatio;
+
+
         const { frameThicknessDecimal, mountThicknessDecimal } = frameData;
 
         if (!heightToWidthRatio || !widthToHeightRatio) return null;

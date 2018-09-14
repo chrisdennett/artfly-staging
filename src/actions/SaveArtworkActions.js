@@ -24,7 +24,7 @@ export function addNewArtwork(imgFile, artworkData, callback) {
             type: SAVING_ARTWORK_TRIGGERED
         });
 
-        saveImage({ userId, artworkId, source: imgFile, maxSize: MAX_IMG_SIZE, directory:'source' },
+        saveImage({ userId, artworkId, source: imgFile, maxSize: MAX_IMG_SIZE, directory: 'source' },
             progress => {
                 dispatch({
                     type: SAVING_ARTWORK_PROGRESS,
@@ -37,7 +37,7 @@ export function addNewArtwork(imgFile, artworkData, callback) {
             ,
             sourceUrl => {
                 // save thumb
-                saveImage({ userId, artworkId, directory:'thumb', source: imgFile, maxSize: THUMB_SIZE, orientation, cropData },
+                saveImage({ userId, artworkId, directory: 'thumb', source: imgFile, maxSize: THUMB_SIZE, orientation, cropData },
                     progress => {
                         dispatch({
                             type: SAVING_ARTWORK_PROGRESS,
@@ -51,7 +51,7 @@ export function addNewArtwork(imgFile, artworkData, callback) {
                     thumbUrl => {
 
                         // save large image
-                        saveImage({ userId, artworkId, directory:'large', source: imgFile, maxSize: LARGE_IMG_SIZE, orientation, cropData },
+                        saveImage({ userId, artworkId, directory: 'large', source: imgFile, maxSize: LARGE_IMG_SIZE, orientation, cropData },
                             progress => {
                                 dispatch({
                                     type: SAVING_ARTWORK_PROGRESS,
@@ -78,10 +78,10 @@ export function addNewArtwork(imgFile, artworkData, callback) {
                                 saveArtworkChanges(artworkId, fullArtworkData, () => {
                                     dispatch({
                                         type: SAVING_ARTWORK_COMPLETE,
-                                        payload: {[artworkId]:fullArtworkData}
+                                        payload: { [artworkId]: fullArtworkData }
                                     });
 
-                                    if(callback) callback(artworkId);
+                                    if (callback) callback(artworkId);
                                 });
                             });
                     });
@@ -100,20 +100,23 @@ export function updateArtwork(artworkId, newArtworkData, callback) {
         saveArtworkChanges(artworkId, newArtworkData, () => {
             dispatch({
                 type: SAVING_ARTWORK_COMPLETE,
-                payload:{ [artworkId]: newArtworkData }
+                payload: { [artworkId]: newArtworkData }
             });
 
-            if(callback) callback(artworkId);
+            if (callback) callback(artworkId);
         });
     }
 }
 
 // UPDATE ARTWORK & IMAGE
-export function updateArtworkAndImage(imgFile, artworkData, artworkId, callback) {
+export function updateArtworkAndImage(imgFile, artworkData, artworkId, ignoreOrientation, callback) {
     return dispatch => {
 
         const { uid: userId } = auth.currentUser;
-        const { orientation, cropData } = artworkData;
+        let { orientation, cropData } = artworkData;
+        if (ignoreOrientation) {
+            orientation = 1;
+        }
 
         dispatch({
             type: SAVING_ARTWORK_TRIGGERED
@@ -132,7 +135,6 @@ export function updateArtworkAndImage(imgFile, artworkData, artworkId, callback)
             }
             ,
             thumbUrl => {
-
                 // save large image
                 saveImage({ url: artworkData.largeUrl, userId, source: imgFile, maxSize: LARGE_IMG_SIZE, orientation, cropData },
                     progress => {
@@ -158,10 +160,10 @@ export function updateArtworkAndImage(imgFile, artworkData, artworkId, callback)
                         saveArtworkChanges(artworkId, fullArtworkData, () => {
                             dispatch({
                                 type: SAVING_ARTWORK_COMPLETE,
-                                payload:{ [artworkId]: fullArtworkData }
+                                payload: { [artworkId]: fullArtworkData }
                             });
 
-                            if(callback) callback(artworkId);
+                            if (callback) callback(artworkId);
                         });
                     });
             });

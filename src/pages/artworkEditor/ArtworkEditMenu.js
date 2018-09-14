@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 // ui
 import { Drawer, DrawerContent } from 'rmwc/Drawer';
-import { ListItem, ListItemText, ListItemGraphic } from 'rmwc/List';
+import { ListItem, ListItemText, ListItemGraphic, ListDivider } from 'rmwc/List';
 // images
 import IconFrameSize from '../../components/images/icons/frame-size.png';
 import IconCropRotate from '../../components/images/icons/crop-rotate.png';
@@ -39,6 +39,17 @@ const ArtworkEditMenu = ({ isOpen, onClose, artworkId, galleryId, UpdateUrl }) =
                     </ListItemGraphic>
                     <ListItemText>
                         Crop & Rotate
+                    </ListItemText>
+                </ListItem>
+
+                <ListDivider />
+
+                <ListItem onClick={() => UpdateUrl(path('colourSplitter'), 'ArtworkEditMenu > colour splitter')}>
+                    <ListItemGraphic>
+                        <img style={imgStyle} src={IconCropRotate} alt={'crop and rotate icon'}/>
+                    </ListItemGraphic>
+                    <ListItemText>
+                        Colour Splitter
                     </ListItemText>
                 </ListItem>
 

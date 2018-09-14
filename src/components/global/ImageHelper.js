@@ -37,15 +37,6 @@ export function GetImage(imgFile, callback) {
     })
 }
 
-// Used to generate unique image names
-// used getTime and extra random digits to deal with 2 images
-// created in the same ms.
-// https://gist.github.com/gordonbrander/2230317
-export function generateUUID() {
-    let d = new Date().getTime();
-    return d + '_' + Math.random().toString(36).substr(2, 9);
-}
-
 export function getImageBlob({source, maxSize, orientation=1, cropData, quality=0.95}, callback) {
     const canvas = document.createElement('canvas');
 
@@ -64,36 +55,12 @@ export function getImageBlob({source, maxSize, orientation=1, cropData, quality=
     });
 }
 
-export function GetImageFromUrl(imgUrl, callback) {
-    const imgSrc = imgUrl;
-    // Create a new image element
-    let img = new Image();
-    img.setAttribute('crossOrigin', 'anonymous'); //
-    img.src = imgSrc;
+export function getDimensionRatios(w,h){
+    const widthToHeightRatio = Math.round(100 * (h / w)) / 100;
+    const heightToWidthRatio = Math.round(100 * (w / h)) / 100;
 
-    // wait for it to be loaded and then return
-    img.onload = (e) => {
-        const w = img.width;
-        const h = img.height;
-
-        const widthToHeightRatio = Math.round(100 * (h / w)) / 100;
-        const heightToWidthRatio = Math.round(100 * (w / h)) / 100;
-
-        callback(img, widthToHeightRatio, heightToWidthRatio);
-    }
+    return {widthToHeightRatio, heightToWidthRatio};
 }
-
-/*export function LoadImage(imgSrc, callback) {
-    let img = new Image();
-    // the lack of this crossOrigin line caused me a world of pain!!!
-    // https://stackoverflow.com/questions/20424279/canvas-todataurl-securityerror/27260385#27260385
-    img.setAttribute('crossOrigin', 'anonymous'); //
-    img.src = imgSrc;
-    // wait for it to be loaded and then return
-    img.onload = (e) => {
-        callback(e.target);
-    }
-}*/
 
 // Reads file as Array buffer to get camera orientation from exif data
 function GetPhotoOrientation(file, callback) {
@@ -127,66 +94,6 @@ function GetPhotoOrientation(file, callback) {
     reader.readAsArrayBuffer(file);
 }
 
-
-// Draws an image to a canvas restricting to a specific size
-export function drawImageToCanvas({ sourceImg, outputCanvas, orientation, maxOutputCanvasWidth = MAX_IMG_SIZE, maxOutputCanvasHeight = MAX_IMG_SIZE }, callback) {
-    const isPortrait = orientation > 4 && orientation < 9;
-
-    // if portrait the final canvas dimensions will be the other way round
-    const canvasH = isPortrait ? sourceImg.width : sourceImg.height;
-    const canvasW = isPortrait ? sourceImg.height : sourceImg.width;
-    outputCanvas.width = canvasW;
-    outputCanvas.height = canvasH;
-
-    const ctx = outputCanvas.getContext('2d');
-
-    // save the context so it can be reset after transform
-    ctx.save();
-    // transform context before drawing image
-    switch (orientation) {
-        case 2:
-            // flipped horizontally
-            ctx.transform(-1, 0, 0, 1, canvasH, 0);
-            break;
-        case 3:
-            // rotated 180°
-            ctx.transform(-1, 0, 0, -1, canvasW, canvasH);
-            break;
-        case 4:
-            // flipped horizontally and rotated 180°
-            ctx.transform(1, 0, 0, -1, 0, canvasW);
-            break;
-        case 5:
-            // flipped horizontally and rotated 270°
-            ctx.transform(0, 1, 1, 0, 0, 0);
-            break;
-        case 6:
-            // rotated 90°
-            ctx.transform(0, 1, -1, 0, canvasW, 0);
-            break;
-        case 7:
-            // flipped horizontally and rotated 90°
-            ctx.transform(0, -1, -1, 0, canvasW, canvasH);
-            break;
-        case 8:
-            // rotated 270°
-            ctx.transform(0, -1, 1, 0, 0, canvasH);
-            break;
-        default:
-            break;
-    }
-
-    ctx.drawImage(sourceImg,0,0);
-    // restore ensures resets transform in case another image is added
-    ctx.restore();
-
-    const widthToHeightRatio = Math.round(100 * (canvasH / canvasW)) / 100;
-    const heightToWidthRatio = Math.round(100 * (canvasW / canvasH)) / 100;
-
-    if (callback) callback(widthToHeightRatio, heightToWidthRatio)
-}
-
-
 // Draws one canvas to another restricting to a specific size
 export function drawToCanvas({ sourceCanvas, outputCanvas, orientation, cropData, maxOutputCanvasWidth = MAX_IMG_SIZE, maxOutputCanvasHeight = MAX_IMG_SIZE }, callback) {
 
@@ -211,8 +118,10 @@ export function drawToCanvas({ sourceCanvas, outputCanvas, orientation, cropData
     const maxW = imgW >= maxOutputCanvasWidth ? maxOutputCanvasWidth : imgW;
     const maxH = imgH >= maxOutputCanvasHeight ? maxOutputCanvasHeight : imgH;
 
-    const widthToHeightRatio = Math.round(100 * (imgH / imgW)) / 100;
-    const heightToWidthRatio = Math.round(100 * (imgW / imgH)) / 100;
+    const {widthToHeightRatio, heightToWidthRatio} = getDimensionRatios(imgW, imgH);
+
+    // const widthToHeightRatio = Math.round(100 * (imgH / imgW)) / 100;
+    // const heightToWidthRatio = Math.round(100 * (imgW / imgH)) / 100;
 
     let canvasW = maxW;
     let canvasH = maxW * widthToHeightRatio;
@@ -286,6 +195,37 @@ export function drawToCanvas({ sourceCanvas, outputCanvas, orientation, cropData
 
     if (callback) callback(widthToHeightRatio, heightToWidthRatio)
 }
+
+/*export function GetImageFromUrl(imgUrl, callback) {
+    const imgSrc = imgUrl;
+    // Create a new image element
+    let img = new Image();
+    img.setAttribute('crossOrigin', 'anonymous'); //
+    img.src = imgSrc;
+
+    // wait for it to be loaded and then return
+    img.onload = (e) => {
+        const w = img.width;
+        const h = img.height;
+
+        const widthToHeightRatio = Math.round(100 * (h / w)) / 100;
+        const heightToWidthRatio = Math.round(100 * (w / h)) / 100;
+
+        callback(img, widthToHeightRatio, heightToWidthRatio);
+    }
+}*/
+
+/*export function LoadImage(imgSrc, callback) {
+    let img = new Image();
+    // the lack of this crossOrigin line caused me a world of pain!!!
+    // https://stackoverflow.com/questions/20424279/canvas-todataurl-securityerror/27260385#27260385
+    img.setAttribute('crossOrigin', 'anonymous'); //
+    img.src = imgSrc;
+    // wait for it to be loaded and then return
+    img.onload = (e) => {
+        callback(e.target);
+    }
+}*/
 
 // Draws an image to a canvas
 /*export function drawImageToCanvas(img, canvas, orientation, cropDataPercents, callback) {
@@ -453,4 +393,74 @@ export function drawCanvasToCanvasWithRotation(sourceCanvas, outputCanvas, orien
     ctx.restore();
 
     if (callback) callback(widthToHeightRatio, heightToWidthRatio)
+}*/
+
+// Draws an image to a canvas restricting to a specific size
+/*
+export function drawImageToCanvas({ sourceImg, outputCanvas, orientation, maxOutputCanvasWidth = MAX_IMG_SIZE, maxOutputCanvasHeight = MAX_IMG_SIZE }, callback) {
+    const isPortrait = orientation > 4 && orientation < 9;
+
+    // if portrait the final canvas dimensions will be the other way round
+    const canvasH = isPortrait ? sourceImg.width : sourceImg.height;
+    const canvasW = isPortrait ? sourceImg.height : sourceImg.width;
+    outputCanvas.width = canvasW;
+    outputCanvas.height = canvasH;
+
+    const ctx = outputCanvas.getContext('2d');
+
+    // save the context so it can be reset after transform
+    ctx.save();
+    // transform context before drawing image
+    switch (orientation) {
+        case 2:
+            // flipped horizontally
+            ctx.transform(-1, 0, 0, 1, canvasH, 0);
+            break;
+        case 3:
+            // rotated 180°
+            ctx.transform(-1, 0, 0, -1, canvasW, canvasH);
+            break;
+        case 4:
+            // flipped horizontally and rotated 180°
+            ctx.transform(1, 0, 0, -1, 0, canvasW);
+            break;
+        case 5:
+            // flipped horizontally and rotated 270°
+            ctx.transform(0, 1, 1, 0, 0, 0);
+            break;
+        case 6:
+            // rotated 90°
+            ctx.transform(0, 1, -1, 0, canvasW, 0);
+            break;
+        case 7:
+            // flipped horizontally and rotated 90°
+            ctx.transform(0, -1, -1, 0, canvasW, canvasH);
+            break;
+        case 8:
+            // rotated 270°
+            ctx.transform(0, -1, 1, 0, 0, canvasH);
+            break;
+        default:
+            break;
+    }
+
+    ctx.drawImage(sourceImg,0,0);
+    // restore ensures resets transform in case another image is added
+    ctx.restore();
+
+    const widthToHeightRatio = Math.round(100 * (canvasH / canvasW)) / 100;
+    const heightToWidthRatio = Math.round(100 * (canvasW / canvasH)) / 100;
+
+    if (callback) callback(widthToHeightRatio, heightToWidthRatio)
+}
+*/
+
+// Used to generate unique image names
+// used getTime and extra random digits to deal with 2 images
+// created in the same ms.
+// https://gist.github.com/gordonbrander/2230317
+/*
+export function generateUUID() {
+    let d = new Date().getTime();
+    return d + '_' + Math.random().toString(36).substr(2, 9);
 }*/

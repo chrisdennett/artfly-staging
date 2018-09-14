@@ -8,6 +8,7 @@ import * as ImageHelper from "../../../components/global/ImageHelper";
 // components
 import CropControlsContainer from "./assets/CropControlsContainer";
 import LoadingThing from "../../../components/loadingThing/LoadingThing";
+import { getDimensionRatios } from "../../../components/global/ImageHelper";
 
 class CropAndRotateEditor extends Component {
     constructor(props) {
@@ -139,8 +140,7 @@ const getSizeRatios = (cropDecimals, width, height) => {
     const croppedWidth = width - cropWidth;
     const croppedHeight = height - cropHeight;
 
-    const heightToWidthRatio = croppedWidth / croppedHeight;
-    const widthToHeightRatio = croppedHeight / croppedWidth;
+    const {widthToHeightRatio, heightToWidthRatio} = getDimensionRatios(croppedWidth, croppedHeight);
 
     return { widthToHeightRatio, heightToWidthRatio };
 };
