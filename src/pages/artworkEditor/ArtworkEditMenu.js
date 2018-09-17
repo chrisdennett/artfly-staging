@@ -2,14 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 // ui
 import { Drawer, DrawerContent } from 'rmwc/Drawer';
-import { ListItem, ListItemText, ListItemGraphic, ListDivider } from 'rmwc/List';
+import { ListItem, ListItemText, ListItemGraphic } from 'rmwc/List';
 // images
 import IconFrameSize from '../../components/images/icons/frame-size.png';
 import IconCropRotate from '../../components/images/icons/crop-rotate.png';
 // actions
 import { UpdateUrl } from "../../actions/UrlActions";
-import { addDerivedArtwork } from "../../actions/SaveArtworkActions";
-import DerivedArtworkAdder from "../../components/derivedArtworkAdder/DerivedArtworkAdder";
 
 const ArtworkEditMenu = ({ isOpen, onClose, currentArtwork, artworkId, galleryId, UpdateUrl, onAddDerivedArtwork }) => {
 
@@ -44,17 +42,6 @@ const ArtworkEditMenu = ({ isOpen, onClose, currentArtwork, artworkId, galleryId
                     </ListItemText>
                 </ListItem>
 
-                <ListDivider/>
-
-                {/*<DerivedArtworkAdder sourceArtwork={currentArtwork} galleryId={galleryId}>
-                    <ListItem>
-                        <ListItemGraphic use="add_to_photos"/>
-                        <ListItemText>
-                            Create new artwork
-                        </ListItemText>
-                    </ListItem>
-                </DerivedArtworkAdder>*/}
-
                 <ListItem onClick={() => UpdateUrl(path('colourSplitter'))}>
                     <ListItemGraphic use={'burst_mode'} />
                     <ListItemText>
@@ -67,4 +54,4 @@ const ArtworkEditMenu = ({ isOpen, onClose, currentArtwork, artworkId, galleryId
     )
 };
 
-export default connect(null, { UpdateUrl, addDerivedArtwork })(ArtworkEditMenu);
+export default connect(null, { UpdateUrl })(ArtworkEditMenu);

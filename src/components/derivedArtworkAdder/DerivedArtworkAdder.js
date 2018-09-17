@@ -1,3 +1,4 @@
+/*
 import React from 'react';
 import { connect } from 'react-redux';
 // actions
@@ -27,4 +28,4 @@ const DerivedArtworkAdder = ({ sourceArtwork, children, addDerivedArtwork, Updat
     )
 };
 
-export default connect(null, { addDerivedArtwork, UpdateUrl })(DerivedArtworkAdder);
+export default connect(null, { addDerivedArtwork, UpdateUrl })(DerivedArtworkAdder);*/

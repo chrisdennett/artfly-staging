@@ -10,7 +10,7 @@ export const SAVING_ARTWORK_COMPLETE = 'saving_artwork_complete';
 export const SAVING_ARTWORK_PROGRESS = 'saving_artwork_progress';
 
 // ADD DERIVED ARTWORK
-export function addDerivedArtwork(artworkData, callback) {
+/*export function addDerivedArtwork(artworkData, callback) {
     return dispatch => {
 
         const { uid: userId } = auth.currentUser;
@@ -41,7 +41,7 @@ export function addDerivedArtwork(artworkData, callback) {
             if (callback) callback(artworkId);
         });
     }
-}
+}*/
 
 
 // ADD ARTWORK

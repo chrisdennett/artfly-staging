@@ -121,6 +121,10 @@ class ColourSplitter extends Component {
                             onSaveClick={() => onSaveClick(this.canvas)}
                             onCancelClick={onCancelClick}/>
 
+                {!this.props.sourceImg &&
+                <LoadingThing label={'Loading Source Image'}/>
+                }
+
                 <div className={'labApp--content'}>
                     <canvas ref={(canvas) => this.canvas = canvas}
                             className={'rgb--output-canvas'}/>
