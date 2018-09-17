@@ -9,6 +9,7 @@ import * as ImageHelper from '../../../components/global/ImageHelper';
 import SliderControl from "../../../components/appControls/SliderControl";
 import { EditAppBar } from "../../../components/appBar/AppBar";
 import LoadingThing from "../../../components/loadingThing/LoadingThing";
+import { MAX_IMG_SIZE } from "../../../GLOBAL_CONSTANTS";
 
 class ColourSplitter extends Component {
 
@@ -36,25 +37,17 @@ class ColourSplitter extends Component {
     updateMasterCanvas(props = this.props) {
         const { sourceImg, artworkData } = props;
 
-        // console.log("sourceImg: ", sourceImg);
-        // console.log("this.sourceCanvas: ", this.sourceCanvas);
         if (!sourceImg || !this.sourceCanvas) return;
 
         const { orientation, cropData } = artworkData;
-
-        const maxOutputWidth = Math.max(window.innerWidth, document.documentElement.clientWidth, 400);
-        const maxCuttingBoardHeight = maxOutputWidth * (sourceImg.height / sourceImg.width);
-
-        // const maxOutputWidth = 800;
-        // const maxCuttingBoardHeight = 900;
 
         ImageHelper.drawToCanvas({
                 sourceCanvas: sourceImg,
                 outputCanvas: this.sourceCanvas,
                 orientation: orientation,
                 cropData: cropData,
-                maxOutputCanvasWidth: maxOutputWidth,
-                maxOutputCanvasHeight: maxCuttingBoardHeight
+                maxOutputCanvasWidth: MAX_IMG_SIZE,
+                maxOutputCanvasHeight: MAX_IMG_SIZE
             },
             () => {
                 // add back in the filters currently used
