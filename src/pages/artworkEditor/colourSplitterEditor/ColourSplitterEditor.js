@@ -40,7 +40,7 @@ class ColourSplitter extends Component {
         // console.log("this.sourceCanvas: ", this.sourceCanvas);
         if (!sourceImg || !this.sourceCanvas) return;
 
-        const { orientation } = artworkData;
+        const { orientation, cropData } = artworkData;
 
         const maxOutputWidth = Math.max(window.innerWidth, document.documentElement.clientWidth, 400);
         const maxCuttingBoardHeight = maxOutputWidth * (sourceImg.height / sourceImg.width);
@@ -52,6 +52,7 @@ class ColourSplitter extends Component {
                 sourceCanvas: sourceImg,
                 outputCanvas: this.sourceCanvas,
                 orientation: orientation,
+                cropData: cropData,
                 maxOutputCanvasWidth: maxOutputWidth,
                 maxOutputCanvasHeight: maxCuttingBoardHeight
             },

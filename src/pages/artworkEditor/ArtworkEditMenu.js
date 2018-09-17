@@ -7,14 +7,16 @@ import { ListItem, ListItemText, ListItemGraphic, ListDivider } from 'rmwc/List'
 import IconFrameSize from '../../components/images/icons/frame-size.png';
 import IconCropRotate from '../../components/images/icons/crop-rotate.png';
 // actions
-import {UpdateUrl} from "../../actions/UrlActions";;
+import { UpdateUrl } from "../../actions/UrlActions";
+import { addDerivedArtwork } from "../../actions/SaveArtworkActions";
+import DerivedArtworkAdder from "../../components/derivedArtworkAdder/DerivedArtworkAdder";
 
-const ArtworkEditMenu = ({ isOpen, onClose, artworkId, galleryId, UpdateUrl }) => {
+const ArtworkEditMenu = ({ isOpen, onClose, currentArtwork, artworkId, galleryId, UpdateUrl, onAddDerivedArtwork }) => {
 
     const imgStyle = { width: 22 };
 
     const path = (editor) => {
-      return `/artworkEditor/galleryId_${galleryId}_galleryId/artworkId_${artworkId}_artworkId/editor_${editor}_editor`;
+        return `/artworkEditor/galleryId_${galleryId}_galleryId/artworkId_${artworkId}_artworkId/editor_${editor}_editor`;
     };
 
     return (
@@ -42,12 +44,19 @@ const ArtworkEditMenu = ({ isOpen, onClose, artworkId, galleryId, UpdateUrl }) =
                     </ListItemText>
                 </ListItem>
 
-                <ListDivider />
+                <ListDivider/>
 
-                <ListItem onClick={() => UpdateUrl(path('colourSplitter'), 'ArtworkEditMenu > colour splitter')}>
-                    <ListItemGraphic>
-                        <img style={imgStyle} src={IconCropRotate} alt={'crop and rotate icon'}/>
-                    </ListItemGraphic>
+                {/*<DerivedArtworkAdder sourceArtwork={currentArtwork} galleryId={galleryId}>
+                    <ListItem>
+                        <ListItemGraphic use="add_to_photos"/>
+                        <ListItemText>
+                            Create new artwork
+                        </ListItemText>
+                    </ListItem>
+                </DerivedArtworkAdder>*/}
+
+                <ListItem onClick={() => UpdateUrl(path('colourSplitter'))}>
+                    <ListItemGraphic use={'burst_mode'} />
                     <ListItemText>
                         Colour Splitter
                     </ListItemText>
@@ -58,4 +67,4 @@ const ArtworkEditMenu = ({ isOpen, onClose, artworkId, galleryId, UpdateUrl }) =
     )
 };
 
-export default connect(null, {UpdateUrl})(ArtworkEditMenu);
+export default connect(null, { UpdateUrl, addDerivedArtwork })(ArtworkEditMenu);

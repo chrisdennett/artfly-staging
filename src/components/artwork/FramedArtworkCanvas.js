@@ -69,7 +69,6 @@ class FramedArtworkCanvas extends Component {
         const widthToHeightRatio = editedWidthToHeightRatio ? editedWidthToHeightRatio : sourceWidthToHeightRatio;
         const heightToWidthRatio = editedHeightToWidthRatio ? editedHeightToWidthRatio : sourceHeightToWidthRatio;
 
-
         const { frameThicknessDecimal, mountThicknessDecimal } = frameData;
 
         if (!heightToWidthRatio || !widthToHeightRatio) return null;

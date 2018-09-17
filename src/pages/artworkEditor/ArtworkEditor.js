@@ -72,6 +72,7 @@ class ArtworkEditor extends Component {
         // need to add editedOrientation and editedWidthToHeightRatio and editedHeightToWidthRatio
         const editedOrientation = 1;
         const { widthToHeightRatio: editedWidthToHeightRatio, heightToWidthRatio: editedHeightToWidthRatio } = getDimensionRatios(canvas.width, canvas.height);
+        // need to have edited crop data too - ahhhhhhh, time to rethink?
 
         const mergedData = { ...currentArtwork, ...unsavedArtworkData, editedOrientation, editedWidthToHeightRatio, editedHeightToWidthRatio };
 

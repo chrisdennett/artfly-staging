@@ -88,6 +88,7 @@ class GalleryArtworkViewer extends Component {
                 {isEditable &&
                 <ArtworkEditMenu isOpen={editMenuIsOpen}
                                  galleryId={galleryId}
+                                 currentArtwork={currentArtwork}
                                  artworkId={currentArtwork.artworkId}
                                  onClose={() => this.setState({ editMenuIsOpen: false })}/>
                 }

@@ -9,6 +9,40 @@ export const SAVING_ARTWORK_TRIGGERED = 'saving_artwork_triggered';
 export const SAVING_ARTWORK_COMPLETE = 'saving_artwork_complete';
 export const SAVING_ARTWORK_PROGRESS = 'saving_artwork_progress';
 
+// ADD DERIVED ARTWORK
+export function addDerivedArtwork(artworkData, callback) {
+    return dispatch => {
+
+        const { uid: userId } = auth.currentUser;
+
+        const artworkDatabaseRef = db.collection('artworks').doc();
+        const artworkId = artworkDatabaseRef.id;
+
+        dispatch({
+            type: SAVING_ARTWORK_TRIGGERED
+        });
+
+        const fullArtworkData = {
+            adminId: userId,
+            type: 'derived',
+            artworkId,
+            dateAdded: Date.now(),
+            ...artworkData
+        };
+
+        //ud0OMBxPVTSkwomNzXw1
+
+        saveArtworkChanges(artworkId, fullArtworkData, () => {
+            dispatch({
+                type: SAVING_ARTWORK_COMPLETE,
+                payload: { [artworkId]: fullArtworkData }
+            });
+
+            if (callback) callback(artworkId);
+        });
+    }
+}
+
 
 // ADD ARTWORK
 export function addNewArtwork(imgFile, artworkData, callback) {
