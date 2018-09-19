@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import isEqual from 'lodash/isEqual';
 // styles
 import './colourSplitter_styles.css'
 // images
@@ -9,100 +10,72 @@ import * as ImageHelper from '../../../components/global/ImageHelper';
 import SliderControl from "../../../components/appControls/SliderControl";
 import { EditAppBar } from "../../../components/appBar/AppBar";
 import LoadingThing from "../../../components/loadingThing/LoadingThing";
-import { MAX_IMG_SIZE } from "../../../GLOBAL_CONSTANTS";
+import { LARGE_IMG_SIZE } from "../../../GLOBAL_CONSTANTS";
+import { copyToCanvas } from "../../../components/global/ImageHelper";
+import { getColourSplitterValues } from "../../../components/global/ImageHelper";
+import { createColourSplitCanvas } from "../../../components/global/ImageHelper";
+import { loadImage } from "../../../components/global/ImageHelper";
+import { drawToCanvasWithMaxSize } from "../../../components/global/ImageHelper";
+import { drawOrientatedCanvas } from "../../../components/global/ImageHelper";
+import { drawCroppedCanvas } from "../../../components/global/ImageHelper";
 
 class ColourSplitter extends Component {
 
     constructor(props) {
         super(props);
 
-        this.setupCanvases = this.setupCanvases.bind(this);
-        this.onOffsetXSliderChange = this.onOffsetXSliderChange.bind(this);
+        this.state = {};
+
         this.combineCanvases = this.combineCanvases.bind(this);
+        this.onSaveClick = this.onSaveClick.bind(this);
+        this.onCancelClick = this.onCancelClick.bind(this);
     }
 
     componentDidMount() {
-        this.updateMasterCanvas(this.props);
-    }
+        const { editValues } = this.props;
+        const { sourceUrl, orientation, cropData } = this.props.artworkData;
 
-    componentDidUpdate(prevProps) {
-        if (this.props.sourceImg && !prevProps.sourceImg) {
-            this.updateMasterCanvas(this.props);
-        }
-        else {
+        loadImage(sourceUrl, (sourceImg) => {
+            const resizedCanvas = drawToCanvasWithMaxSize(sourceImg, LARGE_IMG_SIZE, LARGE_IMG_SIZE);
+            const orientatedCanvas = drawOrientatedCanvas(resizedCanvas, orientation);
+            this.sourceCanvas = drawCroppedCanvas(orientatedCanvas, cropData);
+
+            const { cyanXPercent, magentaXPercent, yellowXPercent } = editValues;
+
+            this.setState({ cyanXPercent, magentaXPercent, yellowXPercent });
+
             this.combineCanvases();
-        }
-    }
-
-    updateMasterCanvas(props = this.props) {
-        const { sourceImg, artworkData } = props;
-
-        if (!sourceImg || !this.sourceCanvas) return;
-
-        const { orientation, cropData } = artworkData;
-
-        ImageHelper.drawToCanvas({
-                sourceCanvas: sourceImg,
-                outputCanvas: this.sourceCanvas,
-                orientation: orientation,
-                cropData: cropData,
-                maxOutputCanvasWidth: MAX_IMG_SIZE,
-                maxOutputCanvasHeight: MAX_IMG_SIZE
-            },
-            () => {
-                // add back in the filters currently used
-                ImageHelper.drawToCanvas({ sourceCanvas: this.sourceCanvas, outputCanvas: this.canvas1 });
-                this.canvas2.width = this.canvas3.width = this.canvas.width = this.canvas1.width;
-                this.canvas2.height = this.canvas3.height = this.canvas.height = this.canvas1.height;
-
-                this.setupCanvases();
-            })
-    }
-
-    setupCanvases() {
-        splitRGBToSeparateCanvases(this.sourceCanvas, this.canvas1, this.canvas2, this.canvas3);
-        this.combineCanvases();
-    }
-
-    onOffsetXSliderChange(layerName, value) {
-        const colourSplitterEdits = { ...getColourSplitterValues(this.props.artworkData), [layerName]: value };
-        this.props.onDataChange({ colourSplitterEdits });
+        });
     }
 
     combineCanvases() {
-        const { cyanXPercent, magentaXPercent, yellowXPercent } = getColourSplitterValues(this.props.artworkData);
-        const maxWidth = this.canvas1.width * 2;
-        const cyanPos = maxWidth * (cyanXPercent / 100);
-        const magentaPos = maxWidth * (magentaXPercent / 100);
-        const yellowPos = maxWidth * (yellowXPercent / 100);
+        const { cyanXPercent, magentaXPercent, yellowXPercent } = this.state;
 
-        // always draw from left most edge of canvas
-        // left edge
-        const leftEdge = Math.min(cyanPos, magentaPos, yellowPos);
-        const rightEdge = Math.max(cyanPos, magentaPos, yellowPos);
+        const combinedCanvas = createColourSplitCanvas(this.sourceCanvas, { cyanXPercent, magentaXPercent, yellowXPercent });
+        copyToCanvas(combinedCanvas, this.canvas);
 
-        this.canvas.width = this.canvas1.width + (rightEdge - leftEdge);
+        this.setState({ isLoaded: true });
+    }
 
-        const ctx = this.canvas.getContext('2d');
-        ctx.globalCompositeOperation = 'multiply';
-        // ctx.globalCompositeOperation = 'hue'; // soft monochrome
-        // ctx.globalCompositeOperation = 'exclusion'; // like invert
-        // ctx.globalCompositeOperation = 'hard-light'; // interesting
-        // ctx.globalCompositeOperation = 'overlay'; // interesting
+    onSaveClick() {
+        this.props.onSaveClick(this.canvas);
+    }
 
-        ctx.drawImage(this.canvas3, yellowPos - leftEdge, 0);
-        ctx.drawImage(this.canvas2, magentaPos - leftEdge, 0);
-        ctx.drawImage(this.canvas1, cyanPos - leftEdge, 0);
+    onCancelClick(){
+        const { cyanXPercent, magentaXPercent, yellowXPercent } = this.props.editValues;
+        this.setState({cyanXPercent, magentaXPercent, yellowXPercent}, this.combineCanvases);
     }
 
     render() {
-        const { hasChanges, onCloseClick, onSaveClick, onCancelClick, artworkData } = this.props;
+        const { onCloseClick, artworkData, editValues } = this.props;
 
-        if (!artworkData || !artworkData.frameData) {
+        if (!artworkData || !artworkData.sourceUrl) {
             return <LoadingThing/>
         }
 
-        const { cyanXPercent, magentaXPercent, yellowXPercent } = getColourSplitterValues(artworkData);
+        const { cyanXPercent, magentaXPercent, yellowXPercent } = this.state;
+
+        const hasChanges = checkIfChanged(editValues, { cyanXPercent, magentaXPercent, yellowXPercent });
         const style = { backgroundImage: `url(${graphPaperTile})` };
 
         return (
@@ -111,29 +84,16 @@ class ColourSplitter extends Component {
                 <EditAppBar title={'Colour Splitter'}
                             hasChanges={hasChanges}
                             onCloseClick={onCloseClick}
-                            onSaveClick={() => onSaveClick(this.canvas)}
-                            onCancelClick={onCancelClick}/>
+                            onSaveClick={this.onSaveClick}
+                            onCancelClick={this.onCancelClick}/>
 
-                {!this.props.sourceImg &&
+                {!this.state.isLoaded &&
                 <LoadingThing label={'Loading Source Image'}/>
                 }
 
                 <div className={'labApp--content'}>
                     <canvas ref={(canvas) => this.canvas = canvas}
                             className={'rgb--output-canvas'}/>
-
-                    <canvas ref={(canvas) => this.canvas1 = canvas}
-                            className={'hidden-canvas'}/>
-
-                    <canvas ref={(canvas) => this.canvas2 = canvas}
-                            className={'hidden-canvas'}/>
-
-                    <canvas ref={(canvas) => this.canvas3 = canvas}
-                            className={'hidden-canvas'}/>
-
-                    <canvas ref={(canvas) => this.sourceCanvas = canvas}
-                            style={{ display: 'none' }}
-                            className={'source-canvas'}/>
                 </div>
 
                 <div className={'appControls'}>
@@ -143,19 +103,19 @@ class ColourSplitter extends Component {
                                        min={0}
                                        max={100}
                                        value={cyanXPercent}
-                                       onChange={value => this.onOffsetXSliderChange('cyanXPercent', value)}/>
+                                       onChange={value => this.setState({ cyanXPercent: value }, this.combineCanvases)}/>
 
                         <SliderControl label={'Magenta:'}
                                        min={0}
                                        max={100}
                                        value={magentaXPercent}
-                                       onChange={value => this.onOffsetXSliderChange('magentaXPercent', value)}/>
+                                       onChange={value => this.setState({ magentaXPercent: value }, this.combineCanvases)}/>
 
                         <SliderControl label={'Yellow:'}
                                        min={0}
                                        max={100}
                                        value={yellowXPercent}
-                                       onChange={value => this.onOffsetXSliderChange('yellowXPercent', value)}/>
+                                       onChange={value => this.setState({ yellowXPercent: value }, this.combineCanvases)}/>
 
                     </div>
                 </div>
@@ -167,55 +127,10 @@ class ColourSplitter extends Component {
 
 export default ColourSplitter;
 
-const getColourSplitterValues = (artworkData) => {
-    if (artworkData && artworkData.colourSplitterEdits) {
-        const { cyanXPercent = 0, magentaXPercent = 0, yellowXPercent = 0 } = artworkData.colourSplitterEdits;
-        return { cyanXPercent, magentaXPercent, yellowXPercent };
-    }
-    else {
-        // return a default if no data is set yet
-        return { cyanXPercent: 0, magentaXPercent: 5, yellowXPercent: 10 }
-    }
+
+const checkIfChanged = (initialValues, currentValues) => {
+    const { cyanXPercent:initialCyan, magentaXPercent:initialMagenta, yellowXPercent:initialYellow } = initialValues;
+    const { cyanXPercent, magentaXPercent, yellowXPercent } = currentValues;
+
+    return cyanXPercent !== initialCyan || magentaXPercent !== initialMagenta || yellowXPercent !== initialYellow;
 };
-
-const splitRGBToSeparateCanvases = (sourceCanvas, outputCanvas1, outputCanvas2, outputCanvas3) => {
-    const sourceCtx = sourceCanvas.getContext('2d');
-
-    let imageData = sourceCtx.getImageData(0, 0, sourceCanvas.width, sourceCanvas.height);
-    let imageData2 = sourceCtx.getImageData(0, 0, sourceCanvas.width, sourceCanvas.height);
-    let imageData3 = sourceCtx.getImageData(0, 0, sourceCanvas.width, sourceCanvas.height);
-    let imageData4 = sourceCtx.getImageData(0, 0, sourceCanvas.width, sourceCanvas.height);
-    let pixels1 = imageData.data;
-    let pixels2 = imageData2.data;
-    let pixels3 = imageData3.data;
-    let pixels4 = imageData4.data;
-
-    for (let i = 0; i < pixels1.length; i += 4) {
-        const r = pixels1[i];     // red
-        const g = pixels1[i + 1]; // green
-        const b = pixels1[i + 2]; // blue
-
-        pixels1[i] = r;
-        pixels1[i + 1] = 255;
-        pixels1[i + 2] = 255;
-
-        pixels2[i] = 255;
-        pixels2[i + 1] = g;
-        pixels2[i + 2] = 255;
-
-        pixels3[i] = 255;
-        pixels3[i + 1] = 255;
-        pixels3[i + 2] = b;
-
-        // const avg = (r + g + b) / 3;
-        const avg = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-        pixels4[i] = avg;
-        pixels4[i + 1] = avg;
-        pixels4[i + 2] = avg;
-    }
-
-    // put the updated image data in the output canvas
-    outputCanvas1.getContext('2d').putImageData(imageData, 0, 0);
-    outputCanvas2.getContext('2d').putImageData(imageData2, 0, 0);
-    outputCanvas3.getContext('2d').putImageData(imageData3, 0, 0);
-}
