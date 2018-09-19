@@ -1,18 +1,19 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-//import isEqual from 'lodash/isEqual';
 // styles
 import './artworkEditor_styles.css';
 // actions
 import { UpdateUrl } from "../../actions/UrlActions";
 import { updateArtworkAndImage, updateArtwork } from '../../actions/SaveArtworkActions';
+// selectors
+import { getArtwork } from "../../selectors/Selectors";
+// constants
+import { DEFAULT_COLOUR_SPLITTER_VALUES } from "../../GLOBAL_CONSTANTS";
 // comps
 import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
-import { getArtwork } from "../../selectors/Selectors";
 import FrameEditor from "./frameEditor/FrameEditor";
 import ColourSplitter from "./colourSplitterEditor/ColourSplitterEditor";
 import LoadingThing from "../../components/loadingThing/LoadingThing";
-import { DEFAULT_COLOUR_SPLITTER_VALUES } from "../../GLOBAL_CONSTANTS";
 
 class ArtworkEditor extends Component {
 
@@ -75,9 +76,6 @@ class ArtworkEditor extends Component {
             currentEdit = DEFAULT_COLOUR_SPLITTER_VALUES;
         }
 
-
-        // const mergedData = { ...currentArtwork };
-        // const hasChanges = !isEqual(mergedData, currentArtwork) && !!currentArtwork;
         if (editor === 'colourSplitter') {
             return <ColourSplitter artworkData={currentArtwork}
                                    editValues={currentEdit}
@@ -95,16 +93,14 @@ class ArtworkEditor extends Component {
         if (editor === 'frame') {
             return <FrameEditor artworkData={currentArtwork}
                                 onSaveClick={this.onSave}
-                                onCloseClick={this.onClose}
-                                onDataChange={this.onArtworkEdit}/>
+                                onCloseClick={this.onClose}/>
         }
     }
 }
 
 const mapStateToProps = (state, props) => {
     return {
-        currentArtwork: getArtwork(state, props),
-        artworkSavingProgress: state.artworkSavingProgress
+        currentArtwork: getArtwork(state, props)
     }
 };
 export default connect(mapStateToProps, { UpdateUrl, updateArtworkAndImage, updateArtwork })(ArtworkEditor);

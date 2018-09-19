@@ -17,108 +17,76 @@ class FrameEditor extends Component {
 
         this.state = {};
 
-        this.onFrameColourChange = this.onFrameColourChange.bind(this);
-        this.onMountColourChange = this.onMountColourChange.bind(this);
-        this.onFrameThicknessChange = this.onFrameThicknessChange.bind(this);
-        this.onMountThicknessChange = this.onMountThicknessChange.bind(this);
         this.onSaveClick = this.onSaveClick.bind(this);
+        this.setInitialValues = this.setInitialValues.bind(this);
     }
 
-    onSaveClick(){
-        const {
-                  mountColour: initialMountColour, frameColour: initialFrameColour,
-                  frameThicknessDecimal: initialFrameThickness, mountThicknessDecimal: initialMountThickness
-              } = this.props.artworkData.frameData;
+    componentWillMount() {
+       this.setInitialValues();
+    }
 
+    setInitialValues(){
+        const { frameData } = this.props.artworkData;
+        const { frameThicknessDecimal, mountThicknessDecimal, mountColour, frameColour } = frameData;
+        this.setState({frameThicknessDecimal, mountThicknessDecimal, mountColour, frameColour});
+    }
+
+    onSaveClick() {
         const { frameThicknessDecimal, mountThicknessDecimal, mountColour, frameColour } = this.state;
-
-        const currentFrameColour = frameColour ? frameColour : initialFrameColour;
-        const currentMountColour = mountColour ? mountColour : initialMountColour;
-        const currentFrameThickness = frameThicknessDecimal ? frameThicknessDecimal : initialFrameThickness;
-        const currentMountThickness = mountThicknessDecimal ? mountThicknessDecimal : initialMountThickness;
 
         const mergedArtworkData = {
             ...this.props.artworkData,
             frameData: {
-                frameColour: currentFrameColour,
-                mountColour: currentMountColour,
-                frameThicknessDecimal: currentFrameThickness,
-                mountThicknessDecimal: currentMountThickness
+                frameThicknessDecimal, mountThicknessDecimal, mountColour, frameColour
             }
         };
 
         this.props.onSaveClick(mergedArtworkData);
     }
 
-    onFrameColourChange({ hue, saturation, lightness }) {
-        this.setState({ frameColour: { hue, saturation, lightness } });
-    };
-
-    onMountColourChange({ hue, saturation, lightness }) {
-        this.setState({ mountColour: { hue, saturation, lightness } });
-    };
-
-    onFrameThicknessChange(frameThicknessDecimal) {
-        this.setState({ frameThicknessDecimal });
-    };
-
-    onMountThicknessChange(mountThicknessDecimal) {
-        this.setState({ mountThicknessDecimal });
-    };
-
     render() {
         if (!this.props.artworkData || !this.props.artworkData.frameData) {
             return <LoadingThing/>
         }
 
-        const {
-                  mountColour: initialMountColour, frameColour: initialFrameColour,
-                  frameThicknessDecimal: initialFrameThickness, mountThicknessDecimal: initialMountThickness
-              } = this.props.artworkData.frameData;
-
         const { frameThicknessDecimal, mountThicknessDecimal, mountColour, frameColour } = this.state;
-
-        const currentFrameColour = frameColour ? frameColour : initialFrameColour;
-        const currentMountColour = mountColour ? mountColour : initialMountColour;
-        const currentFrameThickness = frameThicknessDecimal ? frameThicknessDecimal : initialFrameThickness;
-        const currentMountThickness = mountThicknessDecimal ? mountThicknessDecimal : initialMountThickness;
 
         const mergedArtworkData = {
             ...this.props.artworkData,
             frameData: {
-                frameColour: currentFrameColour,
-                mountColour: currentMountColour,
-                frameThicknessDecimal: currentFrameThickness,
-                mountThicknessDecimal: currentMountThickness
+                frameThicknessDecimal, mountThicknessDecimal, mountColour, frameColour
             }
         };
+
+        const hasChanges = checkIfChanged(this.props.artworkData.frameData, { frameThicknessDecimal, mountThicknessDecimal, mountColour, frameColour });
+
 
         return (
             <div className={'labApp'}>
 
                 <EditAppBar title={'Colour Splitter'}
-                            hasChanges={true}
+                            hasChanges={hasChanges}
                             onCloseClick={this.props.onCloseClick}
                             onSaveClick={this.onSaveClick}
-                            onCancelClick={() => this.setState({
-                                frameColour: null, mountColour: null,
-                                frameThicknessDecimal: null, mountThicknessDecimal: null
-                            })}/>
+                            onCancelClick={this.setInitialValues}/>
 
                 <GalleryArtwork artworkData={mergedArtworkData}/>
 
                 <div className={'frameEditor--controls'}>
 
                     <div className={'frameEditor--controls--set'}>
-                        <Typography use={'button'} tag={'div'} className={'frameEditor--controls--set--label'}>
+                        <Typography use={'button'}
+                                    tag={'div'}
+                                    className={'frameEditor--controls--set--label'}>
                             Frame:
                         </Typography>
-                        <ColourPicker onChange={this.onFrameColourChange}
-                                      colour={currentFrameColour}/>
+                        <ColourPicker colour={frameColour}
+                                      onChange={({ hue, saturation, lightness }) => this.setState({ frameColour: { hue, saturation, lightness } })}
+                        />
                         <Slider
                             min={0} max={0.2}
-                            value={currentFrameThickness}
-                            onInput={e => this.onFrameThicknessChange(e.detail.value)}
+                            value={frameThicknessDecimal}
+                            onInput={e => this.setState({ frameThicknessDecimal: e.detail.value })}
                         />
                     </div>
 
@@ -128,12 +96,14 @@ class FrameEditor extends Component {
                             Mount:
                         </Typography>
 
-                        <ColourPicker onChange={this.onMountColourChange} colour={currentMountColour}/>
+                        <ColourPicker colour={mountColour}
+                                      onChange={({ hue, saturation, lightness }) => this.setState({ mountColour: { hue, saturation, lightness } })}
+                        />
 
                         <Slider
                             min={0} max={0.2}
-                            value={currentMountThickness}
-                            onInput={e => this.onMountThicknessChange(e.detail.value)}
+                            value={mountThicknessDecimal}
+                            onInput={e => this.setState({ mountThicknessDecimal: e.detail.value })}
                         />
                     </div>
                 </div>
@@ -143,3 +113,17 @@ class FrameEditor extends Component {
 }
 
 export default FrameEditor;
+
+const checkIfChanged = (initialValues, currentValues) => {
+    let hasChanges = false;
+    const keys = Object.keys(initialValues);
+
+    for(let key of keys){
+        if(initialValues[key] !== currentValues[key]){
+            hasChanges = true;
+            break;
+        }
+    }
+
+    return hasChanges;
+};
