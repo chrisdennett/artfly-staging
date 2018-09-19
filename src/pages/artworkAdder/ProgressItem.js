@@ -18,7 +18,7 @@ const ProgressItem = ({ progress, label }) => {
 
             {progress === 1 &&
             <Typography use={'body1'}>
-                <Icon style={iconStyle} use="done_outline"/> {label} SAVED
+                <Icon style={iconStyle} icon="done_outline"/> {label} SAVED
             </Typography>
             }
         </div>

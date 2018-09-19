@@ -31,7 +31,7 @@ export const EditAppBar = ({ title, onSaveClick, onCancelClick, fixed = false, h
 
             {!hasChanges &&
             <ToolbarSection alignEnd>
-                <ToolbarIcon use={'close'}
+                <ToolbarIcon icon={'close'}
                              theme={'text-primary-on-background'}
                              onClick={onCloseClick}/>
             </ToolbarSection>
@@ -46,18 +46,18 @@ export const ArtworkAppBar = ({ onCloseClick, onMenuClick, isEditable, onAddClic
     <Toolbar theme={'background'}>
         <ToolbarRow className={'appBar'} theme={'background text-primary-on-background'}>
             <ToolbarSection alignStart>
-                <ToolbarMenuIcon use="dashboard"
+                <ToolbarMenuIcon icon="dashboard"
                                  onClick={onMenuClick}/>
             </ToolbarSection>
 
             <ToolbarSection alignEnd>
                 {isEditable &&
-                <ToolbarIcon use="add"
+                <ToolbarIcon icon="add"
                              theme={'text-primary-on-background'}
                              onClick={onAddClick}/>
                 }
                 {isEditable &&
-                <ToolbarMenuIcon use="delete"
+                <ToolbarMenuIcon icon="delete"
                                  onClick={onDeleteClick}/>
                 }
                 <UserMenu/>
@@ -78,7 +78,7 @@ export const TempScreenAppBar = ({ title, onCloseClick, isFixed = false }) => (
 
             <ToolbarSection alignEnd>
                 {/*<UserMenu/>*/}
-                <ToolbarIcon use={'close'}
+                <ToolbarIcon icon={'close'}
                              theme={'text-primary-on-background'}
                              onClick={onCloseClick}/>
             </ToolbarSection>
@@ -99,12 +99,12 @@ export const GalleryHomeAppBar = function ({ title, isEditable, onEditClick, onA
 
                 <ToolbarSection alignEnd>
                     {isEditable &&
-                    <ToolbarIcon use="add"
+                    <ToolbarIcon icon="add"
                                  theme={'text-primary-on-background'}
                                  onClick={onAddClick}/>
                     }
                     {isEditable &&
-                    <ToolbarIcon use="edit"
+                    <ToolbarIcon icon="edit"
                                  theme={'text-primary-on-background'}
                                  onClick={onEditClick}/>
                     }
@@ -141,7 +141,7 @@ const AppBar = function ({ title, navigation, onCloseClick, showHomeIcon = true,
                     }
 
                     {showCloseButt &&
-                    <ToolbarIcon use="close"
+                    <ToolbarIcon icon="close"
                                  theme={'text-primary-on-background'}
                                  onClick={onCloseClick}/>
                     }

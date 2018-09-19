@@ -10,9 +10,6 @@ const BottomBar = ({onEnterGallery, disabled}) => {
 
     return (
         <div className={'bottomBar'}>
-            {/*<Button style={buttStyle} disabled={disabled} onClick={onEnterGallery}>
-                <Icon use={'edit'}/>
-            </Button>*/}
             <Button style={buttStyle} outlined disabled={disabled} onClick={onEnterGallery}>
                 Enter
             </Button>

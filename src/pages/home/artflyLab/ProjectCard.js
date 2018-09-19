@@ -46,7 +46,7 @@ const ProjectCard = function ({ title, subtitle, description, image, link, labLi
                 <CardAction tag={'a'} href={link}>Have a go</CardAction>
             </CardActionButtons>
             <CardActionIcons>
-                {/*<CardAction use="add" onClick={onAddClick}/>*/}
+                {/*<CardAction icon="add" onClick={onAddClick}/>*/}
             </CardActionIcons>
         </CardActions>
     </Card>

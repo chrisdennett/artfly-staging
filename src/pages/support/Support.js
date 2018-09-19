@@ -48,7 +48,7 @@ const Support = ({ account }) => {
                 </Typography>
 
                 <Button raised tag={'a'} href={emailStr}>
-                    <ButtonIcon use="email"/> chris@artfly.io
+                    <ButtonIcon icon="email"/> chris@artfly.io
                 </Button>
 
             </div>

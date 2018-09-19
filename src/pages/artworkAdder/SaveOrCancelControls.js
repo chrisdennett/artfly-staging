@@ -9,7 +9,7 @@ const SaveOrCancelControls = ({ onSave, onCancel }) => {
             <GridCell phone="2" desktop="6" tablet="4">
                 <Button onClick={onSave}
                         raised>
-                    <ButtonIcon use={'save'}/>
+                    <ButtonIcon icon={'save'}/>
                     Save
                 </Button>
             </GridCell>
@@ -18,7 +18,7 @@ const SaveOrCancelControls = ({ onSave, onCancel }) => {
                 <Button onClick={onCancel}
                         raised
                         theme={'secondary-bg'}>
-                    <ButtonIcon use={'delete'}/>
+                    <ButtonIcon icon={'delete'}/>
                     Cancel
                 </Button>
             </GridCell>

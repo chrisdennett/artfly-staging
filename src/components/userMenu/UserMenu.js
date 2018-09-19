@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 // ui
 import { Button } from 'rmwc/Button';
 import { ToolbarIcon } from 'rmwc/Toolbar';
-import { Menu, MenuAnchor } from 'rmwc/Menu';
+import { Menu, MenuSurfaceAnchor } from 'rmwc/Menu';
 import {
     List,
     ListItem,
@@ -39,7 +39,7 @@ class UserMenu extends Component {
         return (
             <div>
                 {!userPending &&
-                <MenuAnchor>
+                <MenuSurfaceAnchor>
                     <Menu
                         open={menuIsOpen}
                         anchorCorner={'topLeft'}
@@ -48,15 +48,15 @@ class UserMenu extends Component {
                         {userSignedIn &&
                         <List>
                             <ListItem onClick={this.onProfileClick}>
-                                <ListItemGraphic>person</ListItemGraphic>
+                                <ListItemGraphic icon={'person'}/>
                                 <ListItemText>Profile</ListItemText>
                             </ListItem>
                             <ListItem onClick={() => UpdateUrl('/support')}>
-                                <ListItemGraphic>help</ListItemGraphic>
+                                <ListItemGraphic icon={'help'}/>
                                 <ListItemText>Support</ListItemText>
                             </ListItem>
                             <ListItem onClick={() => signOutUser()}>
-                                <ListItemGraphic>exit_to_app</ListItemGraphic>
+                                <ListItemGraphic icon={'exit_to_app'}/>
                                 <ListItemText>Sign out</ListItemText>
                             </ListItem>
                         </List>
@@ -71,12 +71,12 @@ class UserMenu extends Component {
                     }
 
                     {userSignedIn &&
-                    <ToolbarIcon use="person"
+                    <ToolbarIcon icon="person"
                                  style={{ userSelect: 'none' }}
                                  theme={'text-primary-on-background'}
                                  onClick={() => this.setState({ menuIsOpen: true })}/>
                     }
-                </MenuAnchor>
+                </MenuSurfaceAnchor>
                 }
             </div>
         );

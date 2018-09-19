@@ -30,7 +30,7 @@
     "redux-form": "^7.4.2",
     "redux-thunk": "^2.3.0",
     "reselect": "^3.0.1",
-    "rmwc": "^1.8.3",
+    "rmwc": "^2.1.1",
     "source-map-explorer": "^1.5.0"
   },
   "externals": {

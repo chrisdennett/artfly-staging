@@ -49,7 +49,7 @@ const UserGalleryCard = ({ userGallery, updateUrl }) => {
                     </CardAction>
                 </CardActionButtons>
                 <CardActionIcons>
-                    <CardAction use="add"
+                    <CardAction icon="add"
                                 onClick={() => updateUrl(`/artworkAdder/galleryId_${userGallery.galleryId}_galleryId`)}
                     />
                 </CardActionIcons>

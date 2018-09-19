@@ -1,23 +1,16 @@
 import React, { Component } from "react";
-import isEqual from 'lodash/isEqual';
 // styles
 import './colourSplitter_styles.css'
 // images
 import graphPaperTile from './hip-square-small.png';
-// helpers
-import * as ImageHelper from '../../../components/global/ImageHelper';
-// comps
-import SliderControl from "../../../components/appControls/SliderControl";
-import { EditAppBar } from "../../../components/appBar/AppBar";
-import LoadingThing from "../../../components/loadingThing/LoadingThing";
+// constants
 import { LARGE_IMG_SIZE } from "../../../GLOBAL_CONSTANTS";
-import { copyToCanvas } from "../../../components/global/ImageHelper";
-import { getColourSplitterValues } from "../../../components/global/ImageHelper";
-import { createColourSplitCanvas } from "../../../components/global/ImageHelper";
-import { loadImage } from "../../../components/global/ImageHelper";
-import { drawToCanvasWithMaxSize } from "../../../components/global/ImageHelper";
-import { drawOrientatedCanvas } from "../../../components/global/ImageHelper";
-import { drawCroppedCanvas } from "../../../components/global/ImageHelper";
+// helpers
+import { EditAppBar } from "../../../components/appBar/AppBar";
+import { copyToCanvas, createColourSplitCanvas, loadImage, drawToCanvasWithMaxSize, drawOrientatedCanvas, drawCroppedCanvas } from "../../../components/global/ImageHelper";
+// comps
+import LoadingThing from "../../../components/loadingThing/LoadingThing";
+import SliderControl from "../../../components/appControls/SliderControl";
 
 class ColourSplitter extends Component {
 

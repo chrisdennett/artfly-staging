@@ -65,7 +65,7 @@ class PaidMemberCard extends Component {
                     {receiptUrl &&
                     <LabelValueItem label={'Latest Receipt:'} value={
                         <Button unelevated dense tag={'a'} href={receiptUrl} target={'_blank'}>
-                            <ButtonIcon use={'receipt'}/> receipt
+                            <ButtonIcon icon={'receipt'}/> receipt
                         </Button>
                     }/>
                     }

@@ -80,9 +80,7 @@ class GalleryArtworkViewer extends Component {
                 <Fab theme={'primary-bg'}
                      style={editFabStyle}
                      exited={editMenuIsOpen}
-                     onClick={() => this.setState({ editMenuIsOpen: true })}>
-                    edit
-                </Fab>
+                     onClick={() => this.setState({ editMenuIsOpen: true })} icon={'edit'} />
                 }
 
                 {isEditable &&
@@ -120,17 +118,17 @@ class GalleryArtworkViewer extends Component {
                 <div className={'gallery--controls'}>
                     <Button disabled={!previousArtwork}
                             onClick={this.goToPreviousArtwork}>
-                        <Icon use={'arrow_back'}/>
+                        <Icon icon={'arrow_back'}/>
                     </Button>
 
                     <Button className={'gallery--controls--backToGalleryButt'}
                             onClick={this.goToGallery}>
-                        <Icon use={'dashboard'}/>
+                        <Icon icon={'dashboard'}/>
                     </Button>
 
                     <Button disabled={!nextArtwork}
                             onClick={this.goToNextArtwork}>
-                        <Icon use={'arrow_forward'}/>
+                        <Icon icon={'arrow_forward'}/>
                     </Button>
                 </div>
             </div>

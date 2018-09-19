@@ -60,7 +60,7 @@ const UserProfile = ({ user, membershipPlan, latestUserArtworks, UpdateUrl, user
 
                 <div className={'userProfile--deleteSection'}>
                     <Button theme={'primary'} onClick={() => UpdateUrl(`/accountDelete`)}>
-                        <ButtonIcon use="delete_forever"/>
+                        <ButtonIcon icon="delete_forever"/>
                         Delete Account
                     </Button>
                 </div>
