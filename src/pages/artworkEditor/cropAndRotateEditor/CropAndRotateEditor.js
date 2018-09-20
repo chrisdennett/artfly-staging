@@ -6,7 +6,13 @@ import {isEqual} from 'lodash';
 import './cropAndRotate_styles.css';
 // helpers
 import {
-    getDimensionRatios, copyToCanvas, loadImage, drawToCanvasWithMaxSize, getDimensionsToFit, drawOrientatedCanvas
+    getDimensionRatios,
+    copyToCanvas,
+    loadImage,
+    drawToCanvasWithMaxSize,
+    getDimensionsToFit,
+    drawOrientatedCanvas,
+    getCroppedWidthAndHeight
 } from "../../../components/global/ImageHelper";
 // constants
 import { LARGE_IMG_SIZE } from "../../../GLOBAL_CONSTANTS";
@@ -91,7 +97,11 @@ class CropAndRotateEditor extends Component {
     onSave() {
         const { cropData, orientation = 1 } = this.state;
         const { artworkData } = this.props;
-        const { widthToHeightRatio, heightToWidthRatio } = getDimensionRatios(this.canvas.width, this.canvas.height);
+
+        // need to work out width and height ratios with crop taken into account
+        const {croppedWidth, croppedHeight}  = getCroppedWidthAndHeight(this.canvas, cropData);
+
+        const { widthToHeightRatio, heightToWidthRatio } = getDimensionRatios(croppedWidth, croppedHeight);
         const mergedData = { ...artworkData, cropData, orientation, widthToHeightRatio, heightToWidthRatio };
 
         this.props.onSaveClick(this.canvas, mergedData);

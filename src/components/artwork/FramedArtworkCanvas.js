@@ -39,11 +39,14 @@ class FramedArtworkCanvas extends Component {
         const { artworkData, maxWidth, maxHeight } = props;
         if (!artworkData || !maxWidth || !maxHeight || artworkData.isDeleted) return;
 
-        const { frameData, widthToHeightRatio:sourceWidthToHeightRatio, heightToWidthRatio:sourceHeightToWidthRatio, editedWidthToHeightRatio, editedHeightToWidthRatio } = artworkData;
+        const { frameData, widthToHeightRatio:sourceWidthToHeightRatio, heightToWidthRatio:sourceHeightToWidthRatio, outputWidthToHeightRatio, outputHeightToWidthRatio } = artworkData;
+
+        console.log("sourceWidthToHeightRatio: ", sourceWidthToHeightRatio);
+        console.log("sourceHeightToWidthRatio: ", sourceHeightToWidthRatio);
 
         // use the edited values if set, otherwise use the values from the source image.
-        const widthToHeightRatio = editedWidthToHeightRatio ? editedWidthToHeightRatio : sourceWidthToHeightRatio;
-        const heightToWidthRatio = editedHeightToWidthRatio ? editedHeightToWidthRatio : sourceHeightToWidthRatio;
+        const widthToHeightRatio = outputWidthToHeightRatio ? outputWidthToHeightRatio : sourceWidthToHeightRatio;
+        const heightToWidthRatio = outputHeightToWidthRatio ? outputHeightToWidthRatio : sourceHeightToWidthRatio;
 
         const { frameThicknessDecimal, mountThicknessDecimal, frameColour, mountColour } = frameData;
         const { frameWidth, frameHeight, frameThickness, mountWidth, mountHeight, mountThickness } = calculateDimensions(maxWidth, maxHeight, heightToWidthRatio, widthToHeightRatio, frameThicknessDecimal, mountThicknessDecimal);
@@ -63,11 +66,11 @@ class FramedArtworkCanvas extends Component {
         );
 
         // use the edited values if set, otherwise use the values from the source image.
-        const { frameData, widthToHeightRatio:sourceWidthToHeightRatio, heightToWidthRatio:sourceHeightToWidthRatio, editedWidthToHeightRatio, editedHeightToWidthRatio } = artworkData;
+        const { frameData, widthToHeightRatio:sourceWidthToHeightRatio, heightToWidthRatio:sourceHeightToWidthRatio, outputWidthToHeightRatio, outputHeightToWidthRatio } = artworkData;
 
         // use the edited values if set, otherwise use the values from the source image.
-        const widthToHeightRatio = editedWidthToHeightRatio ? editedWidthToHeightRatio : sourceWidthToHeightRatio;
-        const heightToWidthRatio = editedHeightToWidthRatio ? editedHeightToWidthRatio : sourceHeightToWidthRatio;
+        const widthToHeightRatio = outputWidthToHeightRatio ? outputWidthToHeightRatio : sourceWidthToHeightRatio;
+        const heightToWidthRatio = outputHeightToWidthRatio ? outputHeightToWidthRatio : sourceHeightToWidthRatio;
 
         const { frameThicknessDecimal, mountThicknessDecimal } = frameData;
 

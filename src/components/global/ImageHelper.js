@@ -394,6 +394,20 @@ export const drawOrientatedCanvas = (sourceCanvas, orientation) => {
     return outputCanvas;
 };
 
+export const getCroppedWidthAndHeight = (canvas, cropData) => {
+    const { topPercent, rightPercent, bottomPercent, leftPercent } = cropData;
+    const { width: sourceWidth, height: sourceHeight } = canvas;
+
+    const leftCrop = sourceWidth * leftPercent;
+    const rightCrop = sourceWidth * (1 - rightPercent);
+    const topCrop = sourceHeight * topPercent;
+    const bottomCrop = sourceHeight * (1 - bottomPercent);
+    const croppedWidth = canvas.width - (leftCrop + rightCrop);
+    const croppedHeight = canvas.height - (topCrop + bottomCrop);
+
+    return {croppedWidth, croppedHeight};
+};
+
 export const drawCroppedCanvas = (sourceCanvas, cropData) => {
     // if there's no cropping just return the sourceCanvas unchanged
     if (!cropData || cropData === { topPercent: 0, rightPercent: 1, bottomPercent: 1, leftPercent: 0 }) {
