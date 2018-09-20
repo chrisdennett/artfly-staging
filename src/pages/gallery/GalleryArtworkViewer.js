@@ -60,7 +60,7 @@ class GalleryArtworkViewer extends Component {
         const { editMenuIsOpen, deleteConfirmOpen } = this.state;
         const { galleryNavData, galleryId, deleteArtwork, UpdateUrl } = this.props;
         const { currentArtwork, previousArtwork, nextArtwork, isEditable } = galleryNavData;
-        const editFabStyle = { position: 'fixed', zIndex: 10000, bottom: 35, right: 10 };
+        const editFabStyle = { position: 'fixed', zIndex: 999, bottom: 35, right: 10 };
 
         return (
             <div className={'gallery'}>

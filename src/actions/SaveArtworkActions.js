@@ -2,7 +2,12 @@ import { auth, firestoreDb as db, storage, storageEvent, storageRef as store } f
 // helpers
 import { getImageBlob } from "../components/global/ImageHelper";
 // constants
-import { THUMB_SIZE, LARGE_IMG_SIZE, MAX_IMG_SIZE } from '../GLOBAL_CONSTANTS';
+import {
+    THUMB_SIZE,
+    LARGE_IMG_SIZE,
+    MAX_IMG_SIZE,
+    DEFAULT_CROP_VALUES
+} from '../GLOBAL_CONSTANTS';
 // import { ARTWORK_CHANGE } from "./GetArtworkActions";
 
 export const SAVING_ARTWORK_TRIGGERED = 'saving_artwork_triggered';
@@ -149,6 +154,7 @@ export function updateArtworkAndImage(imgFile, artworkData, artworkId, ignoreOri
         const { uid: userId } = auth.currentUser;
         let { orientation, cropData } = artworkData;
         if (ignoreOrientation) {
+            cropData = DEFAULT_CROP_VALUES;
             orientation = 1;
         }
 

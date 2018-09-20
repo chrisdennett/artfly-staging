@@ -1,4 +1,9 @@
-import { DEFAULT_COLOUR_SPLITTER_VALUES, LARGE_IMG_SIZE, MAX_IMG_SIZE } from "../../GLOBAL_CONSTANTS";
+import {
+    DEFAULT_COLOUR_SPLITTER_VALUES,
+    DEFAULT_CROP_VALUES,
+    LARGE_IMG_SIZE,
+    MAX_IMG_SIZE
+} from "../../GLOBAL_CONSTANTS";
 
 // Returns an image element given a file
 export function GetImage(imgFile, callback) {
@@ -381,14 +386,6 @@ export const drawOrientatedCanvas = (sourceCanvas, orientation) => {
             break;
     }
 
-    /*const transformedCanvasW = isPortrait ? canvasH : canvasW;
-    const transformedCanvasH = isPortrait ? canvasW : canvasH;
-
-    const transformedImgW = isPortrait ? imgH : imgW;
-    const transformedImgH = isPortrait ? imgW : imgH;*/
-
-    // draw image: context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
-    // ctx.drawImage(sourceCanvas, xCropStart, yCropStart, transformedImgW, transformedImgH, 0, 0, transformedCanvasW, transformedCanvasH);
     ctx.drawImage(sourceCanvas, 0, 0);
 
     return outputCanvas;
@@ -410,7 +407,7 @@ export const getCroppedWidthAndHeight = (canvas, cropData) => {
 
 export const drawCroppedCanvas = (sourceCanvas, cropData) => {
     // if there's no cropping just return the sourceCanvas unchanged
-    if (!cropData || cropData === { topPercent: 0, rightPercent: 1, bottomPercent: 1, leftPercent: 0 }) {
+    if (!cropData || cropData === DEFAULT_CROP_VALUES) {
         return sourceCanvas;
     }
 

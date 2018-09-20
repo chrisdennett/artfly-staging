@@ -7,7 +7,15 @@ import graphPaperTile from './hip-square-small.png';
 import { LARGE_IMG_SIZE } from "../../../GLOBAL_CONSTANTS";
 // helpers
 import { EditAppBar } from "../../../components/appBar/AppBar";
-import { copyToCanvas, createColourSplitCanvas, loadImage, drawToCanvasWithMaxSize, drawOrientatedCanvas, drawCroppedCanvas } from "../../../components/global/ImageHelper";
+import {
+    copyToCanvas,
+    createColourSplitCanvas,
+    loadImage,
+    drawToCanvasWithMaxSize,
+    drawOrientatedCanvas,
+    drawCroppedCanvas,
+    getDimensionRatios
+} from "../../../components/global/ImageHelper";
 // comps
 import LoadingThing from "../../../components/loadingThing/LoadingThing";
 import SliderControl from "../../../components/appControls/SliderControl";
@@ -55,7 +63,13 @@ class ColourSplitter extends Component {
         const {edits} = artworkData;
         const newEditValues = {...editValues, cyanXPercent, magentaXPercent, yellowXPercent};
         const updatedEdits = {...edits, [editKey]:newEditValues};
-        const newArtworkData = {...artworkData, edits:updatedEdits};
+
+        // need to work out width and height ratios with crop taken into account
+        const { width, height}  = this.canvas;
+        const { widthToHeightRatio:outputWidthToHeightRatio, heightToWidthRatio:outputHeightToWidthRatio } = getDimensionRatios(width, height);
+
+        const newArtworkData = {...artworkData, edits:updatedEdits, outputWidthToHeightRatio, outputHeightToWidthRatio};
+
 
         this.props.onSaveClick(this.canvas, newArtworkData);
     }

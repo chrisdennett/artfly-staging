@@ -41,9 +41,6 @@ class FramedArtworkCanvas extends Component {
 
         const { frameData, widthToHeightRatio:sourceWidthToHeightRatio, heightToWidthRatio:sourceHeightToWidthRatio, outputWidthToHeightRatio, outputHeightToWidthRatio } = artworkData;
 
-        console.log("sourceWidthToHeightRatio: ", sourceWidthToHeightRatio);
-        console.log("sourceHeightToWidthRatio: ", sourceHeightToWidthRatio);
-
         // use the edited values if set, otherwise use the values from the source image.
         const widthToHeightRatio = outputWidthToHeightRatio ? outputWidthToHeightRatio : sourceWidthToHeightRatio;
         const heightToWidthRatio = outputHeightToWidthRatio ? outputHeightToWidthRatio : sourceHeightToWidthRatio;

@@ -8,3 +8,4 @@ export const MAX_GALLERY_TITLE_LENGTH = 24;
 export const MAX_GALLERY_SUBTITLE_LENGTH = 42;
 
 export const DEFAULT_COLOUR_SPLITTER_VALUES = { cyanXPercent: 0, magentaXPercent: 0, yellowXPercent: 0 };
+export const DEFAULT_CROP_VALUES = { leftPercent:0, rightPercent:1, topPercent:0, bottomPercent:1 };
