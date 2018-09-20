@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
-import * as storage2 from 'firebase/storage';
-import * as auth2 from 'firebase/auth';
-import firestore from 'firebase/firestore';
+import 'firebase/storage';
+import 'firebase/auth';
+import 'firebase/firestore';
 // constants
 import {IN_STAGING} from '../GLOBAL_CONSTANTS';
 
@@ -28,12 +28,15 @@ const productionConfig = {
 const config = IN_STAGING ? stagingOnlyConfig : productionConfig;
 firebase.initializeApp(config);
 
-if(1===2) {
-    console.log("fs: ", firestore);
-    console.log("storage2: ", storage2);
-    console.log("auth2: ", auth2);
-} //just prevents annoying not used console warning
 
+export const firestoreDb = firebase.firestore();
+export const auth = firebase.auth();
+export const storage = firebase.storage();
+export const storageRef = firebase.storage().ref();
+export const storageEvent = firebase.storage.TaskEvent;
+
+const settings = {timestampsInSnapshots: true};
+firestoreDb.settings(settings);
 
 /*firebase.firestore().enablePersistence()
     .then(function () {
@@ -49,27 +52,3 @@ if(1===2) {
         }
         console.log("firebase config err: ", err);
     });*/
-
-export const storage = firebase.storage();
-export const storageEvent = firebase.storage.TaskEvent;
-export const storageRef = firebase.storage().ref();
-export const firestoreDb = firebase.firestore();
-export const auth = firebase.auth();
-
-
-const settings = {timestampsInSnapshots: true};
-firestoreDb.settings(settings);
-
-export default firebase;
-
-// const database = libs.database();
-// const auth = libs.auth();
-/*const stagingOnlyConfig = {
-    apiKey: "AIzaSyBw4JO9UT1KXpDpnb6gvF2DfkIrXXQ4Vac",
-    authDomain: "artfly-staging.firebaseapp.com",
-    databaseURL: "https://artfly-staging.firebaseio.com",
-    storageBucket: "artfly-staging.appspot.com",
-    messagingSenderId: "133898795032"
-};
-const artflyFirebase = firebase.initializeApp(stagingOnlyConfig);*/
-
