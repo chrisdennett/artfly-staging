@@ -85,7 +85,7 @@ class ArtworkEditor extends Component {
         }
 
         if (editor === 'crop') {
-            return <CropAndRotateEditor updateArtworkAndImage={this.updateArtworkAndImage}
+            return <CropAndRotateEditor onSaveClick={this.updateArtworkAndImage}
                                         artworkData={currentArtwork}
                                         onCloseClick={this.onClose}/>
         }

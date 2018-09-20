@@ -50,7 +50,6 @@ class FrameEditor extends Component {
         }
 
         const { frameThicknessDecimal, mountThicknessDecimal, mountColour, frameColour } = this.state;
-
         const mergedArtworkData = {
             ...this.props.artworkData,
             frameData: {
@@ -59,7 +58,6 @@ class FrameEditor extends Component {
         };
 
         const hasChanges = checkIfChanged(this.props.artworkData.frameData, { frameThicknessDecimal, mountThicknessDecimal, mountColour, frameColour });
-
 
         return (
             <div className={'labApp'}>

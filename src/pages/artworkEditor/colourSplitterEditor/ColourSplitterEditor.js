@@ -33,11 +33,9 @@ class ColourSplitter extends Component {
             const orientatedCanvas = drawOrientatedCanvas(resizedCanvas, orientation);
             this.sourceCanvas = drawCroppedCanvas(orientatedCanvas, cropData);
 
+            // set the initial values
             const { cyanXPercent, magentaXPercent, yellowXPercent } = editValues;
-
-            this.setState({ cyanXPercent, magentaXPercent, yellowXPercent });
-
-            this.combineCanvases();
+            this.setState({ cyanXPercent, magentaXPercent, yellowXPercent }, this.combineCanvases);
         });
     }
 
