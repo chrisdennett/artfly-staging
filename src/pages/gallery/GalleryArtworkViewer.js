@@ -77,10 +77,12 @@ class GalleryArtworkViewer extends Component {
                 />
 
                 {isEditable &&
-                <Fab theme={'primary-bg'}
-                     style={editFabStyle}
-                     exited={editMenuIsOpen}
-                     onClick={() => this.setState({ editMenuIsOpen: true })} icon={'edit'} />
+                <div style={editFabStyle}>
+                    <Fab theme={'primary-bg'}
+                         exited={editMenuIsOpen}
+                         onClick={() => this.setState({ editMenuIsOpen: true })}
+                         icon={'edit'}/>
+                </div>
                 }
 
                 {isEditable &&

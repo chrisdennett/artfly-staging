@@ -51,7 +51,15 @@ class ColourSplitter extends Component {
     }
 
     onSaveClick() {
-        this.props.onSaveClick(this.canvas);
+        const { artworkData, editValues, editKey } = this.props;
+        const { cyanXPercent, magentaXPercent, yellowXPercent } = this.state;
+
+        const {edits} = artworkData;
+        const newEditValues = {...editValues, cyanXPercent, magentaXPercent, yellowXPercent};
+        const updatedEdits = {...edits, [editKey]:newEditValues};
+        const newArtworkData = {...artworkData, edits:updatedEdits};
+
+        this.props.onSaveClick(this.canvas, newArtworkData);
     }
 
     onCancelClick(){

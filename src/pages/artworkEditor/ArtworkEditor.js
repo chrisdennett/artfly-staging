@@ -81,7 +81,7 @@ class ArtworkEditor extends Component {
                                    editValues={currentEdit}
                                    editKey={currentEditKey}
                                    onCloseClick={this.onClose}
-                                   onSaveClick={this.onSaveEditedImage}/>
+                                   onSaveClick={this.updateArtworkAndImage}/>
         }
 
         if (editor === 'crop') {
