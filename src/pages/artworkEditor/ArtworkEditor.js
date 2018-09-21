@@ -67,9 +67,11 @@ class ArtworkEditor extends Component {
             return <LoadingThing/>
         }
 
-        const currentEditKey = 'abc123';
+        // if frame, don't need to do anything
+        let currentEditKey = 'abc123';
         let currentEdit;
-        if (currentEditKey) {
+
+        if (currentEditKey && currentArtwork.edits) {
             currentEdit = currentArtwork.edits[currentEditKey];
         }
         else {
