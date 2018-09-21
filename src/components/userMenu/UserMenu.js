@@ -35,28 +35,28 @@ class UserMenu extends Component {
     render() {
         const { menuIsOpen } = this.state;
         const { userSignedIn, signOutUser, userPending, UpdateUrl } = this.props;
+        const listGraphicStyle = { marginRight: 15 };
 
         return (
             <div>
                 {!userPending &&
                 <MenuSurfaceAnchor>
-                    <Menu
-                        open={menuIsOpen}
-                        anchorCorner={'topLeft'}
-                        onClose={() => this.setState({ menuIsOpen: false })}
-                    >
+                    <Menu open={menuIsOpen}
+                          anchorCorner={'topLeft'}
+                          onClose={() => this.setState({ menuIsOpen: false })}>
+
                         {userSignedIn &&
                         <List>
                             <ListItem onClick={this.onProfileClick}>
-                                <ListItemGraphic icon={'person'}/>
+                                <ListItemGraphic style={listGraphicStyle} icon={'person'}/>
                                 <ListItemText>Profile</ListItemText>
                             </ListItem>
                             <ListItem onClick={() => UpdateUrl('/support')}>
-                                <ListItemGraphic icon={'help'}/>
+                                <ListItemGraphic style={listGraphicStyle} icon={'help'}/>
                                 <ListItemText>Support</ListItemText>
                             </ListItem>
                             <ListItem onClick={() => signOutUser()}>
-                                <ListItemGraphic icon={'exit_to_app'}/>
+                                <ListItemGraphic style={listGraphicStyle} icon={'exit_to_app'}/>
                                 <ListItemText>Sign out</ListItemText>
                             </ListItem>
                         </List>
@@ -65,7 +65,7 @@ class UserMenu extends Component {
 
                     {!userSignedIn &&
                     <div>
-                        <Button onClick={() => UpdateUrl('/signUp')} style={{marginRight:10}}>Sign up</Button>
+                        <Button onClick={() => UpdateUrl('/signUp')} style={{ marginRight: 10 }}>Sign up</Button>
                         <SignInButt onClick={() => UpdateUrl('/signIn')}/>
                     </div>
                     }

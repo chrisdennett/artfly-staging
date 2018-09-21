@@ -10,13 +10,14 @@ import { getMaxArtworksAllowed, getTotalUserArtworks, getDeleteAfterDate } from 
 // helper
 import GenerateDefaultArtworkData from '../../components/artwork/DefaultArtworkDataGenerator';
 import { GetImage } from "../../components/global/ImageHelper";
+// constants
+import MEMBERSHIP_PLANS from "../../MEMBERSHIP_PLANS";
 // comps
 import { EditAppBar } from "../../components/appBar/AppBar";
 import PhotoSelector from "../../components/photoSelector/PhotoSelector";
 import CropAndRotateEditor from "../artworkEditor/cropAndRotateEditor/CropAndRotateEditor";
 import LoadingThing from "../../components/loadingThing/LoadingThing";
 import MaximumArtworksReached from "./maximumArtworksReached/MaximumArtworksReached";
-import MEMBERSHIP_PLANS from "../../MEMBERSHIP_PLANS";
 
 class ArtworkAdder extends Component {
 
@@ -36,26 +37,23 @@ class ArtworkAdder extends Component {
 
     onPhotoSelected(imgFile) {
         GetImage(imgFile, (img, orientation, widthToHeightRatio, heightToWidthRatio) => {
-
             const newArtworkData = { ...this.state.artworkData, orientation, widthToHeightRatio, heightToWidthRatio };
-
             this.setState({ img, artworkData: newArtworkData });
         })
     }
 
     onCropAndRotateChange(newData) {
         const newArtworkData = { ...this.state.artworkData, ...newData };
-
         this.setState({ artworkData: newArtworkData })
     }
 
     onSaveNewArtwork() {
-        const {deleteAfterDate, totalUserArtworks} = this.props;
-        const {artworkData} = this.state;
+        const { deleteAfterDate, totalUserArtworks } = this.props;
+        const { artworkData } = this.state;
         const maxArtworksOnFreePlan = MEMBERSHIP_PLANS.free.maxArtworks;
         const includeDeleteDate = deleteAfterDate && totalUserArtworks >= maxArtworksOnFreePlan;
 
-        const newArtworkData = includeDeleteDate ? {...artworkData, deleteAfter:deleteAfterDate} : artworkData;
+        const newArtworkData = includeDeleteDate ? { ...artworkData, deleteAfter: deleteAfterDate } : artworkData;
 
         this.props.addNewArtwork(this.state.img, newArtworkData, () => {
             this.props.UpdateUrl(`/gallery/galleryId_${this.props.galleryId}_galleryId`);
@@ -74,14 +72,21 @@ class ArtworkAdder extends Component {
             return <LoadingThing/>
         }
 
+        if (showPhotoCropper) {
+            return <CropAndRotateEditor sourceImg={img}
+                                        artworkData={artworkData}
+                                        hasChanges={showPhotoCropper}
+                                        onCancelClick={() => this.setState({ img: null })}
+                                        onCloseClick={() => this.setState({ img: null })}
+                                        onSaveClick={this.onSaveNewArtwork}
+            />
+        }
+
         return (
             <div className={'artworkAdder'}>
 
                 <EditAppBar title={'Add Artwork'}
-                            hasChanges={showPhotoCropper}
-                            onCloseClick={() => UpdateUrl(`/gallery/galleryId_${galleryId}_galleryId`)}
-                            onSaveClick={this.onSaveNewArtwork}
-                            onCancelClick={() => this.setState({ img: null })}/>
+                            onCloseClick={() => UpdateUrl(`/gallery/galleryId_${galleryId}_galleryId`)}/>
 
                 {maximumArtworkLimitReached &&
                 <MaximumArtworksReached galleryId={galleryId}
@@ -95,13 +100,6 @@ class ArtworkAdder extends Component {
                 </div>
                 }
 
-                {showPhotoCropper &&
-                <CropAndRotateEditor sourceImg={img}
-                                     key={1}
-                                     artworkData={artworkData}
-                                     onDataChange={this.onCropAndRotateChange}/>
-                }
-
             </div>
         )
     }
@@ -112,7 +110,7 @@ const mapStateToProps = (state) => (
         deleteAfterDate: getDeleteAfterDate(state),
         totalArtworksFetchProgress: state.dataFetching.userArtworks,
         totalUserArtworks: getTotalUserArtworks(state),
-        maxArtworksAllowed: getMaxArtworksAllowed(state),
+        maxArtworksAllowed: getMaxArtworksAllowed(state)
     }
 );
 export default connect(mapStateToProps, { addNewArtwork, UpdateUrl })(ArtworkAdder);

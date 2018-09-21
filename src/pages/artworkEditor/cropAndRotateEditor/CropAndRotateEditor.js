@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import Measure from 'react-measure'; //https://www.npmjs.com/package/react-measure
 // styles
-import {isEqual} from 'lodash';
+import { isEqual } from 'lodash';
 import './cropAndRotate_styles.css';
 // helpers
 import {
@@ -38,12 +38,19 @@ class CropAndRotateEditor extends Component {
     componentDidMount() {
         const { sourceUrl, orientation, cropData } = this.props.artworkData;
 
-        // set up source image
-        loadImage(sourceUrl, (sourceImg) => {
-            this.sourceCanvas = drawToCanvasWithMaxSize(sourceImg, LARGE_IMG_SIZE, LARGE_IMG_SIZE);
+        if (this.props.sourceImg) {
+            this.sourceCanvas = drawToCanvasWithMaxSize(this.props.sourceImg, LARGE_IMG_SIZE, LARGE_IMG_SIZE);
 
             this.setState({ orientation, cropData }, this.drawCuttingBoardCanvas);
-        });
+        }
+        else {
+            // set up source image
+            loadImage(sourceUrl, (sourceImg) => {
+                this.sourceCanvas = drawToCanvasWithMaxSize(sourceImg, LARGE_IMG_SIZE, LARGE_IMG_SIZE);
+
+                this.setState({ orientation, cropData }, this.drawCuttingBoardCanvas);
+            });
+        }
     }
 
     drawCuttingBoardCanvas() {
@@ -99,7 +106,7 @@ class CropAndRotateEditor extends Component {
         const { artworkData } = this.props;
 
         // need to work out width and height ratios with crop taken into account
-        const {croppedWidth, croppedHeight}  = getCroppedWidthAndHeight(this.canvas, cropData);
+        const { croppedWidth, croppedHeight } = getCroppedWidthAndHeight(this.canvas, cropData);
 
         const { widthToHeightRatio, heightToWidthRatio } = getDimensionRatios(croppedWidth, croppedHeight);
         const mergedData = { ...artworkData, cropData, orientation, widthToHeightRatio, heightToWidthRatio };
@@ -109,11 +116,16 @@ class CropAndRotateEditor extends Component {
 
     onCancel() {
         const { orientation, cropData } = this.props.artworkData;
-        this.setState({ orientation, cropData }, this.drawCuttingBoardCanvas);
+        this.setState({ orientation, cropData }, () => {
+            if(this.props.onCancelClick){
+                this.props.onCancelClick();
+            }
+
+            this.drawCuttingBoardCanvas();
+        });
     }
 
     render() {
-
         const { cropData } = this.state;
         const { canvasDisplayWidth = 100, canvasDisplayHeight = 100 } = this.state;
         const hasChanges = checkIfChanged(this.props.artworkData, this.state);
@@ -122,7 +134,7 @@ class CropAndRotateEditor extends Component {
             <div className={'labApp'}>
 
                 <EditAppBar title={'Crop & Rotate'}
-                            hasChanges={hasChanges}
+                            hasChanges={hasChanges || this.props.sourceImg}
                             onCloseClick={this.props.onCloseClick}
                             onSaveClick={this.onSave}
                             onCancelClick={this.onCancel}/>
@@ -162,7 +174,7 @@ class CropAndRotateEditor extends Component {
 export default CropAndRotateEditor;
 
 const checkIfChanged = (initialValues, currentValues) => {
-    const { orientation:initialOrientation, cropData:initialCropData } = initialValues;
+    const { orientation: initialOrientation, cropData: initialCropData } = initialValues;
     const { orientation, cropData } = currentValues;
 
     return orientation !== initialOrientation || !isEqual(cropData, initialCropData);
