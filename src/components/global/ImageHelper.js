@@ -210,7 +210,7 @@ export function copyToCanvas(inputCanvas, outputCanvas) {
     ctx.drawImage(inputCanvas, 0, 0);
 }
 
-export function drawToCanvasWithMaxSize(inputCanvas, _maxWidth, _maxHeight) {
+export function createMaxSizeCanvas(inputCanvas, _maxWidth, _maxHeight) {
     const { width: inputWidth, height: inputHeight } = inputCanvas;
     const maxWidth = _maxWidth ? _maxWidth : inputWidth;
     const maxHeight = _maxHeight ? _maxHeight : inputHeight;
@@ -241,7 +241,7 @@ export const getColourSplitterValues = (colourSplitterEdits) => {
     }
 };
 
-export const createOrientatedCanvas = (inputImage, orientation) => {
+/*export const createOrientatedCanvasOLD = (inputImage, orientation) => {
     const outputCanvas = document.createElement('canvas');
     drawToCanvas({
         sourceCanvas: inputImage,
@@ -252,7 +252,7 @@ export const createOrientatedCanvas = (inputImage, orientation) => {
     });
 
     return outputCanvas;
-};
+};*/
 
 export const loadImage = (url, callback) => {
     let sourceImg = new Image();
@@ -336,14 +336,14 @@ export const createArtworkCanvasFromSource = (artworkData, sourceCanvas) => {
 
 export const createArtworkCanvas = (artworkData, sourceCanvas) => {
     // apply orientation if needed
-    // const orientatedCanvas = drawOrientatedCanvas()
+    // const orientatedCanvas = createOrientatedCanvas()
     // next apply any source image cropping
     // next look at editOrder array
     // for each apply the edit creating a new canvas
     // export the final canvas
 };
 
-export const drawOrientatedCanvas = (sourceCanvas, orientation) => {
+export const createOrientatedCanvas = (sourceCanvas, orientation) => {
     const outputCanvas = document.createElement('canvas');
     const isPortrait = orientation > 4 && orientation < 9;
 
@@ -405,7 +405,7 @@ export const getCroppedWidthAndHeight = (canvas, cropData) => {
     return {croppedWidth, croppedHeight};
 };
 
-export const drawCroppedCanvas = (sourceCanvas, cropData) => {
+export const createCroppedCanvas = (sourceCanvas, cropData) => {
     // if there's no cropping just return the sourceCanvas unchanged
     if (!cropData || cropData === DEFAULT_CROP_VALUES) {
         return sourceCanvas;

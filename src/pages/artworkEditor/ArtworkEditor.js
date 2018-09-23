@@ -8,12 +8,19 @@ import { updateArtworkAndImage, updateArtwork } from '../../actions/SaveArtworkA
 // selectors
 import { getArtwork } from "../../selectors/Selectors";
 // constants
-import { DEFAULT_COLOUR_SPLITTER_VALUES } from "../../GLOBAL_CONSTANTS";
+import { DEFAULT_COLOUR_SPLITTER_VALUES, LARGE_IMG_SIZE, MAX_IMG_SIZE } from "../../GLOBAL_CONSTANTS";
 // comps
 import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
 import FrameEditor from "./frameEditor/FrameEditor";
 import ColourSplitter from "./colourSplitterEditor/ColourSplitterEditor";
 import LoadingThing from "../../components/loadingThing/LoadingThing";
+import { generateUID } from "../../components/global/UTILS";
+import {
+    createCroppedCanvas,
+    createOrientatedCanvas,
+    createMaxSizeCanvas,
+    loadImage
+} from "../../components/global/ImageHelper";
 
 class ArtworkEditor extends Component {
 
@@ -21,7 +28,6 @@ class ArtworkEditor extends Component {
     // It could also apply all the edits before the current one and pass in the canvas.
     // On save it could apply all the edits after the current one when I add in the ability
     // to change previous edits.
-
     constructor(props) {
         super(props);
 
@@ -30,14 +36,35 @@ class ArtworkEditor extends Component {
         this.onClose = this.onClose.bind(this);
         this.onSave = this.onSave.bind(this);
         this.updateArtworkAndImage = this.updateArtworkAndImage.bind(this);
+        this.setupSourceCanvas = this.setupSourceCanvas.bind(this);
     }
 
     componentDidMount() {
         document.body.classList.toggle('no-scroll-bars', true);
+
+        // editor - depending on editor and artworkData edits object
+        // need to set up the canvas and
+        if (this.props.currentArtwork) {
+            this.setupSourceCanvas();
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (!prevProps.currentArtwork && this.props.currentArtwork) {
+            this.setupSourceCanvas();
+        }
     }
 
     componentWillUnmount() {
         document.body.classList.remove('no-scroll-bars');
+    }
+
+    setupSourceCanvas() {
+        const { sourceUrl } = this.props.currentArtwork;
+        loadImage(sourceUrl, (sourceImg) => {
+            const sourceCanvas = createMaxSizeCanvas(sourceImg, MAX_IMG_SIZE, MAX_IMG_SIZE);
+            this.setState({ sourceCanvas });
+        });
     }
 
     onClose() {
@@ -61,20 +88,50 @@ class ArtworkEditor extends Component {
     }
 
     render() {
+        const { sourceCanvas } = this.state;
         const { currentArtwork, editor } = this.props;
 
-        if (!currentArtwork) {
+        if (!currentArtwork || !sourceCanvas) {
             return <LoadingThing/>
         }
 
-        // if frame, don't need to do anything
-        let currentEditKey = 'abc123';
-        let currentEdit;
+        const { orientation, cropData } = currentArtwork;
 
-        if (currentEditKey && currentArtwork.edits) {
+        // if are no edits can only have crop and rotate
+        if (!currentArtwork.edits) {
+            // if cropping
+            if (editor === 'crop') {
+                return <CropAndRotateEditor sourceCanvas={sourceCanvas}
+                                            artworkData={currentArtwork}
+                                            onSaveClick={this.updateArtworkAndImage}
+                                            onCloseClick={this.onClose}/>
+            }
+
+            // if not crop, must be the first edit, pass in the cropped
+            // and rotated source and set up a new edit object.
+            const orientatedCanvas = createOrientatedCanvas(sourceCanvas, orientation);
+            const croppedCanvas = createCroppedCanvas(orientatedCanvas, cropData);
+
+            const Editor = getEditingComponent(editor);
+
+            return <Editor artworkData={currentArtwork}
+                           editValues={null}
+                           editKey={'new'}
+                           sourceCanvas={croppedCanvas}
+                           onCloseClick={this.onClose}
+                           onSaveClick={this.updateArtworkAndImage}/>
+        }
+
+        let currentEditKey;
+        let currentEdit;
+        console.log("generateUID(): ", generateUID());
+
+        if (currentArtwork.edits) {
+            currentEditKey = 'abc123';
             currentEdit = currentArtwork.edits[currentEditKey];
         }
         else {
+            currentEditKey = null;
             currentEdit = DEFAULT_COLOUR_SPLITTER_VALUES;
         }
 
@@ -105,4 +162,13 @@ const mapStateToProps = (state, props) => {
         currentArtwork: getArtwork(state, props)
     }
 };
+
 export default connect(mapStateToProps, { UpdateUrl, updateArtworkAndImage, updateArtwork })(ArtworkEditor);
+
+const getEditingComponent = (editorName) => {
+
+    if (editorName === 'colourSplitter') {
+        return ColourSplitter;
+    }
+
+};

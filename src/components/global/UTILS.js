@@ -26,4 +26,13 @@ export const TO_DATE_TEXT = (dateNumber) => {
     const year = d.getFullYear();
 
     return`${date} ${month} ${year}`;
+};
+
+// Used to generate unique image names
+// used getTime and extra random digits to deal with 2 images
+// created in the same ms.
+// https://gist.github.com/gordonbrander/2230317
+export function generateUID() {
+    let d = new Date().getTime();
+    return d + '_' + Math.random().toString(36).substr(2, 4);
 }
