@@ -30,15 +30,22 @@ class ColourSplitter extends Component {
     }
 
     componentDidMount() {
-        let { editValues, editKey } = this.props;
-        if(editKey === 'new'){
+        const { editValues:initialEditValues, editKey:initialEditKey } = this.props;
+
+        let editKey, editValues;
+
+        if(initialEditKey === "new"){
             editKey = generateUID();
-            editValues = DEFAULT_COLOUR_SPLITTER_VALUES;
+            editValues = {...initialEditValues, ...DEFAULT_COLOUR_SPLITTER_VALUES};
+        }
+        else{
+            editKey = initialEditKey;
+            editValues = initialEditValues;
         }
 
         // set the initial values
         const {  cyanXPercent, magentaXPercent, yellowXPercent } = editValues;
-        this.setState({ editKey, editValues, cyanXPercent, magentaXPercent, yellowXPercent }, this.combineCanvases);
+        this.setState({ isSetUp:true, editKey, editValues, cyanXPercent, magentaXPercent, yellowXPercent }, this.combineCanvases);
     }
 
     combineCanvases() {
@@ -76,12 +83,12 @@ class ColourSplitter extends Component {
     render() {
         const { onCloseClick, artworkData } = this.props;
 
-        if (!artworkData || !artworkData.sourceUrl) {
+        if (!artworkData || !this.state.isSetUp) {
             return <LoadingThing/>
         }
 
         const { cyanXPercent, magentaXPercent, yellowXPercent, editValues } = this.state;
-
+        
         const hasChanges = checkIfChanged(editValues, { cyanXPercent, magentaXPercent, yellowXPercent });
         const style = { backgroundImage: `url(${graphPaperTile})` };
 

@@ -8,13 +8,12 @@ import { updateArtworkAndImage, updateArtwork } from '../../actions/SaveArtworkA
 // selectors
 import { getArtwork } from "../../selectors/Selectors";
 // constants
-import { DEFAULT_COLOUR_SPLITTER_VALUES, LARGE_IMG_SIZE, MAX_IMG_SIZE } from "../../GLOBAL_CONSTANTS";
+import { DEFAULT_COLOUR_SPLITTER_VALUES, MAX_IMG_SIZE } from "../../GLOBAL_CONSTANTS";
 // comps
 import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
 import FrameEditor from "./frameEditor/FrameEditor";
 import ColourSplitter from "./colourSplitterEditor/ColourSplitterEditor";
 import LoadingThing from "../../components/loadingThing/LoadingThing";
-import { generateUID } from "../../components/global/UTILS";
 import {
     createCroppedCanvas,
     createOrientatedCanvas,
@@ -77,7 +76,6 @@ class ArtworkEditor extends Component {
         this.props.updateArtwork(artworkId, newArtworkData, () => {
             this.props.UpdateUrl(`/gallery/galleryId_${this.props.galleryId}_galleryId/artworkId_${artworkId}_artworkId`);
         });
-
     }
 
     updateArtworkAndImage(canvas, newArtworkData) {
@@ -111,20 +109,20 @@ class ArtworkEditor extends Component {
             // and rotated source and set up a new edit object.
             const orientatedCanvas = createOrientatedCanvas(sourceCanvas, orientation);
             const croppedCanvas = createCroppedCanvas(orientatedCanvas, cropData);
-
+            // get the editor component
             const Editor = getEditingComponent(editor);
-
+            // pass 'new' in as the key to trigger the editor itself to add default values.
             return <Editor artworkData={currentArtwork}
-                           editValues={null}
+                           editValues={{order:1}}
                            editKey={'new'}
                            sourceCanvas={croppedCanvas}
                            onCloseClick={this.onClose}
                            onSaveClick={this.updateArtworkAndImage}/>
         }
 
+
         let currentEditKey;
         let currentEdit;
-        console.log("generateUID(): ", generateUID());
 
         if (currentArtwork.edits) {
             currentEditKey = 'abc123';
@@ -166,9 +164,7 @@ const mapStateToProps = (state, props) => {
 export default connect(mapStateToProps, { UpdateUrl, updateArtworkAndImage, updateArtwork })(ArtworkEditor);
 
 const getEditingComponent = (editorName) => {
-
     if (editorName === 'colourSplitter') {
         return ColourSplitter;
     }
-
 };
