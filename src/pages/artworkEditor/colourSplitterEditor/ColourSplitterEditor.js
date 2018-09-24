@@ -3,8 +3,6 @@ import React, { Component } from "react";
 import './colourSplitter_styles.css'
 // images
 import graphPaperTile from './hip-square-small.png';
-// constants
-import { DEFAULT_COLOUR_SPLITTER_VALUES } from "../../../GLOBAL_CONSTANTS";
 // helpers
 import { EditAppBar } from "../../../components/appBar/AppBar";
 import {
@@ -15,7 +13,6 @@ import {
 // comps
 import LoadingThing from "../../../components/loadingThing/LoadingThing";
 import SliderControl from "../../../components/appControls/SliderControl";
-import { generateUID } from "../../../components/global/UTILS";
 
 class ColourSplitter extends Component {
 
@@ -30,66 +27,52 @@ class ColourSplitter extends Component {
     }
 
     componentDidMount() {
-        const { editValues:initialEditValues, editKey:initialEditKey } = this.props;
-
-        let editKey, editValues;
-
-        if(initialEditKey === "new"){
-            editKey = generateUID();
-            editValues = {...initialEditValues, ...DEFAULT_COLOUR_SPLITTER_VALUES};
-        }
-        else{
-            editKey = initialEditKey;
-            editValues = initialEditValues;
-        }
+        const { initialEditValues, editKey } = this.props;
 
         // set the initial values
-        const {  cyanXPercent, magentaXPercent, yellowXPercent } = editValues;
-        this.setState({ isSetUp:true, editKey, editValues, cyanXPercent, magentaXPercent, yellowXPercent }, this.combineCanvases);
+        const { cyanXPercent, magentaXPercent, yellowXPercent } = initialEditValues;
+        this.setState({ isSetUp: true, editKey, cyanXPercent, magentaXPercent, yellowXPercent }, this.combineCanvases);
     }
 
     combineCanvases() {
         const { cyanXPercent, magentaXPercent, yellowXPercent } = this.state;
+        const { sourceCanvas } = this.props;
 
-        const combinedCanvas = createColourSplitCanvas(this.props.sourceCanvas, { cyanXPercent, magentaXPercent, yellowXPercent });
+        const combinedCanvas = createColourSplitCanvas(sourceCanvas, { cyanXPercent, magentaXPercent, yellowXPercent });
+
         copyToCanvas(combinedCanvas, this.canvas);
 
         this.setState({ isLoaded: true });
     }
 
     onSaveClick() {
-        const { artworkData } = this.props;
-        const { cyanXPercent, magentaXPercent, yellowXPercent, editValues, editKey } = this.state;
+        const { initialEditValues, editKey } = this.props;
+        const { cyanXPercent, magentaXPercent, yellowXPercent } = this.state;
 
-        const { edits } = artworkData;
-        const newEditValues = { ...editValues, cyanXPercent, magentaXPercent, yellowXPercent };
-        const updatedEdits = { ...edits, [editKey]: newEditValues };
+        const newEditValues = { ...initialEditValues, cyanXPercent, magentaXPercent, yellowXPercent };
 
         // need to work out width and height ratios with crop taken into account
         const { width, height } = this.canvas;
-        const { widthToHeightRatio: outputWidthToHeightRatio, heightToWidthRatio: outputHeightToWidthRatio } = getDimensionRatios(width, height);
+        const { widthToHeightRatio, heightToWidthRatio} = getDimensionRatios(width, height);
 
-        const newArtworkData = { ...artworkData, edits: updatedEdits, outputWidthToHeightRatio, outputHeightToWidthRatio };
-
-
-        this.props.onSaveClick(this.canvas, newArtworkData);
+        this.props.onSaveClick(this.canvas, editKey, newEditValues, widthToHeightRatio, heightToWidthRatio);
     }
 
     onCancelClick() {
-        const { cyanXPercent, magentaXPercent, yellowXPercent } = this.state.editValues;
+        const { cyanXPercent, magentaXPercent, yellowXPercent } = this.props.initialEditValues;
         this.setState({ cyanXPercent, magentaXPercent, yellowXPercent }, this.combineCanvases);
     }
 
     render() {
-        const { onCloseClick, artworkData } = this.props;
+        const { onCloseClick, initialEditValues } = this.props;
 
-        if (!artworkData || !this.state.isSetUp) {
+        if (!this.state.isSetUp) {
             return <LoadingThing/>
         }
 
-        const { cyanXPercent, magentaXPercent, yellowXPercent, editValues } = this.state;
-        
-        const hasChanges = checkIfChanged(editValues, { cyanXPercent, magentaXPercent, yellowXPercent });
+        const { cyanXPercent, magentaXPercent, yellowXPercent } = this.state;
+
+        const hasChanges = checkIfChanged(initialEditValues, { cyanXPercent, magentaXPercent, yellowXPercent });
         const style = { backgroundImage: `url(${graphPaperTile})` };
 
         return (
@@ -106,7 +89,7 @@ class ColourSplitter extends Component {
                 }
 
                 <div className={'labApp--content'}>
-                    <canvas ref={(canvas) => this.canvas = canvas}
+                    <canvas ref={canvas => this.canvas = canvas}
                             className={'rgb--output-canvas'}/>
                 </div>
 
@@ -140,7 +123,6 @@ class ColourSplitter extends Component {
 }
 
 export default ColourSplitter;
-
 
 const checkIfChanged = (initialValues, currentValues) => {
     const { cyanXPercent: initialCyan, magentaXPercent: initialMagenta, yellowXPercent: initialYellow } = initialValues;

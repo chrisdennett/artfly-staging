@@ -31,10 +31,6 @@ class ArtworkAdder extends Component {
         this.onCropAndRotateChange = this.onCropAndRotateChange.bind(this);
     }
 
-    componentWillUnmount() {
-        this.setState = ({ img: null, artworkData: GenerateDefaultArtworkData() });
-    }
-
     onPhotoSelected(imgFile) {
         GetImage(imgFile, (img, orientation, widthToHeightRatio, heightToWidthRatio) => {
             const newArtworkData = { ...this.state.artworkData, orientation, widthToHeightRatio, heightToWidthRatio };
@@ -47,13 +43,14 @@ class ArtworkAdder extends Component {
         this.setState({ artworkData: newArtworkData })
     }
 
-    onSaveNewArtwork() {
+    onSaveNewArtwork(canvas, editKey, newEditValues, widthToHeightRatio, heightToWidthRatio) {
         const { deleteAfterDate, totalUserArtworks } = this.props;
         const { artworkData } = this.state;
         const maxArtworksOnFreePlan = MEMBERSHIP_PLANS.free.maxArtworks;
         const includeDeleteDate = deleteAfterDate && totalUserArtworks >= maxArtworksOnFreePlan;
 
-        const newArtworkData = includeDeleteDate ? { ...artworkData, deleteAfter: deleteAfterDate } : artworkData;
+        const updatedArtworkData = {...artworkData, ...newEditValues, widthToHeightRatio, heightToWidthRatio};
+        const newArtworkData = includeDeleteDate ? { ...updatedArtworkData, deleteAfter: deleteAfterDate } : updatedArtworkData;
 
         this.props.addNewArtwork(this.state.img, newArtworkData, () => {
             this.props.UpdateUrl(`/gallery/galleryId_${this.props.galleryId}_galleryId`);
@@ -73,13 +70,11 @@ class ArtworkAdder extends Component {
         }
 
         if (showPhotoCropper) {
-            return <CropAndRotateEditor sourceImg={img}
-                                        artworkData={artworkData}
-                                        hasChanges={showPhotoCropper}
+            return <CropAndRotateEditor sourceCanvas={img}
+                                        initialEditValues={{orientation:artworkData.orientation, cropData:artworkData.cropData}}
                                         onCancelClick={() => this.setState({ img: null })}
                                         onCloseClick={() => this.setState({ img: null })}
-                                        onSaveClick={this.onSaveNewArtwork}
-            />
+                                        onSaveClick={this.onSaveNewArtwork}/>
         }
 
         return (

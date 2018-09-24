@@ -16,8 +16,8 @@ import {
 import { EditAppBar } from "../../../components/appBar/AppBar";
 import CropControlsContainer from "./assets/CropControlsContainer";
 import LoadingThing from "../../../components/loadingThing/LoadingThing";
-import { DEFAULT_CROP_EDIT_VALUES } from "../../../GLOBAL_CONSTANTS";
-import { generateUID } from "../../../components/global/UTILS";
+// import { DEFAULT_CROP_EDIT_VALUES } from "../../../GLOBAL_CONSTANTS";
+// import { generateUID } from "../../../components/global/UTILS";
 
 class CropAndRotateEditor extends Component {
     constructor(props) {
@@ -34,12 +34,14 @@ class CropAndRotateEditor extends Component {
     }
 
     componentDidMount() {
-        const { sourceCanvas, artworkData, editValues: initialEditValues, editKey: initialEditKey } = this.props;
-        let orientation, cropData, editValues, editKey;
+        const { sourceCanvas, initialEditValues } = this.props;
+        const {orientation, cropData} = initialEditValues;
 
-        if (!initialEditValues) {
-            orientation = artworkData.orientation;
-            cropData = artworkData.cropData;
+        console.log("orientation, cropData: ", orientation, cropData);
+
+        /*if (!initialEditValues) {
+            orientation = rtworkData.orientation;
+            cropData = rtworkData.cropData;
         }
         else {
             if (initialEditKey === 'new') {
@@ -48,21 +50,19 @@ class CropAndRotateEditor extends Component {
             }
             orientation = editValues.orientation;
             cropData = editValues.cropData;
-        }
+        }*/
 
         // create a smaller source canvas to manipulations on screen are faster.
         this.smallSourceCanvas = createMaxSizeCanvas(sourceCanvas, window.innerWidth, window.innerHeight);
-        this.setState({ orientation, cropData, editValues, editKey }, this.drawCuttingBoardCanvas);
+        this.setState({ orientation, cropData }, this.drawCuttingBoardCanvas);
     }
 
     drawCuttingBoardCanvas() {
-        // const { sourceCanvas } = this.props;
         const { orientation, dimensions } = this.state;
         const { width, height } = dimensions ? dimensions : { width: null, height: null };
 
         if (!this.smallSourceCanvas || !width || !this.canvas) return;
 
-        // const combinedCanvas = createColourSplitCanvas(this.sourceCanvas, this.props.artworkData);
         const orientatedCanvas = createOrientatedCanvas(this.smallSourceCanvas, orientation);
         copyToCanvas(orientatedCanvas, this.canvas);
 
@@ -103,34 +103,23 @@ class CropAndRotateEditor extends Component {
     }
 
     onSave() {
-        const { cropData, orientation, editKey, editValues } = this.state;
-        const { artworkData, sourceCanvas } = this.props;
+        const { cropData, orientation } = this.state;
+        const { sourceCanvas, editKey, initialEditValues } = this.props;
 
         // need to work out width and height ratios with crop taken into account
         const { croppedWidth, croppedHeight } = getCroppedWidthAndHeight(this.canvas, cropData);
         const { widthToHeightRatio, heightToWidthRatio } = getDimensionRatios(croppedWidth, croppedHeight);
 
-        // if there's no edit key this is an edit to the source
-        let mergedData;
-        if (!editKey) {
-            mergedData = { ...artworkData, cropData, orientation, widthToHeightRatio, heightToWidthRatio };
-        }
-        // otherwise add/overwrite relevant edit
-        else{
-            const {edits} = artworkData;
-            const updatedEdits = {...edits, [editKey]:editValues};
-            mergedData = {...artworkData, edits:updatedEdits};
-        }
-
         // recreate manipulation using source (ie full sized) canvas
         const orientatedCanvas = createOrientatedCanvas(sourceCanvas, orientation);
         const croppedCanvas = createCroppedCanvas(orientatedCanvas, cropData);
+        const newEditValues = {...initialEditValues, cropData, orientation};
 
-        this.props.onSaveClick(croppedCanvas, mergedData);
+        this.props.onSaveClick(croppedCanvas, editKey, newEditValues, widthToHeightRatio, heightToWidthRatio);
     }
 
     onCancel() {
-        const { orientation, cropData } = this.props.artworkData;
+        const { orientation, cropData } = this.props.initialEditValues;
         this.setState({ orientation, cropData }, () => {
             if (this.props.onCancelClick) {
                 this.props.onCancelClick();
@@ -141,9 +130,9 @@ class CropAndRotateEditor extends Component {
     }
 
     render() {
-        const { sourceCanvas, artworkData } = this.props;
+        const { sourceCanvas, initialEditValues } = this.props;
         const { cropData, canvasDisplayWidth = 100, canvasDisplayHeight = 100 } = this.state;
-        const hasChanges = checkIfChanged(artworkData, this.state);
+        const hasChanges = checkIfChanged(initialEditValues, this.state);
 
         return (
             <div className={'labApp'}>
