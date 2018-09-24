@@ -16,6 +16,8 @@ import {
 import { EditAppBar } from "../../../components/appBar/AppBar";
 import CropControlsContainer from "./assets/CropControlsContainer";
 import LoadingThing from "../../../components/loadingThing/LoadingThing";
+import { DEFAULT_CROP_EDIT_VALUES } from "../../../GLOBAL_CONSTANTS";
+import { generateUID } from "../../../components/global/UTILS";
 
 class CropAndRotateEditor extends Component {
     constructor(props) {
@@ -32,11 +34,25 @@ class CropAndRotateEditor extends Component {
     }
 
     componentDidMount() {
-        const {sourceCanvas, artworkData} = this.props;
-        const { orientation, cropData } = artworkData;
+        const { sourceCanvas, artworkData, editValues: initialEditValues, editKey: initialEditKey } = this.props;
+        let orientation, cropData, editValues, editKey;
+
+        if (!initialEditValues) {
+            orientation = artworkData.orientation;
+            cropData = artworkData.cropData;
+        }
+        else {
+            if (initialEditKey === 'new') {
+                editKey = generateUID();
+                editValues = DEFAULT_CROP_EDIT_VALUES;
+            }
+            orientation = editValues.orientation;
+            cropData = editValues.cropData;
+        }
+
         // create a smaller source canvas to manipulations on screen are faster.
         this.smallSourceCanvas = createMaxSizeCanvas(sourceCanvas, window.innerWidth, window.innerHeight);
-        this.setState({ orientation, cropData }, this.drawCuttingBoardCanvas);
+        this.setState({ orientation, cropData, editValues, editKey }, this.drawCuttingBoardCanvas);
     }
 
     drawCuttingBoardCanvas() {
@@ -87,16 +103,26 @@ class CropAndRotateEditor extends Component {
     }
 
     onSave() {
-        const { cropData, orientation } = this.state;
+        const { cropData, orientation, editKey, editValues } = this.state;
         const { artworkData, sourceCanvas } = this.props;
 
         // need to work out width and height ratios with crop taken into account
         const { croppedWidth, croppedHeight } = getCroppedWidthAndHeight(this.canvas, cropData);
-
         const { widthToHeightRatio, heightToWidthRatio } = getDimensionRatios(croppedWidth, croppedHeight);
-        const mergedData = { ...artworkData, cropData, orientation, widthToHeightRatio, heightToWidthRatio };
 
-        // recreate manipulation
+        // if there's no edit key this is an edit to the source
+        let mergedData;
+        if (!editKey) {
+            mergedData = { ...artworkData, cropData, orientation, widthToHeightRatio, heightToWidthRatio };
+        }
+        // otherwise add/overwrite relevant edit
+        else{
+            const {edits} = artworkData;
+            const updatedEdits = {...edits, [editKey]:editValues};
+            mergedData = {...artworkData, edits:updatedEdits};
+        }
+
+        // recreate manipulation using source (ie full sized) canvas
         const orientatedCanvas = createOrientatedCanvas(sourceCanvas, orientation);
         const croppedCanvas = createCroppedCanvas(orientatedCanvas, cropData);
 

@@ -8,7 +8,7 @@ import { updateArtworkAndImage, updateArtwork } from '../../actions/SaveArtworkA
 // selectors
 import { getArtwork } from "../../selectors/Selectors";
 // constants
-import { DEFAULT_COLOUR_SPLITTER_VALUES, MAX_IMG_SIZE } from "../../GLOBAL_CONSTANTS";
+import { MAX_IMG_SIZE } from "../../GLOBAL_CONSTANTS";
 // comps
 import CropAndRotateEditor from "./cropAndRotateEditor/CropAndRotateEditor";
 import FrameEditor from "./frameEditor/FrameEditor";
@@ -18,7 +18,7 @@ import {
     createCroppedCanvas,
     createOrientatedCanvas,
     createMaxSizeCanvas,
-    loadImage
+    loadImage, createEditedCanvas
 } from "../../components/global/ImageHelper";
 
 class ArtworkEditor extends Component {
@@ -93,18 +93,25 @@ class ArtworkEditor extends Component {
             return <LoadingThing/>
         }
 
+        // needed before any edits
         const { orientation, cropData } = currentArtwork;
+
+        // frame is independent of canvas edits so check for that first
+        if (editor === 'frame') {
+            return <FrameEditor artworkData={currentArtwork}
+                                onSaveClick={this.onSave}
+                                onCloseClick={this.onClose}/>
+        }
 
         // if are no edits can only have crop and rotate
         if (!currentArtwork.edits) {
-            // if cropping
+            // if cropping just open to overwrite current values
             if (editor === 'crop') {
                 return <CropAndRotateEditor sourceCanvas={sourceCanvas}
                                             artworkData={currentArtwork}
                                             onSaveClick={this.updateArtworkAndImage}
                                             onCloseClick={this.onClose}/>
             }
-
             // if not crop, must be the first edit, pass in the cropped
             // and rotated source and set up a new edit object.
             const orientatedCanvas = createOrientatedCanvas(sourceCanvas, orientation);
@@ -113,44 +120,45 @@ class ArtworkEditor extends Component {
             const Editor = getEditingComponent(editor);
             // pass 'new' in as the key to trigger the editor itself to add default values.
             return <Editor artworkData={currentArtwork}
-                           editValues={{order:1}}
+                           editValues={{ order: 1 }}
                            editKey={'new'}
                            sourceCanvas={croppedCanvas}
                            onCloseClick={this.onClose}
                            onSaveClick={this.updateArtworkAndImage}/>
         }
-
-
-        let currentEditKey;
-        let currentEdit;
-
-        if (currentArtwork.edits) {
-            currentEditKey = 'abc123';
-            currentEdit = currentArtwork.edits[currentEditKey];
-        }
+        // if there are already edits saved
         else {
-            currentEditKey = null;
-            currentEdit = DEFAULT_COLOUR_SPLITTER_VALUES;
-        }
+            const editsInOrder = getEditsInOrder(currentArtwork.edits);
+            const lastEdit = editsInOrder[editsInOrder.length - 1];
+            // apply source orientation
+            const orientatedCanvas = createOrientatedCanvas(sourceCanvas, orientation);
+            // apply source cropping
+            const croppedCanvas = createCroppedCanvas(orientatedCanvas, cropData);
+            // get the requested editor
+            const Editor = getEditingComponent(editor);
+            // if the current editor is the same as the latest edit, just open it.
+            if(lastEdit.type === editor){
+                return <Editor artworkData={currentArtwork}
+                               editValues={lastEdit}
+                               editKey={lastEdit.key}
+                               sourceCanvas={croppedCanvas}
+                               onCloseClick={this.onClose}
+                               onSaveClick={this.updateArtworkAndImage}/>
+            }
+            // otherwise create canvas from all edits and add new edit
+            else{
+                // create canvas from all edits
+                const canvasAfterAllEdits = createEditedCanvas(editsInOrder, croppedCanvas);
+                // then call component with a new edit
+                const newEditOrderNumber = editsInOrder.length + 1;
 
-        if (editor === 'colourSplitter') {
-            return <ColourSplitter artworkData={currentArtwork}
-                                   editValues={currentEdit}
-                                   editKey={currentEditKey}
-                                   onCloseClick={this.onClose}
-                                   onSaveClick={this.updateArtworkAndImage}/>
-        }
-
-        if (editor === 'crop') {
-            return <CropAndRotateEditor onSaveClick={this.updateArtworkAndImage}
-                                        artworkData={currentArtwork}
-                                        onCloseClick={this.onClose}/>
-        }
-
-        if (editor === 'frame') {
-            return <FrameEditor artworkData={currentArtwork}
-                                onSaveClick={this.onSave}
-                                onCloseClick={this.onClose}/>
+                return <Editor artworkData={currentArtwork}
+                               editValues={{order:newEditOrderNumber}}
+                               editKey={'new'}
+                               sourceCanvas={canvasAfterAllEdits}
+                               onCloseClick={this.onClose}
+                               onSaveClick={this.updateArtworkAndImage}/>
+            }
         }
     }
 }
@@ -163,8 +171,24 @@ const mapStateToProps = (state, props) => {
 
 export default connect(mapStateToProps, { UpdateUrl, updateArtworkAndImage, updateArtwork })(ArtworkEditor);
 
+const getEditsInOrder = (allEdits) => {
+    // edits are
+    let orderedArray = Object.keys(allEdits).map(key => {
+        return { ...allEdits[key], key };
+    });
+
+    orderedArray.sort((a, b) => a.order - b.order);
+
+    return orderedArray;
+};
+
 const getEditingComponent = (editorName) => {
     if (editorName === 'colourSplitter') {
         return ColourSplitter;
     }
+
+    if(editorName === 'crop'){
+        return CropAndRotateEditor;
+    }
 };
+

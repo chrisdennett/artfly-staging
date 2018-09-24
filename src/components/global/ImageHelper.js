@@ -327,19 +327,17 @@ export const createColourSplitCanvas = (inputCanvas, colourSplitEditValues) => {
     return outputCanvas;
 };
 
-export const createArtworkCanvasFromSource = (artworkData, sourceCanvas) => {
-    // draw the source image to a canvas
+export const createEditedCanvas = (editsInOrder, sourceCanvas) => {
+    let outputCanvas = document.createElement('canvas');
+    copyToCanvas(sourceCanvas, outputCanvas);
+    
+    for(let edit of editsInOrder){
+        if(edit.type === 'colourSplitter'){
+            outputCanvas = createColourSplitCanvas(sourceCanvas, edit);
+        }
+    }
 
-    // apply remaining transformations
-};
-
-export const createArtworkCanvas = (artworkData, sourceCanvas) => {
-    // apply orientation if needed
-    // const orientatedCanvas = createOrientatedCanvas()
-    // next apply any source image cropping
-    // next look at editOrder array
-    // for each apply the edit creating a new canvas
-    // export the final canvas
+    return outputCanvas;
 };
 
 export const createOrientatedCanvas = (sourceCanvas, orientation) => {
