@@ -4,9 +4,9 @@ import thunk from 'redux-thunk';
 import reducers from "../actionReducers";
 
 // DEV ONLY - handy for debugging -- comment out before commit
-import { composeWithDevTools } from 'redux-devtools-extension';
-const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)));
+// import { composeWithDevTools } from 'redux-devtools-extension';
+// const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)));
 // RELEASE
-// const store = createStore(reducers, applyMiddleware(thunk));
+const store = createStore(reducers, applyMiddleware(thunk));
 
 export default store;

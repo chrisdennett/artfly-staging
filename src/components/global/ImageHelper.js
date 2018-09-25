@@ -435,25 +435,21 @@ export const getDimensionsToFit = (inputWidth, inputHeight, maxWidth, maxHeight)
 
     // if the width need reducing, set width to max and scale height accordingly
     if (inputWidth > maxWidth) {
-        console.log("1");
         outputWidth = maxWidth;
         outputHeight = outputWidth * widthToHeightRatio;
 
         if(outputHeight > maxHeight){
-            console.log("1.5");
             outputHeight = maxHeight;
             outputWidth = outputHeight * heightToWidthRatio;
         }
     }
     // if the height need reducing, set height to max and scale width accordingly
     else if (inputHeight > maxHeight) {
-        console.log("2");
         outputHeight = maxHeight;
         outputWidth = outputHeight * heightToWidthRatio;
     }
     // otherwise output can match input
     else {
-        console.log("3");
         outputWidth = inputWidth;
         outputHeight = inputHeight;
     }

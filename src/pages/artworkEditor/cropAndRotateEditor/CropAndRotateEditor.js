@@ -37,21 +37,6 @@ class CropAndRotateEditor extends Component {
         const { sourceCanvas, initialEditValues } = this.props;
         const {orientation, cropData} = initialEditValues;
 
-        console.log("orientation, cropData: ", orientation, cropData);
-
-        /*if (!initialEditValues) {
-            orientation = rtworkData.orientation;
-            cropData = rtworkData.cropData;
-        }
-        else {
-            if (initialEditKey === 'new') {
-                editKey = generateUID();
-                editValues = DEFAULT_CROP_EDIT_VALUES;
-            }
-            orientation = editValues.orientation;
-            cropData = editValues.cropData;
-        }*/
-
         // create a smaller source canvas to manipulations on screen are faster.
         this.smallSourceCanvas = createMaxSizeCanvas(sourceCanvas, window.innerWidth, window.innerHeight);
         this.setState({ orientation, cropData }, this.drawCuttingBoardCanvas);

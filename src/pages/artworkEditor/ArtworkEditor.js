@@ -24,10 +24,6 @@ import { generateUID } from "../../components/global/UTILS";
 
 class ArtworkEditor extends Component {
 
-    // ArtworkEditor should determine what edit is required and display the necessary editor
-    // It could also apply all the edits before the current one and pass in the canvas.
-    // On save it could apply all the edits after the current one when I add in the ability
-    // to change previous edits.
     constructor(props) {
         super(props);
 
@@ -41,9 +37,6 @@ class ArtworkEditor extends Component {
 
     componentDidMount() {
         document.body.classList.toggle('no-scroll-bars', true);
-
-        // editor - depending on editor and artworkData edits object
-        // need to set up the canvas and
         if (this.props.artworkData) {
             this.setupSourceCanvas();
         }
@@ -93,7 +86,7 @@ class ArtworkEditor extends Component {
         else {
             const { edits } = artworkData;
             const updatedEdits = { ...edits, [editKey]: newEditValues };
-            newArtworkData = { ...artworkData, edits: updatedEdits, outputWidthToHeightRatio:widthToHeightRatio, outputHeightToWidthRatio:heightToWidthRatio };
+            newArtworkData = { ...artworkData, edits: updatedEdits, outputWidthToHeightRatio: widthToHeightRatio, outputHeightToWidthRatio: heightToWidthRatio };
         }
 
         this.props.updateArtworkAndImage(canvas, newArtworkData, artworkId, true, () => {
@@ -147,32 +140,39 @@ class ArtworkEditor extends Component {
         // if there are already edits saved
         else {
             const editsInOrder = getEditsInOrder(artworkData.edits);
-            const lastEdit = editsInOrder[editsInOrder.length - 1];
-            // apply source orientation
             const orientatedCanvas = createOrientatedCanvas(sourceCanvas, orientation);
-            // apply source cropping
             const croppedCanvas = createCroppedCanvas(orientatedCanvas, cropData);
+
+            let editsBeforeCurrent = [];
+            let currentEditValue;
+            for (let edit of editsInOrder) {
+                if (edit.type !== editor) {
+                    editsBeforeCurrent.push(edit);
+                }
+                else {
+                    currentEditValue = edit;
+                    break;
+                }
+            }
+
+            const canvasEditedUpToCurrent = createEditedCanvas(editsBeforeCurrent, croppedCanvas);
             // get the requested editor
             const Editor = getEditingComponent(editor);
-            // if the current editor is the same as the latest edit, just open it.
-            if (lastEdit.type === editor) {
-                return <Editor initialEditValues={lastEdit}
-                               editKey={lastEdit.key}
-                               sourceCanvas={croppedCanvas}
+
+            if (currentEditValue) {
+                return <Editor initialEditValues={currentEditValue}
+                               editKey={currentEditValue.key}
+                               sourceCanvas={canvasEditedUpToCurrent}
                                onCloseClick={this.onClose}
                                onSaveClick={this.updateArtworkAndImage}/>
             }
-            // otherwise create canvas from all edits and add new edit
             else {
-                // create canvas from all edits
-                const canvasAfterAllEdits = createEditedCanvas(editsInOrder, croppedCanvas);
-                // then call component with a new edit
                 const newEditOrderNumber = editsInOrder.length + 1;
                 const defaultValues = getEditorDefaults(editor);
                 const newEditKey = generateUID();
                 return <Editor initialEditValues={{ ...defaultValues, order: newEditOrderNumber }}
                                editKey={newEditKey}
-                               sourceCanvas={canvasAfterAllEdits}
+                               sourceCanvas={canvasEditedUpToCurrent}
                                onCloseClick={this.onClose}
                                onSaveClick={this.updateArtworkAndImage}/>
             }
@@ -213,4 +213,3 @@ const getEditorDefaults = (editor) => {
     if (editor === 'crop') return DEFAULT_CROP_EDIT_VALUES;
     if (editor === 'colourSplitter') return DEFAULT_COLOUR_SPLITTER_VALUES;
 };
-

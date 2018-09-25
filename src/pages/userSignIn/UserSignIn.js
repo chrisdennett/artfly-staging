@@ -33,8 +33,7 @@ class UserSignIn extends Component {
                 <TabBar
                     style={{backgroundColor:'rgba(255,255,255,0.5)', width:'100%'}}
                     activeTabIndex={activeTabIndex}
-                    onChange={e => this.setState({ 'activeTabIndex': e.detail.activeTabIndex })}
-                >
+                    onActivate={e => this.setState({ activeTabIndex: e.detail.index })}>
                     <Tab>new user sign up</Tab>
                     <Tab>sign in</Tab>
                 </TabBar>
