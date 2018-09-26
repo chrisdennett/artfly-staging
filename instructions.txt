@@ -24,7 +24,7 @@ firebase open hosting:site
 1. make sure everything is checked into dev
 2. git merge master        //(resolve any merge conflicts if there are any)
 3. git checkout master
-4. git merge development
+4. git merge dev
 5. git push -u origin master
 
 // DEPLOY FUNCTIONS
