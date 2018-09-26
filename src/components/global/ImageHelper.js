@@ -240,19 +240,6 @@ export const getColourSplitterValues = (colourSplitterEdits) => {
     }
 };
 
-/*export const createOrientatedCanvasOLD = (inputImage, orientation) => {
-    const outputCanvas = document.createElement('canvas');
-    drawToCanvas({
-        sourceCanvas: inputImage,
-        outputCanvas: outputCanvas,
-        orientation: orientation,
-        maxOutputCanvasWidth: LARGE_IMG_SIZE,
-        maxOutputCanvasHeight: LARGE_IMG_SIZE
-    });
-
-    return outputCanvas;
-};*/
-
 export const loadImage = (url, callback) => {
     let sourceImg = new Image();
     sourceImg.setAttribute('crossOrigin', 'anonymous'); //

@@ -71,6 +71,7 @@ class ArtworkAdder extends Component {
 
         if (showPhotoCropper) {
             return <CropAndRotateEditor sourceCanvas={img}
+                                        forceShowSave={true}
                                         initialEditValues={{orientation:artworkData.orientation, cropData:artworkData.cropData}}
                                         onCancelClick={() => this.setState({ img: null })}
                                         onCloseClick={() => this.setState({ img: null })}

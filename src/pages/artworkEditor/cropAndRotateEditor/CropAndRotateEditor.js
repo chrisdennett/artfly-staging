@@ -123,7 +123,7 @@ class CropAndRotateEditor extends Component {
             <div className={'labApp'}>
 
                 <EditAppBar title={'Crop & Rotate'}
-                            hasChanges={hasChanges || this.props.sourceImg}
+                            hasChanges={hasChanges || this.props.forceShowSave}
                             onCloseClick={this.props.onCloseClick}
                             onSaveClick={this.onSave}
                             onCancelClick={this.onCancel}/>
