@@ -1,4 +1,5 @@
 import React from 'react';
+import GallerySwitcher from './gallerySwitcher/GallerySwitcher';
 
 const GalleryTitles = ({title, subtitle}) => {
     return (
@@ -10,6 +11,9 @@ const GalleryTitles = ({title, subtitle}) => {
             <h2 className={'gallery--subtitle'}>
                 {subtitle}
             </h2>
+
+            <GallerySwitcher />
+
         </div>
     )
 };

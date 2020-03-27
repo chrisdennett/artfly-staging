@@ -2,7 +2,8 @@ import firebase from 'firebase/app';
 import { createSelector } from 'reselect';
 // TODO: move this to a data folder
 import MEMBERSHIP_PLANS from '../MEMBERSHIP_PLANS';
-import { getParams } from "../AppRouteSelector";
+import { getQueryParameters } from "../AppRouteSelector";
+import { getNewEditData } from "../editors/EditUtils";
 
 export const getUserId = (state) => {
     const { user } = state;
@@ -39,16 +40,42 @@ export const getRecentUserArtworks = state => {
     return userArtworks.slice(0, 3);
 };
 
+/*
+* Get user artists
+*/
+export const getUserArtists = createSelector(
+    state => state.account,
+    (account) => {
+        if (!account) {
+            return null;
+        }
+
+        return account.artists;
+    }
+);
+
+/*
+* Get Current params from routing
+*/
 const getCurrentParams = createSelector(
     state => state.routing,
     (route) => {
         if (!route || !route.pathname) return null;
 
-        return getParams(route.pathname);
+        return getQueryParameters(route.pathname);
     }
 );
 
-const getCurrentGalleryIdParam = createSelector(
+export const getCurrentArtistParam = createSelector(
+    state => getCurrentParams(state),
+    (params) => {
+        if (!params || !params.artistId) return null;
+
+        return params.artistId.split('%20').join(' ');
+    }
+);
+
+export const getCurrentGalleryIdParam = createSelector(
     state => getCurrentParams(state),
     (params) => {
         if (!params || !params.galleryId) return null;
@@ -56,7 +83,7 @@ const getCurrentGalleryIdParam = createSelector(
     }
 );
 
-const getCurrentArtworkIdParam = createSelector(
+export const getCurrentArtworkIdParam = createSelector(
     state => getCurrentParams(state),
     (params) => {
         if (!params || !params.artworkId) return null;
@@ -64,23 +91,222 @@ const getCurrentArtworkIdParam = createSelector(
     }
 );
 
+export const getNewArtworkParam = createSelector(
+    state => getCurrentParams(state),
+    (params) => {
+        if (!params || !params.newArtworkId) return false;
+        return params.newArtworkId;
+    }
+);
+
+export const getCurrentArtwork = createSelector(
+    state => state.artworks,
+    state => getCurrentArtworkIdParam(state),
+    (artworks, artworkId) => {
+        if (!artworks || !artworkId) return null;
+        return artworks[artworkId];
+    }
+);
+
+const addMissingKeys = (edits) => {
+    const ids = Object.keys(edits);
+    const editsWithKeys = {};
+
+    for (let id of ids) {
+        const edit = edits[id];
+
+        if (edit.key) {
+            editsWithKeys[id] = { ...edit };
+        }
+        else {
+            editsWithKeys[id] = { ...edit, key: id };
+        }
+    }
+
+    return editsWithKeys;
+};
+
+const updateAnyLegacyEditData = ({ editData, edits, cropData, orientation, frameData }) => {
+    /*
+    Legacy data people may have no 'edits' data or if they added
+    {
+        1542800251854_mb4f:{
+            cyanXPercent: 2,
+            magentaXPercent: 6,
+            order: 1,
+            type: "colourSplitter",
+            yellowXPercent: 10,
+        },
+        frame:{
+            frameColour: { },
+            frameThicknessDecimal: 0.04,
+            key: "frame",
+            mountColour: {       },
+            mountThicknessDecimal: 0.06,
+            type: "frame",
+        },
+        initialCrop:{
+            cropData: {
+
+            },
+            key: "initialCrop",
+            orientation: 1,
+            type: "crop",
+        }
+    };
+    */
+
+    // if it has editData all is up to date as of 21 Nov 2018
+    if (editData) {
+        // just to reset current dev data.
+        return editData;
+
+        /*const {edits, editOrder } = {...editData};
+        const updatedEdits = {};
+
+        for(let id of editOrder){
+            const edit = edits[id];
+            if(edits[id].type === 'colourSplitter'){
+                updatedEdits[id] = {...edit, name:'Colour Splitter'};
+            }
+            else{
+                updatedEdits[id] = edit;
+            }
+        }
+
+        return {...editData, edits:updatedEdits};*/
+    }
+    else {
+        // convert old data to a framed artwork project
+        // with the addition of a colourSplitter edit if
+        // anyone has added one since last update.
+        const editData = {};
+        const updatedEdits = edits ? edits : {};
+
+        if (!updatedEdits['imageAdd']) {
+            const defaultData = getNewEditData('imageAdd', 'imageAdd');
+            updatedEdits.imageAdd = { ...defaultData };
+        }
+
+        if (!updatedEdits['initialCrop']) {
+            const defaultData = getNewEditData('crop', 'initialCrop');
+            updatedEdits.initialCrop = { ...defaultData, cropData, orientation };
+        }
+
+        if (!updatedEdits['frame']) {
+            const defaultData = getNewEditData('frame', 'frame');
+            updatedEdits.frame = { ...defaultData, ...frameData };
+        }
+
+        editData.edits = addMissingKeys(updatedEdits);
+        editData.editOrder = ['imageAdd', 'initialCrop'];
+        const possColourSplitterEditId = Object.keys(updatedEdits).find(id => updatedEdits[id].type === 'colourSplitter');
+        if (possColourSplitterEditId) {
+            editData.editOrder.push(possColourSplitterEditId);
+        }
+        editData.editOrder.push('frame');
+
+        return editData;
+    }
+};
+
+export const getArtworkEdits = createSelector(
+    state => getCurrentArtwork(state),
+    (artwork) => {
+        if (!artwork) return null;
+
+        // convert any old edit data into the current format
+        const editData = updateAnyLegacyEditData(artwork);
+
+        return editData;
+    }
+);
+
+/*
+* Get Artist galleries
+* - get artists
+* - for each artist get latest picture
+*/
+export const getUserGalleries = createSelector(
+    state => state.user,
+    state => getUserArtists(state),
+    state => state.artworks,
+    (user, artists = [], artworks) => {
+
+        const userArtworks = getArtworksWithAdminId(artworks, user.uid);
+        const userArtworkIds = Object.keys(userArtworks);
+        const totalArtworks = userArtworkIds.length;
+        const firstUserArtworkId = userArtworkIds.length > 0 ? userArtworkIds[0] : null;
+        const latestArtwork = firstUserArtworkId ? userArtworks[firstUserArtworkId] : null;
+
+        const userGallery = {
+            type: 'global',
+            id: user.uid,
+            galleryId: user.id,
+            ...getGalleryTitle(null),
+            totalArtworks,
+            latestArtwork
+        };
+
+        let artistGalleries = [];
+        // for each artist add an object with gallery info
+        for (let artist of artists) {
+            const artworks = getGalleryArtworks(user.uid, userArtworks, artist.name)
+
+            artistGalleries.push(
+                {
+                    type: 'artist',
+                    id: artist.name,
+                    galleryId: user.id,
+                    ...getGalleryTitle(artist.name),
+                    totalArtworks: artworks.length,
+                    latestArtwork: artworks[0],
+                    artist: artist.name
+                }
+            )
+        }
+
+        return [userGallery, ...artistGalleries];
+    }
+);
+
+const getGalleryTitle = (artist) => {
+    if (artist) {
+        return {
+            title: artist,
+        }
+    }
+    else {
+        return {
+            title: "All Artworks",
+        }
+    }
+}
+
 export const getCurrentGalleryData = createSelector(
     state => state.user,
-    state => state.galleries,
     state => state.artworks,
     state => getCurrentGalleryIdParam(state),
-    (user, galleries, artworks, galleryId) => {
-        if (!galleries || !galleryId) return [];
+    state => getCurrentArtistParam(state),
+    (user, artworks, galleryId, artist) => {
+        if (!galleryId) return [];
+        const isEditable = user && user.uid === galleryId;
 
-        const gallery = galleries[galleryId];
-        if (!gallery) return [];
-
-        const isEditable = user && user.uid === gallery.adminId;
-        const galleryArtworks = getGalleryArtworks(gallery, artworks);
+        const galleryArtworks = getGalleryArtworks(galleryId, artworks, artist);
         const totalArtworks = galleryArtworks.length;
         const firstArtworkId = galleryArtworks.length > 0 ? galleryArtworks[0].artworkId : null;
 
-        return { ...gallery, isEditable, galleryArtworks, totalArtworks, firstArtworkId };
+        const titleData = getGalleryTitle(artist);
+
+        return {
+            ...titleData,
+            isEditable,
+            galleryArtworks,
+            totalArtworks,
+            firstArtworkId,
+            galleryId,
+            artist: artist
+        };
     }
 );
 
@@ -89,14 +315,17 @@ export const getCurrentGalleryData = createSelector(
 * the gallery key is the adminId.  Future gallery types
 * may include artworks from all over.
 * */
-const getGalleryArtworks = (gallery, artworks) => {
-    const { type, key } = gallery;
+const getGalleryArtworks = (adminId, artworks, artist) => {
+    const galleryArtworks = getArtworksWithAdminId(artworks, adminId);
 
-    let galleryArtworks = [];
-    if (type === 'user') {
-        galleryArtworks = getArtworksWithAdminId(artworks, key);
+    if (artist) {
+        const artistArtworkIds = Object.keys(galleryArtworks).filter(artworkId => artist === galleryArtworks[artworkId].artist);
+        let artistArtworks = {};
+        for (let id of artistArtworkIds) {
+            artistArtworks[id] = galleryArtworks[id];
+        }
+        return getArtworksByDate(artistArtworks);
     }
-    if (!galleryArtworks) return [];
 
     return getArtworksByDate(galleryArtworks);
 };
@@ -144,35 +373,9 @@ export const getGalleryNavigation = createSelector(
         const userId = user ? user.uid : '';
         const isEditable = !currentArtwork ? false : currentArtwork.adminId === userId;
 
-        //http://localhost:3000/gallery/galleryId_dPFQjQdkX1bJBjYWtXQ5_galleryId/artworkId_sPdffDuVZToteQedU1bL_artworkId
-
         return { currentArtwork, isEditable, nextArtwork, previousArtwork };
     }
 );
-
-export const getUserGalleryId = (state) => {
-    const { galleries, user } = state;
-    if (!galleries || !user) return null;
-
-    const userGalleryArr = Object.keys(galleries).filter(galleryId => galleries[galleryId].adminId === user.uid);
-
-    if (userGalleryArr.length === 0) {
-        return null;
-    }
-    else {
-        return userGalleryArr[0];
-    }
-};
-
-export const getUserGallery = (state) => {
-    const { galleries } = state;
-    const userGalleryId = getUserGalleryId(state);
-
-    if (!userGalleryId) return null;
-
-    return galleries[userGalleryId];
-
-};
 
 export const getSignInProvider = (state) => {
     const { user } = state;

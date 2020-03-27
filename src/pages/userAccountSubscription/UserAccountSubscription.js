@@ -34,38 +34,41 @@ const UserAccountSubscription = ({ userId, membershipPlan, subscribeUser, Update
                               onCloseClick={() => UpdateUrl('/profile')}/>
 
             <div className={'accountSubscription--content'}>
-                <Typography use={'overline'} tag={'div'} className={'accountSubscription--membershipOption--title'}>
-                    Current membership:
-                </Typography>
-
-                {!userIsOnFreePlan &&
-                <PaidMemberCard membershipDetails={membershipPlan}
-                                subscribeUser={subscribeUser}
-                                userId={userId}
-                                freePlanMaxArtworks={MEMBERSHIP_PLANS['free'].maxArtworks}
-                                cancelSubscription={cancelSubscription}/>
-                }
-
-                {userIsOnFreePlan &&
-                <FreeMemberCard membershipDetails={membershipPlan}/>
-                }
-
-                <div className={'accountSubscription--membershipOptions'}>
+                <div className={'accountSubscription--content--inner'}>
                     <Typography use={'overline'} tag={'div'} className={'accountSubscription--membershipOption--title'}>
-                        other membership options:
+                        Current membership:
                     </Typography>
 
                     {!userIsOnFreePlan &&
-                    <MembershipOption membershipPlan={MEMBERSHIP_PLANS['free']}
-                                      message={"You'll automatically switch to this membership if you cancel your current subscription."}/>
+                    <PaidMemberCard membershipDetails={membershipPlan}
+                                    subscribeUser={subscribeUser}
+                                    userId={userId}
+                                    freePlanMaxArtworks={MEMBERSHIP_PLANS['free'].maxArtworks}
+                                    cancelSubscription={cancelSubscription}/>
                     }
 
                     {userIsOnFreePlan &&
-                    <MembershipOption membershipPlan={MEMBERSHIP_PLANS['516947']}
-                                      localPrice={localPrice}
-                                      userId={userId}
-                                      subscribeUser={subscribeUser}/>
+                    <FreeMemberCard membershipDetails={membershipPlan}/>
                     }
+
+                    <div className={'accountSubscription--membershipOptions'}>
+                        <Typography use={'overline'} tag={'div'}
+                                    className={'accountSubscription--membershipOption--title'}>
+                            other membership options:
+                        </Typography>
+
+                        {!userIsOnFreePlan &&
+                        <MembershipOption membershipPlan={MEMBERSHIP_PLANS['free']}
+                                          message={"You'll automatically switch to this membership if you cancel your current subscription."}/>
+                        }
+
+                        {userIsOnFreePlan &&
+                        <MembershipOption membershipPlan={MEMBERSHIP_PLANS['516947']}
+                                          localPrice={localPrice}
+                                          userId={userId}
+                                          subscribeUser={subscribeUser}/>
+                        }
+                    </div>
                 </div>
             </div>
 

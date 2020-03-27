@@ -140,14 +140,12 @@ export function deleteUserAuth() {
     }
 }
 
-export function deleteUserData(uid, accountId, galleryId) {
+export function deleteUserData(uid, accountId) {
     return async dispatch => {
 
         try {
             // set the user account to deleted
             await db.collection('accounts').doc(accountId).set({ adminId: uid, status: 'deleted' });
-            // bin the gallery data
-            await db.collection('galleries').doc(galleryId).delete();
 
             dispatch({
                 type: USER_DATA_DELETED,

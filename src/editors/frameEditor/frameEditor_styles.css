@@ -1,0 +1,32 @@
+.frameEditor {
+    /*background: url("../../images/bg/cuttingMat.png");*/
+    background: url("../../components/images/brickwall.png");
+    overflow: hidden;
+    min-height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.frameEditor--artworkHolder {
+    padding: 0 10px;
+}
+
+.frameEditor--controls {
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    border-left: 1px solid rgba(0, 0, 0, 0.2);
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    z-index: 6;
+}
+
+.frameEditor--controls--set {
+    display: flex;
+    align-items: center;
+}
+
+.frameEditor--controls--set--label {
+    width: 105px;
+}

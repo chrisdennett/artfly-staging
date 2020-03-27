@@ -10,7 +10,7 @@ export const ARTWORK_DELETE_ERROR = 'artworkDeleteError';
       console.log("artworks all deleted: ", artworks)
 }*/
 
-function deleteImages(imageUrls){
+function deleteImages(imageUrls) {
     return imageUrls.map(url => {
         return storage.refFromURL(url).delete();
     });
@@ -21,8 +21,8 @@ function deleteArtworkData(artworkId) {
 }
 
 function markArtworkDataAsDeleted(artworkData) {
-    const {largeUrl, sourceUrl, thumbUrl, adminId, artworkId} = artworkData;
-    const deletedArtworkData = {largeUrl, sourceUrl, thumbUrl, oldAdminId:adminId, isDeleted:true};
+    const { largeUrl, sourceUrl, thumbUrl, adminId, artworkId } = artworkData;
+    const deletedArtworkData = { largeUrl, sourceUrl, thumbUrl, oldAdminId: adminId, isDeleted: true };
 
     return db.collection('artworks')
         .doc(artworkId)
@@ -34,9 +34,9 @@ export function deleteArtwork(artworkData, callback = null) {
         // const { artworkId, url, sourceUrl, thumbUrl, largeUrl, largeImgUrl, mediumUrl } = artworkData;
         const { artworkId, largeUrl, sourceUrl, thumbUrl } = artworkData;
 
-        try{
-            await deleteImages([largeUrl, sourceUrl, thumbUrl]);
+        try {
             await deleteArtworkData(artworkData.artworkId);
+            await deleteImages([largeUrl, sourceUrl, thumbUrl]);
 
             dispatch({
                 type: ARTWORK_DELETED,

@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from 'react-redux';
 import CookieConsent from "react-cookie-consent"; // cookie consent
+import { Offline } from "react-detect-offline";
+import 'blueimp-canvas-to-blob';
 // ui
 import { Button } from 'rmwc/Button';
 // styles
@@ -13,20 +15,36 @@ import { listenForUserAuthChanges } from "./actions/UserAuthActions";
 import { fetchUserAccount } from "./actions/UserAccountActions";
 import { listenForUserSubscriptionChanges } from "./actions/UserSubscriptionActions";
 import { UpdateUrl } from "./actions/UrlActions";
-import { fetchGalleryData, fetchUserGallery, fetchUserGalleryArtworks } from "./actions/GalleryDataActions";
 // selectors
 import { getCurrentPageComponent, findMissingData, getRedirectPath } from "./AppRouteSelector";
 // comps
 import ArtworkEditorSavingProgress from "./pages/artworkEditor/ArtworkEditorSavingProgress";
+import { getCurrentGalleryIdParam } from "./selectors/Selectors";
+import ErrorBoundary from './components/errorBoundary/ErrorBoundary';
+import OfflineMessage from "./components/offlineMessage/OfflineMessage";
 
 class ArtflyRouting extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.fetchData = this.fetchData.bind(this);
+    }
 
     componentDidMount() {
         // listen out for logging in and out
         this.props.listenForUserAuthChanges();
+
+        if (this.props.galleryId) {
+            this.props.fetchUserArtworks(this.props.galleryId);
+        }
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        this.fetchData(prevProps);
+    }
+
+    fetchData(prevProps) {
         const { uid: newUid } = this.props.user;
         const { uid: currentUid } = prevProps.user;
         const { redirectPath } = this.props;
@@ -38,7 +56,6 @@ class ArtflyRouting extends React.Component {
         }
 
         if (newUid && newUid !== currentUid) {
-            this.props.fetchUserGallery(newUid);
             this.props.fetchLocalPrice();
             this.props.fetchUserAccount(newUid);
             this.props.fetchUserArtworks(newUid);
@@ -47,17 +64,18 @@ class ArtflyRouting extends React.Component {
             this.props.listenForUserSubscriptionChanges(newUid);
         }
 
+        if (this.props.galleryId) {
+            if (!prevProps || prevProps.galleryId !== this.props.galleryId) {
+                this.props.fetchUserArtworks(this.props.galleryId);
+            }
+        }
+
         const { missingData } = this.props;
         if (missingData) {
-            const { artworkId, galleryId } = missingData;
+            const { artworkId } = missingData;
+
             if (artworkId) {
                 this.props.getArtworkDataOnce(artworkId);
-            }
-
-            if (galleryId) {
-                this.props.fetchGalleryData(galleryId, (galleryData) => {
-                    this.props.fetchUserGalleryArtworks(galleryData.key)
-                });
             }
         }
     }
@@ -66,18 +84,24 @@ class ArtflyRouting extends React.Component {
         const { currentPage, UpdateUrl } = this.props;
 
         return (
-            <div>
-                <ArtworkEditorSavingProgress/>
+            <ErrorBoundary>
+                <Offline>
+                    <OfflineMessage />
+                </Offline>
+
+                <ArtworkEditorSavingProgress />
                 {currentPage}
 
                 <CookieConsent debug={false} buttonText="Okay, got it" buttonStyle={{ fontSize: 18 }}>
                     This website uses cookies. Check our <Button dense
-                                                                 tag={'a'}
-                                                                 style={{ color: '#fff', textDecoration: 'underline' }}
-                                                                 onClick={() => UpdateUrl('/privacyPolicy')}>
-                    privacy policy</Button> for more detail.
+                        tag={'a'}
+                        style={{ color: '#fff', textDecoration: 'underline' }}
+                        onClick={() => UpdateUrl('/privacyPolicy')}>
+                        privacy policy</Button> for more detail.
                 </CookieConsent>
-            </div>
+
+
+            </ErrorBoundary>
         );
     }
 }
@@ -87,7 +111,8 @@ const mapAppStateToProps = (state) => {
         user: state.user,
         redirectPath: getRedirectPath(state),
         missingData: findMissingData(state),
-        currentPage: getCurrentPageComponent(state)
+        currentPage: getCurrentPageComponent(state),
+        galleryId: getCurrentGalleryIdParam(state)
     }
 };
 const mapActionsToProps = {
@@ -95,10 +120,7 @@ const mapActionsToProps = {
     fetchUserArtworks,
     getArtworkDataOnce,
     fetchUserAccount,
-    fetchUserGallery,
-    fetchGalleryData,
     UpdateUrl,
-    fetchUserGalleryArtworks,
     fetchLocalPrice,
     listenForUserSubscriptionChanges
 };

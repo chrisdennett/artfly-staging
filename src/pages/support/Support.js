@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+// styles
+import './support_styles.css';
 // ui
 import { Button, ButtonIcon } from 'rmwc/Button';
 import { Typography } from 'rmwc/Typography';
@@ -16,7 +18,7 @@ const Support = ({ account }) => {
 
     return (
         <div className={'standard-page'}>
-            <AppBar title={'Support'}/>
+            <AppBar title={'Support'} />
 
             <div className={'standard-page--content'}>
 
@@ -48,11 +50,25 @@ const Support = ({ account }) => {
                 </Typography>
 
                 <Button raised tag={'a'} href={emailStr}>
-                    <ButtonIcon icon="email"/> chris@artfly.io
+                    <ButtonIcon icon="email" /> chris@artfly.io
                 </Button>
 
+                <Typography use='body1' className={'support--browserSuggestions'}>
+                    I'd recommend using one of these browsers:
+                <ul>
+                        <li>
+                            <Button tag={'a'} href={'https://www.google.com/chrome/'}>Chrome</Button>
+                            (used by 72% of people)
+                    </li>
+                        <li>
+                            <Button tag={'a'} href={'https://www.mozilla.org/en-GB/firefox/new/'} >Firefox</Button>
+                            (used by 10% of people)
+                    </li>
+                    </ul>
+                </Typography>
+
             </div>
-            <Footer/>
+            <Footer />
         </div>
     )
 };

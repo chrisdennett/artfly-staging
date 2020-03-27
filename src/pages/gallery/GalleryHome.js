@@ -1,12 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from 'react-redux';
 // ui
-import { Fab } from 'rmwc/Fab';
+import { Fab } from '@rmwc/fab';
 // styles
 import './gallery_styles.css';
 // actions
 import { UpdateUrl } from "../../actions/UrlActions";
-import { updateGallery } from '../../actions/GalleryDataActions';
 // selectors
 import { getCurrentGalleryData } from '../../selectors/Selectors';
 // comps
@@ -15,100 +14,77 @@ import { GalleryHomeAppBar } from "../../components/appBar/AppBar";
 import BottomBar from "./bottomBar/BottomBar";
 import LoadingThing from "../../components/loadingThing/LoadingThing";
 import GalleryTitles from "./GalleryTitles";
-import GalleryEditor from './GalleryEditor';
+import { EDITOR_PATH, ARTWORK_PATH } from "../../components/global/UTILS";
 
-class GalleryHome extends Component {
+const GalleryHome = ({ UpdateUrl, currentGalleryData }) => {
 
-    constructor(props) {
-        super(props);
+    const { isEditable, title, subtitle, galleryId, galleryArtworks, firstArtworkId, artist } = currentGalleryData;
+    const addFabStyle = { position: 'absolute', bottom: -25, left: '50%', marginLeft: -67 };
+    const titlesHolderStyle = { position: 'relative' };
 
-        this.state = { unsavedGalleryData: {}, inEditMode: false };
-    }
+    return (
+        <div className={'galleryHome'}>
 
-    render() {
-        const { currentGalleryData, UpdateUrl } = this.props;
-        const { inEditMode } = this.state;
+            <GalleryHomeAppBar title={'Gallery'}
+                isEditable={isEditable}
+                onAddClick={() => UpdateUrl(EDITOR_PATH(galleryId, null, artist))} />
 
-        if (!currentGalleryData) {
-            return <div className={'gallery--loader'}>
-                <LoadingThing/>
-            </div>
-        }
-
-        const { isEditable, title, subtitle, galleryId, galleryArtworks, firstArtworkId } = currentGalleryData;
-        const addFabStyle = { position: 'absolute', bottom: -25, left: '50%', marginLeft: -67 };
-        const titlesHolderStyle = { position: 'relative' };
-
-        return (
-            <div className={'galleryHome'}>
-
-                {!inEditMode &&
-                <GalleryHomeAppBar title={'Gallery'}
-                                   isEditable={isEditable}
-                                   onAddClick={() => UpdateUrl(`/artworkAdder/galleryId_${galleryId}_galleryId`)}
-                                   onEditClick={() => this.setState({ inEditMode: true })}/>
-                }
-
-
-                {inEditMode &&
-                <GalleryEditor currentGallery={currentGalleryData}
-                               onClose={() => this.setState({ inEditMode: false })}/>
-                }
-
-
-                {!title &&
+            {!title &&
                 <div className={'gallery--loader'}>
-                    <LoadingThing/>
+                    <LoadingThing />
                 </div>
-                }
+            }
 
-                {currentGalleryData &&
+            {currentGalleryData &&
                 <div>
-                    {!inEditMode &&
                     <div style={titlesHolderStyle}>
                         <GalleryTitles title={title}
-                                       subtitle={subtitle}/>
+                            subtitle={subtitle} />
 
                         {isEditable &&
-                        <Fab style={addFabStyle}
-                             theme={'primary-bg'}
-                             label={'Add art'}
-                             icon={'add'}
-                             onClick={() => UpdateUrl(`/artworkAdder/galleryId_${galleryId}_galleryId`)}/>
+                            <Fab style={addFabStyle}
+                                theme={'primary-bg'}
+                                label={'Add art'}
+                                icon={'add'}
+                                onClick={() => UpdateUrl(EDITOR_PATH(galleryId, null, artist))} />
                         }
                     </div>
-                    }
 
                     {galleryArtworks &&
-                    <div className={'gallery--artworkThumbs'}>
-                        {
-                            galleryArtworks.map(artworkData => {
-                                return (
-                                    <ArtworkThumb key={artworkData.artworkId}
-                                                  UpdateUrl={UpdateUrl}
-                                                  viewerIsAdmin={isEditable}
-                                                  onClick={() => UpdateUrl(`/gallery/galleryId_${galleryId}_galleryId/artworkId_${artworkData.artworkId}_artworkId`)}
-                                                  artworkData={artworkData}
-                                    />
-                                )
-                            })
-                        }
-                    </div>
+                        <div className={'gallery--artworkThumbs'}>
+                            {
+                                galleryArtworks.map(artworkData => {
+
+                                    if (artworkData.artworkId) {
+                                        return (
+                                            <ArtworkThumb key={artworkData.artworkId}
+                                                UpdateUrl={UpdateUrl}
+                                                viewerIsAdmin={isEditable}
+                                                onClick={() => UpdateUrl(ARTWORK_PATH(artworkData.artworkId, galleryId, artist))}
+                                                artworkData={artworkData}
+                                            />
+                                        )
+                                    }
+                                    else {
+                                        console.log("NO ID: artworkData: ", artworkData);
+                                        return null;
+                                    }
+                                })
+                            }
+                        </div>
                     }
                 </div>
-                }
+            }
 
-                {!inEditMode &&
-                <BottomBar disabled={!currentGalleryData || !firstArtworkId}
-                           onEnterGallery={() => UpdateUrl(`/gallery/galleryId_${galleryId}_galleryId/artworkId_${firstArtworkId}_artworkId`)}/>
-                }
-            </div>
-        );
-    }
+            <BottomBar disabled={!currentGalleryData || !firstArtworkId}
+                onEnterGallery={() => UpdateUrl(ARTWORK_PATH(firstArtworkId, galleryId, artist))} />
+        </div>
+    );
+
 }
 
-    // currentGalleryData: getCurrentGalleryData(state.user, state.galleries, state.artworks, props.galleryId)
-const mapStateToProps = (state, props) => ({
-    currentGalleryData: getCurrentGalleryData(state, props.galleryId)
+// currentGalleryData: getCurrentGalleryData(state.user, state.galleries, state.artworks, props.galleryId)
+const mapStateToProps = (state) => ({
+    currentGalleryData: getCurrentGalleryData(state)
 });
-export default connect(mapStateToProps, { UpdateUrl, updateGallery })(GalleryHome);
+export default connect(mapStateToProps, { UpdateUrl })(GalleryHome);

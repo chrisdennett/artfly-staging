@@ -1,7 +1,7 @@
 import { UPDATE_URL } from "../actions/UrlActions";
 
 const initialState = {
-    pathname: typeof window.location !== "undefined" ? window.location.pathname : "/"
+    pathname: typeof window.location !== "undefined" ? window.location.pathname + window.location.search : "/"
 };
 
 export default function (state = initialState, action) {

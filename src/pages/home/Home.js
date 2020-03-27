@@ -1,93 +1,111 @@
 // externals
-import React from "react";
-import { connect } from 'react-redux';
+import React, {
+    Component,
+    Suspense
+} from "react";
+import {
+    connect
+} from 'react-redux';
 // ui
-import { Typography } from 'rmwc/Typography';
+import {
+    Typography
+} from 'rmwc/Typography';
 // styles
 import './homeStyles.css';
-// actions
-import { UpdateUrl } from "../../actions/UrlActions";
-// selectors
-import { getLatestUserArtwork, getTotalUserArtworks, getUserGallery } from '../../selectors/Selectors'
 // components
-import LoadingThing from "../../components/loadingThing/LoadingThing";
+import {
+    HomeAppBar
+} from "../../components/appBar/AppBar";
 import Title from "./title/Title";
-import AboutUs from "./aboutUs/AboutUs";
-import SocialMediaStuff from "./socialMediaStuff/SocialMediaStuff";
-import ArtFlyLab from "./artflyLab/ArtFlyLab";
+import LoadingThing from "../../components/loadingThing/LoadingThing";
 import ArtFlyIntro from "./artFlyIntro/ArtFlyIntro";
-import { HomeAppBar } from "../../components/appBar/AppBar";
-import GalleryCard from "./galleryCard/GalleryCard";
-import JumpingVictorianLady from './JumpingVictorianLady';
-import Footer from "../../components/footer/Footer";
+import GalleryCards from "./galleryCards/GalleryCards";
+import ArtistDelete from "../../components/artistDelete/ArtistDelete";
+// lazy loaded components
+const AboutUs = React.lazy(() => import("./aboutUs/AboutUs"));
+const SocialMediaStuff = React.lazy(() => import("./socialMediaStuff/SocialMediaStuff"));
+const ArtFlyLab = React.lazy(() => import("./artflyLab/ArtFlyLab"));
+const JumpingVictorianLady = React.lazy(() => import('./JumpingVictorianLady'));
+const Footer = React.lazy(() => import("../../components/footer/Footer"));
+// import SignUpForm from "./SignUpForm/SignUpForm";
+class Home extends Component {
 
+    constructor(props) {
+        super(props);
 
-const Home = ({ user, userGallery, totalUserArtworks, latestUserArtwork, UpdateUrl, updateUserArtworks }) => {
-    const userLoggedIn = !!user.uid;
-    const userPending = user === 'pending';
+        this.state = {
+            deleteArtist: null,
+            showLowPriorityStuff: false,
+            killMe: false
+        };
+    }
 
-    return (
-        <div className={'home'}>
-            <HomeAppBar/>
+    componentDidMount() {
+        this.setState({ showLowPriorityStuff: true });
+    }
 
-            {userPending &&
-            <LoadingThing/>
-            }
+    render() {
+        const { user } = this.props;
 
-            <div className='home--heading'>
+        const userLoggedIn = !!user.uid;
+        const userPending = user === 'pending';
 
-                <Title/>
+        return (
+            <div className={'home'}>
+                <HomeAppBar />
 
-                {!userLoggedIn &&
-                <ArtFlyIntro />
+                {
+                    userPending &&
+                    <LoadingThing />
                 }
 
-            </div>
-
-            {userLoggedIn &&
-            <div className={'home--yourGalleries'}>
-                <Typography className={'sectionTitle'} use="headline4">
-                    Your Galleries
-                </Typography>
-
-                {/*<button onClick={() => updateUserArtworks(user.uid)}>UPDATE USER ARTWORKS TEST</button>*/}
-
-                {!userGallery &&
-                <LoadingThing label={'Loading your galleries'}/>
+                {
+                    !userLoggedIn &&
+                    <div className='home--heading'>
+                        <Title />
+                        < ArtFlyIntro />
+                    </div>
                 }
 
-                {userGallery &&
-                <div className={'home--yourGalleries--galleries'}>
-                    <GalleryCard galleryData={userGallery}
-                                 latestArtwork={latestUserArtwork}
-                                 totalArtworks={totalUserArtworks}
-                                 key={userGallery.galleryId}
-                                 onAddClick={() => UpdateUrl(`/artworkAdder/galleryId_${userGallery.galleryId}_galleryId`)}
-                                 onClick={() => UpdateUrl(`/gallery/galleryId_${userGallery.galleryId}_galleryId`)}/>
-                </div>
+                {
+                    userLoggedIn &&
+                    <div className={'home--yourGalleries'}>
+                        <Typography className={'sectionTitle'} use="headline4">
+                            Your Galleries
+                        </Typography>
+
+                        <ArtistDelete showDialog={this.state.deleteArtist}
+                            artistId={this.state.deleteArtist}
+                            onCancel={() => this.setState({ deleteArtist: null })}
+                        />
+
+                        <div className={'home--yourGalleries--galleries'} >
+                            <GalleryCards onDeleteArtist={(artistId) => this.setState({ deleteArtist: artistId })} />
+                        </div>
+                    </div>
                 }
-            </div>
-            }
 
-            <div>
-                <ArtFlyLab/>
-                <SocialMediaStuff/>
-                <AboutUs/>
-                <JumpingVictorianLady/>
-                <Footer/>
-            </div>
+                {
+                    this.state.showLowPriorityStuff &&
+                    <Suspense fallback={<div> Loading... </div>}>
+                        <div>
+                            { /*<SignUpForm/>*/}
+                            <ArtFlyLab />
+                            <SocialMediaStuff />
+                            <AboutUs />
+                            <JumpingVictorianLady />
+                            <Footer />
+                        </div>
+                    </Suspense>
+                }
 
-        </div>
-    );
+            </div >
+        );
+    }
 };
 
-const mapStateToProps = (state) => (
-    {
-        user: state.user,
-        latestUserArtwork: getLatestUserArtwork(state),
-        totalUserArtworks: getTotalUserArtworks(state),
-        userGallery: getUserGallery(state)
-    }
-);
+const mapStateToProps = (state) => ({
+    user: state.user,
+});
 
-export default connect(mapStateToProps, { UpdateUrl })(Home);
+export default connect(mapStateToProps)(Home);

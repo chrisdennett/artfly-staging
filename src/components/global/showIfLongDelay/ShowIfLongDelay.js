@@ -14,15 +14,14 @@ class ShowIfLongDelay extends Component {
     }
 
     componentDidMount() {
-        const intervalRef = setInterval(this.updateTimer, 1000);
-        this.setState({intervalRef})
+        this.intervalRef = setInterval(this.updateTimer, 1000);
     }
 
     componentWillUnmount() {
-        clearTimeout(this.state.intervalRef);
+        clearInterval(this.intervalRef);
     }
 
-    updateTimer(e){
+    updateTimer(){
         this.setState((state) => {
             const currSeconds = state.seconds;
             const newSeconds = currSeconds + 1;
@@ -33,7 +32,7 @@ class ShowIfLongDelay extends Component {
         });
 
         if(this.state.seconds > 3){
-            clearTimeout(this.state.intervalRef);
+            clearInterval(this.intervalRef);
         }
     }
 

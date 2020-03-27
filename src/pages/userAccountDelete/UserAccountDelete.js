@@ -13,7 +13,6 @@ import {
     getDeleteAuthError, getMembershipDetails,
     getSignInProvider,
     getTotalUserArtworks,
-    getUserGalleryId,
     getUserId
 } from "../../selectors/Selectors";
 import SignIn from "../userSignIn/signIn/SignIn";
@@ -24,7 +23,6 @@ import AccountDeletedMessage from './AccountDeletedMessage';
 const UserAccountDelete = ({
                                userId,
                                userAccount,
-                               userGalleryId,
                                totalArtworks,
                                userSignInMethod,
                                cancelSubscription,
@@ -90,7 +88,7 @@ const UserAccountDelete = ({
                                    disabled={!deleteArtworkdsCompleted}
                                    title={'Delete all user data'}
                                    description={'This will permanently delete gallery data.'}
-                                   onDeleteConfirm={() => deleteUserData(userId, userAccount.accountId, userGalleryId)}
+                                   onDeleteConfirm={() => deleteUserData(userId, userAccount.accountId)}
                 />
 
                 {showSignInButton &&
@@ -126,7 +124,6 @@ const mapStateToProps = (state) => (
         user: state.user,
         userId: getUserId(state),
         userAccount: state.account,
-        userGalleryId: getUserGalleryId(state),
         userSignInMethod: getSignInProvider(state),
         totalArtworks: getTotalUserArtworks(state),
         deleteAuthError: getDeleteAuthError(state),

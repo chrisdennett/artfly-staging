@@ -8,11 +8,12 @@ import './artFlyIntro_styles.css';
 // actions
 import { UpdateUrl } from "../../../actions/UrlActions";
 // constants
-import {IN_STAGING} from '../../../GLOBAL_CONSTANTS';
+import { IN_STAGING } from '../../../GLOBAL_CONSTANTS';
+import { GALLERY_PATH } from '../../../components/global/UTILS';
 
 const ArtFlyIntro = function ({ UpdateUrl }) {
 
-    const demoGalleryId = IN_STAGING ? 'VcPVuv6chDoFZoYgsrnr' : 'sRCT2R2ILmwmASQla5Ej';
+    const demoGalleryId = IN_STAGING ? 'EXS9OFRuWEWWJIBR8W35IStTjuk1' : 'pXerfNc4GwXugwA86nOYqz21nZe2';
 
     return (
         <div className={'artFlyIntro'}>
@@ -25,14 +26,14 @@ const ArtFlyIntro = function ({ UpdateUrl }) {
                 <Button raised onClick={() => UpdateUrl('/signUp')}>Get started for free</Button>
             </div>
 
-            <Typography tag={'div'} use={'body1'} style={{ marginTop: 20, maxWidth: 500, lineHeight:'1.8rem', textAlign: 'center' }}>
-                ArtFly's just a simple gallery right now. <br/>
+            <Typography tag={'div'} use={'body1'} style={{ marginTop: 20, maxWidth: 500, lineHeight: '1.8rem', textAlign: 'center' }}>
+                ArtFly's just a simple gallery right now. <br />
                 Here's my
-                <Button dense theme={'secondary'} onClick={() => UpdateUrl(`/gallery/galleryId_${demoGalleryId}_galleryId`)}>
+                <Button dense theme={'secondary'} onClick={() => UpdateUrl(GALLERY_PATH(demoGalleryId))}>
                     family gallery
                 </Button>
-                for example.  <br/>
-                But this is just the start. <br/>
+                for example.  <br />
+                But this is just the start. <br />
                 Check out the ArtFly lab to see what I'm planning.
             </Typography>
         </div>

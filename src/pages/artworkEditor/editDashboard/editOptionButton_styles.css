@@ -1,0 +1,24 @@
+.edit-menu-item {
+    width: 45px;
+    display: flex;
+    flex-direction: column;
+    color: rgb(51, 51, 51);
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: whitesmoke;
+}
+
+.edit-menu-item--selected {
+    color: whitesmoke;
+    background-color: rgb(51, 51, 51);
+}
+
+.edit-menu-item--label {
+    text-align: center;
+    font-size: 0.7rem;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    margin-top: 3px;
+    /*color: rgba(255, 255, 255, 0.7);*/
+}

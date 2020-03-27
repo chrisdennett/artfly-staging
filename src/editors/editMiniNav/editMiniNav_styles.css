@@ -1,0 +1,33 @@
+.editMiniNav{
+    display: flex;
+    padding-right: 10px;
+    background-color: whitesmoke;
+    justify-content: flex-end;
+    align-items: center;
+    min-height: 60px;
+    border-top: 1px solid rgba(0,0,0,0.2);
+}
+
+.editMiniNav--navButts{
+
+}
+
+.editMiniNav--prev{
+    margin-right: 5px;
+}
+
+.editMiniNav--next{
+    height: 40px;
+}
+
+.editMiniNav--disabled{
+    background-color: #c1c1c1;
+    cursor:auto!important;
+    box-shadow: none;
+}
+
+.editMiniNav--disabled:hover{
+    background-color: #c1c1c1;
+    cursor:auto!important;
+    box-shadow: none;
+}

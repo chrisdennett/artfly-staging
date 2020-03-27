@@ -40,7 +40,7 @@ export const connectRouteToStore = store => {
     // capabilities. Scroll position of document.body will be maintained
     // automatically as long as our layout uses document.body for scrolling
     window.addEventListener("popstate", () => {
-        store.dispatch(UpdateUrl(window.location.pathname));
+        store.dispatch(UpdateUrl(window.location.pathname+window.location.search));
         restoreScrollPosition();
     });
 
@@ -52,9 +52,9 @@ export const connectRouteToStore = store => {
     // update browser if we navigated via
     // changing state in redux
     store.subscribe(() => {
-        const { pathname } = store.getState().routing;
+        const { pathname  } = store.getState().routing;
 
-        if (location.pathname !== pathname) {
+        if (location.pathname + window.location.search !== pathname) {
             window.history.pushState(null, "", pathname);
             saveScrollPosition();
             // force scroll to top this is what browsers normally do when

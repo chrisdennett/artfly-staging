@@ -1,0 +1,16 @@
+.newArtworkCreator {
+    background: #fff url("../../components/images/concrete_wall_2.png");
+    overflow: auto;
+    min-height: 100vh;
+}
+
+.newArtworkCreator--content {
+
+}
+
+.newArtworkCreator--content--projectCards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+}

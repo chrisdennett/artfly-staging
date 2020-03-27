@@ -1,4 +1,4 @@
-import { firestoreDb as db } from "../libs/firebaseConfig";
+import { auth, firestoreDb as db } from "../libs/firebaseConfig";
 
 export const ACCOUNT_FETCHED = 'accountFetched';
 export const ACCOUNT_UPDATED = 'accountUpdated';
@@ -51,13 +51,16 @@ export function fetchUserAccount(userId) {
     }
 }
 
-export function updateUserAccount(accountId, newAccountData) {
+export function updateUserAccount(accountId, newAccountData) { 
     return (dispatch) => {
+
+        const userAccountId = accountId ? accountId : auth.currentUser.uid;
+
         db.collection('accounts')
-            .doc(accountId)
+            .doc(userAccountId)
             .set(newAccountData, { merge: true })
             .then(() => {
-                const accountDataWithId = { ...newAccountData, accountId: accountId };
+                const accountDataWithId = { ...newAccountData, accountId: userAccountId };
 
                 dispatch({
                     type: ACCOUNT_UPDATED,

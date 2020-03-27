@@ -1,7 +1,11 @@
+Serve dev as https
+Powershell: ($env:HTTPS = "true") -and (npm start)
+cmd.exe: set HTTPS=true&&npm start
+
 ********************************************************************************
 ********************************************************************************
 BUILD AND DEPLOY
-// 1. change the IN_STAGING, IN_BETA_TESTING flags as necessary in GLOBAL_CONSTANTS.js
+// 1. change the IN_STAGING flag as necessary in GLOBAL_CONSTANTS.js
 
 // 2. build the app
 npm run build
@@ -14,6 +18,7 @@ firebase use staging
 firebase use default
 
 // 5. deploy to firebase
+firebase deploy --only hosting
 firebase deploy
 
 // 6. open site
@@ -33,7 +38,6 @@ firebase deploy --only hosting
 // can restrict to individual functions and other stuff...
 // https://firebase.google.com/docs/cli/
 firebase deploy --only functions:subscriptionEvent
-firebase deploy --only functions:subscriptionEvent
 
 // open some other part of the firebase project using
 firebase open
@@ -44,6 +48,11 @@ https://github.com/firebase/functions-samples/blob/master/generate-thumbnail/fun
 
 ********************************************************************************
 ********************************************************************************
+
+// Firebase throwing an error
+firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.firestore is not a function
+// after trying lots of things I eventually solved this by deleting node_modules
+// directory and running npm init again.
 
 // to fake a subscription on staging
 // send a test webhook from paddle

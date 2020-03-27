@@ -45,7 +45,7 @@
 }
 
 .home--yourGalleries{
-    margin-top: 40px;
+    margin-top: 70px;
     margin-bottom: 60px;
     display: flex;
     flex-direction: column;
@@ -53,7 +53,7 @@
 }
 
 .home--yourGalleries--galleries{
-    margin-top: 2rem;
+    width: 100%;
 }
 
 .home--footer{
@@ -73,6 +73,11 @@
 }
 
 @media (max-width: 600px) {
+
+    .home--yourGalleries{
+        margin-top: 60px;
+    }
+
     .home--heading {
         padding: 60px 10px 0 10px;
     }

@@ -1,13 +1,9 @@
 import React from "react";
 import ga from './libs/googleAnalyticsConfig';
-// store - where the entire components state lives
-// import store from '../store/store';
 //
 import TestPage from "./components/testPage/TestPage";
-import GalleryArtworkViewer from "./pages/gallery/GalleryArtworkViewer";
+import GalleryArtworkViewer from "./pages/artworkViewer/GalleryArtworkViewer";
 import GalleryHome from "./pages/gallery/GalleryHome";
-import ArtworkAdder from "./pages/artworkAdder/ArtworkAdder";
-import ArtworkEditor from "./pages/artworkEditor/ArtworkEditor";
 import FourOhFour from "./components/fourOhFour/FourOhFour";
 import Home from "./pages/home/Home";
 import UserSignIn from "./pages/userSignIn/UserSignIn";
@@ -17,28 +13,23 @@ import AccountDelete from "./pages/userAccountDelete/UserAccountDelete";
 import PrivacyPolicy from "./pages/privacyPolicy/PrivacyPolicy";
 import TermsOfService from "./pages/termsOfService/TermsOfService";
 import Support from "./pages/support/Support";
-// import UserAccountDeleted from "./userAccountDeleted/UserAccountDeleted";
-// import { UpdateUrl } from "../actions/UrlActions";
+import ArtworkMaker from "./pages/artworkMaker/ArtworkMaker";
+import { GALLERY_PATH } from "./components/global/UTILS";
 
 export const findMissingData = state => {
-    const { routing, artworks, galleries } = state;
+    const { routing, artworks } = state;
 
     if (!routing.pathname) return null;
-    const params = getParams(routing.pathname);
-    const { artworkId, galleryId } = params;
+    const params = getQueryParameters(routing.pathname);
+    const { artworkId } = params;
 
-    if (!artworkId && !galleryId) return null;
+    if (!artworkId) return null;
 
     let missingData = {};
 
     // ARTWORK
     if (artworkId && !artworks[artworkId]) {
         missingData.artworkId = artworkId;
-    }
-
-    // GALLERY
-    if (galleryId && !galleries[galleryId]) {
-        missingData.galleryId = galleryId;
     }
 
     return missingData;
@@ -51,7 +42,7 @@ export const getRedirectPath = (state) => {
     if (!routing.pathname) return '/';
 
     // const page = routing.pathname === '/' ? 'home' : routing.pathname.split('/').slice(1)[0];
-    const params = getParams(routing.pathname);
+    const params = getQueryParameters(routing.pathname);
 
     // no matter what path it is, if the account has been deleted take them to the
     // delete page to create a new account or continue with deletion process.
@@ -59,7 +50,7 @@ export const getRedirectPath = (state) => {
         return '/accountDelete';
     }
 
-    const adminOnlyPaths = ['/profile', '/accountSubscription', '/accountDelete', '/artworkAdder', '/artworkEditor'];
+    const adminOnlyPaths = ['/profile', '/accountSubscription', '/accountDelete', '/artworkMaker'];
     // if trying to go to an admin only page and user not logged in redirect to log in
     if (!user.uid && adminOnlyPaths.indexOf(routing.pathname) !== -1) {
         // redirect to home page
@@ -73,7 +64,7 @@ export const getRedirectPath = (state) => {
 
         if (isMissing || isDeleted) {
             if (params.galleryId) {
-                return `/gallery/galleryId_${params.galleryId}_galleryId`;
+                return GALLERY_PATH(params.galleryId, params.artistId);
             }
             else {
                 return '/';
@@ -89,79 +80,111 @@ export const getCurrentPageComponent = (state) => {
 
     if (!routing.pathname) return Home;
 
-    const page = routing.pathname === '/' ? 'home' : routing.pathname.split('/').slice(1)[0];
-    const params = getParams(routing.pathname);
+    const path = routing.pathname.split('?')[0];
+    const page = path === '/' ? 'home' : path.split('/').slice(1)[0];
+    const queryObj = getQueryParameters(routing.pathname);
+    const {galleryId, artworkId} = queryObj;
 
     // this should be called after any redirect manipulation
     ga.set({ page: page });
     ga.pageview(routing.pathname);
 
-    const { artworkId, galleryId, editor } = params;
-
     switch (page) {
         case 'home':
-            return <Home/>;
+            return <Home />;
+
+        case 'artwork':
+            if(!artworkId) return <Home />
+
+            return <GalleryArtworkViewer />;
 
         case 'gallery':
-            // gallery can either be showing an artwork
-            if (galleryId && artworkId) return <GalleryArtworkViewer galleryId={galleryId} artworkId={artworkId}/>;
-            // or showing the gallery home page
-            else if (galleryId) return <GalleryHome galleryId={galleryId}/>;
-            // or if missing params go home
-            else return <Home/>;
+            if(!galleryId) return <Home />
+
+            return <GalleryHome />;
 
         case 'signIn':
-            return <UserSignIn show={'signIn'}/>;
+            return <UserSignIn show={'signIn'} />;
 
         case 'signUp':
-            return <UserSignIn show={'signUp'}/>;
+            return <UserSignIn show={'signUp'} />;
 
         case 'profile':
-            return <UserProfile/>;
+            return <UserProfile />;
 
         case 'accountSubscription':
-            return <AccountSubscription/>;
+            return <AccountSubscription />;
 
         case 'accountDelete':
-            return <AccountDelete/>;
+            return <AccountDelete />;
 
-        case 'artworkAdder':
-            return <ArtworkAdder galleryId={galleryId}/>;
-
-        case 'artworkEditor':
-            return <ArtworkEditor galleryId={galleryId} artworkId={artworkId} editor={editor}/>;
+        case 'artworkMaker':
+            return <ArtworkMaker />;
 
         case 'support':
-            return <Support/>;
+            return <Support />;
 
         case 'privacyPolicy':
-            return <PrivacyPolicy/>;
+            return <PrivacyPolicy />;
 
         case 'termsOfService':
-            return <TermsOfService/>;
+            return <TermsOfService />;
 
         case 'TESTING':
-            return <TestPage/>;
+            return <TestPage />;
 
         default:
-            return <FourOhFour/>;
+            return <FourOhFour />;
     }
 };
 
-export const getParams = (url) => {
-    const paramKeys = ['artworkId', 'galleryId', 'editor'];
-    const params = {};
+// export const getParams = (url) => {
+//     const paramKeys = ['artworkId', 'galleryId', 'editor', 'newArtwork'];
+//     const params = {};
 
-    for (let key of paramKeys) {
-        if (url.indexOf(`${key}_`) !== -1) {
-            const startTag = `${key}_`;
-            const endTag = `_${key}`;
-            const startIndex = url.indexOf(startTag) + startTag.length;
-            const endIndex = url.indexOf(endTag);
+//     for (let key of paramKeys) {
+//         if (url.indexOf(`${key}_`) !== -1) {
+//             const startTag = `${key}_`;
+//             const endTag = `_${key}`;
+//             const startIndex = url.indexOf(startTag) + startTag.length;
+//             const endIndex = url.indexOf(endTag);
 
-            params[key] = url.slice(startIndex, endIndex);
-        }
+//             params[key] = url.slice(startIndex, endIndex);
+//         }
+//     }
+
+//     return params;
+// };
+
+export const getQueryParameters = (path) => {
+    if(!path) return {};
+
+    const search = path.split('?')[1];
+
+    if(!search) return {};
+
+    // const strippedQMark = query.replace(/(^\?)/,'');
+
+    const paramArr = search.split("&");
+    let paramObj = {};
+
+    for(let pair of paramArr){
+        const arr = pair.split("=");
+        const key = arr[0]+'Id';
+        const value = arr[1];
+        paramObj[key] = value;
     }
 
-    return params;
-};
+    return paramObj;
+}
+
+// source: https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+// export const getParameterByName = (name, url) => {
+//     if (!url) url = window.location.href;
+//     name = name.replace(/[[\]]/g, '\\$&');
+//     var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+//         results = regex.exec(url);
+//     if (!results) return null;
+//     if (!results[2]) return '';
+//     return decodeURIComponent(results[2].replace(/\+/g, ' '));
+// }

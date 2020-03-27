@@ -1,45 +1,51 @@
-.quickPhotoSelector{
-    width: 150px;
-    height: 150px;
+.quickPhotoSelector {
+    /*width: 150px;*/
+    /*height: 150px;*/
 }
 
-.quickPhotoSelector--input{
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
+.quickPhotoSelector--label {
+    /*position: relative;*/
+}
+
+.quickPhotoSelector--input {
+    /*position: absolute;*/
+    cursor: pointer;
     position: absolute;
-    z-index: -1;
+    left: 0;
+    opacity: 0;
+    top: 0;
+    bottom: 75px;
+    width: 100%;
+    /*background-color: red;*/
 }
 
-.quickPhotoSelector--customInputButton{
+.quickPhotoSelector--inputButton {
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 140px;
-    height: 140px;
     outline: none;
+    height: 100%;
     text-align: center;
-    border: rgba(0, 0, 0, 0.4) 5px dashed;
+    /*border: rgba(0, 0, 0, 0.4) 5px dashed;*/
 }
 
-.quickPhotoSelector--iconBg{
-    fill: rgba(0, 0, 0, 0.4);
+.quickPhotoSelector--customInputButton {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.quickPhotoSelector--icon{
-    fill: #fff;
+.quickPhotoSelector--inputButton--iconHolder {
+    padding: 20px;
+    border-radius: 60px;
 }
 
-.quickPhotoSelector--text{
-    text-align: center;
-    color: rgba(0, 0, 0, 0.4);
-    font-family: 'Stardos Stencil', cursive;
-    margin: 0;
-    font-size: 2rem;
-    line-height: 2rem;
+.quickPhotoSelector--inputButton--iconHolder i {
+    color: whitesmoke;
 }
 
 /*

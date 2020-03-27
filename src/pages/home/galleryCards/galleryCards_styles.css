@@ -1,0 +1,14 @@
+.galleryCards--globalGalleryHolder{
+    padding: 1rem 0 1rem 0;
+    margin-bottom: 1rem;
+    background-color: rgb(3, 3, 3, 0.05);
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid rgb(3, 3, 3, 0.1);
+}
+
+.galleryCards{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}

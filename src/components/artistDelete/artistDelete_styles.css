@@ -1,0 +1,17 @@
+.artistDelete--emphasis{
+    color: black;
+}
+
+.artistDelete--contentSection{
+    margin-top: 1rem;
+}
+
+.artistDelete--selectHolder{
+    margin-top: 1rem;
+}
+
+
+.artistDelete--select{
+    width: 100%;
+
+}

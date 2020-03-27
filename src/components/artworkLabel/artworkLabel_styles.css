@@ -1,0 +1,45 @@
+.artworkLabelHolder{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.artworkLabel{
+    /* background: whitesmoke; */
+    padding-top: 0.8vh;
+    margin: 0;
+    text-align: center;
+}
+
+.artworkLabel h2{
+    max-width: 350px;
+    font-size: 3vh;
+    margin: 0;
+}
+
+.artworkLabel h3{
+    font-size: 2vh;
+    margin-top: 5px;
+    font-weight: normal;
+    margin-bottom: 0; 
+}
+
+.artworkLabelThumb{
+    max-width: 200px;
+    margin-top: 15px;
+    padding: 0;
+}
+
+.artworkLabelThumb h2{
+    font-size: 1.1rem;
+    line-height: 1.1rem;
+    color: rgba(0,0,0,0.8);
+}
+
+.artworkLabelThumb h3{
+    font-size: 0.9rem;
+    line-height: 0.9rem;
+    font-weight: normal;
+    color: rgba(0,0,0,0.8);
+}

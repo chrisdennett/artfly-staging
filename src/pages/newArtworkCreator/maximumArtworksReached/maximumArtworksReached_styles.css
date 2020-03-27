@@ -1,0 +1,21 @@
+.maxArtworksReached {
+
+}
+
+.maxArtworksReached--message {
+    padding: 20px 20px 10px 20px;
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+.maxArtworksReached--links {
+    border-top: rgba(0, 0, 0, 0.1) 1px solid;
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.maxArtworksReached--links button {
+    margin: 5px;
+}

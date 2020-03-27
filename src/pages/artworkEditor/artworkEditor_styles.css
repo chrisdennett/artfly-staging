@@ -1,7 +1,27 @@
 .artworkEditor{
     display:flex;
-    /*background: url("../../components/images/brickwall.png");*/
-    /*overflow: hidden;*/
     min-height: 100vh;
     flex-direction: column;
 }
+
+.squaresBg{
+    background: #fff url("../../components/images/graph-square-small.png");
+}
+
+.labApp{
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: inset 2px 4px 10px rgba(51, 51, 51, 0.1);
+}
+
+.labApp--content{
+    margin: 2%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+

@@ -3,7 +3,7 @@ import 'firebase/storage';
 import 'firebase/auth';
 import 'firebase/firestore';
 // constants
-import {IN_STAGING} from '../GLOBAL_CONSTANTS';
+import { IN_STAGING } from '../GLOBAL_CONSTANTS';
 
 // FOR STAGING
 const stagingOnlyConfig = {
@@ -28,14 +28,13 @@ const productionConfig = {
 const config = IN_STAGING ? stagingOnlyConfig : productionConfig;
 firebase.initializeApp(config);
 
-
 export const firestoreDb = firebase.firestore();
 export const auth = firebase.auth();
 export const storage = firebase.storage();
 export const storageRef = firebase.storage().ref();
 export const storageEvent = firebase.storage.TaskEvent;
 
-const settings = {timestampsInSnapshots: true};
+const settings = { timestampsInSnapshots: true };
 firestoreDb.settings(settings);
 
 /*firebase.firestore().enablePersistence()

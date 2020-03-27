@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 // ui
 import { Typography } from 'rmwc/Typography';
 import { ListDivider } from 'rmwc/List';
-import { SimpleDialog } from 'rmwc/Dialog';
+import {
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    DialogButton
+} from '@rmwc/dialog';
 import {
     Card,
     CardPrimaryAction,
@@ -16,26 +22,37 @@ class AccountDeleteStep extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {deleteConfirmDialogIsOpen: false}
+        this.state = { deleteConfirmDialogIsOpen: false }
     }
 
     render() {
 
-        const { completed, number, title, description, onDeleteConfirm, disabled, actionLabel='Delete' } = this.props;
+        const { completed, number, title, description, onDeleteConfirm, disabled, actionLabel = 'Delete' } = this.props;
         const completedStyle = { textDecoration: 'line-through' };
         const showDeleteButt = !disabled && !completed;
 
         return (
             <div>
-                <SimpleDialog
-                    title={title}
-                    body={description}
-                    acceptLabel={`confirm ${actionLabel}`}
+                <Dialog
                     open={this.state.deleteConfirmDialogIsOpen}
                     onClose={() => this.setState({ deleteConfirmDialogIsOpen: false })}
-                    onAccept={onDeleteConfirm}
-                    onCancel={() => this.setState({ deleteConfirmDialogIsOpen: false })}
-                />
+                >
+                    <DialogTitle>{title}</DialogTitle>
+                    <DialogContent>{description}</DialogContent>
+                    <DialogActions>
+                        <DialogButton action="close"
+                            onClick={() => this.setState({ deleteConfirmDialogIsOpen: false })}
+                        >
+                            Cancel
+                        </DialogButton>
+                        <DialogButton action="accept"
+                            isDefaultAction
+                            onClick={() => onDeleteConfirm()}
+                        >
+                            confirm {actionLabel}
+                        </DialogButton>
+                    </DialogActions>
+                </Dialog>
 
                 <Card style={{ width: '100%', marginTop: 20 }}>
                     <Typography
@@ -46,11 +63,11 @@ class AccountDeleteStep extends Component {
                     >
                         Step {number}:
                         {completed &&
-                        <span> Complete</span>
+                            <span> Complete</span>
                         }
                     </Typography>
 
-                    <ListDivider/>
+                    <ListDivider />
                     <CardPrimaryAction>
                         <div style={{ padding: '0 1rem 0 1rem' }}>
                             <Typography use="headline6" tag="h2" style={completed ? completedStyle : {}}>
@@ -68,21 +85,21 @@ class AccountDeleteStep extends Component {
                     <CardActions style={{ justifyContent: 'flex-end' }}>
                         <CardActionButtons>
                             {showDeleteButt &&
-                            <CardAction theme={'secondary-bg on-secondary'}
-                                        onClick={() => this.setState({ deleteConfirmDialogIsOpen: true })}>
-                                {actionLabel}
-                            </CardAction>
+                                <CardAction theme={'secondary-bg on-secondary'}
+                                    onClick={() => this.setState({ deleteConfirmDialogIsOpen: true })}>
+                                    {actionLabel}
+                                </CardAction>
                             }
 
                             {completed &&
-                            <Typography use="button" style={{ color: '#ccc' }}>
-                                Complete
+                                <Typography use="button" style={{ color: '#ccc' }}>
+                                    Complete
                             </Typography>
                             }
 
                             {disabled &&
-                            <Typography use="button" style={{ color: '#ccc' }}>
-                                Complete step {number - 1} first
+                                <Typography use="button" style={{ color: '#ccc' }}>
+                                    Complete step {number - 1} first
                             </Typography>
                             }
                         </CardActionButtons>
